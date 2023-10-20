@@ -51,7 +51,7 @@ export const useGovernanceConnectorCategories = <
     Data = GovernanceCategoryForOrgsInterface[], 
     Error = RequestErrorInterface
 > 
-    (): RequestResultInterface<Data, Error> => {
+    (shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -62,7 +62,7 @@ export const useGovernanceConnectorCategories = <
         url: store.getState().config.endpoints.governanceConnectorCategories
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig: null);
 
     return {
         data,

@@ -170,7 +170,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const {
         data: originalConnectorCategories,
         error: connectorCategoriesFetchRequestError
-    } = useGovernanceConnectorCategories();
+    } = useGovernanceConnectorCategories(
+        featureConfig?.residentIdp?.enabled && isFirstLevelOrg);
 
     useEffect(() => {
         dispatch(
