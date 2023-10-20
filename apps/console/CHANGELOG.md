@@ -1,5 +1,31 @@
 # @wso2is/console
 
+## 2.1.5
+
+### Patch Changes
+
+- [#4225](https://github.com/wso2/identity-apps/pull/4225) [`583e0aa16a`](https://github.com/wso2/identity-apps/commit/583e0aa16a3ff394f62baa837e8be395557b7f70) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Address PR review comments and UI issues in remote logging
+
+* [#4253](https://github.com/wso2/identity-apps/pull/4253) [`5ba184cff3`](https://github.com/wso2/identity-apps/commit/5ba184cff36f2342ce8444ca0b12dc1d1b16aeb3) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix incorrect i18n keys in assigned groups UI in roles section
+
+- [#4239](https://github.com/wso2/identity-apps/pull/4239) [`c87b504a32`](https://github.com/wso2/identity-apps/commit/c87b504a326e6d896f6bb63d9d6cb12590376ccd) Thanks [@Achintha444](https://github.com/Achintha444)! - change assign roles interfaces in the `user` and `group` sections.
+
+* [#4263](https://github.com/wso2/identity-apps/pull/4263) [`ed53722390`](https://github.com/wso2/identity-apps/commit/ed5372239055ab28d75f9bb3630870cf4c0b4905) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove the http://schema.openid.net/2007/05/claims dialect from the new console.
+
+- [#4233](https://github.com/wso2/identity-apps/pull/4233) [`c0ea5f71e6`](https://github.com/wso2/identity-apps/commit/c0ea5f71e62471f207bca1e927eefa56cd3c224a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to the user store connections section
+
+* [#4266](https://github.com/wso2/identity-apps/pull/4266) [`d94fa3f961`](https://github.com/wso2/identity-apps/commit/d94fa3f9610eb933210e930a54499bdbf097c32b) Thanks [@Achintha444](https://github.com/Achintha444)! - Add create role UI
+
+- [#4252](https://github.com/wso2/identity-apps/pull/4252) [`199144fe70`](https://github.com/wso2/identity-apps/commit/199144fe70a3a6a7167c5e97ecdd9cddec1f3d45) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add disabled user store option in bulk user import
+
+* [#4262](https://github.com/wso2/identity-apps/pull/4262) [`f6d8450d9d`](https://github.com/wso2/identity-apps/commit/f6d8450d9d7fc43138f77b9f3744d3b25aa9cdea) Thanks [@asekawa](https://github.com/asekawa)! - Fix placeholder values in Advance section of branding
+
+- [#4267](https://github.com/wso2/identity-apps/pull/4267) [`aaaa2c9118`](https://github.com/wso2/identity-apps/commit/aaaa2c91180bef44f64a77d5ef20af740dab0b53) Thanks [@savindi7](https://github.com/savindi7)! - Hide My Account from Navbar
+
+- Updated dependencies [[`583e0aa16a`](https://github.com/wso2/identity-apps/commit/583e0aa16a3ff394f62baa837e8be395557b7f70), [`ed53722390`](https://github.com/wso2/identity-apps/commit/ed5372239055ab28d75f9bb3630870cf4c0b4905), [`c0ea5f71e6`](https://github.com/wso2/identity-apps/commit/c0ea5f71e62471f207bca1e927eefa56cd3c224a), [`d94fa3f961`](https://github.com/wso2/identity-apps/commit/d94fa3f9610eb933210e930a54499bdbf097c32b), [`199144fe70`](https://github.com/wso2/identity-apps/commit/199144fe70a3a6a7167c5e97ecdd9cddec1f3d45)]:
+  - @wso2is/i18n@2.0.10
+  - @wso2is/theme@2.0.16
+
 ## 2.1.4
 
 ### Patch Changes

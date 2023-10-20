@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.16
+
+### Patch Changes
+
+- [#4266](https://github.com/wso2/identity-apps/pull/4266) [`d94fa3f961`](https://github.com/wso2/identity-apps/commit/d94fa3f9610eb933210e930a54499bdbf097c32b) Thanks [@Achintha444](https://github.com/Achintha444)! - Add create role UI
+
 ## 2.0.15
 
 ### Patch Changes
