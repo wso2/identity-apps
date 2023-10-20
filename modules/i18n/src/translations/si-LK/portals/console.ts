@@ -5458,10 +5458,6 @@ export const console: ConsoleNS = {
                             "OpenID Connect ප්‍රොටෝකෝලය නිරූපණය කිරීම.",
                         heading: "OpenID Connect"
                     },
-                    openid: {
-                        description: "පරිශීලක ගුණාංග සඳහා OpenID ප්‍රොටෝකෝල නිරූපණය.",
-                        heading: "OpenID"
-                    },
                     scim: {
                         description: "SCIM2 API හි භාවිතා වන පරිශීලක ගුණාංග සඳහා වන SCIM2 ප්‍රොටොකෝලය නිරූපණය.",
                         heading: "System for Cross-Domain Identity Management"
