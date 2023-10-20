@@ -1392,6 +1392,13 @@ export const console: ConsoleNS = {
                                         validations: {
                                             empty: "This is a required field."
                                         }
+                                    },
+                                    subjectType: {
+                                        label: "Subject type",
+                                        hintPublic: "This option will use the public subject identifier as the" +
+                                            " subject. ",
+                                        hintPairwise: "This option will use the pairwise subject identifier as the" +
+                                            "subject. "
                                     }
                                 },
                                 heading: "Subject"
@@ -1807,6 +1814,12 @@ export const console: ConsoleNS = {
                                         validations: {
                                             empty:  "This is a required field."
                                         }
+                                    },
+                                    signing: {
+                                        hint: "The dropdown contains the supported <1>id_token</1> signing "+
+                                            "algorithms.",
+                                        label: "ID token response signing algorithm",
+                                        placeholder: "Select Algorithm"
                                     }
                                 },
                                 heading: "ID Token"
@@ -1857,6 +1870,64 @@ export const console: ConsoleNS = {
                                 heading: "PKCE",
                                 hint: "Select to make it mandatory for the application to " +
                                 "include a code_challenge in the authorization request."
+                            },
+                            clientAuthentication: {
+                                fields: {
+                                    authenticationMethod: {
+                                        hint: "The dropdown contains the supported client authentication methods.",
+                                        label: "Client authentication method",
+                                        placeholder: "Select method"
+                                    },
+                                    signingAlgorithm: {
+                                        hint: "The dropdown contains the supported client assertion signing" +
+                                            " algorithms.",
+                                        label: "Signing algorithm",
+                                        placeholder: "Select algorithm"
+                                    },
+                                    subjectDN: {
+                                        label: "TLS client auth subject DN",
+                                        placeholder: "Enter the tls client auth subject DN"
+                                    }
+                                },
+                                heading: "Client Authentication"
+                            },
+                            pushedAuthorization: {
+                                fields: {
+                                    requirePushAuthorizationRequest: {
+                                        hint: "Select to make it mandatory for the application to send authorization " +
+                                            "requests as pushed authorization requests.",
+                                        label: "Require Pushed Authorization Requests"
+                                    }
+                                },
+                                heading: "Pushed Authorization Requests"
+                            },
+                            requestObject: {
+                                fields: {
+                                    requireSignedRequestObject: {
+                                        hint: "Select to make it mandatory for the applications to send signed" +
+                                            " request objects.",
+                                        label: "Require request object signed"
+                                    },
+                                    requestObjectSigningAlg: {
+                                        hint: "The dropdown contains the supported <1>request object</1> signing" +
+                                            " algorithms.",
+                                        label: "Request object signing algorithm",
+                                        placeholder: "Select Algorithm"
+                                    },
+                                    requestObjectEncryptionAlgorithm: {
+                                        hint: "The dropdown contains the supported <1>request object</1> encryption" +
+                                            " algorithms.",
+                                        label: "Request object encryption algorithm",
+                                        placeholder: "Select Algorithm"
+                                    },
+                                    requestObjectEncryptionMethod: {
+                                        hint: "The dropdown contains the supported <1>request object</1> encryption" +
+                                            " methods.",
+                                        label: "Request object encryption method",
+                                        placeholder: "Select Method"
+                                    }
+                                },
+                                heading: "Request Object"
                             },
                             refreshToken: {
                                 fields: {

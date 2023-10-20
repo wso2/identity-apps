@@ -807,6 +807,7 @@ export interface ConsoleNS {
                                     subjectIncludeTenantDomain: FormAttributes;
                                     subjectIncludeUserDomain: FormAttributes;
                                     subjectUseMappedLocalSubject: FormAttributes;
+                                    subjectType: FormAttributes;
                                 };
                                 heading: string;
                             };
@@ -903,6 +904,7 @@ export interface ConsoleNS {
                                     algorithm: FormAttributes;
                                     audience: FormAttributes;
                                     encryption: FormAttributes;
+                                    signing: FormAttributes;
                                     method: FormAttributes;
                                 };
                             };
@@ -919,6 +921,29 @@ export interface ConsoleNS {
                                 hint: string;
                                 fields: {
                                     pkce: FormAttributes;
+                                };
+                            };
+                            clientAuthentication: {
+                                heading: string;
+                                fields: {
+                                    authenticationMethod: FormAttributes;
+                                    signingAlgorithm: FormAttributes;
+                                    subjectDN: FormAttributes;
+                                };
+                            };
+                            pushedAuthorization: {
+                                heading: string;
+                                fields: {
+                                    requirePushAuthorizationRequest: FormAttributes;
+                                };
+                            };
+                            requestObject: {
+                                heading: string;
+                                fields: {
+                                    requireSignedRequestObject: FormAttributes;
+                                    requestObjectSigningAlg: FormAttributes;
+                                    requestObjectEncryptionAlgorithm: FormAttributes;
+                                    requestObjectEncryptionMethod: FormAttributes;
                                 };
                             };
                             refreshToken: {

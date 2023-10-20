@@ -227,6 +227,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const encryption: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const algorithm: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const method: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const idTokenSignedResponseAlg: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const idExpiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const backChannelLogoutUrl: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const frontChannelLogoutUrl: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
@@ -234,6 +235,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const scopeValidator: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const formRef: MutableRefObject<HTMLFormElement> = useRef<HTMLFormElement>();
     const updateRef: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const tokenEndpointAuthMethod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const tokenEndpointAuthSigningAlg: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const tlsClientAuthSubjectDn: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const requirePushedAuthorizationRequests: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const requireSignedRequestObject: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const requestObjectSigningAlg: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const requestObjectEncryptionAlgorithm: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const requestObjectEncryptionMethod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
 
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
@@ -930,7 +939,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     method: isEncryptionEnabled && isCertAvailableForEncrypt ?
                         values.get("method") : metadata.idTokenEncryptionMethod.defaultValue
                 },
-                expiryInSeconds: Number(values.get("idExpiryInSeconds"))
+                expiryInSeconds: Number(values.get("idExpiryInSeconds")),
+                idTokenSignedResponseAlg: values.get("idTokenSignedResponseAlg")
             },
             logout: {
                 backChannelLogoutUrl: values.get("backChannelLogoutUrl"),
@@ -993,6 +1003,27 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 }
             };
         }
+
+        inboundConfigFormValues = {
+            ...inboundConfigFormValues,
+            clientAuthentication: {
+                tlsClientAuthSubjectDn: values.get("tlsClientAuthSubjectDn"),
+                tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod"),
+                tokenEndpointAuthSigningAlg: values.get("tokenEndpointAuthSigningAlg")
+            },
+            pushAuthorizationRequest: {
+                requirePushAuthorizationRequest: values.get("requirePushAuthorizationRequest")?.length > 0
+            },
+            requestObject: {
+                encryption: {
+                    algorithm: values.get("requestObjectEncryptionAlgorithm"),
+                    method: values.get("requestObjectEncryptionMethod"),
+                    enabled: true
+                },
+                requestObjectSigningAlg: values.get("requestObjectSigningAlg"),
+                requireSignedRequestObject : values.get("requireSignedRequestObject")?.length > 0
+            }
+        };
 
         // If the app is not a newly created, add `clientId` & `clientSecret`.
         if (initialValues?.clientId && initialValues?.clientSecret) {
@@ -1648,6 +1679,268 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 )
             }
 
+            { /* Client Authentication*/ }
+            <Grid.Row columns={ 2 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Divider />
+                    <Divider hidden />
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Heading as="h4">
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".clientAuthentication.heading") }
+                    </Heading>
+                    <Field
+                        ref={ tokenEndpointAuthMethod }
+                        name="tokenEndpointAuthMethod"
+                        label={
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".clientAuthentication.fields.authenticationMethod.label")
+                        }
+                        required={ false }
+                        type="dropdown"
+                        disabled={ false }
+                        default={
+                            initialValues?.clientAuthentication ?
+                                initialValues.clientAuthentication.tokenEndpointAuthMethod
+                                : metadata.tokenEndpointAuthMethod.defaultValue
+                        }
+                        placeholder={
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".clientAuthentication.fields.authenticationMethod.placeholder")
+                        }
+                        children={ getAllowedList(metadata.tokenEndpointAuthMethod) }
+                        readOnly={ readOnly }
+                    />
+                    <Hint>
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".clientAuthentication.fields.authenticationMethod.hint") }
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Field
+                        ref={ tokenEndpointAuthSigningAlg }
+                        name="tokenEndpointAuthSigningAlg"
+                        label={
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".clientAuthentication.fields.signingAlgorithm.label")
+                        }
+                        required={ false }
+                        type="dropdown"
+                        disabled={ false }
+                        default={
+                            initialValues?.clientAuthentication ?
+                                initialValues.clientAuthentication.tokenEndpointAuthSigningAlg
+                                : metadata.tokenEndpointSignatureAlgorithm.defaultValue
+                        }
+                        placeholder={
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".clientAuthentication.fields.signingAlgorithm.placeholder")
+                        }
+                        children={ getAllowedList(metadata.tokenEndpointSignatureAlgorithm) }
+                        readOnly={ readOnly }
+                    />
+                    <Hint>
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".clientAuthentication.fields.signingAlgorithm.hint") }
+                    </Hint>
+
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Form.TextArea
+                        ref={ tlsClientAuthSubjectDn }
+                        name="tlsClientAuthSubjectDn"
+                        inputType="name"
+                        label={ t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".clientAuthentication.fields.subjectDN.label")
+                        }
+                        required={ false }
+                        type="text"
+                        value={
+                            initialValues?.clientAuthentication
+                                ? initialValues.clientAuthentication.tlsClientAuthSubjectDn
+                                : metadata.tlsClientAuthSubjectDn
+                        }
+                        placeholder={
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".clientAuthentication.fields.subjectDN.placeholder")
+                        }
+                        readOnly={ readOnly }
+                        maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
+                        minLength={ 3 }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+
+            { /* Pushed Authorization Requests*/ }
+            <Grid.Row columns={ 2 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Divider />
+                    <Divider hidden />
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Heading as="h4">
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".pushedAuthorization.heading")}
+                    </Heading>
+                    <Field
+                        ref={ requirePushedAuthorizationRequests }
+                        name={ "requirePushAuthorizationRequest" }
+                        label=""
+                        required={ false }
+                        type="checkbox"
+                        value={ initialValues?.pushAuthorizationRequest?.requirePushAuthorizationRequest
+                            ? [ "requirePushAuthorizationRequest" ]
+                            : [] }
+                        children={ [
+                            {
+                                label: t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".pushedAuthorization.fields.requirePushAuthorizationRequest.label"),
+                                value: "requirePushAuthorizationRequest"
+                            }
+                        ] }
+                        readOnly={ readOnly }
+                    />
+                    <Hint>
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".pushedAuthorization.fields.requirePushAuthorizationRequest.hint") }
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
+
+            { /* Request Object*/ }
+            <Grid.Row columns={ 2 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Divider />
+                    <Divider hidden />
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Heading as="h4">
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections.requestObject.heading") }
+                    </Heading>
+                    <Field
+                        ref={ requireSignedRequestObject }
+                        name={ "requireSignedRequestObject" }
+                        label=""
+                        required={ false }
+                        type="checkbox"
+                        value={ initialValues?.requestObject?.requireSignedRequestObject
+                            ? [ "requireSignedRequestObject" ]
+                            : [] }
+                        children={ [
+                            {
+                                label: t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".requestObject.fields.requireSignedRequestObject.label"),
+                                value: "requireSignedRequestObject"
+                            }
+                        ] }
+                        readOnly={ readOnly }
+                    />
+                    <Hint>
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".requestObject.fields.requireSignedRequestObject.hint") }
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Field
+                        ref={ requestObjectSigningAlg }
+                        name="requestObjectSigningAlg"
+                        label={
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".requestObject.fields.requestObjectSigningAlg.label")
+                        }
+                        required={ false }
+                        type="dropdown"
+                        disabled={ false }
+                        default={
+                            initialValues?.requestObject ? initialValues.requestObject.requestObjectSigningAlg
+                                : metadata.tokenEndpointSignatureAlgorithm.defaultValue
+                        }
+                        placeholder={
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".requestObject.fields.requestObjectSigningAlg.placeholder")
+                        }
+                        children={ getAllowedList(metadata.tokenEndpointSignatureAlgorithm) }
+                        readOnly={ readOnly }
+                    />
+                    <Hint>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".requestObject.fields.requestObjectSigningAlg.hint"
+                            }
+                        >
+                            The dropdown contains the supported <Code withBackground>request object</Code> signing
+                            algorithms.
+                        </Trans>
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Field
+                        ref={ requestObjectEncryptionAlgorithm }
+                        name="requestObjectEncryptionAlgorithm"
+                        label={
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".requestObject.fields.requestObjectEncryptionAlgorithm.label")
+                        }
+                        required={ false }
+                        type="dropdown"
+                        disabled={ false }
+                        default={
+                            initialValues?.requestObject ? initialValues.requestObject.encryption.algorithm
+                                : metadata.idTokenEncryptionAlgorithm.defaultValue
+                        }
+                        placeholder={
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".requestObject.fields.requestObjectEncryptionAlgorithm.placeholder")
+                        }
+                        children={ getAllowedList(metadata.idTokenEncryptionAlgorithm) }
+                        readOnly={ readOnly }
+                    />
+                    <Hint>
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".requestObject.fields.requestObjectEncryptionAlgorithm.hint") }
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Field
+                        ref={ requestObjectEncryptionMethod }
+                        name="requestObjectEncryptionMethod"
+                        label={
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".requestObject.fields.requestObjectEncryptionMethod.label")
+                        }
+                        required={ false }
+                        type="dropdown"
+                        disabled={ false }
+                        default={
+                            initialValues?.requestObject ? initialValues.requestObject.encryption.method
+                                : metadata.idTokenEncryptionMethod.defaultValue
+                        }
+                        placeholder={
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".requestObject.fields.requestObjectEncryptionMethod.placeholder")
+                        }
+                        children={ getAllowedList(metadata.idTokenEncryptionMethod) }
+                        readOnly={ readOnly }
+                    />
+                    <Hint>
+                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                            ".requestObject.fields.requestObjectEncryptionMethod.hint") }
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
+
             { /* Access Token */ }
             <Grid.Row columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2240,6 +2533,42 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </>
                 )
             }
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Field
+                        ref={ idTokenSignedResponseAlg }
+                        name="idTokenSignedResponseAlg"
+                        label={
+                            t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
+                                ".fields.signing.label")
+                        }
+                        required={ false }
+                        type="dropdown"
+                        disabled={ false }
+                        default={
+                            initialValues?.idToken ? initialValues.idToken.idTokenSignedResponseAlg
+                                : metadata.tokenEndpointSignatureAlgorithm.defaultValue
+                        }
+                        placeholder={
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".idToken.fields.signing.placeholder")
+                        }
+                        children={ getAllowedList(metadata.tokenEndpointSignatureAlgorithm) }
+                        readOnly={ readOnly }
+                    />
+                    <Hint disabled={ !isEncryptionEnabled || !isCertAvailableForEncrypt }>
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
+                                ".fields.algorithm.hint"
+                            }
+                        >
+                            The dropdown contains the supported <Code withBackground>id_token</Code>
+                            encryption algorithms.
+                        </Trans>
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Field

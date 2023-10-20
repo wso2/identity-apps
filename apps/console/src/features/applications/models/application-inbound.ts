@@ -60,6 +60,9 @@ export interface OIDCMetadataInterface {
     accessTokenBindingType?: MetadataPropertyInterface;
     accessTokenBindingValidation?: boolean;
     revokeTokensWhenIDPSessionTerminated?: boolean;
+    tokenEndpointAuthMethod?: MetadataPropertyInterface;
+    tokenEndpointSignatureAlgorithm?: MetadataPropertyInterface;
+    tlsClientAuthSubjectDn?: string;
 }
 
 export enum State {
@@ -70,6 +73,28 @@ export enum State {
 export interface OAuth2PKCEConfigurationInterface {
     mandatory?: boolean;
     supportPlainTransformAlgorithm?: boolean;
+}
+
+export interface ClientAuthenticationConfigurationInterface {
+    tokenEndpointAuthMethod?: string;
+    tokenEndpointAuthSigningAlg?: string;
+    tlsClientAuthSubjectDn?: string;
+}
+
+export interface PushedAuthRequestConfigurationInterface {
+    requirePushAuthorizationRequest?: boolean;
+}
+
+interface RequestObjectEncryptionConfigurationInterface {
+    algorithm?: string;
+    method?: string;
+}
+
+export interface RequestObjectConfigurationInterface {
+
+    requireSignedRequestObject? : boolean;
+    requestObjectSigningAlg?: string;
+    encryption?: RequestObjectEncryptionConfigurationInterface;
 }
 
 interface AccessTokenConfigurationInterface {
@@ -96,6 +121,7 @@ interface IdTokenConfigurationInterface {
     expiryInSeconds?: number;
     audience?: string[];
     encryption?: IdTokenEncryptionConfigurationInterface;
+    idTokenSignedResponseAlg?: string;
 }
 
 interface OIDCLogoutConfigurationInterface {
@@ -115,6 +141,9 @@ export interface OIDCDataInterface {
     allowedOrigins?: string[];
     publicClient?: boolean;
     pkce?: OAuth2PKCEConfigurationInterface;
+    clientAuthentication?: ClientAuthenticationConfigurationInterface;
+    pushAuthorizationRequest?: PushedAuthRequestConfigurationInterface;
+    requestObject?: RequestObjectConfigurationInterface;
     accessToken?: AccessTokenConfigurationInterface;
     refreshToken?: RefreshTokenConfigurationInterface;
     idToken?: IdTokenConfigurationInterface;
