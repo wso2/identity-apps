@@ -21,7 +21,6 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Segment } from "semantic-ui-react";
-import { identityProviderConfig } from "../../../../../extensions";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import {
     IdentityProviderManagementConstants
