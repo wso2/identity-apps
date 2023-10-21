@@ -811,7 +811,7 @@
                 "enabled": false,
                 "scopes": {}
             },
-            "remoteLogIngest": {
+            "remoteLogging": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {}
