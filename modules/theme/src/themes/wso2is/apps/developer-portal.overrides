@@ -1874,3 +1874,11 @@ TODO : Move values to separate variables and cleanup styles.
     background: @primaryColorGradient !important;
     text-transform: capitalize !important;
 }
+
+#onetrust-reject-all-handler {
+    border-radius: 22px !important;
+    padding: 12px 20px 12px 20px !important;
+    background: none !important;
+    color: @primaryColor !important;
+    text-transform: capitalize !important;
+}
