@@ -812,7 +812,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         icon: {
                             icon: getSidePanelIcons().remoteLogging
                         },
-                        id: "remoteLogIngest",
+                        id: "remoteLogging",
                         name: "Remote Logging",
                         order: 22,
                         path: AppConstants.getPaths().get("REMOTE_LOGGING"),
