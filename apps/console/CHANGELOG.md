@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.1.6
+
+### Patch Changes
+
+- [#4268](https://github.com/wso2/identity-apps/pull/4268) [`9dd93eb4fa`](https://github.com/wso2/identity-apps/commit/9dd93eb4fa45da45e5dcd87babb58e4b10afdbd8) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add deployment config to conditionally enable remote logging and advisory banner features
+
 ## 2.1.5
 
 ### Patch Changes
