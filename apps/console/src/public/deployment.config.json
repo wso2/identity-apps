@@ -810,6 +810,16 @@
                 "disabledFeatures": [],
                 "enabled": false,
                 "scopes": {}
+            },
+            "remoteLogIngest": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {}
+            },
+            "adminAdvisoryBanner": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {}
             }
         },
         "gravatarConfig": {
