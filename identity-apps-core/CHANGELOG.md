@@ -1,5 +1,16 @@
 # @wso2is/identity-apps-core
 
+## 2.0.20
+
+### Patch Changes
+
+- [#4275](https://github.com/wso2/identity-apps/pull/4275) [`c34909a7c1`](https://github.com/wso2/identity-apps/commit/c34909a7c10c3f9cc9bde49dba118ea384f8ba9e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the logo theme issue
+
+* [#4274](https://github.com/wso2/identity-apps/pull/4274) [`aa6e1e6012`](https://github.com/wso2/identity-apps/commit/aa6e1e6012fea5ec6c04d54f4c6e6b17e268239e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add class for the `Reject All` button in the cookie banner
+
+* Updated dependencies [[`c34909a7c1`](https://github.com/wso2/identity-apps/commit/c34909a7c10c3f9cc9bde49dba118ea384f8ba9e), [`aa6e1e6012`](https://github.com/wso2/identity-apps/commit/aa6e1e6012fea5ec6c04d54f4c6e6b17e268239e)]:
+  - @wso2is/theme@2.0.17
+
 ## 2.0.19
 
 ### Patch Changes
