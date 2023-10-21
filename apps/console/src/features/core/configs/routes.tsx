@@ -150,35 +150,6 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         children: [
                             {
                                 component: lazy(() =>
-                                    import("../../../extensions/components/" + "api-resources/pages/api-resource-edit")
-                                ),
-                                exact: true,
-                                id: "apiResources-edit",
-                                name: "extensions:develop.sidePanel.apiResources",
-                                path: APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT"),
-                                protected: true,
-                                showOnSidePanel: false
-                            }
-                        ],
-                        component: lazy(() =>
-                            import("../../../extensions/components/" + "api-resources/pages/api-resources")
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: import("../../../extensions/assets/images/icons/api-resources-icon.svg")
-                        },
-                        id: "apiResources",
-                        name: "extensions:develop.sidePanel.apiResources",
-                        order: 2,
-                        path: APIResourcesConstants.getPaths().get("API_RESOURCES"),
-                        protected: true,
-                        showOnSidePanel: true
-                    },
-                    {
-                        category: "console:develop.features.sidePanel.categories.application",
-                        children: [
-                            {
-                                component: lazy(() =>
                                     import("../../connections/pages/connection-templates")
                                 ),
                                 exact: true,
@@ -955,6 +926,35 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
     if (useExtendedRoutes) {
         routes.push(
             {
+                category: "console:develop.features.sidePanel.categories.application",
+                children: [
+                    {
+                        component: lazy(() =>
+                            import("../../../extensions/components/api-resources/pages/api-resource-edit")
+                        ),
+                        exact: true,
+                        id: "apiResources-edit",
+                        name: "extensions:develop.sidePanel.apiResources",
+                        path: APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() =>
+                    import("../../../extensions/components/api-resources/pages/api-resources")
+                ),
+                exact: true,
+                icon: {
+                    icon: import("../../../extensions/assets/images/icons/api-resources-icon.svg")
+                },
+                id: "apiResources",
+                name: "extensions:develop.sidePanel.apiResources",
+                order: 2,
+                path: APIResourcesConstants.getPaths().get("API_RESOURCES"),
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
                 category: "extensions:manage.sidePanel.categories.userManagement",
                 children: [
                     {
@@ -1194,6 +1194,35 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
         );
     } else {
         routes.push(
+            {
+                category: "console:develop.features.sidePanel.categories.application",
+                children: [
+                    {
+                        component: lazy(() =>
+                            import("../../api-resources/pages/api-resource-edit")
+                        ),
+                        exact: true,
+                        id: "apiResources-edit",
+                        name: "extensions:develop.sidePanel.apiResources",
+                        path: APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT"),
+                        protected: true,
+                        showOnSidePanel: true
+                    }
+                ],
+                component: lazy(() =>
+                    import("../../api-resources/pages/api-resources")
+                ),
+                exact: true,
+                icon: {
+                    icon: import("../../../extensions/assets/images/icons/api-resources-icon.svg")
+                },
+                id: "apiResources",
+                name: "extensions:develop.sidePanel.apiResources",
+                order: 2,
+                path: APIResourcesConstants.getPaths().get("API_RESOURCES"),
+                protected: true,
+                showOnSidePanel: true
+            },
             {
                 category: "extensions:manage.sidePanel.categories.userManagement",
                 children: [

@@ -231,7 +231,7 @@
             },
             "apiResources": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "update": [
                         "internal_application_mgt_update"
