@@ -3477,6 +3477,7 @@ export interface ConsoleNS {
                 };
                 notifications: {
                     addUser: Notification;
+                    addUserPendingApproval: Notification;
                     bulkImportUser: {
                         validation: {
                             emptyRowError: NotificationItem;
