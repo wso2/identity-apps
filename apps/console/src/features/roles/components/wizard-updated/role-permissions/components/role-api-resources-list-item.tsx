@@ -124,7 +124,7 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                                     >
                                     </Tooltip>
                                 </Grid>
-                            </Grid>  
+                            </Grid>
                         ) }
                         disablePadding
                     >  
