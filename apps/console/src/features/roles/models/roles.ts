@@ -17,6 +17,7 @@
  */
 
 import { RolesInterface } from "@wso2is/core/models";
+import { ScopeInterface } from "./apiResources";
 import { CreateGroupMemberInterface } from "../../groups/models";
 import { SchemaAttributeValueInterface } from "../../users/models";
 import { RoleAudienceTypes } from "../constants/role-constants";
@@ -196,6 +197,9 @@ export interface RolesV2ResponseInterface {
     Resources: RolesV2Interface[];
 }
 
+/**
+ *  Interface for associated roles patch operation.
+ */
 export interface AssociatedRolesPatchObjectInterface {
     allowedAudience: RoleAudienceTypes;
     roles: BasicRoleInterface[];
@@ -209,4 +213,25 @@ export interface AssociatedRolesInterface {
 export interface BasicRoleInterface {
     id: string;
     name?: string;
+}
+
+/**
+ * Interface to capture the selected permissions.
+ */
+export interface SelectedPermissionsInterface {
+    /**
+     * ID of the API resource that the scopes belongs to.
+     */
+    apiResourceId: string;
+    /**
+     * set of scopes names that are selected.
+     */
+    scopes: ScopeInterface[];
+}
+
+/**
+ * Interface to capture options passed to the Autocomplete component in the role section.
+ */
+export interface ChipOptionsInterface {
+    id?: string;
 }

@@ -7929,6 +7929,29 @@ export const console: ConsoleNS = {
                                     empty: "අයදුම්පත් සහිත භූමිකාවක් නිර්මාණය කිරීම සඳහා පවරා ඇති අයදුම්පතක් අවශ්ය වේ."
                                 }
                             }
+                        },
+                        rolePermission: {
+                            apiResource: {
+                                label: "API සම්පත් තෝරන්න",
+                                placeholder: "විෂය පථය (අවසර) පැවරීම සඳහා API සම්පතක් තෝරන්න"
+                            },
+                            permissions: {
+                                label: "තෝරාගත් API සම්පත් වලින් විෂයයන් (අවසර) තෝරන්න",
+                                placeholder: "විෂය පථය (අවසර) තෝරන්න",
+                                tooltips: {
+                                    noScopes: "තෝරාගත් API සම්පත සඳහා විෂය පදක් නොමැත",
+                                    selectAllScopes: "සියලුම විෂය පථය (අවසර) තෝරන්න",
+                                    removeAPIResource: "API සම්පත ඉවත් කරන්න"
+                                }
+                            },
+                            notifications: {
+                                fetchAPIResourceError: {
+                                    error: {
+                                        description: "API සම්පත් ලබා ගැනීමේදී යමක් වැරදී ඇත.කරුණාකර නැවත උත්සාහ කරන්න.",
+                                        message: "යම්කිසි වරදක් සිදුවී ඇත."
+                                    }
+                                }
+                            }
                         }
                     },
                     heading: "{{Type}} සාදන්න",

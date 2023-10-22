@@ -28,6 +28,7 @@ import useRequest, {
     RequestResultInterface 
 } from "../../core/hooks/use-request";
 import { CreateRoleInterface, PatchRoleDataInterface, RolesV2ResponseInterface, SearchRoleInterface } from "../models";
+import { APIResourceInterface, APIResourceListInterface } from "../models/apiResources";
 
 /**
  * Initialize an axios Http client.
@@ -377,5 +378,81 @@ export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInter
         isValidating,
         mutate,
         response
+    };
+};
+
+/**
+ * Hook to get the retrieve the list of API resources that are currently in the system.
+ *
+ * @param domain - User store domain.
+ * @param filter - Search filter.
+ * @returns The object containing the roles list.
+ * @deprecated This is a temporary hook until the API resources is moved to features.
+ */
+export const useAPIResourcesList = <Data = APIResourceListInterface, Error = RequestErrorInterface>(
+    filter?: string
+): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: {
+            filter
+        },
+        url: store.getState().config.endpoints.apiResources
+    };
+
+    const {
+        data,
+        error,
+        isValidating,
+        mutate,
+        response
+    } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate,
+        response
+    };
+};
+
+/**
+ * 
+ * @param apiResourceId - id of the API resource
+ * @returns `Promise<APIResourceInterface>`
+ * @throws `IdentityAppsApiException`
+ *  @deprecated This is a temporary hook until the API resources is moved to features.
+ */
+export const useAPIResourceDetails = <Data = APIResourceInterface, Error = RequestErrorInterface>(
+    apiResourceId: string
+): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.apiResources}/${apiResourceId}`
+    };
+
+    /**
+     * Pass `null` if the `apiResourceId` is not available. This will prevent the request from being called.
+     */
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(apiResourceId ? requestConfig : null);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate
     };
 };

@@ -8097,6 +8097,29 @@ export const console: ConsoleNS = {
                                     empty: "L'application attribuée est nécessaire pour créer un rôle à application."
                                 }
                             }
+                        },
+                        rolePermission: {
+                            apiResource: {
+                                label: "Sélectionnez la ressource API",
+                                placeholder: "Sélectionnez une ressource API pour attribuer des scopes (autorisations)"
+                            },
+                            permissions: {
+                                label: "Sélectionnez Scopes (autorisations) dans les ressources API sélectionnées",
+                                placeholder: "Sélectionnez des lunettes (autorisations)",
+                                tooltips: {
+                                    noScopes: "Aucune portée disponible pour la ressource API sélectionnée",
+                                    selectAllScopes: "Sélectionnez toutes les portées (autorisations)",
+                                    removeAPIResource: "Supprimer la ressource API"
+                                }
+                            },
+                            notifications: {
+                                fetchAPIResourceError: {
+                                    error: {
+                                        description: "Quelque chose s'est mal passé tout en récupérant les ressources d'API.Veuillez réessayer.",
+                                        message: "Quelque chose s'est mal passé"
+                                    }
+                                }
+                            }
                         }
                     },
                     heading: "Créer un {{type}}",

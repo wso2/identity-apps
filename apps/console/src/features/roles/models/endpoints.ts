@@ -20,6 +20,8 @@
  * Interface for the Role Management feature resource endpoints.
  */
 export interface RolesResourceEndpointsInterface {
+    // TODO: This need to be removed once this endpoint is moved to the API resources feature.
+    apiResources?: string;
     roles: string;
     rolesV2: string;
     permission: string;

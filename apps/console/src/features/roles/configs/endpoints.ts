@@ -23,13 +23,15 @@ import { RolesResourceEndpointsInterface } from "../models";
  *
  * @param serverHostWithOrgPath - Server Host with Org Path.
  * @param serverHost - Server Host
- * @returns Roles Resource Endpoints.
+ * @returns `RolesResourceEndpointsInterface`
  */
 export const getRolesResourceEndpoints = (
     serverHostWithOrgPath: string,
     serverHost: string
 ): RolesResourceEndpointsInterface => {
     return {
+        // TODO: This need to be removed once this endpoint is moved to the API resources feature.
+        apiResources: `${serverHost}/api/server/v1/api-resources`,
         permission: `${serverHostWithOrgPath}/api/server/v1/permission-management/permissions`,
         roles: `${serverHostWithOrgPath}/scim2/Roles`,
         rolesV2: `${serverHostWithOrgPath}/scim2/v2/Roles`,

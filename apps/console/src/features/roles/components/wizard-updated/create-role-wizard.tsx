@@ -23,9 +23,15 @@ import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { RoleBasics } from "./role-basics";
+import { RolePermissionsList } from "./role-permissions/role-permissions";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
-import { CreateRoleFormData, CreateRoleStateInterface, CreateRoleStepsFormTypes } from "../../models";
+import { 
+    CreateRoleFormData, 
+    CreateRoleStateInterface, 
+    CreateRoleStepsFormTypes, 
+    SelectedPermissionsInterface 
+} from "../../models";
 
 /**
  * Interface which captures create role props.
@@ -45,6 +51,8 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
 
     const [ stepperState, setStepperState ] = useState<CreateRoleStateInterface>(undefined);
     const [ isBasicDetailsNextButtonDisabled, setIsBasicDetailsNextButtonDisabled ] = useState<boolean>(true);
+    const [ isPermissionStepNextButtonDisabled, setIsPermissionStepNextButtonDisabled ] = useState<boolean>(false);
+    const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface[]>([]);
 
     // External trigger to submit the authorization step. 
     let submitRoleBasic: () => void;
@@ -76,6 +84,17 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 />
             ),
             stepTitle: t("console:manage.features.roles.addRoleWizard.wizardSteps.0")
+        },
+        {
+            preventGoToNextStep: isPermissionStepNextButtonDisabled,
+            stepContent: (
+                <RolePermissionsList
+                    selectedPermissions={ selectedPermissions }
+                    setSelectedPermissions={ setSelectedPermissions }
+                    setIsPermissionStepNextButtonDisabled={ setIsPermissionStepNextButtonDisabled }
+                />
+            ),
+            stepTitle: t("console:manage.features.roles.addRoleWizard.wizardSteps.1")
         }
     ];
 
