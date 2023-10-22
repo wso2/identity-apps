@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -85,7 +85,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
         } = useAPIResourceDetails(selectedAPIResourceId);
 
         /**
-         * Show error if user list fetch request failed
+         * Show error if the API resource fetch request failed.
          */ 
         useEffect(() => {
             if ( selectedAPIResourceFetchRequestError ||  apiResourcsListFetchRequestError) {
@@ -137,8 +137,6 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                 selectedAPIResourceId && setSelectedAPIResourceId(undefined);
             }
         }, [ selectedAPIResource ]);
-
-        // TODO: Need to handle the error state.
 
         /**
          * The following function handles the search query for the groups list.

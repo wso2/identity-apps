@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -47,7 +47,6 @@ interface RoleAPIResourcesListItemProp extends  IdentifiableComponentInterface {
      * Callback to handle API resource removal.
      */
     onRemoveAPIResource: (apiResourceId: string) => void;
-    
 }
 
 export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListItemProp> = 
