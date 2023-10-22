@@ -21,6 +21,7 @@ import { DocumentationProviders, DocumentationStructureFileTypes } from "@wso2is
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
 import { getFeatureGateResourceEndpoints } from "../../../extensions/components/feature-gate/configs";
 import { getExtendedFeatureResourceEndpoints } from "../../../extensions/configs/endpoints";
+import { getAPIResourceEndpoints } from "../../api-resources/configs/endpoint";
 import { getApplicationsResourceEndpoints } from "../../applications/configs/endpoints";
 import { getBrandingResourceEndpoints } from "../../branding/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "../../certificates";
@@ -210,6 +211,7 @@ export class Config {
      */
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
+            ...getAPIResourceEndpoints(this.resolveServerHost()),
             ...getApplicationsResourceEndpoints(this.resolveServerHost()),
             ...getApprovalsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getBrandingResourceEndpoints(this.getDeploymentConfig()?.serverHost),
