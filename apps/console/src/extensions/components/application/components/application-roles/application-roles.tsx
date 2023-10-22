@@ -475,7 +475,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 type="negative"
                 open={ showSwitchAudienceWarning }
                 assertionHint={ t("extensions:develop.applications.edit.sections." +
-                    "rolesV2.confirmationModal.assertionHint") }
+                    "rolesV2.switchRoleAudience.confirmationModal.assertionHint") }
                 assertionType="checkbox"
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }
@@ -493,7 +493,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     data-componentid={ `${ componentId }-switch-role-audience-confirmation-modal-header` }
                 >
                     { t("extensions:develop.applications.edit.sections." +
-                        "rolesV2.confirmationModal.header") }
+                        "rolesV2.switchRoleAudience.confirmationModal.header") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
@@ -501,13 +501,13 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     data-componentid={ `${ componentId }-switch-role-audience-confirmation-modal-message` }
                 >
                     { t("extensions:develop.applications.edit.sections." +
-                        "rolesV2.confirmationModal.message") }
+                        "rolesV2.switchRoleAudience.confirmationModal.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content
                     data-componentid={ `${ componentId }-switch-role-audience-confirmation-modal-content` }
                 >
                     { t("extensions:develop.applications.edit.sections." +
-                        "rolesV2.confirmationModal.content") }
+                        "rolesV2.switchRoleAudience.confirmationModal.content") }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>
