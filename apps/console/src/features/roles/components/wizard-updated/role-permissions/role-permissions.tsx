@@ -81,7 +81,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             data: selectedAPIResource,
             isLoading: isSelectedAPIResourceFetchRequestLoading,
             isValidating: isSelectedAPIResourceFetchRequestValidating,
-            error: selectedAPIResourceFetchRequestError        
+            error: selectedAPIResourceFetchRequestError
         } = useAPIResourceDetails(selectedAPIResourceId);
 
         /**
