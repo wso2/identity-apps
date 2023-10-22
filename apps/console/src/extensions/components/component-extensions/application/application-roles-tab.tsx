@@ -21,11 +21,11 @@ import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
 import { ApplicationInterface } from "../../../../features/applications/models";
+import { ApplicationRoles } from "../../../../features/roles/components/application-roles";
 import { applicationConfig } from "../../../configs";
-import { ApplicationRoles } from "../../application/components/application-roles/application-roles";
 import { 
-    ApplicationRoles as ApplicationRolesLegacy
-} from "../../application/components/application-roles/application-roles-legacy";
+    ApplicationRoles as ExtendedApplicationRoles
+} from "../../application/components/application-roles/application-roles";
 
 interface ApplicationRolesTabInterface extends IdentifiableComponentInterface {
     /**
@@ -52,7 +52,7 @@ const ApplicationRolesTab: FunctionComponent<ApplicationRolesTabInterface> = (
                 <Grid>
                     <Grid.Row>
                         <Grid.Column width={ 16 } >
-                            <ApplicationRolesLegacy application={ application } onUpdate={ onUpdate }/>
+                            <ExtendedApplicationRoles application={ application } onUpdate={ onUpdate }/>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

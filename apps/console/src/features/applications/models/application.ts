@@ -23,7 +23,7 @@ import {
     WSTrustConfigurationInterface
 } from "./application-inbound";
 import { GenericAuthenticatorInterface } from "../../identity-providers/models/identity-provider";
-import { RoleAudienceTypes } from "../constants/application-management";
+import { AssociatedRolesInterface } from "../../roles/models";
 import { TemplateContentInterface } from "../data/application-templates";
 
 /**
@@ -72,16 +72,6 @@ export interface ApplicationInterface extends ApplicationBasicInterface {
     authenticationSequence?: AuthenticationSequenceInterface;
     provisioningConfigurations?: ProvisioningConfigurationInterface;
     appRoleConfigurations?: IdpRoleMappingInterface[];
-}
-
-export interface AssociatedRolesInterface {
-    allowedAudience: RoleAudienceTypes;
-    roles: BasicRoleInterface[];
-}
-
-export interface BasicRoleInterface {
-    id: string;
-    name?: string;
 }
 
 /**

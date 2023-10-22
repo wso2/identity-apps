@@ -27,13 +27,52 @@ import useRequest, {
     RequestErrorInterface, 
     RequestResultInterface 
 } from "../../core/hooks/use-request";
-import { CreateRoleInterface, PatchRoleDataInterface, SearchRoleInterface } from "../models";
+import { CreateRoleInterface, PatchRoleDataInterface, RolesV2ResponseInterface, SearchRoleInterface } from "../models";
 
 /**
  * Initialize an axios Http client.
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
+
+/**
+ * Get the application roles by audience.
+ *
+ * @param audience - audience.
+ * @param before - Before link.
+ * @param after - After link.
+ * @param limit - Limit.
+ * 
+ * @returns A promise containing the response.
+ */
+export const getApplicationRolesByAudience = (
+    audience: string,
+    before: string,
+    after: string,
+    limit: number
+):Promise<RolesV2ResponseInterface> => {
+
+    const filter: string = `audience.type eq ${ audience.toLowerCase() }`;
+
+    const requestConfig: RequestConfigInterface = {
+        method: HttpMethods.GET,
+        params: {
+            after,
+            before,
+            filter,
+            limit
+        },
+        url:  `${ store.getState().config.endpoints.rolesV2 }`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {            
+            return Promise.resolve(response.data as RolesV2ResponseInterface);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
 
 /**
  * Retrieve Role details for a give role id.

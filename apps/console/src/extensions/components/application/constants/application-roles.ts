@@ -37,8 +37,4 @@ export class ApplicationRolesConstants {
      * Organization Login authenticator name
      */
     public static readonly ORGANIZATION_LOGIN: string = "Organization Login";
-    /**
-     * Debounce timeout for role search.
-     */
-    public static readonly DEBOUNCE_TIMEOUT: number = 1000;
 }

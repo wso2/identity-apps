@@ -60,7 +60,6 @@ import MobileAppTemplate from "../application-templates/templates/mobile-applica
 import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
 import SinglePageAppTemplate from 
     "../application-templates/templates/single-page-application/single-page-application.json";
-import { ApplicationRolesConstants } from "../components/application/constants";
 import { getTryItClientId } from "../components/application/utils/try-it-utils";
 import ApplicationRolesTab from "../components/component-extensions/application/application-roles-tab";
 import { getGettingStartedCardIllustrations } from "../components/getting-started/configs";
@@ -93,28 +92,6 @@ const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimIn
     }
 
     return identityRegex.test(claim.mappedLocalClaimURI);
-};
-
-/**
- * Check whether the application is a Choreo application or not.
- *
- * @param application - application.
- * @returns true if the application is a Choreo application.
- */
-const isChoreoApplication = (application: ApplicationInterface): boolean => {
-    // Check whether `isChoreoApp` SP property is available.
-    const additionalSpProperties: additionalSpProperty[] = 
-        application?.advancedConfigurations?.additionalSpProperties;
-
-    const choreoSpProperty: additionalSpProperty = additionalSpProperties?.find(
-        (spProperty: additionalSpProperty) => 
-            spProperty.name === ApplicationRolesConstants.IS_CHOREO_APP_SP_PROPERTY 
-            && spProperty.value === "true"
-    );
-
-    // Check whether the application is a choreo app using choreo app template ID or `isChoreoApp` SP property.
-    return application?.templateId === ApplicationRolesConstants.CHOREO_APP_TEMPLATE_ID
-        || choreoSpProperty?.name === ApplicationRolesConstants.IS_CHOREO_APP_SP_PROPERTY;
 };
 
 export const applicationConfig: ApplicationConfig = {
@@ -388,7 +365,6 @@ export const applicationConfig: ApplicationConfig = {
             features: FeatureConfigInterface
         ): ResourceTabPaneInterface[] => {
             const extendedFeatureConfig: ExtendedFeatureConfigInterface = features as ExtendedFeatureConfigInterface;
-            const applicationRolesFeatureEnabled: boolean = extendedFeatureConfig?.applicationRoles?.enabled;
             const apiResourceFeatureEnabled: boolean = extendedFeatureConfig?.apiResources?.enabled;
 
             const application: ApplicationInterface = props?.application as ApplicationInterface;
@@ -396,8 +372,6 @@ export const applicationConfig: ApplicationConfig = {
             const onApplicationUpdate: () => void = props?.onApplicationUpdate as () => void;
 
             const tabExtensions: ResourceTabPaneInterface[] = [];
-
-            const isChoreoApp: boolean = isChoreoApplication(application);
 
             // Enable the roles tab for supported templates when the api resources config is enabled.
             // Otherwise enable the roles tab for choreo applications when the application roles config is enabled.
@@ -413,7 +387,6 @@ export const applicationConfig: ApplicationConfig = {
                         || application?.templateId === SinglePageAppTemplate?.id
                     )
                 )
-                || (applicationRolesFeatureEnabled && isChoreoApp)
             ) {
                 tabExtensions.push(
                     {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -83,4 +83,9 @@ export enum Schemas {
     SEARCH_REQUEST = "urn:ietf:params:scim:api:messages:2.0:SearchRequest",
     BULK_REQUEST = "urn:ietf:params:scim:api:messages:2.0:BulkRequest",
     PATCH_OP = "urn:ietf:params:scim:api:messages:2.0:PatchOp"
+}
+
+export enum RoleAudienceTypes {
+    ORGANIZATION = "ORGANIZATION",
+    APPLICATION = "APPLICATION"
 }
