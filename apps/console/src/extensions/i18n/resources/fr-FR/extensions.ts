@@ -1150,6 +1150,25 @@ export const extensions: Extensions = {
                                 }
                             }
                         }
+                    },
+                    rolesV2: {
+                        heading: "Les rôles",
+                        subHeading: "Gérer les rôles attribués dans l'application.",
+                        roleAudience: "Rôle public",
+                        organization: "Organisation",
+                        application: "application",
+                        assignedRoles: "Rôles attribués",
+                        removedRoles: "Rôles supprimés",
+                        searchPlaceholder: "Recherche par nom de rôle",
+                        switchRoleAudience: {
+                            confirmationModal: {
+                                assertionHint: "Veuillez confirmer votre action.",
+                                content: "Si vous modifiez le public du rôle, les rôles associés au public actuel " +
+                                    "être supprimé.Veuillez procéder avec prudence.",
+                                header: "Es-tu sûr?",
+                                message: "Cette action est irréversible et supprimera en permanence les rôles existants."
+                            }
+                        }
                     }
                 }
             },
