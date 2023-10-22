@@ -21,7 +21,7 @@ import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
 import { ApplicationInterface } from "../../../../features/applications/models";
-import { ApplicationRoles } from "../../../../features/roles/components/application-roles";
+import { ApplicationRoles } from "../../application/components/application-roles";
 
 interface ApplicationRolesTabInterface extends IdentifiableComponentInterface {
     /**
