@@ -8170,6 +8170,10 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "ක්‍රියා",
                         lastModified: "අවසන් වරට වෙනස් කරන ලදි",
+                        managedBy: {
+                            label: "කළමනාකරණය",
+                            header: "කළමනාකරණය"
+                        },
                         name: "නම"
                     },
                     confirmations: {
@@ -8204,6 +8208,15 @@ export const console: ConsoleNS = {
                     popups: {
                         delete: "{{type}} delete මකන්න",
                         edit: "{{type}} සංස්කරණය කරන්න"
+                    },
+                    filterOptions: {
+                        all: "සියල්ල පෙන්වන්න",
+                        applicationRoles: "යෙදුම් භූමිකාවන්",
+                        organizationRoles: "සංවිධාන භූමිකාවන්"
+                    },
+                    filterAttirbutes: {
+                        name: "නම",
+                        audience: "භූමිකාව ප්රේක්ෂකයින්"
                     }
                 },
                 notifications: {

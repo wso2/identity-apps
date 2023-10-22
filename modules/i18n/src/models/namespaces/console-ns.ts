@@ -5226,6 +5226,10 @@ export interface ConsoleNS {
                         actions: string;
                         lastModified: string;
                         name: string;
+                        managedBy: {
+                            label: string;
+                            header: string;
+                        };
                     };
                     confirmations: {
                         deleteItem: Confirmation;
@@ -5237,6 +5241,15 @@ export interface ConsoleNS {
                     popups: {
                         delete: string;
                         edit: string;
+                    };
+                    filterOptions: {
+                        all: string;
+                        applicationRoles: string;
+                        organizationRoles: string;
+                    };
+                    filterAttirbutes: {
+                        name: string;
+                        audience: string;
                     };
                 };
                 notifications: {

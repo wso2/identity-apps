@@ -10103,6 +10103,10 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         lastModified: "Modified Time",
+                        managedBy: {
+                            label: "Managed by",
+                            header: "Managed By"
+                        },
                         name: "Role"
                     },
                     confirmations: {
@@ -10137,6 +10141,15 @@ export const console: ConsoleNS = {
                     popups: {
                         delete: "Delete {{type}}",
                         edit: "Edit {{type}}"
+                    },
+                    filterOptions: {
+                        all: "Show All",
+                        applicationRoles: "Application Roles",
+                        organizationRoles: "Organization Roles"
+                    },
+                    filterAttirbutes: {
+                        name: "Name",
+                        audience: "Role Audience"
                     }
                 },
                 notifications: {

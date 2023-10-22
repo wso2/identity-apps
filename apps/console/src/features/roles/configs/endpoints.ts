@@ -34,6 +34,7 @@ export const getRolesResourceEndpoints = (
         apiResources: `${serverHost}/api/server/v1/api-resources`,
         permission: `${serverHostWithOrgPath}/api/server/v1/permission-management/permissions`,
         roles: `${serverHostWithOrgPath}/scim2/Roles`,
+        rolesV2: `${serverHostWithOrgPath}/scim2/v2/Roles`,
         rolesWithoutOrgPath: `${serverHost}/scim2/Roles`
     };
 };

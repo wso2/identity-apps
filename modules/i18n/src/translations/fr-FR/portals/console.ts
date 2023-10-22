@@ -8346,6 +8346,10 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         lastModified: "Dernière modification",
+                        managedBy: {
+                            label: "Dirigé par",
+                            header: "Dirigé par"
+                        },
                         name: "Nom"
                     },
                     confirmations: {
@@ -8382,6 +8386,15 @@ export const console: ConsoleNS = {
                     popups: {
                         delete: "Supprimer le {{type}}",
                         edit: "Modifier le {{type}}"
+                    },
+                    filterOptions: {
+                        all: "Afficher tout",
+                        applicationRoles: "Rôles d'application",
+                        organizationRoles: "Rôles d'organisation"
+                    },
+                    filterAttirbutes: {
+                        name: "Nom",
+                        audience: "Rôle public"
                     }
                 },
                 notifications: {
