@@ -323,7 +323,7 @@ export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInter
             filter,
             startIndex
         },
-        url: store.getState().config.endpoints.rolesNew
+        url: store.getState().config.endpoints.rolesV2
     };
 
     const {

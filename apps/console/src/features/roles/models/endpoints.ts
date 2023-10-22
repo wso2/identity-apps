@@ -22,9 +22,9 @@
 export interface RolesResourceEndpointsInterface {
     // TODO: This need to be removed once this endpoint is moved to the API resources feature.
     apiResources?: string;
-    // TODO: Need to replace this with `roles` once the implementation is done.
-    rolesNew?: string;
     roles: string;
+    // TODO: This need to be removed once the Role V2 endpoint is enabled.
+    rolesV2: string;
     permission: string;
     rolesWithoutOrgPath: string;
 }
