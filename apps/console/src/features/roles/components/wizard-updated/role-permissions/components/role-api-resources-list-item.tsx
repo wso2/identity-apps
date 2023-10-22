@@ -129,7 +129,7 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                         disablePadding
                     >  
                         <ListItemText primary={ apiResource?.name } />
-                    </ListItem>            
+                    </ListItem>
                 </AccordionSummary>
                 {
                     apiResource?.scopes?.length > 0 
