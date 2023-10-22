@@ -9852,14 +9852,14 @@ export const console: ConsoleNS = {
                                 hint: "Set the audience of the role. <1>Note that audience of the role cannot be changed.</1>",
                                 label: "Select the role audience",
                                 values: {
-                                    organization: "Organization-scoped role",
-                                    application: "Application-scoped role"
+                                    organization: "Organization",
+                                    application: "Application"
                                 }
                             },
                             notes: {
-                                orgNote: "When the role audience is organization-scoped, you can only assign the role to applications that support organization-scoped roles exclusively.",
-                                appNote: "When the role audience is application-scoped, you can only assign the role to applications that support application-scoped roles exclusively.",
-                                cannotCreateRole: "You cannot create an application-scoped role because there are currently no applications that support application-scoped role. Please <1>create an application</1> that supports application-scoped roles to proceed."
+                                orgNote: "When the role audience is organization, you can associate the role with an application which allows organization audience roles.",
+                                appNote: "When the role audience is application, you can associate the role with an application which allows application audience roles.",
+                                cannotCreateRole: "You cannot create a role with role audience as application because there are currently no applications that support application audience roles. Please <1>create an application</1> that supports application audience roles to proceed."
                             },
                             assignedApplication: {
                                 hint: "Assign an application for the role. Note that assigned application for this role cannot be edited after the role is created.",
@@ -9884,6 +9884,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     subHeading: "Create a new {{type}} in the system.",
+                    back: "Go back",
                     summary: {
                         labels: {
                             domain: {
@@ -10284,8 +10285,8 @@ export const console: ConsoleNS = {
                         logTypes: {
                             label: "Log types to be published",
                             values: {
-                                carbonLogs: "Carbon Logs",
-                                auditLogs: "Audit Logs",
+                                carbonLogs: "Carbon logs",
+                                auditLogs: "Audit logs",
                                 allLogs: "All Logs"
                             }
                         },
@@ -10327,15 +10328,15 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
-                        title: "Restore Default Configuration",
-                        header: "Restore Default Configuration",
-                        subheader: "This action will delete the existing configuration. Please be certain before you proceed.",
+                        title: "Restore Default Configuration for {{logType}} Logs",
+                        header: "Restore Default Configuration for {{logType}} Logs",
+                        subheader: "This action will delete the existing configuration for {{logType}} logs. Please be certain before you proceed.",
                         confirmation: {
                             hint: "Please confirm your action.",
                             header: "Are you sure?",
-                            message: "If you restore the default configuration, remote log publishing may not work properly. " +
+                            message: "If you restore the default configuration, remote log publishing for {{logType}} logs may not work properly. " +
                             "Please proceed with caution.",
-                            content: "This action will restore the default log publishing configuration."
+                            content: "This action will restore the default log publishing configuration for {{logType}} logs."
                         }
                     },
                     notification: {
@@ -10727,7 +10728,9 @@ export const console: ConsoleNS = {
                             },
                             advanceSearch: {
                                 placeholder: "Search by Username"
-                            }
+                            },
+                            disabledSecondaryStoreInfo: "Bulk import to external user stores is not available " +
+                                "at the moment."
                         },
                         buttons: {
                             import: "Import"

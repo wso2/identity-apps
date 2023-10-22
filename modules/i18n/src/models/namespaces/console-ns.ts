@@ -5067,6 +5067,7 @@ export interface ConsoleNS {
                         };
                     };
                     subHeading: string;
+                    back: string;
                     summary: {
                         labels: {
                             domain: {
@@ -5609,7 +5610,8 @@ export interface ConsoleNS {
                             };
                             advanceSearch: {
                                 placeholder: string;
-                            }
+                            };
+                            disabledSecondaryStoreInfo: string;
                         };
                         buttons: {
                             import: string;

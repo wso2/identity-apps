@@ -356,9 +356,10 @@ export class AppConstants {
                 "PRIVATE_KEY_JWT_CONFIG_EDIT", 
                 `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration` 
             ],
-            [ "INSIGHTS",`${AppConstants.getAdminViewBasePath()}/insights` ],
-            [ "REMOTE_LOGGING",`${AppConstants.getAdminViewBasePath()}/logs` ],
-            [ "SESSION_MANAGEMENT",`${AppConstants.getAdminViewBasePath()}/login-and-registration/session-management` ],
+            [ "INSIGHTS", `${AppConstants.getAdminViewBasePath()}/insights` ],
+            [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/logs` ],
+            [ "SESSION_MANAGEMENT",
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/session-management` ],
             [ "SAML2_CONFIGURATION",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/saml2-configuration` ],
             [ "WSFED_CONFIGURATION",

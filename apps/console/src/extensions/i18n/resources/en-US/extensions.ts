@@ -1296,21 +1296,21 @@ export const extensions: Extensions = {
                                     "Link to a document or a webpage with detailed information on all cookies " +
                                     "used by your applications and the purpose of each of them.",
                                 label: "Cookie Policy",
-                                placeholder: "https://asgardeo.io/cookie-policy"
+                                placeholder: "https://myapp.com/cookie-policy"
                             },
                             privacyPolicyURL: {
                                 hint:
                                     "Link to a statement or a legal document that states how your organization " +
                                     "collects, handles, and processes the data of your customers and visitors.",
                                 label: "Privacy Policy",
-                                placeholder: "https://asgardeo.io/privacy-policy"
+                                placeholder: "https://myapp.com/privacy-policy"
                             },
                             termsOfUseURL: {
                                 hint:
                                     "Link to an agreement that your customers must agree to and abide by in " +
                                     "order to use your organization's applications or other services.",
                                 label: "Terms of Service",
-                                placeholder: "https://asgardeo.io/terms-of-service"
+                                placeholder: "https://myapp.com/terms-of-service"
                             }
                         },
                         heading: "Links"

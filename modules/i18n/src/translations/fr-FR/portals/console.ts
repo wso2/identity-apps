@@ -8091,14 +8091,14 @@ export const console: ConsoleNS = {
                                 hint: "Définissez le public du rôle.<1> Notez que le public du rôle ne peut pas être modifié. </1>",
                                 label: "Sélectionnez le rôle de rôle",
                                 values: {
-                                    organization: "Rôle de l'organisation",
-                                    application: "Rôle appliqué"
+                                    organization: "Organisation",
+                                    application: "Application"
                                 }
                             },
                             notes: {
-                                orgNote: "Lorsque le rôle que le public est encope, vous ne pouvez attribuer le rôle qu'aux applications qui soutiennent exclusivement les rôles qui soutiennent l'organisation.",
-                                appNote: "Lorsque le rôle que le public est encope des applications, vous ne pouvez attribuer le rôle qu'aux applications qui prennent en charge exclusivement les rôles qui prennent des applications.",
-                                cannotCreateRole: "Vous ne pouvez pas créer de rôle encopique appliqué car il n'y a actuellement aucune application qui prend en charge le rôle de lacopie appliquée.S'il vous plaît <1> Créer une application </1> qui prend en charge les rôles à application pour continuer."
+                                orgNote: "Lorsque le rôle d'audience est l'organisation, vous pouvez associer le rôle à une application qui permet des rôles d'audience d'organisation.",
+                                appNote: "Lorsque le rôle d'audience est une application, vous pouvez associer le rôle à une application qui permet des rôles d'audience d'application.",
+                                cannotCreateRole: "Vous ne pouvez pas créer un rôle avec le public de rôle en tant qu'application car il n'y a actuellement aucune application qui prend en charge les rôles d'audience d'application.S'il vous plaît <1> Créer une application </1> qui prend en charge les rôles d'audience d'application pour continuer."
                             },
                             assignedApplication: {
                                 hint: "Attribuer une application pour le rôle. Notez que l'application attribuée pour ce rôle ne peut pas être modifiée après la création du rôle.",
@@ -8123,6 +8123,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     subHeading: "Créer un nouveau {{type}} dans le système avec des permissions spécifiques",
+                    back: "Retourner",
                     summary: {
                         labels: {
                             domain: {
@@ -8585,15 +8586,15 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
-                        title: "Restaurer la configuration par défaut",
-                        header: "Restaurer la configuration par défaut",
-                        subheader: "Cette action supprimera la configuration existante. Soyez certain avant de continuer.",
+                        title: "Restaurer la configuration par défaut pour les journaux {{logType}}",
+                        header: "Restaurer la configuration par défaut pour les journaux {{logType}}",
+                        subheader: "Cette action supprimera la configuration existante pour les journaux {{logType}}. Veuillez en être sûr avant de continuer.",
                         confirmation: {
                             hint: "Veuillez confirmer votre action.",
                             header: "Êtes-vous sûr?",
-                            message: "Si vous restaurez la configuration par défaut, la publication des journaux à distance risque de ne pas fonctionner correctement. " +
+                            message: "Si vous restaurez la configuration par défaut, la publication de journaux à distance pour les journaux {{logType}} risque de ne pas fonctionner correctement. " +
                             "Veuillez procéder avec prudence.",
-                            content: "Cette action restaurera la configuration de publication des journaux par défaut."
+                            content: "Cette action restaurera la configuration de publication de journaux par défaut pour les journaux {{logType}}."
                         }
                     },
                     notification: {
@@ -8994,7 +8995,9 @@ export const console: ConsoleNS = {
                             },
                             advanceSearch: {
                                 placeholder: "Rechercher par nom d'utilisateur"
-                            }
+                            },
+                            disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
+                                "externes n’est pas disponible pour le moment."
                         },
                         buttons: {
                             import: "Importer"

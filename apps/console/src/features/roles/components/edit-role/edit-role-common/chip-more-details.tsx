@@ -94,7 +94,7 @@ export const ChipMoreDetails: FunctionComponent<ChipMoreDetailsInterface> = (
                             <Grid>
                                 <ListItemText
                                     primary={ primaryText }
-                                    secondary={ secondaryText ? secondaryText : null }
+                                    secondary={ secondaryText }
                                 />
                             </Grid>
                         </Grid>
