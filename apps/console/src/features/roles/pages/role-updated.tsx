@@ -94,11 +94,11 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
      */
     useEffect(() => {
         if (rolesListError) {
-            handleAlerts(addAlert<AlertInterface>({
+            handleAlerts({
                 description: t("console:manage.features.roles.notifications.fetchRoles.genericError.description"),
                 level: AlertLevels.ERROR,
                 message: t("console:manage.features.roles.notifications.fetchRoles.genericError.message")
-            }));
+            });
         }
     }, [ rolesListError ]);
 
