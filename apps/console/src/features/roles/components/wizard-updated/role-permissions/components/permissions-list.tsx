@@ -37,7 +37,7 @@ interface PermissionsListPropsInterface extends  IdentifiableComponentInterface 
     /**
      * Callback to handle API resource removal.
      */
-    onChangeScopes: (apiResource: APIResourceInterface, scopes: ScopeInterface[]) => void;    
+    onChangeScopes: (apiResource: APIResourceInterface, scopes: ScopeInterface[]) => void;
 }
 
 export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> = 
