@@ -374,17 +374,14 @@ export const applicationConfig: ApplicationConfig = {
             const tabExtensions: ResourceTabPaneInterface[] = [];
 
             // Enable the roles tab for supported templates when the api resources config is enabled.
-            if (
-                (
-                    apiResourceFeatureEnabled
-                    && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
-                        applicationRoles?.enabled) 
-                    && (
-                        application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-                        || application?.templateId === MobileAppTemplate?.id
-                        || application?.templateId === OIDCWebAppTemplate?.id
-                        || application?.templateId === SinglePageAppTemplate?.id
-                    )
+            if (apiResourceFeatureEnabled
+                && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
+                    applicationRoles?.enabled) 
+                && (
+                    application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                    || application?.templateId === MobileAppTemplate?.id
+                    || application?.templateId === OIDCWebAppTemplate?.id
+                    || application?.templateId === SinglePageAppTemplate?.id
                 )
             ) {
                 tabExtensions.push(
