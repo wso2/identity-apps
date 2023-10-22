@@ -374,7 +374,6 @@ export const applicationConfig: ApplicationConfig = {
             const tabExtensions: ResourceTabPaneInterface[] = [];
 
             // Enable the roles tab for supported templates when the api resources config is enabled.
-            // Otherwise enable the roles tab for choreo applications when the application roles config is enabled.
             if (
                 (
                     apiResourceFeatureEnabled
