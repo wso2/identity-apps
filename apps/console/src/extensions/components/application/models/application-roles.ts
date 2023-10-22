@@ -16,9 +16,6 @@
  * under the License.
  */
 
-import { RoleAudienceTypes } from "../../../../features/applications/constants";
-import { BasicRoleInterface } from "../../../../features/applications/models";
-
 /**
  * Interface to store link data of paginated response.
  */
@@ -160,51 +157,4 @@ export interface ApplicationRoleGroupsUpdatePayloadInterface {
 export interface DescendantDataInterface {
     id: string;
     name: string;
-}
-
-/**
- * Interface for roles V2 data.
- */
-export interface RolesV2Interface {
-    audience: {
-        display: string;
-        type: string;
-        value: string;
-    };
-    displayName: string;
-    id: string;
-    meta: {
-        location: string;
-    };
-}
-
-/**
- *  Interface for roles V2 response data.
- */
-export interface RolesV2ResponseInterface {
-    /**
-     * Number of results that match the listing operation.
-     */
-    totalResults?: number;
-    /**
-     * Index of the first element of the page, which will be equal to offset + 1.
-     */
-    startIndex?: number;
-    /**
-     * Schema related to the response.
-     */
-    schemas?: string[];
-    /**
-     * Number of elements in the returned page.
-     */
-    itemsPerPage?: number;
-    /**
-     * Set of roles.
-     */
-    Resources: RolesV2Interface[];
-}
-
-export interface AssociatedRolesPatchObjectInterface {
-    allowedAudience: RoleAudienceTypes;
-    roles: BasicRoleInterface[];
 }

@@ -44,7 +44,6 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
 
-
 /**
  * Get the application roles of the application.
  *
