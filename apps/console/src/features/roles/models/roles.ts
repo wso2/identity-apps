@@ -17,6 +17,7 @@
  */
 
 import { RolesInterface } from "@wso2is/core/models";
+import { ScopeInterface } from "./apiResources";
 import { CreateGroupMemberInterface } from "../../groups/models";
 import { SchemaAttributeValueInterface } from "../../users/models";
 
@@ -151,4 +152,25 @@ export interface CreateRoleStateInterface {
      * Basic details step form data.
      */
     [ CreateRoleStepsFormTypes.BASIC_DETAILS ]: CreateRoleFormData;
+}
+
+/**
+ * Interface to capture the selected permissions.
+ */
+export interface SelectedPermissionsInterface {
+    /**
+     * ID of the API resource that the scopes belongs to.
+     */
+    apiResourceId: string;
+    /**
+     * set of scopes names that are selected.
+     */
+    scopes: ScopeInterface[];
+}
+
+/**
+ * Interface to capture options passed to the Autocomplete component in the role section.
+ */
+export interface ChipOptionsInterface {
+    id?: string;
 }

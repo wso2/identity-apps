@@ -5055,6 +5055,24 @@ export interface ConsoleNS {
                                 cannotCreateRole: string
                             }
                         };
+                        rolePermission: {
+                            apiResource: {
+                                label: string;
+                                placeholder: string;
+                            };
+                            permissions: {
+                                label: string;
+                                placeholder: string;
+                                tooltips: {
+                                    noScopes: string;
+                                    selectAllScopes: string;
+                                    removeAPIResource: string;
+                                }
+                            };
+                            notifications: {
+                                fetchAPIResourceError: Notification;
+                            };
+                        };
                     };
                     heading: string;
                     permissions: {
