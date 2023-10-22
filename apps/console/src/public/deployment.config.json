@@ -249,7 +249,7 @@
             },
             "applicationRoles": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "update": [],
                     "read": [],
@@ -559,7 +559,7 @@
                 "scopes": {}
             },
             "identityVerificationProviders": {
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "create": [
                         "internal_idvp_create"
