@@ -6,4 +6,4 @@
 "@wso2is/theme": patch
 ---
 
-added permissions selection section to the create role interface
+Add permissions selection section to the create role interface
