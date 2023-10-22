@@ -122,7 +122,7 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                                         content={ t("console:manage.features.roles.addRoleWizard.forms." +
                                             "rolePermission.permissions.tooltips.removeAPIResource") }
                                     >
-                                    </Tooltip>                    
+                                    </Tooltip>
                                 </Grid>
                             </Grid>  
                         ) }
