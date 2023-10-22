@@ -445,3 +445,8 @@ export enum ShareWithOrgStatus {
     FALSE,
     UNDEFINED
 }
+
+export enum RoleAudienceTypes {
+    ORGANIZATION = "ORGANIZATION",
+    APPLICATION = "APPLICATION"
+}

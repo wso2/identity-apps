@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,7 @@ import {
     WSTrustConfigurationInterface
 } from "./application-inbound";
 import { GenericAuthenticatorInterface } from "../../identity-providers/models/identity-provider";
+import { RoleAudienceTypes } from "../constants/application-management";
 import { TemplateContentInterface } from "../data/application-templates";
 
 /**
@@ -66,10 +67,21 @@ export interface ApplicationInterface extends ApplicationBasicInterface {
     imageUrl?: string;
     claimConfiguration?: ClaimConfigurationInterface;
     advancedConfigurations?: AdvancedConfigurationsInterface;
+    associatedRoles?: AssociatedRolesInterface;
     inboundProtocols?: InboundProtocolListItemInterface[];
     authenticationSequence?: AuthenticationSequenceInterface;
     provisioningConfigurations?: ProvisioningConfigurationInterface;
     appRoleConfigurations?: IdpRoleMappingInterface[];
+}
+
+export interface AssociatedRolesInterface {
+    allowedAudience: RoleAudienceTypes;
+    roles: BasicRoleInterface[];
+}
+
+export interface BasicRoleInterface {
+    id: string;
+    name?: string;
 }
 
 /**

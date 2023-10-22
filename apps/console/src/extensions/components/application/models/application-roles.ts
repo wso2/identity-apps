@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import { RoleAudienceTypes } from "../../../../features/applications/constants";
+import { BasicRoleInterface } from "../../../../features/applications/models";
 
 /**
  * Interface to store link data of paginated response.
@@ -157,4 +160,51 @@ export interface ApplicationRoleGroupsUpdatePayloadInterface {
 export interface DescendantDataInterface {
     id: string;
     name: string;
+}
+
+/**
+ * Interface for roles V2 data.
+ */
+export interface RolesV2Interface {
+    audience: {
+        display: string;
+        type: string;
+        value: string;
+    };
+    displayName: string;
+    id: string;
+    meta: {
+        location: string;
+    };
+}
+
+/**
+ *  Interface for roles V2 response data.
+ */
+export interface RolesV2ResponseInterface {
+    /**
+     * Number of results that match the listing operation.
+     */
+    totalResults?: number;
+    /**
+     * Index of the first element of the page, which will be equal to offset + 1.
+     */
+    startIndex?: number;
+    /**
+     * Schema related to the response.
+     */
+    schemas?: string[];
+    /**
+     * Number of elements in the returned page.
+     */
+    itemsPerPage?: number;
+    /**
+     * Set of roles.
+     */
+    Resources: RolesV2Interface[];
+}
+
+export interface AssociatedRolesPatchObjectInterface {
+    allowedAudience: RoleAudienceTypes;
+    roles: BasicRoleInterface[];
 }

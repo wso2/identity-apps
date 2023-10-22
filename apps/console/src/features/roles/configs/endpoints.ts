@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,9 +21,9 @@ import { RolesResourceEndpointsInterface } from "../models";
 /**
  * Get the resource endpoints for the Role Management feature.
  *
- * @param {string} serverHostWithOrgPath - Server Host with Org Path.
- * @param {string} serverHost - Server Host
- * @return {RolesResourceEndpointsInterface}
+ * @param serverHostWithOrgPath - Server Host with Org Path.
+ * @param serverHost - Server Host
+ * @returns Roles Resource Endpoints.
  */
 export const getRolesResourceEndpoints = (
     serverHostWithOrgPath: string,
@@ -32,6 +32,7 @@ export const getRolesResourceEndpoints = (
     return {
         permission: `${serverHostWithOrgPath}/api/server/v1/permission-management/permissions`,
         roles: `${serverHostWithOrgPath}/scim2/Roles`,
+        rolesV2: `${serverHostWithOrgPath}/scim2/v2/Roles`,
         rolesWithoutOrgPath: `${serverHost}/scim2/Roles`
     };
 };

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,6 +32,7 @@ import {
     AuthorizedAPIListItemInterface, 
     CreateRolePayloadInterface, 
     DescendantDataInterface, 
+    RolesV2ResponseInterface, 
     SharedApplicationAPIResponseInterface, 
     SharedApplicationDataInterface, 
     UpdateRolePayloadInterface
@@ -43,6 +44,45 @@ import {
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
+
+/**
+ * Get the application roles by audience.
+ *
+ * @param audience - audience.
+ * @param before - Before link.
+ * @param after - After link.
+ * @param limit - Limit.
+ * 
+ * @returns A promise containing the response.
+ */
+export const getApplicationRolesByAudience = (
+    audience: string,
+    before: string,
+    after: string,
+    limit: number
+):Promise<RolesV2ResponseInterface> => {
+
+    const filter: string = `audience.type eq ${ audience.toLowerCase() }`;
+
+    const requestConfig: AxiosRequestConfig = {
+        method: HttpMethods.GET,
+        params: {
+            after,
+            before,
+            filter,
+            limit
+        },
+        url:  `${ store.getState().config.endpoints.rolesV2 }`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {            
+            return Promise.resolve(response.data as RolesV2ResponseInterface);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
 
 /**
  * Get the application roles of the application.

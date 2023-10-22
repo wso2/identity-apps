@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -37,4 +37,8 @@ export class ApplicationRolesConstants {
      * Organization Login authenticator name
      */
     public static readonly ORGANIZATION_LOGIN: string = "Organization Login";
+    /**
+     * Debounce timeout for role search.
+     */
+    public static readonly DEBOUNCE_TIMEOUT: number = 1000;
 }
