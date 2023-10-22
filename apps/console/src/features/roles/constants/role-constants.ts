@@ -76,7 +76,7 @@ export class RoleConstants {
     ];
 
     /**
-     * filter query for audience type application.
+     * Filter query for audience type application.
      */
     public static readonly ROLE_AUDIENCE_APPLICATION_FILTER: string = "audience.type eq application";
 

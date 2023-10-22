@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -93,7 +94,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
      */
     useEffect(() => {
         if (rolesListError) {
-            dispatch(addAlert<AlertInterface>({
+            handleAlerts(addAlert<AlertInterface>({
                 description: t("console:manage.features.roles.notifications.fetchRoles.genericError.description"),
                 level: AlertLevels.ERROR,
                 message: t("console:manage.features.roles.notifications.fetchRoles.genericError.message")
@@ -204,7 +205,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                                         value: "displayName"
                                     },
                                     {
-                                        key: 0,
+                                        key: 1,
                                         text: t("console:manage.features.roles.list.filterAttirbutes.audience"),
                                         value: "audience.type"
                                     }

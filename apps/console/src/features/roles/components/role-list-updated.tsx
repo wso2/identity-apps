@@ -40,13 +40,11 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "../../core";
+import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
+import { AppConstants } from "../../core/constants/app-constants";
+import { history } from "../../core/helpers/history";
+import { FeatureConfigInterface } from "../../core/models/config";
+import { AppState } from "../../core/store/index";
 import { RoleAudiences } from "../models";
 
 interface RoleListProps extends LoadableComponentInterface, IdentifiableComponentInterface {
