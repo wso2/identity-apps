@@ -9858,6 +9858,29 @@ export const console: ConsoleNS = {
                                     empty: "Assigned application is required to create an application-scoped role."
                                 }
                             }
+                        },
+                        rolePermission: {
+                            apiResource: {
+                                label: "Select API Resource",
+                                placeholder: "Select an API resource to assign scopes(permissions)"
+                            },
+                            permissions: {
+                                label: "Select scopes(permissions) from the selected API resources",
+                                placeholder: "Select scopes(permissions)",
+                                tooltips: {
+                                    noScopes: "No scopes available for the selected API resource",
+                                    selectAllScopes: "Select all scopes(permissions)",
+                                    removeAPIResource: "Remove API resource"
+                                }
+                            },
+                            notifications: {
+                                fetchAPIResourceError: {
+                                    error: {
+                                        description: "Something went wrong while fetching API resources. Please try again.",
+                                        message: "Something went wrong"
+                                    }
+                                }
+                            }
                         }
                     },
                     heading: "Create {{type}}",

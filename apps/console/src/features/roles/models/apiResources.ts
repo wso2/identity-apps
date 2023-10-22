@@ -16,13 +16,31 @@
  * under the License.
  */
 
+// TODO: Need to remove this once the API resources is moved to the features.
+
 /**
- * Interface for the Role Management feature resource endpoints.
+ * Interface to contain api resources list
  */
-export interface RolesResourceEndpointsInterface {
-    // TODO: This need to be removed once this endpoint is moved to the API resources feature.
-    apiResources?: string;
-    roles: string;
-    permission: string;
-    rolesWithoutOrgPath: string;
+export interface APIResourceListInterface {
+    totalResults: number;
+    apiResources: APIResourceInterface[];
+}
+
+/**
+ * Interface to contain api resource information
+ */
+export interface APIResourceInterface {
+    id: string;
+    name: string;
+    identifier: string;
+    scopes?: ScopeInterface[];
+}
+
+/**
+ * Interface to contain scope information
+ */
+export interface ScopeInterface {
+    id: string;
+    displayName?: string;
+    name?: string;
 }

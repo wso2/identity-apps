@@ -45,7 +45,7 @@ interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
     /**
      * The user store of the option.
      */
-    userstore: string;
+    userstore?: string;
     /**
      * The ternary title of the option. (This will display in the middle of the option)
      */
@@ -99,18 +99,22 @@ export const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOptio
                     }
                 </Grid>
                 <Grid justifyContent="flex-end">
-                    <Chip 
-                        icon={ ( 
-                            <GenericIcon
-                                inline
-                                size="default"
-                                transparent
-                                icon={ getSidePanelIcons().userStore }
-                                verticalAlign="middle"
-                            /> 
-                        ) }
-                        label={ userstore }
-                    />
+                    {
+                        userstore ? (
+                            <Chip 
+                                icon={ ( 
+                                    <GenericIcon
+                                        inline
+                                        size="default"
+                                        transparent
+                                        icon={ getSidePanelIcons().userStore }
+                                        verticalAlign="middle"
+                                    /> 
+                                ) }
+                                label={ userstore }
+                            />
+                        ) : null
+                    }
                 </Grid>
             </Grid>
         </li>
