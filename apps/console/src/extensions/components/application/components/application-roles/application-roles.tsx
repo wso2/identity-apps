@@ -79,7 +79,7 @@ interface ApplicationRolesSettingsInterface extends IdentifiableComponentInterfa
     /**
      * on application update callback
      */
-    onUpdate: () => void;
+    onUpdate: (id: string) => void;
 }
 
 /**

@@ -71,7 +71,7 @@ interface ApplicationRolesSettingsInterface extends IdentifiableComponentInterfa
     /**
      * on application update callback
      */
-    onUpdate: () => void;
+    onUpdate: (id: string) => void;
 }
 
 /**
@@ -213,7 +213,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     message: t("console:develop.features.applications.notifications.updateApplication.success.message")
                 }));
 
-                onUpdate();
+                onUpdate(appId);
             })
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {

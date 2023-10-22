@@ -56,12 +56,12 @@ import { AppConstants } from "../../features/core/constants";
 import {
     IdentityProviderManagementConstants
 } from "../../features/identity-providers/constants/identity-provider-management-constants";
+import { ApplicationRoles } from "../../features/roles/components/application-roles";
 import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
 import SinglePageAppTemplate from 
     "../application-templates/templates/single-page-application/single-page-application.json";
 import { getTryItClientId } from "../components/application/utils/try-it-utils";
-import ApplicationRolesTab from "../components/component-extensions/application/application-roles-tab";
 import { getGettingStartedCardIllustrations } from "../components/getting-started/configs";
 import { UsersConstants } from "../components/users/constants";
 
@@ -99,8 +99,7 @@ export const applicationConfig: ApplicationConfig = {
         showEnableAuthorization: true,
         showMyAccount: true,
         showReturnAuthenticatedIdPs: true,
-        showSaaS: true,
-        useFluffyRoles: false
+        showSaaS: true
     },
     allowedGrantTypes: {
         // single page app template
@@ -394,10 +393,12 @@ export const applicationConfig: ApplicationConfig = {
                             "extensions:develop.applications.edit.sections.roles.heading"
                         ),
                         render: () => (
-                            <ApplicationRolesTab 
-                                application={ application }
-                                onUpdate={ onApplicationUpdate }
-                            />
+                            <ResourceTab.Pane controlledSegmentation>
+                                <ApplicationRoles 
+                                    application={ application }
+                                    onUpdate={ onApplicationUpdate }
+                                />
+                            </ResourceTab.Pane>
                         )
                     }
                 );
@@ -431,6 +432,7 @@ export const applicationConfig: ApplicationConfig = {
             if(clientId === getTryItClientId(tenantDomain)) {
                 if(tabType === ApplicationTabTypes.PROVISIONING
                     || tabType === ApplicationTabTypes.INFO
+                    || tabType === ApplicationTabTypes.ROLES
                     || tabType === ApplicationTabTypes.PROTOCOL){
                     return false;
                 }

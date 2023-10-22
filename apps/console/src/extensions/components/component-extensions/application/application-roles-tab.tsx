@@ -22,10 +22,6 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
 import { ApplicationInterface } from "../../../../features/applications/models";
 import { ApplicationRoles } from "../../../../features/roles/components/application-roles";
-import { applicationConfig } from "../../../configs";
-import { 
-    ApplicationRoles as ExtendedApplicationRoles
-} from "../../application/components/application-roles/application-roles";
 
 interface ApplicationRolesTabInterface extends IdentifiableComponentInterface {
     /**
@@ -45,20 +41,6 @@ const ApplicationRolesTab: FunctionComponent<ApplicationRolesTabInterface> = (
     props: ApplicationRolesTabInterface
 ): ReactElement => {
     const { application, onUpdate } = props;
-
-    if (applicationConfig?.advancedConfigurations?.useFluffyRoles) {
-        return (
-            <ResourceTab.Pane controlledSegmentation>
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column width={ 16 } >
-                            <ExtendedApplicationRoles application={ application } onUpdate={ onUpdate }/>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </ResourceTab.Pane>
-        );
-    }
 
     return (
         <ResourceTab.Pane controlledSegmentation>

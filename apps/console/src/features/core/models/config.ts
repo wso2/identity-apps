@@ -69,6 +69,10 @@ export interface FeatureConfigInterface {
      */
     applications?: FeatureAccessConfigInterface;
     /**
+     * Application roles feature.
+     */
+    applicationRoles?: FeatureAccessConfigInterface;
+    /**
      * Workflow approvals feature.
      */
     approvals?: FeatureAccessConfigInterface;

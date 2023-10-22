@@ -769,6 +769,7 @@ export enum ApplicationTabTypes {
     PROTOCOL ="protocol",
     USER_ATTRIBUTES = "user-attributes",
     SIGN_IN_METHOD = "sign-in-method",
+    ROLES = "roles",
     PROVISIONING = "provisioning",
     ADVANCED = "advanced",
     INFO = "info"

@@ -33,7 +33,6 @@ export interface ApplicationConfig {
         showMyAccount: boolean;
         showSaaS: boolean;
         showReturnAuthenticatedIdPs: boolean;
-        useFluffyRoles: boolean;
     };
     allowedGrantTypes: Record<string, string[]>,
     generalSettings: {
