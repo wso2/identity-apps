@@ -155,7 +155,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
          */
         const onSearchChangeAPIResourcs = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
             setAPIResourcesSearching(true);
-            searchAPIResources(data.searchQuery.toString().trim());
+            searchAPIResources(data?.searchQuery?.toString().trim());
         };
 
         /**
