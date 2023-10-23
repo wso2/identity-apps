@@ -33,7 +33,7 @@ import { Trans } from "react-i18next";
 import { Divider, Icon, Message } from "semantic-ui-react";
 import { ApplicationGeneralTabOverride } from "./components/application-general-tab-overide";
 import { MarketingConsentModalWrapper } from "./components/marketing-consent/components";
-import { ApplicationConfig } from "./models";
+import { ApplicationConfig, ExtendedFeatureConfigInterface } from "./models";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
@@ -47,8 +47,13 @@ import {
     additionalSpProperty
 } from "../../features/applications/models";
 import { ClaimManagementConstants } from "../../features/claims/constants/claim-management-constants";
-import { EventPublisher } from "../../features/core";
+import { EventPublisher, FeatureConfigInterface } from "../../features/core";
 import { AppConstants } from "../../features/core/constants";
+import { ApplicationRoles } from "../../features/roles/components/application-roles";
+import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
+import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
+import SinglePageAppTemplate from 
+    "../application-templates/templates/single-page-application/single-page-application.json";
 import { getTryItClientId } from "../components/application/utils/try-it-utils";
 import { getGettingStartedCardIllustrations } from "../components/getting-started/configs";
 import { UsersConstants } from "../components/users/constants";
@@ -64,6 +69,7 @@ function isClaimInterface(
 }
 
 const IS_ENTERPRISELOGIN_MANAGEMENT_APP: string = "isEnterpriseLoginManagementApp";
+const APPLICATION_ROLES_INDEX: number = 4;
 
 /**
  * Check whether claims is  identity claims or not.
@@ -346,7 +352,53 @@ export const applicationConfig: ApplicationConfig = {
                 return 4; // Anything else
             }
         },
-        getTabExtensions: (): ResourceTabPaneInterface[] => [],
+        getTabExtensions: (
+            props: Record<string, unknown>, 
+            features: FeatureConfigInterface
+        ): ResourceTabPaneInterface[] => {
+            const extendedFeatureConfig: ExtendedFeatureConfigInterface = features as ExtendedFeatureConfigInterface;
+            const apiResourceFeatureEnabled: boolean = extendedFeatureConfig?.apiResources?.enabled;
+            const applicationRolesFeatureEnabled: boolean = extendedFeatureConfig?.applicationRoles?.enabled;
+
+            const application: ApplicationInterface = props?.application as ApplicationInterface;
+    
+            const onApplicationUpdate: () => void = props?.onApplicationUpdate as () => void;
+
+            const tabExtensions: ResourceTabPaneInterface[] = [];
+
+            // Enable the roles tab for supported templates when the api resources config is enabled.
+            if (apiResourceFeatureEnabled
+                && applicationRolesFeatureEnabled
+                && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
+                    applicationRoles?.enabled) 
+                && (
+                    application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                    || application?.templateId === MobileAppTemplate?.id
+                    || application?.templateId === OIDCWebAppTemplate?.id
+                    || application?.templateId === SinglePageAppTemplate?.id
+                )
+            ) {
+                tabExtensions.push(
+                    {
+                        componentId: "application-roles",
+                        index: APPLICATION_ROLES_INDEX + tabExtensions.length,
+                        menuItem: I18n.instance.t(
+                            "extensions:develop.applications.edit.sections.roles.heading"
+                        ),
+                        render: () => (
+                            <ResourceTab.Pane controlledSegmentation>
+                                <ApplicationRoles 
+                                    application={ application }
+                                    onUpdate={ onApplicationUpdate }
+                                />
+                            </ResourceTab.Pane>
+                        )
+                    }
+                );
+            }
+
+            return tabExtensions;
+        },
         getTabPanelReadOnlyStatus: (tabPanelName: string, application: ApplicationInterface): boolean => {
             // Restrict modifying configurations for Enterprise IDP Login Applications.
             let isEnterpriseLoginMgt: string;
@@ -373,6 +425,7 @@ export const applicationConfig: ApplicationConfig = {
             if(clientId === getTryItClientId(tenantDomain)) {
                 if(tabType === ApplicationTabTypes.PROVISIONING
                     || tabType === ApplicationTabTypes.INFO
+                    || tabType === ApplicationTabTypes.ROLES
                     || tabType === ApplicationTabTypes.PROTOCOL){
                     return false;
                 }

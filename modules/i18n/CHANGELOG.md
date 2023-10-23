@@ -1,5 +1,27 @@
 # @wso2is/i18n
 
+## 2.0.11
+
+### Patch Changes
+
+- [#4278](https://github.com/wso2/identity-apps/pull/4278) [`8be0337845`](https://github.com/wso2/identity-apps/commit/8be03378456c5b8799fc3052e4b7a315b65f7013) Thanks [@Achintha444](https://github.com/Achintha444)! - Add permissions selection section to the create role interface
+
+* [#4280](https://github.com/wso2/identity-apps/pull/4280) [`7ee4e2e360`](https://github.com/wso2/identity-apps/commit/7ee4e2e360f463be9b9ca72814e4ee90077995da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update roles list interface
+
+## 2.0.10
+
+### Patch Changes
+
+- [#4225](https://github.com/wso2/identity-apps/pull/4225) [`583e0aa16a`](https://github.com/wso2/identity-apps/commit/583e0aa16a3ff394f62baa837e8be395557b7f70) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Address PR review comments and UI issues in remote logging
+
+* [#4263](https://github.com/wso2/identity-apps/pull/4263) [`ed53722390`](https://github.com/wso2/identity-apps/commit/ed5372239055ab28d75f9bb3630870cf4c0b4905) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove the http://schema.openid.net/2007/05/claims dialect from the new console.
+
+- [#4233](https://github.com/wso2/identity-apps/pull/4233) [`c0ea5f71e6`](https://github.com/wso2/identity-apps/commit/c0ea5f71e62471f207bca1e927eefa56cd3c224a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to the user store connections section
+
+* [#4266](https://github.com/wso2/identity-apps/pull/4266) [`d94fa3f961`](https://github.com/wso2/identity-apps/commit/d94fa3f9610eb933210e930a54499bdbf097c32b) Thanks [@Achintha444](https://github.com/Achintha444)! - Add create role UI
+
+- [#4252](https://github.com/wso2/identity-apps/pull/4252) [`199144fe70`](https://github.com/wso2/identity-apps/commit/199144fe70a3a6a7167c5e97ecdd9cddec1f3d45) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add disabled user store option in bulk user import
+
 ## 2.0.9
 
 ### Patch Changes

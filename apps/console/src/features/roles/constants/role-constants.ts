@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import { RoleAudiences } from "../models";
 
 export const APPLICATION_DOMAIN: string = "Application/";
 export const INTERNAL_DOMAIN: string = "Internal";
@@ -59,6 +61,29 @@ export class RoleConstants {
      * Minimum length of the role name.
      */
     public static readonly ROLE_NAME_MIN_LENGTH: number = 3;
+
+    /**
+     * Default role audience.
+     */
+    public static readonly DEFAULT_ROLE_AUDIENCE: string = RoleAudiences.ORG;
+
+    /**
+     * Read only applications client ids.
+     */
+    public static readonly READONLY_APPLICATIONS_CLIENT_IDS: string[] = [
+        "CONSOLE",
+        "MY_ACCOUNT"
+    ];
+
+    /**
+     * Filter query for audience type application.
+     */
+    public static readonly ROLE_AUDIENCE_APPLICATION_FILTER: string = "audience.type eq application";
+
+    /**
+     * filter query for audience type organization.
+     */
+    public static readonly ROLE_AUDIENCE_ORGANIZATION_FILTER: string = "audience.type eq organization";
 }
 
 /**
@@ -68,4 +93,9 @@ export enum Schemas {
     SEARCH_REQUEST = "urn:ietf:params:scim:api:messages:2.0:SearchRequest",
     BULK_REQUEST = "urn:ietf:params:scim:api:messages:2.0:BulkRequest",
     PATCH_OP = "urn:ietf:params:scim:api:messages:2.0:PatchOp"
+}
+
+export enum RoleAudienceTypes {
+    ORGANIZATION = "ORGANIZATION",
+    APPLICATION = "APPLICATION"
 }

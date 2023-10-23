@@ -401,7 +401,7 @@ export class RouteUtils {
             },
             {
                 category: settings,       
-                id: "remoteLogIngest"
+                id: "remoteLogging"
             },
             {
                 category: settings,

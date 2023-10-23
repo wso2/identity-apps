@@ -576,7 +576,6 @@
                 img {
                     width: 80px;
                     max-height: 20px;
-                    margin-top: 6px;
                     margin-left: 4px;
                 }
             }

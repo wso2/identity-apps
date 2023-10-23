@@ -45,7 +45,7 @@ interface ChipMoreDetailsInterface extends IdentifiableComponentInterface {
     /**
      * The user store of the option. This will display in the chip.
      */
-    userStore: string;
+    userStore?: string;
 }
 
 export const ChipMoreDetails: FunctionComponent<ChipMoreDetailsInterface> = (
@@ -94,23 +94,27 @@ export const ChipMoreDetails: FunctionComponent<ChipMoreDetailsInterface> = (
                             <Grid>
                                 <ListItemText
                                     primary={ primaryText }
-                                    secondary={ secondaryText ? secondaryText : null }
+                                    secondary={ secondaryText }
                                 />
                             </Grid>
                         </Grid>
                         <Grid justifyContent="flex-end">
-                            <Chip
-                                icon={ (
-                                    <GenericIcon
-                                        inline
-                                        size="default"
-                                        transparent
-                                        icon={ getSidePanelIcons().userStore }
-                                        verticalAlign="middle"
+                            {
+                                userStore ? (
+                                    <Chip
+                                        icon={ (
+                                            <GenericIcon
+                                                inline
+                                                size="default"
+                                                transparent
+                                                icon={ getSidePanelIcons().userStore }
+                                                verticalAlign="middle"
+                                            />
+                                        ) }
+                                        label={ userStore }
                                     />
-                                ) }
-                                label={ userStore }
-                            />
+                                ) : null
+                            }
                         </Grid>
                     </Grid>
                 </CardContent>
