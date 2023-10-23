@@ -25,5 +25,5 @@ export class OrganizationManagementConstants {
         .set("ORGANIZATION_EMAIL_DOMAIN_UPDATE", "organizationDiscovery.update")
         .set("ORGANIZATION_EMAIL_DOMAIN_DELETE", "organizationDiscovery.delete")
         .set("ORGANIZATION_EMAIL_DOMAIN_READ", "organizationDiscovery.read");
-    
+
 }

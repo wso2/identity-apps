@@ -27,12 +27,17 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
+import useRequest, { RequestResultInterface } from "../../core/hooks/use-request";
 import {
+    AddOrganizationInterface,
     OrganizationDiscoveryAttributeDataInterface,
     OrganizationDiscoveryConfigInterface,
+    OrganizationInterface,
     OrganizationListInterface,
     OrganizationListWithDiscoveryInterface,
-    OrganizationResponseInterface
+    OrganizationPatchData,
+    OrganizationResponseInterface,
+    UpdateOrganizationInterface
 } from "../models";
 
 /**
@@ -130,15 +135,15 @@ export const deleteOrganizationDiscoveryConfig = (
  * Get a list of organizations.
  *
  * @param filter - The filter query.
- * @param _offset - The maximum number of organizations to return.
- * @param _limit  - Number of records to skip for pagination.
+ * @param offset - The maximum number of organizations to return.
+ * @param limit  - Number of records to skip for pagination.
  *
  * @returns a promise containing the response
  */
 export const getOrganizationDiscovery = (
-    filter?: string,
-    _offset?: number,
-    _limit?: number
+    filter: string,
+    offset: number,
+    limit: number
 ): Promise< OrganizationListWithDiscoveryInterface> => {
     const config: HttpRequestConfig = {
         headers: {
@@ -147,7 +152,9 @@ export const getOrganizationDiscovery = (
         },
         method: "GET",
         params: {
-            filter
+            // filter,
+            // offset,
+            // limit
         },
         url: `${ store.getState().config.endpoints.organizations }/organizations/discovery`
     };
@@ -161,67 +168,6 @@ export const getOrganizationDiscovery = (
             return Promise.resolve(response?.data);
         })
         .catch((error: HttpError) => {
-            return Promise.reject(error?.response?.data);
-        });
-};
-
-/**
- * Get the organization discovery data with the given id.
- *
- * @param id - The organization id.
- *
- * @returns a promise containing the response
- */
-export const getOrganizationDiscoveryAttributes = (id: string): 
-Promise<OrganizationDiscoveryAttributeDataInterface> => {
-    const config: HttpRequestConfig = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        method: "GET",
-        url: `${ store.getState().config.endpoints.organizations }/organizations/${ id }/discovery`
-    };
-
-    return httpClient(config)
-        .then((response: HttpResponse<OrganizationDiscoveryAttributeDataInterface>) => {
-            if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to get the organization."));
-            }
-
-            return Promise.resolve(response?.data);
-        })
-        .catch((error: IdentityAppsApiException) => {
-            return Promise.reject(error?.response?.data);
-        });
-};
-
-/**
- * Update discovery attributes of an organization.
- *
- * @param properties - Data that needs to be updated.
- */
-export const updateOrganizationDiscoveryAttributes = (
-    id: string,
-    properties: OrganizationDiscoveryAttributeDataInterface
-): Promise<any> => {
-    const requestConfig: AxiosRequestConfig = {
-        data: properties,
-        headers: {
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.PUT,
-        url: `${ store.getState().config.endpoints.organizations }/organizations/${ id }/discovery`
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to update organization discovery attributes."));
-            }
-
-            return Promise.resolve(response?.data);
-        }).catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -273,6 +219,36 @@ export const getOrganizations = (
             return Promise.resolve(response?.data);
         })
         .catch((error: HttpError) => {
+            return Promise.reject(error?.response?.data);
+        });
+};
+
+/**
+ * Get the organization discovery data with the given id.
+ *
+ * @param id - The organization id.
+ *
+ * @returns a promise containing the response
+ */
+export const getOrganizationDiscoveryAttributes = (id: string): Promise<OrganizationDiscoveryAttributeDataInterface> => {
+    const config: HttpRequestConfig = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: "GET",
+        url: `${ store.getState().config.endpoints.organizations }/organizations/${ id }/discovery`
+    };
+
+    return httpClient(config)
+        .then((response: HttpResponse<OrganizationDiscoveryAttributeDataInterface>) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to get the organization."));
+            }
+
+            return Promise.resolve(response?.data);
+        })
+        .catch((error: IdentityAppsApiException) => {
             return Promise.reject(error?.response?.data);
         });
 };

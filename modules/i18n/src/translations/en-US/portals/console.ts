@@ -10227,7 +10227,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Restore groups"
                             }
                         }
-                        
+
                     },
                     menuItems: {
                         basic: "Basics",
@@ -10680,6 +10680,7 @@ export const console: ConsoleNS = {
                 editRoles: "Edit Role",
                 editUsers: "Edit User",
                 editUserstore: "Edit User Store",
+                emailDomainDiscovery: "Email Domain Discovery",
                 emailDomainDiscovery: "Email Domain Discovery",
                 emailTemplateTypes: "",
                 emailTemplates: "Email Templates",

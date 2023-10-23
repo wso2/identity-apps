@@ -391,7 +391,7 @@ export class RouteUtils {
                 category: build,
                 id: "communication-management",
                 parent: branding,
-                selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") || 
+                selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
                     history.location.pathname === `${ AppConstants.getDeveloperViewBasePath() }/email-management`
             },
             {
@@ -410,12 +410,12 @@ export class RouteUtils {
             },
             {
                 category: manage,
-                id: "organizationDiscovery",
+                id: "emailDomainDiscovery",
                 parent: organizationManagement
             },
             {
                 category: monitoring,
-                id: "logs"            
+                id: "logs"
             },
             {
                 category: other,
@@ -442,9 +442,9 @@ export class RouteUtils {
 
             return !saasFeatureIsEnabled;
         }).map((route: RouteInterface) => {
-            const categoryMappedRoute: Omit<RouteInterface, "showOnSidePanel"> 
+            const categoryMappedRoute: Omit<RouteInterface, "showOnSidePanel">
                 = CategoryMappedRoutes.find((item: RouteInterface) => item.id === route.id);
-            
+
             return {
                 ...route,
                 navCategory: categoryMappedRoute?.category,
@@ -470,9 +470,9 @@ export class RouteUtils {
             }));
 
         const ungroupedItems: NavRouteInterface[] = itemsWithCategory.filter((item: NavRouteInterface) => !item.parent);
-        
+
         return sortBy(
-            sortBy([ ...updatedGroupedItems, ...ungroupedItems ], (item: NavRouteInterface) => item.order), 
+            sortBy([ ...updatedGroupedItems, ...ungroupedItems ], (item: NavRouteInterface) => item.order),
             (item: NavRouteInterface) => item.navCategory?.order
         );
     }

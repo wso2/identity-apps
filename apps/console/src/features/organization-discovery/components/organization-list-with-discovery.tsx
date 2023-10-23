@@ -245,7 +245,7 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
                     title={ t("console:manage.placeholders.emptySearchResult.title") }
                     subtitle={ [
                         t("console:manage.placeholders.emptySearchResult.subtitles.0", {
-                            // searchQuery looks like "name co OrganizationName", so we only remove the filter string 
+                            // searchQuery looks like "name co OrganizationName", so we only remove the filter string
                             // only to get the actual user entered query
                             query: searchQuery.split("organizationName co ")[1]
                         }),

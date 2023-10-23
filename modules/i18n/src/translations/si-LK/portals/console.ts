@@ -7413,43 +7413,22 @@ export const console: ConsoleNS = {
                 }
             },
             organizationDiscovery: {
-                advancedSearch: {
-                    form: {
-                        dropdown: {
-                            filterAttributeOptions: {
-                                organizationName: "සංවිධානයේ නම"
-                            }
-                        },
-                        inputs: {
-                            filterAttribute: {
-                                placeholder: "උදා. සංවිධානයේ නම ආදිය."
-                            },
-                            filterCondition: {
-                                placeholder: "උදා. ආදියෙන් ආරම්භ වේ."
-                            },
-                            filterValue: {
-                                placeholder: "සෙවීමට අගය ඇතුළත් කරන්න"
-                            }
-                        }
-                    },
-                    placeholder: "සංවිධානයේ නම අනුව සොයන්න"
-                },
                 emailDomains: {
                     actions: {
                         assign: "විද්‍යුත් තැපැල් වසම පවරන්න",
-                        enable: "ඊමේල් වසම් සොයාගැනීම සබල කරන්න"
+                        enable: "Enable email domain discovery"
                     }
                 },
                 edit: {
-                    back: "ආපසු",
-                    description: "ඊමේල් වසම් සංස්කරණය කරන්න",
+                    back: "Back",
+                    description: "Edit Email Domains",
                     fields: {
                         name: {
-                            label: "සංවිධානයේ නම"
+                            label: "Organization Name"
                         },
                         emailDomains: {
-                            label : "ඊමේල් වසම්",
-                            placeHolder: "ඊමේල් වසම් ඇතුලත් කරන්න"
+                            label : "Email Domains",
+                            placeHolder: "Enter email domains"
                         }
                     }
                 },
@@ -7457,84 +7436,63 @@ export const console: ConsoleNS = {
                     disableEmailDomainDiscovery: {
                         error: {
                             description: "{{description}}",
-                            message: "විද්‍යුත් තැපැල් වසම් සොයාගැනීම අක්‍රිය කිරීමේදී දෝෂයකි"
+                            message: "Error while disabling email domain discovery"
                         },
                         genericError: {
-                            description: "විද්‍යුත් තැපැල් වසම් සොයාගැනීම අක්‍රිය කිරීමේදී දෝෂයක් ඇති විය",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                            description: "An error occurred while disabling email domain discovery",
+                            message: "Something went wrong"
                         },
                         success: {
-                            description: "විද්‍යුත් තැපැල් වසම් සොයා ගැනීම සාර්ථකව අක්‍රීය කරන ලදී",
-                            message: "විද්‍යුත් තැපෑල වසම් සොයා ගැනීම සාර්ථකව අක්‍රීය කර ඇත"
+                            description: "Successfully disabled email domain discovery",
+                            message: "Email domain discovery disabled successfully"
                         }
                     },
                     enableEmailDomainDiscovery: {
                         error: {
                             description: "{{description}}",
-                            message: "විද්‍යුත් තැපැල් වසම් සොයාගැනීම සබල කිරීමේදී දෝෂයකි"
+                            message: "Error while enabling email domain discovery"
                         },
                         genericError: {
-                            description: "විද්‍යුත් තැපෑල වසම් සොයාගැනීම සබල කිරීමේදී දෝෂයක් ඇති විය",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                            description: "An error occurred while enabling email domain discovery",
+                            message: "Something went wrong"
                         },
                         success: {
-                            description: "විද්‍යුත් තැපැල් වසම් සොයාගැනීම සාර්ථකව සක්‍රීය කර ඇත",
-                            message: "විද්‍යුත් තැපැල් වසම් සොයා ගැනීම සාර්ථකව සක්‍රීය කර ඇත"
+                            description: "Successfully enabled email domain discovery",
+                            message: "Email domain discovery enabled successfully"
                         }
                     },
                     fetchOrganizationDiscoveryAttributes: {
                         error: {
                             description: "{{description}}",
-                            message: "සංවිධානයේ සොයාගැනීම් ගුණාංග ලබා ගැනීමේදී දෝෂයකි"
+                            message: "Error while fetching the organization discovery attributes"
                         },
                         genericError: {
-                            description: "සංවිධානයේ සොයාගැනීම් ගුණාංග ලබා ගැනීමේදී දෝෂයක් ඇති විය",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                            description: "An error occurred while fetching the organization discovery attributes",
+                            message: "Something went wrong"
                         }
                     },
                     getEmailDomainDiscovery: {
                         error: {
                             description: "{{description}}",
-                            message: "විද්‍යුත් තැපැල් වසම් සොයාගැනීමේ වින්‍යාසය ලබා ගැනීමේදී දෝෂයකි"
+                            message: "Error while retrieving email domain discovery configuration"
                         },
                         genericError: {
-                            description: "ඊමේල් වසම් සොයාගැනීමේ වින්‍යාසය ලබා ගැනීමේදී දෝෂයක් ඇති විය",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                            description: "An error occurred while retrieving email domain discovery configuration",
+                            message: "Something went wrong"
                         }
                     },
                     getOrganizationListWithDiscovery: {
                         error: {
                             description: "{{description}}",
-                            message: "සොයාගැනීම් ගුණාංග සහිත සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයකි"
+                            message: "Error while getting the organization list with discovery attributes"
                         },
                         genericError: {
-                            description: "සොයාගැනීම් ගුණාංග සහිත සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයක් ඇති විය",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
-                        }
-                    },
-                    updateOrganizationDiscoveryAttributes: {
-                        error: {
-                            description: "{{description}}",
-                            message: "සංවිධානයේ සොයාගැනීම් ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයකි"
-                        },
-                        genericError: {
-                            description: "සංවිධානයේ සොයාගැනීම් ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
-                        },
-                        success: {
-                            description: "සංවිධානයේ සොයාගැනීම් උපලක්ෂණ සාර්ථකව යාවත්කාලීන කරන ලදී",
-                            message: "සංවිධානයේ සොයාගැනීම් උපලක්ෂණ සාර්ථකව යාවත්කාලීන කරන ලදී"
+                            description: "An error occurred while getting the organization list with discovery attributes",
+                            message: "Something went wrong"
                         }
                     }
                 },
-                placeholders: {
-                    emptyList: {
-                        action: "විද්‍යුත් තැපැල් වසම පවරන්න",
-                        subtitles: "පවරන ලද ඊමේල් වසම් සහිත සංවිධාන නොමැත.",
-                        title: "විද්‍යුත් තැපැල් වසම පවරන්න"
-                    }
-                },
-                title: "ඊමේල් වසම් සොයාගැනීම"
+                title: "Email Domain Discovery"
             },
             organizations: {
                 advancedSearch: {
@@ -10343,7 +10301,7 @@ export const console: ConsoleNS = {
                 title: "{{template}}"
             },
             emailDomainDiscovery: {
-                subTitle: "ආයතන සඳහා විද්‍යුත් තැපැල් වසම් සොයාගැනීම වින්‍යාස කරන්න..",
+                subTitle: "උප සංවිධාන සඳහා විද්‍යුත් තැපැල් වසම් සොයාගැනීම වින්‍යාස කරන්න.",
                 title: "ඊමේල් වසම් සොයාගැනීම"
             },
             emailLocaleAdd: {

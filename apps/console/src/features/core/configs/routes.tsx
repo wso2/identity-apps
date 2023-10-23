@@ -391,6 +391,37 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
+                        category: "console:manage.features.sidePanel.categories.organizations",
+                        children: [
+                            {
+                                component: lazy(() =>
+                                    import("../../../features/organization-discovery/pages/email-domain-edit")
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().organization
+                                },
+                                id: "email-domain-edit",
+                                name: "Email Domain Edit",
+                                path: AppConstants.getPaths().get("EMAIL_DOMAIN_UPDATE"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                        ],
+                        component: lazy(() => import("../../../features/organization-discovery/pages/" +
+                        "email-domain-discovery")),
+                        exact: true,
+                        icon: {
+                            icon: <HierarchyIcon fill="black" />
+                        },
+                        id: "emailDomainDiscovery",
+                        name: "console:manage.features.sidePanel.emailDomainDiscovery",
+                        order: 12,
+                        path: AppConstants.getPaths().get("EMAIL_DOMAIN_DISCOVERY"),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
                         category: "extensions:develop.sidePanel.categories.branding",
                         component: lazy(() => import("../../../features/branding/pages/branding")),
                         exact: true,

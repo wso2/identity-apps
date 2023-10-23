@@ -5485,6 +5485,7 @@ export interface ConsoleNS {
                 editUsers: string;
                 editUserstore: string;
                 emailDomainDiscovery: string;
+                emailDomainDiscovery: string;
                 emailTemplateTypes: string;
                 emailTemplates: string;
                 generalConfigurations: string;

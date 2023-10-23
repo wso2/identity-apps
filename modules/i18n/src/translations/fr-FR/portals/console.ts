@@ -9376,7 +9376,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     notifications: {
-                        
+
                         changeUserPassword: {
                             error: {
                                 description: "{{description}}",
@@ -10583,6 +10583,10 @@ export const console: ConsoleNS = {
             },
             emailDomainDiscovery: {
                 subTitle: "Configurez la découverte de domaines de messagerie pour les organisations.",
+                title: "Découverte de domaines de messagerie"
+            },
+            emailDomainDiscovery: {
+                subTitle: "Configurez la découverte de domaines de messagerie pour les sous-organisations.",
                 title: "Découverte de domaines de messagerie"
             },
             emailLocaleAdd: {

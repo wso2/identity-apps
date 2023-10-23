@@ -48,10 +48,10 @@ import {
     PaginationProps
 } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, AppConstants, EventPublisher, UIConstants, history } from "../../core";
-import { addOrganizationDiscoveryConfig, 
-    deleteOrganizationDiscoveryConfig, 
-    getOrganizationDiscovery, 
-    getOrganizationDiscoveryConfig 
+import { addOrganizationDiscoveryConfig,
+    deleteOrganizationDiscoveryConfig,
+    getOrganizationDiscovery,
+    getOrganizationDiscoveryConfig
 } from "../api";
 import { OrganizationListWithDiscovery } from "../components";
 import {
@@ -253,7 +253,7 @@ const EmailDomainDiscoveryPage: FunctionComponent<EmailDomainDiscoveryPageInterf
             .catch((error: AxiosError) => {
                 if (error.response.status == 404) {
                     setOrganizationDiscoveryEnabled(false);
-                
+
                     return;
                 }
                 if (error.response && error.response.data && error.response.data.detail) {
@@ -304,12 +304,12 @@ const EmailDomainDiscoveryPage: FunctionComponent<EmailDomainDiscoveryPageInterf
             const updateData: OrganizationDiscoveryConfigInterface = {
                 properties: []
             };
-    
+
             updateData.properties.push({
                 key: "emailDomain.enable",
                 value: true
             });
-    
+
             addOrganizationDiscoveryConfig(updateData)
                 .then(() => {
                     dispatch(
