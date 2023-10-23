@@ -5546,6 +5546,33 @@ export interface ConsoleNS {
                     searchPlaceholder: string;
                 };
             };
+            parentOrgInvitations: {
+                addUserWizard: {
+                    heading: string;
+                    description: string;
+                    hint: string;
+                    usernameHint: string;
+                };
+                tab: {
+                    usersTab: string
+                    invitationsTab: string;
+                };
+                searchPlaceholder: string;
+                searchdropdown: {
+                    pendingLabel: string;
+                    expiredLabel: string;
+                };
+                createDropdown: {
+                    createLabel: string;
+                    inviteLabel: string;
+                };
+                filterLabel: string;
+                emptyPlaceholder: {
+                    noPendingInvitations: string;
+                    noExpiredInvitations: string;
+                    noInvitations: string;
+                }
+            };
             onboarded?: {
                 notifications?: {
                     removeUser?: Notification;

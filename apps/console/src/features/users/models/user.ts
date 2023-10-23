@@ -21,6 +21,7 @@ import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterf
 import React, { ReactElement } from "react";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { UserRoleInterface } from "../../core";
+import { GroupsInterface } from "../../groups";
 
 /**
  * Captures meta details of the user.
@@ -145,7 +146,7 @@ export interface AddUserWizardStateInterface {
     newPassword: string;
     confirmPassword: string;
     passwordOption: string;
-    groups: RolesInterface[];
+    groups: GroupsInterface[];
     roles: RolesInterface[];
 }
 
@@ -316,6 +317,7 @@ export interface WizardStepInterface {
     content: ReactElement;
     icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     title: string;
+    name?: string;
 }
 
 /**

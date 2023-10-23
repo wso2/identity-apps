@@ -22,6 +22,7 @@ import {
     AlertInterface, 
     AlertLevels, 
     MultiValueAttributeInterface, 
+    IdentifiableComponentInterface,
     TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
@@ -31,14 +32,17 @@ import {
     ListLayout,
     PageLayout,
     Popup,
-    PrimaryButton
+    PrimaryButton,
+    ResourceTab,
+    ResourceTabPaneInterface
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
+import { RouteComponentProps } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Dropdown, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { Dropdown, DropdownProps, DropdownItemProps, Icon, PaginationProps, TabProps } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -48,7 +52,9 @@ import {
     UserBasicInterface,
     getAUserStore,
     getEmptyPlaceholderIllustrations,
-    store
+    store,
+    EventPublisher,
+    history
 } from "../../core";
 import { RootOnlyComponent } from "../../organizations/components";
 import { OrganizationUtils } from "../../organizations/utils";
@@ -65,13 +71,15 @@ import {
 import { getUserStoreList } from "../../userstores/api";
 import { CONSUMER_USERSTORE } from "../../userstores/constants/user-store-constants";
 import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../userstores/models/user-stores";
-import { getUsersList } from "../api";
+import { getUsersList, useUsersList } from "../api";
 import { UsersList } from "../components/users-list";
 import { UsersListOptionsComponent } from "../components/users-list-options";
 import { AddUserWizard } from "../components/wizard/add-user-wizard";
-import { UserManagementConstants } from "../constants";
+import { UserAccountTypesMain, UserManagementConstants, UserAccountTypes } from "../constants";
 import { UserListInterface } from "../models";
-
+import { UsersConstants } from "apps/console/src/extensions/components/users/constants";
+import { GuestUsersList } from "../components/guests/pages/guest-users-list";
+import { UserInviteInterface, useParentOrgUserInvitesList, InvitationStatus } from "../components/guests/api/invite";
 interface UserStoreItem {
     key: number;
     text: string;
@@ -81,12 +89,13 @@ interface UserStoreItem {
 /**
  * Props for the Users page.
  */
-type UsersPageInterface = TestableComponentInterface;
+type UsersPageInterface = IdentifiableComponentInterface & RouteComponentProps & TestableComponentInterface;
 
 /**
  * Temporary value to append to the list limit to figure out if the next button is there.
  */
 const TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET: number = 1;
+const NUMBER_OF_PAGES_FOR_LDAP: number = 100;
 
 /**
  * Users info page.
@@ -99,7 +108,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 ): ReactElement => {
 
     const {
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -110,10 +120,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listOffset, setListOffset ] = useState<number>(0);
+    const [ activeTabIndex, setActiveTabIndex ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ usersList, setUsersList ] = useState<UserListInterface>({});
-    const [ rolesList ] = useState([]);
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
@@ -125,12 +135,62 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ emailVerificationEnabled, setEmailVerificationEnabled ] = useState<boolean>(undefined);
     const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(undefined);
     const [ realmConfigs, setRealmConfigs ] = useState<RealmConfigInterface>(undefined);
+    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+    const [ selectedAddUserType ] = useState<UserAccountTypes>(UserAccountTypes.USER);
+    const [ userType, setUserType ] = useState<string>();
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(CONSUMER_USERSTORE);
+    const [ invitationStatusOption, setInvitationStatusOption ] = useState<string>(InvitationStatus.PENDING);
+    const [ isUsersNextPageAvailable, setIsUsersNextPageAvailable ] = useState<boolean>(undefined);
+    const [ isSelectedUserStoreReadOnly, setSelectedUserStoreReadOnly ] = useState<boolean>(false);
+    const [ isInvitationStatusOptionChanged, setIsInvitationStatusOptionChanged ] = useState<boolean>(false);
+    const [ finalGuestList, setFinalGuestList ] = useState<UserInviteInterface[]>([]);
+
 
     const init : MutableRefObject<boolean> = useRef(true);
 
     const username: string = useSelector((state: AppState) => state.auth.username);
     const tenantName: string = store.getState().config.deployment.tenant;
     const tenantSettings: Record<string, any> = JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenantName));
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const modifiedLimit: number = listItemLimit + TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET;
+    const excludedAttributes: string = UsersConstants.GROUPS_AND_ROLES_ATTRIBUTE;
+
+
+    const invitationStatusOptions: DropdownItemProps[] = [
+        {
+            key: 2,
+            text: t("console:manage.features.parentOrgInvitations.searchdropdown.pendingLabel"),
+            value: "Pending"
+        },
+        {
+            key: 3,
+            text: t("console:manage.features.parentOrgInvitations.searchdropdown.expiredLabel"),
+            value: "Expired"
+        }
+    ];
+
+    const {
+        data: originalUserList,
+        isLoading: isUserListFetchRequestLoading,
+        error: userListFetchRequestError,
+        mutate: mutateUserListFetchRequest
+    } = useUsersList(
+        modifiedLimit,
+        listOffset,
+        searchQuery === "" ? null : searchQuery,
+        null,
+        selectedUserStore,
+        excludedAttributes
+    );
+
+    const {
+        data: parentOrgUserInviteList,
+        isLoading: isParentOrgUserInviteFetchRequestLoading,
+        error: parentOrgUserInviteFetchRequestError,
+        mutate: mutateParentOrgUserListFetchRequest
+    } = useParentOrgUserInvitesList();
 
     /**
      * Fetch the list of available userstores.
@@ -194,6 +254,15 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             }
         }
     }, [ emailVerificationEnabled ]);
+
+     /**
+     * Handles parent user invitation pagination.
+     */
+     useEffect(() => {
+        setFinalGuestList(parentOrgUserInviteList?.invitations?.filter((invitation: UserInviteInterface) =>
+            invitation.status === InvitationStatus.PENDING.toUpperCase()));
+
+    }, [ parentOrgUserInviteList?.invitations ]);
 
     const getReadOnlyUserStoresList = (): void => {
         SharedUserStoreUtils.getReadOnlyUserStores().then((response: string[]) => {
@@ -452,24 +521,14 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         setListUpdated(true);
     };
 
-    /**
-     * Handles the `onFilter` callback action from the
-     * users search component.
-     *
-     * @param query - Search query.
-     */
     const handleUserFilter = (query: string): void => {
-        const attributes: string = generateAttributesString(userListMetaContent.values());
-
         if (query === "userName sw ") {
-            getList(listItemLimit, listOffset, null, attributes, userStore);
+            mutateUserListFetchRequest();
 
             return;
         }
 
         setSearchQuery(query);
-        setListOffset(0);
-        getList(listItemLimit, listOffset, query, attributes, userStore);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
@@ -525,63 +584,47 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             });
     };
 
-    return (
-        <PageLayout
-            action={
-                (isUserListRequestLoading || !(!searchQuery && usersList?.totalResults <= 0))
-                && (
-                    <Show when={ AccessControlConstants.USER_WRITE }>
-                        <PrimaryButton
-                            data-testid="user-mgt-user-list-add-user-button"
-                            onClick={ () => handleAddNewUserWizardClick()  }
-                        >
-                            <Icon name="add"/>
-                            { t("console:manage.features.users.buttons.addNewUserBtn") }
-                        </PrimaryButton>
-                    </Show>
-                )
+    const advancedSearchFilter = (): ReactElement => (
+        <AdvancedSearchWithBasicFilters
+            onFilter={ handleUserFilter }
+            filterAttributeOptions={ [
+                {
+                    key: 0,
+                    text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                        "filterAttributeOptions.username"),
+                    value: "userName"
+                },
+                {
+                    key: 1,
+                    text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                        "filterAttributeOptions.email"),
+                    value: "emails"
+                }
+            ] }
+            filterAttributePlaceholder={
+                t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute" +
+                    ".placeholder")
             }
-            title={ t("console:manage.pages.users.title") }
-            pageTitle={ t("console:manage.pages.users.title") }
-            description={ t("console:manage.pages.users.subTitle") }
-            data-testid={ `${ testId }-page-layout` }
-        >
+            filterConditionsPlaceholder={
+                t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
+                    ".placeholder")
+            }
+            filterValuePlaceholder={
+                t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
+                    ".placeholder")
+            }
+            placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
+            defaultSearchAttribute="emails"
+            defaultSearchOperator="co"
+            triggerClearQuery={ triggerClearQuery }
+        />
+    );
+
+    const renderUsersList = (): ReactElement => {
+        return (
             <ListLayout
                 // TODO add sorting functionality.
-                advancedSearch={ (
-                    <AdvancedSearchWithBasicFilters
-                        onFilter={ handleUserFilter }
-                        filterAttributeOptions={ [
-                            {
-                                key: 0,
-                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
-                                    "filterAttributeOptions.username"),
-                                value: "userName"
-                            },
-                            {
-                                key: 1,
-                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
-                                    "filterAttributeOptions.email"),
-                                value: "emails"
-                            }
-                        ] }
-                        filterAttributePlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute.placeholder")
-                        }
-                        filterConditionsPlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
-                                ".placeholder")
-                        }
-                        filterValuePlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
-                                ".placeholder")
-                        }
-                        placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
-                        defaultSearchAttribute="emails"
-                        defaultSearchOperator="co"
-                        triggerClearQuery={ triggerClearQuery }
-                    />
-                ) }
+                advancedSearch={ advancedSearchFilter() }
                 currentListSize={ usersList.itemsPerPage }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
@@ -649,41 +692,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         imageSize="tiny"
                     />)
                     : (<UsersList
-                        advancedSearch={ (
-                            <AdvancedSearchWithBasicFilters
-                                onFilter={ handleUserFilter }
-                                filterAttributeOptions={ [
-                                    {
-                                        key: 0,
-                                        text: t("console:manage.features.users.advancedSearch.form.dropdown." +
-                                            "filterAttributeOptions.username"),
-                                        value: "userName"
-                                    },
-                                    {
-                                        key: 1,
-                                        text: t("console:manage.features.users.advancedSearch.form.dropdown." +
-                                            "filterAttributeOptions.email"),
-                                        value: "emails"
-                                    }
-                                ] }
-                                filterAttributePlaceholder={
-                                    t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute" +
-                                        ".placeholder")
-                                }
-                                filterConditionsPlaceholder={
-                                    t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
-                                        ".placeholder")
-                                }
-                                filterValuePlaceholder={
-                                    t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
-                                        ".placeholder")
-                                }
-                                placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
-                                defaultSearchAttribute="emails"
-                                defaultSearchOperator="co"
-                                triggerClearQuery={ triggerClearQuery }
-                            />
-                        ) }
+                        advancedSearch={ advancedSearchFilter()}
                         usersList={ usersList }
                         onUserDelete={ onUserDelete }
                         userMetaListContent={ userListMetaContent }
@@ -695,24 +704,291 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         readOnlyUserStores={ readOnlyUserStoresList }
                         featureConfig={ featureConfig }
                     />)
-                }
+                } 
                 {
-                    showWizard && (
-                        <AddUserWizard
-                            data-testid="user-mgt-add-user-wizard-modal"
-                            closeWizard={ () => {
-                                setShowWizard(false);
-                                setEmailVerificationEnabled(undefined);
-                            } }
-                            listOffset={ listOffset }
-                            listItemLimit={ listItemLimit }
-                            updateList={ () => setListUpdated(true) }
-                            rolesList={ rolesList }
-                            emailVerificationEnabled={ emailVerificationEnabled }
+                    showWizard && ( showUserWizard() )
+                }
+            </ListLayout>
+        );
+    }
+
+    const renderInvitationsList = (): ReactElement => {
+        return (
+            <ListLayout
+                advancedSearch={ advancedSearchFilter() }
+                currentListSize={ usersList?.itemsPerPage }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                data-componentid={ `${ componentId }-user-mgt-user-list-layout` }
+                data-testid={ `${ testId }-user-mgt-user-list-layout` }
+                onPageChange={ handlePaginationChange }
+                showPagination={ true }
+                totalPages={ resolveTotalPages() }
+                totalListSize={ usersList?.totalResults }
+                isLoading={
+                    isUserListFetchRequestLoading
+                    || isParentOrgUserInviteFetchRequestLoading
+                }
+                paginationOptions={ {
+                    disableNextButton: !isUsersNextPageAvailable,
+                    showItemsPerPageDropdown: selectedUserStore === CONSUMER_USERSTORE
+                        ? true
+                        : false
+                } }
+                showPaginationPageLimit={ !isSelectedUserStoreReadOnly }
+                leftActionPanel={
+                    (
+                        <Dropdown
+                            data-componentid={ `${ componentId }-list-userstore-dropdown` }
+                            selection
+                            options={ invitationStatusOptions }
+                            onChange={ handleAccountStatusChange }
+                            text={
+                                t("console:manage.features.parentOrgInvitations.filterLabel")
+                                +  invitationStatusOption
+                            }
+                            disabled={
+                                isParentOrgUserInviteFetchRequestLoading
+                            }
                         />
                     )
                 }
+            >
+                {
+                    userStoreError
+                        ? (
+                            <EmptyPlaceholder
+                                subtitle={ [ t("console:manage.features.users.placeholders.userstoreError.subtitles.0"),
+                                    t("console:manage.features.users.placeholders.userstoreError.subtitles.1") ] }
+                                title={ t("console:manage.features.users.placeholders.userstoreError.title") }
+                                image={ getEmptyPlaceholderIllustrations().genericError }
+                                imageSize="tiny"
+                            />
+                        )
+                        : (
+
+                            <GuestUsersList
+                                invitationStatusOption={ null }
+                                onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
+                                onboardedGuestUserList={ usersList }
+                                onSearchQueryClear={ handleSearchQueryClear }
+                                guestUsersList={ finalGuestList }
+                                getGuestUsersList={ () => mutateParentOrgUserListFetchRequest() }
+                                searchQuery={ searchQuery }
+                                userTypeSelection={ UserAccountTypesMain.EXTERNAL }
+                                data-testid={ testId }
+                            />
+                        )
+                }
             </ListLayout>
+        );
+    };
+
+    const handleAccountStatusChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
+        setInvitationStatusOption(data.value as string);
+        setIsInvitationStatusOptionChanged(true);
+    };
+
+    const resolveTotalPages = (): number => {
+        if (selectedUserStore === CONSUMER_USERSTORE) {
+            return Math.ceil(usersList?.totalResults / listItemLimit);
+        } else {
+            /** Response from the LDAP only contains the total items per page.
+             * No way to resolve the total number of items. So a large value will be set here and the
+             * next button will be disabled if there are no more items to fetch.
+            */
+            return NUMBER_OF_PAGES_FOR_LDAP;
+        }
+    };
+
+    const addUserDropdown: ReactElement = (
+        <>
+            <PrimaryButton
+                data-componentid={ `${ componentId }-add-user-button` }
+                onClick={ () => {
+                    eventPublisher.publish("click-add-new-button");
+                } }
+                className="tablet or lower hidden"
+            >
+                <Icon name="add"/>
+                { t("extensions:manage.users.buttons.addUserBtn") }
+                <Icon name="dropdown" className="ml-3 mr-0"/>
+            </PrimaryButton>
+            <Button
+                data-componentid={ `${ componentId }-add-user-button-mobile` }
+                icon="add"
+                onClick={ () => {
+                    eventPublisher.publish("click-add-new-button");
+                } }
+                className="mobile only tablet only"
+                primary
+            >
+            </Button>
+        </>
+    );
+
+    const addUserOptions: DropdownItemProps[] = [
+        {
+            "data-componentid": `${ componentId }-add-internal-user`,
+            key: 1,
+            text: t("console:manage.features.parentOrgInvitations.createDropdown.createLabel"),
+            value: UserAccountTypesMain.INTERNAL
+        },
+        {
+            "data-componentid": `${ componentId }-add-external-user`,
+            key: 2,
+            text: t("console:manage.features.parentOrgInvitations.createDropdown.inviteLabel"),
+            value: UserAccountTypesMain.EXTERNAL
+        }
+    ];
+
+    const handleDropdownItemChange = (value: string): void => {
+        if (value === UserAccountTypesMain.INTERNAL) {
+            eventPublisher.publish("manage-users-click-create-new", {
+                type: "user"
+            });
+            setShowWizard(true);
+            setUserType(UserAccountTypesMain.INTERNAL);
+        } else if (value === UserAccountTypesMain.EXTERNAL) {
+            eventPublisher.publish("manage-users-click-create-invite", {
+                type: "user"
+            });
+            setShowWizard(true);
+            setUserType(UserAccountTypesMain.EXTERNAL);
+        }
+    };
+
+    const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
+        setActiveTabIndex(data.activeIndex as number);
+        handleSearchQueryClear();
+        if (data.activeIndex === 0) {
+            setUserType(UserAccountTypesMain.INTERNAL);
+        } else if (data.activeIndex === 1) {
+            setUserType(UserAccountTypesMain.EXTERNAL);
+        }
+    };
+
+    const renderUserDropDown = (): ReactElement => {
+        return (
+            <Dropdown
+                data-componentid={ `${ componentId }-add-user-dropdown` }
+                direction="left"
+                floating
+                icon={ null }
+                trigger={ addUserDropdown }
+            >
+                <Dropdown.Menu >
+                    { addUserOptions.map((option: {
+                        "data-componentid": string;
+                        key: number;
+                        text: string;
+                        value: UserAccountTypes;
+                    }) => (
+                        <Dropdown.Item
+                            key={ option.value }
+                            onClick={ ()=> handleDropdownItemChange(option.value) }
+                            { ...option }
+                        />
+                    )) }
+                </Dropdown.Menu>
+            </Dropdown>
+        );
+    };
+
+    const showUserWizard = (): ReactElement => {
+        return (
+            <AddUserWizard
+                data-componentid={ `${ componentId }-user-mgt-add-user-wizard-modal` }
+                data-testid={ `${ testId }-user-mgt-add-user-wizard-modal` }
+                isSubOrg={ isSubOrg }
+                closeWizard={ () => {
+                    setShowWizard(false);
+                    setEmailVerificationEnabled(undefined);
+                } }
+                emailVerificationEnabled={ emailVerificationEnabled }
+                onSuccessfulUserAddition={ (id: string) => {
+                    mutateParentOrgUserListFetchRequest();
+                    eventPublisher.publish("manage-users-finish-creating-user");
+                    history.push(UsersConstants.getPaths().get("CUSTOMER_USER_EDIT_PATH")
+                        .replace(":id", id));
+                } }
+                defaultUserTypeSelection={ selectedAddUserType }
+                userTypeSelection={ userType }
+                listOffset={ listOffset }
+                listItemLimit={ listItemLimit }
+                updateList={ () => setListUpdated(true) }
+                userStore= { userStore }
+            />
+        );
+    }
+
+    const resolveAdminTabPanes = (): ResourceTabPaneInterface[] => {
+        const panes: ResourceTabPaneInterface[] = [];
+
+        panes.push({
+            componentId: "users",
+            menuItem: {
+                content: t("console:manage.features.parentOrgInvitations.tab.usersTab")
+            },
+            render: renderUsersList
+        });
+
+        panes.push({
+            componentId: "invitations",
+            menuItem: {
+                content: t("console:manage.features.parentOrgInvitations.tab.invitationsTab")
+            },
+            render: renderInvitationsList
+        });
+
+        return panes;
+    };
+
+    return (
+        <PageLayout
+            action={
+                !isUserListFetchRequestLoading
+                && !isParentOrgUserInviteFetchRequestLoading
+                && (
+                    <Show when={ AccessControlConstants.USER_WRITE }>
+                        { !isSubOrg ? (
+                            <PrimaryButton
+                                data-componentid={ `${ componentId }-add-user-button` }
+                                data-testid={ `${ testId }-add-user-button` }
+                                onClick={ () => {
+                                    eventPublisher.publish("manage-users-click-create-new", {
+                                        type: "user"
+                                    });
+                                    setShowWizard(true);
+                                } }
+                            >
+                                <Icon name="add"/>
+                                { t("extensions:manage.users.buttons.addUserBtn") }
+                            </PrimaryButton>
+                        ) : (
+                            renderUserDropDown()
+                        ) }
+                    </Show>
+                )
+            }
+            title={ t("console:manage.pages.users.title") }
+            pageTitle={ t("console:manage.pages.users.title") }
+            description={ t("console:manage.pages.users.subTitle") }
+            data-testid={ `${ testId }-page-layout` }
+        >
+            { isSubOrg ?
+                ( <ResourceTab
+                    activeIndex= { activeTabIndex }
+                    data-testid= { `${ testId }-administrator-tabs` }
+                    defaultActiveIndex={ 0 }
+                    onTabChange={ handleTabChange }
+                    panes= { resolveAdminTabPanes() }
+                /> )
+                : renderUsersList()
+            }
+            {
+                showWizard && ( showUserWizard())
+            }
         </PageLayout>
     );
 };
@@ -721,7 +997,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
  * Default props for the component.
  */
 UsersPage.defaultProps = {
-    "data-testid": "users"
+    "data-testid": "users",
+    "data-componentid": "users"
 };
 
 /**

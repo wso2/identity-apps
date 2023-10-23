@@ -22,14 +22,18 @@ import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
 
 interface AddUserWizardSummaryProps {
-    summary: any;
-    triggerSubmit: boolean;
-    onSubmit: (application: any) => void;
+    summary?: any;
+    triggerSubmit?: boolean;
+    onSubmit?: (application: any) => void;
+    selectedUserStore?: string
+    username?: string;
+    password?: string;
+    isPasswordBased?: boolean;
     /**
      * Callback fired when profile image is changed.
      * @param {string} url - New URL.
      */
-    onProfileImageChange: (url: string) => void;
+    onProfileImageChange?: (url: string) => void;
 }
 
 /**

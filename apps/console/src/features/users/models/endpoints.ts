@@ -27,4 +27,6 @@ export interface UsersResourceEndpointsInterface {
     userStores: string;
     users: string;
     schemas: string;
+    guests: string;
+    guestsList: string;
 }

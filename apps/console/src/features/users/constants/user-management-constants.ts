@@ -127,3 +127,13 @@ export enum UserAccountTypes {
     CUSTOMER = "Customer",
     COLLABORATOR = "Collaborator"
 }
+
+/**
+ * Enum for user account types.
+ *
+ * @readonly
+ */
+export enum UserAccountTypesMain {
+    INTERNAL = "internal",
+    EXTERNAL = "external"
+}

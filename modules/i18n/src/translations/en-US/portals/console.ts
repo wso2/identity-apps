@@ -8531,6 +8531,34 @@ export const console: ConsoleNS = {
                     onBoard: "Onboarded Users"
                 }
             },
+            parentOrgInvitations: {
+                addUserWizard: {
+                    heading: "Invite Parent User",
+                    description: "Invite a user from the parent organization.",
+                    hint: "Invited users are managed by the <1>{{currentOrganization}}</1> organization.",
+                    usernameHint: "Username should belong to a user " +
+                        "from the <1>{{currentOrganization}}</1> organization."
+                },
+                tab: {
+                    usersTab: "Users",
+                    invitationsTab: "Invitations"
+                },
+                searchPlaceholder: "Search by Username",
+                searchdropdown: {
+                    pendingLabel: "Pending",
+                    expiredLabel: "Expired"
+                },
+                createDropdown: {
+                    createLabel: "Create user",
+                    inviteLabel: "Invite parent user"
+                },
+                filterLabel: "Filter by: ",
+                emptyPlaceholder: {
+                    noPendingInvitations: "There are no pending invitations at the moment.",
+                    noExpiredInvitations: "There are expired invitations at the moment.",
+                    noInvitations: "There are no invitations at the moment."
+                }
+            },
             oidcScopes: {
                 viewAttributes: "View Attributes",
                 manageAttributes: "Manage Attributes",

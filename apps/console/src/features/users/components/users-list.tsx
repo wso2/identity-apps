@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -32,7 +31,6 @@ import {
     DataTable,
     EmptyPlaceholder,
     LinkButton,
-    PrimaryButton,
     TableActionsInterface,
     TableColumnInterface,
     UserAvatar
@@ -41,7 +39,7 @@ import moment from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
+import { Header, ListItemProps, SemanticICONS } from "semantic-ui-react";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import {
     AppConstants,
@@ -428,17 +426,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             return (
                 <EmptyPlaceholder
                     data-testid={ `${testId}-empty-placeholder` }
-                    action={ (
-                        <Show when={ AccessControlConstants.USER_WRITE }>
-                            <PrimaryButton
-                                data-testid={ `${testId}-empty-placeholder-add-user-button` }
-                                onClick={ () => onEmptyListPlaceholderActionClick() }
-                            >
-                                <Icon name="add"/>
-                                { t("console:manage.features.users.usersList.list.emptyResultPlaceholder.addButton") }
-                            </PrimaryButton>
-                        </Show>
-                    ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("console:manage.features.users.usersList.list.emptyResultPlaceholder.title") }
