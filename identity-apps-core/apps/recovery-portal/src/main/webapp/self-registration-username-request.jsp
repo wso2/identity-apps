@@ -531,8 +531,10 @@
                         </div>
                     </div>
                     <br>
-                    <%
-                        } else {
+                    <% } else { 
+                        String[] imageURLSegements = imageURL.split("/");
+                        String logoFileName = imageURLSegements[imageURLSegements.length - 1];
+                        String logoPath = "libs/themes/default/assets/images/identity-providers/" + logoFileName;
                     %>
                     <div class="social-login blurring social-dimmer">
                         <div class="field">
@@ -548,7 +550,7 @@
                                         role="presentation"
                                         alt="sign-up-with-<%=Encode.forHtmlContent(name)%> logo"
                                         class="ui image"
-                                        src="<%=Encode.forHtmlAttribute(imageURL)%>">
+                                        src="<%=Encode.forHtmlAttribute(logoPath)%>">
                                     <span><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "continue.with")%> <%=Encode.forHtmlContent(displayName)%></span>
                             </button>
                         </div>
