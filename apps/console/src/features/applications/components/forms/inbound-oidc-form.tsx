@@ -1751,27 +1751,28 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             </Grid.Row>
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Form.TextArea
+                    <Form.Input
                         ref={ tlsClientAuthSubjectDn }
-                        name="tlsClientAuthSubjectDn"
+                        ariaLabel="TLS client auth subject DN"
                         inputType="name"
+                        name="tlsClientAuthSubjectDn"
                         label={ t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".clientAuthentication.fields.subjectDN.label")
                         }
                         required={ false }
-                        type="text"
+                        placeholder={
+                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".clientAuthentication.fields.subjectDN.placeholder")
+                        }
                         value={
                             initialValues?.clientAuthentication
                                 ? initialValues.clientAuthentication.tlsClientAuthSubjectDn
                                 : metadata.tlsClientAuthSubjectDn
                         }
-                        placeholder={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".clientAuthentication.fields.subjectDN.placeholder")
-                        }
-                        readOnly={ readOnly }
+                        readOnly={ false }
                         maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                         minLength={ 3 }
+                        width={ 16 }
                     />
                 </Grid.Column>
             </Grid.Row>
