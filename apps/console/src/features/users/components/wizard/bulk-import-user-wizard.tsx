@@ -36,7 +36,6 @@ import { addAlert } from "@wso2is/core/store";
 import {
     CSVFileStrategy,
     CSVResult,
-    ContentLoader,
     FilePicker,
     Heading,
     Hint,
@@ -57,9 +56,7 @@ import { getUserStores } from "../../../../extensions/components/users/api";
 import { UsersConstants } from "../../../../extensions/components/users/constants";
 import { userConfig } from "../../../../extensions/configs";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
-import { 
-    SharedUserStoreConstants,
-    SharedUserStoreUtils,
+import {
     UserStoreDetails,
     UserStoreProperty,
     getCertificateIllustrations
@@ -164,8 +161,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ emailData, setEmailData ] = useState<string[]>();
     const [ isEmailDataError, setIsEmailDataError ] = useState<boolean>(false);
     const [ emailDataError, setEmailDataError ] = useState<string>("");
-    const [ userStoreRegex, setUserStoreRegex ] = useState<string>("");
-    const [ regExLoading, setRegExLoading ] = useState<boolean>(false);
 
     const optionsArray: string[] = [];
 
@@ -175,21 +170,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     useEffect(() => {
         setConfigureMode(MultipleInviteMode.MANUAL);
     }, [ ]);
-
-    /**
-     * Get the userstore.
-     */
-    useEffect(() => {
-        (async () => {
-            setRegExLoading(true);
-            await SharedUserStoreUtils.getUserStoreRegEx(userstore,
-                SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.UsernameRegEx)
-                .then((response: string) => {
-                    setUserStoreRegex(response);
-                    setRegExLoading(false);
-                });
-        })();
-    }, [ userStoreRegex ]);
 
     /**
      * Fetches SCIM dialects.
@@ -1067,7 +1047,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     </Grid.Column>
                                 </Grid.Row>
                                 <Autocomplete
-                                    disabled={ regExLoading }
                                     size="small"
                                     limitTags={ userConfig.bulkUserImportLimit.inviteEmails }
                                     fullWidth
@@ -1316,10 +1295,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             <Modal.Content className="content-container" scrolling>
                 <Grid>
                     { resolveMultipleUsersModeSelection() }
-                    { 
-                        regExLoading
-                            ? <ContentLoader/>
-                            : resolveMultipleUsersConfiguration()
+                    {
+                        resolveMultipleUsersConfiguration()
                     }
                 </Grid>
 
