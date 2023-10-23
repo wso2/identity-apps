@@ -223,7 +223,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
 
             return undefined;
         },
-        showAdvancedSettings: false,
+        showAdvancedSettings: true,
         showJitProvisioning: true,
         showOutboundProvisioning: true
     },
@@ -270,12 +270,12 @@ export const identityProviderConfig: IdentityProviderConfig = {
         enableJitProvisioningField: {
             show: true
         },
-        menuItemName: "Advanced",
+        menuItemName: "Just-in-Time Provisioning",
         provisioningSchemeField: {
-            show: false
+            show: true
         },
         userstoreDomainField: {
-            show: false
+            show: true
         }
     },
     templates: {
