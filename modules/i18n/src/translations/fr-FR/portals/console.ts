@@ -8183,6 +8183,16 @@ export const console: ConsoleNS = {
                     placeholder: "Rechercher par nom de rôle"
                 },
                 edit: {
+                    placeholders: {
+                        errorPlaceHolder: {
+                            action: "Retourner",
+                            subtitles: {
+                                0: "Une erreur s'est produite lors de la récupération du rôle demandé, peut-être parce que le rôle n'existe pas.",
+                                1: "Please try again."
+                            },
+                            title: "Quelque chose s'est mal passé"
+                        }
+                    },
                     basics: {
                         buttons: {
                             update: "Mettre à jour"
@@ -8443,6 +8453,12 @@ export const console: ConsoleNS = {
                     fetchRoles: {
                         genericError: {
                             description: "Une erreur s'est produite lors de la récupération des rôles.",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
+                    fetchRole: {
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération du rôle.",
                             message: "Quelque chose s'est mal passé"
                         }
                     },

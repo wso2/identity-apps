@@ -9943,6 +9943,16 @@ export const console: ConsoleNS = {
                     placeholder: "Search by role name"
                 },
                 edit: {
+                    placeholders: {
+                        errorPlaceHolder: {
+                            action: "Go back",
+                            subtitles: {
+                                0: "An error occurred while retrieving the requested role, possibly because the role does not exist.",
+                                1: "Please try again."
+                            },
+                            title: "Something went wrong"
+                        }
+                    },
                     basics: {
                         buttons: {
                             update: "Update"
@@ -10198,6 +10208,12 @@ export const console: ConsoleNS = {
                     fetchRoles: {
                         genericError: {
                             description: "An error occurred while retrieving roles.",
+                            message: "Something went wrong"
+                        }
+                    },
+                    fetchRole: {
+                        genericError: {
+                            description: "An error occurred while retrieving the role.",
                             message: "Something went wrong"
                         }
                     },

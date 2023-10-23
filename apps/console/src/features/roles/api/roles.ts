@@ -19,7 +19,7 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { RoleConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods, RoleListInterface } from "@wso2is/core/models";
+import { HttpMethods, RoleListInterface, RolesInterface } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
 import useRequest, { 
@@ -79,6 +79,7 @@ export const getApplicationRolesByAudience = (
  * Retrieve Role details for a give role id.
  *
  * @param roleId - role id to retrieve role details
+ * @deprecated Use `useGetRoleById` instead.
  */
 export const getRoleById = (roleId: string): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
@@ -96,6 +97,41 @@ export const getRoleById = (roleId: string): Promise<any> => {
         }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
+};
+
+/**
+ * Retrieve Role details for a given role id.
+ *
+ * @param roleId - role id to retrieve role details
+ */
+export const useGetRoleById = <Data = RolesInterface, Error = RequestErrorInterface>(
+    roleId: string
+): RequestResultInterface<Data, Error> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.rolesV2}/${roleId}`
+    };
+
+    const {
+        data,
+        error,
+        isValidating,
+        mutate,
+        response
+    } = useRequest<Data, Error>(roleId ? requestConfig : null);
+
+    return {
+        data,
+        error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate,
+        response
+    };
 };
 
 /**
