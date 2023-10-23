@@ -64,6 +64,7 @@ import {
 } from "../models";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
+import { useGetApplication } from "../api/use-get-application";
 
 /**
  * Proptypes for the applications edit page component.
@@ -104,7 +105,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
 
-    const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
+    const [ applicationId, setApplicationId ] = useState<string>(undefined);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(undefined);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
@@ -114,6 +115,43 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ isConnectedAppsRedirect, setisConnectedAppsRedirect ] = useState(false);
     const [ callBackIdpID, setcallBackIdpID ] = useState<string>();
     const [ callBackIdpName, setcallBackIdpName ] = useState<string>();
+
+    const {
+        data: application,
+        mutate: mutateApplicationGetRequest,
+        isLoading: isApplicationGetRequestLoading,
+        error: applicationGetRequestError
+    } = useGetApplication(applicationId, !!applicationId);
+
+    useEffect(() => {
+        setApplicationRequestLoading(isApplicationGetRequestLoading);
+    }, [ isApplicationGetRequestLoading ]);
+
+    useEffect(() => {
+        if (!applicationGetRequestError) {
+            return;
+        }
+
+        if (applicationGetRequestError.response
+            && applicationGetRequestError.response.data
+            && applicationGetRequestError.response.data.description) {
+            dispatch(addAlert({
+                description: applicationGetRequestError.response.data.description,
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.applications.notifications.fetchApplication.error.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("console:develop.features.applications.notifications.fetchApplication" +
+                ".genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("console:develop.features.applications.notifications.fetchApplication.genericError." +
+                "message")
+        }));
+    }, [ applicationGetRequestError ]);
 
     useEffect(() => {
         /**
@@ -202,8 +240,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             dispatch(toggleHelpPanelVisibility(true));
             setHelpPanelShown();
         }
-        getApplication(id);
 
+        setApplicationId(id);
     }, []);
 
     /**
@@ -214,7 +252,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             return;
         }
 
-        setisConnectedAppsRedirect(true);    
+        setisConnectedAppsRedirect(true);
         const idpInfo: idpInfoTypeInterface = history.location.state as idpInfoTypeInterface;
 
         setcallBackIdpID(idpInfo.id);
@@ -283,7 +321,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
          * Additionally @see InboundFormFactory.
          */
         if (!application?.templateId) {
-            if (application.inboundProtocols?.length > 0) {
+            if (application?.inboundProtocols?.length > 0) {
                 application.templateId = InboundProtocolDefaultFallbackTemplates.get(
                     application.inboundProtocols[ 0 /*We pick the first*/ ].type
                 ) ?? ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC;
@@ -338,48 +376,12 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         if (application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
             || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
-            template = applicationTemplates.find((template: ApplicationTemplateListItemInterface) => 
+            template = applicationTemplates.find((template: ApplicationTemplateListItemInterface) =>
                 template.id === CustomApplicationTemplate.id);
         }
 
         setApplicationTemplate(template);
 
-    };
-
-    /**
-     * Retrieves application details from the API.
-     *
-     * @param id - Application id.
-     */
-    const getApplication = (id: string): void => {
-        setApplicationRequestLoading(true);
-
-        getApplicationDetails(id)
-            .then((response: ApplicationInterface) => {
-                setApplication(response);
-            })
-            .catch((error: IdentityAppsApiException) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("console:develop.features.applications.notifications.fetchApplication.error.message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.fetchApplication" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.fetchApplication.genericError." +
-                        "message")
-                }));
-            })
-            .finally(() => {
-                setApplicationRequestLoading(false);
-            });
     };
 
     /**
@@ -409,7 +411,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * @param id - Application id.
      */
     const handleApplicationUpdate = (id: string): void => {
-        getApplication(id);
+        mutateApplicationGetRequest();
     };
 
     /**
@@ -470,7 +472,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const resolveReadOnlyState = (): boolean => {
 
         return urlSearchParams.get(ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY) === "true"
-            || application.access === ApplicationAccessTypes.READ
+            || application?.access === ApplicationAccessTypes.READ
             || !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update,
                 allowedScopes);
     };
@@ -480,7 +482,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             pageTitle="Edit Application"
             title={ (
                 <>
-                    <span>{ application.name }</span>
+                    <span>{ application?.name }</span>
                     { /*TODO - Application status is not shown until the backend support for disabling is given
                         @link https://github.com/wso2/product-is/issues/11453
                         { resolveApplicationStatusLabel() }*/ }
@@ -496,7 +498,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                 <Label size="small">{ applicationTemplate.name }</Label>
                             ) }
                             {
-                                ApplicationManagementUtils.isChoreoApplication(application) 
+                                ApplicationManagementUtils.isChoreoApplication(application)
                                     && (<Label
                                         size="small"
                                         className="choreo-label no-margin-left"
@@ -518,17 +520,17 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 applicationConfig.editApplication.getOverriddenImage(inboundProtocolConfigs?.oidc?.clientId,
                     tenantDomain)
                 ?? (
-                    application.imageUrl
+                    application?.imageUrl
                         ? (
                             <AppAvatar
-                                name={ application.name }
-                                image={ application.imageUrl }
+                                name={ application?.name }
+                                image={ application?.imageUrl }
                                 size="tiny"
                             />
                         )
                         : (
                             <AnimatedAvatar
-                                name={ application.name }
+                                name={ application?.name }
                                 size="tiny"
                                 floated="left"
                             />
@@ -543,7 +545,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             backButton={ {
                 "data-componentid": `${componentId}-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: isConnectedAppsRedirect ? t("console:develop.features.idp.connectedApps.applicationEdit.back", 
+                text: isConnectedAppsRedirect ? t("console:develop.features.idp.connectedApps.applicationEdit.back",
                     { idpName: callBackIdpName }) : t("console:develop.pages.applicationsEdit.backButton")
             } }
             titleTextAlign="left"
