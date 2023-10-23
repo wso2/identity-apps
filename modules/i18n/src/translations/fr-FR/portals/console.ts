@@ -8981,8 +8981,8 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Importer des utilisateurs en masse",
-                        subTitle: "Importez plusieurs utilisateurs à l'aide d'un fichier CSV..",
+                        title: "Inviter plusieurs utilisateurs",
+                        subTitle: "Invitez plusieurs utilisateurs dans l’organisation.",
                         wizardSummary: {
                             successCount: "Nombre de réussites",
                             failedCount: "Nombre d'échecs",
@@ -9018,7 +9018,22 @@ export const console: ConsoleNS = {
                                 placeholder: "Rechercher par nom d'utilisateur"
                             },
                             disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
-                                "externes n’est pas disponible pour le moment."
+                                "externes n’est pas disponible pour le moment.",
+                            manualCreation: {
+                                hint: "Ajoutez des e-mails et envoyez des invitations à plusieurs utilisateurs.",
+                                emailsLabel: "E-mails",
+                                emailsPlaceholder: "Entrez les adresses e-mail",
+                                disabledHint: "TL'option manuelle est désactivée en raison de l'utilisation de noms d'utilisateur alphanumériques dans votre organisation.",
+                                upload: {
+                                    buttonText: "Télécharger le fichier CSV",
+                                    description: "Faites glisser et déposez un fichier CSV ici."
+                                },
+                                primaryButton: "Inviter",
+                                warningMessage: "The manual option to invite multiple users is available only when email as username is enabled."
+                            },
+                            fileBased: {
+                                hint: "Invitez plusieurs utilisateurs en masse à l’aide d’un fichier CSV."
+                            }
                         },
                         buttons: {
                             import: "Importer"

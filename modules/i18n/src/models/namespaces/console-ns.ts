@@ -5641,6 +5641,21 @@ export interface ConsoleNS {
                                 placeholder: string;
                             };
                             disabledSecondaryStoreInfo: string;
+                            manualCreation: {
+                                hint: string;
+                                emailsLabel: string;
+                                emailsPlaceholder: string;
+                                disabledHint: string;
+                                upload: {
+                                    buttonText: string;
+                                    description: string;
+                                };
+                                primaryButton: string;
+                                warningMessage: string;
+                            };
+                            fileBased: {
+                                hint: string;
+                            }
                         };
                         buttons: {
                             import: string;

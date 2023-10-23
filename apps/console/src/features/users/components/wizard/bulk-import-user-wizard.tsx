@@ -15,8 +15,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+import {
+    Autocomplete,
+    AutocompleteRenderGetTagProps,
+    AutocompleteRenderInputParams
+} from "@mui/material";
+import { Chip, TextField } from "@oxygen-ui/react";
 import Alert from "@oxygen-ui/react/Alert";
+import InputLabel from "@oxygen-ui/react/InputLabel/InputLabel";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertLevels,
@@ -32,6 +38,7 @@ import {
     CSVResult,
     FilePicker,
     Heading,
+    Hint,
     LinkButton,
     PickerResult,
     PrimaryButton,
@@ -43,13 +50,17 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon, Modal } from "semantic-ui-react";
+import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon, Modal } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
 import { getUserStores } from "../../../../extensions/components/users/api";
 import { UsersConstants } from "../../../../extensions/components/users/constants";
 import { userConfig } from "../../../../extensions/configs";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
-import { UserStoreDetails, UserStoreProperty, getCertificateIllustrations } from "../../../core";
+import {
+    UserStoreDetails,
+    UserStoreProperty,
+    getCertificateIllustrations
+} from "../../../core";
 import { PRIMARY_USERSTORE } from "../../../userstores/constants";
 import { addBulkUsers } from "../../api";
 import {
@@ -63,10 +74,13 @@ import {
     BulkResponseSummary,
     BulkUserImportOperationResponse,
     BulkUserImportOperationStatus,
+    MultipleInviteMode,
     SCIMBulkEndpointInterface,
     SCIMBulkOperation,
-    SCIMBulkResponseOperation
+    SCIMBulkResponseOperation,
+    UserDetailsInterface
 } from "../../models";
+import { UserManagementUtils } from "../../utils";
 import { BulkImportResponseList } from "../bulk-import-response-list";
 
 /**
@@ -134,6 +148,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ response, setResponse ] = useState<BulkUserImportOperationResponse[]>([]);
     const [ showResponseView, setShowResponseView ] = useState<boolean>(false);
+    const [ showManualInviteTable, setshowManualInviteTable ] = useState<boolean>(false);
     const [ bulkResponseSummary, setBulkResponseSummary ] = useState<BulkResponseSummary>(initialBulkResponseSummary);
     const [ readWriteUserStoresList, setReadWriteUserStoresList ] = useState<DropdownItemProps[]>([]);
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>("");
@@ -142,6 +157,19 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         setSelectedUserStore(userstore);
         getUserStoreList();
     }, [ userstore ]);
+    const [ configureMode, setConfigureMode ] = useState<string>(undefined);
+    const [ emailData, setEmailData ] = useState<string[]>();
+    const [ isEmailDataError, setIsEmailDataError ] = useState<boolean>(false);
+    const [ emailDataError, setEmailDataError ] = useState<string>("");
+
+    const optionsArray: string[] = [];
+
+    /**
+     * Set the default multiple invites option.
+     */
+    useEffect(() => {
+        setConfigureMode(MultipleInviteMode.MANUAL);
+    }, [ ]);
 
     /**
      * Fetches SCIM dialects.
@@ -723,6 +751,90 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     };
 
     /**
+     * Generate SCIM Bulk Request Body
+     *
+     * @param attributeMapping - attribute mapping.
+     * @returns SCIMBulkRequestBody
+     */
+    const generateMultipleUsersSCIMRequestBody = (): SCIMBulkEndpointInterface => {
+        // Create the data operations
+        const operations: SCIMBulkOperation[] = [];
+
+        // Create the user record
+        emailData?.map((email: string) => {
+            const userDetails: UserDetailsInterface = {
+                emails: [
+                    {
+                        primary: true,
+                        value: email
+                    }
+                ],
+                schemas: [
+                    "urn:ietf:params:scim:schemas:core:2.0:User",
+                    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+                ],
+                userName: 
+                    userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
+                        ? `${userstore}/${email}`
+                        : email,    
+                [ userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
+                    ? UserManagementConstants.CUSTOMSCHEMA
+                    : UserManagementConstants.ENTERPRISESCHEMA
+                ]: {
+                    askPassword: "true"
+                }
+            };
+            const asyncOperationID: string = uuidv4();
+            
+            const SCIMBulkOperation: SCIMBulkOperation = {
+                bulkId: `bulkId:${email}:${asyncOperationID}`,
+                data: userDetails,
+                method: "POST",
+                path: "/Users"
+            };
+
+            operations.push(SCIMBulkOperation);
+        });
+
+        return {
+            Operations: operations,
+            failOnErrors: 0,
+            schemas: [ UserManagementConstants.BULK_REQUEST_SCHEMA ]
+        };
+    };
+
+    /**
+     * Handle multiple user invite.
+     */
+    const manualInviteMultipleUsers = async () => {
+        const handleManualInvite: SCIMBulkEndpointInterface = generateMultipleUsersSCIMRequestBody();
+
+        try {
+            const scimResponse: any = await addBulkUsers(handleManualInvite);
+
+            setshowManualInviteTable(true);
+
+            if (scimResponse.status !== 200) {
+                throw new Error("Failed to import users.");
+            }
+
+            const response: BulkUserImportOperationResponse[] = scimResponse.data.Operations.map(generateBulkResponse);
+
+            setResponse(response);
+        } catch (error) {
+            setHasError(true);
+            setAlert({
+                description: t(
+                    "console:manage.features.users.notifications.bulkImportUser.submit.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.users.notifications.bulkImportUser.submit.genericError.message")
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    /**
      * Handle bulk user import.
      */
     const handleBulkUserImport = async () => {
@@ -841,6 +953,333 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             "console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableStatus.failed" );
     };
 
+    /**
+     * Render Multiple Users mode selection section.
+     */
+    const resolveMultipleUsersModeSelection = (): ReactElement => {
+        return(
+            <Grid.Row>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Button.Group
+                        size="large"
+                        labeled
+                        basic
+                    >
+                        {
+                            Object.values(MultipleInviteMode).map((mode: string, index: number) => {
+                                return(
+                                    <Button
+                                        data-componentid={ `${componentId}-${mode}-tab-option` }
+                                        key={ index }
+                                        active={ configureMode === mode }
+                                        className="multiple-users-config-mode-wizard-tab"
+                                        content={
+                                            UserManagementUtils.resolveMultipleInvitesDisplayName(
+                                                mode as MultipleInviteMode
+                                            )
+                                        }
+                                        onClick={ (
+                                            event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+                                            event.preventDefault();
+                                            setConfigureMode(mode);
+                                        } }
+                                    />         
+                                );
+                            })
+                        }
+                    </Button.Group>
+                </Grid.Column>
+            </Grid.Row>
+        );
+    };
+
+    /**
+     * Render Multiple Users configuration section.
+     */
+    const resolveMultipleUsersConfiguration = (): ReactElement => {
+
+        if (configureMode == MultipleInviteMode.MANUAL) {
+            return (
+                <>
+                    {
+                        !showManualInviteTable ? (
+                            <>
+                                <Grid.Row columns={ 1 } className="mb-0 pb-0">
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }> 
+                                        <Alert severity="warning">
+                                            { 
+                                                t("console:manage.features.user.modals.bulkImportUserWizard" +
+                                                ".wizardSummary.manualCreation.warningMessage") 
+                                            }
+                                        </Alert>
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }> 
+                                        <Form.Field required={ true }>
+                                            <label className="pb-2">
+                                                { t("console:manage.features.user.forms.addUserForm."+
+                                                            "inputs.domain.placeholder") }
+                                            </label>
+                                            <Dropdown
+                                                className="mt-2"
+                                                fluid
+                                                selection
+                                                labeled
+                                                options={ readWriteUserStoresList }
+                                                loading={ false }
+                                                data-testid={
+                                                    `${componentId}-userstore-dropdown`
+                                                }
+                                                data-componentid={
+                                                    `${componentId}-userstore-dropdown`
+                                                }
+                                                name="userstore"
+                                                disabled={ true }
+                                                value={ selectedUserStore }
+                                                onChange={
+                                                    (e: React.ChangeEvent<HTMLInputElement>,
+                                                        data: DropdownProps) => {
+                                                        setSelectedUserStore(data.value.toString());
+                                                    }
+                                                }
+                                                tabIndex={ 1 }
+                                                maxLength={ 60 }
+                                            />
+                                        </Form.Field> 
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Autocomplete
+                                    size="small"
+                                    limitTags={ userConfig.bulkUserImportLimit.inviteEmails }
+                                    fullWidth
+                                    multiple
+                                    id="tags-filled"
+                                    options={ optionsArray.map((option: string) => option) }
+                                    defaultValue={ [] }
+                                    freeSolo
+                                    renderTags={ (
+                                        value: readonly string[],
+                                        getTagProps: AutocompleteRenderGetTagProps
+                                    ) =>
+                                        value.map((option: string, index: number) => (
+                                            <Chip 
+                                                key={ "" }
+                                                size="small"
+                                                sx={ { marginLeft: 1 } }
+                                                className="oxygen-chip-beta"
+                                                label={ option }
+                                                { ...getTagProps({ index }) } 
+                                            />
+                                        ))
+                                    }
+                                    renderInput={ (params: AutocompleteRenderInputParams) => (
+                                        <>
+                                            <InputLabel
+                                                htmlFor="tags-filled"
+                                                disableAnimation
+                                                shrink={ false }
+                                                margin="dense"
+                                                className="mt-2"
+                                                data-componentid={ `${componentId}-emails-label` }
+                                            >
+                                                { 
+                                                    t("console:manage.features.user.modals.bulkImportUserWizard" +
+                                                    ".wizardSummary.manualCreation.emailsLabel")
+                                                }
+                                            </InputLabel>
+                                            <TextField
+                                                id="tags-filled"
+                                                margin="normal"
+                                                error={ isEmailDataError }
+                                                helperText= { 
+                                                    isEmailDataError
+                                                    && emailDataError
+                                                }
+                                                InputLabelProps= { {
+                                                    required: true
+                                                } }
+                                                { ...params }
+                                                required
+                                                variant="outlined"
+                                                placeholder={
+                                                    t("console:manage.features.user.modals.bulkImportUserWizard" +
+                                                    ".wizardSummary.manualCreation.emailsPlaceholder") 
+                                                }
+                                                data-componentid={ `${componentId}-email-input` }
+                                            />
+                                        </>
+                                    ) }
+                                    onChange={ (
+                                        event: React.SyntheticEvent<Element, Event>,
+                                        value: string[]
+                                    ) => {
+                                        setEmailData(value);
+                                        validateEmail(value);
+                                    } }
+                                    onInputChange={ () => {
+                                        setIsEmailDataError(false);
+                                    } }
+                                />
+                                <Hint>
+                                    { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
+                                    ".manualCreation.hint" ) }
+                                </Hint>
+                            </>
+                        ) : (
+                            <>
+                                { alert && (
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            { alertComponent }
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                ) }
+                                <BulkImportResponseList
+                                    isLoading={ isSubmitting }
+                                    data-componentid={ `${componentId}-manual-response-list` }
+                                    hasError={ hasError }
+                                    responseList={ response }
+                                    bulkResponseSummary={ bulkResponseSummary }
+                                />
+                            </>
+                        )
+                    }
+                </>      
+            );
+        } else if (configureMode === MultipleInviteMode.META_FILE) {
+            return (
+                !showResponseView ?
+                    (
+                        <>
+                            { alert
+                                && (
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            { alertComponent }
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                ) }
+                            { !isLoading && !hideUserStoreDropdown()
+                                && (
+                                    <>
+                                        <Grid.Row columns={ 1 } className="mb-0 pb-0">
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }> 
+                                                <Alert severity="info">
+                                                    { t("console:manage.features.user.modals." +
+                                                        "bulkImportUserWizard.wizardSummary." +
+                                                        "disabledSecondaryStoreInfo") }
+                                                </Alert>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }> 
+                                                <Form.Field required={ true }>
+                                                    <label className="pb-2">
+                                                        { t("console:manage.features.user.forms.addUserForm."+
+                                                            "inputs.domain.placeholder") }
+                                                    </label>
+                                                    <Dropdown
+                                                        className="mt-2"
+                                                        fluid
+                                                        selection
+                                                        labeled
+                                                        options={ readWriteUserStoresList }
+                                                        loading={ false }
+                                                        data-testid={
+                                                            `${componentId}-userstore-dropdown`
+                                                        }
+                                                        data-componentid={
+                                                            `${componentId}-userstore-dropdown`
+                                                        }
+                                                        name="userstore"
+                                                        disabled={ true }
+                                                        value={ selectedUserStore }
+                                                        onChange={
+                                                            (e: React.ChangeEvent<HTMLInputElement>,
+                                                                data: DropdownProps) => {
+                                                                setSelectedUserStore(data.value.toString());
+                                                            }
+                                                        }
+                                                        tabIndex={ 1 }
+                                                        maxLength={ 60 }
+                                                    />
+                                                </Form.Field> 
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </>
+                                )
+                            }
+                            <Grid.Row columns={ 1 } className="pt-0">
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <FilePicker
+                                        key={ 1 }
+                                        fileStrategy={ CSV_FILE_PROCESSING_STRATEGY }
+                                        file={ selectedCSVFile }
+                                        onChange={ (
+                                            result: PickerResult<{
+                                            headers: string[];
+                                            items: string[][];
+                                        }>) => {
+                                            setSelectedCSVFile(result.file);
+                                            setUserData(result.serialized);
+                                            setAlert(null);
+                                            setHasError(false);
+                                        } }
+                                        uploadButtonText="Upload CSV File"
+                                        dropzoneText="Drag and drop a CSV file here."
+                                        data-testid={ `${componentId}-form-wizard-csv-file-picker` }
+                                        data-componentid={ `${componentId}-form-wizard-csv-file-picker` }
+                                        icon={ getCertificateIllustrations().uploadPlaceholder }
+                                        placeholderIcon={ <Icon name="file code" size="huge" /> }
+                                        normalizeStateOnRemoveOperations={ true }
+                                        emptyFileError={ false }
+                                        hidePasteOption={ true }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                            {
+                                <Hint>
+                                    { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
+                                    ".fileBased.hint" ) }
+                                </Hint>
+                            }
+                        </>
+                    ) : (
+                        <>
+                            { alert && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        { alertComponent }
+                                    </Grid.Column>
+                                </Grid.Row>
+                                    
+                            ) }
+                            <BulkImportResponseList
+                                isLoading={ isSubmitting }
+                                data-componentid={ `${componentId}-response-list` }
+                                hasError={ hasError }
+                                responseList={ response }
+                                bulkResponseSummary={ bulkResponseSummary }
+                            />
+                        </>
+                    ) 
+            );
+        }
+    };
+
+    // Validate the input string is an email address.
+    const validateEmail = (emailList: string[]) => {
+
+        const emailValidation: boolean = FormValidation.email(emailList[emailList.length-1]);
+
+        if (!emailValidation) {
+            setIsEmailDataError(true);
+            setEmailDataError("Enter a valid email address");
+            emailList.pop();
+        }
+    };
+
     return (
         <Modal
             data-testid={ componentId }
@@ -860,148 +1299,84 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
             <Modal.Content className="content-container" scrolling>
                 <Grid>
-                    { !showResponseView ?
-                        (
-                            <>
-                                { alert
-                                    && (
-                                        <Grid.Row columns={ 1 }>
-                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                                { alertComponent }
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    ) }
-                                { !isLoading && !hideUserStoreDropdown()
-                                    && (
-                                        <>
-                                            <Grid.Row columns={ 1 } className="mb-0 pb-0">
-                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }> 
-                                                    <Alert severity="info">
-                                                        { t("console:manage.features.user.modals." +
-                                                            "bulkImportUserWizard.wizardSummary." +
-                                                            "disabledSecondaryStoreInfo") }
-                                                    </Alert>
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                            <Grid.Row columns={ 1 }>
-                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }> 
-                                                    <Form.Field required={ true }>
-                                                        <label className="pb-2">
-                                                            { t("console:manage.features.user.forms.addUserForm."+
-                                                                "inputs.domain.placeholder") }
-                                                        </label>
-                                                        <Dropdown
-                                                            className="mt-2"
-                                                            fluid
-                                                            selection
-                                                            labeled
-                                                            options={ readWriteUserStoresList }
-                                                            loading={ false }
-                                                            data-testid={
-                                                                `${componentId}-userstore-dropdown`
-                                                            }
-                                                            data-componentid={
-                                                                `${componentId}-userstore-dropdown`
-                                                            }
-                                                            name="userstore"
-                                                            disabled={ true }
-                                                            value={ selectedUserStore }
-                                                            onChange={
-                                                                (e: React.ChangeEvent<HTMLInputElement>,
-                                                                    data: DropdownProps) => {
-                                                                    setSelectedUserStore(data.value.toString());
-                                                                }
-                                                            }
-                                                            tabIndex={ 1 }
-                                                            maxLength={ 60 }
-                                                        />
-                                                    </Form.Field> 
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        </>
-                                    )
-                                }
-                                <Grid.Row columns={ 1 } className="pt-0">
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                        <FilePicker
-                                            key={ 1 }
-                                            fileStrategy={ CSV_FILE_PROCESSING_STRATEGY }
-                                            file={ selectedCSVFile }
-                                            onChange={ (result: PickerResult<{
-                                            headers: string[];
-                                            items: string[][];
-                                        }>) => {
-                                                setSelectedCSVFile(result.file);
-                                                setUserData(result.serialized);
-                                                setAlert(null);
-                                                setHasError(false);
-                                            } }
-                                            uploadButtonText="Upload CSV File"
-                                            dropzoneText="Drag and drop a CSV file here."
-                                            data-testid={ `${componentId}-form-wizard-csv-file-picker` }
-                                            data-componentid={ `${componentId}-form-wizard-csv-file-picker` }
-                                            icon={ getCertificateIllustrations().uploadPlaceholder }
-                                            placeholderIcon={ <Icon name="file code" size="huge" /> }
-                                            normalizeStateOnRemoveOperations={ true }
-                                            emptyFileError={ false }
-                                            hidePasteOption={ true }
-                                        />
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </>
-                        ) : (
-                            <>
-                                { alert && (
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                            { alertComponent }
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                        
-                                ) }
-                                <BulkImportResponseList
-                                    isLoading={ isSubmitting }
-                                    data-componentid={ `${componentId}-response-list` }
-                                    hasError={ hasError }
-                                    responseList={ response }
-                                    bulkResponseSummary={ bulkResponseSummary }
-                                />
-                            </>
-                        ) }
+                    { resolveMultipleUsersModeSelection() }
+                    {
+                        resolveMultipleUsersConfiguration()
+                    }
                 </Grid>
+
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
-                    <Grid.Row column={ 1 }>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton
-                                data-testid={ `${componentId}-cancel-button` }
-                                data-componentid={ `${componentId}-cancel-button` }
-                                floated="left"
-                                onClick={ () => {
-                                    closeWizard();
-                                    setShowResponseView(false);
-                                } }
-                                disabled={ isSubmitting }
-                            >
-                                { t("common:close") }
-                            </LinkButton>
-                        </Grid.Column>
-                        { !showResponseView || isSubmitting ? (
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                <PrimaryButton
-                                    data-testid={ `${componentId}-finish-button` }
-                                    data-componentid={ `${componentId}-finish-button` }
-                                    floated="right"
-                                    onClick={ handleBulkUserImport }
-                                    loading={ isSubmitting }
-                                    disabled={ isLoading || isSubmitting ||  hasError || !selectedCSVFile }
-                                >
-                                    { t("console:manage.features.user.modals.bulkImportUserWizard.buttons.import") }
-                                </PrimaryButton>
-                            </Grid.Column>
-                        ) : null }
-                    </Grid.Row>
+                    {
+                        configureMode == MultipleInviteMode.MANUAL
+                            ? (
+                                <Grid.Row column={ 1 }>
+                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                        <LinkButton
+                                            data-testid={ `${componentId}-close-button` }
+                                            data-componentid={ `${componentId}-close-button` }
+                                            floated="left"
+                                            onClick={ () => {
+                                                closeWizard();
+                                                setshowManualInviteTable(false);
+                                            } }
+                                            disabled={ isSubmitting }
+                                        >
+                                            { t("common:close") }
+                                        </LinkButton>
+                                    </Grid.Column>
+                                    { !showManualInviteTable || isSubmitting ? (
+                                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                            <PrimaryButton
+                                                data-testid={ `${componentId}-invite-button` }
+                                                data-componentid={ `${componentId}-invite-button` }
+                                                floated="right"
+                                                onClick={ manualInviteMultipleUsers }
+                                                loading={ isSubmitting }
+                                                disabled={ isLoading || isSubmitting || hasError }
+                                            >
+                                                { t("console:manage.features.user.modals." +
+                                                "bulkImportUserWizard.wizardSummary.manualCreation.primaryButton") }
+                                            </PrimaryButton>
+                                        </Grid.Column>
+                                    ) : null }
+                                </Grid.Row>
+                            ) : (
+                                <Grid.Row column={ 1 }>
+                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                        <LinkButton
+                                            data-testid={ `${componentId}-cancel-button` }
+                                            data-componentid={ `${componentId}-cancel-button` }
+                                            floated="left"
+                                            onClick={ () => {
+                                                closeWizard();
+                                                setShowResponseView(false);
+                                            } }
+                                            disabled={ isSubmitting }
+                                        >
+                                            { t("common:close") }
+                                        </LinkButton>
+                                    </Grid.Column>
+                                    { !showResponseView || isSubmitting ? (
+                                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                            <PrimaryButton
+                                                data-testid={ `${componentId}-finish-button` }
+                                                data-componentid={ `${componentId}-finish-button` }
+                                                floated="right"
+                                                onClick={ handleBulkUserImport }
+                                                loading={ isSubmitting }
+                                                disabled={ isLoading || isSubmitting ||  hasError || !selectedCSVFile }
+                                            >
+                                                { t("console:manage.features.user.modals." +
+                                                    "bulkImportUserWizard.buttons.import") }
+                                            </PrimaryButton>
+                                        </Grid.Column>
+                                    ) : null }
+                                </Grid.Row>
+                            )
+                    }
+                    
                 </Grid>
             </Modal.Actions>
         </Modal>
