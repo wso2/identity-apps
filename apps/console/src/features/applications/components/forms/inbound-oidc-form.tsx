@@ -592,6 +592,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     };
 
+    const [ selectedAuthMethod, setSelectedAuthMethod ] = useState<string>(undefined);
+
+    const handleAuthMethodChange = (values: Map<string, FormValue>) => {
+        const authMethod: string = values.get("tokenEndpointAuthMethod") as string;
+        setSelectedAuthMethod(authMethod);
+    };
+
     /**
      * Moderates the metadata labels.
      *
@@ -1720,61 +1727,71 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Field
-                        ref={ tokenEndpointAuthSigningAlg }
-                        name="tokenEndpointAuthSigningAlg"
-                        label={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".clientAuthentication.fields.signingAlgorithm.label")
-                        }
-                        required={ false }
-                        type="dropdown"
-                        disabled={ false }
-                        default={
-                            initialValues?.clientAuthentication ?
-                                initialValues.clientAuthentication.tokenEndpointAuthSigningAlg
-                                : metadata.tokenEndpointSignatureAlgorithm.defaultValue
-                        }
-                        placeholder={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".clientAuthentication.fields.signingAlgorithm.placeholder")
-                        }
-                        children={ getAllowedList(metadata.tokenEndpointSignatureAlgorithm) }
-                        readOnly={ readOnly }
-                    />
-                    <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".clientAuthentication.fields.signingAlgorithm.hint") }
-                    </Hint>
 
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Form.Input
-                        ref={ tlsClientAuthSubjectDn }
-                        ariaLabel="TLS client auth subject DN"
-                        inputType="name"
-                        name="tlsClientAuthSubjectDn"
-                        label={ t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".clientAuthentication.fields.subjectDN.label")
-                        }
-                        required={ false }
-                        placeholder={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".clientAuthentication.fields.subjectDN.placeholder")
-                        }
-                        value={ subjectDN }
-                        onChange={(e) => setTLSClientAuthSubjectDN(e.target.value)}
-                        readOnly={false}
-                        maxLength={ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH}
-                        minLength={3}
-                        width={16}
-                    />
-                </Grid.Column>
-            </Grid.Row>
+            { selectedAuthMethod == "private_key_jwt" &&
+                (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Field
+                                ref={ tokenEndpointAuthSigningAlg }
+                                name="tokenEndpointAuthSigningAlg"
+                                label={
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                        ".clientAuthentication.fields.signingAlgorithm.label")
+                                }
+                                required={ false }
+                                type="dropdown"
+                                disabled={ false }
+                                default={
+                                    initialValues?.clientAuthentication ?
+                                        initialValues.clientAuthentication.tokenEndpointAuthSigningAlg
+                                        : metadata.tokenEndpointSignatureAlgorithm.defaultValue
+                                }
+                                placeholder={
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                        ".clientAuthentication.fields.signingAlgorithm.placeholder")
+                                }
+                                children={ getAllowedList(metadata.tokenEndpointSignatureAlgorithm) }
+                                readOnly={ readOnly }
+                            />
+                            <Hint>
+                                { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".clientAuthentication.fields.signingAlgorithm.hint") }
+                            </Hint>
+
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
+
+            { selectedAuthMethod == "tls_client_auth" &&
+                (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Form.Input
+                                ref={ tlsClientAuthSubjectDn }
+                                ariaLabel="TLS client auth subject DN"
+                                inputType="name"
+                                name="tlsClientAuthSubjectDn"
+                                label={ t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".clientAuthentication.fields.subjectDN.label")
+                                }
+                                required={ false }
+                                placeholder={
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                        ".clientAuthentication.fields.subjectDN.placeholder")
+                                }
+                                value={ subjectDN }
+                                onChange={ (e) => setTLSClientAuthSubjectDN(e.target.value) }
+                                readOnly={ false }
+                                maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
+                                minLength={ 3 }
+                                width={ 16 }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
 
             { /* Pushed Authorization Requests*/ }
             <Grid.Row columns={ 2 }>
