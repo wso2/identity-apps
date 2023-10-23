@@ -64,8 +64,8 @@ const httpClientAll: (config: HttpRequestConfig[]) => Promise<AxiosResponse[]> =
 /**
  * Gets the basic information about the application.
  *
+ * @deprecated Use `useGetApplication` SWR hook instead.
  * @param id - ID of the application.
- *
  * @returns A promise containing the response.
  */
 export const getApplicationDetails = (id: string): Promise<any> => {
@@ -208,7 +208,7 @@ export const useApplicationList = <Data = ApplicationListInterface, Error = Requ
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
-    const requestConfig: AxiosRequestConfig = shouldFetch 
+    const requestConfig: AxiosRequestConfig = shouldFetch
         ? {
             headers: {
                 "Accept": "application/json",
