@@ -21,6 +21,7 @@ import {
     AutocompleteRenderInputParams
 } from "@mui/material";
 import { Chip, TextField } from "@oxygen-ui/react";
+import Alert from "@oxygen-ui/react/Alert";
 import InputLabel from "@oxygen-ui/react/InputLabel/InputLabel";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -1007,6 +1008,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                             isAlphanumericUsername
                                                             && mode === MultipleInviteMode.MANUAL
                                                         }
+                                                        data-componentid={ `${componentId}-${mode}-tab-option` }
                                                         key={ index }
                                                         active={ configureMode === mode }
                                                         className="multiple-users-config-mode-wizard-tab"
@@ -1033,6 +1035,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                 mode === MultipleInviteMode.META_FILE
                                                 || !isAlphanumericUsername
                                             }
+                                            data-componentid={ `${componentId}-disabled-hint` }
                                         />
                                     </>
                                 );
@@ -1055,10 +1058,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     {
                         !showManualInviteTable ? (
                             <>
-                                <Hint>
-                                    { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
-                                    ".manualCreation.hint" ) }
-                                </Hint>
+                                <Alert severity="warning">
+                                    { 
+                                        t("console:manage.features.user.modals.bulkImportUserWizard" +
+                                            ".wizardSummary.manualCreation.warningMessage") 
+                                    }
+                                </Alert>
                                 <Autocomplete
                                     disabled={ regExLoading }
                                     size="small"
@@ -1090,6 +1095,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                 shrink={ false }
                                                 margin="dense"
                                                 className="mt-2"
+                                                data-componentid={ `${componentId}-emails-label` }
                                             >
                                                 { 
                                                     t("console:manage.features.user.modals.bulkImportUserWizard" +
@@ -1114,6 +1120,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     t("console:manage.features.user.modals.bulkImportUserWizard" +
                                                     ".wizardSummary.manualCreation.emailsPlaceholder") 
                                                 }
+                                                data-componentid={ `${componentId}-email-input` }
                                             />
                                         </>
                                     ) }
@@ -1128,17 +1135,28 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         setIsEmailDataError(false);
                                     } }
                                 />
+                                <Hint>
+                                    { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
+                                    ".manualCreation.hint" ) }
+                                </Hint>
                             </>
                         ) : (
-                            <Grid.Row columns={ 1 }>
+                            <>
+                                { alert && (
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            { alertComponent }
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                ) }
                                 <BulkImportResponseList
                                     isLoading={ isSubmitting }
-                                    data-testid={ `${componentId}-bulk-import-response-list` }
+                                    data-componentid={ `${componentId}-manual-response-list` }
                                     hasError={ hasError }
                                     responseList={ response }
                                     bulkResponseSummary={ bulkResponseSummary }
                                 />
-                            </Grid.Row>
+                            </>
                         )
                     }
                 </>
@@ -1265,11 +1283,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         }
     };
 
+    // Validate the input string is an email address.
     const validateEmail = (emailList: string[]) => {
 
-        const emailInput: string = emailList[emailList.length-1];
+        const emailValidation: boolean = FormValidation.email(emailList[emailList.length-1]);
 
-        if (emailInput && !SharedUserStoreUtils.validateInputAgainstRegEx(emailInput, userStoreRegex)) {
+        if (!emailValidation) {
             setIsEmailDataError(true);
             setEmailDataError("Enter a valid email address");
             emailList.pop();
@@ -1299,7 +1318,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     { 
                         regExLoading
                             ? <ContentLoader/>
-                            : resolveMultipleUsersConfiguration() }
+                            : resolveMultipleUsersConfiguration()
+                    }
                 </Grid>
 
             </Modal.Content>
@@ -1311,7 +1331,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                 <Grid.Row column={ 1 }>
                                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                         <LinkButton
-                                            data-testid={ `${componentId}-cancel-button` }
+                                            data-testid={ `${componentId}-close-button` }
+                                            data-componentid={ `${componentId}-close-button` }
                                             floated="left"
                                             onClick={ () => {
                                                 closeWizard();
@@ -1325,7 +1346,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     { !showManualInviteTable || isSubmitting ? (
                                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                             <PrimaryButton
-                                                data-testid={ `${componentId}-finish-button` }
+                                                data-testid={ `${componentId}-invite-button` }
+                                                data-componentid={ `${componentId}-invite-button` }
                                                 floated="right"
                                                 onClick={ manualInviteMultipleUsers }
                                                 loading={ isSubmitting }
@@ -1342,6 +1364,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                         <LinkButton
                                             data-testid={ `${componentId}-cancel-button` }
+                                            data-componentid={ `${componentId}-cancel-button` }
                                             floated="left"
                                             onClick={ () => {
                                                 closeWizard();
@@ -1356,10 +1379,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                             <PrimaryButton
                                                 data-testid={ `${componentId}-finish-button` }
+                                                data-componentid={ `${componentId}-finish-button` }
                                                 floated="right"
                                                 onClick={ handleBulkUserImport }
                                                 loading={ isSubmitting }
-                                                disabled={ isLoading || isSubmitting ||  hasError }
+                                                disabled={ isLoading || isSubmitting ||  hasError|| !selectedCSVFile }
                                             >
                                                 { t("common:finish") }
                                             </PrimaryButton>

@@ -5638,6 +5638,7 @@ export interface ConsoleNS {
                                     description: string;
                                 };
                                 primaryButton: string;
+                                warningMessage: string;
                             };
                             fileBased: {
                                 hint: string;

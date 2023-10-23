@@ -10748,7 +10748,8 @@ export const console: ConsoleNS = {
                                     buttonText: "Upload CSV File",
                                     description: "Drag and drop a CSV file here."
                                 },
-                                primaryButton: "Invite"
+                                primaryButton: "Invite",
+                                warningMessage: "The manual option to invite multiple users is available only when email as username is enabled."
                             },
                             fileBased: {
                                 hint: "Bulk invite multiple users using a CSV file."
