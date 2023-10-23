@@ -66,7 +66,7 @@
                     errorMessage = String.format(AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.temporarly.locked"), unlockTime);
                 }
             } else if (errorMessage.equalsIgnoreCase(EmailOTPAuthenticatorConstants.ERROR_TENANT_MISMATCH_MSG)) {
-                errorMessage = "Application you are trying to access does not allow users from your organization.";
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "user.tenant.domain.mismatch.message");
             }
         }
     }
