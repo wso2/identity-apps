@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.1.9
+
+### Patch Changes
+
+- [#4229](https://github.com/wso2/identity-apps/pull/4229) [`eeb2da4a7c`](https://github.com/wso2/identity-apps/commit/eeb2da4a7c57d8870e6d1aef37a4337a151e1e6c) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Implement the multiple user invites feature
+
+* [#4289](https://github.com/wso2/identity-apps/pull/4289) [`7997349f7a`](https://github.com/wso2/identity-apps/commit/7997349f7aeebf67e863a27f148e9c919a9c08f9) Thanks [@ThaminduDilshan](https://github.com/ThaminduDilshan)! - Enable back missing connection edit UI fields in JIT provisioning and Advanced config sections
+
+- [#4290](https://github.com/wso2/identity-apps/pull/4290) [`d32dfab48d`](https://github.com/wso2/identity-apps/commit/d32dfab48d2deb5ac94e5c056f018bb891b3b74b) Thanks [@Achintha444](https://github.com/Achintha444)! - Update the basic section of the role
+
+* [#4285](https://github.com/wso2/identity-apps/pull/4285) [`b99c4e0278`](https://github.com/wso2/identity-apps/commit/b99c4e0278624c0d9d9b373b236799e39b0f6829) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Hide API Resource edit in side panel
+
+* Updated dependencies [[`eeb2da4a7c`](https://github.com/wso2/identity-apps/commit/eeb2da4a7c57d8870e6d1aef37a4337a151e1e6c), [`d32dfab48d`](https://github.com/wso2/identity-apps/commit/d32dfab48d2deb5ac94e5c056f018bb891b3b74b)]:
+  - @wso2is/i18n@2.0.12
+
 ## 2.1.8
 
 ### Patch Changes
