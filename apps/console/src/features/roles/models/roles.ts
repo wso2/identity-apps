@@ -123,11 +123,11 @@ export enum RoleAudiences {
     /**
      * Organization role audience.
      */
-    ORG = "Organization",
+    ORG = "organization",
     /**
      * Application role audience.
      */
-    APPLICATION = "Application",
+    APPLICATION = "application",
 }
 
 /**

@@ -110,7 +110,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         }
 
         if (isRole && roleObject) {
-            setPreviouslyCheckedKeys(roleObject.permissions);
+            setPreviouslyCheckedKeys(roleObject.permissions as string[]);
             previouslyCheckedKeys?.forEach((key: string) => {
                 checkedNodes.push(getNodeByKey(key, permissions));
             });

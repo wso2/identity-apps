@@ -346,7 +346,8 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
  * @returns The object containing the roles list.
  */
 export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInterface>(
-    domain: string,
+    count?: number, 
+    startIndex?: number, 
     filter?: string
 ): RequestResultInterface<Data, Error> => {
 
@@ -357,10 +358,11 @@ export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInter
         },
         method: HttpMethods.GET,
         params: {
-            domain,
-            filter
+            count,
+            filter,
+            startIndex
         },
-        url: store.getState().config.endpoints.roles
+        url: store.getState().config.endpoints.rolesV2
     };
 
     const {

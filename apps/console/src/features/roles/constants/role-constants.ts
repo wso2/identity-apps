@@ -74,6 +74,16 @@ export class RoleConstants {
         "CONSOLE",
         "MY_ACCOUNT"
     ];
+
+    /**
+     * Filter query for audience type application.
+     */
+    public static readonly ROLE_AUDIENCE_APPLICATION_FILTER: string = "audience.type eq application";
+
+    /**
+     * filter query for audience type organization.
+     */
+    public static readonly ROLE_AUDIENCE_ORGANIZATION_FILTER: string = "audience.type eq organization";
 }
 
 /**
