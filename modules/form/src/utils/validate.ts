@@ -108,10 +108,6 @@ export const getValidation = (
         return FieldConstants.FIELD_REQUIRED_ERROR;
     }
 
-    if (!value) {
-        return;
-    }
-
     if (validation instanceof Promise) {
         validation(value, allValues).then((message: string) => {
             return message;
@@ -120,6 +116,10 @@ export const getValidation = (
 
     if (typeof(validation) === "function") {
         return validation(value, allValues);
+    }
+
+    if (!value) {
+        return;
     }
 
     return getDefaultValidation(field, fieldType, value);
