@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { Code, Heading, Hint } from "@wso2is/react-components";
+import { Code, Heading, Hint, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
@@ -27,10 +27,12 @@ import { applicationConfig } from "../../../../../extensions";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
     InboundProtocolListItemInterface,
+    OIDCDataInterface,
     RoleConfigInterface,
     RoleInterface,
     SubjectConfigInterface,
-    SubjectInterface
+    SubjectInterface,
+    SubjectTypes
 } from "../../../models";
 
 interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterface {
@@ -48,7 +50,8 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
      */
     readOnly?: boolean;
     applicationTemplateId?: string;
-    onlyOIDCConfigured?:boolean;
+    onlyOIDCConfigured?: boolean;
+    oidcInitialValues?: OIDCDataInterface;
 }
 
 export const SubjectAttributeFieldName = "subjectAttribute";
@@ -78,7 +81,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         readOnly,
         technology,
         onlyOIDCConfigured,
-        [ "data-testid" ]: testId
+        oidcInitialValues,
+        ["data-testid"]: testId,
     } = props;
 
     const { t } = useTranslation();
@@ -86,6 +90,12 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
     const [ selectedSubjectValueLocalClaim, setSelectedSubjectValueLocalClaim ] =
         useState<string>();
+    const [ sectorIdentifierURI, setSectorIdentifierURI ] = useState(oidcInitialValues?.subject ?
+        oidcInitialValues.subject.sectorIdentifierUri : null);
+    const [ selectedSubjectType, setSelectedSubjectType ] = useState(oidcInitialValues?.subject ?
+        oidcInitialValues.subject.subjectType : SubjectTypes.PUBLIC);
+    const multipleCallbacksConfigured = oidcInitialValues?.callbackURLs?.length > 0 ||
+        oidcInitialValues.callbackURLs[0].includes("regexp=");
 
     useEffect(() => {
         if (claimMappingOn && dropDownOptions && dropDownOptions.length > 0) {
@@ -161,7 +171,15 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         const settingValues: {
             role: RoleInterface;
             subject: SubjectInterface
+            oidc: OIDCDataInterface
         } = {
+            oidc: {
+                ...oidcInitialValues,
+                subject: {
+                    sectorIdentifierUri: sectorIdentifierURI,
+                    subjectType: selectedSubjectType
+                }
+            },
             role: {
                 claim: getDefaultDropDownValue(dropDownOptions, values.roleAttribute),
                 includeUserDomain: !!values.role,
@@ -263,7 +281,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     uncontrolledForm={ false }
                     initialValues={
                         !onlyOIDCConfigured &&
-                        { subjectAttribute: selectedSubjectValue }
+                        {
+                            oidcInitialValues: oidcInitialValues,
+                            subjectAttribute: selectedSubjectValue
+                        }
                     }
                     onSubmit={ (values) => {
                         submitValues(values);
@@ -281,6 +302,37 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             "sections.subject.heading") }
                     </Heading>
                     <Divider hidden/>
+                    <div>
+                        <Text>
+                            {
+                                t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                    ".sections.subject.fields.subjectType.label")
+                            }
+                        </Text>
+                    </div>
+                    <Field.Radio
+                        key={ SubjectTypes.PUBLIC }
+                        ariaLabel={ "Subject type public" }
+                        name={ "subjectType" }
+                        value={ SubjectTypes.PUBLIC }
+                        label={ SubjectTypes.PUBLIC }
+                        checked={selectedSubjectType === SubjectTypes.PUBLIC }
+                        listen={() => {
+                            setSelectedSubjectType(`${SubjectTypes.PUBLIC}`);
+                        } }
+                    />
+                    <Field.Radio
+                        key={ SubjectTypes.PAIRWISE }
+                        ariaLabel={ "Subject type pairwise" }
+                        name={ "subjectType" }
+                        value={ SubjectTypes.PAIRWISE }
+                        label={ SubjectTypes.PAIRWISE }
+                        checked={ selectedSubjectType === SubjectTypes.PAIRWISE }
+                        listen={ () => {
+                            setSelectedSubjectType(`${SubjectTypes.PAIRWISE}`);
+                        } }
+                    />
+
                     <Field.Dropdown
                         ariaLabel="Subject attribute"
                         name="subjectAttribute"
@@ -361,6 +413,36 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             "sections.subject.fields.subjectUseMappedLocalSubject.hint")
                         }
                     />
+
+                    { selectedSubjectType === SubjectTypes.PAIRWISE &&
+                        (
+                            <Field.Input
+                                ariaLabel="Subject Identifier URI"
+                                inputType="url"
+                                name="subjectIdentifierURI"
+                                label={ t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".subject.fields.sectorIdentifierURI.label")
+                                }
+                                required={ multipleCallbacksConfigured }
+                                requiredErrorMessage={
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections.pkce" +
+                                        ".fields.pkce.validations.empty")
+                                }
+                                placeholder={
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                        ".subject.fields.sectorIdentifierURI.placeholder")
+                                }
+                                hint={ t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".subject.fields.sectorIdentifierURI.hint") }
+                                value={ sectorIdentifierURI }
+                                onChange={ (e) => setSectorIdentifierURI(e.target.value) }
+                                readOnly={ readOnly }
+                                maxLength={ 200 }
+                                minLength={ 3 }
+                                width={ 16 }
+                            />
+                        )
+                    }
                     {
                         applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute && (
                             <>

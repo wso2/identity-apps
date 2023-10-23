@@ -124,6 +124,11 @@ interface IdTokenConfigurationInterface {
     idTokenSignedResponseAlg?: string;
 }
 
+interface SubjectConfigInterface {
+    subjectType?: string;
+    sectorIdentifierUri?: string;
+}
+
 interface OIDCLogoutConfigurationInterface {
     backChannelLogoutUrl?: string;
     frontChannelLogoutUrl?: string;
@@ -150,6 +155,7 @@ export interface OIDCDataInterface {
     logout?: OIDCLogoutConfigurationInterface;
     validateRequestObjectSignature?: boolean;
     scopeValidators?: string[];
+    subject?: SubjectConfigInterface;
 }
 
 /**

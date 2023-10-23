@@ -779,3 +779,8 @@ export interface idpInfoTypeInterface {
     id: string;
     name: string;
 }
+
+export enum SubjectTypes {
+    PUBLIC ="public",
+    PAIRWISE = "pairwise"
+}

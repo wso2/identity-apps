@@ -677,6 +677,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 }
                 onUpdate={ handleApplicationUpdate }
                 applicationTemplateId={ application?.templateId }
+                inboundProtocolConfig={ inboundProtocolConfig }
                 readOnly={ readOnly }
                 data-componentid={ `${ componentId }-attribute-settings` }
             />
