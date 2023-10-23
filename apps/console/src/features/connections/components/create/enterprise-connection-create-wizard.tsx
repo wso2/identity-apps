@@ -19,7 +19,11 @@
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import Backdrop from "@mui/material/Backdrop";
 import Divider from "@oxygen-ui/react/Divider";
+import FormControl from "@oxygen-ui/react/FormControl";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
+import Radio from "@oxygen-ui/react/Radio";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { ModalWithSidePanel } from "@wso2is/common/src/components/modals/modal-with-side-panel";
 import { getCertificateIllustrations } from "@wso2is/common/src/configs/ui";
 import { AppConstants } from "@wso2is/common/src/constants/app-constants";
@@ -39,10 +43,10 @@ import {
     Heading,
     Hint,
     LinkButton,
+    PickerResult,
     PrimaryButton,
     SelectionCard,
     Steps,
-    Switcher,
     XMLFileStrategy,
     useDocumentation,
     useWizardAlert
@@ -53,6 +57,7 @@ import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
 import React, {
+    ChangeEvent,
     FC,
     MutableRefObject,
     PropsWithChildren,
@@ -75,6 +80,7 @@ import { ConnectionManagementConstants } from "../../constants/connection-consta
 import { AuthenticatorMeta } from "../../meta/authenticator-meta";
 import {
     AuthProtocolTypes,
+    ConnectionFormValuesInterface,
     ConnectionInterface,
     ConnectionTemplateInterface,
     GenericConnectionCreateWizardPropsInterface,
@@ -159,7 +165,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
     const { getLink } = useDocumentation();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    
+
     const {
         data: connections,
         isLoading: isConnectionsFetchRequestLoading,
@@ -213,7 +219,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         setSelectedTemplateId(templateId);
     }, [ selectedProtocol ]);
 
-    const initialValues: { NameIDType: string, RequestMethod: string, name: string } = useMemo(() => ({
+    const initialValues: ConnectionFormValuesInterface = useMemo(() => ({
         NameIDType: "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
         RequestMethod: "post",
         name: EMPTY_STRING // This must be filled by the user.
@@ -241,8 +247,8 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     const isIdpNameAlreadyTaken = (userInput: string): boolean => {
         if (idpList?.length > 0) {
-            return idpList?.reduce((set: Set<string>, { name }: { name: string }) => set.add(name), new Set<string>())
-                .has(userInput);
+            return idpList?.reduce((set: Set<string>, { name }: StrictConnectionInterface) => set
+                .add(name), new Set<string>()).has(userInput);
         }
 
         return false;
@@ -267,11 +273,11 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
     };
 
     /**
-     * @param values - form values
-     * @param form - form instance
-     * @param callback - callback to proceed to the next step
+     * Handles the form submit action.
+     *
+     * @param values - Form values
      */
-    const handleFormSubmit = (values: any) => {
+    const handleFormSubmit = (values: ConnectionFormValuesInterface) => {
 
         const FIRST_ENTRY: number = 0;
 
@@ -440,7 +446,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     const wizardCommonFirstPage = () => (
         <WizardPage
-            validate={ (values: any) => {
+            validate={ (values: ConnectionFormValuesInterface) => {
                 const errors: FormErrors = {};
 
                 errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
@@ -466,10 +472,10 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 minLength={ IDP_NAME_LENGTH.min }
                 required={ true }
                 width={ 15 }
-                format = { (values: any) => {
+                format = { (values: string) => {
                     return values.toString().trimStart();
                 } }
-                validation={ (values: any) => {
+                validation={ (values: string) => {
                     let errors: "";
 
                     errors = composeValidators(required, length(IDP_NAME_LENGTH))(values);
@@ -493,9 +499,9 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
             />
             <div className="sub-template-selection">
                 <label className="sub-templates-label">Select protocol</label>
-                <Grid 
-                    container 
-                    spacing={ { md: 3, xs: 2 } } 
+                <Grid
+                    container
+                    spacing={ { md: 3, xs: 2 } }
                     columns={ { md: 12, sm: 8, xs: 4 } }
                 >
                     <Grid xs={ 2 } sm={ 4 } md={ 8 }>
@@ -546,9 +552,9 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         </WizardPage>
     );
 
-    const samlConfigurationPage = () => ( 
+    const samlConfigurationPage = () => (
         <WizardPage
-            validate={ (values: any) => {
+            validate={ (values: ConnectionFormValuesInterface) => {
                 const errors: FormErrors = {};
 
                 errors.SPEntityId = composeValidators(required, length(SP_EID_LENGTH))(values.SPEntityId);
@@ -576,23 +582,30 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 placeholder="Enter a Service Provider Entity ID"
                 data-componentid={ `${ componentId }-form-wizard-saml-entity-id` }
             />
-            <Grid container spacing={ { md: 3, xs: 2 } } columns={ { md: 12, sm: 8, xs: 4  } }>
-                <Grid xs={ 2 } sm={ 4 } md={ 6 }>
+            <Grid container spacing={ { md: 3, xs: 2 } } columns={ { md: 12, sm: 8, xs: 4 } }>
+                <Grid xs={ 2 } sm={ 4 } md={ 12 }>
                     <p><b>Mode of configuration</b></p>
-                    <Switcher
-                        compact
-                        data-componentid={ `${ componentId }-form-wizard-saml-config-switcher` }
-                        className={ "mt-1" }
-                        selectedValue={ selectedSamlConfigMode }
-                        onChange={ ({ value }: any) => setSelectedSamlConfigMode(value as any) }
-                        options={ [ {
-                            label: "Manual Configuration",
-                            value: "manual"
-                        }, {
-                            label: "File Based Configuration",
-                            value: "file"
-                        } ] }
-                    />
+                    <FormControl>
+                        <RadioGroup
+                            row
+                            name="configuration-mode"
+                            onChange={ (event: ChangeEvent<HTMLInputElement>) =>
+                                setSelectedSamlConfigMode((event.target as HTMLInputElement).value as any) }
+                            data-componentid={ `${ componentId }-form-wizard-saml-config-radio-group` }
+                            value={ selectedSamlConfigMode }
+                        >
+                            <FormControlLabel
+                                control={ <Radio /> }
+                                label="Manual Configuration"
+                                value="manual"
+                            />
+                            <FormControlLabel
+                                control={ <Radio /> }
+                                label="File Based Configuration"
+                                value="file"
+                            />
+                        </RadioGroup>
+                    </FormControl>
                 </Grid>
             </Grid>
             <Divider hidden/>
@@ -630,7 +643,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                     fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
                     file={ selectedMetadataFile }
                     pastedContent={ pastedMetadataContent }
-                    onChange={ (result: any) => {
+                    onChange={ (result: PickerResult<File>) => {
                         setSelectedMetadataFile(result.file);
                         setPastedMetadataContent(result.pastedContent);
                         setXmlBase64String(result.serialized as string);
@@ -650,7 +663,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
     const oidcConfigurationPage = () => {
         return (
             <WizardPage
-                validate={ (values: any) => {
+                validate={ (values: ConnectionFormValuesInterface) => {
                     const errors: FormErrors = {};
 
                     errors.clientId = composeValidators(
@@ -735,7 +748,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     const certificatesPage = () => (
         <WizardPage
-            validate={ (values: any) => {
+            validate={ (values: ConnectionFormValuesInterface) => {
                 const errors: FormErrors = {};
 
                 if (selectedProtocol === "oidc" && selectedCertInputType === "jwks") {
@@ -752,24 +765,29 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 return errors;
             } }>
             <Grid container spacing={ { md: 3, xs: 2 } } columns={ { md: 12, sm: 8, xs: 4 } }>
-                <Grid xs={ 2 } sm={ 4 } md={ 6 }>
+                <Grid xs={ 2 } sm={ 4 } md={ 12 }>
                     <p><b>Mode of certificate configuration</b></p>
                     { (selectedProtocol === "oidc") && (
-                        <Switcher
-                            compact
-                            disabledMessage="This feature will be enabled soon."
-                            className={ "mt-1" }
-                            defaultOptionValue={ "jwks" }
-                            selectedValue={ selectedCertInputType }
-                            onChange={ ({ value }: any) => setSelectedCertInputType(value as any) }
-                            options={ [ {
-                                label: "JWKS endpoint",
-                                value: "jwks"
-                            }, {
-                                label: "Use PEM certificate",
-                                value: "pem"
-                            } ] }
-                        />
+                        <FormControl>
+                            <RadioGroup
+                                row
+                                name="certificate-type"
+                                onChange={ (event: ChangeEvent<HTMLInputElement>) =>
+                                    setSelectedCertInputType((event.target as HTMLInputElement).value as any) }
+                                value={ selectedCertInputType }
+                            >
+                                <FormControlLabel
+                                    control={ <Radio /> }
+                                    label="JWKS endpoint"
+                                    value="jwks"
+                                />
+                                <FormControlLabel
+                                    control={ <Radio /> }
+                                    label="Use PEM certificate"
+                                    value="pem"
+                                />
+                            </RadioGroup>
+                        </FormControl>
                     ) }
                 </Grid>
             </Grid>
@@ -803,7 +821,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                         pastedContent={ pastedPEMContent }
                         fileStrategy={ CERT_FILE_PROCESSING_STRATEGY }
                         normalizeStateOnRemoveOperations={ true }
-                        onChange={ (result: any) => {
+                        onChange={ (result: PickerResult<string | File>) => {
                             setPastedPEMContent(result.pastedContent);
                             setSelectedCertificateFile(result.file);
                             setPemString(result.serialized?.pem);
@@ -863,7 +881,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         // or `oidcHelp` is not defined in `selectedTemplate` object.
 
         const subTemplate: ConnectionTemplateInterface = cloneDeep(template.subTemplates.find(
-            ({ id }: { id: string }) => {
+            ({ id }: ConnectionTemplateInterface) => {
                 return id === (selectedProtocol === "saml"
                     ? "enterprise-saml-idp"
                     : "enterprise-oidc-idp"
@@ -964,7 +982,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                         data-componentid={ `${ componentId }-modal-content-1` }>
                         <Steps.Group
                             current={ currentWizardStep }>
-                            { wizardSteps.map((step: any, index: number) => (
+                            { wizardSteps.map((step: WizardStepInterface, index: number) => (
                                 <Steps.Step
                                     active
                                     key={ index }
@@ -1093,9 +1111,9 @@ const XML_FILE_PROCESSING_STRATEGY: XMLFileStrategy = new XMLFileStrategy();
 // FIXME: These will be removed in the future when
 //        form module validation gets to a stable state.
 
-const composeValidators = ( ...validators: any) => (value: string) => {
+const composeValidators = (...validators: any[]) => (value: string) => {
     return validators.reduce(
-        (error: any, validator: any) => error || validator(value),
+        (error: string, validator: (criteria: unknown) => string) => error || validator(value),
         undefined
     );
 };
@@ -1103,16 +1121,17 @@ const composeValidators = ( ...validators: any) => (value: string) => {
 /**
  * Given a {@link FormErrors} object, it will check whether
  * every key has a assigned truthy value. {@link Array.every}
- * will return true if one of the object member has
+ * will return `true` if one of the object member has
  * a truthy value. In other words, it will check a field has
  * a error message attached to it or not.
  *
+ * @param errors - Form errors object.
  */
 const ifFieldsHave = (errors: FormErrors): boolean => {
-    return !Object.keys(errors).every((k: any) => !errors[ k ]);
+    return !Object.keys(errors).every((k: string) => !errors[ k ]);
 };
 
-const required = (value: any) => {
+const required = (value: string) => {
     if (!value) {
         return "This is a required field";
     }

@@ -667,7 +667,7 @@ export interface CertificatePatchRequestInterface {
 }
 
 /**
- * Interface for from values of the connection general details step
+ * Interface for form values of the connection general details step
  */
 export interface GeneralDetailsFormValuesInterface {
     /**
@@ -721,4 +721,21 @@ export interface OutboundProvisioningConnectorMetaDataInterface {
      * Icon for the connector.
      */
     icon: any;
+}
+
+/**
+ * Interface for form values of the connection settings
+ */
+export interface ConnectionFormValuesInterface {
+    name?: string;
+    NameIDType?: string;
+    RequestMethod?: string;
+    clientId?: string;
+    clientSecret?: string;
+    authorizationEndpointUrl?: string;
+    tokenEndpointUrl?: string;
+    jwks_endpoint?: string;
+    IdPEntityId?: string;
+    SPEntityId?: string;
+    SSOUrl?: string;
 }

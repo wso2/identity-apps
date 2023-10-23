@@ -17,7 +17,11 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
+import FormControl from "@oxygen-ui/react/FormControl";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
+import Radio from "@oxygen-ui/react/Radio";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -29,12 +33,10 @@ import {
     Code,
     EmphasizedSegment,
     Hint,
-    PrimaryButton,
-    Switcher,
-    SwitcherOptionProps
+    PrimaryButton
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -82,15 +84,15 @@ const FORM_ID: string = "idp-certificate-jwks-input-form";
  *
  *  +======================================================================+
  *  |                                                                      |
- *  |   (?) Below is the {@link Switcher} component. When user clicks      |
- *  |       on one switch it will change the subcomponent input type.      |
+ *  |   (?) Below is the {@link RadioGroup} component. When user clicks    |
+ *  |       on one option it will change the subcomponent input type.      |
  *  |                                                                      |
- *  |   +==============+====================+                              |
- *  |   |   JWKS URL   | Upload Certificate |                              |
- *  |   +==============+====================+                              |
+ *  |   +===================================+                              |
+ *  |   | () JWKS URL () Upload Certificate |                              |
+ *  |   +===================================+                              |
  *  |                                                                      |
  *  |                                                                      |
- *  |   (?) Based on the switcher selection the sub component appearance   |
+ *  |   (?) Based on the radio selection the sub component appearance      |
  *  |       will change. For example: if you select JWKS URL it will       |
  *  |       only render a input field to get the URL.                      |
  *  |                                                                      |
@@ -180,8 +182,8 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
         }
     };
 
-    const onSelectionChange = ({ value }: SwitcherOptionProps): void => {
-        setSelectedConfigurationMode(value as CertificateConfigurationMode);
+    const onSelectionChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setSelectedConfigurationMode((event.target as HTMLInputElement).value as CertificateConfigurationMode);
     };
 
     const openAddCertificatesWizard = (): void => {
@@ -198,14 +200,16 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
      */
     const onJWKSFormSubmit = (values: Record<string, any>) => {
 
-        const operation: string = editingIDP?.certificate?.jwksUri ? "REPLACE" : "ADD";
+        const operation: string = editingIDP?.certificate?.jwksUri
+            ? jwksValue ? "REPLACE" : "REMOVE"
+            : "ADD";
 
-        const PATCH_OBJECT: CertificatePatchRequestInterface[] = [ 
+        const PATCH_OBJECT: CertificatePatchRequestInterface[] = [
             {
                 "operation": operation,
                 "path": "/certificate/jwksUri",
                 "value": values.jwks_endpoint
-            } 
+            }
         ];
 
         setIsSubmitting(true);
@@ -258,9 +262,8 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
             uncontrolledForm={ true }
             initialValues={ { jwks_endpoint: editingIDP?.certificate?.jwksUri } }
             onSubmit={ onJWKSFormSubmit }
-        > 
+        >
             <Field.Input
-                required
                 hint={ (
                     <React.Fragment>
                         A JSON Web Key (JWK) Set is a JSON object that represents a set of JWKs. The JSON
@@ -273,7 +276,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 inputType="url"
                 width={ 16 }
                 validation={ (value: string) => {
-                    if (!value || !FormValidation.url(value)) {
+                    if (value && !FormValidation.url(value)) {
                         setIsJwksValueValid(false);
 
                         return t("console:develop.features.applications.forms.inboundSAML" +
@@ -307,7 +310,6 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     label={ t("common:update") }
                     disabled={
                         (
-                            !jwksValue ||
                             !isJwksValueValid ||
                             jwksValue === editingIDP?.certificate?.jwksUri
                         ) ||
@@ -369,7 +371,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
 
     /**
      * Checks if the IDP is a trusted token issuer and has no certificates to display an alert.
-     * 
+     *
      * @returns `true` if the IDP is a trusted token issuer and has no certificates, `false` otherwise.
      */
     const shouldShowNoCertificatesAlert = (): boolean => isTrustedTokenIssuer && !editingIDP?.certificate;
@@ -385,7 +387,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     shouldShowNoCertificatesAlert() && (
                         <Grid xs={ 12 }>
                             <Alert severity="error">
-                                { t("console:develop.features.authenticationProvider.forms.certificateSection." + 
+                                { t("console:develop.features.authenticationProvider.forms.certificateSection." +
                                     "noCertificateAlert", { productName: config.ui.productName } ) }
                             </Alert>
                         </Grid>
@@ -393,26 +395,33 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 }
                 <Grid direction="column" container spacing={ 3 } xs={ 12 }>
                     { isJWKSEnabled && isPEMEnabled && (
-                        <Grid md={ 12 } lg={ 6 }>
-                            <Switcher
-                                widths={ "two" }
-                                compact
-                                data-testid={ `${ testId }-switcher` }
-                                selectedValue={ selectedConfigurationMode }
-                                onChange={ onSelectionChange }
-                                options={ [
-                                    {
-                                        label: t("console:develop.features.authenticationProvider.forms." + 
-                                            "certificateSection.certificateEditSwitch.jwks"),
-                                        value: ("jwks" as CertificateConfigurationMode)
-                                    },
-                                    {
-                                        label: t("console:develop.features.authenticationProvider.forms." + 
-                                            "certificateSection.certificateEditSwitch.pem"),
-                                        value: ("certificates" as CertificateConfigurationMode)
-                                    }
-                                ] }
-                            />
+                        <Grid>
+                            <FormControl>
+                                <RadioGroup
+                                    row
+                                    name="certificate-type"
+                                    onChange={ onSelectionChange }
+                                    data-testid={ `${ testId }-radio-group` }
+                                    value={ selectedConfigurationMode }
+                                >
+                                    <FormControlLabel
+                                        control={ <Radio checked={ selectedConfigurationMode === "jwks" } /> }
+                                        label={
+                                            t("console:develop.features.authenticationProvider.forms." +
+                                                "certificateSection.certificateEditSwitch.jwks")
+                                        }
+                                        value="jwks"
+                                    />
+                                    <FormControlLabel
+                                        control={ <Radio checked={ selectedConfigurationMode === "certificates" } /> }
+                                        label={
+                                            t("console:develop.features.authenticationProvider.forms." +
+                                                "certificateSection.certificateEditSwitch.pem")
+                                        }
+                                        value="certificates"
+                                    />
+                                </RadioGroup>
+                            </FormControl>
                         </Grid>
                     ) }
                     <Grid md={ 12 } lg={ 6 }>
