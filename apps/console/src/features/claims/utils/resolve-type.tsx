@@ -37,8 +37,6 @@ export const resolveType = (attributeType: string, capitalize?: boolean, shortFo
             return "Axschema";
         case ClaimManagementConstants.EIDAS:
             return "eIDAS";
-        case ClaimManagementConstants.OPENID:
-            return "OpenID";
         default:
             return capitalize ? "Custom" : "custom";
     }

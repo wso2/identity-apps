@@ -1691,6 +1691,20 @@ export interface ConsoleNS {
                             IncludeProtocolBinding: FormAttributes;
                             IsUserIdInClaims: FormAttributes;
                             commonAuthQueryParams: FormAttributes;
+
+                            isEnableAssertionSigning: FormAttributes;
+                            includeCert: FormAttributes;
+                            includeNameIDPolicy: FormAttributes;
+                            isEnableAssertionEncryption: FormAttributes;
+
+                            authenticationContextClass: FormAttributes;
+                            attributeConsumingServiceIndex: FormAttributes;
+
+                            isArtifactBindingEnabled: FormAttributes;
+                            artifactResolveEndpointUrl: FormAttributes;
+                            isArtifactResolveReqSigned: FormAttributes;
+                            isArtifactResponseSigned: FormAttributes;
+                            authContextComparisonLevel: FormAttributes;
                         }
                     },
                     outboundConnectorAccordion: {
@@ -3701,10 +3715,6 @@ export interface ConsoleNS {
                         heading: string;
                         description: string;
                     };
-                    openid: {
-                        heading: string;
-                        description: string;
-                    },
                     scim: {
                         heading: string;
                         description: string;
@@ -5046,6 +5056,24 @@ export interface ConsoleNS {
                                 cannotCreateRole: string
                             }
                         };
+                        rolePermission: {
+                            apiResource: {
+                                label: string;
+                                placeholder: string;
+                            };
+                            permissions: {
+                                label: string;
+                                placeholder: string;
+                                tooltips: {
+                                    noScopes: string;
+                                    selectAllScopes: string;
+                                    removeAPIResource: string;
+                                }
+                            };
+                            notifications: {
+                                fetchAPIResourceError: Notification;
+                            };
+                        };
                     };
                     heading: string;
                     permissions: {
@@ -5056,6 +5084,7 @@ export interface ConsoleNS {
                         };
                     };
                     subHeading: string;
+                    back: string;
                     summary: {
                         labels: {
                             domain: {
@@ -5598,7 +5627,8 @@ export interface ConsoleNS {
                             };
                             advanceSearch: {
                                 placeholder: string;
-                            }
+                            };
+                            disabledSecondaryStoreInfo: string;
                         };
                         buttons: {
                             import: string;
@@ -5867,6 +5897,7 @@ export interface ConsoleNS {
                         description: FormField;
                     };
                     connection: {
+                        updatePassword: string;
                         testButton: string;
                         connectionErrorMessage: string;
                     };

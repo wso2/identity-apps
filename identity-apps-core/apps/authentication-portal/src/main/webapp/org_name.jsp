@@ -55,6 +55,7 @@
             }
         }
     }
+    boolean isOrgDiscoveryEnabled = Boolean.parseBoolean(request.getParameter("orgDiscoveryEnabled"));
 %>
 
 <%-- Data for the layout from the page --%>
@@ -120,17 +121,31 @@
 
 
                     <form class="ui large form" id="pin_form" name="pin_form" action="<%=commonauthURL%>" method="GET">
-                        <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization.name")%>:</p>
+                        <div class="field m-0 text-left required">
+                            <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization.name")%></label>
+                        </div>
                         <input type="text" id='ORG_NAME' name="org" size='30'/>
+                        <div class="mt-1" id="emptyOrganizationNameError" style="display: none;">
+                            <i class="red exclamation circle fitted icon"></i>
+                            <span class="validation-error-message" id="emptyOrganizationNameErrorText">
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization.name.cannot.be.empty")%>
+                            </span>
+                        </div>
+                        <input id="prompt" name="prompt" type="hidden" value="orgDiscovery">
                         <input id="idp" name="idp" type="hidden" value="<%=Encode.forHtmlAttribute(idp)%>"/>
                         <input id="authenticator" name="authenticator" type="hidden" value="<%=Encode.forHtmlAttribute(authenticator)%>"/>
                         <input id="sessionDataKey" name="sessionDataKey" type="hidden" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
                         <div class="ui divider hidden"></div>
-                        <div class="align-right buttons">
-                            <button type="submit" class="ui primary large fluid button">
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "submit")%>
-                            </button>
-                        </div>
+                        <input type="submit" id="submitButton" onclick="submitOrgName(); return false;"
+                            value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "submit")%>"
+                            class="ui primary large fluid button" />
+                        <% if (isOrgDiscoveryEnabled) { %>
+                            <div class="ui horizontal divider"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%></div>
+                            <div class="social-login blurring social-dimmer">
+                                <input type="submit" id="discoveryButton" onclick="promptDiscovery();" class="ui fluid button"
+                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.email.address")%>">
+                            </div>
+                        <% } %>
                     </form>
 
                 </div>
@@ -168,5 +183,27 @@
         <%
             }
         %>
+        <script type="text/javascript">
+            function promptDiscovery() {
+                document.getElementById("ORG_NAME").disabled = true;
+                document.getElementById("pin_form").submit();
+            }
+
+            function submitOrgName() {
+                // Show error message when organization name is empty.
+                if (document.getElementById("ORG_NAME").value.length <= 0) {
+                    showEmptyOrganizationNameErrorMessage();
+                    return;
+                }
+                    document.getElementById("prompt").remove();
+                    document.getElementById("pin_form").submit();
+                 }
+
+            // Function to show error message when organization name is empty.
+            function showEmptyOrganizationNameErrorMessage() {
+                var emptyOrganizationNameError = $("#emptyOrganizationNameError");
+                emptyOrganizationNameError.show();
+            }
+        </script>
     </body>
 </html>

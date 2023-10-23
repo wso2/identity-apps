@@ -231,7 +231,7 @@
             },
             "apiResources": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "update": [
                         "internal_application_mgt_update"
@@ -249,7 +249,7 @@
             },
             "applicationRoles": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "update": [],
                     "read": [],
@@ -291,7 +291,15 @@
                 "scopes": {
                     "update": [],
                     "read": [],
-                    "create": [],
+                    "create": [
+                        "internal_user_mgt_view",
+                        "internal_user_mgt_list",
+                        "internal_user_mgt_create",
+                        "internal_user_mgt_delete",
+                        "internal_claim_meta_view",
+                        "internal_userstore_view",
+                        "internal_role_mgt_view"
+                    ],
                     "delete": []
                 }
             },
@@ -551,7 +559,7 @@
                 "scopes": {}
             },
             "identityVerificationProviders": {
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "create": [
                         "internal_idvp_create"
@@ -801,6 +809,16 @@
             "insights": {
                 "disabledFeatures": [],
                 "enabled": false,
+                "scopes": {}
+            },
+            "remoteLogging": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {}
+            },
+            "adminAdvisoryBanner": {
+                "disabledFeatures": [],
+                "enabled": true,
                 "scopes": {}
             }
         },

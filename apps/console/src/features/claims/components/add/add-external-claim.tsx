@@ -497,7 +497,6 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                             <Grid.Column width={ 16 }>
                                 {
                                     (attributeType !== ClaimManagementConstants.OIDC &&
-                                        attributeType !== ClaimManagementConstants.OPENID &&
                                         attributeType !== ClaimManagementConstants.OTHERS) &&
                                     (
                                         <Label className="mb-3 mt-2 ml-0">

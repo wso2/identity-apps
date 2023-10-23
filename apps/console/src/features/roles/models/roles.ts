@@ -17,8 +17,10 @@
  */
 
 import { RolesInterface } from "@wso2is/core/models";
+import { ScopeInterface } from "./apiResources";
 import { CreateGroupMemberInterface } from "../../groups/models";
 import { SchemaAttributeValueInterface } from "../../users/models";
+import { RoleAudienceTypes } from "../constants/role-constants";
 
 /**
  * Interface to store data for create role api.
@@ -46,6 +48,8 @@ export interface CreateRoleMemberInterface {
 export interface CreateRoleFormData {
     domain?: string;
     roleName: string;
+    assignedApplication?: string;
+    roleAudience?: string;
 }
 
 /**
@@ -110,4 +114,124 @@ export interface RoleBasicInterface {
      * Role name.
      */
     roleName: string;
+}
+
+/**
+ * Enum for the role audiences.
+ */
+export enum RoleAudiences {
+    /**
+     * Organization role audience.
+     */
+    ORG = "Organization",
+    /**
+     * Application role audience.
+     */
+    APPLICATION = "Application",
+}
+
+/**
+ * Enum for steps form types of the create role stepper.
+ * @readonly
+ */
+export enum CreateRoleStepsFormTypes {
+    /**
+     * Basic details step.
+     */
+    BASIC_DETAILS = "BasicDetails",
+    /**
+     * Role permissions step.
+     */
+    PERM_LIST = "PermissionList"
+}
+
+/**
+ * Interface to capture current state of the create role interface.
+ */
+export interface CreateRoleStateInterface {
+    /**
+     * Basic details step form data.
+     */
+    [ CreateRoleStepsFormTypes.BASIC_DETAILS ]: CreateRoleFormData;
+}
+
+/**
+ * Interface for roles V2 data.
+ */
+export interface RolesV2Interface {
+    audience: {
+        display: string;
+        type: string;
+        value: string;
+    };
+    displayName: string;
+    id: string;
+    meta: {
+        location: string;
+    };
+}
+
+/**
+ *  Interface for roles V2 response data.
+ */
+export interface RolesV2ResponseInterface {
+    /**
+     * Number of results that match the listing operation.
+     */
+    totalResults?: number;
+    /**
+     * Index of the first element of the page, which will be equal to offset + 1.
+     */
+    startIndex?: number;
+    /**
+     * Schema related to the response.
+     */
+    schemas?: string[];
+    /**
+     * Number of elements in the returned page.
+     */
+    itemsPerPage?: number;
+    /**
+     * Set of roles.
+     */
+    Resources: RolesV2Interface[];
+}
+
+/**
+ *  Interface for associated roles patch operation.
+ */
+export interface AssociatedRolesPatchObjectInterface {
+    allowedAudience: RoleAudienceTypes;
+    roles: BasicRoleInterface[];
+}
+
+export interface AssociatedRolesInterface {
+    allowedAudience: RoleAudienceTypes;
+    roles: BasicRoleInterface[];
+}
+
+export interface BasicRoleInterface {
+    id: string;
+    name?: string;
+}
+
+/**
+ * Interface to capture the selected permissions.
+ */
+export interface SelectedPermissionsInterface {
+    /**
+     * ID of the API resource that the scopes belongs to.
+     */
+    apiResourceId: string;
+    /**
+     * set of scopes names that are selected.
+     */
+    scopes: ScopeInterface[];
+}
+
+/**
+ * Interface to capture options passed to the Autocomplete component in the role section.
+ */
+export interface ChipOptionsInterface {
+    id?: string;
 }

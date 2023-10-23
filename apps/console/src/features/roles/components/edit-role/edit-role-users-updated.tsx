@@ -330,9 +330,9 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         <EmphasizedSegment padded="very">
             <Heading as="h4">
                 { t("console:manage.features.roles.edit.users.heading") }
-                <Heading subHeading ellipsis as="h6">
-                    { t("console:manage.features.roles.edit.users.subHeading") }
-                </Heading>
+            </Heading>
+            <Heading subHeading ellipsis as="h6">
+                { t("console:manage.features.roles.edit.users.subHeading") }
             </Heading>
             {
                 userListFetchRequestError || showEmptyRolesListPlaceholder

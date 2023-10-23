@@ -227,6 +227,19 @@ export const identityProviderConfig: IdentityProviderConfig = {
         showJitProvisioning: true,
         showOutboundProvisioning: true
     },
+    extendedSamlConfig: {
+        attributeConsumingServiceIndexEnabled: true,
+        authContextComparisonLevelEnabled: true,
+        enableAssertionSigningEnabled: true,
+        forceAuthenticationEnabled: true,
+        includeAuthenticationContextEnabled: true,
+        includeNameIDPolicyEnabled: true,
+        includePublicCertEnabled: true,
+        isArtifactBindingEnabled: true,
+        isAssertionEncryptionEnabled: true,
+        responseAuthenticationContextClassEnabled: true,
+        saml2WebSSOUserIdLocationEnabled: true
+    },
     fidoTags: [
         AuthenticatorLabels.PASSWORDLESS,
         AuthenticatorLabels.PASSKEY

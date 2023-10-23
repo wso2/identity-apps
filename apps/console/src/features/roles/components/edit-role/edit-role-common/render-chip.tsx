@@ -19,8 +19,6 @@
 import { ChipProps } from "@oxygen-ui/react";
 import Chip from "@oxygen-ui/react/Chip";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { GroupsInterface } from "apps/console/src/features/groups/models";
-import { UserBasicInterface } from "apps/console/src/features/users/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
 import { ChipMoreDetails } from "./chip-more-details";
 
@@ -32,23 +30,27 @@ interface RenderChipInterface extends IdentifiableComponentInterface, ChipProps 
     /**
      * Callback to set the active option.
      */
-    setActiveOption: (option: GroupsInterface|UserBasicInterface) => void;
+    setActiveOption: (option: any) => void;
     /**
      * Primary text of the chip.
      */
     primaryText: string;
     /**
+     * Secondary text of the chip.
+     */
+    secondaryText?: string;
+    /**
      * User store of the user.
      */
-    userStore: string;
+    userStore?: string;
     /**
      * Option object.
      */
-    option: GroupsInterface | UserBasicInterface;
+    option: any;
     /**
      * Active option object.
      */
-    activeOption: GroupsInterface | UserBasicInterface;
+    activeOption: any;
 }
 
 export const RenderChip: FunctionComponent<RenderChipInterface> = (
@@ -59,6 +61,7 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
         key,
         setActiveOption,
         primaryText,
+        secondaryText,
         userStore,
         option,
         activeOption
@@ -100,6 +103,7 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
                             popoverAnchorEl={ popoverAnchorEl } 
                             onPopoverClose={ handleChipMouseLeave } 
                             primaryText={ primaryText } 
+                            secondaryText={ secondaryText }
                             userStore={ userStore } 
                         />
                     )

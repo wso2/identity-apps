@@ -125,6 +125,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             requestPathAuthenticators: "",
             resourceTypes: "",
             roles: "",
+            rolesV2: "",
             rolesWithoutOrgPath: "",
             rootOrganization: "",
             saml2Meta: "",

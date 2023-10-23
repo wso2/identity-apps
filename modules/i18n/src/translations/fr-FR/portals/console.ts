@@ -5595,10 +5595,6 @@ export const console: ConsoleNS = {
                             "utilisateur qui seront utilisés dans l'API OpenID Connect.",
                         heading: "OpenID Connect"
                     },
-                    openid: {
-                        description: "La représentation du protocole OpenID pour les attributs utilisateur.",
-                        heading: "OpenID"
-                    },
                     scim: {
                         description: "Représentation du protocole SCIM2 pour les attributs " +
                             "utilisateur qui seront utilisés dans l'API SCIM2.",
@@ -8080,14 +8076,14 @@ export const console: ConsoleNS = {
                                 hint: "Définissez le public du rôle.<1> Notez que le public du rôle ne peut pas être modifié. </1>",
                                 label: "Sélectionnez le rôle de rôle",
                                 values: {
-                                    organization: "Rôle de l'organisation",
-                                    application: "Rôle appliqué"
+                                    organization: "Organisation",
+                                    application: "Application"
                                 }
                             },
                             notes: {
-                                orgNote: "Lorsque le rôle que le public est encope, vous ne pouvez attribuer le rôle qu'aux applications qui soutiennent exclusivement les rôles qui soutiennent l'organisation.",
-                                appNote: "Lorsque le rôle que le public est encope des applications, vous ne pouvez attribuer le rôle qu'aux applications qui prennent en charge exclusivement les rôles qui prennent des applications.",
-                                cannotCreateRole: "Vous ne pouvez pas créer de rôle encopique appliqué car il n'y a actuellement aucune application qui prend en charge le rôle de lacopie appliquée.S'il vous plaît <1> Créer une application </1> qui prend en charge les rôles à application pour continuer."
+                                orgNote: "Lorsque le rôle d'audience est l'organisation, vous pouvez associer le rôle à une application qui permet des rôles d'audience d'organisation.",
+                                appNote: "Lorsque le rôle d'audience est une application, vous pouvez associer le rôle à une application qui permet des rôles d'audience d'application.",
+                                cannotCreateRole: "Vous ne pouvez pas créer un rôle avec le public de rôle en tant qu'application car il n'y a actuellement aucune application qui prend en charge les rôles d'audience d'application.S'il vous plaît <1> Créer une application </1> qui prend en charge les rôles d'audience d'application pour continuer."
                             },
                             assignedApplication: {
                                 hint: "Attribuer une application pour le rôle. Notez que l'application attribuée pour ce rôle ne peut pas être modifiée après la création du rôle.",
@@ -8101,6 +8097,29 @@ export const console: ConsoleNS = {
                                     empty: "L'application attribuée est nécessaire pour créer un rôle à application."
                                 }
                             }
+                        },
+                        rolePermission: {
+                            apiResource: {
+                                label: "Sélectionnez la ressource API",
+                                placeholder: "Sélectionnez une ressource API pour attribuer des scopes (autorisations)"
+                            },
+                            permissions: {
+                                label: "Sélectionnez Scopes (autorisations) dans les ressources API sélectionnées",
+                                placeholder: "Sélectionnez des lunettes (autorisations)",
+                                tooltips: {
+                                    noScopes: "Aucune portée disponible pour la ressource API sélectionnée",
+                                    selectAllScopes: "Sélectionnez toutes les portées (autorisations)",
+                                    removeAPIResource: "Supprimer la ressource API"
+                                }
+                            },
+                            notifications: {
+                                fetchAPIResourceError: {
+                                    error: {
+                                        description: "Quelque chose s'est mal passé tout en récupérant les ressources d'API.Veuillez réessayer.",
+                                        message: "Quelque chose s'est mal passé"
+                                    }
+                                }
+                            }
                         }
                     },
                     heading: "Créer un {{type}}",
@@ -8112,6 +8131,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     subHeading: "Créer un nouveau {{type}} dans le système avec des permissions spécifiques",
+                    back: "Retourner",
                     summary: {
                         labels: {
                             domain: {
@@ -8574,15 +8594,15 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
-                        title: "Restaurer la configuration par défaut",
-                        header: "Restaurer la configuration par défaut",
-                        subheader: "Cette action supprimera la configuration existante. Soyez certain avant de continuer.",
+                        title: "Restaurer la configuration par défaut pour les journaux {{logType}}",
+                        header: "Restaurer la configuration par défaut pour les journaux {{logType}}",
+                        subheader: "Cette action supprimera la configuration existante pour les journaux {{logType}}. Veuillez en être sûr avant de continuer.",
                         confirmation: {
                             hint: "Veuillez confirmer votre action.",
                             header: "Êtes-vous sûr?",
-                            message: "Si vous restaurez la configuration par défaut, la publication des journaux à distance risque de ne pas fonctionner correctement. " +
+                            message: "Si vous restaurez la configuration par défaut, la publication de journaux à distance pour les journaux {{logType}} risque de ne pas fonctionner correctement. " +
                             "Veuillez procéder avec prudence.",
-                            content: "Cette action restaurera la configuration de publication des journaux par défaut."
+                            content: "Cette action restaurera la configuration de publication de journaux par défaut pour les journaux {{logType}}."
                         }
                     },
                     notification: {
@@ -8983,7 +9003,9 @@ export const console: ConsoleNS = {
                             },
                             advanceSearch: {
                                 placeholder: "Rechercher par nom d'utilisateur"
-                            }
+                            },
+                            disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
+                                "externes n’est pas disponible pour le moment."
                         },
                         buttons: {
                             import: "Importer"
@@ -9905,6 +9927,7 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     connection: {
+                        updatePassword: "Mettre à jour le mot de passe de connexion",
                         connectionErrorMessage: "Veuillez vérifier les informations de connexion "
                             + "que vous avez saisis : URL, utilisateur, mot de passe, pilote",
                         testButton: "Tester la connexion"

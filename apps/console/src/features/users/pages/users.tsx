@@ -17,7 +17,7 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { CommonHelpers } from "@wso2is/core/helpers";
+import { CommonHelpers, hasRequiredScopes } from "@wso2is/core/helpers";
 import { 
     AlertInterface, 
     AlertLevels, 
@@ -109,6 +109,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const dispatch: Dispatch<any> = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -598,7 +599,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 !isUserListRequestLoading
                 && (
                     <Show when={ AccessControlConstants.USER_WRITE }>
-                        { featureConfig?.bulkUserImport?.enabled
+                        { featureConfig?.bulkUserImport?.enabled &&
+                            hasRequiredScopes(
+                                featureConfig?.bulkUserImport,
+                                featureConfig?.bulkUserImport.scopes.create,
+                                allowedScopes
+                            )
                             ? (
                                 addUserDropDown 
                             ) : (

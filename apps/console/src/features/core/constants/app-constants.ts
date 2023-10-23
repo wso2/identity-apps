@@ -356,8 +356,8 @@ export class AppConstants {
                 "PRIVATE_KEY_JWT_CONFIG_EDIT", 
                 `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration` 
             ],
-            [ "INSIGHTS",`${AppConstants.getAdminViewBasePath()}/insights` ],
-            [ "REMOTE_LOGGING",`${AppConstants.getAdminViewBasePath()}/logs` ]
+            [ "INSIGHTS", `${AppConstants.getAdminViewBasePath()}/insights` ],
+            [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/logs` ]
         ]);
 
         return paths;
