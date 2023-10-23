@@ -1005,8 +1005,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     {
                         !showManualInviteTable ? (
                             <>
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }> 
+                                <Grid.Row columns={ 1 } className="mb-0 pb-0">
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }> 
                                         <Alert severity="warning">
                                             { 
                                                 t("console:manage.features.user.modals.bulkImportUserWizard" +
