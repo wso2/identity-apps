@@ -27,7 +27,13 @@ import useRequest, {
     RequestErrorInterface, 
     RequestResultInterface 
 } from "../../core/hooks/use-request";
-import { CreateRoleInterface, PatchRoleDataInterface, RolesV2ResponseInterface, SearchRoleInterface } from "../models";
+import {
+    CreateRoleInterface,
+    PatchRoleDataInterface,
+    RoleAudiences,
+    RolesV2ResponseInterface,
+    SearchRoleInterface
+} from "../models";
 import { APIResourceInterface, APIResourceListInterface } from "../models/apiResources";
 
 /**
@@ -48,12 +54,15 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  */
 export const getApplicationRolesByAudience = (
     audience: string,
+    appId: string,
     before: string,
     after: string,
     limit: number
 ):Promise<RolesV2ResponseInterface> => {
 
-    const filter: string = `audience.type eq ${ audience.toLowerCase() }`;
+    const filter: string = audience === RoleAudiences.APPLICATION
+        ? `audience.value eq ${ appId }`
+        : `audience.type eq ${ audience.toLowerCase() }`;
 
     const requestConfig: RequestConfigInterface = {
         method: HttpMethods.GET,

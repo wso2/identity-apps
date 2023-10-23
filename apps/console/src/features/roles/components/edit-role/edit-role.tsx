@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,13 +19,13 @@
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { RolesInterface, SBACInterface } from "@wso2is/core/models";
-import { ResourceTab } from "@wso2is/react-components";
+import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { BasicRoleDetails } from "./edit-role-basic";
 import { RoleGroupsList } from "./edit-role-groups";
-import { RolePermissionDetails } from "./edit-role-permission";
+import { UpdatedRolePermissionDetails } from "./edit-role-permission-updated";
 import { RoleUserDetails } from "./edit-role-users";
 import { AppState, FeatureConfigInterface, history } from "../../../core";
 
@@ -90,7 +90,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     }, [ roleObject ]);
 
     const resolveResourcePanes = () => {
-        const panes = [
+        const panes: ResourceTabPaneInterface[] = [
             {
                 menuItem: t("console:manage.features.roles.edit.menuItems.basic"),
                 render: () => (
@@ -111,7 +111,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 menuItem: t("console:manage.features.roles.edit.menuItems.permissions"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <RolePermissionDetails
+                        <UpdatedRolePermissionDetails
                             isReadOnly={ isAdminRole
                                 || !hasRequiredScopes(
                                     featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes) }
