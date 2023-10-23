@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { I18n } from "@wso2is/i18n";
 import {
     Code,
     DocumentationLink,
