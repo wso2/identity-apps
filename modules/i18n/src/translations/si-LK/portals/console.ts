@@ -7355,6 +7355,88 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            organizationDiscovery: {
+                emailDomains: {
+                    actions: {
+                        assign: "විද්‍යුත් තැපැල් වසම පවරන්න",
+                        enable: "Enable email domain discovery"
+                    }
+                },
+                edit: {
+                    back: "Back",
+                    description: "Edit Email Domains",
+                    fields: {
+                        name: {
+                            label: "Organization Name"
+                        },
+                        emailDomains: {
+                            label : "Email Domains",
+                            placeHolder: "Enter email domains"
+                        }
+                    }
+                },
+                notifications: {
+                    disableEmailDomainDiscovery: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while disabling email domain discovery"
+                        },
+                        genericError: {
+                            description: "An error occurred while disabling email domain discovery",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully disabled email domain discovery",
+                            message: "Email domain discovery disabled successfully"
+                        }
+                    },
+                    enableEmailDomainDiscovery: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while enabling email domain discovery"
+                        },
+                        genericError: {
+                            description: "An error occurred while enabling email domain discovery",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully enabled email domain discovery",
+                            message: "Email domain discovery enabled successfully"
+                        }
+                    },
+                    fetchOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while fetching the organization discovery attributes"
+                        },
+                        genericError: {
+                            description: "An error occurred while fetching the organization discovery attributes",
+                            message: "Something went wrong"
+                        }
+                    },
+                    getEmailDomainDiscovery: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while retrieving email domain discovery configuration"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving email domain discovery configuration",
+                            message: "Something went wrong"
+                        }
+                    },
+                    getOrganizationListWithDiscovery: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while getting the organization list with discovery attributes"
+                        },
+                        genericError: {
+                            description: "An error occurred while getting the organization list with discovery attributes",
+                            message: "Something went wrong"
+                        }
+                    }
+                },
+                title: "Email Domain Discovery"
+            },
             organizations: {
                 advancedSearch: {
                     form: {
@@ -8506,6 +8588,7 @@ export const console: ConsoleNS = {
                 editRoles: "භූමිකාව සංස්කරණය කරන්න",
                 editUsers: "පරිශීලක සංස්කරණය කරන්න",
                 editUserstore: "පරිශීලක වෙළඳසැල සංස්කරණය කරන්න",
+                emailDomainDiscovery: "ඊමේල් වසම් සොයාගැනීම",
                 emailTemplateTypes: "",
                 emailTemplates: "විද්‍යුත් තැපැල් ආකෘති",
                 generalConfigurations: "ජනරාල්",
@@ -10048,6 +10131,10 @@ export const console: ConsoleNS = {
                 backButton: "{{name}} අච්චුව වෙත ආපසු යන්න",
                 subTitle: null,
                 title: "{{template}}"
+            },
+            emailDomainDiscovery: {
+                subTitle: "උප සංවිධාන සඳහා විද්‍යුත් තැපැල් වසම් සොයාගැනීම වින්‍යාස කරන්න.",
+                title: "ඊමේල් වසම් සොයාගැනීම"
             },
             emailLocaleAdd: {
                 backButton: "{{name}} අච්චුව වෙත ආපසු යන්න",

@@ -3226,6 +3226,30 @@ export interface ConsoleNS {
                     groupName: FormAttributes;
                 };
             };
+            organizationDiscovery: {
+                emailDomains: {
+                    actions: {
+                        assign: string;
+                        enable: string;
+                    }
+                };
+                edit: {
+                    back: string;
+                    description: string;
+                    fields: {
+                        name: FormAttributes;
+                        emailDomains: FormAttributes;
+                    }
+                };
+                notifications: {
+                    disableEmailDomainDiscovery: Notification;
+                    enableEmailDomainDiscovery: Notification;
+                    fetchOrganizationDiscoveryAttributes: Notification;
+                    getEmailDomainDiscovery: Notification;
+                    getOrganizationListWithDiscovery: Notification;
+                },
+                title: string;
+            };
             organizations: {
                 advancedSearch: {
                     form: {
@@ -5371,6 +5395,7 @@ export interface ConsoleNS {
                 editRoles: string;
                 editUsers: string;
                 editUserstore: string;
+                emailDomainDiscovery: string;
                 emailTemplateTypes: string;
                 emailTemplates: string;
                 generalConfigurations: string;
@@ -6148,6 +6173,7 @@ export interface ConsoleNS {
             addEmailTemplate: EditPage;
             approvalsPage: Page;
             editTemplate: EditPage;
+            emailDomainDiscovery: Page;
             emailLocaleAdd: EditPage;
             emailLocaleAddWithDisplayName: EditPage;
             emailTemplateTypes: Page;
