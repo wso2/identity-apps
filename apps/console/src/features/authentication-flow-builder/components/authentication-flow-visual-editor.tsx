@@ -120,6 +120,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
         defaultAuthenticationSequence,
         isAdaptiveAuthAvailable,
         isValidAuthenticationFlow,
+        refetchApplication,
         removeSignInOption,
         removeSignInStep,
         revertAuthenticationSequenceToDefault,
@@ -342,7 +343,8 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                         )
                     })
                 );
-            });
+            })
+            .finally(() => refetchApplication());
     };
 
     return (

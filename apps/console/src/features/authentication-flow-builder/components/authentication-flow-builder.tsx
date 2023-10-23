@@ -211,15 +211,10 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                         mode={ flowModeToSwitch }
                         open={ showAuthenticationFlowModeSwitchDisclaimerModal }
                         onPrimaryActionClick={ () => {
-                            const previousFlowMode: AuthenticationFlowBuilderModesInterface = activeFlowMode;
-        
                             setActiveFlowMode(flowModeToSwitch);
                             setFlowModeToSwitch(null);
                             setShowAuthenticationFlowModeSwitchDisclaimerModal(false);
-        
-                            if (previousFlowMode.id === FlowModes[1].id) {
-                                refetchApplication();
-                            }
+                            refetchApplication();
                         } }
                         onClose={ () => {
                             setFlowModeToSwitch(null);

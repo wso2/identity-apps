@@ -67,6 +67,7 @@ import { setAuthProtocolMeta } from "../../store";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { InboundFormFactory } from "../forms";
 import { ApplicationCreateWizard } from "../wizard";
+import { useGetApplication } from "../../api/use-get-application";
 
 /**
  * Prop-types for the applications settings component.
@@ -182,6 +183,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const { getLink } = useDocumentation();
 
     const dispatch: Dispatch = useDispatch();
+
+    const {
+        mutate: mutateApplicationGetRequest,
+    } = useGetApplication(application.id);
 
     const authProtocolMeta: AuthProtocolMetaInterface = useSelector(
         (state: AppState) => state.application.meta.protocolMeta);
@@ -344,6 +349,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         updateApplicationDetails({ id: appId, ...values.general })
             .then(async () => {
                 await handleInboundConfigFormSubmit(values.inbound, selectedProtocol);
+
+                mutateApplicationGetRequest();
             })
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
