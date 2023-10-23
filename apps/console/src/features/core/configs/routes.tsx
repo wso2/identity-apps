@@ -483,6 +483,22 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: false
                     },
                     {
+                        category: "extensions:develop.sidePanel.categories.smsProvider",
+                        component: lazy(() =>
+                            import("../../../extensions/components/sms-providers" + "/pages/sms-providers")
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: <EnvelopeGearIcon fill="black" className="icon" />
+                        },
+                        id: "smsProviders",
+                        name: "extensions:develop.sidePanel.smsProvider",
+                        order: 16,
+                        path: AppConstants.getPaths().get("SMS_PROVIDER"),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
                         category: "extensions:manage.sidePanel.categories.AccountManagement",
                         children: [
                             {

@@ -469,6 +469,24 @@
                     ]
                 }
             },
+            "smsProviders": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "update": [
+                        "internal_config_mgt_update"
+                    ],
+                    "delete": [
+                        "internal_config_mgt_delete"
+                    ],
+                    "create": [
+                        "internal_config_mgt_add"
+                    ],
+                    "read": [
+                        "internal_config_mgt_view"
+                    ]
+                }
+            },
             "emailTemplates": {
                 "disabledFeatures": [],
                 "enabled": true,

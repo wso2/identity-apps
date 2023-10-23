@@ -44,6 +44,7 @@ export const getExtendedFeatureResourceEndpoints = (serverHost: string,
         organizationEndpoint: `${ serverHost }/api/asgardeo-enterprise-login/v1/business-user-login/{organization}`,
         organizationPatchEndpoint: `${ serverHost }/api/asgardeo-enterprise-login/v1/business-user-login`,
         resendEndpoint: `${ serverHost }/api/asgardeo-guest/v1/users/invite/{}/resend`,
+        smsProviderEndpoint: `${ serverHost }/api/server/v1/notification-senders/sms`,
         userEndpoint: `${ serverHost }/api/asgardeo-guest/v1/users`,
         userStoreAgentConnection: `${ serverHost }/api/onprem-userstore/v1/connection`,
         userStoreAgentToken: `${ serverHost }/api/onprem-userstore/v1/token`
