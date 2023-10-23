@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { store } from "../../../features/core/store";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceThemeInterface,
@@ -34,12 +35,12 @@ export class EmailCustomizationUtils {
         copyright_text: "&#169; YYYY WSO2 LLC.",
         dark_background_color: "#111111",
         dark_border_color: "#333333",
-        dark_logo_url: "https://wso2.cachefly.net/wso2/sites/all/2022/images/asgadeo-logo-white.png",
+        dark_logo_url: store.getState()?.config?.ui.emailTemplates?.defaultWhiteLogoUrl,
         font_color: "#231F20",
         font_style: "Montserrat",
         light_background_color: "#FFFFFF",
         light_border_color: "transparent",
-        light_logo_url: "https://wso2.cachefly.net/wso2/sites/all/2021/images/asgardeo-wso2-logo-white.png",
+        light_logo_url: store.getState()?.config?.ui.emailTemplates?.defaultLogoUrl,
         primary_color: "#FF7300"
     }
 

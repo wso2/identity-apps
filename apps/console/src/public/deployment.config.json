@@ -215,6 +215,10 @@
         "appName": "Console",
         "appLogoPath": "/assets/images/branding/logo.svg",
         "appWhiteLogoPath": "/assets/images/branding/logo-white.svg",
+        "emailTemplates": {
+            "defaultLogoUrl": "https://wso2.cachefly.net/wso2/sites/all/2023/images/wso2-logo.png",
+            "defaultWhiteLogoUrl": "https://wso2.cachefly.net/wso2/sites/all/2023/images/wso2-logo-inverted.png"
+        },
         "appFaviconPath": "/assets/images/branding/favicon.ico",
         "isGOTEnabledForSuperTenantOnly": true,
         "showAppSwitchButton": true,
