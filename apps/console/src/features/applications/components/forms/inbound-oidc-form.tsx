@@ -167,6 +167,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         [ "data-testid" ]: testId
     } = props;
 
+    const [subjectDN, setTLSClientAuthSubjectDN] = useState(initialValues?.clientAuthentication ?
+            initialValues.clientAuthentication.tlsClientAuthSubjectDn : null);
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
@@ -1007,7 +1009,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         inboundConfigFormValues = {
             ...inboundConfigFormValues,
             clientAuthentication: {
-                tlsClientAuthSubjectDn: values.get("tlsClientAuthSubjectDn"),
+                tlsClientAuthSubjectDn: subjectDN,
                 tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod"),
                 tokenEndpointAuthSigningAlg: values.get("tokenEndpointAuthSigningAlg")
             },
@@ -1764,15 +1766,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".clientAuthentication.fields.subjectDN.placeholder")
                         }
-                        value={
-                            initialValues?.clientAuthentication
-                                ? initialValues.clientAuthentication.tlsClientAuthSubjectDn
-                                : metadata.tlsClientAuthSubjectDn
-                        }
-                        readOnly={ false }
-                        maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
-                        minLength={ 3 }
-                        width={ 16 }
+                        value={ subjectDN }
+                        onChange={(e) => setTLSClientAuthSubjectDN(e.target.value)}
+                        readOnly={false}
+                        maxLength={ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH}
+                        minLength={3}
+                        width={16}
                     />
                 </Grid.Column>
             </Grid.Row>
