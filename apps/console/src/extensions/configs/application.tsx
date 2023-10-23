@@ -16,9 +16,6 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import { I18n } from "@wso2is/i18n";
 import {
     Code,
     DocumentationLink,
@@ -33,7 +30,6 @@ import {
 } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { Trans } from "react-i18next";
-import { Dispatch } from "redux";
 import { Divider, Icon, Message } from "semantic-ui-react";
 import { ApplicationGeneralTabOverride } from "./components/application-general-tab-overide";
 import { MarketingConsentModalWrapper } from "./components/marketing-consent/components";
@@ -53,9 +49,6 @@ import {
 import { ClaimManagementConstants } from "../../features/claims/constants/claim-management-constants";
 import { EventPublisher } from "../../features/core";
 import { AppConstants } from "../../features/core/constants";
-import {
-    IdentityProviderManagementConstants
-} from "../../features/identity-providers/constants/identity-provider-management-constants";
 import { getTryItClientId } from "../components/application/utils/try-it-utils";
 import { getGettingStartedCardIllustrations } from "../components/getting-started/configs";
 import { UsersConstants } from "../components/users/constants";
@@ -512,13 +505,6 @@ export const applicationConfig: ApplicationConfig = {
     },
     signInMethod: {
         authenticatorSelection: {
-            customAuthenticatorAdditionValidation: (
-                authenticatorID: string,
-                stepIndex: number,
-                dispatch: Dispatch
-            ): boolean => {
-                return true;
-            },
             messages: {
                 secondFactorDisabled: (
                     <Trans

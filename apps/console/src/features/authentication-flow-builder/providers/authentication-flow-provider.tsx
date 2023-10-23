@@ -365,6 +365,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         }
 
         if (
+            applicationConfig.signInMethod.authenticatorSelection.customAuthenticatorAdditionValidation &&
             !applicationConfig.signInMethod.authenticatorSelection.customAuthenticatorAdditionValidation(
                 authenticatorId,
                 stepIndex,
