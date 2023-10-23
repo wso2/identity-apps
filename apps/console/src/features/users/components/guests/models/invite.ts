@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { InviteUserStatus } from "../api/invite";
+import { InviteUserStatus } from "apps/console/src/extensions/components/users/models";
 
 /**
   * Enum for role types.

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -36,9 +36,8 @@ interface WizardSummaryProps extends TestableComponentInterface {
 /**
  * Wizard summary form component.
  *
- * @param {WizardSummaryProps} props - Props injected to the component.
+ * @param  props - Props injected to the component.
  *
- * @return {React.ReactElement}
  */
 export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
     props: WizardSummaryProps
@@ -160,7 +159,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                                 <Label.Group>
                                     {
                                         summary.inboundProtocolConfiguration.oidc.grantTypes
-                                            .map((grant, index) => (
+                                            .map((grant:string, index:number) => (
                                                 <Label key={ index } basic circular>{ grant }</Label>
                                             ))
                                     }
@@ -182,7 +181,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             {
                                 summary.inboundProtocolConfiguration.saml.manualConfiguration.assertionConsumerUrls
-                                    .map((url, index) => (
+                                    .map((url:string, index:number) => (
                                         <div className="value url" key={ index }>{ url }</div>
                                     ))
                             }
@@ -206,7 +205,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                                 // TODO: Revert this once the API supports callback URLs as string arrays.
                                 EncodeDecodeUtils.decodeURLRegex(
                                     summary.inboundProtocolConfiguration.oidc.callbackURLs[0])
-                                    .map((url, index) => (
+                                    .map((url:string, index:number) => (
                                         <div className="value url" key={ index }>{ url }</div>
                                     ))
                             }

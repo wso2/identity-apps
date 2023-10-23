@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
     EmphasizedSegment,
@@ -31,7 +31,7 @@ import { Divider, Form, Grid, Modal } from "semantic-ui-react";
 import { UserInviteInterface } from "../../../../../extensions/components/admin-developer/models";
 import { RoleType } from "../models/invite";
 
-interface InviteeRoleSelectionPropsInterface extends TestableComponentInterface {
+interface InviteeRoleSelectionPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     invitee: UserInviteInterface;
     showSelectionModal: boolean;
     handleSelectionModalClose: () => void;
@@ -76,7 +76,7 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
         if (isAllRoleListSelected) {
             const selectedRoleList: string[] = [ ...invitee?.roles ];
 
-            roleList.map((role) => {
+            roleList.map((role:RolesInterface) => {
                 selectedRoleList.push(role.displayName);
             });
             setSelectedRoles(selectedRoleList);
@@ -118,7 +118,7 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
                     <Form.Group>
                         <Divider hidden />
                         {
-                            roleList?.map((role, index) => {
+                            roleList?.map((role:RolesInterface, index:number) => {
                                 const roleName: string[] = role?.displayName?.split("/");
 
                                 if (

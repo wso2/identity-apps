@@ -36,6 +36,7 @@ import {
     ResourceTabPaneInterface
 } from "@wso2is/react-components";
 import { UsersConstants } from "apps/console/src/extensions/components/users/constants";
+import { InvitationStatus } from "apps/console/src/extensions/components/users/models";
 import { AxiosError, AxiosResponse } from "axios";
 import React, {
     FunctionComponent, 
@@ -74,7 +75,7 @@ import { getUserStoreList } from "../../userstores/api";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../userstores/constants/user-store-constants";
 import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../userstores/models/user-stores";
 import { getUsersList, useUsersList } from "../api";
-import { InvitationStatus, useGetParentOrgUserInvites } from "../components/guests/api/invite";
+import { useGetParentOrgUserInvites } from "../components/guests/api/invite";
 import { UserInviteInterface } from "../components/guests/models/invite";
 import { GuestUsersList } from "../components/guests/pages/guest-users-list";
 import { UsersList } from "../components/users-list";

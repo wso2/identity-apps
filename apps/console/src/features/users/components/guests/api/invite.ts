@@ -31,26 +31,6 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpReque
     AsgardeoSPAClient.getInstance());
 
 /**
- * Enum for Invite User Status.
- *
- * @readonly
- */
-export enum InviteUserStatus {
-    PENDING = "PENDING",
-    EXPIRED = "EXPIRED"
-}
-
-/* Enum for invitation status types.
-*
-* @readonly
-*/
-export enum InvitationStatus {
-   ACCEPTED = "Accepted",
-   PENDING = "Pending",
-   EXPIRED = "Expired"
-}
-
-/**
  * Hook to get the parent org user invites list.
  */
 export const useGetParentOrgUserInvites = <Data = InvitationsInterface,

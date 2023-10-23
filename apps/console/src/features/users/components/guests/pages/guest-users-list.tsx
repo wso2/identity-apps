@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
@@ -49,7 +49,7 @@ import { UserInviteInterface } from "../models/invite";
 /**
  * Props for the Guest users list component.
  */
-interface GuestUsersListInterface extends TestableComponentInterface {
+interface GuestUsersListInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     invitationStatusOption: InvitationStatus.PENDING | InvitationStatus.EXPIRED | InvitationStatus.ACCEPTED;
     guestUsersList: UserInviteInterface[];
     onboardedGuestUserList: UserListInterface;
@@ -79,7 +79,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
         searchQuery,
         onSearchQueryClear,
         userTypeSelection,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -310,12 +310,12 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                                 <AnimatedAvatar
                                     name={ invite.email }
                                     size="mini"
-                                    data-testid={ `${ testId }-item-image-inner` }
+                                    data-componentid={ `${ componentId }-item-image-inner` }
                                 />
                             ) }
                             size="mini"
                             spaced="right"
-                            data-testid={ `${ testId }-item-image` }
+                            data-componentid={ `${ componentId }-item-image` }
                             data-suppress=""
                         />
                         <Header.Content>
@@ -384,7 +384,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                         renderer: "semantic-icon"
                     },
                     {
-                        "data-testid": `${ testId }-users-list-item-delete-invitation-button`,
+                        "data-componentid": `${ componentId }-users-list-item-delete-invitation-button`,
                         hidden: () => !hasRequiredScopes(
                             featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes),
                         icon: (): SemanticICONS => "trash alternate",
@@ -406,7 +406,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 showDeleteModal && (
                     <ConfirmationModal
                         primaryActionLoading={ loading }
-                        data-testid={ `${testId}-confirmation-modal` }
+                        data-componentid={ `${componentId}-confirmation-modal` }
                         onClose={ (): void => setShowDeleteModal(false) }
                         type="negative"
                         open={ showDeleteModal }
@@ -420,17 +420,17 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                         onPrimaryActionClick={ (): void => revokeUserInvite(deleteUserInvite.id) }
                         closeOnDimmerClick={ false }
                     >
-                        <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
+                        <ConfirmationModal.Header data-componentid={ `${componentId}-confirmation-modal-header` }>
                             { t("console:manage.features.invite.confirmationModal.deleteInvite.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
-                            data-testid={ `${testId}-confirmation-modal-message` }
+                            data-componentid={ `${componentId}-confirmation-modal-message` }
                             attached
                             negative
                         >
                             { t("console:manage.features.invite.confirmationModal.deleteInvite.message") }
                         </ConfirmationModal.Message>
-                        <ConfirmationModal.Content data-testid={ `${testId}-confirmation-modal-content` }>
+                        <ConfirmationModal.Content data-componentid={ `${componentId}-confirmation-modal-content` }>
                             { t("console:manage.features.invite.confirmationModal.deleteInvite.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
@@ -440,7 +440,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 showResendConfirmationModal && (
                     <ConfirmationModal
                         primaryActionLoading={ loading }
-                        data-testid={ `${testId}-confirmation-modal` }
+                        data-componentid={ `${componentId}-confirmation-modal` }
                         onClose={ (): void => setShowResendConfirmationModal(false) }
                         type="warning"
                         open={ showResendConfirmationModal }
@@ -454,17 +454,17 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                         onPrimaryActionClick={ (): void => handleResendUserInvite(resendUserInvite.id) }
                         closeOnDimmerClick={ false }
                     >
-                        <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
+                        <ConfirmationModal.Header data-componentid={ `${componentId}-confirmation-modal-header` }>
                             { t("console:manage.features.invite.confirmationModal.resendInvite.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
-                            data-testid={ `${testId}-confirmation-modal-message` }
+                            data-componentid={ `${componentId}-confirmation-modal-message` }
                             attached
                             warning
                         >
                             { t("console:manage.features.invite.confirmationModal.resendInvite.message") }
                         </ConfirmationModal.Message>
-                        <ConfirmationModal.Content data-testid={ `${testId}-confirmation-modal-content` }>
+                        <ConfirmationModal.Content data-componentid={ `${componentId}-confirmation-modal-content` }>
                             { t("console:manage.features.invite.confirmationModal.resendInvite.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>

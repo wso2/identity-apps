@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,12 +28,12 @@ export const getUsersResourceEndpoints = (serverHost: string): UsersResourceEndp
     return {
         bulk: `${ serverHost }/scim2/Bulk`,
         groups: `${ serverHost }/scim2/Groups`,
+        guests: `${ serverHost }/api/server/v1/guests/invite`,
+        guestsList: `${ serverHost }/api/server/v1/guests/invitations`,
         me: `${serverHost}/scim2/Me`,
         schemas: `${ serverHost }/scim2/Schemas`,
         userSessions: `${ serverHost }/api/users/v1/{0}/sessions`,
         userStores: `${ serverHost }/api/server/v1/userstores`,
         users: `${ serverHost }/scim2/Users`,
-        guests: `${ serverHost }/api/server/v1/guests/invite`,
-        guestsList: `${ serverHost }/api/server/v1/guests/invitations`,
     };
 };

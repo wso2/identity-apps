@@ -20,8 +20,9 @@ import { AlertLevels, RolesInterface, TestableComponentInterface } from "@wso2is
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
-import { UserInviteInterface } from "apps/console/src/extensions/components/users/models";
-import { InternalAdminFormDataInterface } from "apps/console/src/extensions/components/users/models";
+import { 
+    InternalAdminFormDataInterface, 
+    UserInviteInterface } from "apps/console/src/extensions/components/users/models";
 import { UserTypeSelection } from "apps/console/src/extensions/components/users/wizard";
 import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -37,8 +38,7 @@ import { AddConsumerUserGroups } from "./steps/consumer-user-groups";
 import { RolePermissions } from "./user-role-permissions";
 import { AddUserWizardSummary } from "./wizard-summary";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
-import { UserAccountTypes } from "../../../../extensions/components/users/constants";
-import { UsersConstants } from "../../../../extensions/components/users/constants";
+import { UserAccountTypes, UsersConstants } from "../../../../extensions/components/users/constants";
 import { SCIMConfigs } from "../../../../extensions/configs/scim";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
@@ -128,8 +128,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         defaultUserTypeSelection,
         adminTypeSelection,
         isSubOrg,
-        showStepper,
-        conditionallyShowStepper,
         requiredSteps,
         userStore,
         [ "data-testid" ]: testId
@@ -170,7 +168,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ isUserSummaryEnabled ] = useState(false);
     const [ , setIsStepsUpdated ] = useState(false);
     const [ isAlphanumericUsername, setIsAlphanumericUsername ] = useState<boolean>(false);
-    const [ askPasswordFromUser, ] = useState<boolean>(true);
+    const [ askPasswordFromUser ] = useState<boolean>(true);
     const [ , setFinishButtonDisabled ] = useState<boolean>(false);
     const [ , setBasicDetailsLoading ] = useState<boolean>(false);
 
@@ -190,10 +188,16 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         data: validationData
     } = useValidationConfigData();
 
+    /**
+     * Update selected user store when userStore changes
+     */
     useEffect(() => {
         setSelectedUserStore(userStore);
     }, [ userStore ]);
 
+    /**
+     * Toggle view settings based on current wizard step
+     */
     useEffect(() => {
         if (currentWizardStep != 3) {
             setViewRolePermissions(false);
@@ -201,6 +205,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setViewNextButton(true);
     }, [ currentWizardStep ]);
 
+    /**
+     * Fetch group list based on selected user store or reset groups if not a user
+     */
     useEffect(() => {
         if (defaultUserTypeSelection === UserAccountTypes.USER) {
             getGroupListForDomain(selectedUserStore);
@@ -211,6 +218,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         }
     }, [ selectedUserStore ]);
 
+    /**
+     * Set user type in wizard state based on defaultUserTypeSelection
+     */
     useEffect(() => {
 
         if (!defaultUserTypeSelection) {
@@ -226,6 +236,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     }, [ defaultUserTypeSelection ]);
 
+    /**
+     * Determine if alphanumeric username is enabled
+     */
     useEffect(() => {
         setIsAlphanumericUsername(
             getUsernameConfiguration(validationData)?.enableValidator === "true"
@@ -234,6 +247,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         );
     }, [ validationData ]);
 
+    /**
+     * Toggle view of role permissions based on role selection
+     */
     useEffect(() => {
         if (!selectedRoleId) {
             return;
@@ -244,6 +260,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         }
     }, [ isRoleSelected ]);
 
+    /**
+     * Fetch initial role list based on conditions
+     */
     useEffect(() => {
         if (initialRoleList.length === 0) {
             if (isRootOrganization) {
@@ -286,12 +305,18 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setPartiallyCompletedStep(undefined);
     }, [ partiallyCompletedStep ]);
 
+    /**
+     * Fetch group list based on domain in basic details of wizardState
+     */
     useEffect(() => {
         if ( wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain) {
             getGroupListForDomain(wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain);
         }
     }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain ]);
 
+    /**
+     * Update wizard steps and related state based on various conditions
+     */
     useEffect(() => {
 
         if (!wizardState) {
@@ -358,6 +383,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     }, [ fixedGroupList, wizardState && wizardState[ WizardStepsFormTypes.USER_TYPE ].userType, 
         isUserSummaryEnabled, defaultUserTypeSelection ]);
 
+    /**
+     * Function to fetch and update group list for a given domain
+     */
     const getGroupListForDomain = (domain: string) => {
         setBasicDetailsLoading(true);
         getGroupList(domain, excludedAttributes)
@@ -480,8 +508,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     };
 
     const navigateToNext = () => {
-        // debugger
-        // console.log("STEP: ", currentWizardStep)
         switch (currentWizardStep) {
             case 0:
                 setSubmitGeneralSettings();
@@ -1115,7 +1141,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      * This function handles sending the invitation to the external admin user.
      */
     const sendParentOrgInvitation = (invite: UserInviteInterface) => {
-        debugger;
         if (invite != null) {
             setIsSubmitting(true);
     
@@ -1136,7 +1161,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     // Axios throws a generic `Network Error` for 401 status.
                     // As a temporary solution, a check to see if a response
                     // is available has be used.
-                    console.log("ERROR: ", error);
                     if (!error.response || error.response.status === 401) {
                         closeWizard();
                         dispatch(addAlert({
@@ -1189,9 +1213,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 .finally(() => {
                     setIsSubmitting(false);
                 });
-        } else {
-            debugger;
-        }
+        } 
     };
 
     /**
@@ -1216,36 +1238,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     };
 
     /**
-     * Check whether to hide step section or not.
-     * @returns Show steps or not.
-     */
-    const showSteps = (): boolean => {
-        if (defaultUserTypeSelection === UserAccountTypes.USER) {
-            return true;
-        }
-
-        if (fixedGroupList?.length === 0) {
-            return false;
-        }       
-        if (!conditionallyShowStepper) {
-            return showStepper;
-        } else {
-            if (fixedGroupList?.length) {
-                return showStepper && ((defaultUserTypeSelection !== UserAccountTypes.USER ||
-                    fixedGroupList?.length !== 0));
-            }
-
-            return false;
-        }
-    };
-
-    /**
      * Resolves the step content.
      *
      * @returns Step content.
      */
     const resolveStepContent = (): ReactElement => {
-        console.log(wizardSteps[ currentWizardStep ]?.name);
         switch (wizardSteps[ currentWizardStep ]?.name) {
             case WizardStepsFormTypes.USER_TYPE:
                 return getUserSelectionWizardStep()?.content;
@@ -1293,12 +1290,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const showExternalUserWizard = (): ReactElement => {
         return (
-            <>
-                <Modal.Content className="content-container" scrolling>
-                    { alert && alertComponent }
-                    { resolveStepContent() }
-                </Modal.Content>
-            </>
+            <Modal.Content className="content-container" scrolling>
+                { alert && alertComponent }
+                { resolveStepContent() }
+            </Modal.Content>
+
         );
     };
 

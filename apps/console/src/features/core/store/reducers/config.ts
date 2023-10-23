@@ -104,6 +104,8 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             getSecretType: "",
             governanceConnectorCategories: "",
             groups: "",
+            guests: "",
+            guestsList: "",
             identityProviders: "",
             jwtAuthenticationServiceMgt: "",
             localAuthenticators: "",
@@ -142,9 +144,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             users: "",
             usersSuperOrganization: "",
             validationServiceMgt: "",
-            wellKnown: "",
-            guests: "",
-            guestsList: "",
+            wellKnown: ""
         },
         features: {
             applications: null,
