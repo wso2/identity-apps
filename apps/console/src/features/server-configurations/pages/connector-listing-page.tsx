@@ -201,7 +201,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 <Grid xs={ 12 } lg={ 6 } key={ loadedPlaceholders }>
                     <div 
                         className="ui card fluid settings-card"
-                        data-testid={`${testId}-loading-card`}
+                        data-testid={ `${testId}-loading-card` }
                     >
                         <div className="content no-padding">
                             <div className="header-section">

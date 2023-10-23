@@ -19,7 +19,6 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Section } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Divider } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
 import { getSettingsSectionIcons } from "../../server-configurations";
 
