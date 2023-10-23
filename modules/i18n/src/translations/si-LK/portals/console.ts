@@ -8015,6 +8015,16 @@ export const console: ConsoleNS = {
                     placeholder: "භූමිකාවේ නම අනුව සොයන්න"
                 },
                 edit: {
+                    placeholders: {
+                        errorPlaceHolder: {
+                            action: "ආපසු යන්න",
+                            subtitles: {
+                                0: "ඉල්ලූ භූමිකාව ලබා ගැනීමේදී දෝෂයක් ඇතිවිය, සමහර විට භූමිකාව නොපවතින නිසා විය හැකිය.",
+                                1: "කරුණාකර නැවත උත්සාහ කරන්න."
+                            },
+                            title: "යම් දෝෂයක් ඇති වී ඇත"
+                        }
+                    },
                     basics: {
                         buttons: {
                             update: "යාවත්කාලීන කරන්න"
@@ -8265,6 +8275,12 @@ export const console: ConsoleNS = {
                     fetchRoles: {
                         genericError: {
                             description: "භූමිකාවන් ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        }
+                    },
+                    fetchRole: {
+                        genericError: {
+                            description: "භූමිකාව ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
                             message: "යම් දෝෂයක් ඇති වී ඇත"
                         }
                     },
@@ -8782,8 +8798,8 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "සමූහ පරිශීලක ආනයනය​",
-                        subTitle: "ගොනුවක් භාවිතයෙන් බහු පරිශීලකයින් ආනයනය කරන්න.",
+                        title: "බහු පරිශීලකයින්ට ආරාධනා කරන්න​",
+                        subTitle: "සංවිධානයට බහු පරිශීලකයින්ට ආරාධනා කරන්න.",
                         wizardSummary: {
                             successCount: "සාර්ථකත්ව ගණන",
                             failedCount: "අසාර්ථක වූ ගණන",
@@ -8819,7 +8835,22 @@ export const console: ConsoleNS = {
                                 placeholder: "පරිශීලක නාමයෙන් සොයන්න"
                             },
                             disabledSecondaryStoreInfo: "බාහිර පරිශීලක වෙළඳසැල් වෙත පරිශීලක තොග ආනයනය මේ මොහොතේ ලබා " +
-                                "දිය නොහැක."
+                                "දිය නොහැක.",
+                            manualCreation: {
+                                hint: "ඊමේල් එකතු කරන්න සහ බහු පරිශීලකයින්ට ආරාධනා යවන්න.",
+                                emailsLabel: "ඊමේල්",
+                                emailsPlaceholder: "ඊමේල් ලිපින ඇතුලත් කරන්න",
+                                disabledHint: "ඔබගේ සංවිධානයේ අක්ෂරාංක පරිශීලක නාම භාවිතය හේතුවෙන් අතින් විකල්පය අබල කර ඇත.",
+                                upload: {
+                                    buttonText: "CSV ගොනුව උඩුගත කරන්න",
+                                    description: "CSV ගොනුවක් මෙතැනට ඇද දමන්න."
+                                },
+                                primaryButton: "ආරාධනා කරන්න",
+                                warningMessage: "පරිශීලක නාමයක් ලෙස විද්‍යුත් තැපෑල සක්‍රීය කර ඇති විට පමණක් බහු පරිශීලකයින්ට ආරාධනා කිරීමේ අත්පොත විකල්පය ලබා ගත හැක."
+                            },
+                            fileBased: {
+                                hint: "CSV ගොනුවක් භාවිතයෙන් බහු පරිශීලකයින්ට තොග වශයෙන් ආරාධනා කරන්න."
+                            }
                         },
                         buttons: {
                             import: "ආනයනය කරන්න"

@@ -8183,6 +8183,16 @@ export const console: ConsoleNS = {
                     placeholder: "Rechercher par nom de rôle"
                 },
                 edit: {
+                    placeholders: {
+                        errorPlaceHolder: {
+                            action: "Retourner",
+                            subtitles: {
+                                0: "Une erreur s'est produite lors de la récupération du rôle demandé, peut-être parce que le rôle n'existe pas.",
+                                1: "Please try again."
+                            },
+                            title: "Quelque chose s'est mal passé"
+                        }
+                    },
                     basics: {
                         buttons: {
                             update: "Mettre à jour"
@@ -8443,6 +8453,12 @@ export const console: ConsoleNS = {
                     fetchRoles: {
                         genericError: {
                             description: "Une erreur s'est produite lors de la récupération des rôles.",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
+                    fetchRole: {
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération du rôle.",
                             message: "Quelque chose s'est mal passé"
                         }
                     },
@@ -8981,8 +8997,8 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Importer des utilisateurs en masse",
-                        subTitle: "Importez plusieurs utilisateurs à l'aide d'un fichier CSV..",
+                        title: "Inviter plusieurs utilisateurs",
+                        subTitle: "Invitez plusieurs utilisateurs dans l’organisation.",
                         wizardSummary: {
                             successCount: "Nombre de réussites",
                             failedCount: "Nombre d'échecs",
@@ -9018,7 +9034,22 @@ export const console: ConsoleNS = {
                                 placeholder: "Rechercher par nom d'utilisateur"
                             },
                             disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
-                                "externes n’est pas disponible pour le moment."
+                                "externes n’est pas disponible pour le moment.",
+                            manualCreation: {
+                                hint: "Ajoutez des e-mails et envoyez des invitations à plusieurs utilisateurs.",
+                                emailsLabel: "E-mails",
+                                emailsPlaceholder: "Entrez les adresses e-mail",
+                                disabledHint: "TL'option manuelle est désactivée en raison de l'utilisation de noms d'utilisateur alphanumériques dans votre organisation.",
+                                upload: {
+                                    buttonText: "Télécharger le fichier CSV",
+                                    description: "Faites glisser et déposez un fichier CSV ici."
+                                },
+                                primaryButton: "Inviter",
+                                warningMessage: "The manual option to invite multiple users is available only when email as username is enabled."
+                            },
+                            fileBased: {
+                                hint: "Invitez plusieurs utilisateurs en masse à l’aide d’un fichier CSV."
+                            }
                         },
                         buttons: {
                             import: "Importer"

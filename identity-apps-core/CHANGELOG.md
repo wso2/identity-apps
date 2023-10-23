@@ -1,5 +1,18 @@
 # @wso2is/identity-apps-core
 
+## 2.0.21
+
+### Patch Changes
+
+- [#4282](https://github.com/wso2/identity-apps/pull/4282) [`17398e8717`](https://github.com/wso2/identity-apps/commit/17398e8717dc45289b366caf2603290b1dd60f74) Thanks [@dewniMW](https://github.com/dewniMW)! - Update web.xml.j2 of authentication portal
+
+* [#4278](https://github.com/wso2/identity-apps/pull/4278) [`8be0337845`](https://github.com/wso2/identity-apps/commit/8be03378456c5b8799fc3052e4b7a315b65f7013) Thanks [@Achintha444](https://github.com/Achintha444)! - Add permissions selection section to the create role interface
+
+- [#4280](https://github.com/wso2/identity-apps/pull/4280) [`7ee4e2e360`](https://github.com/wso2/identity-apps/commit/7ee4e2e360f463be9b9ca72814e4ee90077995da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update roles list interface
+
+- Updated dependencies [[`8be0337845`](https://github.com/wso2/identity-apps/commit/8be03378456c5b8799fc3052e4b7a315b65f7013)]:
+  - @wso2is/theme@2.0.18
+
 ## 2.0.20
 
 ### Patch Changes

@@ -1,5 +1,21 @@
 # @wso2is/console
 
+## 2.1.8
+
+### Patch Changes
+
+- [#4277](https://github.com/wso2/identity-apps/pull/4277) [`803278ca83`](https://github.com/wso2/identity-apps/commit/803278ca8368e8fa6a810473b22cb8e84559c7ed) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add application roles v2 UI
+
+* [#4278](https://github.com/wso2/identity-apps/pull/4278) [`8be0337845`](https://github.com/wso2/identity-apps/commit/8be03378456c5b8799fc3052e4b7a315b65f7013) Thanks [@Achintha444](https://github.com/Achintha444)! - Add permissions selection section to the create role interface
+
+- [#4271](https://github.com/wso2/identity-apps/pull/4271) [`5322255557`](https://github.com/wso2/identity-apps/commit/532225555766a62e4fcab31166e9bc9392a1584c) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Modify API Resource UIs to support new API Resource Mgt Service
+
+* [#4280](https://github.com/wso2/identity-apps/pull/4280) [`7ee4e2e360`](https://github.com/wso2/identity-apps/commit/7ee4e2e360f463be9b9ca72814e4ee90077995da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update roles list interface
+
+* Updated dependencies [[`8be0337845`](https://github.com/wso2/identity-apps/commit/8be03378456c5b8799fc3052e4b7a315b65f7013), [`7ee4e2e360`](https://github.com/wso2/identity-apps/commit/7ee4e2e360f463be9b9ca72814e4ee90077995da)]:
+  - @wso2is/i18n@2.0.11
+  - @wso2is/theme@2.0.18
+
 ## 2.1.7
 
 ### Patch Changes

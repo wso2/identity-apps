@@ -1206,7 +1206,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         name: "extensions:develop.sidePanel.apiResources",
                         path: APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     }
                 ],
                 component: lazy(() =>

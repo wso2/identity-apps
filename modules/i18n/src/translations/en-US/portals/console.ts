@@ -9943,6 +9943,16 @@ export const console: ConsoleNS = {
                     placeholder: "Search by role name"
                 },
                 edit: {
+                    placeholders: {
+                        errorPlaceHolder: {
+                            action: "Go back",
+                            subtitles: {
+                                0: "An error occurred while retrieving the requested role, possibly because the role does not exist.",
+                                1: "Please try again."
+                            },
+                            title: "Something went wrong"
+                        }
+                    },
                     basics: {
                         buttons: {
                             update: "Update"
@@ -10198,6 +10208,12 @@ export const console: ConsoleNS = {
                     fetchRoles: {
                         genericError: {
                             description: "An error occurred while retrieving roles.",
+                            message: "Something went wrong"
+                        }
+                    },
+                    fetchRole: {
+                        genericError: {
+                            description: "An error occurred while retrieving the role.",
                             message: "Something went wrong"
                         }
                     },
@@ -10714,8 +10730,8 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Bulk Import Users",
-                        subTitle: "Import multiple users using a CSV file.",
+                        title: "Invite multiple users",
+                        subTitle: "Invite multiple users to the organization.",
                         wizardSummary: {
                             successCount: "Successful Imports",
                             failedCount: "Failed Imports",
@@ -10751,7 +10767,22 @@ export const console: ConsoleNS = {
                                 placeholder: "Search by Username"
                             },
                             disabledSecondaryStoreInfo: "Bulk import to external user stores is not available " +
-                                "at the moment."
+                                "at the moment.",
+                            manualCreation: {
+                                hint: "Add emails and send invitations to multiple users.",
+                                emailsLabel: "Emails",
+                                emailsPlaceholder: "Enter email addresses",
+                                disabledHint: "The manual option is disabled due to the usage of alphanumeric usernames in your organization.",
+                                upload: {
+                                    buttonText: "Upload CSV File",
+                                    description: "Drag and drop a CSV file here."
+                                },
+                                primaryButton: "Invite",
+                                warningMessage: "The manual option to invite multiple users is available only when email as username is enabled."
+                            },
+                            fileBased: {
+                                hint: "Bulk invite multiple users using a CSV file."
+                            }
                         },
                         buttons: {
                             import: "Import"
@@ -11226,8 +11257,8 @@ export const console: ConsoleNS = {
                     metaColumnBtn: "Columns"
                 },
                 addUserDropDown: {
-                    addNewUser:  "Add User",
-                    bulkImport: "Bulk Import"
+                    addNewUser:  "Single User",
+                    bulkImport: "Multiple Users"
                 },
                 confirmations: {
                     terminateAllSessions: {
