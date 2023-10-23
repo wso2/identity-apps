@@ -808,6 +808,7 @@ export interface ConsoleNS {
                                     subjectIncludeUserDomain: FormAttributes;
                                     subjectUseMappedLocalSubject: FormAttributes;
                                     subjectType: FormAttributes;
+                                    sectorIdentifierURI: FormAttributes;
                                 };
                                 heading: string;
                             };
@@ -5053,7 +5054,7 @@ export interface ConsoleNS {
                 };
             };
             serverConfigs: {
-                adminAdvisory: {    
+                adminAdvisory: {
                     configurationEditSection: {
                         backButtonLabel: string;
                         pageHeading: string;
@@ -5065,7 +5066,7 @@ export interface ConsoleNS {
                                 placeholder: string;
                             };
                         };
-                    };      
+                    };
                     configurationSection: {
                         disabled: string;
                         description: string;

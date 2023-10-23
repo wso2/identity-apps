@@ -1419,6 +1419,29 @@ export const console: ConsoleNS = {
                                         validations: {
                                             empty: "Ceci est un champ obligatoire."
                                         }
+                                    },
+                                    subjectType: {
+                                        label: "Type de sujet",
+                                        public: {
+                                            label: "public",
+                                            hint: "Cette option utilisera l'identifiant public du sujet comme sujet."
+                                        },
+                                        pairwise: {
+                                            label: "par paire",
+                                            hint: "Cette option utilisera l'identifiant de sujet par paire comme sujet."
+                                        }
+                                    },
+                                    sectorIdentifierURI: {
+                                        label: "URI de l'identifiant du sujet",
+                                        hint: "Doit configurer cette valeur si plusieurs URI de rappel avec des noms" +
+                                            " d'hôte différents sont configurés.",
+                                        placeholder: "Entrez l'URI de l'identifiant du sujet",
+                                        validations: {
+                                            invalid: "L'URL saisie n'est pas HTTPS. Veuillez ajouter une URL valide.",
+                                            required: "Ce champ est obligatoire pour une application fonctionnelle." +
+                                                " Toutefois, si vous envisagez d’essayer l’exemple d’application, ce" +
+                                                " champ peut être ignoré."
+                                        }
                                     }
                                 },
                                 heading: "Sujet"
@@ -1845,6 +1868,12 @@ export const console: ConsoleNS = {
                                         validations: {
                                             empty: "Ceci est un champ obligatoire."
                                         }
+                                    },
+                                    signing: {
+                                        hint: "La liste déroulante contient les algorithmes de signature " +
+                                            "<1>id_token</1> pris en charge.",
+                                        label: "Algorithme de signature de réponse au jeton d'identification",
+                                        placeholder: "Sélectionnez l'algorithme"
                                     }
                                 },
                                 heading: "jeton d'identification"
@@ -1896,6 +1925,65 @@ export const console: ConsoleNS = {
                                 heading: "PKCE",
                                 hint: "Sélectionnez cette option pour obliger l'application " +
                                     "à inclure un code_challenge dans la demande d'autorisation."
+                            },
+                            clientAuthentication: {
+                                fields: {
+                                    authenticationMethod: {
+                                        hint: "La liste déroulante contient les méthodes d'authentification client " +
+                                            "prises en charge.",
+                                        label: "Méthode d'authentification client",
+                                        placeholder: "Sélectionnez la méthode"
+                                    },
+                                    signingAlgorithm: {
+                                        hint: "La liste déroulante contient les algorithmes de signature" +
+                                            " d'assertions client pris en charge.",
+                                        label: "Algorithme de signature",
+                                        placeholder: "Sélectionnez l'algorithme"
+                                    },
+                                    subjectDN: {
+                                        label: "DN du sujet d'authentification du client TLS"
+                                    }
+                                },
+                                heading: "Authentification client"
+                            },
+                            pushedAuthorization: {
+                                fields: {
+                                    requirePushAuthorizationRequest: {
+                                        hint: "Sélectionnez cette option pour rendre obligatoire l'envoi par" +
+                                            " l'application des demandes d'autorisation sous forme de demandes" +
+                                            " d'autorisation poussées.",
+                                        label: "Exiger des demandes d'autorisation poussées"
+                                    }
+                                },
+                                heading: "Demandes d'autorisation poussées"
+                            },
+                            requestObject: {
+                                fields: {
+                                    requireSignedRequestObject: {
+                                        hint: "Sélectionnez cette option pour rendre obligatoire l'envoi par les " +
+                                            "applications d'objets de demande signés.",
+                                        label: "Exiger que l'objet de la demande soit signé"
+                                    },
+                                    requestObjectSigningAlg: {
+                                        hint: "La liste déroulante contient les algorithmes de signature d'<1>objet " +
+                                            "de requête</1> pris en charge.",
+                                        label: "Demander un algorithme de signature d'objet",
+                                        placeholder: "Sélectionnez l'algorithme"
+                                    },
+                                    requestObjectEncryptionAlgorithm: {
+                                        hint: "La liste déroulante contient les algorithmes de chiffrement " +
+                                            "<1>objet de requête</1> pris en charge.",
+                                        label: "Demander un algorithme de chiffrement d'objet",
+                                        placeholder: "Sélectionnez l'algorithme"
+                                    },
+                                    requestObjectEncryptionMethod: {
+                                        hint: "La liste déroulante contient les méthodes de chiffrement " +
+                                            "<1>objet de requête</1> prises en charge.",
+                                        label: "Demander une méthode de chiffrement d'objet",
+                                        placeholder: "Sélectionnez la méthode"
+                                    }
+                                },
+                                heading: "Objet de demande"
                             },
                             refreshToken: {
                                 fields: {

@@ -1395,10 +1395,28 @@ export const console: ConsoleNS = {
                                     },
                                     subjectType: {
                                         label: "Subject type",
-                                        hintPublic: "This option will use the public subject identifier as the" +
-                                            " subject. ",
-                                        hintPairwise: "This option will use the pairwise subject identifier as the" +
-                                            "subject. "
+                                        public: {
+                                            label: "public",
+                                            hint: "This option will use the public subject identifier as the" +
+                                                " subject."
+                                        },
+                                        pairwise: {
+                                            label: "pairwise",
+                                            hint: "This option will use the pairwise subject identifier as the" +
+                                                " subject."
+                                        }
+                                    },
+                                    sectorIdentifierURI: {
+                                        label: "Subject Identifier URI",
+                                        hint: "Must configure this value if multiple callback URIs with" +
+                                            " different hostnames are configured.",
+                                        placeholder: "Enter the subject identifier URI",
+                                        validations: {
+                                            invalid: "The entered URL isnot HTTPS. Please add a valid URL.",
+                                            required: "This field is required for a functional app. " +
+                                                "However, if you are planning to try the sample app, " +
+                                                "this field can be ignored."
+                                        }
                                     }
                                 },
                                 heading: "Subject"
