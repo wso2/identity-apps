@@ -173,13 +173,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                     };
                 }
 
-                if (template.id === "linkedin-idp") {
-                    return {
-                        ...template,
-                        comingSoon: true
-                    };
-                }
-
                 return template;
             }
         );
