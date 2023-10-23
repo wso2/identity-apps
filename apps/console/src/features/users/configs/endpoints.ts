@@ -34,6 +34,6 @@ export const getUsersResourceEndpoints = (serverHost: string): UsersResourceEndp
         schemas: `${ serverHost }/scim2/Schemas`,
         userSessions: `${ serverHost }/api/users/v1/{0}/sessions`,
         userStores: `${ serverHost }/api/server/v1/userstores`,
-        users: `${ serverHost }/scim2/Users`,
+        users: `${ serverHost }/scim2/Users`
     };
 };
