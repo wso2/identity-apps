@@ -801,10 +801,16 @@
                                         </div>
                                     </div>
                                     <br>
-                                    <% } else { 
-                                        String[] imageURLSegements = imageURL.split("/");
-                                        String logoFileName = imageURLSegements[imageURLSegements.length - 1];
-                                        String logoPath = "libs/themes/default/assets/images/identity-providers/" + logoFileName;
+                                    <% } else {
+
+                                        String logoPath = imageURL;
+                                        
+                                        if (!imageURL.isEmpty() && imageURL.contains("/")) {
+                                            String[] imageURLSegements = imageURL.split("/");
+                                            String logoFileName = imageURLSegements[imageURLSegements.length - 1];
+
+                                            logoPath = "libs/themes/default/assets/images/identity-providers/" + logoFileName;
+                                        }
                                     %>
                                     <div class="social-login blurring social-dimmer">
                                         <div class="field">
