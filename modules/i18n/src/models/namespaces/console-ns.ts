@@ -5134,6 +5134,9 @@ export interface ConsoleNS {
                     placeholder: string;
                 };
                 edit: {
+                    placeholders: {
+                        errorPlaceHolder: Placeholder;
+                    };
                     basics: {
                         buttons: {
                             update: string;
@@ -5255,6 +5258,7 @@ export interface ConsoleNS {
                 notifications: {
                     deleteRole: Notification;
                     fetchRoles: Notification;
+                    fetchRole: Notification;
                     updateRole: Notification;
                     createRole: Notification;
                     createPermission: Notification;

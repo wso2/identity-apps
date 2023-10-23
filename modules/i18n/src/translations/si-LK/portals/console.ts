@@ -8015,6 +8015,16 @@ export const console: ConsoleNS = {
                     placeholder: "භූමිකාවේ නම අනුව සොයන්න"
                 },
                 edit: {
+                    placeholders: {
+                        errorPlaceHolder: {
+                            action: "ආපසු යන්න",
+                            subtitles: {
+                                0: "ඉල්ලූ භූමිකාව ලබා ගැනීමේදී දෝෂයක් ඇතිවිය, සමහර විට භූමිකාව නොපවතින නිසා විය හැකිය.",
+                                1: "කරුණාකර නැවත උත්සාහ කරන්න."
+                            },
+                            title: "යම් දෝෂයක් ඇති වී ඇත"
+                        }
+                    },
                     basics: {
                         buttons: {
                             update: "යාවත්කාලීන කරන්න"
@@ -8265,6 +8275,12 @@ export const console: ConsoleNS = {
                     fetchRoles: {
                         genericError: {
                             description: "භූමිකාවන් ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        }
+                    },
+                    fetchRole: {
+                        genericError: {
+                            description: "භූමිකාව ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
                             message: "යම් දෝෂයක් ඇති වී ඇත"
                         }
                     },

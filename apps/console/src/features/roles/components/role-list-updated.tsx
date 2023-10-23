@@ -193,14 +193,6 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         />
                         <Header.Content>
                             { role?.displayName }
-                            <Header.Subheader>
-                                <Label
-                                    className="no-margin-left" 
-                                    size="mini"
-                                >
-                                    { role?.audience?.type.charAt(0).toUpperCase() + role?.audience?.type.slice(1) }
-                                </Label>
-                            </Header.Subheader>
                         </Header.Content>
                     </Header>
                 ),
@@ -215,7 +207,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     <Header as="h6" data-componentid={ `${ componentId }-col-2-item-heading` }>
                         <Header.Content>
                             <Header.Subheader data-componentid={ `${ componentId }-col-2-item-sub-heading` }>
-                                { t("console:manage.features.roles.list.columns.managedBy.label") }
+                                { role?.audience?.type.charAt(0).toUpperCase() + role?.audience?.type.slice(1) }
                                 <Label
                                     size="mini"
                                     className = {
@@ -293,7 +285,6 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 }
                 placeholders={ showPlaceholders() }
                 data-componentid={ componentId }
-                showHeader={ false }
             />
             {
                 showRoleDeleteConfirmation && (
