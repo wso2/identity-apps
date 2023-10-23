@@ -156,7 +156,6 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
                 organizationDiscoveryData = { organizationDiscoveryData }
                 isReadOnly={ isReadOnly }
                 onOrganizationUpdate={ getOrganizationData }
-                onOrganizationDelete={ goBackToOrganizationListWithDomains }
             />
         </PageLayout>
     );

@@ -298,14 +298,14 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
                                     } }
                                 >
                                     <Icon name="add" />
-                                    { t("console:manage.features.organizations.placeholders.emptyList.action") }
+                                    { t("console:manage.features.organizationDiscovery.placeholders.emptyList.action") }
                                 </PrimaryButton>
                             </Show>
                         )
                     }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    subtitle={ t("console:manage.features.organizations.placeholders.emptyList.subtitles.0") }
+                    subtitle={ t("console:manage.features.organizationDiscoverys.placeholders.emptyList.subtitles") }
                     data-componentid={ `${ componentId }-empty-placeholder` }
                 />
             );

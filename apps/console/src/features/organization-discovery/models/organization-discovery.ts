@@ -15,8 +15,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { RolesInterface } from "@wso2is/core/models";
-import { ScimOperationsInterface } from "../../roles/models/roles";
 
 export interface OrganizationInterface {
     id: string;
@@ -54,14 +52,6 @@ export interface OrganizationListWithDiscoveryInterface {
     organizations: OrganizationDiscoveryInterface[];
 }
 
-export interface AddOrganizationInterface {
-    name: string;
-    description: string;
-    type: string;
-    parentId: string;
-    attributes?: OrganizationAttributesInterface[];
-}
-
 export interface OrganizationAttributesInterface {
     key: string;
     value: string;
@@ -91,55 +81,4 @@ export interface OrganizationResponseInterface {
         ref: string;
     };
     attributes: OrganizationAttributesInterface[];
-}
-
-export interface UpdateOrganizationInterface {
-    name: string;
-    description: string;
-    status: string;
-    attributes: OrganizationAttributesInterface[];
-}
-
-export interface OrganizationPatchData {
-    operation: string;
-    path: string;
-    value: string;
-}
-
-export type OrganizationRoleInterface = RolesInterface;
-
-export type OrganizationRoleListItemInterface = Omit<OrganizationRoleInterface, "users" | "permissions" | "groups">;
-
-export type OrganizationRoleListResponseInterface = {
-    totalResults: number;
-    itemsPerPage: number;
-    nextCursor: string;
-    previousCursor: string;
-    Resources: Array<OrganizationRoleListItemInterface>;
-};
-
-export type PatchOrganizationRoleDataInterface = {
-    operations: ScimOperationsInterface[]
-};
-
-/**
- * Interface to store User information related to create role api
- */
-export interface CreateOrganizationRoleMemberInterface {
-    value: string;
-    display?: string;
-}
-
-export interface BreadcrumbItem {
-    id: string;
-    name: string;
-}
-
-export type BreadcrumbList = BreadcrumbItem[];
-
-export type GenericOrganization = OrganizationInterface | OrganizationResponseInterface | BreadcrumbItem;
-
-export interface ShareApplicationRequestInterface {
-    shareWithAllChildren: boolean;
-    sharedOrganizations?: string[];
 }

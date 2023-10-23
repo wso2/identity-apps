@@ -3247,7 +3247,11 @@ export interface ConsoleNS {
                     fetchOrganizationDiscoveryAttributes: Notification;
                     getEmailDomainDiscovery: Notification;
                     getOrganizationListWithDiscovery: Notification;
+                    updateOrganizationDiscoveryAttributes: Notification;
                 },
+                placeholders: {
+                    emptyList: Placeholder;
+                };
                 title: string;
             };
             organizations: {

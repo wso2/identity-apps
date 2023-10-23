@@ -32,6 +32,7 @@ import React, {
     SyntheticEvent,
     useCallback,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -99,6 +100,14 @@ const EmailDomainDiscoveryPage: FunctionComponent<EmailDomainDiscoveryPageInterf
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
+    const filterQuery: string = useMemo(() => {
+        let filterQuery: string = "";
+
+        filterQuery = searchQuery;
+
+        return filterQuery;
+    }, [ searchQuery ]);
+
     /**
      * Retrieves the list of organizations.
      *
@@ -155,8 +164,8 @@ const EmailDomainDiscoveryPage: FunctionComponent<EmailDomainDiscoveryPageInterf
         );
 
     useEffect(() => {
-        getOrganizationListWithDiscovery(listItemLimit, listOffset, searchQuery);
-    }, [ listItemLimit, getOrganizationListWithDiscovery, listOffset, searchQuery ]);
+        getOrganizationListWithDiscovery(listItemLimit, listOffset, filterQuery);
+    }, [ listItemLimit, getOrganizationListWithDiscovery, listOffset, filterQuery ]);
 
     /**
      * Sets the list sorting strategy.
@@ -200,8 +209,8 @@ const EmailDomainDiscoveryPage: FunctionComponent<EmailDomainDiscoveryPageInterf
             const offsetValue: number = (data.activePage as number - 1) * listItemLimit;
 
             setListOffset(offsetValue);
-            getOrganizationListWithDiscovery(listItemLimit, listOffset, searchQuery);
-        }, [ getOrganizationListWithDiscovery, searchQuery, listOffset, listItemLimit ]);
+            getOrganizationListWithDiscovery(listItemLimit, listOffset, filterQuery);
+        }, [ getOrganizationListWithDiscovery, filterQuery, listOffset, listItemLimit ]);
 
     /**
      * Handles per page dropdown page.
@@ -519,7 +528,7 @@ const EmailDomainDiscoveryPage: FunctionComponent<EmailDomainDiscoveryPageInterf
                         <OrganizationListWithDiscovery
                             list={ organizationList }
                             onEmptyListPlaceholderActionClick={ () => {
-                                () => history.push(AppConstants.getPaths().get("EMAIL_DOMAIN_ASSIGN"))
+                                () => history.push(AppConstants.getPaths().get("EMAIL_DOMAIN_ASSIGN"));
                             } }
                             onSearchQueryClear={ handleSearchQueryClear }
                             searchQuery={ searchQuery }
