@@ -807,10 +807,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * Handle multiple user invite.
      */
     const manualInviteMultipleUsers = async () => {
-        const scimRequestBody1: SCIMBulkEndpointInterface = generateMultipleUsersSCIMRequestBody();
+        const handleManualInvite: SCIMBulkEndpointInterface = generateMultipleUsersSCIMRequestBody();
 
         try {
-            const scimResponse: any = await addBulkUsers(scimRequestBody1);
+            const scimResponse: any = await addBulkUsers(handleManualInvite);
 
             setshowManualInviteTable(true);
 
@@ -975,7 +975,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         className="multiple-users-config-mode-wizard-tab"
                                         content={
                                             UserManagementUtils.resolveMultipleInvitesDisplayName(
-                                                            mode as MultipleInviteMode
+                                                mode as MultipleInviteMode
                                             )
                                         }
                                         onClick={ (
@@ -983,8 +983,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             event.preventDefault();
                                             setConfigureMode(mode);
                                         } }
-                                    />
-                                                
+                                    />         
                                 );
                             })
                         }
