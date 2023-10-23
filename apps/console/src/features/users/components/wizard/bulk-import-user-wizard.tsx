@@ -1005,12 +1005,16 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     {
                         !showManualInviteTable ? (
                             <>
-                                <Alert severity="warning">
-                                    { 
-                                        t("console:manage.features.user.modals.bulkImportUserWizard" +
-                                            ".wizardSummary.manualCreation.warningMessage") 
-                                    }
-                                </Alert>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }> 
+                                        <Alert severity="warning">
+                                            { 
+                                                t("console:manage.features.user.modals.bulkImportUserWizard" +
+                                                ".wizardSummary.manualCreation.warningMessage") 
+                                            }
+                                        </Alert>
+                                    </Grid.Column>
+                                </Grid.Row>
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }> 
                                         <Form.Field required={ true }>
@@ -1062,7 +1066,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         value.map((option: string, index: number) => (
                                             <Chip 
                                                 key={ "" }
-                                                size="medium"
+                                                size="small"
+                                                sx={ { marginLeft: 1 } }
+                                                className="oxygen-chip-beta"
                                                 label={ option }
                                                 { ...getTagProps({ index }) } 
                                             />
