@@ -6493,6 +6493,7 @@ export const console: ConsoleNS = {
                 connectorCategories: {
                     passwordPolicies: {
                         name: "Politiques de mot de passe",
+                        description: "Configurer les stratégies de mot de passe pour améliorer la force du mot de passe utilisateur.",
                         connectors: {
                             passwordHistory: {
                                 friendlyName: "Historique du mot de passe",
@@ -6536,6 +6537,7 @@ export const console: ConsoleNS = {
                     },
                     userOnboarding: {
                         name: "Intégration de l'utilisateur",
+                        description: "Configurer les paramètres d'intégration de l'utilisateur.",
                         connectors: {
                             selfSignUp: {
                                 friendlyName: "Auto-inscription",
@@ -6676,6 +6678,7 @@ export const console: ConsoleNS = {
                     },
                     loginAttemptsSecurity: {
                         name: "La connexion tente la sécurité",
+                        description: "Configurer les paramètres de sécurité des tentatives de connexion.",
                         connectors: {
                             accountLockHandler: {
                                 friendlyName: "Verrouillage du compte",
@@ -6727,6 +6730,7 @@ export const console: ConsoleNS = {
                     },
                     accountManagement: {
                         name: "Gestion de compte",
+                        description: "Configurer les paramètres de gestion des comptes.",
                         connectors: {
                             suspensionNotification: {
                                 friendlyName: "Suspende du compte inactif",
@@ -6871,6 +6875,7 @@ export const console: ConsoleNS = {
                     },
                     otherSettings: {
                         name: "Autres réglages",
+                        description: "Configurer d'autres paramètres.",
                         connectors: {
                             piiController: {
                                 friendlyName: "Contrôleur d'information sur le consentement",
@@ -7038,6 +7043,7 @@ export const console: ConsoleNS = {
                     },
                     multiFactorAuthenticators: {
                         name: "Authentificateurs multi-facteurs",
+                        description: "Configurer les paramètres d'authentificateur multi-facteurs.",
                         connectors: {
                             backupCodeAuthenticator: {
                                 friendlyName: "Authentificateur de code de sauvegarde",

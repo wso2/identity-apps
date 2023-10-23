@@ -6339,6 +6339,7 @@ export const console: ConsoleNS = {
                 connectorCategories: {
                     passwordPolicies: {
                         name: "මුරපද ප්රතිපත්ති",
+                        description: "පරිශීලක මුරපද ශක්තිය වැඩි දියුණු කිරීම සඳහා මුරපද ප්රතිපත්ති වින්යාස කරන්න.",
                         connectors: {
                             passwordHistory: {
                                 friendlyName: "මුරපද ඉතිහාසය",
@@ -6382,6 +6383,7 @@ export const console: ConsoleNS = {
                     },
                     userOnboarding: {
                         name: "පරිශීලක ඔන්බෝඩ් කිරීම",
+                        description: "පරිශීලකයා ඔන්බෝඩ් සැකසුම් වින්යාස කරන්න.",
                         connectors: {
                             selfSignUp: {
                                 friendlyName: "ස්වයං ලියාපදිංචිය",
@@ -6522,6 +6524,7 @@ export const console: ConsoleNS = {
                     },
                     loginAttemptsSecurity: {
                         name: "පිවිසුම් උත්සාහය ආරක්ෂාව",
+                        description: "පුරනය වීම වින්යාස කරන්න ආරක්ෂක සැකසුම් උත්සාහ කරන්න.",
                         connectors: {
                             accountLockHandler: {
                                 friendlyName: "ගිණුම් අගුල",
@@ -6573,6 +6576,7 @@ export const console: ConsoleNS = {
                     },
                     accountManagement: {
                         name: "ගිණුම් කළමනාකරණය",
+                        description: "ගිණුම් කළමනාකරණ සැකසුම් වින්යාස කරන්න.",
                         connectors: {
                             suspensionNotification: {
                                 friendlyName: "උදාසීන ගිණුම අත්හිටුවීම",
@@ -6717,6 +6721,7 @@ export const console: ConsoleNS = {
                     },
                     otherSettings: {
                         name: "වෙනත් සැකසුම්",
+                        description: "වෙනත් සැකසුම් වින්යාස කරන්න.",
                         connectors: {
                             piiController: {
                                 friendlyName: "අනුකූල තොරතුරු පාලකය",
@@ -6884,6 +6889,7 @@ export const console: ConsoleNS = {
                     },
                     multiFactorAuthenticators: {
                         name: "බහු සාධක සත්යාපනය",
+                        description: "බහු සාධක සත්යාපන සැකසුම් වින්යාස කරන්න.",
                         connectors: {
                             backupCodeAuthenticator: {
                                 friendlyName: "උපස්ථ කේත සත්යාපකය",

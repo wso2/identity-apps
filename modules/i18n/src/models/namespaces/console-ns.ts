@@ -4241,6 +4241,7 @@ export interface ConsoleNS {
                 connectorCategories: {
                     passwordPolicies : {
                         name: string;
+                        description: string;
                         connectors: {
                             passwordHistory: {
                                 friendlyName: string;
@@ -4284,6 +4285,7 @@ export interface ConsoleNS {
                     };
                     userOnboarding : {
                         name: string;
+                        description: string;
                         connectors: {
                             selfSignUp: {
                                 friendlyName: string;
@@ -4424,6 +4426,7 @@ export interface ConsoleNS {
                     };
                     loginAttemptsSecurity : {
                         name: string;
+                        description: string;
                         connectors: {
                             accountLockHandler: {
                                 friendlyName: string;
@@ -4475,6 +4478,7 @@ export interface ConsoleNS {
                     };
                     accountManagement : {
                         name: string;
+                        description: string;
                         connectors: {
                             suspensionNotification: {
                                 friendlyName: string;
@@ -4619,6 +4623,7 @@ export interface ConsoleNS {
                     };
                     otherSettings : {
                         name: string;
+                        description: string;
                         connectors: {
                             piiController: {
                                 friendlyName: string;
@@ -4786,6 +4791,7 @@ export interface ConsoleNS {
                     };
                     multiFactorAuthenticators : {
                         name: string;
+                        description: string;
                         connectors: {
                             backupCodeAuthenticator: {
                                 friendlyName: string;
