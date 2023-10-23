@@ -81,14 +81,3 @@ export const policyDetails: Map<Policy, PolicyInfo> = new Map<Policy, PolicyInfo
         }
     ]
 ]);
-
-/*
- * API Authorization constants.
- */
-export class APIAuthorizationConstants {
-
-    /**
-     * Client credentials grant type string.
-     */
-    public static readonly CLIENT_CREDENTIALS_GRANT_TYPE: string = "client_credentials";
-}
