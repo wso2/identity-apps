@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.0.12
+
+### Patch Changes
+
+- [#4229](https://github.com/wso2/identity-apps/pull/4229) [`eeb2da4a7c`](https://github.com/wso2/identity-apps/commit/eeb2da4a7c57d8870e6d1aef37a4337a151e1e6c) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Implement the multiple user invites feature
+
+* [#4290](https://github.com/wso2/identity-apps/pull/4290) [`d32dfab48d`](https://github.com/wso2/identity-apps/commit/d32dfab48d2deb5ac94e5c056f018bb891b3b74b) Thanks [@Achintha444](https://github.com/Achintha444)! - Update the basic section of the role
+
 ## 2.0.11
 
 ### Patch Changes
