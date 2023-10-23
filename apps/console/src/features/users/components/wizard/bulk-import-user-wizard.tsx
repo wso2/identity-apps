@@ -42,7 +42,6 @@ import {
     Hint,
     LinkButton,
     PickerResult,
-    Popup,
     PrimaryButton,
     useWizardAlert
 } from "@wso2is/react-components";
@@ -66,8 +65,6 @@ import {
     getCertificateIllustrations
 } from "../../../core";
 import { PRIMARY_USERSTORE } from "../../../userstores/constants";
-import { useValidationConfigData } from "../../../validation/api";
-import { ValidationFormInterface } from "../../../validation/models";
 import { addBulkUsers } from "../../api";
 import {
     BlockedBulkUserImportAttributes,
@@ -86,7 +83,7 @@ import {
     SCIMBulkResponseOperation,
     UserDetailsInterface
 } from "../../models";
-import { UserManagementUtils, getUsernameConfiguration } from "../../utils";
+import { UserManagementUtils } from "../../utils";
 import { BulkImportResponseList } from "../bulk-import-response-list";
 
 /**
@@ -170,11 +167,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ userStoreRegex, setUserStoreRegex ] = useState<string>("");
     const [ regExLoading, setRegExLoading ] = useState<boolean>(false);
 
-    const { data: validationData } = useValidationConfigData();
-
-    const config: ValidationFormInterface = getUsernameConfiguration(validationData);
-    const isAlphanumericUsername: boolean = config?.enableValidator === "true";
     const optionsArray: string[] = [];
+
+    /**
+     * Set the default multiple invites option.
+     */
+    useEffect(() => {
+        setConfigureMode(MultipleInviteMode.MANUAL);
+    }, [ ]);
 
     /**
      * Get the userstore.
@@ -190,17 +190,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 });
         })();
     }, [ userStoreRegex ]);
-
-    /**
-     * Set the default multiple invites option.
-     */
-    useEffect(() => {
-        setConfigureMode(
-            isAlphanumericUsername
-                ? MultipleInviteMode.META_FILE
-                : MultipleInviteMode.MANUAL
-        );
-    }, [ isAlphanumericUsername ]);
 
     /**
      * Fetches SCIM dialects.
@@ -792,7 +781,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const operations: SCIMBulkOperation[] = [];
 
         // Create the user record
-        emailData.map((email: string) => {
+        emailData?.map((email: string) => {
             const userDetails: UserDetailsInterface = {
                 emails: [
                     {
@@ -999,45 +988,23 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         {
                             Object.values(MultipleInviteMode).map((mode: string, index: number) => {
                                 return(
-                                    <>
-                                        <Popup
-                                            trigger={ (
-                                                <div className={ "inline-button" } >
-                                                    <Button
-                                                        disabled={ 
-                                                            isAlphanumericUsername
-                                                            && mode === MultipleInviteMode.MANUAL
-                                                        }
-                                                        data-componentid={ `${componentId}-${mode}-tab-option` }
-                                                        key={ index }
-                                                        active={ configureMode === mode }
-                                                        className="multiple-users-config-mode-wizard-tab"
-                                                        content={
-                                                            UserManagementUtils.resolveMultipleInvitesDisplayName(
+                                    <Button
+                                        data-componentid={ `${componentId}-${mode}-tab-option` }
+                                        key={ index }
+                                        active={ configureMode === mode }
+                                        className="multiple-users-config-mode-wizard-tab"
+                                        content={
+                                            UserManagementUtils.resolveMultipleInvitesDisplayName(
                                                             mode as MultipleInviteMode
-                                                            )
-                                                        }
-                                                        onClick={ (
-                                                            event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-                                                            event.preventDefault();
-                                                            setConfigureMode(mode);
-                                                        } }
-                                                    />
-                                                </div>
-                                            ) }
-                                            content={ 
-                                                t("console:manage.features.user.modals.bulkImportUserWizard" +
-                                                ".wizardSummary.manualCreation.disabledHint" )
-                                            }
-                                            size="mini"
-                                            wide
-                                            disabled={ 
-                                                mode === MultipleInviteMode.META_FILE
-                                                || !isAlphanumericUsername
-                                            }
-                                            data-componentid={ `${componentId}-disabled-hint` }
-                                        />
-                                    </>
+                                            )
+                                        }
+                                        onClick={ (
+                                            event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+                                            event.preventDefault();
+                                            setConfigureMode(mode);
+                                        } }
+                                    />
+                                                
                                 );
                             })
                         }
@@ -1064,6 +1031,41 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             ".wizardSummary.manualCreation.warningMessage") 
                                     }
                                 </Alert>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }> 
+                                        <Form.Field required={ true }>
+                                            <label className="pb-2">
+                                                { t("console:manage.features.user.forms.addUserForm."+
+                                                            "inputs.domain.placeholder") }
+                                            </label>
+                                            <Dropdown
+                                                className="mt-2"
+                                                fluid
+                                                selection
+                                                labeled
+                                                options={ readWriteUserStoresList }
+                                                loading={ false }
+                                                data-testid={
+                                                    `${componentId}-userstore-dropdown`
+                                                }
+                                                data-componentid={
+                                                    `${componentId}-userstore-dropdown`
+                                                }
+                                                name="userstore"
+                                                disabled={ true }
+                                                value={ selectedUserStore }
+                                                onChange={
+                                                    (e: React.ChangeEvent<HTMLInputElement>,
+                                                        data: DropdownProps) => {
+                                                        setSelectedUserStore(data.value.toString());
+                                                    }
+                                                }
+                                                tabIndex={ 1 }
+                                                maxLength={ 60 }
+                                            />
+                                        </Form.Field> 
+                                    </Grid.Column>
+                                </Grid.Row>
                                 <Autocomplete
                                     disabled={ regExLoading }
                                     size="small"
@@ -1159,21 +1161,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                             </>
                         )
                     }
-                </>
-                        
+                </>      
             );
         } else if (configureMode === MultipleInviteMode.META_FILE) {
             return (
                 !showResponseView ?
                     (
                         <>
-                            {
-
-                                <Hint>
-                                    { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
-                                    ".fileBased.hint" ) }
-                                </Hint>
-                            }
                             { alert
                                 && (
                                     <Grid.Row columns={ 1 }>
@@ -1238,10 +1232,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         key={ 1 }
                                         fileStrategy={ CSV_FILE_PROCESSING_STRATEGY }
                                         file={ selectedCSVFile }
-                                        onChange={ (result: PickerResult<{
-                                        headers: string[];
-                                        items: string[][];
-                                    }>) => {
+                                        onChange={ (
+                                            result: PickerResult<{
+                                            headers: string[];
+                                            items: string[][];
+                                        }>) => {
                                             setSelectedCSVFile(result.file);
                                             setUserData(result.serialized);
                                             setAlert(null);
@@ -1259,6 +1254,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     />
                                 </Grid.Column>
                             </Grid.Row>
+                            {
+                                <Hint>
+                                    { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
+                                    ".fileBased.hint" ) }
+                                </Hint>
+                            }
                         </>
                     ) : (
                         <>
@@ -1383,9 +1384,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                 floated="right"
                                                 onClick={ handleBulkUserImport }
                                                 loading={ isSubmitting }
-                                                disabled={ isLoading || isSubmitting ||  hasError|| !selectedCSVFile }
+                                                disabled={ isLoading || isSubmitting ||  hasError || !selectedCSVFile }
                                             >
-                                                { t("common:finish") }
+                                                { t("console:manage.features.user.modals." +
+                                                    "bulkImportUserWizard.buttons.import") }
                                             </PrimaryButton>
                                         </Grid.Column>
                                     ) : null }
