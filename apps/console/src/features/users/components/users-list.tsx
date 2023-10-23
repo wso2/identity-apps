@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -31,6 +32,7 @@ import {
     DataTable,
     EmptyPlaceholder,
     LinkButton,
+    PrimaryButton,
     TableActionsInterface,
     TableColumnInterface,
     UserAvatar
@@ -41,7 +43,7 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Header, ListItemProps, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import {
     AppConstants,
@@ -81,6 +83,10 @@ interface UsersListProps extends SBACInterface<FeatureConfigInterface>, Loadable
      * @param columns - New columns.
      */
     onColumnSelectionChange?: (columns: TableColumnInterface[]) => void;
+    /**
+     * Callback to be fired when the empty list placeholder action is clicked.
+     */
+    onEmptyListPlaceholderActionClick?: () => void;
     /**
      * On list item select callback.
      */
@@ -138,6 +144,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         readOnlyUserStores,
         featureConfig,
         onColumnSelectionChange,
+        onEmptyListPlaceholderActionClick,
         onListItemClick,
         onSearchQueryClear,
         realmConfigs,
@@ -218,7 +225,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 render: (user: UserBasicInterface): ReactNode => {
                     let header: string | MultiValueAttributeInterface;
                     let subHeader: string | MultiValueAttributeInterface;
-                    const isNameAvailable: boolean = 
+                    const isNameAvailable: boolean =
                     user.name?.familyName === undefined && user.name?.givenName === undefined;
 
                     if (user[SCIMConfigs.scim.enterpriseSchema]?.userSourceId) {
@@ -424,6 +431,17 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             return (
                 <EmptyPlaceholder
                     data-testid={ `${testId}-empty-placeholder` }
+                    action={ (
+                        <Show when={ AccessControlConstants.USER_WRITE }>
+                            <PrimaryButton
+                                data-testid={ `${testId}-empty-placeholder-add-user-button` }
+                                onClick={ () => onEmptyListPlaceholderActionClick() }
+                            >
+                                <Icon name="add"/>
+                                { t("console:manage.features.users.usersList.list.emptyResultPlaceholder.addButton") }
+                            </PrimaryButton>
+                        </Show>
+                    ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("console:manage.features.users.usersList.list.emptyResultPlaceholder.title") }

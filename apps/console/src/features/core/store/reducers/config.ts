@@ -142,7 +142,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             users: "",
             usersSuperOrganization: "",
             validationServiceMgt: "",
-            wellKnown: ""
+            wellKnown: "",
+            guests: "",
+            guestsList: "",
         },
         features: {
             applications: null,
