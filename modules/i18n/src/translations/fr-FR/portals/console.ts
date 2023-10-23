@@ -7684,6 +7684,27 @@ export const console: ConsoleNS = {
                             description: "Mise à jour réussie des attributs de découverte de l'organisation",
                             message: "Attributs de découverte d'organisation mis à jour avec succès"
                         }
+                    },
+                    updateOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while updating the organization discovery attributes"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the organization discovery attributes",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the organization discovery attributes",
+                            message: "Organization discovery attributes updated successfully"
+                        }
+                    }
+                },
+                placeholders: {
+                    emptyList: {
+                        action: "Assign Email Domain",
+                        subtitles: "There are no organizations with email domains assigned.",
+                        title: "Assign Email Domain"
                     }
                 },
                 placeholders: {

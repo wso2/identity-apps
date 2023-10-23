@@ -7490,6 +7490,27 @@ export const console: ConsoleNS = {
                             description: "An error occurred while getting the organization list with discovery attributes",
                             message: "Something went wrong"
                         }
+                    },
+                    updateOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while updating the organization discovery attributes"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the organization discovery attributes",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the organization discovery attributes",
+                            message: "Organization discovery attributes updated successfully"
+                        }
+                    }
+                },
+                placeholders: {
+                    emptyList: {
+                        action: "Assign Email Domain",
+                        subtitles: "There are no organizations with email domains assigned.",
+                        title: "Assign Email Domain"
                     }
                 },
                 title: "Email Domain Discovery"

@@ -53,9 +53,9 @@ import {
     ORGANIZATION_NAME_MAX_LENGTH,
     ORGANIZATION_NAME_MIN_LENGTH
 } from "../../constants";
+import { updateOrganizationDiscoveryAttributes } from "../../api";
 import {
     OrganizationDiscoveryAttributeDataInterface,
-    OrganizationPatchData,
     OrganizationResponseInterface,
 } from "../../models";
 
@@ -83,10 +83,6 @@ interface EditOrganizationEmailDomainsPropsInterface
      * Callback for when organization update
      */
     onOrganizationUpdate: (organizationId: string) => void;
-    /**
-     * Callback for when organization delete
-     */
-    onOrganizationDelete: (organizationId: string) => void;
 }
 
 const FORM_ID: string = "edit-organization-email-domains-form";
@@ -105,7 +101,6 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
         organizationDiscoveryData,
         isReadOnly,
         onOrganizationUpdate,
-        onOrganizationDelete,
         [ "data-testid" ]: testId
     } = props;
 
@@ -121,73 +116,68 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
 
     const optionsArray: string[] = [];
 
-    // const handleSubmit = useCallback(
-    //     async (values: OrganizationResponseInterface): Promise<void> => {
-    //         setIsSubmitting(true);
+    const handleSubmit = () => {
+        setIsSubmitting(true);
 
-    //         const patchData: OrganizationPatchData[] = Object.keys(values)
-    //             .filter(field => editableFields.includes(field))
-    //             .map(field => {
-    //                 return {
-    //                     operation: "REPLACE",
-    //                     path: `/${ field }`,
-    //                     value: values[ field ]
-    //                 };
-    //             });
-    //         console.log(patchData);
+        const emailDomainDiscoveryData: OrganizationDiscoveryAttributeDataInterface = {
+            attributes: [
+                {
+                    type: "emailDomain",
+                    values: emailDomainData
+                }
+            ]
+        };
 
-    //         patchOrganization(organization.id, patchData)
-    //             .then(_response => {
-    //                 dispatch(
-    //                     addAlert({
-    //                         description: t(
-    //                             "console:manage.features.organizations.notifications.updateOrganization." +
-    //                             "success.description"
-    //                         ),
-    //                         level: AlertLevels.SUCCESS,
-    //                         message: t(
-    //                             "console:manage.features.organizations.notifications.updateOrganization." +
-    //                             "success.message"
-    //                         )
-    //                     })
-    //                 );
+        updateOrganizationDiscoveryAttributes(organization.id, emailDomainDiscoveryData)
+            .then(_response => {
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:manage.features.organizationDiscovery.notifications.updateOrganizationDiscoveryAttributes." +
+                            "success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "console:manage.features.organizationDiscovery.notifications.updateOrganizationDiscoveryAttributes." +
+                            "success.message"
+                        )
+                    })
+                );
 
-    //                 onOrganizationUpdate(organization.id);
-    //             })
-    //             .catch(error => {
-    //                 if (error.description) {
-    //                     dispatch(
-    //                         addAlert({
-    //                             description: error.description,
-    //                             level: AlertLevels.ERROR,
-    //                             message: t(
-    //                                 "console:manage.features.organizations.notifications.updateOrganization." +
-    //                                 "error.message"
-    //                             )
-    //                         })
-    //                     );
+                onOrganizationUpdate(organization.id);
+            })
+            .catch(error => {
+                if (error.description) {
+                    dispatch(
+                        addAlert({
+                            description: error.description,
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.organizationDiscovery.notifications.updateOrganizationDiscoveryAttributes." +
+                                "error.message"
+                            )
+                        })
+                    );
 
-    //                     return;
-    //                 }
+                    return;
+                }
 
-    //                 dispatch(
-    //                     addAlert({
-    //                         description: t(
-    //                             "console:manage.features.organizations.notifications" +
-    //                             ".updateOrganization.genericError.description"
-    //                         ),
-    //                         level: AlertLevels.ERROR,
-    //                         message: t(
-    //                             "console:manage.features.organizations.notifications" +
-    //                             ".updateOrganization.genericError.message"
-    //                         )
-    //                     })
-    //                 );
-    //             })
-    //             .finally(() => setIsSubmitting(false));
-    //     },
-    //     [ organization, setIsSubmitting ]
-    // );
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:manage.features.organizationDiscovery.notifications" +
+                            ".updateOrganizationDiscoveryAttributes.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.features.organizationDiscovery.notifications" +
+                            ".updateOrganizationDiscoveryAttributes.genericError.message"
+                        )
+                    })
+                );
+            })
+            .finally(() => setIsSubmitting(false));
+        };
 
     return organization ? (
         <>
@@ -262,7 +252,6 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
                                     value: string[]
                                 ) => {
                                     setEmailDomainData(value);
-                                    console.log(organizationDiscoveryData);
                                     // validateEmail(value);
                                 } }
                                 onInputChange={ () => {
@@ -276,38 +265,12 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
                 <Divider hidden />
                 <PrimaryButton
                     data-testid="group-mgt-update-roles-modal-save-button"
-                    // floated="right"
                     disabled={ isSubmitting }
                     loading={ isSubmitting }
-                    // onClick={ () => handleSubmit1(emailDomainData) }
+                    onClick={ () => handleSubmit() }
                 >
                     { t("common:update") }
                 </PrimaryButton>
-                            {/* <Form
-                                id={ FORM_ID }
-                                data-testid={ `${ testId }-form` }
-                                onSubmit={ handleSubmit }
-                                uncontrolledForm={ false }
-                                validate={ validate }
-                            >
-                                { !isReadOnly && (
-                                    <Field.Button
-                                        form={ FORM_ID }
-                                        size="small"
-                                        buttonType="primary_btn"
-                                        ariaLabel="Update button"
-                                        name="update-button"
-                                        className="form-button"
-                                        data-testid={ `${ testId }-form-update-button` }
-                                        disabled={ isSubmitting }
-                                        loading={ isSubmitting }
-                                        label={ t("common:update") }
-                                    />
-                                ) }
-                            </Form> */}
-                        {/* </Grid.Column>
-                    </Grid.Row>
-                </Grid> */}
             </EmphasizedSegment>
         </>
     ) : (
