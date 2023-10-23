@@ -48,7 +48,7 @@ interface InviteeRoleSelectionPropsInterface extends TestableComponentInterface 
  *
  * @param  props - Props injected to the component.
  *
- */
+  */
 export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsInterface> = (
     props: InviteeRoleSelectionPropsInterface
 ): ReactElement => {
@@ -89,7 +89,7 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
      * Handle the role selection checkbox change.
      */
     const handleRoleSelection = (roleName: string) => {
-        const checkedRoles = [];
+        const checkedRoles:any = [];
 
         checkedRoles.push(roleName);
         setSelectedRoles(checkedRoles);
