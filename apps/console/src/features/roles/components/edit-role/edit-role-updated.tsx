@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,6 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { BasicRoleDetails } from "./edit-role-basic-updated";
 import { RoleGroupsList } from "./edit-role-groups-updated";
-import { RolePermissionDetails } from "./edit-role-permission";
 import { RoleUsersList } from "./edit-role-users-updated";
 import { AppState, FeatureConfigInterface } from "../../../core";
 
@@ -67,7 +66,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
 
     const { t } = useTranslation();
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
@@ -99,22 +98,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                     </ResourceTab.Pane>
                 )
             },
-            {
-                menuItem: t("console:manage.features.roles.edit.menuItems.permissions"),
-                render: () => (
-                    <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <RolePermissionDetails
-                            isReadOnly={ isAdminRole
-                                || !hasRequiredScopes(
-                                    featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes) }
-                            data-testid="role-mgt-edit-role-permissions"
-                            isGroup={ false }
-                            roleObject={ roleObject }
-                            onRoleUpdate={ onRoleUpdate }
-                        />
-                    </ResourceTab.Pane>
-                )
-            },
+            // TODO: Permission tab need to be added after the permission API is implemented.
             {
                 menuItem: t("console:manage.features.roles.edit.menuItems.groups"),
                 render: () => (

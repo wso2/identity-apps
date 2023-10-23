@@ -71,7 +71,7 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
     } = useGetRoleById(roleId);
 
     /**
-     * The following useEffect is used to handle if any error occurs while fetching the role details.
+     * Handle if any error occurs while fetching the role details.
      */
     useEffect(() => {
         if(roleDetailsRequestError) {

@@ -100,7 +100,7 @@ export const getRoleById = (roleId: string): Promise<any> => {
 };
 
 /**
- * Retrieve Role details for a give role id.
+ * Retrieve Role details for a given role id.
  *
  * @param roleId - role id to retrieve role details
  */
