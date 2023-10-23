@@ -405,7 +405,7 @@ export const updateFederatedAuthenticator = (
  *
  * @returns A promise containing the response.
  */
-export const getFederatedAuthenticatorsList = (): Promise<FederatedAuthenticatorMetaInterface> => {
+export const getFederatedAuthenticatorsList = (): Promise<FederatedAuthenticatorMetaInterface[]> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -423,7 +423,7 @@ export const getFederatedAuthenticatorsList = (): Promise<FederatedAuthenticator
                 return Promise.reject(new Error("Failed to get federated authenticators list"));
             }
 
-            return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
+            return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface[]);
         }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
