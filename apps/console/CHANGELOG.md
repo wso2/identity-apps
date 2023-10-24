@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.1.14
+
+### Patch Changes
+
+- [#4309](https://github.com/wso2/identity-apps/pull/4309) [`eaa54ecb8e`](https://github.com/wso2/identity-apps/commit/eaa54ecb8e2fad13407976418e9efbec0886de48) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update SCIM config for on prem console
+
+* [#4255](https://github.com/wso2/identity-apps/pull/4255) [`0716ce8389`](https://github.com/wso2/identity-apps/commit/0716ce8389a7147aadb8f664c830cd96735854df) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Add M2M template
+
+* Updated dependencies [[`0716ce8389`](https://github.com/wso2/identity-apps/commit/0716ce8389a7147aadb8f664c830cd96735854df)]:
+  - @wso2is/theme@2.0.22
+  - @wso2is/i18n@2.0.15
+
 ## 2.1.13
 
 ### Patch Changes
