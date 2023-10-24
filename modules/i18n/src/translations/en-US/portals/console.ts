@@ -9012,8 +9012,8 @@ export const console: ConsoleNS = {
                     expiredLabel: "Expired"
                 },
                 createDropdown: {
-                    createLabel: "Create user",
-                    inviteLabel: "Invite parent user"
+                    createLabel: "Create User",
+                    inviteLabel: "Invite Parent User"
                 },
                 filterLabel: "Filter by: ",
                 emptyPlaceholder: {
