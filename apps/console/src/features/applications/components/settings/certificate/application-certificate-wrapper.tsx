@@ -417,7 +417,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                         }
                                         onUpdate={ onUpdate }
                                         application={ application }
-                                        updatePEMValue={ (val) => {
+                                        updatePEMValue={ (val: string) => {
                                             setPEMValue(val);
                                         } }
                                         applicationCertificate={ PEMValue }
@@ -462,7 +462,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                             }
                                         } }
                                         listen={
-                                            (values) => {
+                                            (values: Map<string, FormValue>) => {
                                                 setJWKSValue(values.get("jwksValue") as string);
                                             }
                                         }
