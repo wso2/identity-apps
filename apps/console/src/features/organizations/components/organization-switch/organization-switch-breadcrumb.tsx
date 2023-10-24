@@ -77,6 +77,11 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
+    const isShowSwitcher: boolean = (
+        (organizationConfigs?.showSwitcherInTenants && !isSubOrg) ||
+        (!organizationConfigs?.showSwitcherInTenants && isSubOrg)
+    );
+
     useEffect(() => {
         if (!error) {
             return;
@@ -370,7 +375,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         );
     };
 
-    const  showTenantDropdown = (): ReactElement => {
+    if (isShowSwitcher) {
         return (
             <TenantDropdown 
                 dropdownTrigger={ triggerOrganizationDropdown() } 
@@ -381,14 +386,9 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                 } 
             />
         );
-    };
+    }
 
-    return (
-        <> 
-            { organizationConfigs.showSwitcherInTenants ? showTenantDropdown() :
-                (isSubOrg ? showTenantDropdown() : null) } 
-        </>
-    );
+    return null;
 };
 
 OrganizationSwitchBreadcrumb.defaultProps = {
