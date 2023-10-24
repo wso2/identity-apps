@@ -368,12 +368,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     return;
                 }
                 setWizardSteps(filterSteps([
-                    // Temporarily disable the USER_TYPE step.
-                    // WizardStepsFormTypes.USER_TYPE,
+                    // TODO: Enable temporarily disabled USER_TYPE step.
                     WizardStepsFormTypes.BASIC_DETAILS
-                    // Commented to temporarily disable the summary step.
-                    // ,
-                    // WizardStepsFormTypes.SUMMARY
+                    // TODO: Enable temporarily disabled summary step.
                 ]));
                 setIsStepsUpdated(true);
 
@@ -392,19 +389,15 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             }
 
             setWizardSteps(filterSteps([
-                // Temporarily disable the USER_TYPE step.
-                // WizardStepsFormTypes.USER_TYPE,
+                // TODO: Enable temporarily disabled  USER_TYPE step.
                 WizardStepsFormTypes.BASIC_DETAILS,
                 WizardStepsFormTypes.GROUP_LIST
-                // Commented to temporarily disable the summary step.
-                // ,
-                // WizardStepsFormTypes.SUMMARY
+                // TODO: Enable temporarily disabled summary step.
             ]));
             setIsStepsUpdated(true);
         } else {
             setWizardSteps(filterSteps([
-                // Temporarily disable the USER_TYPE step.
-                // WizardStepsFormTypes.USER_TYPE,
+                // TODO: Enable temporarily disabled USER_TYPE step.
                 WizardStepsFormTypes.BASIC_DETAILS ]));
             setIsStepsUpdated(true);
         }
@@ -794,9 +787,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 closeWizard();
             })
             .catch((error: AxiosError) => {
-                // Axios throws a generic `Network Error` for 401 status.
-                // As a temporary solution, a check to see if a response
-                // is available has be used.
+                /**
+                 * Axios throws a generic `Network Error` for 401 status.
+                 * As a temporary solution, a check to see if a response
+                 * is available has be used.
+                 */
                 if (!error.response || error.response.status === 401) {
                     closeWizard();
                     dispatch(addAlert({
