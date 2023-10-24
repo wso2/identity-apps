@@ -1413,9 +1413,7 @@ export const console: ConsoleNS = {
                                         placeholder: "Enter the subject identifier URI",
                                         validations: {
                                             invalid: "The entered URL isnot HTTPS. Please add a valid URL.",
-                                            required: "This field is required for a functional app. " +
-                                                "However, if you are planning to try the sample app, " +
-                                                "this field can be ignored."
+                                            required: "This field is required if multiple callback URIs are configured."
                                         }
                                     }
                                 },
