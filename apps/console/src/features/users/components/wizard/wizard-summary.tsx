@@ -38,7 +38,7 @@ interface AddUserWizardSummaryProps {
 
 /**
  * Add user wizard summary page.
- * 
+ * @param  props - Props injected to the component
  */
 export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> = (
     props: AddUserWizardSummaryProps

@@ -372,12 +372,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     return;
                 }
                 setWizardSteps(filterSteps([
-                    // Temporarily disable the USER_TYPE step.
-                    // WizardStepsFormTypes.USER_TYPE,
+                    // TODO: Enable temporarily disabled the USER_TYPE step.
                     WizardStepsFormTypes.BASIC_DETAILS
-                    // Commented to temporarily disable the summary step.
-                    // ,
-                    // WizardStepsFormTypes.SUMMARY
+                    // TODO: Enable temporarily disabled the summary step.
                 ]));
                 setIsStepsUpdated(true);
 
@@ -1145,7 +1142,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         };
     };
 
-
     /**
      * User summary wizard step.
      * @returns User summary wizard step.
@@ -1193,9 +1189,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     closeWizard();
                 })
                 .catch((error: AxiosError) => {
-                    // Axios throws a generic `Network Error` for 401 status.
-                    // As a temporary solution, a check to see if a response
-                    // is available has be used.
+                    /**
+                     * Axios throws a generic `Network Error` for 401 status.
+                     * As a temporary solution, a check to see if a response
+                     * is available has be used.
+                     */
                     if (!error.response || error.response.status === 401) {
                         closeWizard();
                         dispatch(addAlert({
@@ -1335,55 +1333,53 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const handleModalAction = (): ReactElement => {
         return (
-            <>
-                <Modal.Actions>
-                    <Grid>
-                        <Grid.Row column={ 1 }>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                <LinkButton
-                                    data-testid={ `${ testId }-cancel-button` }
-                                    floated="left"
-                                    onClick={ () => closeWizard() }
+            <Modal.Actions>
+                <Grid>
+                    <Grid.Row column={ 1 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            <LinkButton
+                                data-testid={ `${ testId }-cancel-button` }
+                                floated="left"
+                                onClick={ () => closeWizard() }
+                            >
+                                { t("common:cancel") }
+                            </LinkButton>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            { currentWizardStep < STEPS.length - 1 && viewNextButton && (
+                                <PrimaryButton
+                                    data-testid={ `${ testId }-next-button` }
+                                    floated="right"
+                                    onClick={ navigateToNext }
                                 >
-                                    { t("common:cancel") }
-                                </LinkButton>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                { currentWizardStep < STEPS.length - 1 && viewNextButton && (
-                                    <PrimaryButton
-                                        data-testid={ `${ testId }-next-button` }
-                                        floated="right"
-                                        onClick={ navigateToNext }
-                                    >
-                                        { t("console:manage.features.user.modals.addUserWizard.buttons.next") }
-                                        <Icon name="arrow right"/>
-                                    </PrimaryButton>
-                                ) }
-                                { currentWizardStep === STEPS.length - 1 && (
-                                    <PrimaryButton
-                                        data-testid={ `${ testId }-finish-button` }
-                                        floated="right"
-                                        onClick={ navigateToNext }
-                                        loading={ isSubmitting }
-                                        disabled={ isSubmitting }
-                                    >
+                                    { t("console:manage.features.user.modals.addUserWizard.buttons.next") }
+                                    <Icon name="arrow right"/>
+                                </PrimaryButton>
+                            ) }
+                            { currentWizardStep === STEPS.length - 1 && (
+                                <PrimaryButton
+                                    data-testid={ `${ testId }-finish-button` }
+                                    floated="right"
+                                    onClick={ navigateToNext }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting }
+                                >
                                         Finish</PrimaryButton>
-                                ) }
-                                { currentWizardStep > 0 && (
-                                    <LinkButton
-                                        data-testid={ `${ testId }-previous-button` }
-                                        floated="right"
-                                        onClick={ navigateToPrevious }
-                                    >
-                                        <Icon name="arrow left"/>
-                                        { t("console:manage.features.user.modals.addUserWizard.buttons.previous") }
-                                    </LinkButton>
-                                ) }
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </Modal.Actions>
-            </>
+                            ) }
+                            { currentWizardStep > 0 && (
+                                <LinkButton
+                                    data-testid={ `${ testId }-previous-button` }
+                                    floated="right"
+                                    onClick={ navigateToPrevious }
+                                >
+                                    <Icon name="arrow left"/>
+                                    { t("console:manage.features.user.modals.addUserWizard.buttons.previous") }
+                                </LinkButton>
+                            ) }
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Modal.Actions>
         );
     };
 
@@ -1433,7 +1429,6 @@ AddUserWizard.defaultProps = {
     currentStep: 0,
     emailVerificationEnabled: false,
     showStepper: true,
-    // Submit Step changed to temporarily disable the summary step.
-    // submitStep: WizardStepsFormTypes.SUMMARY
+    // TODO: Submit Step changed to temporarily disable the summary step.
     submitStep: WizardStepsFormTypes.GROUP_LIST
 };

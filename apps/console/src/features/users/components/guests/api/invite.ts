@@ -19,41 +19,14 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../../../core/hooks/use-request";
 import { store } from "../../../../core/store";
-import { InvitationsInterface, UserInviteInterface } from "../models/invite";
+import { UserInviteInterface } from "../models/invite";
 
 /**
  * Initialize an axios Http client.
- *
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance());
-
-/**
- * Hook to get the parent org user invites list.
- */
-export const useGetParentOrgUserInvites = <Data = InvitationsInterface,
-    Error = RequestErrorInterface>(): RequestResultInterface<Data, Error> => {
-
-    const requestConfig: AxiosRequestConfig = {
-        headers: {
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.guestsList
-    };
-
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
-
-    return {
-        data,
-        error: error,
-        isLoading: !error && !data,
-        isValidating,
-        mutate: mutate
-    };
-};
 
 export const sendParentOrgUserInvite = (userInvite: UserInviteInterface): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
