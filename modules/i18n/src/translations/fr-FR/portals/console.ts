@@ -1653,7 +1653,8 @@ export const console: ConsoleNS = {
                                     empty: "Une URL d'accès valide doit être fournie pour" +
                                         " rendre cette application détectable.",
                                     invalid: "Ceci n'est pas une URL valide"
-                                }
+                                },
+                                ariaLabel: "URL d'accès à l'application"
                             },
                             description: {
                                 label: "Description",
@@ -1893,6 +1894,18 @@ export const console: ConsoleNS = {
                                             " client doit présenter le <1>jeton_d'accès</1> + cookie pour une" +
                                             " autorisation réussie.",
                                         label: "Valider les liaisons des jetons"
+                                    },
+                                    audience: {
+                                        hint: "Spécifiez le destinataire auquel ce <1>jeton_d'accès</1> est " +
+                                            "destiné. Par défaut, l'ID client de cette application est " +
+                                            "ajouté en tant qu'audience.",
+                                        label: "Audience",
+                                        placeholder: "Saisir l'audience",
+                                        validations: {
+                                            duplicate: "L'audience contient des valeurs en double",
+                                            empty: "Veuillez remplir le public",
+                                            invalid: "Veuillez ajouter une audience valide."
+                                        }
                                     }
                                 },
                                 heading: "Jeton d'accès",
@@ -6493,6 +6506,7 @@ export const console: ConsoleNS = {
                 connectorCategories: {
                     passwordPolicies: {
                         name: "Politiques de mot de passe",
+                        description: "Configurer les stratégies de mot de passe pour améliorer la force du mot de passe utilisateur.",
                         connectors: {
                             passwordHistory: {
                                 friendlyName: "Historique du mot de passe",
@@ -6536,6 +6550,7 @@ export const console: ConsoleNS = {
                     },
                     userOnboarding: {
                         name: "Intégration de l'utilisateur",
+                        description: "Configurer les paramètres d'intégration de l'utilisateur.",
                         connectors: {
                             selfSignUp: {
                                 friendlyName: "Auto-inscription",
@@ -6676,6 +6691,7 @@ export const console: ConsoleNS = {
                     },
                     loginAttemptsSecurity: {
                         name: "La connexion tente la sécurité",
+                        description: "Configurer les paramètres de sécurité des tentatives de connexion.",
                         connectors: {
                             accountLockHandler: {
                                 friendlyName: "Verrouillage du compte",
@@ -6727,6 +6743,7 @@ export const console: ConsoleNS = {
                     },
                     accountManagement: {
                         name: "Gestion de compte",
+                        description: "Configurer les paramètres de gestion des comptes.",
                         connectors: {
                             suspensionNotification: {
                                 friendlyName: "Suspende du compte inactif",
@@ -6871,6 +6888,7 @@ export const console: ConsoleNS = {
                     },
                     otherSettings: {
                         name: "Autres réglages",
+                        description: "Configurer d'autres paramètres.",
                         connectors: {
                             piiController: {
                                 friendlyName: "Contrôleur d'information sur le consentement",
@@ -7038,6 +7056,7 @@ export const console: ConsoleNS = {
                     },
                     multiFactorAuthenticators: {
                         name: "Authentificateurs multi-facteurs",
+                        description: "Configurer les paramètres d'authentificateur multi-facteurs.",
                         connectors: {
                             backupCodeAuthenticator: {
                                 friendlyName: "Authentificateur de code de sauvegarde",
@@ -8111,6 +8130,9 @@ export const console: ConsoleNS = {
                                     selectAllScopes: "Sélectionnez toutes les portées (autorisations)",
                                     removeAPIResource: "Supprimer la ressource API"
                                 }
+                            },
+                            notes: {
+                                applicationRoles: "Seules les API et les étendues (autorisations) autorisées dans l'application sélectionnée(<1>{{applicationName}}</1>) seront répertoriées pour être sélectionnées."
                             },
                             notifications: {
                                 fetchAPIResourceError: {

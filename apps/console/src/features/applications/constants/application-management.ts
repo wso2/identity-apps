@@ -379,10 +379,14 @@ export class ApplicationManagementConstants {
      * Form element constraints.
      */
     public static readonly FORM_FIELD_CONSTRAINTS: {
+        ACCESS_URL_MAX_LENGTH: number,
+        ACCESS_URL_MIN_LENGTH: number,
         APP_DESCRIPTION_PATTERN: RegExp,
         APP_NAME_MAX_LENGTH: number,
         APP_NAME_PATTERN: RegExp
     } = {
+        ACCESS_URL_MAX_LENGTH: 200,
+        ACCESS_URL_MIN_LENGTH: 3,
         APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
         APP_NAME_MAX_LENGTH: 50,
         APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
@@ -399,6 +403,8 @@ export class ApplicationManagementConstants {
     public static readonly CUSTOM_APPLICATION: string = "custom-application";
 
     public static readonly MOBILE: string = "mobile-application";
+
+    public static readonly M2M_APP_TEMPLATE_ID: string = "m2m-application";
 
     public static readonly CHOREO_APP_TEMPLATE_ID: string = "choreo-apim-application-oidc";
 

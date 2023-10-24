@@ -1618,7 +1618,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "මෙම යෙදුම සොයාගත හැකි වන පරිදි වලංගු ප්‍රවේශ URL එකක් සැපයිය යුතුය.",
                                     invalid: "මෙය වලංගු URL එකක් නොවේ"
-                                }
+                                },
+                                ariaLabel: "යෙදුම් ප්රවේශ url"
                             },
                             description: {
                                 label: "විස්තර",
@@ -1847,6 +1848,18 @@ export const console: ConsoleNS = {
                                         hint: "ටෝකන වලංගුකරණයේදී බන්ධන ගුණාංග වලංගු කරන්න. සාර්ථක අවසරයක් සඳහා" +
                                             " සේවාදායකයාට <1>ප්‍රවේශ ටෝකන්</1> + කුකිය ඉදිරිපත් කළ යුතුය.",
                                         label: "ටෝකන් බන්ධන වලංගු කරන්න"
+                                    },
+                                    audience: {
+                                        hint: "මෙම <1>ප්‍රවේශ ටෝකනය</1> අදහස් කර ඇති ලබන්නා සඳහන් කරන්න." +
+                                            " පෙරනිමියෙන්, මෙම යෙදුමේ ග්‍රාහක හැඳුනුම්පත ප්‍රේක්ෂකයන් ලෙස එකතු " +
+                                            "කරනු ලැබේ.",
+                                        label: "ප්‍රේක්ෂකයෝ",
+                                        placeholder: "ප්‍රේක්ෂකයින් ඇතුළත් කරන්න",
+                                        validations: {
+                                            duplicate: "Audience හි අනුපිටපත් අගයන් අඩංගු වේ",
+                                            empty: "කරුණාකර audience පුරවන්න",
+                                            invalid: "කරුණාකර වලංගු ප්‍රේක්ෂක පිරිසක් එක් කරන්න."
+                                        }
                                     }
                                 },
                                 heading: "ටෝකනයට ප්‍රවේශ වන්න",
@@ -6339,6 +6352,7 @@ export const console: ConsoleNS = {
                 connectorCategories: {
                     passwordPolicies: {
                         name: "මුරපද ප්රතිපත්ති",
+                        description: "පරිශීලක මුරපද ශක්තිය වැඩි දියුණු කිරීම සඳහා මුරපද ප්රතිපත්ති වින්යාස කරන්න.",
                         connectors: {
                             passwordHistory: {
                                 friendlyName: "මුරපද ඉතිහාසය",
@@ -6382,6 +6396,7 @@ export const console: ConsoleNS = {
                     },
                     userOnboarding: {
                         name: "පරිශීලක ඔන්බෝඩ් කිරීම",
+                        description: "පරිශීලකයා ඔන්බෝඩ් සැකසුම් වින්යාස කරන්න.",
                         connectors: {
                             selfSignUp: {
                                 friendlyName: "ස්වයං ලියාපදිංචිය",
@@ -6522,6 +6537,7 @@ export const console: ConsoleNS = {
                     },
                     loginAttemptsSecurity: {
                         name: "පිවිසුම් උත්සාහය ආරක්ෂාව",
+                        description: "පුරනය වීම වින්යාස කරන්න ආරක්ෂක සැකසුම් උත්සාහ කරන්න.",
                         connectors: {
                             accountLockHandler: {
                                 friendlyName: "ගිණුම් අගුල",
@@ -6573,6 +6589,7 @@ export const console: ConsoleNS = {
                     },
                     accountManagement: {
                         name: "ගිණුම් කළමනාකරණය",
+                        description: "ගිණුම් කළමනාකරණ සැකසුම් වින්යාස කරන්න.",
                         connectors: {
                             suspensionNotification: {
                                 friendlyName: "උදාසීන ගිණුම අත්හිටුවීම",
@@ -6717,6 +6734,7 @@ export const console: ConsoleNS = {
                     },
                     otherSettings: {
                         name: "වෙනත් සැකසුම්",
+                        description: "වෙනත් සැකසුම් වින්යාස කරන්න.",
                         connectors: {
                             piiController: {
                                 friendlyName: "අනුකූල තොරතුරු පාලකය",
@@ -6884,6 +6902,7 @@ export const console: ConsoleNS = {
                     },
                     multiFactorAuthenticators: {
                         name: "බහු සාධක සත්යාපනය",
+                        description: "බහු සාධක සත්යාපන සැකසුම් වින්යාස කරන්න.",
                         connectors: {
                             backupCodeAuthenticator: {
                                 friendlyName: "උපස්ථ කේත සත්යාපකය",
@@ -7943,6 +7962,9 @@ export const console: ConsoleNS = {
                                     selectAllScopes: "සියලුම විෂය පථය (අවසර) තෝරන්න",
                                     removeAPIResource: "API සම්පත ඉවත් කරන්න"
                                 }
+                            },
+                            notes: {
+                                applicationRoles: "තෝරාගත් අයදුම්පතේ(<1>{{applicationName}}</1>) තෝරා ගැනීමට ලැයිස්තුගත කර ඇති APIs සහ විෂය පථයන් පමණක් තෝරා ගැනීමට ලැයිස්තුගත කර ඇත."
                             },
                             notifications: {
                                 fetchAPIResourceError: {

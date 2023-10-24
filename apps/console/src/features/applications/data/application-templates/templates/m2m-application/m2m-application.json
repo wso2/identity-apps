@@ -1,0 +1,17 @@
+{
+    "id": "m2m-application",
+    "templateId": "m2m-application",
+    "name": "M2M Application",
+    "description": "Applications tailored for Machine to Machine communication",
+    "image": "m2m",
+    "authenticationProtocol": "",
+    "category": "DEFAULT",
+    "displayOrder": -1,
+    "self": "",
+    "subTemplatesSectionTitle": "",
+    "templateGroup": "",
+    "types": [
+        "oauth2"
+    ],
+    "application": null
+}

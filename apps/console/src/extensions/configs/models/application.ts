@@ -147,6 +147,7 @@ export interface ApplicationConfig {
         windows: boolean;
         custom: boolean;
         mobile: boolean;
+        m2m: boolean;
     };
     customApplication: {
         allowedProtocolTypes: string[];

@@ -32,7 +32,7 @@ export interface APIResourceListInterface {
 export interface APIResourceInterface {
     id: string;
     name: string;
-    identifier: string;
+    identifier?: string;
     scopes?: ScopeInterface[];
 }
 
@@ -44,4 +44,15 @@ export interface ScopeInterface {
     displayName?: string;
     name?: string;
     description?: string;
+}
+
+/**
+ * Interface to store authorized API list item.
+ */
+export interface AuthorizedAPIListItemInterface {
+    id: string,
+    identifier: string,
+    displayName: string,
+    policyId: string,
+    authorizedScopes: ScopeInterface[]
 }

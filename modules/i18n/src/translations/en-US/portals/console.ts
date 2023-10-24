@@ -1623,7 +1623,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "A valid access URL must be provided to make this application discoverable.",
                                     invalid: "Enter a valid URL"
-                                }
+                                },
+                                ariaLabel: "Application access URL"
                             },
                             description: {
                                 label: "Description",
@@ -1860,6 +1861,17 @@ export const console: ConsoleNS = {
                                             "needs to present the <1>access_token</1> + cookie for successful "+
                                             "authorization.",
                                         label: "Validate token bindings"
+                                    },
+                                    audience: {
+                                        hint: "Specify the recipient(s) that this <1>access_token</1> is intended for." +
+                                        " By default, the client ID of this application is added as an audience.",
+                                        label: "Audience",
+                                        placeholder: "Enter Audience",
+                                        validations: {
+                                            duplicate: "Audience contains duplicate values",
+                                            empty: "Please fill the audience",
+                                            invalid: "Please avoid special characters like commas (,)"
+                                        }
                                     }
                                 },
                                 heading: "Access Token",
@@ -8109,6 +8121,7 @@ export const console: ConsoleNS = {
                 connectorCategories: {
                     passwordPolicies : {
                         name: "Password Policies",
+                        description: "Configure password policies to enhance user password strength.",
                         connectors: {
                             passwordHistory: {
                                 friendlyName: "Password History",
@@ -8152,6 +8165,7 @@ export const console: ConsoleNS = {
                     },
                     userOnboarding : {
                         name: "User Onboarding",
+                        description: "Configure user onboarding settings.",
                         connectors: {
                             selfSignUp: {
                                 friendlyName: "Self Registration",
@@ -8292,6 +8306,7 @@ export const console: ConsoleNS = {
                     },
                     loginAttemptsSecurity : {
                         name: "Login Attempts Security",
+                        description: "Configure login attempt security settings.",
                         connectors: {
                             accountLockHandler: {
                                 friendlyName: "Account Lock",
@@ -8343,6 +8358,7 @@ export const console: ConsoleNS = {
                     },
                     accountManagement : {
                         name: "Account Management",
+                        description: "Configure account management settings.",
                         connectors: {
                             suspensionNotification: {
                                 friendlyName: "Idle Account Suspend",
@@ -8487,6 +8503,7 @@ export const console: ConsoleNS = {
                     },
                     otherSettings : {
                         name: "Other Settings",
+                        description: "Configure other settings.",
                         connectors: {
                             piiController: {
                                 friendlyName: "Consent Information Controller",
@@ -8654,6 +8671,7 @@ export const console: ConsoleNS = {
                     },
                     multiFactorAuthenticators : {
                         name: "Multi Factor Authenticators",
+                        description: "Configure multi factor authenticator settings.",
                         connectors: {
                             backupCodeAuthenticator: {
                                 friendlyName: "Backup Code Authenticator",
@@ -9872,6 +9890,9 @@ export const console: ConsoleNS = {
                                     selectAllScopes: "Select all scopes(permissions)",
                                     removeAPIResource: "Remove API resource"
                                 }
+                            },
+                            notes: {
+                                applicationRoles: "Only the APIs and the scopes(permissions) that are authorized in the selected application(<1>{{applicationName}}</1>) will be listed to select."
                             },
                             notifications: {
                                 fetchAPIResourceError: {
