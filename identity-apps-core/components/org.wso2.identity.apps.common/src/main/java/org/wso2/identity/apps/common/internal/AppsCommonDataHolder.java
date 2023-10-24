@@ -134,6 +134,7 @@ public class AppsCommonDataHolder {
 
     /**
      * Get organization manager.
+     *
      * @return OrganizationManager.
      */
     public OrganizationManager getOrganizationManager() {
@@ -143,6 +144,7 @@ public class AppsCommonDataHolder {
 
     /**
      * Set organization manager.
+     *
      * @param organizationManager OrganizationManager.
      */
     public void setOrganizationManager(OrganizationManager organizationManager) {
@@ -152,6 +154,7 @@ public class AppsCommonDataHolder {
 
     /**
      * Get realm service.
+     *
      * @return RealmService.
      */
     public RealmService getRealmService() {
@@ -161,6 +164,7 @@ public class AppsCommonDataHolder {
 
     /**
      * Set realm service.
+     *
      * @param realmService RealmService.
      */
     public void setRealmService(RealmService realmService) {
