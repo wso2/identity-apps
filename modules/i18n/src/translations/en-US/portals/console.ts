@@ -11388,6 +11388,20 @@ export const console: ConsoleNS = {
                             message: "User added successfully"
                         }
                     },
+                    addUserPendingApproval: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error adding the new user"
+                        },
+                        genericError: {
+                            description: "Couldn't add the new user",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The new user was accepted and pending approval.",
+                            message: "User accepted for creation"
+                        }
+                    },
                     bulkImportUser: {
                         validation: {
                             emptyRowError: {
