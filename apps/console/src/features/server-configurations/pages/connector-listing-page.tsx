@@ -365,7 +365,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                                     renderConnectors()
                                 }
                                 {
-                                    serverConfigurationConfig.dynamicConnectors 
+                                    serverConfigurationConfig.dynamicConnectors
                                         ? (
                                             <Grid xs={ 12 } lg={ 6 }>
                                                 <AdminAdvisoryBannerSection />

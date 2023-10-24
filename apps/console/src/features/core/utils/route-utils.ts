@@ -406,7 +406,7 @@ export class RouteUtils {
                 id: "logs"            
             },
             {
-                category: other,       
+                category: other,
                 id: "remoteLogging"
             },
             {
