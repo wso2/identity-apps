@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,7 @@
 import { Hint } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { Field as FinalFormField } from "react-final-form";
-import { ScopeFieldAdapter } from "./adapters";
+import { ScopeFieldAdapter } from "./adapters/__DEPRECATED__adapters";
 import { FormFieldPropsInterface } from "./field";
 import { FieldInputTypes, FormFieldMessage } from "../models";
 import { getValidation } from "../utils";

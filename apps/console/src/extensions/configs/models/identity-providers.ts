@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,11 +19,25 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import { FunctionComponent, ReactElement, ReactNode, SVGProps } from "react";
+import { ConnectionTabTypes } from "../../../features/connections/models/connection";
 import {
     AuthenticatorInterface,
-    GenericIdentityProviderCreateWizardPropsInterface,
-    IdentityProviderTabTypes
+    GenericIdentityProviderCreateWizardPropsInterface
 } from "../../../features/identity-providers/models";
+
+export interface ExtendedSamlConfigInterface {
+    isArtifactBindingEnabled: boolean;
+    attributeConsumingServiceIndexEnabled: boolean;
+    saml2WebSSOUserIdLocationEnabled: boolean;
+    authContextComparisonLevelEnabled: boolean;
+    responseAuthenticationContextClassEnabled: boolean;
+    forceAuthenticationEnabled: boolean;
+    includeAuthenticationContextEnabled: boolean;
+    isAssertionEncryptionEnabled: boolean;
+    includeNameIDPolicyEnabled: boolean;
+    enableAssertionSigningEnabled: boolean;
+    includePublicCertEnabled: boolean;
+}
 
 export interface IdentityProviderConfig {
     /**
@@ -68,7 +82,7 @@ export interface IdentityProviderConfig {
          * @param templateId - The IDP Template Type.
          * @param tabType - Tab Type.
          */
-        isTabEnabledForIdP: (templateId: string, tabType: IdentityProviderTabTypes) => boolean | undefined;
+        isTabEnabledForIdP: (templateId: string, tabType: ConnectionTabTypes) => boolean | undefined;
         /**
          * Used to the IDP settings form of a certain IDP template type.
          * @param type - The IDP Authenticator ID.
@@ -139,6 +153,7 @@ export interface IdentityProviderConfig {
     fidoTags: string[];
     filterFidoTags: (tags: string[]) => string[];
     getOverriddenAuthenticatorDisplayName: (authenticatorId: string, value: string) => string;
+    extendedSamlConfig: ExtendedSamlConfigInterface;
 }
 
 /**

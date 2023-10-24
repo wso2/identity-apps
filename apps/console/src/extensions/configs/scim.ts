@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,7 +32,9 @@ export const SCIMConfigs: SCIMConfigInterface = {
         enterpriseSchema: "urn:scim:wso2:schema",
         userSchema: "urn:ietf:params:scim:schemas:core:2.0:User"
     },
-    scimDialectID: {},
+    scimDialectID: {
+        customEnterpriseSchema: "dXJuOnNjaW06d3NvMjpzY2hlbWE"
+    },
     scimEnterpriseUserClaimUri: {
         accountDisabled: "urn:scim:wso2:schema.accountDisabled",
         accountLocked: "urn:scim:wso2:schema.accountLocked",

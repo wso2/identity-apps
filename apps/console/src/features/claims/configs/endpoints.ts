@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,17 +21,18 @@ import { ClaimResourceEndpointsInterface } from "../models";
 /**
  * Get the resource endpoints for the Claim Management feature.
  *
- * @param {string} serverHost - Server Host.
- * @param {string }serverHostWithOrgPath - Server Host with the Organization Path.
- * @return {ClaimResourceEndpointsInterface}
+ * @param serverHost - Server Host.
+ * @param serverHostWithOrgPath - Server Host with the Organization Path.
+ * @returns ClaimResourceEndpointsInterface
  */
 export const getClaimResourceEndpoints = (
     serverHost: string,
     serverHostWithOrgPath: string
 ): ClaimResourceEndpointsInterface => {
     return {
-        claims: `${ serverHost }/api/server/v1/claim-dialects`,
-        externalClaims:`${ serverHost }/api/server/v1/claim-dialects/{}/claims`,
-        localClaims: `${ serverHostWithOrgPath }/api/server/v1/claim-dialects/local/claims`
+        claims: `${ serverHostWithOrgPath }/api/server/v1/claim-dialects`,
+        externalClaims:`${ serverHostWithOrgPath }/api/server/v1/claim-dialects/{}/claims`,
+        localClaims: `${serverHostWithOrgPath}/api/server/v1/claim-dialects/local/claims`,
+        resourceTypes: `${ serverHostWithOrgPath }/scim2/ResourceTypes`
     };
 };

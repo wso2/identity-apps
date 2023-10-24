@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,10 +21,11 @@ import { ClaimManagementConstants } from "../constants";
 /**
  * Resolves the type of the attribute.
  *
- * @param {string} - Attribute type.
- * @param {boolean} - Capitalize.
+ * @param attributeType - Attribute type.
+ * @param capitalize - Capitalize.
+ * @param shortForm - Return short form.
  *
- * @return {string} - The type name.
+ * @returns - The type name.
  */
 export const resolveType = (attributeType: string, capitalize?: boolean, shortForm?: boolean): string => {
     switch (attributeType) {
@@ -32,6 +33,10 @@ export const resolveType = (attributeType: string, capitalize?: boolean, shortFo
             return shortForm? "OIDC" : "OpenID Connect";
         case ClaimManagementConstants.SCIM:
             return "SCIM";
+        case ClaimManagementConstants.AXSCHEMA:
+            return "Axschema";
+        case ClaimManagementConstants.EIDAS:
+            return "eIDAS";
         default:
             return capitalize ? "Custom" : "custom";
     }

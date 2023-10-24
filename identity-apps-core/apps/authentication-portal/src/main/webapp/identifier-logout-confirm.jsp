@@ -60,7 +60,7 @@
         <layout:component componentName="MainSection">
             <div class="ui segment">
                 <h3 class="ui header">
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login")%>
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login.heading")%>
                 </h3>
 
                 <form form action="<%=commonauthURL%>" method="post" id="identifier_logout_confirm_form"
@@ -97,6 +97,9 @@
                 <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
+        <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+            <jsp:include page="${pathOfDynamicComponent}" />
+        </layout:dynamicComponent>
     </layout:main>
 
     <%-- footer --%>

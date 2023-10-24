@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,10 +22,9 @@ import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
 import Tree from "rc-tree";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { AppState, store } from "../../../core";
-import { getServerConfigs } from "../../../server-configurations";
+import { store } from "../../../core";
+import { ServerConfigurationsInterface, getServerConfigs } from "../../../server-configurations";
 import { RoleConstants } from "../../constants";
 import { TreeNode } from "../../models";
 import { RoleManagementUtils } from "../../utils";
@@ -58,7 +57,7 @@ interface PermissionListProp extends  TestableComponentInterface {
 /**
  * Component to create the permission tree structure from the give permission list.
  *
- * @param props props containing event handlers for permission component
+ * @param props - props containing event handlers for permission component
  */
 export const PermissionList: FunctionComponent<PermissionListProp> = (props: PermissionListProp): ReactElement => {
 
@@ -84,12 +83,11 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     const [ defaultExpandedKeys, setDefaultExpandKeys ] = useState<string[]>([]);
     const [ isPermissionsLoading, setIsPermissionsLoading ] = useState<boolean>(true);
     const [ isSuperAdmin, setIsSuperAdmin ] = useState<boolean>(false);
-    const tenantDomain: string = useSelector<AppState, string>((state: AppState) => state.config.deployment.tenant);
 
     useEffect(() => {
         const checkedNodes: TreeNode[] = [];
 
-        RoleManagementUtils.getAllPermissions(permissionsToHide, tenantDomain)
+        RoleManagementUtils.getAllPermissions(permissionsToHide)
             .then((permissionTree: TreeNode[]) => {
                 disableSuperAdminTreeNode(isSuperAdmin, permissionTree);
                 setPermissions(permissionTree);
@@ -101,19 +99,19 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         if ( initialValues && initialValues.length > 0 ) {
             const previousFormCheckedKeys: string[] = [];
 
-            initialValues.forEach(initialKey => {
+            initialValues.forEach((initialKey: TreeNode) => {
                 previousFormCheckedKeys.push(initialKey.key.toString());
             });
             setPreviouslyCheckedKeys(previousFormCheckedKeys);
-            previouslyCheckedKeys?.forEach(key => {
+            previouslyCheckedKeys?.forEach((key: string) => {
                 checkedNodes.push(getNodeByKey(key, permissions));
             });
             setCheckedPermission(checkedNodes);
         }
 
         if (isRole && roleObject) {
-            setPreviouslyCheckedKeys(roleObject.permissions);
-            previouslyCheckedKeys?.forEach(key => {
+            setPreviouslyCheckedKeys(roleObject.permissions as string[]);
+            previouslyCheckedKeys?.forEach((key: string) => {
                 checkedNodes.push(getNodeByKey(key, permissions));
             });
             setCheckedPermission(checkedNodes);
@@ -124,9 +122,9 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
      * Util function to check if current user is a super admin.
      */
     const checkIsSuperAdmin = () => {
-        getServerConfigs().then((response) => {
-            const loggedUserName = store.getState().profile.profileInfo.userName;
-            const adminUser = response?.realmConfig.adminUser;
+        getServerConfigs().then((response: ServerConfigurationsInterface) => {
+            const loggedUserName: string = store.getState().profile.profileInfo.userName;
+            const adminUser: string = response?.realmConfig.adminUser;
 
             if (loggedUserName === adminUser) {
                 setIsSuperAdmin(true);
@@ -137,8 +135,8 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     /**
      * Utill method to disable super admin permissions when `isSuperAdmin` is false.
      *
-     * @param isSuperAdmin is super admin check
-     * @param permissionTree permission tree to change
+     * @param isSuperAdmin - is super admin check
+     * @param permissionTree - permission tree to change
      */
     const disableSuperAdminTreeNode = (isSuperAdmin: boolean, permissionTree: TreeNode[]) => {
         permissionTree[0].children.forEach((permission: TreeNode) => {
@@ -172,9 +170,10 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
      * @param checked - checked states of the node
      * @param info - checked information
      */
+    // eslint-disable-next-line @typescript-eslint/typedef
     const onCheck = (checked: { checked: React.ReactText[]; halfChecked: React.ReactText[] }, info) => {
         if (info.checked) {
-            if (!checkedPermission.find(permission => permission.key === info.node.key)) {
+            if (!checkedPermission.find((permission: TreeNode) => permission.key === info.node.key)) {
                 const parentNode: TreeNode = getNodeByKey(info.node.key, permissions, true);
                 let checkedChildren: number = 1;
 
@@ -185,7 +184,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                     }
                 });
                 if (parentNode?.children?.length === checkedChildren) {
-                    const filteredCheckedPermissions = checkedPermission.filter((permission: TreeNode) => {
+                    const filteredCheckedPermissions: TreeNode[] = checkedPermission.filter((permission: TreeNode) => {
                         permission.key.toString().replace(/^\/|\/$/g, "").split("/") === parentNode.key.toString()
                             .replace(/^\/|\/$/g, "").split("/");
                     });
@@ -208,10 +207,10 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
      * @param isParent - condition to find the parent of the key node
      */
     const getNodeByKey = (key: string, permissionTree: TreeNode[], isParent: boolean = false): TreeNode => {
-        const flattenedTree = [ permissionTree[0] ];
+        const flattenedTree: TreeNode[] = [ permissionTree[0] ];
 
         while ( flattenedTree.length ) {
-            const node = flattenedTree.shift();
+            const node: TreeNode = flattenedTree.shift();
 
             if (isParent) {
                 if ( node.key === key.slice(0,key.lastIndexOf("/")) ) {
@@ -236,7 +235,8 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
      * the tree nodes.
      * @param eventObject - event object
      */
-    const switcherIcon = eventObject => {
+    // eslint-disable-next-line @typescript-eslint/typedef
+    const switcherIcon = (eventObject) => {
         if (eventObject.isLeaf) {
             return null;
         }
@@ -265,7 +265,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                                     className={ "customIcon" }
                                     data-testid={ `${ testId }-tree` }
                                     disabled={ isReadOnly }
-                                    checkedKeys={ checkedPermission.map( permission => permission.key ) }
+                                    checkedKeys={ checkedPermission.map( (permission: TreeNode) => permission.key ) }
                                     defaultExpandedKeys={ defaultExpandedKeys }
                                     showLine
                                     showIcon={ false }

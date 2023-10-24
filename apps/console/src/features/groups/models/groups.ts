@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -57,6 +57,12 @@ export interface PatchGroupDataInterface {
     Operations: GroupSCIMOperationsInterface[];
 }
 
+export interface PatchBulkGroupDataInterface {
+    schemas: string[];
+    Operations: PatchGroupOpInterface[];
+    failOnErrors?: number;
+}
+
 export interface PatchGroupOpInterface {
     data: {
         Operations: (PatchGroupRemoveOpInterface | PatchGroupAddOpInterface)[];
@@ -83,7 +89,7 @@ export interface PatchGroupAddOpInterface {
 export interface GroupsInterface {
     displayName: string;
     id: string;
-    meta: GroupsMetaInterface;
+    meta?: GroupsMetaInterface;
     members?: GroupsMemberInterface[];
     roles?: RolesMemberInterface[];
 }
@@ -103,9 +109,9 @@ export interface GroupListInterface {
  * Interface to contain Group meta information
  */
 export interface GroupsMetaInterface {
-    created: string;
+    created?: string;
     location: string;
-    lastModified: string;
+    lastModified?: string;
 }
 
 /**
@@ -119,8 +125,15 @@ export interface GroupsMemberInterface {
 
 export interface GroupSCIMOperationsInterface {
     op: string;
-    value: any;
+    value?: any;
     path?: string;
+}
+
+/**
+ * Interface to contain data for SCIM update group members api request.
+ */
+export interface GroupSCIMAddMemberInterface {
+    members: CreateGroupMemberInterface[];
 }
 
 /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,11 +18,10 @@
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { CommonHelpers } from "@wso2is/core/helpers";
-import { 
-    AlertInterface, 
-    AlertLevels, 
-    MultiValueAttributeInterface, 
+import {
+    AlertLevels,
     IdentifiableComponentInterface,
+    MultiValueAttributeInterface,
     TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
@@ -36,50 +35,56 @@ import {
     ResourceTab,
     ResourceTabPaneInterface
 } from "@wso2is/react-components";
+import { UsersConstants } from "apps/console/src/extensions/components/users/constants";
+import { InvitationStatus } from "apps/console/src/extensions/components/users/models";
 import { AxiosError, AxiosResponse } from "axios";
-import React, { FunctionComponent, MutableRefObject, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
-import { RouteComponentProps } from "react-router";
+import React, {
+    FunctionComponent, 
+    MutableRefObject, 
+    ReactElement, 
+    SyntheticEvent, 
+    useEffect, 
+    useRef, 
+    useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { Dropdown, DropdownProps, DropdownItemProps, Icon, PaginationProps, TabProps } from "semantic-ui-react";
+import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps, TabProps } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
+    EventPublisher,
     FeatureConfigInterface,
     SharedUserStoreUtils,
     UIConstants,
     UserBasicInterface,
     getAUserStore,
     getEmptyPlaceholderIllustrations,
-    store,
-    EventPublisher,
-    history
+    history,
+    store
 } from "../../core";
 import { RootOnlyComponent } from "../../organizations/components";
 import { OrganizationUtils } from "../../organizations/utils";
 import {
-    ConnectorPropertyInterface,
-    GovernanceConnectorCategoryInterface,
-    GovernanceConnectorInterface,
     RealmConfigInterface,
-    ServerConfigurationsConstants,
     ServerConfigurationsInterface,
-    getConnectorCategory,
     getServerConfigs
 } from "../../server-configurations";
 import { getUserStoreList } from "../../userstores/api";
-import { CONSUMER_USERSTORE } from "../../userstores/constants/user-store-constants";
+import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../userstores/constants/user-store-constants";
 import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../userstores/models/user-stores";
 import { getUsersList, useUsersList } from "../api";
+import { useGetParentOrgUserInvites } from "../components/guests/api/invite";
+import { UserInviteInterface } from "../components/guests/models/invite";
+import { GuestUsersList } from "../components/guests/pages/guest-users-list";
 import { UsersList } from "../components/users-list";
 import { UsersListOptionsComponent } from "../components/users-list-options";
 import { AddUserWizard } from "../components/wizard/add-user-wizard";
-import { UserAccountTypesMain, UserManagementConstants, UserAccountTypes } from "../constants";
+import { BulkImportUserWizard } from "../components/wizard/bulk-import-user-wizard";
+import { UserAccountTypes, UserAccountTypesMain, UserAddOptionTypes, UserManagementConstants } from "../constants";
 import { UserListInterface } from "../models";
-import { UsersConstants } from "apps/console/src/extensions/components/users/constants";
-import { GuestUsersList } from "../components/guests/pages/guest-users-list";
-import { UserInviteInterface, useParentOrgUserInvitesList, InvitationStatus } from "../components/guests/api/invite";
+
 interface UserStoreItem {
     key: number;
     text: string;
@@ -123,11 +128,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    const [ showBulkImportWizard, setShowBulkImportWizard ] = useState<boolean>(false);
     const [ usersList, setUsersList ] = useState<UserListInterface>({});
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ userStore, setUserStore ] = useState(undefined);
+    const [ userStore, setUserStore ] = useState("primary");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
@@ -138,11 +144,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
     const [ selectedAddUserType ] = useState<UserAccountTypes>(UserAccountTypes.USER);
     const [ userType, setUserType ] = useState<string>();
-    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(CONSUMER_USERSTORE);
+    const [ selectedUserStore ] = useState<string>(CONSUMER_USERSTORE);
     const [ invitationStatusOption, setInvitationStatusOption ] = useState<string>(InvitationStatus.PENDING);
-    const [ isUsersNextPageAvailable, setIsUsersNextPageAvailable ] = useState<boolean>(undefined);
-    const [ isSelectedUserStoreReadOnly, setSelectedUserStoreReadOnly ] = useState<boolean>(false);
-    const [ isInvitationStatusOptionChanged, setIsInvitationStatusOptionChanged ] = useState<boolean>(false);
+    const [ isUsersNextPageAvailable ] = useState<boolean>(undefined);
+    const [ isSelectedUserStoreReadOnly ] = useState<boolean>(false);
+    const [ , setIsInvitationStatusOptionChanged ] = useState<boolean>(false);
     const [ finalGuestList, setFinalGuestList ] = useState<UserInviteInterface[]>([]);
 
 
@@ -172,9 +178,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     ];
 
     const {
-        data: originalUserList,
         isLoading: isUserListFetchRequestLoading,
-        error: userListFetchRequestError,
         mutate: mutateUserListFetchRequest
     } = useUsersList(
         modifiedLimit,
@@ -188,9 +192,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const {
         data: parentOrgUserInviteList,
         isLoading: isParentOrgUserInviteFetchRequestLoading,
-        error: parentOrgUserInviteFetchRequestError,
         mutate: mutateParentOrgUserListFetchRequest
-    } = useParentOrgUserInvitesList();
+    } = useGetParentOrgUserInvites();
 
     /**
      * Fetch the list of available userstores.
@@ -255,10 +258,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         }
     }, [ emailVerificationEnabled ]);
 
-     /**
+    /**
      * Handles parent user invitation pagination.
      */
-     useEffect(() => {
+    useEffect(() => {
         setFinalGuestList(parentOrgUserInviteList?.invitations?.filter((invitation: UserInviteInterface) =>
             invitation.status === InvitationStatus.PENDING.toUpperCase()));
 
@@ -494,15 +497,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     /**
-     * Dispatches the alert object to the redux store.
-     *
-     * @param alert - Alert object.
-     */
-    const handleAlerts = (alert: AlertInterface) => {
-        dispatch(addAlert(alert));
-    };
-
-    /**
      * The following method set the list of columns selected by the user to
      * the state.
      *
@@ -540,49 +534,26 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
-        if (data.value === "all") {
-            setUserStore(null);
-        } else {
-            setUserStore(data.value as string);
-        }
+        setUserStore(data.value as string);
     };
 
     const onUserDelete = (): void => {
         setListUpdated(true);
     };
 
-    /**
-     * Handles the click event of the create new user button.
-     */
-    const handleAddNewUserWizardClick = (): void => {
 
-        getConnectorCategory(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
-            .then((response: GovernanceConnectorCategoryInterface) => {
-                const connectors: GovernanceConnectorInterface[]  = response?.connectors;
-                const userOnboardingConnector: GovernanceConnectorInterface = connectors.find(
-                    (connector: GovernanceConnectorInterface) => connector.id
-                        === ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID
-                );
 
-                const emailVerification: ConnectorPropertyInterface = userOnboardingConnector.properties.find(
-                    (property: ConnectorPropertyInterface) => 
-                        property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED);
+    const addUserDropdownTrigger: ReactElement = (
+        <PrimaryButton
+            data-componentid={ `${ testId }-add-user-button` }
+            data-testid={ `${ testId }-add-user-button` }
+        >
+            <Icon name="add"/>
+            { t("extensions:manage.users.buttons.addUserBtn") }
+            <Icon name="dropdown" className="ml-3 mr-0"/>
+        </PrimaryButton>
+    );
 
-                setEmailVerificationEnabled(emailVerification.value === "true");
-            }).catch((error: AxiosError) => {
-                handleAlerts({
-                    description: error?.response?.data?.description ?? t(
-                        "console:manage.features.governanceConnectors.notifications." +
-                        "getConnector.genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: error?.response?.data?.message ?? t(
-                        "console:manage.features.governanceConnectors.notifications." +
-                        "getConnector.genericError.message"
-                    )
-                });
-            });
-    };
 
     const advancedSearchFilter = (): ReactElement => (
         <AdvancedSearchWithBasicFilters
@@ -619,6 +590,14 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             triggerClearQuery={ triggerClearQuery }
         />
     );
+
+    /**
+     * Handles the `onClose` callback action from the bulk import wizard.
+     */
+    const handleBulkImportWizardClose = (): void => {
+        setShowBulkImportWizard(false);
+        getList(listItemLimit, listOffset, null, null, userStore);
+    };
 
     const renderUsersList = (): ReactElement => {
         return (
@@ -660,11 +639,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                             />
                             <RootOnlyComponent>
                                 <Dropdown
+                                    value={ userStore }
                                     data-testid="user-mgt-user-list-userstore-dropdown"
                                     selection
                                     options={ userStoreOptions && userStoreOptions }
                                     onChange={ handleDomainChange }
-                                    defaultValue="all"
                                 />
                             </RootOnlyComponent>
                         </>
@@ -692,7 +671,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         imageSize="tiny"
                     />)
                     : (<UsersList
-                        advancedSearch={ advancedSearchFilter()}
+                        advancedSearch={ advancedSearchFilter() }
                         usersList={ usersList }
                         onUserDelete={ onUserDelete }
                         userMetaListContent={ userListMetaContent }
@@ -710,8 +689,143 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 }
             </ListLayout>
         );
-    }
+    };
 
+    const addUserOptions: DropdownItemProps[] = [
+        {
+            "data-componentid": `${ componentId }-add-internal-user`,
+            key: 1,
+            text: t("console:manage.features.parentOrgInvitations.createDropdown.createLabel"),
+            value: UserAccountTypesMain.INTERNAL
+        },
+        {
+            "data-componentid": `${ componentId }-add-external-user`,
+            key: 2,
+            text: t("console:manage.features.parentOrgInvitations.createDropdown.inviteLabel"),
+            value: UserAccountTypesMain.EXTERNAL
+        },
+        {
+            "data-componentid": `${ testId }-bulk-import-users-dropdown-item`,
+            "data-testid": `${ testId }-bulk-import-users-dropdown-item`,
+            key: 3,
+            text: t("console:manage.features.users.addUserDropDown.bulkImport"),
+            value: UserAddOptionTypes.BULK_IMPORT
+        }
+    ];
+    
+    const handleDropdownItemChange = (value: string): void => {
+        if (value === UserAccountTypesMain.INTERNAL) {
+            eventPublisher.publish("manage-users-click-create-new", {
+                type: "user"
+            });
+            setShowWizard(true);
+            setUserType(UserAccountTypesMain.INTERNAL);
+        } else if (value === UserAccountTypesMain.EXTERNAL) {
+            eventPublisher.publish("manage-users-click-create-invite", {
+                type: "user"
+            });
+            setShowWizard(true);
+            setUserType(UserAccountTypesMain.EXTERNAL);
+        } else if (value === UserAddOptionTypes.BULK_IMPORT) {
+            setShowBulkImportWizard(true);
+        }
+    };
+    
+    const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
+        setActiveTabIndex(data.activeIndex as number);
+        handleSearchQueryClear();
+        if (data.activeIndex === 0) {
+            setUserType(UserAccountTypesMain.INTERNAL);
+        } else if (data.activeIndex === 1) {
+            setUserType(UserAccountTypesMain.EXTERNAL);
+        }
+    };
+    
+    const renderUserDropDown = (): ReactElement => {
+        return (
+            <Dropdown
+                data-componentid={ `${ componentId }-add-user-dropdown` }
+                direction="left"
+                floating
+                icon={ null }
+                trigger={ addUserDropdownTrigger }
+            >
+                <Dropdown.Menu >
+                    { addUserOptions.map((option: {
+                        "data-componentid": string;
+                        key: number;
+                        text: string;
+                        value: UserAccountTypes;
+                    }) => (
+                        <Dropdown.Item
+                            key={ option.value }
+                            onClick={ ()=> handleDropdownItemChange(option.value) }
+                            { ...option }
+                        />
+                    )) }
+                </Dropdown.Menu>
+            </Dropdown>
+        );
+    };
+    
+    const showUserWizard = (): ReactElement => {
+        return (
+            <AddUserWizard
+                data-componentid={ `${ componentId }-user-mgt-add-user-wizard-modal` }
+                data-testid={ `${ testId }-user-mgt-add-user-wizard-modal` }
+                isSubOrg={ isSubOrg }
+                closeWizard={ () => {
+                    setShowWizard(false);
+                    setEmailVerificationEnabled(undefined);
+                } }
+                emailVerificationEnabled={ emailVerificationEnabled }
+                onSuccessfulUserAddition={ (id: string) => {
+                    mutateParentOrgUserListFetchRequest();
+                    eventPublisher.publish("manage-users-finish-creating-user");
+                    history.push(UsersConstants.getPaths().get("CUSTOMER_USER_EDIT_PATH")
+                        .replace(":id", id));
+                } }
+                defaultUserTypeSelection={ selectedAddUserType }
+                userTypeSelection={ userType }
+                listOffset={ listOffset }
+                listItemLimit={ listItemLimit }
+                updateList={ () => setListUpdated(true) }
+                userStore= { userStore }
+                {
+                    ...showBulkImportWizard && (
+                        <BulkImportUserWizard
+                            data-componentid="user-mgt-bulk-import-user-wizard-modal"
+                            closeWizard={ handleBulkImportWizardClose }
+                            userstore={ PRIMARY_USERSTORE }
+                        />
+                    )
+                }
+            />
+        );
+    };
+    
+    const resolveAdminTabPanes = (): ResourceTabPaneInterface[] => {
+        const panes: ResourceTabPaneInterface[] = [];
+    
+        panes.push({
+            componentId: "users",
+            menuItem: {
+                content: t("console:manage.features.parentOrgInvitations.tab.usersTab")
+            },
+            render: renderUsersList
+        });
+    
+        panes.push({
+            componentId: "invitations",
+            menuItem: {
+                content: t("console:manage.features.parentOrgInvitations.tab.invitationsTab")
+            },
+            render: renderInvitationsList
+        });
+    
+        return panes;
+    };
+    
     const renderInvitationsList = (): ReactElement => {
         return (
             <ListLayout
@@ -766,7 +880,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                             />
                         )
                         : (
-
+    
                             <GuestUsersList
                                 invitationStatusOption={ null }
                                 onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
@@ -783,12 +897,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             </ListLayout>
         );
     };
-
+    
     const handleAccountStatusChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
         setInvitationStatusOption(data.value as string);
         setIsInvitationStatusOptionChanged(true);
     };
-
+    
     const resolveTotalPages = (): number => {
         if (selectedUserStore === CONSUMER_USERSTORE) {
             return Math.ceil(usersList?.totalResults / listItemLimit);
@@ -800,150 +914,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             return NUMBER_OF_PAGES_FOR_LDAP;
         }
     };
-
-    const addUserDropdown: ReactElement = (
-        <>
-            <PrimaryButton
-                data-componentid={ `${ componentId }-add-user-button` }
-                onClick={ () => {
-                    eventPublisher.publish("click-add-new-button");
-                } }
-                className="tablet or lower hidden"
-            >
-                <Icon name="add"/>
-                { t("extensions:manage.users.buttons.addUserBtn") }
-                <Icon name="dropdown" className="ml-3 mr-0"/>
-            </PrimaryButton>
-            <Button
-                data-componentid={ `${ componentId }-add-user-button-mobile` }
-                icon="add"
-                onClick={ () => {
-                    eventPublisher.publish("click-add-new-button");
-                } }
-                className="mobile only tablet only"
-                primary
-            >
-            </Button>
-        </>
-    );
-
-    const addUserOptions: DropdownItemProps[] = [
-        {
-            "data-componentid": `${ componentId }-add-internal-user`,
-            key: 1,
-            text: t("console:manage.features.parentOrgInvitations.createDropdown.createLabel"),
-            value: UserAccountTypesMain.INTERNAL
-        },
-        {
-            "data-componentid": `${ componentId }-add-external-user`,
-            key: 2,
-            text: t("console:manage.features.parentOrgInvitations.createDropdown.inviteLabel"),
-            value: UserAccountTypesMain.EXTERNAL
-        }
-    ];
-
-    const handleDropdownItemChange = (value: string): void => {
-        if (value === UserAccountTypesMain.INTERNAL) {
-            eventPublisher.publish("manage-users-click-create-new", {
-                type: "user"
-            });
-            setShowWizard(true);
-            setUserType(UserAccountTypesMain.INTERNAL);
-        } else if (value === UserAccountTypesMain.EXTERNAL) {
-            eventPublisher.publish("manage-users-click-create-invite", {
-                type: "user"
-            });
-            setShowWizard(true);
-            setUserType(UserAccountTypesMain.EXTERNAL);
-        }
-    };
-
-    const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
-        setActiveTabIndex(data.activeIndex as number);
-        handleSearchQueryClear();
-        if (data.activeIndex === 0) {
-            setUserType(UserAccountTypesMain.INTERNAL);
-        } else if (data.activeIndex === 1) {
-            setUserType(UserAccountTypesMain.EXTERNAL);
-        }
-    };
-
-    const renderUserDropDown = (): ReactElement => {
-        return (
-            <Dropdown
-                data-componentid={ `${ componentId }-add-user-dropdown` }
-                direction="left"
-                floating
-                icon={ null }
-                trigger={ addUserDropdown }
-            >
-                <Dropdown.Menu >
-                    { addUserOptions.map((option: {
-                        "data-componentid": string;
-                        key: number;
-                        text: string;
-                        value: UserAccountTypes;
-                    }) => (
-                        <Dropdown.Item
-                            key={ option.value }
-                            onClick={ ()=> handleDropdownItemChange(option.value) }
-                            { ...option }
-                        />
-                    )) }
-                </Dropdown.Menu>
-            </Dropdown>
-        );
-    };
-
-    const showUserWizard = (): ReactElement => {
-        return (
-            <AddUserWizard
-                data-componentid={ `${ componentId }-user-mgt-add-user-wizard-modal` }
-                data-testid={ `${ testId }-user-mgt-add-user-wizard-modal` }
-                isSubOrg={ isSubOrg }
-                closeWizard={ () => {
-                    setShowWizard(false);
-                    setEmailVerificationEnabled(undefined);
-                } }
-                emailVerificationEnabled={ emailVerificationEnabled }
-                onSuccessfulUserAddition={ (id: string) => {
-                    mutateParentOrgUserListFetchRequest();
-                    eventPublisher.publish("manage-users-finish-creating-user");
-                    history.push(UsersConstants.getPaths().get("CUSTOMER_USER_EDIT_PATH")
-                        .replace(":id", id));
-                } }
-                defaultUserTypeSelection={ selectedAddUserType }
-                userTypeSelection={ userType }
-                listOffset={ listOffset }
-                listItemLimit={ listItemLimit }
-                updateList={ () => setListUpdated(true) }
-                userStore= { userStore }
-            />
-        );
-    }
-
-    const resolveAdminTabPanes = (): ResourceTabPaneInterface[] => {
-        const panes: ResourceTabPaneInterface[] = [];
-
-        panes.push({
-            componentId: "users",
-            menuItem: {
-                content: t("console:manage.features.parentOrgInvitations.tab.usersTab")
-            },
-            render: renderUsersList
-        });
-
-        panes.push({
-            componentId: "invitations",
-            menuItem: {
-                content: t("console:manage.features.parentOrgInvitations.tab.invitationsTab")
-            },
-            render: renderInvitationsList
-        });
-
-        return panes;
-    };
-
+    
     return (
         <PageLayout
             action={
@@ -997,8 +968,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
  * Default props for the component.
  */
 UsersPage.defaultProps = {
-    "data-testid": "users",
-    "data-componentid": "users"
+    "data-componentid": "users",
+    "data-testid": "users"
 };
 
 /**

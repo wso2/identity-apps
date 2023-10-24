@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,6 +26,9 @@ import {
     useAuthContext
 } from "@asgardeo/auth-react";
 import { AccessControlUtils } from "@wso2is/access-control";
+import useDeploymentConfig from "@wso2is/common/src/hooks/use-deployment-configs";
+import useResourceEndpoints from "@wso2is/common/src/hooks/use-resource-endpoints";
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore,
@@ -71,7 +74,7 @@ import React, {
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { commonConfig, organizationConfigs } from "./extensions";
+import { commonConfig } from "./extensions";
 import {
     AuthenticateUtils,
     getProfileInformation
@@ -128,6 +131,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     } = useAuthContext();
 
     const dispatch: Dispatch<any> = useDispatch();
+    const { setResourceEndpoints } = useResourceEndpoints();
+    const { setDeploymentConfig } = useDeploymentConfig();
+    const { setUIConfig } = useUIConfig();
 
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
@@ -158,11 +164,12 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             )
         );
         dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
+        setUIConfig(Config.getUIConfig());
     }, []);
 
     useEffect(() => {        
-        dispatch(setFilteredDevelopRoutes(getAppViewRoutes()));
-        dispatch(setSanitizedDevelopRoutes(getAppViewRoutes()));
+        dispatch(setFilteredDevelopRoutes(getAppViewRoutes(commonConfig.useExtendedRoutes)));
+        dispatch(setSanitizedDevelopRoutes(getAppViewRoutes(commonConfig.useExtendedRoutes)));
     }, [ dispatch ]);
 
     useEffect(() => {
@@ -251,6 +258,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         )
                     );
 
+                    // Sets the resource endpoints in the context.
+                    setResourceEndpoints(Config.getServiceResourceEndpoints() as any);
+
                     await requestCustomGrant(
                         {
                             attachToken: false,
@@ -288,6 +298,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     Config.getServiceResourceEndpoints()
                 )
             );
+
+            // Sets the resource endpoints in the context.
+            setResourceEndpoints(Config.getServiceResourceEndpoints() as any);
 
             // When the tenant domain changes, we have to reset the auth callback in session storage.
             // If not, it will hang and the app will be unresponsive with in the tab.
@@ -389,6 +402,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             Config.getDeploymentConfig()
                         )
                     );
+
+                    // Set the deployment configs in the context.
+                    setDeploymentConfig(Config.getDeploymentConfig());
 
                     // Update runtime configurations.
                     ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
@@ -586,43 +602,50 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         }
         
         const resolveHiddenRoutes = (): string[] => {
-            const commonHiddenRoutes: string[] = [ 
-                ...AppUtils.getHiddenRoutes(), 
-                ...AppConstants.ORGANIZATION_ONLY_ROUTES 
+            const commonHiddenRoutes: string[] = [
+                ...AppUtils.getHiddenRoutes(),
+                ...AppConstants.ORGANIZATION_ONLY_ROUTES
             ];
             
-            const additionalRoutes: string[] = isOrganizationManagementEnabled ? (
-                (OrganizationUtils.isCurrentOrganizationRoot() 
-                && AppConstants.getSuperTenant() === tenant) || isFirstLevelOrg
-                    ? isPrivilegedUser
-                        ? loggedUserName === isSuperAdmin
-                            ? [ 
-                                ...commonHiddenRoutes, 
-                                ...AppConstants.ORGANIZATION_ROUTES 
-                            ]
-                            : [ 
-                                ...commonHiddenRoutes, 
-                                ...AppConstants.ORGANIZATION_ROUTES, 
-                                ...AppConstants.SUPER_ADMIN_ONLY_ROUTES 
-                            ]
-                        : loggedUserName === isSuperAdmin
-                            ? commonHiddenRoutes
-                            : [
-                                ...commonHiddenRoutes, 
+            function getAdditionalRoutes() {
+                if (!isOrganizationManagementEnabled) {
+                    return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
+                }
+
+                const isCurrentOrgRootAndSuperTenant: boolean =
+                    OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.getSuperTenant() === tenant;
+
+                if (isCurrentOrgRootAndSuperTenant || isFirstLevelOrg) {
+                    if (isPrivilegedUser) {
+                        if (loggedUserName === isSuperAdmin) {
+                            return [ ...commonHiddenRoutes, ...AppConstants.ORGANIZATION_ROUTES ];
+                        } else {
+                            return [
+                                ...commonHiddenRoutes,
+                                ...AppConstants.ORGANIZATION_ROUTES,
                                 ...AppConstants.SUPER_ADMIN_ONLY_ROUTES
-                            ]
-                    : window["AppUtils"].getConfig().organizationName
-                        ? organizationConfigs.canCreateOrganization()
-                            ? AppUtils.getHiddenRoutes()
-                            : [
-                                ...AppUtils.getHiddenRoutes(), 
-                                ...OrganizationManagementConstants.ORGANIZATION_ROUTES
-                            ]
-                        : [ 
+                            ];
+                        }
+                    } else {
+                        if (loggedUserName === isSuperAdmin) {
+                            return commonHiddenRoutes;
+                        } else {
+                            return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
+                        }
+                    }
+                } else {
+                    if (window["AppUtils"].getConfig().organizationName) {
+                        return [ 
                             ...AppUtils.getHiddenRoutes(), 
-                            ...AppConstants.ORGANIZATION_ROUTES 
-                        ]
-            ) : [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
+                            ...OrganizationManagementConstants.ORGANIZATION_ROUTES 
+                        ];
+                    } else {
+                        return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
+                    }
+                }
+            }
+            
+            const additionalRoutes: string[] = getAdditionalRoutes();
 
             return [ ...additionalRoutes ];
         };
@@ -631,7 +654,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             appRoutes,
             sanitizedAppRoutes
         ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
-            getAppViewRoutes(),
+            getAppViewRoutes(commonConfig.useExtendedRoutes),
             featureConfig,
             allowedScopes,
             window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,

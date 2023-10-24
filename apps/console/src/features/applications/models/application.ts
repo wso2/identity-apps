@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,7 @@ import {
     WSTrustConfigurationInterface
 } from "./application-inbound";
 import { GenericAuthenticatorInterface } from "../../identity-providers/models/identity-provider";
+import { AssociatedRolesInterface } from "../../roles/models";
 import { TemplateContentInterface } from "../data/application-templates";
 
 /**
@@ -66,6 +67,7 @@ export interface ApplicationInterface extends ApplicationBasicInterface {
     imageUrl?: string;
     claimConfiguration?: ClaimConfigurationInterface;
     advancedConfigurations?: AdvancedConfigurationsInterface;
+    associatedRoles?: AssociatedRolesInterface;
     inboundProtocols?: InboundProtocolListItemInterface[];
     authenticationSequence?: AuthenticationSequenceInterface;
     provisioningConfigurations?: ProvisioningConfigurationInterface;
@@ -767,6 +769,7 @@ export enum ApplicationTabTypes {
     PROTOCOL ="protocol",
     USER_ATTRIBUTES = "user-attributes",
     SIGN_IN_METHOD = "sign-in-method",
+    ROLES = "roles",
     PROVISIONING = "provisioning",
     ADVANCED = "advanced",
     INFO = "info"

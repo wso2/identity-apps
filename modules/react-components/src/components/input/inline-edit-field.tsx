@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,7 +18,7 @@
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Grid, GridColumn, Icon, Input, InputOnChangeData } from "semantic-ui-react";
+import { Grid, Icon, Input, InputOnChangeData } from "semantic-ui-react";
 import { Popup } from "../popup";
 
 export interface InlineEditInputPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
@@ -81,7 +81,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
             ? (
                 <Grid verticalAlign="middle">
                     <Grid.Row columns={ 2 }>
-                        <GridColumn width={ 12 }>
+                        <Grid.Column width={ 12 }>
                             <Input
                                 fluid
                                 size="mini"
@@ -97,7 +97,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
                                 data-componentid={ `${ componentId }-input` }
                                 data-testid={ `${ testId }-input` }
                             />
-                        </GridColumn>
+                        </Grid.Column>
                         <Grid.Column width={ 4 }>
                             <Popup
                                 trigger={ (
@@ -152,7 +152,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
             : (
                 <Grid columns="equal" verticalAlign="middle">
                     <Grid.Row>
-                        <GridColumn width="16">
+                        <Grid.Column width={ 16 } className="overflow-wrap">
                             {
                                 text && text !== "" && (
                                     <>
@@ -180,7 +180,7 @@ export const InlineEditInput: FunctionComponent<InlineEditInputPropsInterface> =
                                     </>
                                 )
                             }
-                        </GridColumn>
+                        </Grid.Column>
                     </Grid.Row>
                 </Grid>
             )

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -70,6 +70,16 @@ export interface UpdateGovernanceConnectorConfigInterface {
 	properties: UpdateGovernanceConnectorConfigPropertyInterface[];
 }
 
+export interface UpdateMultipleGovernanceConnectorsInterface {
+	operation: string;
+	connectors: UpdateGovernanceConnectorInterface[];
+}
+
+export interface UpdateGovernanceConnectorInterface {
+	id: string;
+	properties: UpdateGovernanceConnectorConfigPropertyInterface[];
+}
+
 export interface GovernanceCategoryForOrgsInterface {
 	connectors: GovernanceConnectorForOrgsInterface[],
 	id: string,
@@ -89,4 +99,52 @@ export interface GovernanceConnectorForOrgsInterface {
 export interface AdminAdvisoryBannerConfigurationInterface {
     bannerContent: string;
     enableBanner: boolean;
+}
+
+export enum LogType {
+    AUDIT = "AUDIT",
+    CARBON = "CARBON"
+}
+
+export interface RemoteLogPublishingConfigurationInterface {
+	/**
+	 * Destination to where the logs should be published.
+	 */
+	remoteUrl: string,
+	/**
+	 * Connection timeout in milliseconds.
+	 */
+	connectTimeoutMillis: string,
+	/**
+	 * Should hostname be verified.
+	 */
+	verifyHostname: boolean,
+	/**
+	 * Log type for which the configurations should be applied.
+	 */
+	logType: LogType.AUDIT | LogType.CARBON,
+	/**
+	 * Remote server username
+	 */
+	username: string,
+	/**
+	 * Remote server password
+	 */
+	password: string,
+	/**
+	 * Path to keystore location.
+	 */
+	keystoreLocation: string,
+	/**
+	 * Keystore password.
+	 */
+	keystorePassword: string,
+	/**
+	 * Path to truststore location.
+	 */
+	truststoreLocation: string,
+	/**
+	 * Truststore password.
+	 */
+	truststorePassword: string
 }

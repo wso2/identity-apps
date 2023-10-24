@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the 'License'); you may not use this file except
+ * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -10,7 +10,7 @@
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
- * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
@@ -21,7 +21,7 @@ import { FormValue } from "@wso2is/forms";
 import { EmptyPlaceholder } from "@wso2is/react-components";
 import differenceWith from "lodash-es/differenceWith";
 import isEqual from "lodash-es/isEqual";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { ClaimEventClickItem, ClaimsList, ListType } from "../..";
@@ -51,8 +51,8 @@ interface ExternalClaimsPropsInterface extends TestableComponentInterface {
      * A delegated event handler to pass the current
      * selected/active claims to the parent.
      *
-     * @see methods onExternalClaimAdd, onExternalClaimDelete, onExternalClaimEdit
-     * @param {AddExternalClaim[]} claims
+     * @see methods onExternalClaimAdd, onExternalClaimDelete, onExternalClaimEdit.
+     * @param claims - External claim addition data.
      */
     onExternalClaimsChanged?: (claims: AddExternalClaim[]) => void;
     /**
@@ -89,9 +89,9 @@ interface ExternalClaimsPropsInterface extends TestableComponentInterface {
 /**
  * This component renders the Add External Claims step of the wizard.
  *
- * @param {ExternalClaimsPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns External claims component.
  */
 export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
     props: ExternalClaimsPropsInterface
@@ -116,8 +116,8 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
     const [ initialList, setInitialList ] = useState<AddExternalClaim[]>([]);
     const [ tempMappedLocalClaims, setTempMappedLocalClaims ] = useState<string[]>([]);
 
-    const ref = useRef(true);
-    const firstTimeValueChanges = useRef(true);
+    const ref: MutableRefObject<boolean> = useRef(true);
+    const firstTimeValueChanges: MutableRefObject<boolean> = useRef(true);
 
     const { t } = useTranslation();
 
@@ -158,24 +158,43 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
     }, [ claims ]);
 
     /**
+     * Create the externam claim uri according to the claim dialect type.
+     *
+     * @param attributeType - Claim dialect type.
+     * @param claimDialectURI - Dialect URI.
+     * @param claimURIValue - Claim URI value.
+     * 
+     * @returns Complete claim URI.
+     */
+    const createClaimURI = (attributeType: string, claimDialectURI: string, claimURIValue: string): string => {
+        switch (attributeType) {
+            case ClaimManagementConstants.SCIM:
+                return `${claimDialectURI}:${claimURIValue}`;
+            case ClaimManagementConstants.OIDC:
+            case ClaimManagementConstants.OTHERS:
+                return claimURIValue;
+            default:
+                return `${claimDialectURI}/${claimURIValue}`;
+        }
+    };
+
+    /**
      * Handles the event when a new external claim has been submitted via
      * the form {@link AddExternalClaims}. We delegate this change to
      * to the above parent component {@link AddDialect} because it has the
      * state to manage the user selected {@link ExternalClaim} mappings.
      *
      * @see AddExternalClaims
-     * @param {Map<string, FormValue>} values {claimURI, localClaim}
+     * @param values - claimURI, localClaim.
      */
     const onExternalClaimAdd = (values: Map<string, FormValue>): void => {
-        const newClaim = {
-            claimURI: attributeType === "scim" 
-                ? `${claimDialectUri}:${values.get("claimURI").toString()}` 
-                : values.get("claimURI").toString(),
+        const newClaim: AddExternalClaim = {
+            claimURI: createClaimURI(attributeType, claimDialectUri, values.get("claimURI").toString()),
             mappedLocalClaimURI: values.get("localClaim").toString()
         };
-        const newState = [ ...claims, newClaim ];
+        const newState: AddExternalClaim[] = [ ...claims, newClaim ];
 
-        setTempMappedLocalClaims(prevLocalClaims => 
+        setTempMappedLocalClaims((prevLocalClaims: string[]) => 
             [ ...prevLocalClaims, newClaim.mappedLocalClaimURI
             ]);
         setClaims(newState);
@@ -192,14 +211,18 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
      * In this function the param `claim` is always {@link AddExternalClaim}
      *
      * @see {@link ClaimsList}
-     * @param {ClaimEventClickItem} editingClaim
+     * @param editingClaim - Editing claim item.
      */
     const onExternalClaimDelete = (editingClaim: ClaimEventClickItem): void => {
-        const deletedClaim = editingClaim as AddExternalClaim;
-        const filteredClaims = claims.filter((claim: AddExternalClaim) => !isEqual(editingClaim, claim));
+        const deletedClaim: AddExternalClaim = editingClaim as AddExternalClaim;
+        const filteredClaims: AddExternalClaim[] = claims.filter(
+            (claim: AddExternalClaim) => !isEqual(editingClaim, claim)
+        );
 
         setClaims(filteredClaims);
-        setTempMappedLocalClaims(tempMappedLocalClaims.filter(claim => claim !== deletedClaim.mappedLocalClaimURI));
+        setTempMappedLocalClaims(tempMappedLocalClaims.filter(
+            (claim: string) => claim !== deletedClaim.mappedLocalClaimURI)
+        );
         onExternalClaimsChanged && onExternalClaimsChanged(filteredClaims);
     };
 
@@ -208,11 +231,11 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
      * claim in the {@link ClaimsList}
      *
      * @see ClaimsList
-     * @param {ClaimEventClickItem} editingClaim
-     * @param {Map<string, FormValue>} values {claimURI, localClaim}
+     * @param editingClaim - Editing claim item.
+     * @param values - claimURI, localClaim.
      */
     const onExternalClaimEdit = (editingClaim: ClaimEventClickItem, values: Map<string, FormValue>): void => {
-        const existingClaims = [ ...claims ];
+        const existingClaims: AddExternalClaim[] = [ ...claims ];
 
         for (const claim of existingClaims) {
             // If its not the claim then continue

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     Code,
@@ -71,7 +71,8 @@ import { ApplicationCreateWizard } from "../wizard";
 /**
  * Prop-types for the applications settings component.
  */
-interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
+interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigInterface>,
+    IdentifiableComponentInterface {
     /**
      * The application model.
      */
@@ -174,7 +175,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         template,
         extendedAccessConfig,
         applicationTemplateId,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -662,7 +663,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                     SAMLCreationOption={
                                         (selectedProtocol === SupportedAuthProtocolTypes.SAML) && samlCreationOption }
                                     template={ template }
-                                    data-testid={ `${ testId }-inbound-${ selectedProtocol }-form` }
+                                    data-testid={ `${ componentId }-inbound-${ selectedProtocol }-form` }
                                     containerRef={ emphasizedSegmentRef }
                                 />
                             )
@@ -705,7 +706,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         )
                                     }
                                     template={ template }
-                                    data-testid={ `${ testId }-inbound-custom-form` }
+                                    data-testid={ `${ componentId }-inbound-custom-form` }
                                     containerRef={ emphasizedSegmentRef }
                                 />
                             )
@@ -976,7 +977,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         selectedProtocols={ inboundProtocols }
                                         onUpdate={ onUpdate }
                                         appId={ appId }
-                                        data-testid={ `${ testId }-protocol-add-wizard` }
+                                        data-testid={ `${ componentId }-protocol-add-wizard` }
                                     />
                                 )
                             }
@@ -1010,11 +1011,11 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                 setShowDeleteConfirmationModal(false);
                                             }
                                         }
-                                        data-testid={ `${ testId }-protocol-delete-confirmation-modal` }
+                                        data-testid={ `${ componentId }-protocol-delete-confirmation-modal` }
                                         closeOnDimmerClick={ false }
                                     >
                                         <ConfirmationModal.Header
-                                            data-testid={ `${ testId }-protocol-delete-confirmation-modal-header` }
+                                            data-testid={ `${ componentId }-protocol-delete-confirmation-modal-header` }
                                         >
                                             {
                                                 t("console:develop.features.applications.confirmations" +
@@ -1024,7 +1025,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         <ConfirmationModal.Message
                                             attached
                                             negative
-                                            data-testid={ `${ testId }-protocol-delete-confirmation-modal-message` }
+                                            data-testid={
+                                                `${ componentId }-protocol-delete-confirmation-modal-message`
+                                            }
                                         >
                                             {
                                                 t("console:develop.features.applications.confirmations" +
@@ -1032,7 +1035,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
-                                            data-testid={ `${ testId }-protocol-delete-confirmation-modal-content` }
+                                            data-testid={
+                                                `${ componentId }-protocol-delete-confirmation-modal-content`
+                                            }
                                         >
                                             {
                                                 t("console:develop.features.applications.confirmations" +
@@ -1061,11 +1066,11 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                 setShowProtocolSwitchModal(false);
                                             }
                                         }
-                                        data-testid={ `${ testId }-protocol-delete-confirmation-modal` }
+                                        data-testid={ `${ componentId }-protocol-delete-confirmation-modal` }
                                         closeOnDimmerClick={ false }
                                     >
                                         <ConfirmationModal.Header
-                                            data-testid={ `${ testId }-protocol-delete-confirmation-modal-header` }
+                                            data-testid={ `${ componentId }-protocol-delete-confirmation-modal-header` }
                                         >
                                             { t("console:develop.features.applications.confirmations." +
                                             "changeProtocol.header") }
@@ -1073,14 +1078,18 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                         <ConfirmationModal.Message
                                             attached
                                             negative
-                                            data-testid={ `${ testId }-protocol-delete-confirmation-modal-message` }
+                                            data-testid={
+                                                `${ componentId }-protocol-delete-confirmation-modal-message`
+                                            }
                                         >
                                             { t("console:develop.features.applications.confirmations" +
                                             ".changeProtocol.message",
                                             { name: selectedProtocol }) }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
-                                            data-testid={ `${ testId }-protocol-delete-confirmation-modal-content` }
+                                            data-testid={
+                                                `${ componentId }-protocol-delete-confirmation-modal-content`
+                                            }
                                         >
                                             { t("console:develop.features.applications.confirmations." +
                                             "changeProtocol.content") }
@@ -1103,6 +1112,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
  * Default props for the application access configuration component.
  */
 AccessConfiguration.defaultProps = {
-    "data-testid": "application-access-configuration",
+    "data-componentid": "application-access-configuration",
     extendedAccessConfig: false
 };

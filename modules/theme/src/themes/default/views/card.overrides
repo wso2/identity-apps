@@ -55,6 +55,7 @@
             color: @recentApplicationCardDefaultColor;
             width: 100%;
             margin-bottom: 25px;
+            height: 100%;
 
             &:hover {
                 transform: none;
@@ -81,9 +82,12 @@
                         line-height: @recentApplicationCardHeaderFontSize;
                         margin-bottom: 4px;
                         max-width: @recentApplicationCardHeaderMaxWidth;
-                        white-space: nowrap;
+                        white-space: normal;
                         text-overflow: ellipsis;
                         overflow: hidden;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
                     }
                     .application-description {
                         color: @recentApplicationCardDescColor;
@@ -531,18 +535,18 @@
                 .actions {
                     display: flex;
                     justify-content: space-between;
+                    width: 100%;
 
-                    .delete-button {
-                        visibility: hidden;
-                        color: @negativeColor;
+                    .left {
+                        order: 1;
                     }
-                }
-            }
 
-            &:hover {
-                .action-container {
+                    .right {
+                        order: 2;
+                    }
+
                     .delete-button {
-                        visibility: visible;
+                        color: @negativeColor;
                     }
                 }
             }
@@ -556,7 +560,7 @@
 
 .sign-in-method-landing .ui.card.info-card {
     border-color: #d8d8d8;
-    
+
     .header-without-toggle {
         flex-direction: row;
         align-items: center;
@@ -984,7 +988,7 @@
         }
         .action-container {
             .info-card-inner-action {
-                padding: 11px 0px !important;
+                padding: 12px 0px !important;
 
                 .icon {
                     margin-left: 3px !important;
@@ -1624,4 +1628,65 @@
     font-size:24px;
     font-weight:500;
     margin: 25px 0px;
+}
+
+.ui.cards.authenticators-grid {
+    width: 100%;
+    display: flex !important;
+
+    .ui.card {
+        &.selection-info-card {
+            border: @defaultCardBorder;
+            box-shadow: none;
+            max-width: 254px;
+
+            &:hover {
+                text-decoration: none;
+
+                &:not(.no-hover) {
+                    cursor: pointer;
+                    box-shadow: @infoCardHoverBoxShadow;
+                }
+            }
+            &.selected {
+                border-color: @infoCardSelectedBorder;
+            }
+            &.disabled {
+                cursor: not-allowed;
+                filter: grayscale(100%);
+            }
+            .content {
+                border: none;
+            }
+            .card-image {
+                margin-right: 0.7em;
+            }
+            .card-header {
+                font-weight: 500;
+                font-size: 1em;
+            }
+            .card-subheader {
+                font-size: 1em;
+                color: @lightFontColor;
+            }
+            .card-description {
+                padding-top: 0.5em !important;
+                min-height: 45px !important;
+                font-size: 0.9em !important;
+                word-break: break-word;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                line-height: 1.2em;
+                max-height: 2.8em;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                color: @lightFontColor;
+            }
+        }
+    }
+}
+
+.ui.cards.authenticators-grid > .ui.card {
+    width: calc(100% / 3);
 }

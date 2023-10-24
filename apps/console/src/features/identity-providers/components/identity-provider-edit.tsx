@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -42,6 +42,7 @@ import {
 } from "./settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import { identityProviderConfig } from "../../../extensions";
+import { ConnectionTabTypes } from "../../connections";
 import { AppState, FeatureConfigInterface } from "../../core";
 import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../constants";
 import {
@@ -441,7 +442,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
 
         const isTabEnabledInExtensions: boolean | undefined = identityProviderConfig
             .editIdentityProvider
-            .isTabEnabledForIdP(type, IdentityProviderTabTypes.USER_ATTRIBUTES);
+            .isTabEnabledForIdP(type, ConnectionTabTypes.USER_ATTRIBUTES);
 
         return isTabEnabledInExtensions !== undefined
             ? isTabEnabledInExtensions

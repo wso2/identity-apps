@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,35 @@
  * under the License.
  */
 
-import { InviteUserStatus } from "../api/invite";
+import { InviteUserStatus } from "apps/console/src/extensions/components/users/models";
+
+/**
+  * Enum for role types.
+  */
+export enum RoleType {
+    EVERYONE = "everyone",
+    SYSTEM = "system",
+    SELFSIGNUP = "selfsignup"
+}
+
+/**
+  * Interface to store data for create group api.
+  */
+export interface UserInviteInterface {
+    id?: string;
+    roles?: string[];
+    email?: string;
+    status?: InviteUserStatus;
+    expiredAt?: string;
+    username?: string;
+}
+
+/**
+ * Interface to store invitations list.
+ */
+export interface InvitationsInterface {
+    invitations?: UserInviteInterface[];
+}
 
 /**
  * Interface to store data for create group api.

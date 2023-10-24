@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,10 +17,11 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { HttpMethods } from "@wso2is/core/models";
-import { store } from "../../../../core/store";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../../../core/hooks/use-request";
+import { store } from "../../../../core/store";
+import { InvitationsInterface, UserInviteInterface } from "../models/invite";
 
 /**
  * Initialize an axios Http client.
@@ -28,50 +29,11 @@ import useRequest, { RequestErrorInterface, RequestResultInterface } from "../..
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance());
- 
-/**
-  * Interface to store data for create group api.
-  */
- export interface UserInviteInterface {
-     id?: string;
-     roles?: string[];
-     email?: string;
-     status?: InviteUserStatus;
-     expiredAt?: string;
-     username?: string;
- }
- 
- /**
-  * Interface to store invitations list.
-  */
- export interface InvitationsInterface {
-     invitations?: UserInviteInterface[];
- }
-
- /**
- * Enum for Invite User Status.
- *
- * @readonly
- */
-export enum InviteUserStatus {
-    PENDING = "PENDING",
-    EXPIRED = "EXPIRED"
-}
-
-/* Enum for invitation status types.
-*
-* @readonly
-*/
-export enum InvitationStatus {
-   ACCEPTED = "Accepted",
-   PENDING = "Pending",
-   EXPIRED = "Expired"
-}
 
 /**
  * Hook to get the parent org user invites list.
  */
-export const useParentOrgUserInvitesList = <Data = InvitationsInterface,
+export const useGetParentOrgUserInvites = <Data = InvitationsInterface,
     Error = RequestErrorInterface>(): RequestResultInterface<Data, Error> => {
 
     const requestConfig: AxiosRequestConfig = {
@@ -94,7 +56,6 @@ export const useParentOrgUserInvitesList = <Data = InvitationsInterface,
 };
 
 export const sendParentOrgUserInvite = (userInvite: UserInviteInterface): Promise<any> => {
-    debugger;
     const requestConfig: AxiosRequestConfig = {
         data: userInvite,
         headers: {
@@ -106,11 +67,9 @@ export const sendParentOrgUserInvite = (userInvite: UserInviteInterface): Promis
     };
 
     return httpClient(requestConfig).then((response: AxiosResponse) => {
-        console.log("Response", response)
+
         return Promise.resolve(response);
     }).catch((error: AxiosError) => {
-        debugger;
-        console.log("error", error);
         return Promise.reject(error);
     });
 };

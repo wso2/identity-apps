@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,13 @@
  * under the License.
  */
 
-import { BoltIcon, EnvelopeCogwheelIcon, HierarchyIcon, UserGroupIcon } from "@oxygen-ui/react-icons";
+import { 
+    ArrowRightToBracketPencilIcon,
+    BoltIcon,
+    EnvelopeGearIcon,
+    HierarchyIcon, 
+    UserGroupIcon
+} from "@oxygen-ui/react-icons";
 import { RouteInterface } from "@wso2is/core/models";
 import compact from "lodash-es/compact";
 import keyBy from "lodash-es/keyBy";
@@ -72,6 +78,34 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
+                        component: lazy(() =>
+                            import(
+                                "../../../features/server-configurations/" + "pages/connector-listing-page"
+                            )
+                        ),
+                        exact: false,
+                        icon: { 
+                            icon: <ArrowRightToBracketPencilIcon /> 
+                        },
+                        id: "loginAndRegistration",
+                        name: "console:common.sidePanel.loginAndRegistration.label",
+                        order: 0,
+                        path: AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
+                        component: lazy(() => import("../../server-configurations/pages/governance-connectors")),
+                        exact: true,
+                        icon: null,
+                        id: "governanceConnectors",
+                        name: "console:manage.features.sidePanel.governanceConnectors",
+                        order: 11,
+                        path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
                         category: "console:develop.features.sidePanel.categories.application",
                         children: [
                             {
@@ -116,36 +150,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         children: [
                             {
                                 component: lazy(() =>
-                                    import("../../../extensions/components/" + "api-resources/pages/api-resource-edit")
-                                ),
-                                exact: true,
-                                id: "apiResources-edit",
-                                name: "extensions:develop.sidePanel.apiResources",
-                                path: APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT"),
-                                protected: true,
-                                showOnSidePanel: false
-                            }
-                        ],
-                        component: lazy(() =>
-                            import("../../../extensions/components/" + "api-resources/pages/api-resources")
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: import("../../../extensions/assets/images/icons/api-resources-icon.svg")
-                        },
-                        id: "apiResources",
-                        name: "extensions:develop.sidePanel.apiResources",
-                        order: 2,
-                        path: APIResourcesConstants.getPaths().get("API_RESOURCES"),
-                        protected: true,
-                        showOnSidePanel: true
-                    },
-                    {
-                        category: "console:develop.features.sidePanel.categories.application",
-                        children: [
-                            {
-                                component: lazy(() =>
-                                    import("../../identity-providers/pages/identity-provider-template")
+                                    import("../../connections/pages/connection-templates")
                                 ),
                                 exact: true,
                                 icon: {
@@ -158,7 +163,9 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 showOnSidePanel: false
                             },
                             {
-                                component: lazy(() => import("../../identity-providers/pages/identity-provider-edit")),
+                                component: lazy(() =>
+                                    import("../../connections/pages/connection-edit")
+                                ),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
@@ -170,7 +177,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../identity-providers/pages/identity-providers")),
+                        component: lazy(() => import("../../connections/pages/connections")),
                         exact: true,
                         icon: {
                             icon: identityProviderConfig?.useNewConnectionsView
@@ -187,58 +194,47 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
-                        category: "extensions:manage.sidePanel.categories.userManagement",
+                        category: "console:develop.features.sidePanel.categories.application",
                         children: [
                             {
-                                component: lazy(() => import("../../roles/pages/role-edit")),
+                                component: lazy(() =>
+                                    import("../../identity-verification-providers/pages/" +
+                                    "identity-verification-provider-template")
+                                ),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
                                 },
-                                id: "rolesEdit",
-                                name: "console:manage.features.sidePanel.editRoles",
-                                path: AppConstants.getPaths().get("ROLE_EDIT"),
+                                id: "identityVerificationProviderTemplate",
+                                name: "Identity Verification Provider Templates",
+                                path: AppConstants.getPaths().get("IDVP_TEMPLATES"),
                                 protected: true,
                                 showOnSidePanel: false
-                            }
-                        ],
-                        component: lazy(() => import("../../roles/pages/role")),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().applicationRoles
-                        },
-                        id: "roles",
-                        name: "console:manage.features.sidePanel.roles",
-                        order: 7,
-                        path: AppConstants.getPaths().get("ROLES"),
-                        protected: true,
-                        showOnSidePanel: true
-                    },
-                    {
-                        category: "extensions:manage.sidePanel.categories.userManagement",
-                        children: [
+                            },
                             {
-                                component: lazy(() => import("../../application-roles/pages/application-role-edit")),
+                                component: lazy(() => import(
+                                    "../../identity-verification-providers/pages/identity-verification-provider-edit")
+                                ),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
                                 },
-                                id: "applicationRolesEdit",
-                                name: "Edit Role",
-                                path: AppConstants.getPaths().get("APPLICATION_ROLES_EDIT"),
+                                id: "identityVerificationProvidersEdit",
+                                name: "Identity Verification Providers Edit",
+                                path: AppConstants.getPaths().get("IDVP_EDIT"),
                                 protected: true,
                                 showOnSidePanel: false
                             }
                         ],
-                        component: lazy(() => import("../../application-roles/pages/application-roles")),
+                        component: lazy(
+                            () => import("../../identity-verification-providers/pages/identity-verification-providers")
+                        ),
                         exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().roles
-                        },
-                        id: "applicationRoles",
-                        name: "Roles",
-                        order: 8,
-                        path: AppConstants.getPaths().get("APPLICATION_ROLES"),
+                        icon: { icon: getSidePanelIcons().identityVerificationProviders },
+                        id: "identityVerificationProviders",
+                        name: "console:develop.features.sidePanel.categories.identityVerificationProviders",
+                        order: 4,
+                        path: AppConstants.getPaths().get("IDVP"),
                         protected: true,
                         showOnSidePanel: true
                     },
@@ -366,13 +362,13 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                     },
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
-                        component: lazy(() => import("../../../extensions/components/branding/pages/branding")),
+                        component: lazy(() => import("../../../features/branding/pages/branding")),
                         exact: true,
                         icon: {
                             icon: import("../../../extensions/assets/images/icons/paint-palette-and-brush-outline.svg")
                         },
                         id: "branding",
-                        name: "extensions:develop.sidePanel.branding",
+                        name: "extensions:develop.sidePanel.stylesAndText",
                         order: 13,
                         path: `${ AppConstants.getDeveloperViewBasePath() }/branding`,
                         protected: true,
@@ -381,12 +377,12 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
                         component: lazy(() =>
-                            import("../../../extensions/components/email-management/" + "pages/email-customization")
+                            import("../../../features/email-management/" + "pages/email-customization")
                         ),
                         exact: true,
                         icon: { icon: getSidePanelIcons().emailTemplates },
                         id: "communication-management",
-                        name: "extensions:develop.sidePanel.emailTemplates",
+                        name: "Email",
                         order: 14,
                         path: `${ AppConstants.getDeveloperViewBasePath() }/email-management`,
                         protected: true,
@@ -395,18 +391,18 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
                         component: lazy(() =>
-                            import("../../../extensions/components/email-providers" + "/pages/email-providers")
+                            import("../../../features/email-providers" + "/pages/email-providers")
                         ),
                         exact: true,
                         icon: {
-                            icon: <EnvelopeCogwheelIcon fill="black" className="icon" />
+                            icon: <EnvelopeGearIcon fill="black" className="icon" />
                         },
                         id: "emailProviders",
                         name: "extensions:develop.sidePanel.emailProvider",
                         order: 15,
                         path: AppConstants.getPaths().get("EMAIL_PROVIDER"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.AccountManagement",
@@ -436,7 +432,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 16,
                         path: AppConstants.getPaths().get("MY_ACCOUNT"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.AccountManagement",
@@ -466,7 +462,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 17,
                         path: AppConstants.getPaths().get("MY_ACCOUNT"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.AccountManagement",
@@ -474,7 +470,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../extensions/components/governance-connectors/" +
+                                        "../../../features/server-configurations/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -494,7 +490,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../extensions/components/governance-connectors/" + "pages/connector-listing-page"
+                                "../../../features/server-configurations/" + "pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -510,7 +506,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             .get("GOVERNANCE_CONNECTOR")
                             .replace(":id", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.AccountManagement",
@@ -531,6 +527,23 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 path: AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"),
                                 protected: true,
                                 showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import(
+                                        "../../../extensions/components/account-login/" +
+                                        "pages/alternative-login-identifier-edit"
+                                    )
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "account-login",
+                                name: "Account Login",
+                                path: AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
+                                protected: true,
+                                showOnSidePanel: false
                             }
                         ],
                         component: lazy(() =>
@@ -545,7 +558,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 19,
                         path: AppConstants.getPaths().get("ACCOUNT_LOGIN"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.AccountManagement",
@@ -553,8 +566,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../extensions/components/governance-connectors/" +
-                                        "pages/connector-edit-page"
+                                        "../../../features/server-configurations/" + "pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -579,7 +591,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../extensions/components/governance-connectors/" + "pages/connector-listing-page"
+                                "../../../features/server-configurations/" +  "pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -595,7 +607,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             .get("GOVERNANCE_CONNECTOR")
                             .replace(":id", ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.AccountManagement",
@@ -603,7 +615,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../extensions/components/governance-connectors/" +
+                                        "../../../features/server-configurations/" +
                                         "pages/connector-edit-page"
                                     )
                                 ),
@@ -629,8 +641,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../extensions/components/governance-connectors/" +
-                                        "pages/connector-edit-page"
+                                        "../../../features/server-configurations/" + "pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -683,7 +694,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../extensions/components/" + "governance-connectors/pages/connector-listing-page"
+                                "../../../features/server-configurations/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -699,7 +710,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             .get("GOVERNANCE_CONNECTOR")
                             .replace(":id", ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.AccountManagement",
@@ -730,6 +741,22 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         name: "console:manage.features.serverConfigs.adminAdvisory.pageHeading",
                         order: 22,
                         path: AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER"),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
+                        category: "extensions:develop.sidePanel.categories.AccountManagement",
+                        component: lazy(() =>
+                            import("../../server-configurations/pages/remote-logging")
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().remoteLogging
+                        },
+                        id: "remoteLogging",
+                        name: "Remote Logging",
+                        order: 22,
+                        path: AppConstants.getPaths().get("REMOTE_LOGGING"),
                         protected: true,
                         showOnSidePanel: true
                     },
@@ -869,6 +896,35 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
     if (useExtendedRoutes) {
         routes.push(
             {
+                category: "console:develop.features.sidePanel.categories.application",
+                children: [
+                    {
+                        component: lazy(() =>
+                            import("../../../extensions/components/api-resources/pages/api-resource-edit")
+                        ),
+                        exact: true,
+                        id: "apiResources-edit",
+                        name: "extensions:develop.sidePanel.apiResources",
+                        path: APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() =>
+                    import("../../../extensions/components/api-resources/pages/api-resources")
+                ),
+                exact: true,
+                icon: {
+                    icon: import("../../../extensions/assets/images/icons/api-resources-icon.svg")
+                },
+                id: "apiResources",
+                name: "extensions:develop.sidePanel.apiResources",
+                order: 2,
+                path: APIResourcesConstants.getPaths().get("API_RESOURCES"),
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
                 category: "extensions:manage.sidePanel.categories.userManagement",
                 children: [
                     {
@@ -976,6 +1032,36 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 category: "extensions:manage.sidePanel.categories.userManagement",
                 children: [
                     {
+                        component: lazy(() => import("../../application-roles/pages/application-role-edit")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "applicationRolesEdit",
+                        name: "Edit Role",
+                        path: AppConstants.getPaths().get("APPLICATION_ROLES_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() => import("../../application-roles/pages/application-roles")),
+                exact: true,
+                featureStatus: "NEW",
+                featureStatusLabel: "common:new",
+                icon: {
+                    icon: getSidePanelIcons().roles
+                },
+                id: "applicationRoles",
+                name: "Roles",
+                order: 8,
+                path: AppConstants.getPaths().get("APPLICATION_ROLES"),
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                children: [
+                    {
                         component: lazy(() => import("../../../features/userstores/pages/user-stores-edit")),
                         exact: true,
                         icon: {
@@ -1034,10 +1120,109 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 path: AppConstants.getPaths().get("USERSTORES"),
                 protected: true,
                 showOnSidePanel: true
+            },
+            {
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                children: [
+                    {
+                        component: lazy(() => import("../../application-roles/pages/application-roles")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "applicationRoles",
+                        name: "Application Roles",
+                        path: AppConstants.getPaths().get("APPLICATION_ROLES_SUB"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() => import("../../application-roles/pages/application-role-edit")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "applicationRolesEdit",
+                        name: "Edit Application Role",
+                        path: AppConstants.getPaths().get("APPLICATION_ROLES_EDIT_SUB"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() =>
+                            import("../../../features/organizations/pages/organization-roles")
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().roles
+                        },
+                        id: "organization-roles",
+                        name: "Organization Roles",
+                        path: AppConstants.getPaths().get("ORGANIZATION_ROLES"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() =>
+                            import("../../../features/organizations/pages/organization-roles-edit")
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().roles
+                        },
+                        id: "organization-roles-edit",
+                        name: "organization Roles Edit",
+                        path: AppConstants.getPaths().get("ORGANIZATION_ROLE_UPDATE"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() => import("../../parent-roles/parent-roles")),
+                exact: true,
+                featureStatus: "NEW",
+                featureStatusLabel: "common:new",
+                icon: {
+                    icon: getSidePanelIcons().applicationRoles
+                },
+                id: "roles",
+                name: "Roles",
+                order: 7,
+                path: AppConstants.getPaths().get("ROLES"),
+                protected: true,
+                showOnSidePanel: true
             }
         );
     } else {
         routes.push(
+            {
+                category: "console:develop.features.sidePanel.categories.application",
+                children: [
+                    {
+                        component: lazy(() =>
+                            import("../../api-resources/pages/api-resource-edit")
+                        ),
+                        exact: true,
+                        id: "apiResources-edit",
+                        name: "extensions:develop.sidePanel.apiResources",
+                        path: APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() =>
+                    import("../../api-resources/pages/api-resources")
+                ),
+                exact: true,
+                icon: {
+                    icon: import("../../../extensions/assets/images/icons/api-resources-icon.svg")
+                },
+                id: "apiResources",
+                name: "extensions:develop.sidePanel.apiResources",
+                order: 2,
+                path: APIResourcesConstants.getPaths().get("API_RESOURCES"),
+                protected: true,
+                showOnSidePanel: true
+            },
             {
                 category: "extensions:manage.sidePanel.categories.userManagement",
                 children: [
@@ -1181,9 +1366,37 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 path: AppConstants.getPaths().get("USERSTORES"),
                 protected: true,
                 showOnSidePanel: true
+            },
+            {
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                children: [
+                    {
+                        component: lazy(() => import("../../roles/pages/role-edit")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "rolesEdit",
+                        name: "console:manage.features.sidePanel.editRoles",
+                        path: AppConstants.getPaths().get("ROLE_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() => import("../../roles/pages/role")),
+                exact: true,
+                icon: {
+                    icon: getSidePanelIcons().applicationRoles
+                },
+                id: "userRoles",
+                name: "console:manage.features.sidePanel.roles",
+                order: 7,
+                path: AppConstants.getPaths().get("ROLES"),
+                protected: true,
+                showOnSidePanel: true
             }
         );
-    }    
+    }
 
     routes.push({
         component: null,

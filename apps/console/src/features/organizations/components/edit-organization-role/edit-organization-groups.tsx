@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -686,10 +686,10 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                         <EmphasizedSegment>
                                             <EmptyPlaceholder
                                                 data-testid="role-mgt-empty-groups-list"
-                                                title={ t("console:manage.features.roles.edit.groups." +
+                                                title={ t("console:manage.features.roles.edit.groups.placeholders." +
                                                         "emptyPlaceholder.title") }
                                                 subtitle={ [
-                                                    t("console:manage.features.roles.edit.groups." +
+                                                    t("console:manage.features.roles.edit.groups.placeholders." +
                                                             "emptyPlaceholder.subtitles")
                                                 ] }
                                                 action={
@@ -700,7 +700,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                                             onClick={ handleOpenAddNewGroupModal }
                                                         >
                                                             { t("console:manage.features.roles.edit.groups." +
-                                                                    "emptyPlaceholder.action") }
+                                                                    "placeholders.emptyPlaceholder.action") }
                                                         </PrimaryButton>
                                                     )
                                                 }

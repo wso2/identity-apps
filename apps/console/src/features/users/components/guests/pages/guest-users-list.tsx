@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
@@ -34,21 +34,22 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, SemanticICONS } from "semantic-ui-react";
+import { deleteInvite, resendInvite } from "../../../../../extensions/components/users/api";
+import { InvitationStatus } from "../../../../../extensions/components/users/models";
 import { 
     AppState, 
     FeatureConfigInterface, 
     UserListInterface, 
     getEmptyPlaceholderIllustrations 
 } from "../../../../core";
-import { deleteInvite, resendInvite } from "../../../../../extensions/components/users/api";
-import { InvitationStatus } from "../../../../../extensions/components/users/models";
 import { UserAccountTypesMain } from "../../../constants";
-import { deleteParentOrgInvite, UserInviteInterface } from "../api/invite";
+import { deleteParentOrgInvite } from "../api/invite";
+import { UserInviteInterface } from "../models/invite";
 
 /**
  * Props for the Guest users list component.
  */
-interface GuestUsersListInterface extends TestableComponentInterface {
+interface GuestUsersListInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     invitationStatusOption: InvitationStatus.PENDING | InvitationStatus.EXPIRED | InvitationStatus.ACCEPTED;
     guestUsersList: UserInviteInterface[];
     onboardedGuestUserList: UserListInterface;
@@ -78,7 +79,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
         searchQuery,
         onSearchQueryClear,
         userTypeSelection,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -88,15 +89,10 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
     const [ deleteUserInvite, setDeleteUserInvite ] = useState<UserInviteInterface>(undefined);
     const [ showResendConfirmationModal, setShowResendConfirmationModal ] = useState<boolean>(false);
     const [ resendUserInvite, setResendUserInvite ] = useState<UserInviteInterface>(undefined);
-    const [ roleSelectionInvite, setRoleSelectionInvite ] = useState<UserInviteInterface>(undefined);
-    const [ showRoleSelectionModal, setShowRoleSelectionModal ] = useState<boolean>(false);
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ hideRoles ] = useState<boolean>(true);
     const [ loading, setLoading ] = useState(false);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
     const handleDeleteInvite = (traceID: string): Promise<void> => {
 
@@ -314,12 +310,12 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                                 <AnimatedAvatar
                                     name={ invite.email }
                                     size="mini"
-                                    data-testid={ `${ testId }-item-image-inner` }
+                                    data-componentid={ `${ componentId }-item-image-inner` }
                                 />
                             ) }
                             size="mini"
                             spaced="right"
-                            data-testid={ `${ testId }-item-image` }
+                            data-componentid={ `${ componentId }-item-image` }
                             data-suppress=""
                         />
                         <Header.Content>
@@ -327,7 +323,6 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                                 ? invite?.username
                                 : invite?.email
                             }
-                            {/* <Header.Subheader>{ invite?.roles ? invite?.roles.toString() : null }</Header.Subheader> */}
                         </Header.Content>
                     </Header>
                 ),
@@ -389,6 +384,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                         renderer: "semantic-icon"
                     },
                     {
+                        "data-componentid": `${ componentId }-users-list-item-delete-invitation-button`,
                         hidden: () => !hasRequiredScopes(
                             featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes),
                         icon: (): SemanticICONS => "trash alternate",
@@ -396,7 +392,6 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                             setDeleteUserInvite(invite);
                             setShowDeleteModal(true);
                         },
-                        "data-testid": `${ testId }-users-list-item-delete-invitation-button`,
                         popupText: (): string => "delete",
                         renderer: "semantic-icon"
                     }
@@ -411,7 +406,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 showDeleteModal && (
                     <ConfirmationModal
                         primaryActionLoading={ loading }
-                        data-testid={ `${testId}-confirmation-modal` }
+                        data-componentid={ `${componentId}-confirmation-modal` }
                         onClose={ (): void => setShowDeleteModal(false) }
                         type="negative"
                         open={ showDeleteModal }
@@ -425,17 +420,17 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                         onPrimaryActionClick={ (): void => revokeUserInvite(deleteUserInvite.id) }
                         closeOnDimmerClick={ false }
                     >
-                        <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
+                        <ConfirmationModal.Header data-componentid={ `${componentId}-confirmation-modal-header` }>
                             { t("console:manage.features.invite.confirmationModal.deleteInvite.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
-                            data-testid={ `${testId}-confirmation-modal-message` }
+                            data-componentid={ `${componentId}-confirmation-modal-message` }
                             attached
                             negative
                         >
                             { t("console:manage.features.invite.confirmationModal.deleteInvite.message") }
                         </ConfirmationModal.Message>
-                        <ConfirmationModal.Content data-testid={ `${testId}-confirmation-modal-content` }>
+                        <ConfirmationModal.Content data-componentid={ `${componentId}-confirmation-modal-content` }>
                             { t("console:manage.features.invite.confirmationModal.deleteInvite.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
@@ -445,7 +440,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 showResendConfirmationModal && (
                     <ConfirmationModal
                         primaryActionLoading={ loading }
-                        data-testid={ `${testId}-confirmation-modal` }
+                        data-componentid={ `${componentId}-confirmation-modal` }
                         onClose={ (): void => setShowResendConfirmationModal(false) }
                         type="warning"
                         open={ showResendConfirmationModal }
@@ -459,17 +454,17 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                         onPrimaryActionClick={ (): void => handleResendUserInvite(resendUserInvite.id) }
                         closeOnDimmerClick={ false }
                     >
-                        <ConfirmationModal.Header data-testid={ `${testId}-confirmation-modal-header` }>
+                        <ConfirmationModal.Header data-componentid={ `${componentId}-confirmation-modal-header` }>
                             { t("console:manage.features.invite.confirmationModal.resendInvite.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
-                            data-testid={ `${testId}-confirmation-modal-message` }
+                            data-componentid={ `${componentId}-confirmation-modal-message` }
                             attached
                             warning
                         >
                             { t("console:manage.features.invite.confirmationModal.resendInvite.message") }
                         </ConfirmationModal.Message>
-                        <ConfirmationModal.Content data-testid={ `${testId}-confirmation-modal-content` }>
+                        <ConfirmationModal.Content data-componentid={ `${componentId}-confirmation-modal-content` }>
                             { t("console:manage.features.invite.confirmationModal.resendInvite.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>

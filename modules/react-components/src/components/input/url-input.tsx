@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,7 @@
 
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
+import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 import { Button, Grid, Icon, Input, Label } from "semantic-ui-react";
@@ -149,6 +150,14 @@ export interface URLInputPropsInterface extends IdentifiableComponentInterface, 
      * Resolve i18n tag for showMoreContent content
      */
     showMoreContent?: string;
+    /**
+     * Id of the field.
+     */
+    id?: string;
+    /**
+     * Additional classes.
+     */
+    className?: string;
 }
 
 /**
@@ -163,6 +172,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 ): ReactElement => {
 
     const {
+        id,
+        className,
         addURLTooltip,
         allowEmptyValues,
         restrictSecondaryContent,
@@ -744,7 +755,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         const { origin } = URLUtils.urlComponents(url);
 
         return (
-            <Grid.Row key={ url } className={ "urlComponentTagRow" }>
+            <Grid.Row key={ url } className="urlComponentTagRow url-chip">
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
                     <p>
                         { /*Section that contains | https://origin X |*/ }
@@ -805,7 +816,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         }
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row className={ "urlComponentInputRow" }>
+                <Grid.Row className={ classNames("urlComponentInputRow", className) }>
                     <Grid.Column mobile={ 14 } tablet={ 14 } computer={ computerSize }>
                         <Input
                             fluid
@@ -822,6 +833,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                             data-testid={ testId }
                         >
                             <input
+                                id={ id }
                                 disabled={ disabled ? disabled : false }
                             />
                             <Popup

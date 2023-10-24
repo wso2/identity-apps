@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@ import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso
 import classNames from "classnames";
 import React, { FC, PropsWithChildren, ReactElement, cloneElement } from "react";
 import { FieldProps } from "react-final-form";
+import { __DEPRECATED__FieldCheckbox } from "./__DEPRECATED__field-checkbox";
 import { FieldButton } from "./field-button";
 import { FieldCheckbox } from "./field-checkbox";
 import { FieldCheckboxLegacy } from "./field-checkbox-legacy";
@@ -53,7 +54,8 @@ type FieldType = FC<FormFieldPropsInterface> & {
     Button: typeof FieldButton;
     CheckboxLegacy: typeof FieldCheckboxLegacy;
     Textarea: typeof FieldTextarea;
-    Checkbox: typeof FieldCheckbox;
+    Checkbox: typeof __DEPRECATED__FieldCheckbox;
+    OxygenCheckbox: typeof FieldCheckbox;
     Dropdown: typeof FieldDropdown;
     QueryParams: typeof FieldQueryParams;
     ColorPicker: typeof FieldColorPicker;
@@ -78,7 +80,7 @@ export const Field: FieldType = (props: PropsWithChildren<FormFieldPropsInterfac
         className
     );
 
-    const childNodes: (string | number | React.ReactElement<any, string | React.JSXElementConstructor<any>> 
+    const childNodes: (string | number | React.ReactElement<any, string | React.JSXElementConstructor<any>>
         | React.ReactFragment | React.ReactPortal)[] = React.Children.toArray(children);
 
     return (
@@ -104,7 +106,8 @@ Field.Input = FieldInput;
 Field.Button = FieldButton;
 Field.Textarea = FieldTextarea;
 Field.CheckboxLegacy = FieldCheckboxLegacy;
-Field.Checkbox = FieldCheckbox;
+Field.Checkbox = __DEPRECATED__FieldCheckbox;
+Field.OxygenCheckbox = FieldCheckbox;
 Field.Dropdown = FieldDropdown;
 Field.QueryParams = FieldQueryParams;
 Field.ColorPicker = FieldColorPicker;

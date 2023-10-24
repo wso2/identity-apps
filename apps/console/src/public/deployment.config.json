@@ -214,6 +214,8 @@
         "appTitle": "WSO2 Identity Server Console",
         "appName": "Console",
         "appLogoPath": "/assets/images/branding/logo.svg",
+        "appWhiteLogoPath": "/assets/images/branding/logo-white.svg",
+        "appFaviconPath": "/assets/images/branding/favicon.ico",
         "isGOTEnabledForSuperTenantOnly": true,
         "showAppSwitchButton": true,
         "features": {
@@ -229,7 +231,7 @@
             },
             "apiResources": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "update": [
                         "internal_application_mgt_update"
@@ -247,7 +249,7 @@
             },
             "applicationRoles": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "update": [],
                     "read": [],
@@ -281,6 +283,24 @@
                     "create": [
                         "internal_application_mgt_update"
                     ]
+                }
+            },
+            "bulkUserImport": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "update": [],
+                    "read": [],
+                    "create": [
+                        "internal_user_mgt_view",
+                        "internal_user_mgt_list",
+                        "internal_user_mgt_create",
+                        "internal_user_mgt_delete",
+                        "internal_claim_meta_view",
+                        "internal_userstore_view",
+                        "internal_role_mgt_view"
+                    ],
+                    "delete": []
                 }
             },
             "eventPublishing": {
@@ -538,6 +558,23 @@
                 "enabled": true,
                 "scopes": {}
             },
+            "identityVerificationProviders": {
+                "enabled": false,
+                "scopes": {
+                    "create": [
+                        "internal_idvp_create"
+                    ],
+                    "read": [
+                        "internal_idvp_view"
+                    ],
+                    "update": [
+                        "internal_idvp_update"
+                    ],
+                    "delete": [
+                        "internal_idvp_delete"
+                    ]
+                }
+            },
             "oidcScopes": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -773,12 +810,23 @@
                 "disabledFeatures": [],
                 "enabled": false,
                 "scopes": {}
+            },
+            "remoteLogging": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {}
+            },
+            "adminAdvisoryBanner": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {}
             }
         },
         "gravatarConfig": {
             "fallback": "404"
         },
         "hiddenAuthenticators": [],
+        "hiddenConnectionTemplates": [],
         "hiddenUserStores": [
             "ASGARDEO-USER",
             "LITE-USER",
@@ -799,6 +847,7 @@
                 "enabled": true
             }
         },
+        "connectionResourcesUrl": "",
         "isFeatureGateEnabled": true,
         "isCookieConsentBannerEnabled": false,
         "isMarketingConsentBannerEnabled": false,
@@ -810,7 +859,7 @@
         "isRequestPathAuthenticationEnabled": false,
         "isLeftNavigationCategorized": true,
         "isSignatureValidationCertificateAliasEnabled": false,
-        "listAllAttributeDialects": false,
+        "listAllAttributeDialects": true,
         "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {

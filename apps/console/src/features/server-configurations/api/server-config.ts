@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,13 +19,18 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
+import { I18n } from "@wso2is/i18n";
 import { AxiosError, AxiosResponse } from "axios";
 import { ServerConfigurationsInterface } from "./governance-connectors";
 import { store } from "../../core";
 import useRequest,
 { RequestConfigInterface, RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
 import { ServerConfigurationsConstants } from "../constants";
-import { AdminAdvisoryBannerConfigurationInterface } from "../models";
+import { 
+    AdminAdvisoryBannerConfigurationInterface, 
+    LogType, 
+    RemoteLogPublishingConfigurationInterface 
+} from "../models";
 
 /**
  * Initialize an axios Http client.
@@ -183,5 +188,100 @@ export const updateAdminAdvisoryBannerConfiguration = (
                 error.response,
                 error.config);
         });
+};
 
+/**
+ * Hook to get the remote log publishing configurations.
+ * 
+ * @returns remote log publishing configurations.
+ */
+export const useRemoteLogPublishingConfigs = <Data = RemoteLogPublishingConfigurationInterface[],
+    Error = RequestErrorInterface>(shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.remoteLogging
+    };
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate: mutate
+    };
+};
+
+/**
+ * Update remote log publishing configurations.
+ *
+ * @returns a promise containing the response.
+ */
+export const updateRemoteLogPublishingConfigurationByLogType = (
+    config: RemoteLogPublishingConfigurationInterface
+): Promise<AxiosResponse> => {
+
+    const { logType, ...data } = config;
+
+    const requestConfig: RequestConfigInterface = {
+        data,
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.remoteLogging + "/" + logType
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                I18n.instance.t("console:manage.features.serverConfigs.remoteLogPublishing.errors.genericError"),
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Restore remote log publishing configurations.
+ * 
+ * @param logType - Log type.
+ *
+ * @returns a promise containing the response.
+ */
+export const restoreRemoteLogPublishingConfigurationByLogType = (logType: LogType): Promise<AxiosResponse> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: store.getState().config.endpoints.remoteLogging + "/" + logType
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                I18n.instance.t("console:manage.features.serverConfigs.remoteLogPublishing.errors.genericError"),
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
 };

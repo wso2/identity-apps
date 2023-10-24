@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,19 +18,21 @@
 
 import React, { ReactElement, ReactNode } from "react";
 import { TFunction } from "react-i18next";
+import { Card, Divider, Grid, Header } from "semantic-ui-react";
 import {
     PasswordExpiryInterface,
     PasswordHistoryCountInterface,
+    PasswordPoliciesInterface,
     ServerConfigurationConfig
 } from "./models/server-configuration";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     ServerConfigurationsConstants,
-    UpdateGovernanceConnectorConfigInterface
+    UpdateGovernanceConnectorConfigInterface,
+    UpdateMultipleGovernanceConnectorsInterface
 } from "../../features/server-configurations";
 import { ValidationFormInterface } from "../../features/validation/models";
-import { ExtendedDynamicConnector } from "../components/governance-connectors";
 import {
     updatePasswordExpiryProperties,
     useGetPasswordExpiryProperties
@@ -41,27 +43,27 @@ import {
     useGetPasswordHistoryCount
 } from "../components/password-history-count/api";
 import { generatePasswordHistoryCount } from "../components/password-history-count/components";
-
+import { updatePasswordPolicyProperties } from "../components/password-policies/api/password-policies";
 
 export const serverConfigurationConfig: ServerConfigurationConfig = {
     autoEnableConnectorToggleProperty: true,
-    connectorPropertiesToShow: [
-        "Recovery.ReCaptcha.Password.Enable",
-        "Recovery.NotifySuccess",
-        "Recovery.ExpiryTime"
+    connectorCategoriesToShow: [
+        ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+        ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
+        ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID,
+        ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID,
+        ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID,
+        ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID
     ],
-    connectorToggleName: {
-        "account-recovery": ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE,
-        "account.lock.handler": ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE,
-        "self-sign-up": ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
-        "sso.login.recaptcha": ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE
-    },
-    connectorsToShow: [
-        "account-recovery",
-        "account.lock.handler",
-        "self-sign-up",
-        "sso.login.recaptcha"
+    connectorPropertiesToShow: [ "all" ],
+    connectorToggleName: {},
+    connectorsToHide: [
+        "analytics-engine",
+        "elastic-analytics-engine",
+        "pii-controller"
     ],
+    connectorsToShow: [ "all" ],
+    dynamicConnectors: true,
     intendSettings: false,
     passwordExpiryComponent: (
         componentId: string,
@@ -192,29 +194,104 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
 
         return updatePasswordExpiryProperties(passwordExpiryData);
     },
+    processPasswordPoliciesSubmitData: (data: PasswordPoliciesInterface) => {   
+        let passwordExpiryTime: number | undefined = parseInt((data.passwordExpiryTime as string));     
+        const passwordExpiryEnabled: boolean | undefined = data.passwordExpiryEnabled;
+        let passwordHistoryCount: number | undefined = parseInt((data.passwordHistoryCount as string));
+        const passwordHistoryCountEnabled: boolean | undefined = data.passwordHistoryCountEnabled;
+
+        delete data.passwordExpiryTime;
+        delete data.passwordExpiryEnabled;
+        delete data.passwordHistoryCount;
+        delete data.passwordHistoryCountEnabled;
+
+        if (passwordExpiryEnabled && passwordExpiryTime === 0) {
+            passwordExpiryTime = 30;
+        }
+
+        if (passwordHistoryCountEnabled && passwordHistoryCount === 0) {
+            passwordHistoryCount = 1;
+        }
+
+        const passwordPoliciesData: UpdateMultipleGovernanceConnectorsInterface = {
+            connectors: [
+                {
+                    id: ServerConfigurationsConstants.PASSWORD_EXPIRY_CONNECTOR_ID,
+                    properties: [
+                        {
+                            name: ServerConfigurationsConstants.PASSWORD_EXPIRY_ENABLE,
+                            value: passwordExpiryEnabled?.toString()
+                        },
+                        {
+                            name: ServerConfigurationsConstants.PASSWORD_EXPIRY_TIME,
+                            value: passwordExpiryTime?.toString()
+                        }
+                    ]
+                },
+                {
+                    id: ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID,
+                    properties: [
+                        {
+                            name: ServerConfigurationsConstants.PASSWORD_HISTORY_COUNT,
+                            value: passwordHistoryCount?.toString()
+                        },
+                        {
+                            name: ServerConfigurationsConstants.PASSWORD_HISTORY_ENABLE,
+                            value: passwordHistoryCountEnabled?.toString()
+                        }
+                    ]
+                }
+            ],
+            operation: "UPDATE"
+        };
+
+        return updatePasswordPolicyProperties(passwordPoliciesData);
+    },
     renderConnector: (
         connector: GovernanceConnectorInterface,
         connectorForm: ReactElement,
-        connectorIllustration: string,
         connectorTitle: ReactNode,
         connectorSubHeading: ReactNode,
-        _message: ReactNode
+        message: ReactNode,
+        connectorIllustration?: string
     ): ReactElement => {
         return (
-            <ExtendedDynamicConnector
-                connector={ connector }
-                connectorForm={ connectorForm }
-                connectorIllustration={ connectorIllustration }
-                connectorSubHeading={ connectorSubHeading }
-                connectorToggleName={ serverConfigurationConfig.connectorToggleName[ connector.name ] }
-                data-testid="governance-connector-password-recovery"
-            />
+            <Card fluid>
+                <Card.Content className="connector-section-content">
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column>
+                            <Grid padded>
+                                <Grid.Row>
+                                    <Grid.Column width={ 16 }>
+                                        <div
+                                            className={ connectorIllustration ? "connector-section-with-image-bg" : "" }
+                                            style={ {
+                                                background: `url(${ connectorIllustration })`
+                                            } }
+                                        >
+                                            <Header>
+                                                { connectorTitle }
+                                                <Header.Subheader>
+                                                    { connectorSubHeading }
+                                                </Header.Subheader>
+                                            </Header>
+                                        </div>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                            { message }
+                            <Divider />
+                            { connectorForm }
+                        </Grid.Column>
+                    </Grid.Row>
+                </Card.Content>
+            </Card>
         );
     },
     renderConnectorWithinEmphasizedSegment: false,
     showConnectorsOnTheSidePanel: false,
     showGovernanceConnectorCategories: false,
-    showPageHeading: false,
+    showPageHeading: true,
     usePasswordExpiry: useGetPasswordExpiryProperties,
     usePasswordHistory: useGetPasswordHistoryCount
 };

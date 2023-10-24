@@ -115,7 +115,7 @@ export const console: ConsoleNS = {
                         errors: {
                             noAssociation: {
                                 content: "Il semble que l'e-mail sélectionné ne soit pas enregistré sur Gravatar. " +
-                                    "Ouvrez un compte Gravatar en vous rendant sur le site officiel de Gravatar ou " +
+                                    "Ouvrez un compte Gravatar en vous rendant sur le <1>site officiel de Gravatar</1> ou " +
                                     "utilisez l'un des choix suivants.",
                                 header: "Aucune image Gravatar correspondante trouvée !"
                             }
@@ -463,7 +463,14 @@ export const console: ConsoleNS = {
             }
         },
         sidePanel: {
-            privacy: "Confidentialité"
+            privacy: "Confidentialité",
+            loginAndRegistration: {
+                label: "Connexion et inscription",
+                description: "Configurer les paramètres de connexion et d'enregistrement."
+            },
+            userAttributesAndStores: "Attributs utilisateur et magasins",
+            userManagement: "Gestion des utilisateurs",
+            branding: "l'image de marque"
         },
         validations: {
             inSecureURL: {
@@ -474,6 +481,115 @@ export const console: ConsoleNS = {
                 description: "L'URL saisie n'est ni HTTP ni HTTPS. Veuillez procéder avec prudence.",
                 heading: "URL non reconnue"
             }
+        }
+    },
+    branding: {
+        form: {
+            actions: {
+                save: "Sauver et publier",
+                resetAll: "Réinitialiser à par défaut"
+            }
+        },
+        tabs: {
+            text: {
+                label: "Texte"
+            },
+            preview: {
+                label: "Aperçu"
+            }
+        },
+        screens: {
+            common: "Commune",
+            login: "Se connecter",
+            "sms-otp": "smsOtp",
+            "email-otp": "emailOtp",
+            "email-template": "Modèles de messagerie",
+            "sign-up": "S'inscrire",
+            "totp": "totp",
+            myaccount: "Mon compte"
+        }
+    },
+    brandingCustomText: {
+        revertScreenConfirmationModal: {
+            content: "Une fois que vous avez confirmé, vos utilisateurs commenceront à voir les défaillances {{productName}} et ce ne sera pas réversible. Veuillez procéder avec prudence.",
+            heading: "Es-tu sûr?",
+            message: "Retour <1>{{screen}}</1> Écran Personnaliser le texte pour le <3>{{locale}}</3> Locale."
+        },
+        revertUnsavedConfirmationModal: {
+            content: "Si vous changez l'écran, vos modifications non sauvées seront perdues. Cliquez sur <1>Confirmer</1> pour continuer.",
+            heading: "Es-tu sûr?",
+            message: "Enregistrez vos modifications non sauvées"
+        },
+        form: {
+            genericFieldResetTooltip: "Réinitialiser à par défaut",
+            genericFieldPlaceholder: "Entrez votre texte",
+            fields: {
+                copyright: {
+                    hint: "Texte qui apparaît au bas de l'écran de connexion. Vous pouvez utiliser le paramètre `{{currentYear}}` pour afficher automatiquement l'année en cours."
+                },
+                "site.title": {
+                    hint: "Le titre du site peut apparaître dans les onglets du navigateur, les résultats des moteurs de recherche, les partages sur les réseaux sociaux, etc. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "login.button": {
+                    hint: "Le texte qui apparaît sur le bouton d'action principal de la boîte de connexion. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "login.heading": {
+                    hint: "Le titre de la boîte de connexion. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "sms.otp.heading": {
+                    hint: "Le titre de la boîte SMS OTP. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "email.otp.heading": {
+                    hint: "Le titre de la boîte Email OTP. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "totp.heading": {
+                    hint: "Le titre de la boîte TOTP. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "sign.up.button": {
+                    hint: "Le texte qui apparaît sur le bouton d'action principal de la boîte d'inscription. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                },
+                "sign.up.heading": {
+                    hint: "Le titre de la boîte d'inscription. Si non défini, les valeurs par défaut de {{productName}} sont utilisées."
+                }
+            }
+        },
+        localeSelectDropdown: {
+            label: "Lieu",
+            placeholder: "Sélectionner les paramètres régionaux"
+        },
+        modes: {
+            text: {
+                label: "Champs de texte"
+            },
+            json: {
+                label: "JSON"
+            }
+        },
+        notifications: {
+            getPreferenceError: {
+                description: "Impossible d'obtenir le texte personnalisé de l'écran {{screen}} pour {{locale}}.",
+                message: "Impossible d'obtenir le texte personnalisé"
+            },
+            revertError: {
+                description: "Je n'ai pas pu revenir {{screen}} texte personnalisé de l'écran pour {{locale}}.",
+                message: "Je n'ai pas pu revenir sur le texte personnalisé"
+            },
+            resetSuccess: {
+                description: "Retour avec succès {{screen}} Texte personnalisé de l'écran pour {{locale}}.",
+                message: "Retournez le succès"
+            },
+            updateError: {
+                description: "Impossible de mettre à jour {{Screen}} Texte personnalisé de l'écran pour {{locale}}.",
+                message: "Impossible de mettre à jour le texte personnalisé"
+            },
+            updateSuccess: {
+                description: "Le texte personnalisé de l'écran a mis à jour avec succès {{screen}} pour {{locale}}.",
+                message: "Mise à jour de texte personnalisée réussie"
+            }
+        },
+        screenSelectDropdown: {
+            label: "Écran",
+            placeholder: "Sélectionner l'écran"
         }
     },
     develop: {
@@ -960,7 +1076,7 @@ export const console: ConsoleNS = {
                         },
                         sharedAccess: {
                             subTitle: "Sélectionnez les options suivantes pour partager l'application avec " +
-                                "les sous-organisations.",
+                                "les organisations.",
                             tabName: "Accès partagé"
                         },
                         shareApplication: {
@@ -1177,7 +1293,11 @@ export const console: ConsoleNS = {
                                                 singleIdp: "Asgardeo nécessite le profil de l'utilisateur" +
                                                     " contenant le <1>numéro de mobile</1> pour configurer <3>SMS OTP</3>" +
                                                     " avec Connexion <5>{{idpName}}</5>."
-                                            }
+                                            },
+                                            sessionExecutorDisabledInFirstStep: "Le gestionnaire de limite de sessions actives nécessite " +
+                                                "d'avoir un authentificateur de base dans une étape préalable.",
+                                            sessionExecutorDisabledInMultiOptionStep: "Le gestionnaire de limite de sessions actives " +
+                                                "ne peut pas être ajouté à une étape multi-options."
                                         }
                                     }
                                 },
@@ -1555,8 +1675,8 @@ export const console: ConsoleNS = {
                             },
                             isSharingEnabled: {
                                 hint: "Si elle est activée, elle permettra à cette application d'authentifier les " +
-                                    "clients/partenaires dans cette organisation ou l'une de ses sous-organisations.",
-                                label: "Autoriser le partage avec des sous-organisations"
+                                    "clients/partenaires dans cette organisation ou l'une de ses organisations.",
+                                label: "Autoriser le partage avec des organisations"
                             },
                             isManagementApp: {
                                 hint: "Activez pour autoriser l'application à accéder à l'API de gestion de cette " +
@@ -3130,22 +3250,22 @@ export const console: ConsoleNS = {
                             action: "Voir les forfaits",
                             subtitles: "Vous pouvez contacter l'administrateur de l'organisation ou (si vous êtes l'administrateur) " +
                                 "mettre à niveau votre abonnement pour augmenter la limite autorisée.",
-                            title: "Vous avez atteint le nombre maximal de sous-organisations autorisées."
+                            title: "Vous avez atteint le nombre maximal de organisations autorisées."
                         },
-                        heading: "Vous avez atteint la limite maximale pour les sous-organisations"
+                        heading: "Vous avez atteint la limite maximale pour les organisations"
                     },
                     subOrgLevelsLimitReachedError: {
                         emptyPlaceholder: {
                             action: "Voir les forfaits",
                             subtitles: "Vous pouvez contacter l'administrateur de l'organisation ou (si vous êtes l'administrateur) " +
                                 "mettre à niveau votre abonnement pour augmenter la limite autorisée.",
-                            title: "Vous avez atteint le nombre maximal de niveaux de sous-organisation autorisés."
+                            title: "Vous avez atteint le nombre maximal de niveaux de organisation autorisés."
                         },
-                        heading: "Vous avez atteint les niveaux de sous-organisation maximum autorisés pour l'organisation."
+                        heading: "Vous avez atteint les niveaux de organisation maximum autorisés pour l'organisation."
                     },
                     duplicateOrgError: {
-                        message: "Une sous-organisation portant le même nom existe déjà.",
-                        description: "La sous-organisation que vous essayez de créer existe déjà."
+                        message: "Une organisation portant le même nom existe déjà.",
+                        description: "La organisation que vous essayez de créer existe déjà."
                     }
                 }
             },
@@ -4321,6 +4441,255 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            idvp: {
+                advancedSearch: {
+                    form: {
+                        inputs: {
+                            filterValue: {
+                                placeholder: "Saisissez la valeur à rechercher"
+                            }
+                        }
+                    },
+                    placeholder: "Rechercher par nom"
+                },
+                buttons: {
+                    addIDVP: "Nouveau fournisseur de vérification d'identité"
+                },
+                placeholders: {
+                    emptyIDVPList: {
+                        subtitles: {
+                            0: "Il n'y a pas de fournisseurs de vérification d'identité disponibles pour le moment.",
+                            1: "Vous pouvez facilement ajouter un nouveau fournisseur de vérification d'identité en " +
+                                "suivant les",
+                            2: "étapes de l'assistant de création du fournisseur de vérification d'identité."
+                        },
+                        title: "Ajouter un nouveau fournisseur de vérification d'identité"
+                    },
+                    emptyIDVPTypeList: {
+                        subtitles: {
+                            0: "Il n'y a actuellement aucun type de fournisseur de vérification ",
+                            1: "d'identité disponible pour la configuration."
+                        },
+                        title: "Aucun type de fournisseur de vérification d'identité trouvé"
+                    }
+                },
+                confirmations: {
+                    deleteIDVP: {
+                        assertionHint: "Veuillez confirmer votre action",
+                        content: "Si vous supprimez ce fournisseur de vérification d'identité, vous ne pourrez pas " +
+                            "le récupérer. Veuillez procéder avec prudence.",
+                        header: "Es-tu sûr?",
+                        message: "Cette action est irréversible et supprimera définitivement le fournisseur de " +
+                            "vérification d'identité."
+                    }
+                },
+                notifications: {
+                    getIDVPList: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des fournisseurs de " +
+                                "vérification d'identité.",
+                            message: "Erreur de récupération"
+                        }
+                    },
+                    deleteIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Supprimer l'erreur"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la suppression du fournisseur de " +
+                                "vérification d'identité.",
+                            message: "Supprimer l'erreur"
+                        },
+                        success: {
+                            description: "Le fournisseur de vérification d'identité a bien été supprimé.",
+                            message: "Suppression réussie"
+                        }
+                    },
+                    updateIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de mise à jour"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la mise à jour du fournisseur de " +
+                                "vérification d'identité.",
+                            message: "Erreur de mise à jour"
+                        },
+                        success: {
+                            description: "Le fournisseur de vérification d'identité a bien été mis à jour.",
+                            message: "Mise à jour réussie"
+                        }
+                    },
+                    addIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Créer une erreur"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la création du fournisseur de " +
+                                "vérification d'identité.",
+                            message: "Créer une erreur"
+                        },
+                        success: {
+                            description: "Le fournisseur de vérification d'identité a bien été créé.",
+                            message: "Créez avec succès"
+                        }
+                    },
+                    submitAttributeSettings: {
+                        error: {
+                            description: "Nécessité de configurer toutes les propriétés obligatoires.",
+                            message: "Impossible d'effectuer la mise à jour"
+                        }
+                    },
+                    getAllLocalClaims: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Retrieval Error"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des claims localaux.",
+                            message: "Erreur de récupération"
+                        }
+                    },
+                    getIDVP: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des données du " +
+                                "fournisseur de vérification d'identité",
+                            message: "Erreur de récupération"
+                        }
+                    },
+                    getUIMetadata: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des métadonnées de " +
+                                "l'interface utilisateur.",
+                            message: "Erreur de récupération"
+                        }
+                    },
+                    getIDVPTemplateTypes: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des types de modèles " +
+                                "auprès du fournisseur de vérification d'identité.",
+                            message: "Erreur de récupération"
+                        }
+                    },
+                    getIDVPTemplateType: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de Récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération du type de modèle auprès" +
+                                " du fournisseur de vérification d'identité.",
+                            message: "Erreur de Récupération"
+                        }
+                    },
+                    getIDVPTemplate: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de Récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération du modèle du fournisseur " +
+                                "de vérification d'identité.",
+                            message: "Erreur de Récupération"
+                        }
+                    }
+                },
+                forms: {
+                    generalDetails: {
+                        description: {
+                            hint: "Une description textuelle du fournisseur de vérification d'identité.",
+                            label: "Description",
+                            placeholder: "Entrez une description du fournisseur de vérification d'identité."
+                        },
+                        name: {
+                            hint: "Entrez Un nom unique pour ce fournisseur de vérification d'identité.",
+                            label: "Nom",
+                            placeholder: "Entrez un nom pour le fournisseur de vérification d'identité.",
+                            validations: {
+                                duplicate: "Un fournisseur de vérification d'identité existe déjà avec ce nom",
+                                empty: "Le nom du fournisseur de vérification d'identité est requis",
+                                maxLengthReached: "Le nom du fournisseur de vérification d'identité ne peut pas " +
+                                    "dépasser {{ maxLength }} caractères.",
+                                required: "Le nom du fournisseur de vérification d'identité est requis",
+                                invalid: "Le nom du fournisseur de vérification d'identité n'est pas valide"
+                            }
+                        }
+                    },
+                    attributeSettings: {
+                        attributeMapping: {
+                            heading: "Mapping des attributs du fournisseur de vérification d'identité",
+                            hint: "Ajoutez et mappez les attributs pris en charge par le fournisseur externe " +
+                                "de vérification d'identité.",
+                            addButton: "Ajouter un mappage d'attributs",
+                            emptyPlaceholderEdit: {
+                                subtitle: "Aucun attribut n'est associé à ce fournisseur de vérification d'identité.",
+                                title: "Aucun attribut associé"
+                            },
+                            emptyPlaceholderCreate: {
+                                subtitle: "Associez les attributs sur la carte et cliquez sur <1>Ajouter un mappage " +
+                                    "d'attributs</1> pour commencer.",
+                                title: "Vous n'avez associé aucun attribut"
+                            }
+                        },
+                        attributeMappingListItem: {
+                            validation: {
+                                duplicate: "Il existe déjà un attribut mapé avec ce nom.",
+                                required: "Ce champ ne peut pas être vide",
+                                invalid: "Veuillez entrer une valeur valide"
+                            },
+                            placeholders: {
+                                mappedValue: "Saisissez l'attribut IDVP externe",
+                                localClaim: "Sélectionnez l'attribut de mappage"
+                            },
+                            labels: {
+                                mappedValue: "Attribut IDVP externe",
+                                localClaim: "Mappe à"
+                            }
+                        },
+                        attributeSelectionModal: {
+                            header: "Ajouter des mappages d'attributs"
+                        }
+                    }
+                },
+                dangerZoneGroup: {
+                    deleteIDVP: {
+                        actionTitle: "Supprimer",
+                        header: "Supprimer le fournisseur de vérification d'identité",
+                        subheader: "Il s'agit d'une action irréversible, procédez avec prudence."
+                    },
+                    disableIDVP: {
+                        actionTitle: "{{ state }} Fournisseur de vérification d'identité",
+                        header: "Fournisseur de vérification d'identité {{ state }}",
+                        subheader: "Une fois que vous avez désactivé un fournisseur de vérification d'identité, " +
+                            "il ne peut plus être utilisé tant qu'il n'est pas réactivé.",
+                        subheader2: "Activez le fournisseur de vérification d'identité pour l'utiliser avec vos " +
+                            "applications."
+                    },
+                    header: "Zone de Danger"
+                },
+                list: {
+                    actions: "Actions",
+                    name: "Nom"
+                }
+            },
             overview: {
                 banner: {
                     heading: "WSO2 Identity Server pour les développeurs",
@@ -4525,7 +4894,8 @@ export const console: ConsoleNS = {
                     application: "Applications",
                     general: "Général",
                     gettingStarted: " Pour commencer",
-                    identityProviders: "Fournisseurs d'identité"
+                    identityProviders: "Fournisseurs d'identité",
+                    identityVerificationProviders: "Fournisseurs de vérification d'identité"
                 },
                 customize: "Personnaliser",
                 identityProviderEdit: "Edition des fournisseurs d'identité",
@@ -4619,6 +4989,19 @@ export const console: ConsoleNS = {
                     provisioningDisplayName: "Approvisionnement"
                 },
                 title: "Sélectionnez le connexion"
+            },
+            idvp: {
+                subTitle: "Gérez les fournisseurs de vérification d'identité pour permettre aux utilisateurs de " +
+                "vérifier leur identité via eux.",
+                title: "Fournisseurs de vérification d'identité"
+            },
+            idvpTemplate: {
+                backButton: "Retourner aux fournisseurs de vérification d'identité",
+                subTitle: "Choisissez l'un des fournisseurs de vérification d'identité suivants.",
+                title: "Sélectionnez le fournisseur de vérification d'identité",
+                "search": {
+                    "placeholder": "Recherche par nom"
+                }
             },
             overview: {
                 subTitle: "Configurer et gérer les applications, les fournisseurs d'identité, les utilisateurs " +
@@ -4800,6 +5183,19 @@ export const console: ConsoleNS = {
                     help: "Vous n'avez pas encore configuré votre authentificateur TOTP?Contactez le support"
                 },
                 header: "Vérifiez Votre Identité"
+            },
+            activeSessionsLimit: {
+                controls: {
+                    optionRemoveTooltipContent: "Retirer"
+                },
+                form: {
+                    sessions: {
+                        browserLabel: "Navigateur",
+                        lastAccessedLabel: "Dernier accès"
+                    },
+                    help: "Terminez les sessions actives pour continuer."
+                },
+                header: "Plusieurs sessions actives trouvées"
             }
         },
         revertConfirmationModal: {
@@ -5180,10 +5576,19 @@ export const console: ConsoleNS = {
             },
             claims: {
                 attributeMappings: {
+                    axschema: {
+                        description: "Représentation du schéma d'échange d'attributs (axschema) "
+                            + "pour les attributs utilisateur.",
+                        heading: "Schéma d'échange d'attributs"
+                    },
                     custom: {
                         description: "Représentation de protocole personnalisé pour les " +
                             "attributs utilisateur qui seront utilisés dans l'API personnalisée.",
                         heading: "Attributs personnalisés"
+                    },
+                    eidas: {
+                        description: "La représentation du protocole eIDAS pour les attributs utilisateur.",
+                        heading: "eIDAS"
                     },
                     oidc: {
                         description: "Représentation du protocole OpenID Connect pour les attributs " +
@@ -5310,6 +5715,12 @@ export const console: ConsoleNS = {
                             success: {
                                 description: "Le dialecte a été mis à jour avec succès",
                                 message: "La mise à jour du dialecte a été effectuée avec succès"
+                            }
+                        },
+                        fetchSCIMResource: {
+                            genericError: {
+                                description: "Une erreur s'est produite lors de la récupération des ressources SCIM.",
+                                message: "Quelque chose s'est mal passé"
                             }
                         }
                     },
@@ -6076,6 +6487,7 @@ export const console: ConsoleNS = {
                 copyright: "WSO2 Identity Server © {{year}}"
             },
             governanceConnectors: {
+                goBackLoginAndRegistration: "Revenez à la connexion et à l'enregistrement",
                 categories: "Catégories",
                 connectorSubHeading: "Configurer les paramètre {{ name }}.",
                 connectorCategories: {
@@ -7232,12 +7644,12 @@ export const console: ConsoleNS = {
                     }
                 },
                 homeList: {
-                    description: "Consultez la liste de toutes les sous-organisations disponibles.",
-                    name: "Toutes les sous-organisations"
+                    description: "Consultez la liste de toutes les organisations disponibles.",
+                    name: "Toutes les organisations"
                 },
                 list: {
                     actions: {
-                        add: "Ajouter une sous-organisation"
+                        add: "Ajouter une organisation"
                     },
                     columns: {
                         actions: "Actions",
@@ -7246,9 +7658,9 @@ export const console: ConsoleNS = {
                 },
                 modals: {
                     addOrganization: {
-                        header: "Ajouter une Sous-organisation",
-                        subtitle1: "Créez une nouvelle sous-organisation dans {{parent}}.",
-                        subtitle2: "Créer une nouvelle sous-organisation."
+                        header: "Ajouter une Organisation",
+                        subtitle1: "Créez une nouvelle organisation dans {{parent}}.",
+                        subtitle2: "Créer une nouvelle organisation."
                     }
                 },
                 notifications: {
@@ -7281,7 +7693,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     deleteOrganizationWithSubOrganizationError: "L'organisation {{ organizationName }} ne peut pas" +
-                        " être supprimée car elle possède une ou plusieurs sous-organisations.",
+                        " être supprimée car elle possède une ou plusieurs organisations.",
                     disableOrganization: {
                         error: {
                             description: "{{description}}",
@@ -7297,7 +7709,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     disableOrganizationWithSubOrganizationError: "L'organisation {{ organizationName }} ne peut pas" +
-                        " être désactivée car elle possède une ou plusieurs sous-organisations.",
+                        " être désactivée car elle possède une ou plusieurs organisations.",
                     enableOrganization: {
                         error: {
                             description: "{{description}}",
@@ -7368,7 +7780,7 @@ export const console: ConsoleNS = {
                 },
                 placeholders: {
                     emptyList: {
-                        action: "Ajouter une Sous-organisation",
+                        action: "Ajouter une Organisation",
                         subtitles: {
                             0: "Il n'y a pas d'organisations pour le moment.",
                             1: "Vous pouvez facilement ajouter une nouvelle organisation en",
@@ -7379,14 +7791,14 @@ export const console: ConsoleNS = {
                     }
                 },
                 shareApplicationSubTitle: "Sélectionnez l'une des options suivantes pour partager l'application.",
-                shareApplicationRadio: "Partager avec toutes les sous-organisations",
+                shareApplicationRadio: "Partager avec toutes les organisations",
                 shareApplicationInfo: "Sélectionnez cette option pour partager l'application avec toutes " +
-                    "les sous-organisations existantes et toutes les nouvelles sous-organisations que vous " +
+                    "les organisations existantes et toutes les nouvelles organisations que vous " +
                     "créez sous votre organisation actuelle.",
-                unshareApplicationRadio: "Ne partagez avec aucune sous-organisation",
-                shareWithSelectedOrgsRadio: "Partager uniquement avec les sous-organisations sélectionnées",
+                unshareApplicationRadio: "Ne partagez avec aucune organisation",
+                shareWithSelectedOrgsRadio: "Partager uniquement avec les organisations sélectionnées",
                 unshareApplicationInfo: "Cela vous permettra d'empêcher le partage de cette application " +
-                    "avec l'une des sous-organisations existantes ou les nouvelles sous-organisations que vous " +
+                    "avec l'une des organisations existantes ou les nouvelles organisations que vous " +
                     "créerez sous cette organisation à l'avenir.",
                 subTitle: "Créer et gérer des organisations.",
                 switching: {
@@ -7395,7 +7807,7 @@ export const console: ConsoleNS = {
                         placeholder: "Rechercher par nom"
                     },
                     goBack: "Retourner",
-                    subOrganizations: "Sous-organisations",
+                    subOrganizations: "Organisations",
                     switchLabel: "Organisation"
                 },
                 title: "Organisations"
@@ -7687,6 +8099,54 @@ export const console: ConsoleNS = {
                                         "alphanumériques, - et _. Et doit avoir une longueur comprise entre 3 " +
                                         "et 30 caractères."
                                 }
+                            },
+                            roleAudience: {
+                                hint: "Définissez le public du rôle.<1> Notez que le public du rôle ne peut pas être modifié. </1>",
+                                label: "Sélectionnez le rôle de rôle",
+                                values: {
+                                    organization: "Organisation",
+                                    application: "Application"
+                                }
+                            },
+                            notes: {
+                                orgNote: "Lorsque le rôle d'audience est l'organisation, vous pouvez associer le rôle à une application qui permet des rôles d'audience d'organisation.",
+                                appNote: "Lorsque le rôle d'audience est une application, vous pouvez associer le rôle à une application qui permet des rôles d'audience d'application.",
+                                cannotCreateRole: "Vous ne pouvez pas créer un rôle avec le public de rôle en tant qu'application car il n'y a actuellement aucune application qui prend en charge les rôles d'audience d'application.S'il vous plaît <1> Créer une application </1> qui prend en charge les rôles d'audience d'application pour continuer."
+                            },
+                            assignedApplication: {
+                                hint: "Attribuer une application pour le rôle. Notez que l'application attribuée pour ce rôle ne peut pas être modifiée après la création du rôle.",
+                                label: "Application attribuée",
+                                placeholder: "Sélectionnez l'application pour attribuer le rôle",
+                                applicationSubTitle: {
+                                    application: "Prise en charge des rôles à application",
+                                    organization: "Rôles de soutien à l'organisation"
+                                },
+                                validations: {
+                                    empty: "L'application attribuée est nécessaire pour créer un rôle à application."
+                                }
+                            }
+                        },
+                        rolePermission: {
+                            apiResource: {
+                                label: "Sélectionnez la ressource API",
+                                placeholder: "Sélectionnez une ressource API pour attribuer des scopes (autorisations)"
+                            },
+                            permissions: {
+                                label: "Sélectionnez Scopes (autorisations) dans les ressources API sélectionnées",
+                                placeholder: "Sélectionnez des lunettes (autorisations)",
+                                tooltips: {
+                                    noScopes: "Aucune portée disponible pour la ressource API sélectionnée",
+                                    selectAllScopes: "Sélectionnez toutes les portées (autorisations)",
+                                    removeAPIResource: "Supprimer la ressource API"
+                                }
+                            },
+                            notifications: {
+                                fetchAPIResourceError: {
+                                    error: {
+                                        description: "Quelque chose s'est mal passé tout en récupérant les ressources d'API.Veuillez réessayer.",
+                                        message: "Quelque chose s'est mal passé"
+                                    }
+                                }
                             }
                         }
                     },
@@ -7699,6 +8159,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     subHeading: "Créer un nouveau {{type}} dans le système avec des permissions spécifiques",
+                    back: "Retourner",
                     summary: {
                         labels: {
                             domain: {
@@ -7750,6 +8211,16 @@ export const console: ConsoleNS = {
                     placeholder: "Rechercher par nom de rôle"
                 },
                 edit: {
+                    placeholders: {
+                        errorPlaceHolder: {
+                            action: "Retourner",
+                            subtitles: {
+                                0: "Une erreur s'est produite lors de la récupération du rôle demandé, peut-être parce que le rôle n'existe pas.",
+                                1: "Please try again."
+                            },
+                            title: "Quelque chose s'est mal passé"
+                        }
+                    },
                     basics: {
                         buttons: {
                             update: "Mettre à jour"
@@ -7786,14 +8257,56 @@ export const console: ConsoleNS = {
                             subHeading: "Ajoutez de nouveaux groupes ou supprimez les groupes existants " +
                                 "affectés au rôle."
                         },
-                        emptyPlaceholder: {
-                            action: "Attribuer un groupe",
-                            subtitles: "Aucun groupe n'est affecté à ce rôle pour le moment.",
-                            title: "Aucun groupe attribué"
+                        placeholders: {
+                            emptyPlaceholder: {
+                                action: "Attribuer des groupes",
+                                subtitles: {
+                                    0: "Il n'y a aucun groupe disponible pour le moment."
+                                },
+                                title: "Aucun groupe affecté à ce rôle."
+                            },
+                            errorPlaceholder: {
+                                action: "Rafraîchir",
+                                subtitles: {
+                                    0: "Une erreur s'est produite tout en récupérant les groupes affectés à ce rôle.",
+                                    1: "Veuillez réessayer."
+                                },
+                                title: "Quelque chose s'est mal passé"
+                            }
+                        },
+                        notifications: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Une erreur s'est produite lors de la mise à jour des groupes attribués au rôle."
+                            },
+                            success: {
+                                message: "Rôle mis à jour avec succès",
+                                description: "Les groupes attribués à ce rôle ont été mis à jour avec succès."
+                            },
+                            genericError: {
+                                message: "Quelque chose s'est mal passé",
+                                description: "Nous n'avons pas pu mettre à jour les groupes attribués à ce rôle."
+                            },
+                            fetchError: {
+                                message: "Quelque chose s'est mal passé",
+                                description: "Nous n'avons pas pu récupérer les groupes attribués à ce rôle."
+                            }
                         },
                         heading: "Groupes attribués",
                         subHeading: "Ajoutez ou supprimez les groupes affectés au rôle. Notez que ceci"
-                            + "affectera l'exécution de certaines tâches."
+                            + "affectera l'exécution de certaines tâches.",
+                        actions: {
+                            search: {
+                                placeholder: "Groupes de recherche"
+                            },
+                            assign: {
+                                placeholder: "Attribuer des groupes"
+                            },
+                            remove: {
+                                label: "Élimination des groupes",
+                                placeholder: "Restaurer les groupes"
+                            }
+                        }
                     },
                     menuItems: {
                         basic: "Fondamentaux",
@@ -7803,6 +8316,43 @@ export const console: ConsoleNS = {
                         users: "Utilisateurs"
                     },
                     users: {
+                        heading: "Utilisateurs affectés",
+                        subHeading: "Ajouter ou supprimer les utilisateurs affectés à ce rôle.Notez que cela affectera l'exécution de certaines tâches.",
+                        placeholders: {
+                            emptyPlaceholder: {
+                                action: "Affecter les utilisateurs",
+                                subtitles: {
+                                    0: "Aucun utilisateur n'est attribué à ce rôle pour le moment."
+                                },
+                                title: "Aucun utilisateur affecté au rôle."
+                            },
+                            errorPlaceholder: {
+                                action: "Rafraîchir",
+                                subtitles: {
+                                    0: "Une erreur s'est produite tout en récupérant les utilisateurs affectés à ce rôle.",
+                                    1: "Veuillez réessayer."
+                                },
+                                title: "Quelque chose s'est mal passé"
+                            }
+                        },
+                        notifications: {
+                            error: {
+                                description: "{{description}}",
+                                message: "L'erreur s'est produite lors de la mise à jour des utilisateurs attribués au rôle."
+                            },
+                            success: {
+                                message: "Rôle mis à jour avec succès",
+                                description: "Les utilisateurs affectés à ce rôle ont été mis à jour avec succès."
+                            },
+                            genericError: {
+                                message: "Quelque chose s'est mal passé",
+                                description: "Nous n'avons pas pu mettre à jour les utilisateurs attribués à ce rôle."
+                            },
+                            fetchError: {
+                                message: "Quelque chose s'est mal passé",
+                                description: "Nous n'avons pas pu récupérer les utilisateurs attribués à ce rôle."
+                            }
+                        },
                         list: {
                             emptyPlaceholder: {
                                 action: "Affecter un utilisateur",
@@ -7811,6 +8361,18 @@ export const console: ConsoleNS = {
                             },
                             user: "Utilisateur",
                             organization: "Dirigé par"
+                        },
+                        actions: {
+                            search: {
+                                placeholder: "Rechercher les utilisateurs"
+                            },
+                            assign: {
+                                placeholder: "Affecter les utilisateurs"
+                            },
+                            remove: {
+                                label: "Suppression des utilisateurs",
+                                placeholder: "Restaurer les utilisateurs"
+                            }
                         }
                     }
                 },
@@ -7822,6 +8384,10 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         lastModified: "Dernière modification",
+                        managedBy: {
+                            label: "Dirigé par",
+                            header: "Dirigé par"
+                        },
                         name: "Nom"
                     },
                     confirmations: {
@@ -7858,6 +8424,15 @@ export const console: ConsoleNS = {
                     popups: {
                         delete: "Supprimer le {{type}}",
                         edit: "Modifier le {{type}}"
+                    },
+                    filterOptions: {
+                        all: "Afficher tout",
+                        applicationRoles: "Rôles d'application",
+                        organizationRoles: "Rôles d'organisation"
+                    },
+                    filterAttirbutes: {
+                        name: "Nom",
+                        audience: "Rôle public"
                     }
                 },
                 notifications: {
@@ -7909,6 +8484,12 @@ export const console: ConsoleNS = {
                             message: "Quelque chose s'est mal passé"
                         }
                     },
+                    fetchRole: {
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération du rôle.",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
                     updateRole: {
                         error: {
                             description: "{{description}}",
@@ -7926,17 +8507,17 @@ export const console: ConsoleNS = {
                 }
             },
             serverConfigs: {
-                adminAdvisory: {  
+                adminAdvisory: {
                     configurationEditSection: {
                         backButtonLabel: "Revenir à la bannière de conseils d'administration",
                         pageHeading: "Bannière de conseil d'administration",
-                        pageSubheading: "Configurez et personnalisez la bannière d'avis d'administration " + 
+                        pageSubheading: "Configurez et personnalisez la bannière d'avis d'administration " +
                             "à afficher sur la page de connexion.",
                         form: {
                             bannerContent: {
                                 label: "Contenu de la bannière",
                                 hint: "C'est le contenu qui sera affiché dans la bannière sur la page de connexion.",
-                                placeholder: "Attention : l'utilisation non autorisée de cet outil " + 
+                                placeholder: "Attention : l'utilisation non autorisée de cet outil " +
                                     "est strictement interdite."
                             }
                         }
@@ -7946,7 +8527,7 @@ export const console: ConsoleNS = {
                         description: "Activez et configurez la bannière d'avis d'administration.",
                         enabled: "Activé",
                         heading: "Bannière de conseil d'administration"
-                    },  
+                    },
                     notifications: {
                         disbleAdminAdvisoryBanner: {
                             error: {
@@ -7955,7 +8536,7 @@ export const console: ConsoleNS = {
                                     "d'information de l'administrateur."
                             },
                             genericError: {
-                                description: "Une erreur s'est produite lors de la désactivation de" + 
+                                description: "Une erreur s'est produite lors de la désactivation de" +
                                     "la bannière d'information de l'administrateur.",
                                 message: "Quelque chose s'est mal passé"
                             },
@@ -7972,7 +8553,7 @@ export const console: ConsoleNS = {
                                     "d'administration."
                             },
                             genericError: {
-                                description: "Une erreur s'est produite lors de l'activation " + 
+                                description: "Une erreur s'est produite lors de l'activation " +
                                     "de la bannière d'information de l'administrateur.",
                                 message: "Quelque chose s'est mal passé"
                             },
@@ -7984,11 +8565,11 @@ export const console: ConsoleNS = {
                         getConfigurations: {
                             error: {
                                 description: "{{ description }}",
-                                message: "Erreur lors de la récupération des configurations de la " + 
+                                message: "Erreur lors de la récupération des configurations de la " +
                                     "bannière d'avis d'administration."
                             },
                             genericError: {
-                                description: "Une erreur s'est produite lors de la récupération des " + 
+                                description: "Une erreur s'est produite lors de la récupération des " +
                                     "configurations des bannières d'avis d'administration.",
                                 message: "Quelque chose s'est mal passé"
                             },
@@ -8000,7 +8581,7 @@ export const console: ConsoleNS = {
                         updateConfigurations: {
                             error: {
                                 description: "{{ description }}",
-                                message: "Erreur lors de la mise à jour des configurations de la " + 
+                                message: "Erreur lors de la mise à jour des configurations de la " +
                                 "bannière d'avis d'administration."
                             },
                             genericError: {
@@ -8014,10 +8595,85 @@ export const console: ConsoleNS = {
                                 message: "Bannière mise à jour avec succès"
                             }
                         }
-                    },           
+                    },
                     pageHeading: "Bannière de conseil d'administration",
-                    pageSubheading: "Configurez la bannière d'avis d'administration à afficher " + 
+                    pageSubheading: "Configurez la bannière d'avis d'administration à afficher " +
                         "sur la page de connexion."
+                },
+                remoteLogPublishing: {
+                    title: "Publication de journaux à distance",
+                    pageTitle: "Publication de journaux à distance",
+                    description: "Configurez les paramètres de journalisation à distance pour l'organisation.",
+                    fields: {
+                        logTypes: {
+                            label: "Types de journaux à publier",
+                            values: {
+                                carbonLogs: "Bûches de carbone",
+                                auditLogs: "Journaux d'audit",
+                                allLogs: "Tous les journaux"
+                            }
+                        },
+                        remoteURL: {
+                            label: "URL de destination"
+                        },
+                        advanced: {
+                            title: "Réglages avancés",
+                            connectionTimeout: {
+                                label: "Délai d'expiration de la connexion (ms)"
+                            },
+                            verifyHostname: {
+                                label: "Vérifiez le nom d'hôte"
+                            },
+                            basicAuthConfig: {
+                                title: "Configuration de l'authentification de base",
+                                serverUsername: {
+                                    label: "Nom d'utilisateur du serveur distant"
+                                },
+                                serverPassword: {
+                                    label: "Mot de passe du serveur distant"
+                                }
+                            },
+                            sslConfig: {
+                                title: "Configuration SSL",
+                                keystorePath: {
+                                    label: "Emplacement du magasin de clés"
+                                },
+                                keystorePassword: {
+                                    label: "Mot de passe du magasin de clés"
+                                },
+                                truststorePath: {
+                                    label: "Emplacement du magasin de confiance"
+                                },
+                                truststorePassword: {
+                                    label: "Mot de passe du magasin de confiance"
+                                }
+                            }
+                        }
+                    },
+                    dangerZone: {
+                        title: "Restaurer la configuration par défaut pour les journaux {{logType}}",
+                        header: "Restaurer la configuration par défaut pour les journaux {{logType}}",
+                        subheader: "Cette action supprimera la configuration existante pour les journaux {{logType}}. Veuillez en être sûr avant de continuer.",
+                        confirmation: {
+                            hint: "Veuillez confirmer votre action.",
+                            header: "Êtes-vous sûr?",
+                            message: "Si vous restaurez la configuration par défaut, la publication de journaux à distance pour les journaux {{logType}} risque de ne pas fonctionner correctement. " +
+                            "Veuillez procéder avec prudence.",
+                            content: "Cette action restaurera la configuration de publication de journaux par défaut pour les journaux {{logType}}."
+                        }
+                    },
+                    notification: {
+                        success: {
+                            description: "La configuration de la publication des journaux à distance a été mise à jour avec succès.",
+                            message: "Mis à jour avec succés."
+                        },
+                        error: {
+                            genericError: {
+                                description: "Une erreur s'est produite lors de la mise à jour de la configuration de la publication des journaux à distance.",
+                                message: "Quelque chose s'est mal passé"
+                            }
+                        }
+                    }
                 },
                 realmConfiguration: {
                     actionTitles: {
@@ -8123,7 +8779,7 @@ export const console: ConsoleNS = {
                 localDialect: "Dialecte local",
                 loginAttemptsSecurity: "Sécurité des tentatives de connexion",
                 multiFactorAuthenticators: "Authentificateurs multi-facteurs",
-                organizations: "Sous-organisations",
+                organizations: "Organisations",
                 otherSettings: "Autres réglages",
                 overview: "Vue d'ensemble",
                 passwordPolicies: "Politiques de mot de passe",
@@ -8144,7 +8800,8 @@ export const console: ConsoleNS = {
                         },
                         roles: {
                             selected: "Aucun {{type}} n'est assigné à ce rôle.",
-                            unselected: "Aucun {{type}} disponible ne peut être assigné à ce rôle."
+                            unselected: "Aucun {{type}} disponible ne peut être assigné à ce groupe.",
+                            common: "Aucun {{type}} trouvé"
                         },
                         users: {
                             roles: {
@@ -8367,6 +9024,65 @@ export const console: ConsoleNS = {
                             username: "Nom d'utilisateur"
                         }
                     },
+                    bulkImportUserWizard: {
+                        title: "Inviter plusieurs utilisateurs",
+                        subTitle: "Invitez plusieurs utilisateurs dans l’organisation.",
+                        wizardSummary: {
+                            successCount: "Nombre de réussites",
+                            failedCount: "Nombre d'échecs",
+                            totalCount: "Le compte total",
+                            tableHeaders: {
+                                username: "Nom d'utilisateur",
+                                status: "Statut",
+                                message: "Message"
+                            },
+                            tableMessages: {
+                                userCreatedMessage: "Utilisateur importé avec succès",
+                                invalidDataMessage: "Données non valides fournies",
+                                userAlreadyExistsMessage: "L'utilisateur existe déjà",
+                                userCreationAcceptedMessage: "Création d'utilisateur acceptée",
+                                internalErrorMessage: "Une erreur s'est produite lors de l'importation des utilisateurs"
+                            },
+                            tableStatus: {
+                                success: "Succès",
+                                warning: "Avertissement",
+                                failed: "Échoué"
+                            },
+                            alerts: {
+                                importSuccess: {
+                                    description: "Les utilisateurs ont été importés avec succès.",
+                                    message: "Importation réussie"
+                                },
+                                importFailed: {
+                                    description: "Problèmes rencontrés dans <1>{{failedCount}} importations</1>.",
+                                    message: "Révision requise."
+                                }
+                            },
+                            advanceSearch: {
+                                placeholder: "Rechercher par nom d'utilisateur"
+                            },
+                            disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
+                                "externes n’est pas disponible pour le moment.",
+                            manualCreation: {
+                                hint: "Ajoutez des e-mails et envoyez des invitations à plusieurs utilisateurs.",
+                                emailsLabel: "E-mails",
+                                emailsPlaceholder: "Entrez les adresses e-mail",
+                                disabledHint: "TL'option manuelle est désactivée en raison de l'utilisation de noms d'utilisateur alphanumériques dans votre organisation.",
+                                upload: {
+                                    buttonText: "Télécharger le fichier CSV",
+                                    description: "Faites glisser et déposez un fichier CSV ici."
+                                },
+                                primaryButton: "Inviter",
+                                warningMessage: "The manual option to invite multiple users is available only when email as username is enabled."
+                            },
+                            fileBased: {
+                                hint: "Invitez plusieurs utilisateurs en masse à l’aide d’un fichier CSV."
+                            }
+                        },
+                        buttons: {
+                            import: "Importer"
+                        }
+                    },
                     changePasswordModal: {
                         button: "réinitialiser le mot de passe",
                         header: "Réinitialiser le mot de passe de l'utilisateur",
@@ -8473,6 +9189,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     notifications: {
+                        
                         changeUserPassword: {
                             error: {
                                 description: "{{description}}",
@@ -8865,6 +9582,10 @@ export const console: ConsoleNS = {
                     assignUserRoleBtn: "Assigner un rôle",
                     metaColumnBtn: "Champs"
                 },
+                addUserDropDown: {
+                    addNewUser:  "Ajouter un utilisateur",
+                    bulkImport: "Importation en masse"
+                },
                 confirmations: {
                     terminateAllSessions: {
                         assertionHint: "Veuillez confirmer votre action.",
@@ -8905,6 +9626,13 @@ export const console: ConsoleNS = {
                             1: "Groupes",
                             2: "Rôles",
                             3: "Sessions Actives"
+                        }
+                    },
+                    placeholders: {
+                        undefinedUser: {
+                            action: "Retourner aux utilisateurs",
+                            subtitles: "Il semble que l'utilisateur demandé n'existe pas.",
+                            title: "Utilisateur non trouvé"
                         }
                     }
                 },
@@ -8950,6 +9678,59 @@ export const console: ConsoleNS = {
                         success: {
                             description: "L'utilisateur a été ajouté avec succès.",
                             message: "Ajout d'utilisateur réussi"
+                        }
+                    },
+                    bulkImportUser: {
+                        validation: {
+                            emptyRowError: {
+                                description: "Le fichier sélectionné ne contient aucune donnée.",
+                                message: "Fichier vide"
+                            },
+                            columnMismatchError: {
+                                description: "Certaines lignes de données du fichier déposer ne correspondent " +
+                                    "pas au nombre de colonnes requis. Veuillez examiner et corriger les données.",
+                                message: "Incompatibilité du nombre de colonnes"
+                            },
+                            emptyHeaderError: {
+                                description: "Assurez-vous que la première ligne contient les en-têtes de " +
+                                "chaque colonne.",
+                                message: "En-têtes de colonnes manquants"
+                            },
+                            missingRequiredHeaderError: {
+                                description: "Le ou les en-têtes suivants sont requis mais sont manquants dans" +
+                                "le fichier CSV: {{ headers }}.",
+                                message: "En-têtes de colonnes obligatoires manquants"
+                            },
+                            blockedHeaderError: {
+                                description: "Les en-têtes suivants ne sont pas autorisés : {{headers}}.",
+                                message: "En-têtes de colonnes bloqués"
+                            },
+                            duplicateHeaderError: {
+                                description: "Le(s) en-tête(s) suivant(s) sont dupliqués : {{headers}}.",
+                                message: "En-têtes de colonnes en double"
+                            },
+                            invalidHeaderError: {
+                                description: "Le ou les en-têtes suivants ne sont pas valides : {{headers}}.",
+                                message: "En-têtes de colonnes invalides"
+                            },
+                            emptyDataField: {
+                                description: "Le champ de données '{{dataField}}' ne doit pas être vide.",
+                                message: "Champ de données vide"
+                            }
+                        },
+                        submit: {
+                            error: {
+                                description: "{{description}}",
+                                message: "Une erreur s'est produite lors de l'importation des utilisateurs"
+                            },
+                            genericError: {
+                                description: "Impossible d'importer les utilisateurs.",
+                                message: "Une erreur s'est produite lors de l'importation des utilisateurs"
+                            },
+                            success: {
+                                description: "Les utilisateurs ont été importés avec succès.",
+                                message: "Utilisateurs importés avec succès"
+                            }
                         }
                     },
                     deleteUser: {
@@ -9204,6 +9985,7 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     connection: {
+                        updatePassword: "Mettre à jour le mot de passe de connexion",
                         connectionErrorMessage: "Veuillez vérifier les informations de connexion "
                             + "que vous avez saisis : URL, utilisateur, mot de passe, pilote",
                         testButton: "Tester la connexion"
@@ -9628,8 +10410,8 @@ export const console: ConsoleNS = {
                 title: "Modifier le scope : {{ name }}"
             },
             organizations: {
-                subTitle: "Créer et gérer des Sous-organisations.",
-                title: "Sous-organisations"
+                subTitle: "Créer et gérer des Organisations.",
+                title: "Organisations"
             },
             overview: {
                 subTitle: "Configurer et gérer les utilisateurs, les rôles, les claims " +

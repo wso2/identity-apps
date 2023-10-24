@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,9 +18,9 @@
 
 import {
     AlertLevels,
+    IdentifiableComponentInterface,
     RoleGroupsInterface,
-    RolesInterface,
-    TestableComponentInterface
+    RolesInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -66,7 +66,7 @@ import {
 } from "../../../groups/models";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../constants";
 
-interface RoleGroupsPropsInterface extends TestableComponentInterface {
+interface RoleGroupsPropsInterface extends IdentifiableComponentInterface {
     /**
      * User profile
      */
@@ -673,7 +673,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     };
 
     return (
-        <>
+        <EmphasizedSegment padded="very">
             <Heading as="h4">
                 { t("console:manage.features.roles.edit.groups.heading") }
                 <Heading subHeading ellipsis as="h6">
@@ -683,7 +683,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             <Divider hidden />
             <Grid>
                 <Grid.Row>
-                    <Grid.Column computer={ 8 }>
+                    <Grid.Column>
                         {
                             primaryGroupsList?.size > 0 ? (
                                 <EmphasizedSegment
@@ -742,11 +742,11 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                         <EmphasizedSegment>
                                             <EmptyPlaceholder
                                                 data-testid="role-mgt-empty-groups-list"
-                                                title={ t("console:manage.features.roles.edit.groups." +
+                                                title={ t("console:manage.features.roles.edit.groups.placeholders." +
                                                         "emptyPlaceholder.title") }
                                                 subtitle={ [
-                                                    t("console:manage.features.roles.edit.groups." +
-                                                            "emptyPlaceholder.subtitles")
+                                                    t("console:manage.features.roles.edit.groups.placeholders." +
+                                                            "emptyPlaceholder.subtitles.0")
                                                 ] }
                                                 action={
                                                     !isReadOnly && (
@@ -756,7 +756,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                                             onClick={ handleOpenAddNewGroupModal }
                                                         >
                                                             { t("console:manage.features.roles.edit.groups." +
-                                                                    "emptyPlaceholder.action") }
+                                                                    "placeholders.emptyPlaceholder.action") }
                                                         </PrimaryButton>
                                                     )
                                                 }
@@ -772,6 +772,13 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 </Grid.Row>
             </Grid>
             { addNewGroupModal() }
-        </>
+        </EmphasizedSegment>
     );
+};
+
+/**
+ * Default props for application roles tab component.
+ */
+RoleGroupsList.defaultProps = {
+    "data-componentid": "edit-role-group"
 };

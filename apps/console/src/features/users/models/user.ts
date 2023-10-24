@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,8 @@ import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterf
 import React, { ReactElement } from "react";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { UserRoleInterface } from "../../core";
-import { GroupsInterface } from "../../groups";
+import { GroupsInterface, GroupsMemberInterface } from "../../groups";
+import { BulkUserImportStatus } from "../constants";
 
 /**
  * Captures meta details of the user.
@@ -56,15 +57,19 @@ export interface UserBasicInterface {
     /**
      * Name of the user.
      */
-    name: NameInterface;
+    name?: NameInterface;
     /**
      * Meta information of the user.
      */
-    meta: UserMetaInterface;
+    meta?: UserMetaInterface;
     /**
      * Profile URL of the user.
      */
-    profileUrl: string;
+    profileUrl?: string;
+    /**
+     * Groups of the user.
+     */
+    groups?: GroupsMemberInterface[];
 }
 
 /**
@@ -163,7 +168,7 @@ export interface EmailsInterface {
  */
 export interface UserDetailsInterface {
     emails: EmailsInterface[];
-    name: NameInterface;
+    name?: NameInterface;
     userName: string;
     password?: string;
     /*
@@ -174,7 +179,7 @@ export interface UserDetailsInterface {
     [key: string]: {
         askPassword: string;
     } | any;
-    profileUrl: string;
+    profileUrl?: string;
 }
 
 /**
@@ -339,3 +344,70 @@ export interface PayloadInterface {
       }[];
       schemas: string[];
 }
+
+/**
+ * Type of the bulk user import operation status.
+ */
+export type BulkUserImportOperationStatus = "Success" | "Failed" | "Warning";
+
+/**
+ * Interface for the bulk user import operation response.
+ */
+export interface BulkUserImportOperationResponse {
+    username: string;
+    status: BulkUserImportOperationStatus;
+    message: string;
+    statusCode: BulkUserImportStatus;
+}
+
+/**
+ * Interface for the bulk user import operation summary.
+ */
+export interface BulkResponseSummary {
+    successCount: number;
+    failedCount: number;
+}
+
+export interface PatchBulkUserDataInterface {
+    schemas: string[];
+    Operations: PatchUserOpInterface[];
+    failOnErrors?: number;
+}
+
+export interface PatchUserOpInterface {
+    data: {
+        Operations: (PatchUserRemoveOpInterface | PatchUserAddOpInterface)[];
+    };
+    method: string;
+    path: string;
+}
+
+export interface PatchUserRemoveOpInterface {
+    op: string;
+    path: string;
+}
+
+export interface PatchUserAddOpInterface {
+    op: string;
+    value: {
+        users: { value: string }[]
+    }
+}
+
+/**
+ * Enum for the multiple invites modes.
+ *
+ */
+export enum MultipleInviteMode {
+    MANUAL = "manualConfiguration",
+    META_FILE = "metadataFile"
+}
+
+/**
+ * Multiple Invites mode display name mapping.
+ */
+export const MultipleInvitesDisplayNames: { manualConfiguration: string; metadataFile: string; } = {
+    [ MultipleInviteMode.MANUAL ]: "Manual",
+    [ MultipleInviteMode.META_FILE ]: "File Based"
+};
+

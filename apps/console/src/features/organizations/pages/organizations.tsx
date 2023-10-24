@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,6 +22,7 @@ import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -47,8 +48,7 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import { organizationConfigs } from "../../../extensions";
-import { AdvancedSearchWithBasicFilters, AppState, EventPublisher, store, UIConstants } from "../../core";
+import { AdvancedSearchWithBasicFilters, AppState, EventPublisher, UIConstants } from "../../core";
 import { getOrganization, getOrganizations, useAuthorizedOrganizationsList } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
 import {
@@ -285,11 +285,11 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         handleGetAuthoriziedListCallError(authorizedListFetchRequestError);
     }, [ authorizedListFetchRequestError ]);
 
-    const handleGetAuthoriziedListCallError = (error) => {
+    const handleGetAuthoriziedListCallError = (error: AxiosError) => {
         if (error?.response?.data?.description) {
             dispatch(
                 addAlert({
-                    description: error.description,
+                    description: error?.response?.data?.description,
                     level: AlertLevels.ERROR,
                     message: t(
                         "console:manage.features.organizations.notifications." +
@@ -313,6 +313,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 )
             })
         );
+        
         return;
     };
 
@@ -445,7 +446,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 action={
                     !isOrganizationListRequestLoading && !isAuthorizedOrganizationListRequestLoading &&
                     !(!searchQuery && (isEmpty(organizationList) || organizationList?.organizations?.length <= 0)) &&
-                        organizationConfigs.canCreateOrganization() && (
+                    (
                         <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
                             <PrimaryButton
                                 disabled={ isOrganizationListRequestLoading }
@@ -461,7 +462,6 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             </PrimaryButton>
                         </Show>
                     )
-
                 }
                 pageTitle={ t("console:manage.pages.organizations.title") }
                 title={

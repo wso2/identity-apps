@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -298,13 +298,19 @@ export class AppConstants {
             ],
             [ "IDP_EDIT",
                 useNewConnectionsView
-                    ? `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`
-                    : `${ AppConstants.getDeveloperViewBasePath() }/connections/:id`
+                    ? `${ AppConstants.getDeveloperViewBasePath() }/connections/:id`
+                    : `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`
             ],
+            [ "IDVP", `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers` ],
+            [ "IDVP_TEMPLATES",
+                `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers/templates`
+            ],
+            [ "IDVP_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers/:id` ],
             [ "EVENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/event-edit` ],
             [ "LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/attributes` ],
             [ "LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attributes/:id` ],
             [ "LOGIN", window["AppUtils"]?.getConfig()?.routes.login ],
+            [ "LOGIN_AND_REGISTRATION", `${ AppConstants.getDeveloperViewBasePath() }/login-and-registration` ],
             [ "SCIM_MAPPING", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/scim` ],
             [ "LOGOUT", window["AppUtils"]?.getConfig()?.routes.logout ],
             [ "OIDC_SCOPES", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes` ],
@@ -344,11 +350,14 @@ export class AppConstants {
             [ "VALIDATION_CONFIG_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-validation-configuration` ],
             [ "ACCOUNT_LOGIN", `${AppConstants.getAdminViewBasePath()}/account-login` ],
             [ "USERNAME_VALIDATION_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-username-validation` ],
+            [ "ALTERNATIVE_LOGIN_IDENTIFIER_EDIT", 
+                `${AppConstants.getAdminViewBasePath()}/edit-alternative-login-identifier` ],
             [ 
                 "PRIVATE_KEY_JWT_CONFIG_EDIT", 
                 `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration` 
             ],
-            [ "INSIGHTS",`${AppConstants.getAdminViewBasePath()}/insights` ]
+            [ "INSIGHTS", `${AppConstants.getAdminViewBasePath()}/insights` ],
+            [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/logs` ]
         ]);
 
         return paths;
@@ -412,6 +421,7 @@ export class AppConstants {
         "organizations",
         "groups",
         "roles",
+        "userRoles",
         "applications",
         "emailTemplates",
         "governanceConnectors"
@@ -437,7 +447,8 @@ export class AppConstants {
      * Route ids that are enabled in only for super admins.
      */
     public static readonly SUPER_ADMIN_ONLY_ROUTES: string[] = [
-        "adminAdvisoryBanner"
+        "adminAdvisoryBanner",
+        "remoteLogging"
     ] 
 
     /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,10 +16,17 @@
  * under the License.
  */
 
-export * from "./adapters";
+export * from "./adapters/__DEPRECATED__adapters";
+export * from "./adapters/text-field-adapter";
+export { default as TextFieldAdapter } from "./adapters/text-field-adapter";
+export * from "./adapters/url-field-adapter";
+export { default as URLFieldAdapter } from "./adapters/url-field-adapter";
+export * from "./adapters/checkbox-field-adapter";
+export { default as CheckboxFieldAdapter } from "./adapters/checkbox-field-adapter";
 export * from "./field";
 export * from "./field-button";
 export * from "./field-color-picker";
+export * from "./__DEPRECATED__field-checkbox";
 export * from "./field-checkbox";
 export * from "./field-checkbox-legacy";
 export * from "./field-input";
@@ -31,3 +38,11 @@ export * from "./form";
 export * from "./wizard";
 export * from "./wizard2";
 export * from "./wizardPage";
+
+// Export react-final-form components with a different name.
+export { Form as FinalForm } from "react-final-form";
+export { Field as FinalFormField } from "react-final-form";
+export { FormRenderProps } from "react-final-form";
+export * from "final-form";
+export * as ReactFinalForm from "react-final-form";
+export { FormSpy } from "react-final-form";

@@ -1,5 +1,17 @@
 # @wso2is/core
 
+## 2.0.4
+
+### Patch Changes
+
+- [#4175](https://github.com/wso2/identity-apps/pull/4175) [`459c9713fb`](https://github.com/wso2/identity-apps/commit/459c9713fb7943244682c632b7ac0b9245874b40) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add bulk user import feature
+
+## 2.0.3
+
+### Patch Changes
+
+- [#4153](https://github.com/wso2/identity-apps/pull/4153) [`f1e6dbe8c5`](https://github.com/wso2/identity-apps/commit/f1e6dbe8c513f868a04df680fbc6aeff366bab71) Thanks [@Yasasr1](https://github.com/Yasasr1)! - bump react-sdk version
+
 ## 2.0.2
 
 ### Patch Changes

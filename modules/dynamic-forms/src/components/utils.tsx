@@ -16,10 +16,11 @@
  * under the License.
  */
 
-import { FormHelperText, FormHelperTextProps } from "@oxygen-ui/react";
+import FormHelperText from "@oxygen-ui/react/FormHelperText";
+import { FormHelperTextProps } from "@oxygen-ui/react/FormHelperText";
 import React, { ReactElement } from "react";
 import { FieldMetaState, useField } from "react-final-form";
-import DynamicFormField from "./dynamic-form-field";
+import { DynamicField } from "./dynamic-form-field";
 
 export interface ErrorMessageProps {
 
@@ -81,7 +82,7 @@ export const showErrorOnBlur: ShowErrorFunc = ({
 export const renderFormFields = (fields: Record<string, any>): ReactElement => {
 
 	return fields?.map((fieldProps, index) => (
-		<DynamicFormField
+		<DynamicField.Input
 			key={ index }
 			name={ fieldProps.name }
 			label={ fieldProps.label }
@@ -90,3 +91,13 @@ export const renderFormFields = (fields: Record<string, any>): ReactElement => {
 		/>
 	));
 };
+
+export const resolveFieldInitailValue = (meta: any, name: string, values: any): any => {
+    if (meta?.initial) {
+        return meta?.initial;
+    } else if (values && values[ name ]) {
+        return values[name];
+    } else {
+        return "";
+    }
+}

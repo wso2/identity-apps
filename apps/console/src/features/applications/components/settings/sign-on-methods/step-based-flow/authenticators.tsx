@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, Heading, InfoCard, Popup, Text } from "@wso2is/react-components";
 import classNames from "classnames";
@@ -23,6 +24,8 @@ import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState }
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Label } from "semantic-ui-react";
 import { applicationConfig } from "../../../../../../extensions";
+import { AuthenticatorManagementConstants } from "../../../../../connections";
+import { ConnectionsManagementUtils } from "../../../../../connections/utils/connection-utils";
 import {
     IdentityProviderManagementConstants
 } from "../../../../../identity-providers/constants/identity-provider-management-constants";
@@ -32,6 +35,7 @@ import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface
 } from "../../../../../identity-providers/models/identity-provider";
+import { ApplicationManagementConstants } from "../../../../constants/application-management";
 import { AuthenticationStepInterface } from "../../../../models";
 import { SignInMethodUtils } from "../../../../utils/sign-in-method-utils";
 
@@ -103,6 +107,9 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const { UIConfig } = useUIConfig();
+
+    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     const [ selectedAuthenticators, setSelectedAuthenticators ] = useState<GenericAuthenticatorInterface[]>(undefined);
 
@@ -153,6 +160,19 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
             IdentityProviderManagementConstants.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
             return SignInMethodUtils.isFirstFactorValid(currentStep, authenticationSteps);
+        }
+
+        if (authenticator.name === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
+            if (authenticationSteps[currentStep]?.options?.length !== 0) {
+                return false;
+            }
+            const [ leftSideSteps ]: AuthenticationStepInterface[][] = SignInMethodUtils.getLeftAndRightSideSteps(
+                currentStep, authenticationSteps);
+
+            if (!SignInMethodUtils.hasSpecificFactorsInSteps(
+                ApplicationManagementConstants.ACTIVE_SESSIONS_LIMIT_HANDLERS, leftSideSteps)) {
+                return false;
+            }
         }
 
         return true;
@@ -271,6 +291,27 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     </Text>
                 </Fragment>
             );
+        } else if (authenticator.name === IdentityProviderManagementConstants.SESSION_EXECUTOR_AUTHENTICATOR) {
+            return (
+                <Fragment>
+                    { InfoLabel }
+                    <Text>
+                        {
+                            (authenticationSteps[currentStep]?.options?.length !== 0) 
+                                ? t(
+                                    "console:develop.features.applications.edit.sections" +
+                                    ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
+                                    ".sessionExecutorDisabledInMultiOptionStep"
+                                )
+                                : t(
+                                    "console:develop.features.applications.edit.sections" +
+                                    ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
+                                    ".sessionExecutorDisabledInFirstStep"
+                                )
+                        }
+                    </Text>
+                </Fragment>
+            );
         }
     };
 
@@ -349,7 +390,15 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 }
                                 subHeader={ authenticator.categoryDisplayName }
                                 description={ authenticator.description }
-                                image={ authenticator.image }
+                                image={ 
+                                    authenticator.idp === AuthenticatorCategories.LOCAL || 
+                                    authenticator
+                                        .defaultAuthenticator?.authenticatorId === AuthenticatorManagementConstants
+                                        .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
+                                        ? authenticator.image 
+                                        : ConnectionsManagementUtils
+                                            .resolveConnectionResourcePath(connectionResourcesUrl, authenticator.image)
+                                }
                                 tags={ showLabels && resolveAuthenticatorLabels(authenticator?.defaultAuthenticator) }
                                 onClick={ () => {
                                     isFactorEnabled(authenticator) && handleAuthenticatorSelect(authenticator);

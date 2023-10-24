@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
     EmphasizedSegment,
@@ -29,8 +29,9 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid, Modal } from "semantic-ui-react";
 import { UserInviteInterface } from "../../../../../extensions/components/admin-developer/models";
+import { RoleType } from "../models/invite";
 
-interface InviteeRoleSelectionPropsInterface extends TestableComponentInterface {
+interface InviteeRoleSelectionPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     invitee: UserInviteInterface;
     showSelectionModal: boolean;
     handleSelectionModalClose: () => void;
@@ -45,10 +46,9 @@ interface InviteeRoleSelectionPropsInterface extends TestableComponentInterface 
 /**
  * Invitee role selection component.
  *
- * @param {InviteeRoleSelectionPropsInterface} props - Props injected to the component.
+ * @param  props - Props injected to the component.
  *
- * @return {React.ReactElement}
- */
+  */
 export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsInterface> = (
     props: InviteeRoleSelectionPropsInterface
 ): ReactElement => {
@@ -65,7 +65,7 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
-    const [ roleList, setRoleList ] = useState<RolesInterface[]>(undefined);
+    const [ roleList ] = useState<RolesInterface[]>(undefined);
     const [ selectedRoles, setSelectedRoles ] = useState<string[]>(undefined);
     const [ isAllRoleListSelected ] = useState<boolean>(false);
 
@@ -75,7 +75,8 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
     useEffect(() => {
         if (isAllRoleListSelected) {
             const selectedRoleList: string[] = [ ...invitee?.roles ];
-            roleList.map((role) => {
+
+            roleList.map((role:RolesInterface) => {
                 selectedRoleList.push(role.displayName);
             });
             setSelectedRoles(selectedRoleList);
@@ -88,7 +89,7 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
      * Handle the role selection checkbox change.
      */
     const handleRoleSelection = (roleName: string) => {
-        const checkedRoles = [];
+        const checkedRoles:any = [];
 
         checkedRoles.push(roleName);
         setSelectedRoles(checkedRoles);
@@ -117,13 +118,14 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
                     <Form.Group>
                         <Divider hidden />
                         {
-                            roleList?.map((role, index) => {
+                            roleList?.map((role:RolesInterface, index:number) => {
                                 const roleName: string[] = role?.displayName?.split("/");
+
                                 if (
                                     roleName?.length >= 1 &&
-                                    !roleName.includes("everyone") &&
-                                    !roleName.includes("system") &&
-                                    !roleName.includes("selfsignup")
+                                    !roleName.includes(RoleType.EVERYONE) &&
+                                    !roleName.includes(RoleType.SYSTEM) &&
+                                    !roleName.includes(RoleType.SELFSIGNUP)
                                 ) {
                                     return (
                                         <>
@@ -165,7 +167,7 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { !readOnly &&
-                                <PrimaryButton
+                                (<PrimaryButton
                                     data-testid="group-mgt-update-roles-modal-save-button"
                                     floated="right"
                                     onClick={ () => handleInviteeRolesUpdate(invitee?.id, selectedRoles) }
@@ -174,7 +176,7 @@ export const InviteeRoleSelection: FunctionComponent<InviteeRoleSelectionPropsIn
 
                                 >
                                     { t("common:save") }
-                                </PrimaryButton>
+                                </PrimaryButton>)
                             }
                         </Grid.Column>
                     </Grid.Row>

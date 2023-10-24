@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -1002,6 +1002,24 @@ export interface Extensions {
                             };
                         };
                     };
+                    rolesV2: {
+                        heading: string;
+                        subHeading: string;
+                        roleAudience: string;
+                        organization: string;
+                        application: string;
+                        assignedRoles: string;
+                        removedRoles: string;
+                        searchPlaceholder: string;
+                        switchRoleAudience: {
+                            confirmationModal: {
+                                assertionHint: string;
+                                header: string;
+                                content: string;
+                                message: string;
+                            };
+                        };
+                    }
                 };
             };
             quickstart: {
@@ -1565,17 +1583,12 @@ export interface Extensions {
                 };
                 general: {
                     fields: {
-                        copyrightText: {
-                            hint: string;
-                            label: string;
-                            placeholder: string;
-                        };
-                        siteTitle: {
-                            hint: string;
-                            label: string;
-                            placeholder: string;
-                        };
                         supportEmail: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                        displayName: {
                             hint: string;
                             label: string;
                             placeholder: string;
@@ -1691,16 +1704,27 @@ export interface Extensions {
                                 title: string;
                             };
                             notFoundWithSupport: {
+                                description: string;
                                 subTitle: string;
                                 title: string;
                             };
                         };
                     };
+                    info: {
+                        layout: {
+                            activatedMessage: {
+                                description: string;
+                                subTitle: string;
+                                title: string;
+                            }
+                        }
+                    }
                     label: string;
                 };
             };
         };
         emailProviders: {
+            configureEmailProvider: string;
             heading: string;
             subHeading: string;
             description: string;
@@ -2332,6 +2356,7 @@ export interface Extensions {
         sidePanel: {
             apiResources: string;
             branding: string;
+            stylesAndText: string;
             monitor: string;
             categories: {
                 apiResources: string;
@@ -2506,6 +2531,21 @@ export interface Extensions {
                 usernameLength: string;
                 usernameLengthMin: string;
                 usernameLengthMax: string;
+            };
+            alternativeLoginIdentifierPage: {
+                pageTitle: string;
+                description: string;
+                loginIdentifierTypes: string;
+                loginIdentifierTypesHint: string;
+                warning: string;
+                info: string;
+                notification: {
+                    error: NotificationItem;
+                    success: NotificationItem;
+                };
+                claimUpdateNotification: {
+                    error: NotificationItem;
+                };
             };
             pageTitle: string;
             description: string;

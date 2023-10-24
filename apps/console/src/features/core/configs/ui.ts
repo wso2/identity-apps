@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -67,6 +67,9 @@ import {
     ReactComponent as IDPOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/idp-provider-outline.svg";
 import {
+    ReactComponent as IDVPOutlineIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/idvp-outline.svg";
+import {
     ReactComponent as KeyOutlineIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/key-outline.svg";
 import {
@@ -87,6 +90,9 @@ import {
 import {
     ReactComponent as ApprovalsIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/pending-approval-outline.svg";
+import {
+    ReactComponent as RemoteLoggingIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/remote-logging.svg";
 import { ReactComponent as PinIcon } from "../../../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../../../themes/default/assets/images/icons/plug-icon.svg";
 import { ReactComponent as ScopeIcon } from "../../../themes/default/assets/images/icons/scope.svg";
@@ -133,6 +139,8 @@ import {
 import {
     ReactComponent as PageNotFoundIllustration
 } from "../../../themes/default/assets/images/placeholder-illustrations/page-not-found-illustration.svg";
+import AxschemaLogo from "../../../themes/default/assets/images/protocols/axschema.png";
+import EidasLogo from "../../../themes/default/assets/images/protocols/eidas.png";
 import OIDCFullLogo from "../../../themes/default/assets/images/protocols/oidc.png";
 import OIDCLogo from "../../../themes/default/assets/images/protocols/openid-connect.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
@@ -164,9 +172,11 @@ interface GetTechnologyLogosInterface {
     android: FunctionComponent | ReactNode,
     angular: FunctionComponent | ReactNode,
     apple: FunctionComponent | ReactNode,
+    axschema: string,
     cSharp: FunctionComponent | ReactNode,
     cordova: FunctionComponent | ReactNode,
     dotNet: FunctionComponent | ReactNode,
+    eidas: string,
     html: FunctionComponent | ReactNode,
     ios: FunctionComponent | ReactNode,
     java: FunctionComponent | ReactNode,
@@ -194,9 +204,11 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
         android: AndroidLogo,
         angular: AngularLogo,
         apple: AppleLogo,
+        axschema: AxschemaLogo,
         cSharp: CSharpLogo,
         cordova: CordovaLogo,
         dotNet: DotNetLogo,
+        eidas: EidasLogo,
         html: HTMLLogo,
         ios: IOSLogo,
         java: JavaLogo,
@@ -232,11 +244,13 @@ export type GetSidePanelIconsInterface = {
     groups: FunctionComponent | ReactNode,
     home: FunctionComponent | ReactNode,
     identityProviders: FunctionComponent | ReactNode,
+    identityVerificationProviders: FunctionComponent | ReactNode,
     jwtKey: FunctionComponent | ReactNode,
     organization: FunctionComponent | ReactNode,
     organizationLegacy: FunctionComponent | ReactNode,
     overview: FunctionComponent | ReactNode,
     remoteFetch: FunctionComponent | ReactNode,
+    remoteLogging: FunctionComponent | ReactNode,
     roles: FunctionComponent | ReactNode,
     organizationRoles: FunctionComponent | ReactNode,
     scopes: FunctionComponent | ReactNode,
@@ -278,6 +292,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         groups: UserGroupIcon,
         home: HomeIcon,
         identityProviders: IDPOutlineIcon,
+        identityVerificationProviders: IDVPOutlineIcon ,
         insights: AnalyticsIcon,
         jwtKey: JWTKey,
         organization: LDAPOutlineIcon,
@@ -285,6 +300,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         organizationRoles: OrganizationRolesIcon,
         overview: DashboardIcon,
         remoteFetch: CodeForkIcon,
+        remoteLogging: RemoteLoggingIcon,
         roles: BriefcaseIcon,
         scopes: ScopeIcon,
         secrets: KeyOutlineIcon,

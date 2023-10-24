@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { AppState } from "../../../../core";
-import { UserInviteInterface } from "../api/invite";
+import { UserInviteInterface } from "../models/invite";
 
 /**
  * Proptypes for the invite parent org user component.
@@ -56,6 +56,10 @@ export const InviteParentOrgUser: React.FunctionComponent<InviteParentOrgUserPro
 
     const currentOrganization: string =  useSelector((state: AppState) => state?.config?.deployment?.tenant);
 
+    /**
+     * Extracts form values from a Map and triggers a submit action if specified.
+     * @param values - A Map containing form values where keys are strings and values are of type FormValue.
+     */
     const getFormValues = (values: Map<string, FormValue>): void => {
 
         const inviteUser: UserInviteInterface = {

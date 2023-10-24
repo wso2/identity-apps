@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,6 +28,7 @@ import {
     ApplicationTemplateLoadingStrategies,
     ApplicationsResourceEndpointsInterface
 } from "../../applications/models";
+import { BrandingPreferenceResourceEndpointsInterface } from "../../branding/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "../../certificates";
 import { ClaimResourceEndpointsInterface } from "../../claims/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "../../groups";
@@ -39,6 +40,7 @@ import { JWTAuthenticationServiceEndpointsInterface } from "../../private-key-jw
 import { RolesResourceEndpointsInterface } from "../../roles/models/endpoints";
 import { SecretsManagementEndpoints } from "../../secrets/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
+import { TenantResourceEndpointsInterface } from "../../tenants/models/endpoints";
 import { UsersResourceEndpointsInterface } from "../../users/models/endpoints";
 import { UserstoreResourceEndpointsInterface } from "../../userstores/models/endpoints";
 import { ValidationServiceEndpointsInterface } from "../../validation/models";
@@ -66,6 +68,10 @@ export interface FeatureConfigInterface {
      * Application management feature.
      */
     applications?: FeatureAccessConfigInterface;
+    /**
+     * Application roles feature.
+     */
+    applicationRoles?: FeatureAccessConfigInterface;
     /**
      * Workflow approvals feature.
      */
@@ -110,6 +116,10 @@ export interface FeatureConfigInterface {
      * Identity provider groups feature.
      */
     identityProviderGroups?: FeatureAccessConfigInterface;
+    /**
+     * Identity verification provider management feature.
+     */
+    identityVerificationProviders?: FeatureAccessConfigInterface;
     /**
      * OIDC Scope management feature.
      */
@@ -158,6 +168,10 @@ export interface FeatureConfigInterface {
      * Event Configurations feature
      */
     eventConfiguration?: FeatureAccessConfigInterface;
+    /**
+     * Bulk Import Feature
+     */
+    bulkUserImport?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -227,6 +241,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     applicationTemplateLoadingStrategy?: ApplicationTemplateLoadingStrategies;
     /**
+     * Connection resources URL.
+     */
+    connectionResourcesUrl?: string;
+    /**
      * Configuration to enable Google One Tap for specific tenants.
      */
     googleOneTapEnabledTenants?: string[];
@@ -234,6 +252,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Set of authenticators to be hidden in application sign on methods.
      */
     hiddenAuthenticators?: string[];
+    /**
+     * Set of connections to be hidden.
+     */
+    hiddenConnectionTemplates?: string[];
     /**
      * Configurations for IDP templates.
      */
@@ -357,8 +379,10 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     ScopesResourceEndpointsInterface,
     SecretsManagementEndpoints,
     OrganizationResourceEndpointsInterface,
+    TenantResourceEndpointsInterface,
     ValidationServiceEndpointsInterface,
-    JWTAuthenticationServiceEndpointsInterface {
+    JWTAuthenticationServiceEndpointsInterface,
+    BrandingPreferenceResourceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details
