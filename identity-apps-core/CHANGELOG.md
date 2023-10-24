@@ -1,5 +1,14 @@
 # @wso2is/identity-apps-core
 
+## 2.0.23
+
+### Patch Changes
+
+- [#4298](https://github.com/wso2/identity-apps/pull/4298) [`80eccfdaff`](https://github.com/wso2/identity-apps/commit/80eccfdaffd2b1ef47e314d62f1d3d82ea45c3b2) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with SWE icon on the sign in page
+
+- Updated dependencies [[`80eccfdaff`](https://github.com/wso2/identity-apps/commit/80eccfdaffd2b1ef47e314d62f1d3d82ea45c3b2)]:
+  - @wso2is/theme@2.0.19
+
 ## 2.0.22
 
 ### Patch Changes
