@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,9 +17,15 @@
  */
 
 import { ApplicationManagementConstants } from "../../constants";
-import { AuthProtocolMetaListItemInterface, SAMLConfigModes, SupportedAuthProtocolTypes } from "../../models";
+import { 
+    AuthProtocolMetaListItemInterface, 
+    SAMLConfigModes, 
+    SAMLConfigurationInterface, 
+    SupportedAuthProtocolTypes, 
+    SupportedAuthProtocolTypesInterface 
+} from "../../models";
 
-export const InboundProtocolDefaultFallbackTemplates = new Map<string, string>([
+export const InboundProtocolDefaultFallbackTemplates: Map<string, string> = new Map<string, string>([
     [ "passivests", ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS ],
     [ "openid", ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ],
     [ "oauth2", ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ],
@@ -72,7 +78,7 @@ export const InboundProtocolsMeta: AuthProtocolMetaListItemInterface[] = [
 /**
  * Supported auth protocol type display name mapping.
  */
-export const SupportedAuthProtocolTypeDisplayNames = {
+export const SupportedAuthProtocolTypeDisplayNames: SupportedAuthProtocolTypesInterface = {
     [ SupportedAuthProtocolTypes.SAML ]: "SAML",
     [ SupportedAuthProtocolTypes.OIDC ]: "OpenID Connect",
     [ SupportedAuthProtocolTypes.OAUTH2_OIDC ]: "OAuth2.0/OpenID Connect",
@@ -85,7 +91,7 @@ export const SupportedAuthProtocolTypeDisplayNames = {
 /**
  * Supported auth protocol type description mapping.
  */
-export const SupportedAuthProtocolTypeDescriptions = {
+export const SupportedAuthProtocolTypeDescriptions: SupportedAuthProtocolTypesInterface = {
     [ SupportedAuthProtocolTypes.SAML ]: "Open-standard for authentication and authorization.",
     [ SupportedAuthProtocolTypes.OIDC ]: "Authentication layer on top of OAuth 2.0",
     [ SupportedAuthProtocolTypes.WS_FEDERATION ]: "Enable STS in a web browser.",
@@ -97,7 +103,7 @@ export const SupportedAuthProtocolTypeDescriptions = {
 /**
  * SAML configuration mode display name mapping.
  */
-export const SAMLConfigurationDisplayNames = {
+export const SAMLConfigurationDisplayNames: SAMLConfigurationInterface = {
     [ SAMLConfigModes.MANUAL ]: "Manual",
     [ SAMLConfigModes.META_FILE ]: "File Based",
     [ SAMLConfigModes.META_URL ]: "URL Based"
