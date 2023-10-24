@@ -359,7 +359,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 </Heading>
             </Grid>
             <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={ 2 }>
-                <Grid xs={ 12 }>
+                <Grid xs={ 8 }>
                     <Form
                         id={ componentId } 
                         uncontrolledForm={ false } 
