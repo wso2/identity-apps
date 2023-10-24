@@ -38,6 +38,7 @@ import { Divider, Icon, Message } from "semantic-ui-react";
 import { ApplicationGeneralTabOverride } from "./components/application-general-tab-overide";
 import { MarketingConsentModalWrapper } from "./components/marketing-consent/components";
 import { ApplicationConfig, ExtendedFeatureConfigInterface } from "./models";
+import { APIAuthorization } from "../../features/applications/components/api-authorization/api-authorization";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
@@ -76,6 +77,9 @@ function isClaimInterface(
 }
 
 const IS_ENTERPRISELOGIN_MANAGEMENT_APP: string = "isEnterpriseLoginManagementApp";
+
+// Relative tab indexes.
+const API_AUTHORIZATION_INDEX: number = 4;
 const APPLICATION_ROLES_INDEX: number = 4;
 
 /**
@@ -372,6 +376,32 @@ export const applicationConfig: ApplicationConfig = {
             const onApplicationUpdate: () => void = props?.onApplicationUpdate as () => void;
 
             const tabExtensions: ResourceTabPaneInterface[] = [];
+
+            // Enable the API authorization tab for supported templates when the api resources config is enabled.
+            if (
+                apiResourceFeatureEnabled && !application?.advancedConfigurations?.fragment &&
+                (
+                    application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                    || application?.templateId === MobileAppTemplate?.id
+                    || application?.templateId === OIDCWebAppTemplate?.id
+                    || application?.templateId === SinglePageAppTemplate?.id
+                )
+            ) {
+                tabExtensions.push(
+                    {
+                        componentId: "api-authorization",
+                        index: API_AUTHORIZATION_INDEX + tabExtensions.length,
+                        menuItem: I18n.instance.t(
+                            "extensions:develop.applications.edit.sections.apiAuthorization.title"
+                        ),
+                        render: () => (
+                            <ResourceTab.Pane controlledSegmentation>
+                                <APIAuthorization />
+                            </ResourceTab.Pane>
+                        )
+                    }
+                );
+            }
 
             // Enable the roles tab for supported templates when the api resources config is enabled.
             if (apiResourceFeatureEnabled
