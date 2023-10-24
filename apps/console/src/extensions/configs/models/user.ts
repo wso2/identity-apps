@@ -21,6 +21,7 @@ import { ProfileInfoInterface } from "@wso2is/core/models";
 export interface User {
     bulkUserImportLimit: {
         fileSize: number;
+        inviteEmails: number;
         userCount: number;
     };
     deleteUser: (user: ProfileInfoInterface) => Promise<any>;

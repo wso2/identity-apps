@@ -1136,6 +1136,25 @@ export const extensions: Extensions = {
                                 }
                             }
                         }
+                    },
+                    rolesV2: {
+                        heading: "භූමිකාවන්",
+                        subHeading: "අයදුම්පතේ පවරා ඇති කාර්යභාරය කළමනාකරණය කරන්න.",
+                        roleAudience: "භූමිකාව ප්රේක්ෂකයින්",
+                        organization: "ආයතනය",
+                        application: "අයදුම්පත",
+                        assignedRoles: "පවරා ඇති භූමිකාවන්",
+                        removedRoles: "ඉවත් කරන ලද භූමිකාවන්",
+                        searchPlaceholder: "භූමිකාව අනුව සොයන්න",
+                        switchRoleAudience: {
+                            confirmationModal: {
+                                assertionHint: "කරුණාකර ඔබේ ක්රියාව තහවුරු කරන්න.",
+                                content: "ඔබ භූමිකාව වෙනස් කරන්නේ නම්, වර්තමාන ප්රේක්ෂකයින් හා සම්බන්ධ භූමිකාවන් වනු ඇත " +
+                                    "මකා දැමිය යුතුය.කරුණාකර ප්රවේශමෙන් ඉදිරියට යන්න.",
+                                header: "ඔයාට විශ්වාස ද?",
+                                message: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි වන අතර පවතින භූමිකාවන් ස්ථිරවම මකා දමනු ඇත."
+                            }
+                        }
                     }
                 }
             },
@@ -1278,7 +1297,7 @@ export const extensions: Extensions = {
                                     "ඔබගේ යෙදුම් භාවිතා කරන සියලුම කුකීස් අඩංගු ලේඛනයකට හෝ පිටුවකට සම්බන්ධ කරන්න. " +
                                     "සකසා නොමැති නම්, {{ productName }} පෙරනිමි භාවිතා වේ.",
                                 label: "කුකී ප්‍රතිපත්තිය",
-                                placeholder: "https://asgardeo.io/cookie-policy"
+                                placeholder: "https://myapp.com/cookie-policy"
                             },
                             privacyPolicyURL: {
                                 hint:
@@ -1286,7 +1305,7 @@ export const extensions: Extensions = {
                                     "පරිශීලකයා එකඟ විය යුතු සහ පිළිපැදිය යුතු ගිවිසුමකට සම්බන්ධ කරන්න. සකසා " +
                                     "නොමැති නම්, {{ productName }} පෙරනිමි භාවිතා වේ.",
                                 label: "රහස්යතා ප්රතිපත්තිය",
-                                placeholder: "https://asgardeo.io/privacy-policy"
+                                placeholder: "https://myapp.com/privacy-policy"
                             },
                             termsOfUseURL: {
                                 hint:
@@ -1294,7 +1313,7 @@ export const extensions: Extensions = {
                                     "ආකාරය සඳහන් කරන ප්‍රකාශයකට හෝ නීතිමය ලේඛනයකට සබැඳිය. සකසා නොමැති නම්, " +
                                     "{{ productName }} පෙරනිමි භාවිතා වේ.",
                                 label: "සේවා කොන්දේසි",
-                                placeholder: "https://asgardeo.io/terms-of-service"
+                                placeholder: "https://myapp.com/terms-of-service"
                             }
                         },
                         heading: "සබැඳි"

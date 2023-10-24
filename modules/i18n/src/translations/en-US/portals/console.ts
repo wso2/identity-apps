@@ -3889,6 +3889,66 @@ export const console: ConsoleNS = {
                             commonAuthQueryParams: {
                                 ariaLabel: "SAML request additional query parameters",
                                 label: "Additional query parameters"
+                            },
+                            // New additions
+                            isEnableAssertionSigning:  {
+                                ariaLabel: "Enable assertion signing",
+                                hint: "Specify if SAMLAssertion element is signed",
+                                label: "Enable assertion signing"
+                            },
+                            includeCert:  {
+                                ariaLabel: "Include public certificate",
+                                hint: "Include public certificate in the request",
+                                label: "Include public certificate"
+                            },
+                            includeNameIDPolicy: {
+                                ariaLabel: "Include Name ID Policy",
+                                hint: "Include NameIDPolicy in the request",
+                                label: "Include Name ID Policy"
+                            },
+                            isEnableAssertionEncryption: {
+                                ariaLabel: "Enable assertion encryption",
+                                hint: "Specify if SAMLAssertion element is encrypted",
+                                label: "Enable assertion encryption"
+                            },
+                            authenticationContextClass: {
+                                ariaLabel: "Authentication context class",
+                                hint: "Authentication context class",
+                                label: "Authentication context class",
+                                placeholder: "Enter authentication context class"
+                            },
+                            attributeConsumingServiceIndex: {
+                                ariaLabel: "Attribute consuming service index",
+                                hint: "Specify the Attribute Consuming Service Index",
+                                label: "Attribute consuming service index",
+                                placeholder: "Enter attribute consuming service index"
+                            },
+                            isArtifactBindingEnabled: {
+                                ariaLabel: "Enable artifact binding",
+                                hint: "Enable artifact binding",
+                                label: "Enable artifact binding"
+                            },
+                            artifactResolveEndpointUrl: {
+                                ariaLabel: "Artifact resolve endpoint URL",
+                                hint: "Specify the artifact resolve endpoint URL",
+                                label: "Artifact resolve endpoint URL",
+                                placeholder: "Enter artifact resolve endpoint URL"
+                            },
+                            isArtifactResolveReqSigned: {
+                                ariaLabel: "Sign artifact resolve request",
+                                hint: "Sign artifact resolve request",
+                                label: "Sign artifact resolve request"
+                            },
+                            isArtifactResponseSigned: {
+                                ariaLabel: "Sign artifact response",
+                                hint: "Sign artifact response",
+                                label: "Sign artifact response"
+                            },
+                            authContextComparisonLevel: {
+                                ariaLabel: "Authentication context comparison level",
+                                hint: "Authentication context comparison level",
+                                label: "Authentication context comparison level",
+                                placeholder: ""
                             }
                         }
                     },
@@ -7167,10 +7227,6 @@ export const console: ConsoleNS = {
                             + "attributes.",
                         heading: "OpenID Connect"
                     },
-                    openid: {
-                        description: "The OpenID protocol representation for user attributes.",
-                        heading: "OpenID"
-                    },
                     scim: {
                         description: "The SCIM2 protocol representation for user "
                             + "attributes that will be used in the SCIM2 API.",
@@ -9781,14 +9837,14 @@ export const console: ConsoleNS = {
                                 hint: "Set the audience of the role. <1>Note that audience of the role cannot be changed.</1>",
                                 label: "Select the role audience",
                                 values: {
-                                    organization: "Organization-scoped role",
-                                    application: "Application-scoped role"
+                                    organization: "Organization",
+                                    application: "Application"
                                 }
                             },
                             notes: {
-                                orgNote: "When the role audience is organization-scoped, you can only assign the role to applications that support organization-scoped roles exclusively.",
-                                appNote: "When the role audience is application-scoped, you can only assign the role to applications that support application-scoped roles exclusively.",
-                                cannotCreateRole: "You cannot create an application-scoped role because there are currently no applications that support application-scoped role. Please <1>create an application</1> that supports application-scoped roles to proceed."
+                                orgNote: "When the role audience is organization, you can associate the role with an application which allows organization audience roles.",
+                                appNote: "When the role audience is application, you can associate the role with an application which allows application audience roles.",
+                                cannotCreateRole: "You cannot create a role with role audience as application because there are currently no applications that support application audience roles. Please <1>create an application</1> that supports application audience roles to proceed."
                             },
                             assignedApplication: {
                                 hint: "Assign an application for the role. Note that assigned application for this role cannot be edited after the role is created.",
@@ -9802,6 +9858,29 @@ export const console: ConsoleNS = {
                                     empty: "Assigned application is required to create an application-scoped role."
                                 }
                             }
+                        },
+                        rolePermission: {
+                            apiResource: {
+                                label: "Select API Resource",
+                                placeholder: "Select an API resource to assign scopes(permissions)"
+                            },
+                            permissions: {
+                                label: "Select scopes(permissions) from the selected API resources",
+                                placeholder: "Select scopes(permissions)",
+                                tooltips: {
+                                    noScopes: "No scopes available for the selected API resource",
+                                    selectAllScopes: "Select all scopes(permissions)",
+                                    removeAPIResource: "Remove API resource"
+                                }
+                            },
+                            notifications: {
+                                fetchAPIResourceError: {
+                                    error: {
+                                        description: "Something went wrong while fetching API resources. Please try again.",
+                                        message: "Something went wrong"
+                                    }
+                                }
+                            }
                         }
                     },
                     heading: "Create {{type}}",
@@ -9813,6 +9892,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     subHeading: "Create a new {{type}} in the system.",
+                    back: "Go back",
                     summary: {
                         labels: {
                             domain: {
@@ -9863,6 +9943,16 @@ export const console: ConsoleNS = {
                     placeholder: "Search by role name"
                 },
                 edit: {
+                    placeholders: {
+                        errorPlaceHolder: {
+                            action: "Go back",
+                            subtitles: {
+                                0: "An error occurred while retrieving the requested role, possibly because the role does not exist.",
+                                1: "Please try again."
+                            },
+                            title: "Something went wrong"
+                        }
+                    },
                     basics: {
                         buttons: {
                             update: "Update"
@@ -10023,6 +10113,10 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         lastModified: "Modified Time",
+                        managedBy: {
+                            label: "Managed by",
+                            header: "Managed By"
+                        },
                         name: "Role"
                     },
                     confirmations: {
@@ -10057,6 +10151,15 @@ export const console: ConsoleNS = {
                     popups: {
                         delete: "Delete {{type}}",
                         edit: "Edit {{type}}"
+                    },
+                    filterOptions: {
+                        all: "Show All",
+                        applicationRoles: "Application Roles",
+                        organizationRoles: "Organization Roles"
+                    },
+                    filterAttirbutes: {
+                        name: "Name",
+                        audience: "Role Audience"
                     }
                 },
                 notifications: {
@@ -10105,6 +10208,12 @@ export const console: ConsoleNS = {
                     fetchRoles: {
                         genericError: {
                             description: "An error occurred while retrieving roles.",
+                            message: "Something went wrong"
+                        }
+                    },
+                    fetchRole: {
+                        genericError: {
+                            description: "An error occurred while retrieving the role.",
                             message: "Something went wrong"
                         }
                     },
@@ -10213,8 +10322,8 @@ export const console: ConsoleNS = {
                         logTypes: {
                             label: "Log types to be published",
                             values: {
-                                carbonLogs: "Carbon Logs",
-                                auditLogs: "Audit Logs",
+                                carbonLogs: "Carbon logs",
+                                auditLogs: "Audit logs",
                                 allLogs: "All Logs"
                             }
                         },
@@ -10256,15 +10365,15 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
-                        title: "Restore Default Configuration",
-                        header: "Restore Default Configuration",
-                        subheader: "This action will delete the existing configuration. Please be certain before you proceed.",
+                        title: "Restore Default Configuration for {{logType}} Logs",
+                        header: "Restore Default Configuration for {{logType}} Logs",
+                        subheader: "This action will delete the existing configuration for {{logType}} logs. Please be certain before you proceed.",
                         confirmation: {
                             hint: "Please confirm your action.",
                             header: "Are you sure?",
-                            message: "If you restore the default configuration, remote log publishing may not work properly. " +
+                            message: "If you restore the default configuration, remote log publishing for {{logType}} logs may not work properly. " +
                             "Please proceed with caution.",
-                            content: "This action will restore the default log publishing configuration."
+                            content: "This action will restore the default log publishing configuration for {{logType}} logs."
                         }
                     },
                     notification: {
@@ -10621,8 +10730,8 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Bulk Import Users",
-                        subTitle: "Import multiple users using a CSV file.",
+                        title: "Invite multiple users",
+                        subTitle: "Invite multiple users to the organization.",
                         wizardSummary: {
                             successCount: "Successful Imports",
                             failedCount: "Failed Imports",
@@ -10662,7 +10771,22 @@ export const console: ConsoleNS = {
                                 placeholder: "Search by Username"
                             },
                             disabledSecondaryStoreInfo: "Bulk import to external user stores is not available " +
-                                "at the moment."
+                                "at the moment.",
+                            manualCreation: {
+                                hint: "Add emails and send invitations to multiple users.",
+                                emailsLabel: "Emails",
+                                emailsPlaceholder: "Enter email addresses",
+                                disabledHint: "The manual option is disabled due to the usage of alphanumeric usernames in your organization.",
+                                upload: {
+                                    buttonText: "Upload CSV File",
+                                    description: "Drag and drop a CSV file here."
+                                },
+                                primaryButton: "Invite",
+                                warningMessage: "The manual option to invite multiple users is available only when email as username is enabled."
+                            },
+                            fileBased: {
+                                hint: "Bulk invite multiple users using a CSV file."
+                            }
                         },
                         buttons: {
                             import: "Import"
@@ -11137,8 +11261,8 @@ export const console: ConsoleNS = {
                     metaColumnBtn: "Columns"
                 },
                 addUserDropDown: {
-                    addNewUser:  "Add User",
-                    bulkImport: "Bulk Import"
+                    addNewUser:  "Single User",
+                    bulkImport: "Multiple Users"
                 },
                 confirmations: {
                     terminateAllSessions: {
@@ -11541,6 +11665,7 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     connection: {
+                        updatePassword: "Update connection password",
                         connectionErrorMessage: "Please ensure the provided connection "
                             + "URL, name, password and driver name are correct",
                         testButton: "Test Connection"

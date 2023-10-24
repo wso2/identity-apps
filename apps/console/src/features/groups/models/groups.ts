@@ -109,9 +109,9 @@ export interface GroupListInterface {
  * Interface to contain Group meta information
  */
 export interface GroupsMetaInterface {
-    created: string;
+    created?: string;
     location: string;
-    lastModified: string;
+    lastModified?: string;
 }
 
 /**

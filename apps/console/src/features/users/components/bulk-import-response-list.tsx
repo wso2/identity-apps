@@ -337,6 +337,8 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                         options={ statusOptions }
                                         onChange={ handleStatusDropdownChange }
                                         defaultValue={ ALL_STATUS }
+                                        disabled={ bulkResponseSummary.successCount === 0 ||
+                                            bulkResponseSummary.failedCount === 0 }
                                     />
                                 </>
                             )
