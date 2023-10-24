@@ -3,4 +3,4 @@
 "@wso2is/i18n": patch
 ---
 
-Add role support for bulk user import
+Add v2 role support for bulk user import

@@ -431,8 +431,8 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                 }
                                 filterAttributePlaceholder={
                                     responseOperationType === BulkImportResponseOperationTypes.USER_CREATION ?
-                                        t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute" +
-                                        ".placeholder") :
+                                        t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                        "filterAttributeOptions.username") :
                                         t("console:manage.features.user.modals.bulkImportUserWizard." +
                                         "wizardSummary.advanceSearch.roleGroupFilterAttributePlaceHolder")
                                     
