@@ -791,15 +791,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 listItemLimit={ listItemLimit }
                 updateList={ () => setListUpdated(true) }
                 userStore= { userStore }
-                {
-                    ...showBulkImportWizard && (
-                        <BulkImportUserWizard
-                            data-componentid="user-mgt-bulk-import-user-wizard-modal"
-                            closeWizard={ handleBulkImportWizardClose }
-                            userstore={ PRIMARY_USERSTORE }
-                        />
-                    )
-                }
             />
         );
     };
@@ -959,6 +950,15 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             }
             {
                 showWizard && ( showUserWizard())
+            } 
+            {
+                showBulkImportWizard && (
+                    <BulkImportUserWizard
+                        data-componentid="user-mgt-bulk-import-user-wizard-modal"
+                        closeWizard={ handleBulkImportWizardClose }
+                        userstore={ PRIMARY_USERSTORE }
+                    />
+                )
             }
         </PageLayout>
     );
