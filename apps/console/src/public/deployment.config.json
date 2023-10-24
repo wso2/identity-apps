@@ -354,7 +354,7 @@
                 }
             },
             "applications": {
-                "disabledFeatures": ["m2mTemplate"],
+                "disabledFeatures": [""],
                 "enabled": true,
                 "scopes": {
                     "feature": [
