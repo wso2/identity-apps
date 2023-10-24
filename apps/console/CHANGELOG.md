@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.1.11
+
+### Patch Changes
+
+- [#4300](https://github.com/wso2/identity-apps/pull/4300) [`3f56d59b0e`](https://github.com/wso2/identity-apps/commit/3f56d59b0e369f300c8fca9362d97ed2d3886f5f) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Modify Authorized API UIs to support new API Authorization support
+
+- Updated dependencies [[`80eccfdaff`](https://github.com/wso2/identity-apps/commit/80eccfdaffd2b1ef47e314d62f1d3d82ea45c3b2)]:
+  - @wso2is/theme@2.0.19
+
 ## 2.1.10
 
 ### Patch Changes
