@@ -332,15 +332,12 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
      */
     const resolveSubscribedAPIResourcesListContent = (subscribedAPIResource: AuthorizedAPIListItemInterface):
         ReactElement => (
-
-        <>
-            <ScopeForm
-                appId={ appId }
-                subscribedAPIResource={ subscribedAPIResource }
-                isScopesAvailableForUpdate={ isScopesAvailableForUpdate }
-                bulkChangeAllAuthorizedScopes={ bulkChangeAllAuthorizedScopes }
-            />
-        </>
+        <ScopeForm
+            appId={ appId }
+            subscribedAPIResource={ subscribedAPIResource }
+            isScopesAvailableForUpdate={ isScopesAvailableForUpdate }
+            bulkChangeAllAuthorizedScopes={ bulkChangeAllAuthorizedScopes }
+        />
     );
 
     /**

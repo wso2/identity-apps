@@ -177,7 +177,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
     }, [ selectedScopes, subscribedAPIResource ]);
 
     /**
-     * 
+     * Handles the disabled state of the select none button.
      */
     useEffect(() => {
         setIsSelectNoneDisabled(selectedScopes?.length === 0);
