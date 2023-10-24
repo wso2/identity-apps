@@ -41,12 +41,13 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Form as SemanticForm, Grid } from "semantic-ui-react";
+import { Dispatch } from "redux";
+import { Divider, Grid, Form as SemanticForm } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../core";
 import { updateOrganizationDiscoveryAttributes } from "../../api";
 import {
     OrganizationDiscoveryAttributeDataInterface,
-    OrganizationResponseInterface,
+    OrganizationResponseInterface
 } from "../../models";
 
 interface EditOrganizationEmailDomainsPropsInterface
@@ -88,7 +89,7 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const [ isSubmitting, setIsSubmitting ] = useState(false);
     const [ emailDomainData, setEmailDomainData ] = useState<string[]>();
@@ -233,14 +234,16 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
                     </Grid.Row>
                 </Grid>
                 <Divider hidden />
-                <PrimaryButton
-                    data-testid="group-mgt-update-roles-modal-save-button"
-                    disabled={ isSubmitting }
-                    loading={ isSubmitting }
-                    onClick={ () => handleSubmit() }
-                >
-                    { t("common:update") }
-                </PrimaryButton>
+                { !isReadOnly && (
+                    <PrimaryButton
+                        data-testid="group-mgt-update-roles-modal-save-button"
+                        disabled={ isSubmitting }
+                        loading={ isSubmitting }
+                        onClick={ () => handleSubmit() }
+                    >
+                        { t("common:update") }
+                    </PrimaryButton>
+                ) }
             </EmphasizedSegment>
         </>
     ) : (
