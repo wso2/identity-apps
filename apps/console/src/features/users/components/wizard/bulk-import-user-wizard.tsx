@@ -28,6 +28,7 @@ import {
     AlertLevels,
     ClaimDialect,
     ExternalClaim,
+    HttpMethods,
     RolesInterface,
     SCIMResource,
     SCIMSchemaExtension,
@@ -58,7 +59,7 @@ import { UsersConstants } from "../../../../extensions/components/users/constant
 import { userConfig } from "../../../../extensions/configs";
 import { getGroupList } from "../../../../features/groups/api";
 import { GroupsInterface } from "../../../../features/groups/models";
-import { getRolesList } from "../../../../features/roles/api";
+import { useRolesList } from "../../../../features/roles/api";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
 import {
     UserStoreDetails,
@@ -69,6 +70,7 @@ import { PRIMARY_USERSTORE } from "../../../userstores/constants";
 import { addBulkUsers } from "../../api";
 import {
     BlockedBulkUserImportAttributes,
+    BulkImportResponseOperationTypes,
     BulkUserImportStatus,
     RequiredBulkUserImportAttributes,
     SpecialMultiValuedComplexAttributes,
@@ -147,6 +149,7 @@ const ADDRESS_HOME_ATTRIBUTE: string = "addresses#home";
 const ADDRESS_ATTRIBUTE: string = "addresses";
 const HOME_ATTRIBUTE: string = "home";
 const BULK_ID: string = "bulkId";
+const ORG_ROLE_FILTER: string = "audience.type eq organization";
 
 /**
  *  BulkImportUserWizard component.
@@ -179,8 +182,49 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ emailData, setEmailData ] = useState<string[]>();
     const [ isEmailDataError, setIsEmailDataError ] = useState<boolean>(false);
     const [ emailDataError, setEmailDataError ] = useState<string>("");
+    const [ roleUserAssociations, setRoleUserAssociations ] = useState<Record<string, RoleUserAssociation>>({});
 
     const optionsArray: string[] = [];
+    
+    const {
+        data: rolesList,
+        isLoading: isRolesListLoading,
+        error: rolesListError
+    } = useRolesList(
+        undefined, undefined, ORG_ROLE_FILTER
+    );
+    
+    /**
+     * Handle if any error occurs while fetching the roles list.
+     */
+    useEffect(() => {
+        if (rolesListError) {
+            dispatch(
+                addAlert({
+                    description: t("console:manage.features.roles.notifications.fetchRoles.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.roles.notifications.fetchRoles.genericError.message")
+                })
+            );
+        }
+    }, [ rolesListError ]);
+    
+    /**
+     * Fetch the user roles list.
+     */
+    useEffect(() => {
+        const newRoles: Record<string, RoleUserAssociation> = {};
+    
+        rolesList?.Resources?.map((role: RolesInterface) => {
+            newRoles[role.displayName.toLowerCase()] = {
+                displayName: role.displayName,
+                id: role.id,
+                users: []
+            };
+        });
+    
+        setRoleUserAssociations(newRoles);
+    }, [ rolesList ]);
     
     /**
      * Set the user store list.
@@ -189,29 +233,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         setSelectedUserStore(userstore);
         getUserStoreList();
     }, [ userstore ]);
-    
-    /**
-     * Fetch the user roles list.
-     */
-    const getRoleUserAssociation = async (): Promise<Record<string, RoleUserAssociation>> => {
-        try {
-            const response: any = await getRolesList(null);
-            const newRoles: Record<string, RoleUserAssociation> = {};
-    
-            response.data.Resources.map((role: RolesInterface) => {
-                newRoles[role.displayName.toLowerCase()] = {
-                    displayName: role.displayName,
-                    id: role.id,
-                    users: []
-                };
-            });
-    
-            return newRoles;
-        } catch (error) {
-            setHasError(true);
-            throw error;
-        }
-    };
 
     const getGroupMemberAssociation = async (): Promise<Record<string, GroupMemberAssociation>> => {
         try {
@@ -854,8 +875,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const userOperation: SCIMBulkOperation = {
             bulkId,
             data: generateUserOperationData(row, filteredAttributeMapping, headers),
-            method: "POST",
-            path: "/Users"
+            method: HttpMethods.POST,
+            path: UserManagementConstants.SCIM_USER_PATH
         };
             
         return {
@@ -934,15 +955,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                 op: "add",
                                 value: {
                                     users: roleUserAssociation.users.map((user: User) => ({
-                                        display: user.display,
                                         value: user.value
                                     }))
                                 }
                             }
                         ]
                     },
-                    method: "PATCH",
-                    path: `/Roles/${roleUserAssociation.id}`
+                    method: HttpMethods.PATCH,
+                    path: `${UserManagementConstants.SCIM_V2_ROLE_PATH}/${roleUserAssociation.id}`
                 };
             });
     };
@@ -977,8 +997,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                             }
                         ]
                     },
-                    method: "PATCH",
-                    path: `/Groups/${groupMemberAssociation.id}`
+                    method: HttpMethods.PATCH,
+                    path: `${UserManagementConstants.SCIM_GROUP_PATH}/${groupMemberAssociation.id}`
                 };
             });
     };
@@ -996,8 +1016,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
 
         const filteredAttributeMapping: CSVAttributeMapping[] = filterAttributes(headers, attributeMapping);
-        let roleUserAssociations: Record<string, RoleUserAssociation> = await getRoleUserAssociation();
         let groupMemberAssociations: Record<string, GroupMemberAssociation> = await getGroupMemberAssociation();
+        let updatedRoleUserAssociations: Record<string, RoleUserAssociation> = { ...roleUserAssociations };
 
         const userOperations: SCIMBulkOperation[] = [];
         let roleOperations: SCIMBulkOperation[] = [];
@@ -1011,7 +1031,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 row,
                 filteredAttributeMapping,
                 headers,
-                roleUserAssociations,
+                updatedRoleUserAssociations,
                 groupMemberAssociations
             );
             
@@ -1019,12 +1039,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             userOperations.push(userOperationData.userOperation);
 
             // Updating the association states.
-            roleUserAssociations = userOperationData.newRoleUserAssociations;
+            updatedRoleUserAssociations = userOperationData.newRoleUserAssociations;
             groupMemberAssociations = userOperationData.newGroupMemberAssociations;
         }
 
         if (headers.includes(UserManagementConstants.ROLES)) {
-            roleOperations = generateRoleOperation(roleUserAssociations);
+            roleOperations = generateRoleOperation(updatedRoleUserAssociations);
         }
 
         if (headers.includes(UserManagementConstants.GROUPS)) {
@@ -1079,8 +1099,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             const SCIMBulkOperation: SCIMBulkOperation = {
                 bulkId: `bulkId:${email}:${asyncOperationID}`,
                 data: userDetails,
-                method: "POST",
-                path: "/Users"
+                method: HttpMethods.POST,
+                path: UserManagementConstants.SCIM_USER_PATH
             };
 
             operations.push(SCIMBulkOperation);
@@ -1182,13 +1202,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const generateBulkResponse = (operation: SCIMBulkResponseOperation): BulkUserImportOperationResponse => {
         const resourceIdentifier: string = operation?.bulkId.split(":")[1];
         const statusCode: number = operation?.status?.code;
+        let operationType: BulkImportResponseOperationTypes = BulkImportResponseOperationTypes.USER_CREATION;
 
         const defaultMsg: string = t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
         "tableMessages.internalErrorMessage");
 
         let statusMessages: Record<number, string> = {};
 
-        if (operation?.method === "POST") {
+        if (operation?.method === HttpMethods.POST) {
             statusMessages = {
                 201: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "userCreatedMessage"),
@@ -1201,11 +1222,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 500: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                     "internalErrorMessage")
             };
-        } else if (operation?.method === "PATCH") {
-            // Only show response when a patch operation fails.
-            if (statusCode === 200) {
-                return;
-            }
+        } else if (operation?.method === HttpMethods.PATCH) {
+            operationType = BulkImportResponseOperationTypes.USER_ASSIGNMENT;
             statusMessages = {
                 200: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                 "userAssignmentSuccessMessage", { resource: resourceIdentifier }),
@@ -1218,17 +1236,28 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         
         // Functional update to update the bulk response summary.
         setBulkResponseSummary((prevSummary: BulkResponseSummary) => {
-
-            if (operation?.method === "PATCH") return prevSummary;
-            const successCount: number =
-                (statusCode === 201 || statusCode === 202) ? prevSummary.successCount + 1 : prevSummary.successCount;
-            const failedCount: number =
-                (statusCode !== 201 && statusCode !== 202) ? prevSummary.failedCount + 1 : prevSummary.failedCount;
+            const successUserAssignment: number = (operation?.method === HttpMethods.PATCH && statusCode === 200) ?
+                prevSummary.successUserAssignment + 1 : prevSummary.successUserAssignment;
+            
+            const failedUserAssignment: number = (operation?.method === HttpMethods.PATCH && statusCode !== 200) ?
+                prevSummary.failedUserAssignment + 1 : prevSummary.failedUserAssignment;
+            
+            const successUserCreation: number =
+                (operation?.method === HttpMethods.POST && (statusCode === 201 || statusCode === 202)) ?
+                    prevSummary.successUserCreation + 1 :
+                    prevSummary.successUserCreation;
+            
+            const failedUserCreation: number =
+                (operation?.method === HttpMethods.POST && (statusCode !== 201 && statusCode !== 202)) ?
+                    prevSummary.failedUserCreation + 1 :
+                    prevSummary.failedUserCreation;
 
             return {
                 ...prevSummary,
-                failedCount,
-                successCount
+                failedUserAssignment,
+                failedUserCreation,
+                successUserAssignment,
+                successUserCreation
             };
         });
 
@@ -1240,6 +1269,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
         return {
             message: statusMessages[statusCode] || defaultMsg,
+            operationType,
             resourceIdentifier,
             status: getStatusFromCode(statusCode),
             statusCode: _statusCode
@@ -1253,7 +1283,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @returns - Status message.
      */
     const getStatusFromCode = (statusCode: number): BulkUserImportOperationStatus => {
-        if (statusCode === 201) return t(
+        if (statusCode === 201 || statusCode === 200) return t(
             "console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableStatus.success" );
         if (statusCode === 202) return t(
             "console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableStatus.warning" );
@@ -1675,7 +1705,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                 floated="right"
                                                 onClick={ handleBulkUserImport }
                                                 loading={ isSubmitting }
-                                                disabled={ isLoading || isSubmitting ||  hasError || !selectedCSVFile }
+                                                disabled={ isLoading || isSubmitting || hasError || !selectedCSVFile || 
+                                                    isRolesListLoading
+                                                }
                                             >
                                                 { t("console:manage.features.user.modals." +
                                                     "bulkImportUserWizard.buttons.import") }
@@ -1693,6 +1725,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 };
 
 const initialBulkResponseSummary: BulkResponseSummary = {
-    failedCount: 0,
-    successCount: 0
+    failedUserAssignment: 0,
+    failedUserCreation: 0,
+    successUserAssignment: 0,
+    successUserCreation: 0
 };

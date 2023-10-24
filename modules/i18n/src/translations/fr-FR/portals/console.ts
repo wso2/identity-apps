@@ -9002,7 +9002,8 @@ export const console: ConsoleNS = {
                         wizardSummary: {
                             successCount: "Nombre de réussites",
                             failedCount: "Nombre d'échecs",
-                            totalCount: "Le compte total",
+                            totalUserCreationCount: "Nombre total de créations d'utilisateurs",
+                            totalUserAssignmentCount: "Nombre total d'attributions de rôles/groupes",
                             tableHeaders: {
                                 username: "Nom d'utilisateur",
                                 status: "Statut",
@@ -9033,12 +9034,17 @@ export const console: ConsoleNS = {
                                     message: "Importation réussie"
                                 },
                                 importFailed: {
-                                    description: "Problèmes rencontrés dans <1>{{failedCount}} importations</1>.",
+                                    description: "Problèmes rencontrés dans <1>{{failedUserCreationCount}} " +
+                                        "opération(s)</1> de création d'utilisateur et " +
+                                        "<3>{{failedUserAssignmentCount}} opération(s) </3> d'attribution de " +
+                                        "rôle/groupe.",
                                     message: "Révision requise."
                                 }
                             },
                             advanceSearch: {
-                                placeholder: "Rechercher par nom d'utilisateur"
+                                searchByUsername: "Rechercher par nom d'utilisateur",
+                                searchByRoleOrGroup: "Recherche par nom de rôle/groupe",
+                                roleGroupFilterAttributePlaceHolder: "Nom du rôle/groupe"
                             },
                             disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
                                 "externes n’est pas disponible pour le moment.",
@@ -9056,6 +9062,10 @@ export const console: ConsoleNS = {
                             },
                             fileBased: {
                                 hint: "Invitez plusieurs utilisateurs en masse à l’aide d’un fichier CSV."
+                            },
+                            responseOperationType: {
+                                userCreation: "Création d'utilisateur",
+                                userAssignment: "Affectation de rôle/groupe"
                             }
                         },
                         buttons: {

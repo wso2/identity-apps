@@ -22,7 +22,7 @@ import React, { ReactElement } from "react";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { UserRoleInterface } from "../../core";
 import { GroupsMemberInterface } from "../../groups";
-import { BulkUserImportStatus } from "../constants";
+import { BulkImportResponseOperationTypes, BulkUserImportStatus } from "../constants";
 
 /**
  * Captures meta details of the user.
@@ -357,14 +357,17 @@ export interface BulkUserImportOperationResponse {
     status: BulkUserImportOperationStatus;
     message: string;
     statusCode: BulkUserImportStatus;
+    operationType?: BulkImportResponseOperationTypes;
 }
 
 /**
  * Interface for the bulk user import operation summary.
  */
 export interface BulkResponseSummary {
-    successCount: number;
-    failedCount: number;
+    successUserCreation: number;
+    failedUserCreation: number;
+    successUserAssignment: number;
+    failedUserAssignment: number;
 }
 
 export interface PatchBulkUserDataInterface {

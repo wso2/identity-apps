@@ -10735,7 +10735,8 @@ export const console: ConsoleNS = {
                         wizardSummary: {
                             successCount: "Successful Imports",
                             failedCount: "Failed Imports",
-                            totalCount: "Total Count",
+                            totalUserCreationCount: "Total user creation count",
+                            totalUserAssignmentCount: "Total role/group assigment count ",
                             tableHeaders: {
                                 username: "Username",
                                 status: "Status",
@@ -10763,12 +10764,16 @@ export const console: ConsoleNS = {
                                     message: "Import Successful"
                                 },
                                 importFailed: {
-                                    description: "Issues encountered in <1>{{failedCount}} import(s)</1>.",
+                                    description: "Issues encountered in <1>{{failedUserCreationCount}} user " +
+                                        "creation operations(s)</1> and <3>{{failedUserAssignmentCount}} role/group " +
+                                        "assignment operation(s)</3>.",
                                     message: "Review Required"
                                 }
                             },
                             advanceSearch: {
-                                placeholder: "Search by Username"
+                                searchByUsername: "Search by Username",
+                                searchByRoleOrGroup: "Search by Role/Group",
+                                roleGroupFilterAttributePlaceHolder: "Role/Group Name"
                             },
                             disabledSecondaryStoreInfo: "Bulk import to external user stores is not available " +
                                 "at the moment.",
@@ -10786,6 +10791,10 @@ export const console: ConsoleNS = {
                             },
                             fileBased: {
                                 hint: "Bulk invite multiple users using a CSV file."
+                            },
+                            responseOperationType: {
+                                userCreation: "User Creation",
+                                userAssignment: "Role/Group Assignment"
                             }
                         },
                         buttons: {

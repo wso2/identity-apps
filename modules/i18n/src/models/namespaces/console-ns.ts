@@ -5621,7 +5621,8 @@ export interface ConsoleNS {
                         wizardSummary: {
                             successCount: string;
                             failedCount: string;
-                            totalCount: string;
+                            totalUserCreationCount: string;
+                            totalUserAssignmentCount: string;
                             tableHeaders: {
                                 username: string;
                                 status: string;
@@ -5647,7 +5648,9 @@ export interface ConsoleNS {
                                 importFailed: NotificationItem;
                             };
                             advanceSearch: {
-                                placeholder: string;
+                                searchByUsername: string;
+                                searchByRoleOrGroup: string;
+                                roleGroupFilterAttributePlaceHolder: string;
                             };
                             disabledSecondaryStoreInfo: string;
                             manualCreation: {
@@ -5664,6 +5667,10 @@ export interface ConsoleNS {
                             };
                             fileBased: {
                                 hint: string;
+                            };
+                            responseOperationType: {
+                                userCreation: string;
+                                userAssignment: string;
                             }
                         };
                         buttons: {
