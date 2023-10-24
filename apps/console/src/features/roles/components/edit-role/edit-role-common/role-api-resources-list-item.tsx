@@ -36,6 +36,10 @@ interface RoleAPIResourcesListItemProp extends  IdentifiableComponentInterface {
      */
     apiResource: APIResourceInterface;
     /**
+     * Initial selected permissions.
+     */
+    initialSelectedPermissions?: ScopeInterface[];
+    /**
      * Selected permissions.
      */
     selectedPermissions: ScopeInterface[];
@@ -54,6 +58,7 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
 
         const {
             apiResource,
+            initialSelectedPermissions,
             selectedPermissions,
             onChangeScopes,
             onRemoveAPIResource,
@@ -137,6 +142,7 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                             <AccordionDetails>
                                 <PermissionsList
                                     apiResource={ apiResource }
+                                    initialSelectedPermissions={ initialSelectedPermissions }
                                     selectedPermissions={ selectedPermissions }
                                     onChangeScopes={ onChangeScopes }
                                 />

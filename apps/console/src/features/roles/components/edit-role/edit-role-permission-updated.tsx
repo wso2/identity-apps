@@ -18,7 +18,13 @@
 
 import Button from "@oxygen-ui/react/Button";
 import Grid from "@oxygen-ui/react/Grid";
-import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
+import {
+    AlertInterface,
+    AlertLevels,
+    IdentifiableComponentInterface,
+    RolePermissionInterface,
+    RolesInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { DocumentationLink, EmphasizedSegment, Heading, useDocumentation } from "@wso2is/react-components";
@@ -29,9 +35,9 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps } from "semantic-ui-react";
 import { RoleAPIResourcesListItem } from "./edit-role-common/role-api-resources-list-item";
-import { useAPIResourceDetails, useAPIResourcesList } from "../../api";
+import { getAPIResourceDetails, updateRoleDetails, useAPIResourceDetails, useAPIResourcesList } from "../../api";
 import { RoleConstants } from "../../constants/role-constants";
-import { SelectedPermissionsInterface } from "../../models";
+import { PatchRoleDataInterface, PermissionUpdateInterface, SelectedPermissionsInterface } from "../../models";
 import { APIResourceInterface, ScopeInterface } from "../../models/apiResources";
 
 /**
@@ -66,7 +72,6 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         isReadOnly,
         roleObject,
         onRoleUpdate,
-        isGroup,
         ["data-componentid"]: componentId
     } = props;
 
@@ -81,8 +86,8 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     const [ apiResourcesListOptions, setAPIResourcesListOptions ] = useState<DropdownProps[]>([]);
     const [ selectedAPIResources, setSelectedAPIResources ] = useState<APIResourceInterface[]>([]);
     const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface[]>([]);
-    const [ initialSelectedAPIResourceIds, setInitialSelectedAPIResourceIds ] = useState<string[]>([]);
-
+    const [ initialSelectedPermissions, setInitialSelectedPermissions ] = useState<SelectedPermissionsInterface[]>([]);
+    const [ initialAPIResourceIds, setInitialAPIResourceIds ] = useState<string[]>([]);
 
     const {
         data: apiResourcesList,
@@ -98,21 +103,9 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         error: selectedAPIResourceFetchRequestError
     } = useAPIResourceDetails(selectedAPIResourceId);
 
-    console.log(props);
-
-    const permissions: any[] = [
-        {
-            "display": "Create bookings",
-            "value": "bookings:create",
-            "$ref": "https://localhost:9443/api/server/v1/api-resources/a23eb417-6b7d-4ea0-aea5-fb2228e6d67c/scopes/bookings:create"
-        },
-        {
-            "display": "Read bookings",
-            "value": "bookings:read",
-            "$ref": "https://localhost:9443/api/server/v1/api-resources/a23eb417-6b7d-4ea0-aea5-fb2228e6d67c/scopes/bookings:read"
-        }
-    ];
-    
+    useEffect(() => {
+        getExistingAPIResources();
+    }, [ roleObject ]);
 
     /**
      * Show error if the API resource fetch request failed.
@@ -144,9 +137,8 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 });
             }
         });
-    
+
         setAPIResourcesListOptions(options);
-        getExistingAPIResources();
     }, [ apiResourcesList, selectedAPIResources ]);
 
     /**
@@ -166,31 +158,130 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         }
     }, [ selectedAPIResource ]);
 
+    useEffect(() => {
+        getAPIResourceById(initialAPIResourceIds);
+    }, [ initialAPIResourceIds ]);
+        
+    const getAPIResourceById = async (initialAPIResourceIds: string[]): Promise<void> => {
+        const apiResourceIds: string[] = initialAPIResourceIds;
+        const apiResources: APIResourceInterface[] = [];
+
+        if (apiResourceIds.length === 0) {
+            return;
+        }
+
+        for (const apiResourceId of apiResourceIds) {
+            try {
+                apiResources.push(await getAPIResourceDetails(apiResourceId));
+            } catch (error) {
+                handleAlerts({
+                    description: t("console:manage.features.roles.notifications." +
+                        "fetchAPIResource.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.roles.notifications.fetchAPIResource.error.message")
+                });
+            }
+        }
+        setSelectedAPIResources(apiResources);        
+    };
 
     const getExistingAPIResources = (): void => {
-        const apiResourceIds: APIResourceInterface[] = [];
+        const currentPermissions: SelectedPermissionsInterface[] = [];
+        const uniqueAPIResourceIds: string[] = [];
 
-        // permissions?.map((permission: string) => {
-        //     if (permission["$ref"]?.split("/")?.length > 7) {
-        //         const apiResourceId: string = permission["$ref"].split("/")[7];
+        roleObject?.permissions?.forEach((permission: RolePermissionInterface | string) => {
+            // Check if permission is of type RolePermissionInterface
+            if (typeof permission !== "string") {
+                const apiResourceId: string = permission["$ref"].split("/")[7];
 
-        //         if (!apiResourceIds.includes(apiResourceId)) {
-        //             apiResourceIds.push(apiResourceId);
-        //         }
-        //     }
-        // });
+                // Populate the selected permissions list.
+                if (!currentPermissions.find((selectedPermission: SelectedPermissionsInterface) =>
+                    selectedPermission.apiResourceId === apiResourceId)) {
+                    // Found a new API resource id                                        
+                    uniqueAPIResourceIds.push(apiResourceId);
+                    
+                    // Add it to the selected API resources list.
+                    currentPermissions.push({
+                        apiResourceId: apiResourceId,
+                        scopes: [ {
+                            displayName: permission.display,
+                            id: permission.value,
+                            name: permission.value
+                        } ]
+                    });
+                } else {
+                    // Found a matching API resource id
+                    const index: number = currentPermissions.findIndex(
+                        (selectedPermission: SelectedPermissionsInterface) => 
+                            selectedPermission.apiResourceId === apiResourceId
+                    );
 
-        // console.log(apiResourceIds);
-
+                    // Add the scope to the existing API resource.
+                    currentPermissions[index].scopes.push({
+                        displayName: permission.display,
+                        id: permission.value,
+                        name: permission.value
+                    });
+                }
+            }
+        });
         
+        setInitialAPIResourceIds(uniqueAPIResourceIds);
+        setSelectedPermissions(currentPermissions);
+        setInitialSelectedPermissions(currentPermissions);
     };
 
     /**
      * The following function handles the update of the role permissions.
      */
     const updateRolePermissions = (): void => {
-        console.log("updateRolePermissions");
-        
+        setIsSubmitting(true);
+        const permissionArray: PermissionUpdateInterface[] = [];
+
+        selectedPermissions.map((selectedPermission: SelectedPermissionsInterface) => {
+            selectedPermission.scopes.map((scope: ScopeInterface) => {
+                permissionArray.push({
+                    value: scope.name
+                });
+            });
+        });
+
+        const roleData: PatchRoleDataInterface = {
+            Operations: [ {
+                "op": "add",
+                "value": {
+                    "permissions": permissionArray
+                }
+            } ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        };
+
+        updateRoleDetails(roleObject.id, roleData)
+            .then(() => {
+                onRoleUpdate();
+                handleAlerts({
+                    description: t("console:manage.features.roles.notifications.updateRole.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("console:manage.features.roles.notifications.updateRole.success.message")
+                });
+            }).catch(() => {
+                handleAlerts({
+                    description: t("console:manage.features.roles.notifications.updateRole.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.roles.notifications.updateRole.error.message")
+                });
+            }).finally(() => {
+                setIsSubmitting(false);
+            });
+    };
+
+    /**
+     * Dispatches the alert object to the redux store.
+     *
+     * @param alert - Alert object.
+     */
+    const handleAlerts = (alert: AlertInterface): void => {
+        dispatch(addAlert(alert));
     };
 
     /**
@@ -305,6 +396,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                                             "permissions.label") }
                                     </label>
                                     <EmphasizedSegment
+                                        className="mt-2"
                                         data-componentid={ componentId }
                                         basic
                                         loading={ 
@@ -314,19 +406,26 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                                         }
                                     >
                                         {
-                                            selectedAPIResources?.map((apiResource: APIResourceInterface) => (  
-                                                <RoleAPIResourcesListItem 
-                                                    key={ apiResource?.id } 
-                                                    apiResource={ apiResource }
-                                                    onChangeScopes={ onChangeScopes }
-                                                    onRemoveAPIResource={ onRemoveAPIResource }
-                                                    selectedPermissions={ selectedPermissions?.find(
-                                                        (selectedPermission: SelectedPermissionsInterface) =>
-                                                            selectedPermission.apiResourceId === apiResource?.id)
-                                                        ?.scopes
-                                                    }
-                                                /> 
-                                            ))
+                                            selectedAPIResources?.map((apiResource: APIResourceInterface) => {
+                                                return (
+                                                    <RoleAPIResourcesListItem 
+                                                        key={ apiResource?.id }
+                                                        apiResource={ apiResource }
+                                                        onChangeScopes={ onChangeScopes }
+                                                        onRemoveAPIResource={ onRemoveAPIResource }
+                                                        initialSelectedPermissions={ initialSelectedPermissions?.find(
+                                                            (selectedPermission: SelectedPermissionsInterface) =>
+                                                                selectedPermission.apiResourceId === apiResource?.id)
+                                                            ?.scopes
+                                                        }
+                                                        selectedPermissions={ selectedPermissions?.find(
+                                                            (selectedPermission: SelectedPermissionsInterface) =>
+                                                                selectedPermission.apiResourceId === apiResource?.id)
+                                                            ?.scopes
+                                                        }
+                                                    /> 
+                                                );
+                                            })
                                         }
                                     </EmphasizedSegment>
                                 </div>

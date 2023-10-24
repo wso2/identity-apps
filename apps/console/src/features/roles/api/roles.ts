@@ -97,7 +97,7 @@ export const getRoleById = (roleId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.roles + "/" + roleId
+        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
     };
 
     return httpClient(requestConfig)
@@ -157,7 +157,7 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: store.getState().config.endpoints.roles + "/" + roleId
+        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
     };
 
     return httpClient(requestConfig)
@@ -312,6 +312,30 @@ export const getPermissionsForRole = (roleId: string): Promise<any> => {
 };
 
 /**
+ * 
+ * @param apiResourceId - id of the API resource
+ * @returns `Promise<APIResourceInterface>`
+ * @throws `IdentityAppsApiException`
+ */
+export const getAPIResourceDetails = (apiResourceId: string): Promise<APIResourceInterface> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.apiResources}/${apiResourceId}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<APIResourceInterface>) => {
+            return Promise.resolve(response.data);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
  * Update Data of the matched ID or the role
  *
  * @param roleId - role id to update role details
@@ -355,7 +379,7 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
         params: {
             domain
         },
-        url: store.getState().config.endpoints.roles
+        url: store.getState().config.endpoints.rolesV2
     };
 
     return httpClient(requestConfig)

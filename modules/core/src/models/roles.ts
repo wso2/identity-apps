@@ -86,6 +86,7 @@ export interface RolePermissionInterface {
     displayName: string;
     value: string;
     $ref?: string;
+    display?: string;
 }
 
 /**

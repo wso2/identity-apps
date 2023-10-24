@@ -235,3 +235,10 @@ export interface SelectedPermissionsInterface {
 export interface ChipOptionsInterface {
     id?: string;
 }
+
+/**
+ * Interface to capture permission update in role.
+ */
+export interface PermissionUpdateInterface {
+    value: string;
+}

@@ -19,7 +19,7 @@
 import { Autocomplete, AutocompleteRenderGetTagProps, AutocompleteRenderInputParams } from "@mui/material";
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, HTMLAttributes, ReactElement, SyntheticEvent } from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AutoCompleteRenderOption } from "./auto-complete-render-option";
 import { RenderChip } from "./render-chip";
@@ -30,6 +30,10 @@ interface PermissionsListPropsInterface extends  IdentifiableComponentInterface 
      * API resource.
      */
     apiResource: APIResourceInterface;
+    /**
+     * Initial selected permissions.
+     */
+    initialSelectedPermissions?: ScopeInterface[];
     /**
      * Selected permissions.
      */
@@ -45,6 +49,7 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
 
         const {
             apiResource,
+            initialSelectedPermissions,
             selectedPermissions,
             onChangeScopes,
             [ "data-componentid" ]: componentId
@@ -52,59 +57,166 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
 
         const { t } = useTranslation();
 
-        // Active option.
-        const [ activeOption, setActiveOption ] = React.useState<ScopeInterface>(undefined);
-        
+        const [ activeOption, setActiveOption ] = useState<ScopeInterface>(undefined);
+        const [ removedPermissions, setRemovedPermissions ] = useState<ScopeInterface[]>([]);
+
+        /**
+         * Set removed permissions.
+         */
+        useEffect(() => {
+            if (initialSelectedPermissions && selectedPermissions) {
+                setRemovedPermissions(initialSelectedPermissions?.filter((permission: ScopeInterface) => {
+                    return selectedPermissions?.find(
+                        (selectedPermission: ScopeInterface) =>
+                            selectedPermission.name === permission.name) === undefined;
+                }));
+            }
+        }, [ initialSelectedPermissions, selectedPermissions ]);
+
         /**
          * Handles the select scope action.
          */
-        const handleScopeSelection = (event: SyntheticEvent, scopes: ScopeInterface[]) => {
+        const handleScopeSelection = (scopes: ScopeInterface[]) => {
             onChangeScopes(apiResource, scopes);
         };
 
+        /**
+         * Handle the restore permissions.
+         * 
+         * @param remainingPermissions - remaining permissions
+         */
+        const handleRestorePermissions = (remainingPermissions: ScopeInterface[]) => {
+            const removedRoles: ScopeInterface[] = [];
+
+            removedPermissions.forEach((permission: ScopeInterface) => {
+                if (!remainingPermissions?.find((remainingPermission: ScopeInterface) =>
+                    remainingPermission.name === permission.name)) {
+                    removedRoles.push(permission);
+                }
+            });
+
+            handleScopeSelection([
+                ...selectedPermissions,
+                ...removedRoles
+            ]);
+        };
+
         return (
-            <Autocomplete
-                multiple
-                disableCloseOnSelect
-                options={ apiResource?.scopes ? apiResource?.scopes : [] }
-                value={ selectedPermissions ? selectedPermissions : [] }
-                getOptionLabel={ (scope: ScopeInterface) => scope.displayName }
-                renderInput={ (params: AutocompleteRenderInputParams) => (
-                    <TextField
-                        { ...params }
-                        data-componentid={ `${componentId}-textfield` }
-                        placeholder= { t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
-                            "permissions.placeholder") }
-                    />
-                ) }
-                onChange={ handleScopeSelection }
-                renderTags={ (
-                    value: ScopeInterface[], 
-                    getTagProps: AutocompleteRenderGetTagProps
-                ) => value.map((option: ScopeInterface, index: number) => (
-                    <RenderChip 
-                        { ...getTagProps({ index }) }
-                        key={ index }
-                        primaryText={ option.displayName }
-                        secondaryText={ option.name }
-                        option={ option }
-                        activeOption={ activeOption }
-                        setActiveOption={ setActiveOption }
-                    />
-                )) }
-                renderOption={ (
-                    props: HTMLAttributes<HTMLLIElement>,
-                    option: ScopeInterface,
-                    { selected }: { selected: boolean }
-                ) => (
-                    <AutoCompleteRenderOption
-                        selected={ selected }
-                        subTitle={ option.name }
-                        displayName={ option.displayName }
-                        renderOptionProps={ props }
-                    />
-                ) }
-            />
+            <>
+                <Autocomplete
+                    multiple
+                    disableCloseOnSelect
+                    options={ apiResource?.scopes ? apiResource?.scopes : [] }
+                    value={ selectedPermissions ? selectedPermissions : [] }
+                    isOptionEqualToValue={ 
+                        (option: ScopeInterface, value: ScopeInterface) => 
+                            option.name === value.name
+                    }
+                    getOptionLabel={ (scope: ScopeInterface) => scope.displayName }
+                    renderInput={ (params: AutocompleteRenderInputParams) => (
+                        <TextField
+                            { ...params }
+                            data-componentid={ `${componentId}-textfield` }
+                            placeholder= { t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
+                                "permissions.placeholder") }
+                        />
+                    ) }
+                    onChange={ (event: SyntheticEvent, scopes: ScopeInterface[]) => handleScopeSelection(scopes) }
+                    renderTags={ (
+                        value: ScopeInterface[], 
+                        getTagProps: AutocompleteRenderGetTagProps
+                    ) => value.map((option: ScopeInterface, index: number) => (
+                        <RenderChip 
+                            { ...getTagProps({ index }) }
+                            key={ index }
+                            primaryText={ option.displayName }
+                            secondaryText={ option.name }
+                            option={ option }
+                            activeOption={ activeOption }
+                            setActiveOption={ setActiveOption }
+                            variant={
+                                initialSelectedPermissions?.find(
+                                    (permission: ScopeInterface) => permission.name === option.name
+                                )
+                                    ? "solid"
+                                    : "outlined"
+                            }
+                        />
+                    )) }
+                    renderOption={ (
+                        props: HTMLAttributes<HTMLLIElement>,
+                        option: ScopeInterface,
+                        { selected }: { selected: boolean }
+                    ) => (
+                        <AutoCompleteRenderOption
+                            selected={ selected }
+                            subTitle={ option.name }
+                            displayName={ option.displayName }
+                            renderOptionProps={ props }
+                        />
+                    ) }
+                />
+                {
+                    removedPermissions?.length > 0
+                        ? (
+                            <Autocomplete
+                                className="mt-3"
+                                multiple
+                                disableCloseOnSelect
+                                options={ removedPermissions }
+                                value={ removedPermissions }
+                                getOptionLabel={ 
+                                    (permission: ScopeInterface) => permission.name
+                                }
+                                onChange={ (
+                                    event: SyntheticEvent,
+                                    remainingPermissions: ScopeInterface[]
+                                ) => {
+                                    handleRestorePermissions(remainingPermissions);
+                                } }
+                                renderInput={ (params: AutocompleteRenderInputParams) => (
+                                    <TextField
+                                        { ...params }
+                                        label={ t("extensions:develop.applications.edit.sections." +
+                                            "rolesV2.removedPermissions") }
+                                        placeholder= { t("console:manage.features.roles.addRoleWizard." +
+                                            "forms.rolePermission.permissions.placeholder") }
+                                    />
+                                ) }
+                                renderTags={ (
+                                    value: ScopeInterface[], 
+                                    getTagProps: AutocompleteRenderGetTagProps
+                                ) => value.map((option: ScopeInterface, index: number) => (
+                                    <RenderChip 
+                                        { ...getTagProps({ index }) }
+                                        key={ index }
+                                        primaryText={ option.displayName }
+                                        secondaryText={ option.name }
+                                        option={ option }
+                                        activeOption={ activeOption }
+                                        setActiveOption={ setActiveOption }
+                                        variant="outlined"
+                                        onDelete={ () => {
+                                            handleScopeSelection([
+                                                ...selectedPermissions,
+                                                option
+                                            ]);
+                                        } }
+                                    />
+                                ) ) }
+                                renderOption={ (
+                                    props: HTMLAttributes<HTMLLIElement>, 
+                                    option: ScopeInterface
+                                ) => (
+                                    <AutoCompleteRenderOption
+                                        displayName={ option.name }
+                                        renderOptionProps={ props }
+                                    />
+                                ) }
+                            />
+                        ) : null
+                } 
+            </>
         );
     };
 
