@@ -171,7 +171,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                             }
                                             { header }
                                         </Header>
-                                        <Card.Meta>{ description }</Card.Meta>
+                                        <Card.Meta className="description">{ description }</Card.Meta>
                                     </Grid.Column>
                                     {
                                         connectorEnabled !== undefined
@@ -205,7 +205,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                         className="no-padding"
                                     >
                                         <Header as="h2">{ header }</Header>
-                                        <Card.Meta>{ description }</Card.Meta>
+                                        <Card.Meta className="description">{ description }</Card.Meta>
                                     </Grid.Column>
                                     {
                                         connectorEnabled !== undefined

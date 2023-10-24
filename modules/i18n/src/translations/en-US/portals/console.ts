@@ -8109,6 +8109,7 @@ export const console: ConsoleNS = {
                 connectorCategories: {
                     passwordPolicies : {
                         name: "Password Policies",
+                        description: "Configure password policies to enhance user password strength.",
                         connectors: {
                             passwordHistory: {
                                 friendlyName: "Password History",
@@ -8152,6 +8153,7 @@ export const console: ConsoleNS = {
                     },
                     userOnboarding : {
                         name: "User Onboarding",
+                        description: "Configure user onboarding settings.",
                         connectors: {
                             selfSignUp: {
                                 friendlyName: "Self Registration",
@@ -8292,6 +8294,7 @@ export const console: ConsoleNS = {
                     },
                     loginAttemptsSecurity : {
                         name: "Login Attempts Security",
+                        description: "Configure login attempt security settings.",
                         connectors: {
                             accountLockHandler: {
                                 friendlyName: "Account Lock",
@@ -8343,6 +8346,7 @@ export const console: ConsoleNS = {
                     },
                     accountManagement : {
                         name: "Account Management",
+                        description: "Configure account management settings.",
                         connectors: {
                             suspensionNotification: {
                                 friendlyName: "Idle Account Suspend",
@@ -8487,6 +8491,7 @@ export const console: ConsoleNS = {
                     },
                     otherSettings : {
                         name: "Other Settings",
+                        description: "Configure other settings.",
                         connectors: {
                             piiController: {
                                 friendlyName: "Consent Information Controller",
@@ -8654,6 +8659,7 @@ export const console: ConsoleNS = {
                     },
                     multiFactorAuthenticators : {
                         name: "Multi Factor Authenticators",
+                        description: "Configure multi factor authenticator settings.",
                         connectors: {
                             backupCodeAuthenticator: {
                                 friendlyName: "Backup Code Authenticator",

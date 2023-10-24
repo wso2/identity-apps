@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Section } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Divider } from "semantic-ui-react";
+import { useTranslation } from "react-i18next";
 import { AppConstants, history } from "../../core";
 import { getSettingsSectionIcons } from "../../server-configurations";
 
@@ -39,6 +39,8 @@ export const ValidationConfigPage: FunctionComponent<MyAccountSettingsPageInterf
 ): ReactElement => {
     const { [ "data-componentid" ]: componentId } = props;
 
+    const { t } = useTranslation();
+
     /**
      * Handle connector advance setting selection.
      */
@@ -53,10 +55,8 @@ export const ValidationConfigPage: FunctionComponent<MyAccountSettingsPageInterf
             icon={ getSettingsSectionIcons().passwordValidation }
             header={ "Password Validation" }
             onPrimaryActionClick={ handleSelection }
-            primaryAction={ "Configure" }
-        >
-            <Divider hidden/>
-        </Section>
+            primaryAction={ t("common:configure") }
+        />
     );
 };
 
