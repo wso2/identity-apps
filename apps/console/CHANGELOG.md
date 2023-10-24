@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.1.10
+
+### Patch Changes
+
+- [#4260](https://github.com/wso2/identity-apps/pull/4260) [`ab4160125c`](https://github.com/wso2/identity-apps/commit/ab4160125cb6008de324e729d7af266cb2ed4bb9) Thanks [@dewniMW](https://github.com/dewniMW)! - Change API path that is used to fetch authorized orgs of the user
+
 ## 2.1.9
 
 ### Patch Changes
