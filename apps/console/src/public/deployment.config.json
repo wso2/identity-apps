@@ -215,6 +215,10 @@
         "appName": "Console",
         "appLogoPath": "/assets/images/branding/logo.svg",
         "appWhiteLogoPath": "/assets/images/branding/logo-white.svg",
+        "emailTemplates": {
+            "defaultLogoUrl": "/libs/themes/default/assets/images/branding/logo.svg",
+            "defaultWhiteLogoUrl": "/libs/themes/default/assets/images/branding/logo-white.svg"
+        },
         "appFaviconPath": "/assets/images/branding/favicon.ico",
         "isGOTEnabledForSuperTenantOnly": true,
         "showAppSwitchButton": true,

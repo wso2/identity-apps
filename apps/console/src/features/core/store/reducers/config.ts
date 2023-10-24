@@ -173,6 +173,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             appTitle: "",
             applicationTemplateLoadingStrategy: undefined,
             connectionResourcesUrl: "",
+            emailTemplates: {
+                defaultLogoUrl: "",
+                defaultWhiteLogoUrl: ""
+            },
             features: {
                 applications: null,
                 approvals: null,
