@@ -57,6 +57,7 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
         isSubmitting,
         isReadOnly,
         handleUpdateAPIResource,
+        handleDeleteAPIScope,
         ["data-componentid"]: componentId
     } = props;
 
@@ -116,10 +117,8 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
      * Handles the API resource permission delete action.
      */
     const deletePermission = (): void => {
-        handleUpdateAPIResource(
-            {
-                removedScopes: [ deletingAPIResourcePermission.name ]
-            },
+        handleDeleteAPIScope(
+            deletingAPIResourcePermission.name,
             (): void => setDeletingAPIResourcePermission(null)
         );
     };
