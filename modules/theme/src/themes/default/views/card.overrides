@@ -139,6 +139,10 @@
         .header-section {
             padding: @settingsCardHeaderPadding;
 
+            &.placeholder {
+                padding-bottom: 50px;
+            }
+
             // override the semantic H2 margin
             .ui.header {
                 font-size: @settingsCardHeaderFontSize;

@@ -195,16 +195,16 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
      */
     const renderLoadingPlaceholder = (): ReactElement => {
         const placeholders: ReactElement[] = [];
-        
+
         for (let loadedPlaceholders: number = 0; loadedPlaceholders <= 1; loadedPlaceholders++) {
             placeholders.push(
                 <Grid xs={ 12 } lg={ 6 } key={ loadedPlaceholders }>
-                    <div 
+                    <div
                         className="ui card fluid settings-card"
                         data-testid={ `${testId}-loading-card` }
                     >
                         <div className="content no-padding">
-                            <div className="header-section" style={ { "paddingBottom": "50px" } }>
+                            <div className="header-section placeholder">
                                 <Placeholder>
                                     <Placeholder.Header>
                                         <Placeholder.Line length="medium" />
