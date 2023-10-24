@@ -47,12 +47,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Form as SemanticForm, Grid } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface } from "../../../core";
-import {
-    ORGANIZATION_DESCRIPTION_MAX_LENGTH,
-    ORGANIZATION_DESCRIPTION_MIN_LENGTH,
-    ORGANIZATION_NAME_MAX_LENGTH,
-    ORGANIZATION_NAME_MIN_LENGTH
-} from "../../constants";
 import { updateOrganizationDiscoveryAttributes } from "../../api";
 import {
     OrganizationDiscoveryAttributeDataInterface,
@@ -252,7 +246,7 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
                                     value: string[]
                                 ) => {
                                     setEmailDomainData(value);
-                                    // validateEmail(value);
+                                    // validateEmailDomain(value);
                                 } }
                                 onInputChange={ () => {
                                     setIsEmailDataError(false);

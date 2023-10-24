@@ -27,7 +27,6 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
-import useRequest, { RequestResultInterface } from "../../core/hooks/use-request";
 import {
     OrganizationDiscoveryAttributeDataInterface,
     OrganizationDiscoveryConfigInterface,
@@ -148,7 +147,7 @@ export const getOrganizationDiscovery = (
         },
         method: "GET",
         params: {
-            // filter,
+            filter,
             // offset,
             // limit
         },
@@ -175,7 +174,8 @@ export const getOrganizationDiscovery = (
  *
  * @returns a promise containing the response
  */
-export const getOrganizationDiscoveryAttributes = (id: string): Promise<OrganizationDiscoveryAttributeDataInterface> => {
+export const getOrganizationDiscoveryAttributes = (id: string): 
+Promise<OrganizationDiscoveryAttributeDataInterface> => {
     const config: HttpRequestConfig = {
         headers: {
             Accept: "application/json",

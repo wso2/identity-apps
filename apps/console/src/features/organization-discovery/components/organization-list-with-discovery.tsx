@@ -34,10 +34,8 @@ import {
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
+import { useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { organizationConfigs } from "../../../extensions";
 import {
     AppConstants,
     AppState,
@@ -67,10 +65,6 @@ export interface OrganizationListWithDiscoveryPropsInterface
      */
     list: OrganizationListWithDiscoveryInterface;
     /**
-     * On list item select callback.
-     */
-    onListItemClick?: (event: SyntheticEvent, organization: OrganizationDiscoveryInterface) => void;
-    /**
      * Callback for the search query clear action.
      */
     onSearchQueryClear?: () => void;
@@ -91,10 +85,6 @@ export interface OrganizationListWithDiscoveryPropsInterface
      */
     showListItemActions?: boolean;
     /**
-     * Show sign on methods condition
-     */
-    isSetStrongerAuth?: boolean;
-    /**
      * Is the list rendered on a portal.
      */
     isRenderedOnPortal?: boolean;
@@ -114,26 +104,19 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
         defaultListItemLimit,
         isLoading,
         list,
-        onListItemClick,
         onEmptyListPlaceholderActionClick,
         onSearchQueryClear,
         searchQuery,
         selection,
         showListItemActions,
-        isSetStrongerAuth,
         isRenderedOnPortal,
         [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
 
-    const dispatch: Dispatch = useDispatch();
-
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const tenantDomain: string = useSelector(
-        (state: AppState) => state?.auth?.tenantDomain
-    );
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -142,7 +125,7 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
      *
      * @param organizationId - Organization id.
      */
-    const handleOrganizationEdit = (organizationId: string): void => {
+    const handleOrganizationEmailDomainEdit = (organizationId: string): void => {
         history.push({
             pathname: AppConstants.getPaths()
                 .get("EMAIL_DOMAIN_UPDATE")
@@ -209,16 +192,6 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
         }
 
         return [
-            // organizationConfigs.allowNavigationInDropdown && {
-            //     "data-componentid": `${ componentId }-item-go-to-organization-button`,
-            //     // icon: (): SemanticICONS => {
-            //     //     return "arrow alternate circle right";
-            //     // },
-            //     onClick: (e: SyntheticEvent, organization: OrganizationDiscoveryInterface): void =>
-            //         onListItemClick && onListItemClick(e, organization),
-            //     popupText: () => t("common:view"),
-            //     renderer: "semantic-icon"
-            // },
             {
                 "data-componentid": `${ componentId }-item-edit-button`,
                 hidden: (): boolean =>
@@ -226,7 +199,7 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
                         featureConfig?.organizations,
                         OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
                     ),
-                icon: (organization: OrganizationDiscoveryInterface): SemanticICONS => {
+                icon: (): SemanticICONS => {
 
                     return !hasRequiredScopes(
                         featureConfig?.organizations,
@@ -237,8 +210,8 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
                         : "pencil alternate";
                 },
                 onClick: (e: SyntheticEvent, organization: OrganizationDiscoveryInterface): void =>
-                    handleOrganizationEdit(organization.organizationId),
-                popupText: (organization: OrganizationDiscoveryInterface ): string => {
+                    handleOrganizationEmailDomainEdit(organization.organizationId),
+                popupText: (): string => {
 
                     return !hasRequiredScopes(
                         featureConfig?.organizations,
@@ -272,9 +245,9 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
                     title={ t("console:manage.placeholders.emptySearchResult.title") }
                     subtitle={ [
                         t("console:manage.placeholders.emptySearchResult.subtitles.0", {
-                            // searchQuery looks like "name co OrgName", so we only remove the filter string only to get
-                            // the actual user entered query
-                            query: searchQuery.split("name co ")[1]
+                            // searchQuery looks like "name co OrganizationName", so we only remove the filter string 
+                            // only to get the actual user entered query
+                            query: searchQuery.split("organizationName co ")[1]
                         }),
                         t("console:manage.placeholders.emptySearchResult.subtitles.1")
                     ] }
@@ -323,13 +296,11 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
                     count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
-                actions={ !isSetStrongerAuth && resolveTableActions() }
+                actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
                 data={ list?.organizations }
                 onRowClick={ (e: SyntheticEvent, organization: OrganizationDiscoveryInterface): void => {
-                    organizationConfigs.allowNavigationInDropdown
-                        ? onListItemClick && onListItemClick(e, organization)
-                        : handleOrganizationEdit(organization.organizationId);
+                    handleOrganizationEmailDomainEdit(organization.organizationId);
                 }
                 }
                 placeholders={ showPlaceholders() }

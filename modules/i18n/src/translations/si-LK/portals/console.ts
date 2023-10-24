@@ -7356,6 +7356,27 @@ export const console: ConsoleNS = {
                 }
             },
             organizationDiscovery: {
+                advancedSearch: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                organizationName: "Organization Name"
+                            }
+                        },
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Organization Name etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "Enter value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by Organization Name"
+                },
                 emailDomains: {
                     actions: {
                         assign: "විද්‍යුත් තැපැල් වසම පවරන්න",
@@ -10154,7 +10175,7 @@ export const console: ConsoleNS = {
                 title: "{{template}}"
             },
             emailDomainDiscovery: {
-                subTitle: "උප සංවිධාන සඳහා විද්‍යුත් තැපැල් වසම් සොයාගැනීම වින්‍යාස කරන්න.",
+                subTitle: "ආයතන සඳහා විද්‍යුත් තැපැල් වසම් සොයාගැනීම වින්‍යාස කරන්න..",
                 title: "ඊමේල් වසම් සොයාගැනීම"
             },
             emailLocaleAdd: {

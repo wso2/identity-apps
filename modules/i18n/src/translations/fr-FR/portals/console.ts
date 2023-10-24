@@ -7514,6 +7514,27 @@ export const console: ConsoleNS = {
                 }
             },
             organizationDiscovery: {
+                advancedSearch: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                organizationName: "Organization Name"
+                            }
+                        },
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Organization Name etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "Enter value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by Organization Name"
+                },
                 emailDomains: {
                     actions: {
                         assign: "Attribuer un domaine de messagerie",
@@ -10386,7 +10407,7 @@ export const console: ConsoleNS = {
                 title: "{{template}}"
             },
             emailDomainDiscovery: {
-                subTitle: "Configurez la découverte de domaines de messagerie pour les sous-organisations.",
+                subTitle: "Configurez la découverte de domaines de messagerie pour les organisations.",
                 title: "Découverte de domaines de messagerie"
             },
             emailLocaleAdd: {

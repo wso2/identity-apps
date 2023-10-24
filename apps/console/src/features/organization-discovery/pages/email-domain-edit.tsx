@@ -49,7 +49,8 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     const dispatch: Dispatch = useDispatch();
 
     const [ organization, setOrganization ] = useState<OrganizationResponseInterface>();
-    const [ organizationDiscoveryData, setOrganizationDiscoveryData ] = useState<OrganizationDiscoveryAttributeDataInterface>();
+    const [ organizationDiscoveryData, setOrganizationDiscoveryData ] = useState
+    <OrganizationDiscoveryAttributeDataInterface>();
     const [ isReadOnly, setIsReadOnly ] = useState(true);
 
 
@@ -58,14 +59,13 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
             !isFeatureEnabled(
                 featureConfig?.organizations,
                 OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
-            ) || organization?.status !== "ACTIVE");
+            ));
     }, [ featureConfig, organization ]);
 
     const getOrganizationData: (organizationId: string) => void = useCallback((organizationId: string): void => {
         getOrganization(organizationId)
             .then((organization: OrganizationResponseInterface) => {
                 setOrganization(organization);
-                // setFilterQuery("name eq " + organization?.name);
             }).catch((error: any) => {
                 if (error?.description) {
                     dispatch(addAlert({
@@ -88,32 +88,32 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
             });
     }, [ dispatch, t ]);
 
-    const getOrganizationDiscoveryData: (organizationId: string) => void = useCallback((organizationId: string): void => {
-        getOrganizationDiscoveryAttributes(organizationId)
-            .then((organizationDiscoveryData: OrganizationDiscoveryAttributeDataInterface) => {
-                setOrganizationDiscoveryData(organizationDiscoveryData);
-                // setFilterQuery("name eq " + organization?.name);
-            }).catch((error: any) => {
-                if (error?.description) {
+    const getOrganizationDiscoveryData: (organizationId: string) => void = useCallback(
+        (organizationId: string): void => {
+            getOrganizationDiscoveryAttributes(organizationId)
+                .then((organizationDiscoveryData: OrganizationDiscoveryAttributeDataInterface) => {
+                    setOrganizationDiscoveryData(organizationDiscoveryData);
+                }).catch((error: any) => {
+                    if (error?.description) {
+                        dispatch(addAlert({
+                            description: error.description,
+                            level: AlertLevels.ERROR,
+                            message: t("console:manage.features.organizationDiscovery.notifications." +
+                                "fetchOrganizationDiscoveryAttributes.genericError.message")
+                        }));
+
+                        return;
+                    }
+
                     dispatch(addAlert({
-                        description: error.description,
+                        description: t("console:manage.features.organizationDiscovery.notifications." +
+                            "fetchOrganizationDiscoveryAttributes.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.organizationDiscovery.notifications.fetchOrganizationDiscoveryAttributes." +
-                            "genericError.message")
+                        message: t("console:manage.features.organizationDiscovery.notifications." +
+                            "fetchOrganizationDiscoveryAttributes.genericError.message")
                     }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("console:manage.features.organizationDiscovery.notifications.fetchOrganizationDiscoveryAttributes." +
-                        "genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.organizationDiscovery.notifications.fetchOrganizationDiscoveryAttributes." +
-                        "genericError.message")
-                }));
-            });
-    }, [ dispatch, t ]);
+                });
+        }, [ dispatch, t ]);
 
     useEffect(() => {
         const path: string[] = location.pathname.split("/");
@@ -130,7 +130,6 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
 
     return (
         <PageLayout
-            // isLoading={ isAuthorizedOrganizationListRequestLoading }
             title={ organization?.name ?? t("console:manage.features.organizationDiscovery.title") }
             pageTitle={ organization?.name ?? t("console:manage.features.organizationDiscovery.title") }
             description={ t("console:manage.features.organizationDiscovery.edit.description") }

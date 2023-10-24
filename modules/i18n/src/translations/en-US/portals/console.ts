@@ -9226,6 +9226,27 @@ export const console: ConsoleNS = {
                 }
             },
             organizationDiscovery: {
+                advancedSearch: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                organizationName: "Organization Name"
+                            }
+                        },
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Organization Name etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "Enter value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by Organization Name"
+                },
                 emailDomains: {
                     actions: {
                         assign: "Assign Email Domain",
@@ -12023,7 +12044,7 @@ export const console: ConsoleNS = {
                 title: "{{template}}"
             },
             emailDomainDiscovery: {
-                subTitle: "Configure email domain discovery for sub organizations.",
+                subTitle: "Configure email domain discovery for organizations.",
                 title: "Email Domain Discovery"
             },
             emailLocaleAdd: {

@@ -36,7 +36,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import {
     Checkbox,
@@ -48,20 +48,24 @@ import {
     PaginationProps
 } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, AppConstants, EventPublisher, history, UIConstants } from "../../core";
-import { addOrganizationDiscoveryConfig, deleteOrganizationDiscoveryConfig, getOrganizationDiscovery, getOrganizationDiscoveryConfig } from "../api";
+import { addOrganizationDiscoveryConfig, 
+    deleteOrganizationDiscoveryConfig, 
+    getOrganizationDiscovery, 
+    getOrganizationDiscoveryConfig 
+} from "../api";
 import { OrganizationListWithDiscovery } from "../components";
 import {
     OrganizationDiscoveryConfigInterface,
     OrganizationDiscoveryConfigPropertyInterface,
-    OrganizationDiscoveryInterface,
-    OrganizationListWithDiscoveryInterface,
+    OrganizationListWithDiscoveryInterface
 } from "../models";
 
 const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
         key: 0,
-        text: I18n.instance.t("common:name") as ReactNode,
-        value: "name"
+        text: I18n.instance.t("console:manage.features.organizationDiscovery.advancedSearch." +
+        "form.dropdown.filterAttributeOptions.organizationName") as ReactNode,
+        value: "organizationName"
     }
 ];
 
@@ -95,8 +99,8 @@ const EmailDomainDiscoveryPage: FunctionComponent<EmailDomainDiscoveryPageInterf
     const [ isOrganizationListRequestLoading, setOrganizationListRequestLoading ] = useState<boolean>(true);
     const [ isOrganizationsNextPageAvailable, setIsOrganizationsNextPageAvailable ] = useState<boolean>(undefined);
     const [ isOrganizationsPrevPageAvailable, setIsOrganizationsPrevPageAvailable ] = useState<boolean>(undefined);
-    const [ organizations, setOrganizations ] = useState<OrganizationDiscoveryInterface[]>([]);
     const [ organizationDiscoveryEnabled, setOrganizationDiscoveryEnabled ] = useState<boolean>(false);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -232,25 +236,9 @@ const EmailDomainDiscoveryPage: FunctionComponent<EmailDomainDiscoveryPageInterf
      * Handles the `onSearchQueryClear` callback action.
      */
     const handleSearchQueryClear: () => void = useCallback((): void => {
+        setTriggerClearQuery(!triggerClearQuery);
         setSearchQuery("");
-    }, [ setSearchQuery ]);
-
-    const handleListItemClick = (
-        _e: SyntheticEvent<Element, Event>,
-        organization: OrganizationDiscoveryInterface
-    ): void => {
-        if (organizations.find((org: OrganizationDiscoveryInterface) => 
-            org.organizationId === organization.organizationId)) {
-            return;
-        }
-
-        handleSearchQueryClear();
-
-        const newOrganizations: OrganizationDiscoveryInterface[] = [ ...organizations ];
-
-        newOrganizations.push(organization);
-        setOrganizations(newOrganizations);
-    };
+    }, [ setSearchQuery, triggerClearQuery ]);
 
     /**
      * Update organization discovery enabled state based on existing data.
@@ -480,27 +468,29 @@ const EmailDomainDiscoveryPage: FunctionComponent<EmailDomainDiscoveryPageInterf
                                 filterAttributeOptions={ [
                                     {
                                         key: 0,
-                                        text: t("common:name"),
-                                        value: "name"
+                                        text: t("console:manage.features.organizationDiscovery.advancedSearch." +
+                                        "form.dropdown.filterAttributeOptions.organizationName"),
+                                        value: "organizationName"
                                     }
                                 ] }
                                 filterAttributePlaceholder={ t(
-                                    "console:manage.features.organizations.advancedSearch.form" +
+                                    "console:manage.features.organizationDiscovery.advancedSearch.form" +
                                             ".inputs.filterAttribute.placeholder"
                                 ) }
                                 filterConditionsPlaceholder={ t(
-                                    "console:manage.features.organizations.advancedSearch.form" +
+                                    "console:manage.features.organizationDiscovery.advancedSearch.form" +
                                             ".inputs.filterCondition.placeholder"
                                 ) }
                                 filterValuePlaceholder={ t(
-                                    "console:manage.features.organizations.advancedSearch.form.inputs.filterValue" +
-                                            ".placeholder"
+                                    "console:manage.features.organizationDiscovery.advancedSearch.form" +
+                                    ".inputs.filterValue.placeholder"
                                 ) }
                                 placeholder={ t(
-                                    "console:manage.features.organizations." + "advancedSearch.placeholder"
+                                    "console:manage.features.organizationDiscovery.advancedSearch.placeholder"
                                 ) }
-                                defaultSearchAttribute="name"
+                                defaultSearchAttribute="organizationName"
                                 defaultSearchOperator="co"
+                                triggerClearQuery={ triggerClearQuery }
                                 data-componentid={ `${ testId }-list-advanced-search` }
                             />)
                         }
@@ -533,7 +523,6 @@ const EmailDomainDiscoveryPage: FunctionComponent<EmailDomainDiscoveryPageInterf
                             onSearchQueryClear={ handleSearchQueryClear }
                             searchQuery={ searchQuery }
                             data-componentid="organization-list-with-discovery"
-                            onListItemClick={ handleListItemClick }
                         />
                     </ListLayout>
                 ) }
