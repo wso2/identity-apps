@@ -39,7 +39,7 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, us
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Placeholder, Ref } from "semantic-ui-react";
+import { Placeholder, Ref } from "semantic-ui-react";
 import UsernameValidationIcon from "../../../extensions/assets/images/icons/username-validation-icon.svg";
 import { serverConfigurationConfig } from "../../../extensions/configs/server-configuration";
 import { AppConstants, AppState, FeatureConfigInterface, history, store } from "../../core";
@@ -204,14 +204,13 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         data-testid={ `${testId}-loading-card` }
                     >
                         <div className="content no-padding">
-                            <div className="header-section">
+                            <div className="header-section" style={ { "paddingBottom": "50px" } }>
                                 <Placeholder>
                                     <Placeholder.Header>
                                         <Placeholder.Line length="medium" />
                                         <Placeholder.Line length="full" />
                                     </Placeholder.Header>
                                 </Placeholder>
-                                <Divider hidden />
                             </div>
                         </div>
                         <div className="content extra extra-content">
@@ -222,7 +221,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                             </div>
                         </div>
                     </div>
-                    <Divider hidden />
                 </Grid>
             );
         }
@@ -286,11 +284,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
      * Render connector categories which generate the connector forms dynamically.
      */
     const renderDynamicCategoryConnectors = (): ReactElement[] => {
-        if (
-            connectorCategories &&
-          Array.isArray(connectorCategories) &&
-          connectorCategories.length > 0
-        ) {
+        if (connectorCategories && Array.isArray(connectorCategories) && connectorCategories.length > 0) {
             return connectorCategories.map((connectorCategory: GovernanceConnectorCategoryInterface, index: number) => (
                 <Grid xs={ 12 } lg={ 6 } key={ index }>
                     <SettingsSection
@@ -303,7 +297,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         icon={ () => resolveConnectorCategoryIcon(connectorCategory?.id) }
                         header={ connectorCategory.name }
                         onPrimaryActionClick={ () => handleConnectorCategoryAction(connectorCategory?.id) }
-                        primaryAction="Configure"
+                        primaryAction={ t("common:configure") }
                     />
                 </Grid>
             ));
@@ -385,7 +379,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                                                         t("extensions:manage.accountLogin.editPage.pageTitle") 
                                                     }
                                                     onPrimaryActionClick={ handleSelection }
-                                                    primaryAction={ "Configure" }
+                                                    primaryAction={ t("common:configure") }
                                                 />
                                             </Grid>
                                             <Grid xs={ 12 } lg={ 6 }>
@@ -409,7 +403,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                                                     onPrimaryActionClick={
                                                         handleAlternativeLoginIdentifierSelection
                                                     }
-                                                    primaryAction={ "Configure" }
+                                                    primaryAction={ t("common:configure") }
                                                 />
                                             </Grid>
                                             <Grid xs={ 12 } lg={ 6 }>

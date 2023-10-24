@@ -69,7 +69,7 @@ export const PrivateKeyJWTConfig: FunctionComponent<PrivateKeyJWTConfigPageInter
                     "console:manage.features.jwtPrivateKeyConfiguration.pageTitle" 
                 ) }
                 onPrimaryActionClick={ handleSelection }
-                primaryAction={ "Configure" }
+                primaryAction={ t("common:configure") }
             />
         )
         : null
