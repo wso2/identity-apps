@@ -197,7 +197,7 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
+        url: store.getState().config.endpoints.roles + "/" + roleId
     };
 
     return httpClient(requestConfig)
@@ -222,7 +222,7 @@ export const createRole = (data: CreateRoleInterface): Promise<AxiosResponse> =>
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.rolesV2
+        url: store.getState().config.endpoints.roles
     };
 
     return httpClient(requestConfig)
