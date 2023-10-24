@@ -2962,6 +2962,26 @@ export interface Extensions {
                     };
                 };
             };
+            analytics: {
+                heading: string;
+                subHeading: string;
+                form: {
+                    fields: {
+                        hostUrl: FormAttributes;
+                        hostBasicAuthEnable: FormAttributes;
+                        hostUsername: FormAttributes;
+                        hostPassword: FormAttributes;
+                        hostConnectionTimeout: FormAttributes;
+                        hostReadTimeout: FormAttributes;
+                        hostConnectionRequestTimeout: FormAttributes;
+                        hostNameVerification: FormAttributes;
+                    };
+                    notification: {
+                        error: NotificationItem;
+                        success: NotificationItem;
+                    };
+                };
+            };
             generalBackButton: string;
             generalEnabledLabel: string;
             generalDisabledLabel: string;

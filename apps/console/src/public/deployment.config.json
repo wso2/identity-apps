@@ -229,6 +229,16 @@
                     "delete": []
                 }
             },
+            "analytics": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "update": [],
+                    "read": [],
+                    "create": [],
+                    "delete": []
+                }
+            },
             "apiResources": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -597,6 +607,26 @@
                     ]
                 }
             },
+            "residentIdp": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "update": [],
+                    "read": [],
+                    "create": [],
+                    "delete": []
+                }
+            },
+            "saml2Configuration": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "update": [],
+                    "read": [],
+                    "create": [],
+                    "delete": []
+                }
+            },
             "secretsManagement": {
                 "enabled": false,
                 "scopes": {
@@ -614,6 +644,16 @@
                     ]
                 },
                 "disabledFeatures": []
+            },
+            "sessionManagement": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "update": [],
+                    "read": [],
+                    "create": [],
+                    "delete": []
+                }
             },
             "organizations": {
                 "enabled": true,
@@ -661,6 +701,16 @@
                         "internal_idp_create",
                         "internal_application_mgt_update"
                     ]
+                }
+            },
+            "wsFedConfiguration": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "update": [],
+                    "read": [],
+                    "create": [],
+                    "delete": []
                 }
             },
             "userOnboarding": {

@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { FunctionComponent, SVGProps } from "react";
 import BasicAuthIcon from "../../../themes/default/assets/images/authenticators/basic-auth.png";
 import { ReactComponent as EmailOTPIcon } from "../../../themes/default/assets/images/authenticators/email-otp.svg";
@@ -28,6 +29,7 @@ import { ReactComponent as ClockColoredIcon } from "../../../themes/default/asse
 import { ReactComponent as CodeIcon } from "../../../themes/default/assets/images/icons/code-icon.svg";
 import { ReactComponent as CogWheelIcon } from "../../../themes/default/assets/images/icons/cog-wheel-icon.svg";
 import { ReactComponent as CubeStack } from "../../../themes/default/assets/images/icons/cube-stack-icon.svg";
+import { ReactComponent as DestinationIcon } from "../../../themes/default/assets/images/icons/destination-icon.svg";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
 import { ReactComponent as DoneButtonIcon } from "../../../themes/default/assets/images/icons/done-button.svg";
 import FIDOLogo from "../../../themes/default/assets/images/icons/fingerprint.svg";
@@ -39,6 +41,7 @@ import { ReactComponent as IntrospectIcon } from "../../../themes/default/assets
 import { ReactComponent as IssuerIcon } from "../../../themes/default/assets/images/icons/issuer.svg";
 import { ReactComponent as JWKSIcon } from "../../../themes/default/assets/images/icons/jwks.svg";
 import { ReactComponent as LockShieldIcon } from "../../../themes/default/assets/images/icons/lock-shield.svg";
+import { ReactComponent as LogoutIcon } from "../../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MagicLinkLogo } from "../../../themes/default/assets/images/icons/magic-link-icon.svg";
 import {
     ReactComponent as MagnifierColoredIcon
@@ -53,8 +56,12 @@ import { ReactComponent as WellKnownIcon
 import {
     ReactComponent as RevokeTokenIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/revoke-outline.svg";
+import { ReactComponent as ParIcon } from "../../../themes/default/assets/images/icons/par-icon.svg";
 import PlusIcon from "../../../themes/default/assets/images/icons/plus-icon.svg";
 import { ReactComponent as ReportIcon } from "../../../themes/default/assets/images/icons/report-icon.svg";
+import {
+    ReactComponent as SessionIframeIcon
+} from "../../../themes/default/assets/images/icons/session-iframe-icon.svg";
 import { ReactComponent as ShuttleIcon } from "../../../themes/default/assets/images/icons/shuttle-icon.svg";
 import { ReactComponent as SLOIcon } from "../../../themes/default/assets/images/icons/slo.svg";
 import { ReactComponent as SpinWheelIcon } from "../../../themes/default/assets/images/icons/spin-wheel-icon.svg";
@@ -63,6 +70,7 @@ import { ReactComponent as StartButtonIcon } from "../../../themes/default/asset
 import { ReactComponent as TokenIcon } from "../../../themes/default/assets/images/icons/token.svg";
 import { ReactComponent as UserInfoIcon } from "../../../themes/default/assets/images/icons/userInfo.svg";
 import { ReactComponent as WarningIcon } from "../../../themes/default/assets/images/icons/warning-icon.svg";
+import { ReactComponent as WebFingerIcon } from "../../../themes/default/assets/images/icons/webfinger-icon.svg";
 import {
     ReactComponent as FacebookLogo
 } from "../../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
@@ -267,15 +275,20 @@ export const getHelpPanelIcons = (): {
     endpoints: {
         authorize: FunctionComponent<SVGProps<SVGSVGElement>>;
         certificate: FunctionComponent<SVGProps<SVGSVGElement>>;
+        destination: FunctionComponent<SVGProps<SVGSVGElement>>;
         introspect: FunctionComponent<SVGProps<SVGSVGElement>>;
         issuer: FunctionComponent<SVGProps<SVGSVGElement>>;
         jwks: FunctionComponent<SVGProps<SVGSVGElement>>;
+        logout: FunctionComponent<SVGProps<SVGSVGElement>>;
         metadata: FunctionComponent<SVGProps<SVGSVGElement>>;
+        par: FunctionComponent<SVGProps<SVGSVGElement>>;
         samlSLO: FunctionComponent<SVGProps<SVGSVGElement>>;
         samlSSO: FunctionComponent<SVGProps<SVGSVGElement>>;
+        sessionIframe: FunctionComponent<SVGProps<SVGSVGElement>>;
         token: FunctionComponent<SVGProps<SVGSVGElement>>;
         revoke: FunctionComponent<SVGProps<SVGSVGElement>>;
         userInfo: FunctionComponent<SVGProps<SVGSVGElement>>;
+        webFinger: FunctionComponent<SVGProps<SVGSVGElement>>;
         wellKnown: FunctionComponent<SVGProps<SVGSVGElement>>;
     },
     tabs: {
@@ -291,15 +304,20 @@ export const getHelpPanelIcons = (): {
         endpoints: {
             authorize: AuthorizeIcon,
             certificate: IDPCertificateIcon,
+            destination: DestinationIcon,
             introspect: IntrospectIcon,
             issuer: IssuerIcon,
             jwks: JWKSIcon,
+            logout: LogoutIcon,
             metadata: IDPMetadataIcon,
+            par: ParIcon,
             revoke: RevokeTokenIcon,
             samlSLO: SLOIcon,
             samlSSO: SSOIcon,
+            sessionIframe: SessionIframeIcon,
             token: TokenIcon,
             userInfo: UserInfoIcon,
+            webFinger: WebFingerIcon,
             wellKnown: WellKnownIcon
         },
         tabs: {

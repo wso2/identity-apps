@@ -244,6 +244,7 @@ export type GetSidePanelIconsInterface = {
     connections: FunctionComponent | ReactNode,
     connectors: Record<string, FunctionComponent | ReactNode>,
     emailTemplates: FunctionComponent | ReactNode,
+    gears: FunctionComponent | ReactNode,
     groups: FunctionComponent | ReactNode,
     home: FunctionComponent | ReactNode,
     identityProviders: FunctionComponent | ReactNode,
@@ -292,6 +293,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
             default: PlugIcon
         },
         emailTemplates: EmailIcon,
+        gears: GearsIcon,
         groups: UserGroupIcon,
         home: HomeIcon,
         identityProviders: IDPOutlineIcon,

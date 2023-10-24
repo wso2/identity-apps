@@ -416,6 +416,10 @@ export interface OIDCEndpointsInterface {
      * WellKnown endpoint.
      */
     wellKnown?: string;
+    /**
+     * OpenID server endpoint.
+     */
+    openIdServer?: string;
 }
 
 /**

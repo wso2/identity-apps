@@ -250,6 +250,10 @@ export class AppConstants {
             [ "ADMIN_OVERVIEW", `${ AppConstants.getAdminViewBasePath() }/overview` ],
             [ "ADMIN_ADVISORY_BANNER", `${ AppConstants.getAdminViewBasePath() }/admin-advisory` ],
             [ "ADMIN_ADVISORY_BANNER_EDIT", `${ AppConstants.getAdminViewBasePath() }/admin-advisory-banner-edit` ],
+            [
+                "ANALYTICS",
+                `${AppConstants.getAdminViewBasePath()}/analytics/:categoryId/:connectorId`
+            ],
             [ "APPLICATIONS", `${ AppConstants.getDeveloperViewBasePath() }/applications` ],
             [ "APPLICATION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/applications/templates` ],
             [ "APPLICATION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/applications/:id` ],
@@ -357,7 +361,13 @@ export class AppConstants {
                 `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration` 
             ],
             [ "INSIGHTS", `${AppConstants.getAdminViewBasePath()}/insights` ],
-            [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/logs` ]
+            [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/logs` ],
+            [ "SESSION_MANAGEMENT",
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/session-management` ],
+            [ "SAML2_CONFIGURATION",
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/saml2-configuration` ],
+            [ "WSFED_CONFIGURATION",
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/wsfed-configuration` ]
         ]);
 
         return paths;

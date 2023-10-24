@@ -47,6 +47,9 @@ import { updatePasswordPolicyProperties } from "../components/password-policies/
 
 export const serverConfigurationConfig: ServerConfigurationConfig = {
     autoEnableConnectorToggleProperty: true,
+    backButtonDisabledConnectorIDs: [
+        ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
+    ],
     connectorCategoriesToShow: [
         ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
         ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
@@ -56,6 +59,9 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID
     ],
     connectorPropertiesToShow: [ "all" ],
+    connectorStatusViewDisabledConnectorIDs: [
+        ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
+    ],
     connectorToggleName: {},
     connectorsToHide: [
         "analytics-engine",
@@ -63,6 +69,11 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         "pii-controller"
     ],
     connectorsToShow: [ "all" ],
+    customConnectors: [
+        ServerConfigurationsConstants.SAML2_SSO_CONNECTOR,
+        ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR,
+        ServerConfigurationsConstants.WS_FEDERATION_CONNECTOR
+    ],
     dynamicConnectors: true,
     intendSettings: false,
     passwordExpiryComponent: (

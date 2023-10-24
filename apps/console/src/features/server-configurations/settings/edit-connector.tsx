@@ -20,6 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SettingsSection } from "./settings-section";
+import { serverConfigurationConfig } from "../../../extensions/configs";
 import { AppConstants, history } from "../../core";
 import { getSettingsSectionIcons } from "../configs";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
@@ -61,6 +62,9 @@ export const EditConnector: FunctionComponent<EditConnectorProps> = (
      */
     useEffect(() => {
         if (connector) {
+            // Remove enable option UI elements for connectors that are not allowed to be disabled.
+            if (serverConfigurationConfig.connectorStatusViewDisabledConnectorIDs.includes(connector.id)) return;
+
             const enableProperty: ConnectorPropertyInterface = connector.properties.find(
                 (property: ConnectorPropertyInterface) => property.name === connectorToggleName
             );
@@ -87,6 +91,8 @@ export const EditConnector: FunctionComponent<EditConnectorProps> = (
                 return (
                     t("extensions:manage.serverConfigurations.userOnboarding.selfRegistration.heading")
                 );
+            case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
+                return t("extensions:manage.serverConfigurations.analytics.heading");
             default:
                 return connector?.friendlyName;
         }
@@ -111,6 +117,8 @@ export const EditConnector: FunctionComponent<EditConnectorProps> = (
                 return (
                     t("extensions:manage.serverConfigurations.userOnboarding.selfRegistration.connectorDescription")
                 );
+            case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
+                return t("extensions:manage.serverConfigurations.analytics.subHeading");
             default:
                 return (
                     connector?.description

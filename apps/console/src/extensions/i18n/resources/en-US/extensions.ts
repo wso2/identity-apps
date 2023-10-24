@@ -3585,6 +3585,63 @@ export const extensions: Extensions = {
                 subHeading: "Configure security settings to protect user accounts."
             },
             additionalSettings: "Additional Settings",
+            analytics: {
+                heading: "Analytics Engine",
+                subHeading: "Configure the analytics engine for your organization.",
+                form: {
+                    fields: {
+                        hostUrl: {
+                            label: "Host URL",
+                            placeholder: "Enter the host URL",
+                            hint: "The URL of the analytics engine."
+                        },
+                        hostBasicAuthEnable: {
+                            label: "Enable Basic Authentication",
+                            hint: "Enable basic authentication for the analytics engine."
+                        },
+                        hostUsername: {
+                            label: "Username",
+                            placeholder: "Enter the username",
+                            hint: "The username to authenticate into the analytics engine."
+                        },
+                        hostPassword: {
+                            label: "Password",
+                            placeholder: "Enter the password",
+                            hint: "The password to authenticate into the analytics engine."
+                        },
+                        hostConnectionTimeout: {
+                            label: "HTTP Connection Timeout",
+                            placeholder: "Enter the connection timeout",
+                            hint: "Enter the connection timeout value in milliseconds."
+                        },
+                        hostReadTimeout: {
+                            label: "HTTP Read Timeout",
+                            placeholder: "Enter the read timeout",
+                            hint: "Enter the read timeout value in milliseconds."
+                        },
+                        hostConnectionRequestTimeout: {
+                            label: "HTTP Connection Request Timeout",
+                            placeholder: "Enter the connection request timeout",
+                            hint: "Enter the connection request timeout value in milliseconds."
+                        },
+                        hostNameVerification: {
+                            label: "Hostname Verification",
+                            placeholder: "Enter the hostname verification",
+                            hint: "Enable hostname verification for the analytics engine. (STRICT | ALLOW_ALL)"
+                        }
+                    },
+                    notification: {
+                        error: {
+                            description: "Error occurred while updating the analytics engine configurations.",
+                            message: "Error Occurred"
+                        },
+                        success: {
+                            description: "Successfully updated the analytics engine configurations.",
+                            message: "Update Successful"
+                        }
+                    }
+                }
+            },
             generalBackButton: "Go back",
             generalDisabledLabel: "Disabled",
             generalEnabledLabel: "Enabled",

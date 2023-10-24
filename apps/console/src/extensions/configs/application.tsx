@@ -178,7 +178,11 @@ export const applicationConfig: ApplicationConfig = {
         roleMapping: true
     },
     customApplication: {
-        allowedProtocolTypes: [ SupportedAuthProtocolTypes.OAUTH2_OIDC, SupportedAuthProtocolTypes.SAML ],
+        allowedProtocolTypes: [
+            SupportedAuthProtocolTypes.OAUTH2_OIDC,
+            SupportedAuthProtocolTypes.SAML,
+            SupportedAuthProtocolTypes.WS_FEDERATION
+        ],
         defaultTabIndex: 1
     },
     editApplication: {

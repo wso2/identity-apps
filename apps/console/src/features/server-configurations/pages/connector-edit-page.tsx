@@ -86,6 +86,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const [ connectorId, setConnectorId ] = useState<string>(undefined);
     const [ enableForm, setEnableForm ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ enableBackButton, setEnableBackButton ] = useState<boolean>(true);
 
     const isReadOnly: boolean = useMemo(
         () =>
@@ -117,6 +118,12 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
      */
     const handleBackButtonClick = (): void => {
         history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
+    };
+
+    const resolveBackButtonState = (connectorID:string) => {
+        if (serverConfigurationConfig.backButtonDisabledConnectorIDs.includes(connectorID)) {
+            setEnableBackButton(false);
+        }
     };
 
     const handleUpdateSuccess = () => {
@@ -304,6 +311,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
 
         setCategoryId(categoryId);
         setConnectorId(connectorId);
+        resolveBackButtonState(connectorId);
         setConnectorRequestLoading(true);
 
         getConnectorDetails(categoryId, connectorId)
@@ -363,6 +371,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return t("extensions:manage.serverConfigurations.accountSecurity.botDetection.heading");
             case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
                 return t("extensions:manage.serverConfigurations.userOnboarding.selfRegistration.heading");
+            case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
+                return t("extensions:manage.serverConfigurations.analytics.heading");
             default:
                 return connector?.friendlyName;
         }
@@ -402,6 +412,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                         </DocumentationLink>
                     </>
                 );
+            case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
+                return t("extensions:manage.serverConfigurations.analytics.subHeading");
             default:
                 return connector?.description
                     ? connector.description
@@ -434,6 +446,11 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     "extensions:manage.serverConfigurations.accountRecovery.passwordRecovery." +
                     "notification.success.description"
                 );
+            case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
+                return t(
+                    "extensions:manage.serverConfigurations.analytics.form." +
+                    "notification.success.description"
+                );
             default:
                 return t(
                     "console:manage.features.governanceConnectors.notifications.updateConnector.success.description",
@@ -462,6 +479,11 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
                 return t(
                     "extensions:manage.serverConfigurations.accountRecovery.passwordRecovery." +
+                    "notification.error.description"
+                );
+            case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
+                return t(
+                    "extensions:manage.serverConfigurations.analytics.form." +
                     "notification.error.description"
                 );
             default:
@@ -579,7 +601,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
         <PageLayout
             title={ resolveConnectorTitle(connector) }
             description={ resolveConnectorDescription(connector) }
-            backButton={ {
+            backButton={ enableBackButton && {
                 "data-testid": `${ testId }-${ connectorId }-page-back-button`,
                 onClick: () => handleBackButtonClick(),
                 text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")

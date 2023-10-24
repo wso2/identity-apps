@@ -99,4 +99,13 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MIN_LENGTH: 1,
         EXPIRY_TIME_MIN_VALUE: 1
     };
+
+    /**
+     * Analytics Form element constraints.
+     */
+    public static readonly ANALYTICS_FORM_FIELD_CONSTRAINTS: {
+        TIMEOUT_MIN_LENGTH: number;
+    } = {
+        TIMEOUT_MIN_LENGTH: 0
+    };
 }

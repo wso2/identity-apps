@@ -672,6 +672,8 @@ export interface ConsoleNS {
                             oidcSubHeading: string;
                             samlHeading: string;
                             samlSubHeading: string;
+                            wsFedHeading: string;
+                            wsFedSubHeading: string;
                             tabName: string;
                         };
                         general: {
@@ -6237,6 +6239,68 @@ export interface ConsoleNS {
         placeholders: {
             emptySearchResult: Placeholder;
             underConstruction: Placeholder;
+        };
+    };
+    saml2Config: {
+        title: string;
+        description: string;
+        form: {
+            metadataValidityPeriod: {
+                hint: string;
+                label: string;
+            };
+            destinationUrl: {
+                hint: string;
+                label: string;
+            };
+            enableMetadataSigning: {
+                label: string;
+            };
+            validation: {
+                metadataValidityPeriod: string;
+                destinationURLs: string;
+            };
+        };
+        notifications: {
+            updateConfiguration: Notification;
+            getConfiguration: Notification;
+        };
+    };
+    sessionManagement: {
+        title: string;
+        description: string;
+        form: {
+            idleSessionTimeout: {
+                hint: string;
+                label: string;
+                placeholder: string;
+            };
+            rememberMePeriod: {
+                hint: string;
+                label: string;
+                placeholder: string;
+            };
+            validation: {
+                rememberMePeriod: string;
+                idleSessionTimeout: string;
+            };
+        };
+        notifications: {
+            updateConfiguration: Notification;
+            getConfiguration: Notification;
+        };
+    };
+    wsFederationConfig: {
+        title: string;
+        description: string;
+        form: {
+            enableRequestSigning: {
+                label: string;
+            };
+        };
+        notifications: {
+            updateConfiguration: Notification;
+            getConfiguration: Notification;
         };
     };
 }

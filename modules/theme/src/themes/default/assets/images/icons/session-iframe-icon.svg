@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2023, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg id="session-iframe" class="icon" width="11" height="9" viewBox="0 0 11 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+        d="M9.25 2.875V4.375C9.25 4.47446 9.21049 4.56984 9.14017 4.64016C9.06984 4.71049 8.97446 4.75 8.875 4.75C8.77554 4.75 8.68016 4.71049 8.60983 4.64016C8.53951 4.56984 8.5 4.47446 8.5 4.375V3.25H7.375C7.27554 3.25 7.18016 3.21049 7.10983 3.14016C7.03951 3.06984 7 2.97446 7 2.875C7 2.77554 7.03951 2.68016 7.10983 2.60984C7.18016 2.53951 7.27554 2.5 7.375 2.5H8.875C8.97446 2.5 9.06984 2.53951 9.14017 2.60984C9.21049 2.68016 9.25 2.77554 9.25 2.875ZM4.375 7H3.25V5.875C3.25 5.77554 3.21049 5.68016 3.14016 5.60983C3.06984 5.53951 2.97446 5.5 2.875 5.5C2.77554 5.5 2.68016 5.53951 2.60984 5.60983C2.53951 5.68016 2.5 5.77554 2.5 5.875V7.375C2.5 7.47446 2.53951 7.56984 2.60984 7.64017C2.68016 7.71049 2.77554 7.75 2.875 7.75H4.375C4.47446 7.75 4.56984 7.71049 4.64016 7.64017C4.71049 7.56984 4.75 7.47446 4.75 7.375C4.75 7.27554 4.71049 7.18016 4.64016 7.10983C4.56984 7.03951 4.47446 7 4.375 7ZM10.75 1.75V8.5C10.75 8.69891 10.671 8.88968 10.5303 9.03033C10.3897 9.17098 10.1989 9.25 10 9.25H1.75C1.55109 9.25 1.36032 9.17098 1.21967 9.03033C1.07902 8.88968 1 8.69891 1 8.5V1.75C1 1.55109 1.07902 1.36032 1.21967 1.21967C1.36032 1.07902 1.55109 1 1.75 1H10C10.1989 1 10.3897 1.07902 10.5303 1.21967C10.671 1.36032 10.75 1.55109 10.75 1.75ZM10 8.5V1.75H1.75V8.5H10Z"
+        fill="black" />
+</svg>

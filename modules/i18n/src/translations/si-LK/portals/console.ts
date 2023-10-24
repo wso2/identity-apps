@@ -1040,6 +1040,9 @@ export const console: ConsoleNS = {
                             samlHeading: "අනන්‍යතා සැපයුම්කරුගේ විස්තර",
                             samlSubHeading: "SAML 2.0 භාවිතා කරමින් ඔබගේ යෙදුම සඳහා සත්‍යාපනය ක්‍රියාත්මක කිරීමට " +
                                 "සහ වින්‍යාස කිරීමට පහත අනන්‍යතා සැපයුම්කරුගේ විස්තර ඔබට ප්‍රයෝජනවත් වනු ඇත.",
+                            wsFedHeading: "සම්බන්ධතා තොරතුරු",
+                            wsFedSubHeading: "පහත දැක්වෙන අවිනිශ්චිත තොරතුරු ක්රියාත්මක කිරීමට ඔබට ප්රයෝජනවත් වේ " +
+                                "WS- සම්මේලනය භාවිතා කරමින් ඔබගේ යෙදුම සඳහා සත්යාපනය වින්යාස කරන්න.",
                             tabName: "තොරතුරු"
                         },
                         provisioning: {
@@ -2503,14 +2506,19 @@ export const console: ConsoleNS = {
                                 oidcConfigurations: {
                                     labels: {
                                         authorize: "අවසරලත්",
+                                        dynamicClientRegistration: "ගතික සේවාලාභී ලියාපදිංචිය",
                                         endSession: "පිටතට",
                                         introspection: "ස්වයං විමර්ශනය",
                                         issuer: "නිකුත් කරන්නා",
                                         jwks: "JWKS",
                                         keystore: "යතුරු කට්ටලය",
+                                        openIdServer: "OpenID සේවාදායකය",
+                                        pushedAuthorizationRequest: "තල්ලු වූ අවසර ඉල්ලීම",
                                         revoke: "අහෝසි කරන්න",
+                                        sessionIframe: "Session Iframe",
                                         token: "ටෝකන්",
                                         userInfo: "UserInfo",
+                                        webFinger: "Web Finger",
                                         wellKnown: "සොයාගැනීම"
                                     }
                                 },
@@ -2524,7 +2532,9 @@ export const console: ConsoleNS = {
                                         issuer: "නිකුත් කරන්නා",
                                         metadata: "IDP පාර-දත්ත",
                                         slo: "තනි ලොග්අවුට්",
-                                        sso: "තනි පුරනය වීම"
+                                        sso: "තනි පුරනය වීම",
+                                        destinationURL: "ගමනාන්ත URL",
+                                        artifactResolutionUrl: "පුරාවස්තු විභේදන URL"
                                     }
                                 },
                                 trySample: {
@@ -2541,6 +2551,11 @@ export const console: ConsoleNS = {
                                     subTitle: "අවම කේත රේඛා සංඛ්‍යාවක් සමඟ ඔබේ යෙදුමට සත්‍යාපනය ඒකාබද්ධ " +
                                         "කිරීමට අපගේ SDKs ස්ථාපනය කර භාවිතා කරන්න.",
                                     title: "ඔබේම යෙදුම ඒකාබද්ධ කරන්න"
+                                },
+                                wsFedConfigurations: {
+                                    labels: {
+                                        passiveSTSUrl: "Passive STS url"
+                                    }
                                 }
                             },
                             heading: "ඊළඟට කුමක්ද?"
@@ -10227,6 +10242,111 @@ export const console: ConsoleNS = {
             tags: {
                 premium: {
                     warning: "මෙය ප්‍රීමියක් විවෘත කරන ලද විශේෂිත සේවාවක් වෙනුවට නොවනු ඇත්තේ නිදහස් සඳහා නොවේ. මෙම විශේෂිත සේවාව සඳහා අනුපාතය වෙළුම් කරන්න."
+                }
+            }
+        }
+    },
+    saml2Config: {
+        title: "SAML2 වෙබ් SSO වින්යාසය",
+        description: "ඔබගේ යෙදුම් සඳහා SAML2 වෙබ් SSO වින්යාස කරන්න.",
+        form: {
+            metadataValidityPeriod: {
+                hint: "සමල් පාර-දත්ත වලංගු කාලය මිනිත්තු කිහිපයකින් සකසන්න.",
+                label: "පාර-දත්ත වලංගු කාලය"
+            },
+            destinationUrl: {
+                hint: "සාම්ලයේ ප්රතිචාරය, සාම්ල් ප්රකාශයේ අර්ථ දක්වා ඇති පරිදි.",
+                label: "ගමනාන්ත URL"
+            },
+            enableMetadataSigning: {
+                label: "පාර-දත්ත අත්සන් කිරීම සක්රීය කරන්න"
+            },
+            validation: {
+                metadataValidityPeriod: "පාර-දත්ත වලංගු කාලය ධනාත්මක පූර්ණ සංඛ්යාවක් විය යුතුය.",
+                destinationURLs: "ගමනාන්ත URL වලංගු URL විය යුතු අතර හිස් නොවිය යුතුය."
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "SAML2 වින්යාසයන් ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
+                    message: "දෝෂයක් සිදුවී"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "SAML2 වින්යාසයන් යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය.",
+                    message: "දෝෂයක් සිදුවී"
+                },
+                success: {
+                    description: "SAML2 වින්යාසයන් සාර්ථකව යාවත්කාලීන කරන ලදි.",
+                    message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                }
+            }
+        }
+    },
+    sessionManagement: {
+        description: "ඔබගේ පරිශීලකයින්ගේ සැසියට අදාළ සැකසුම් කළමනාකරණය කරන්න.",
+        title: "සැසි කළමනාකරණය",
+        form: {
+            idleSessionTimeout: {
+                hint: "වින්‍යාස කළ කාලයෙන් පසු පරිශීලකයා ස්වයංක්‍රීයව ඉවත් වනු ඇත.",
+                label: "නිෂ්ක්‍රීය සැසි කල් ඉකුත්වීම",
+                placeholder: "මිනිත්තු කිහිපයකින් නිෂ්ක්‍රීය සැසියේ කල් ඉකුත්වීම ඇතුළු කරන්න"
+            },
+            rememberMePeriod: {
+                hint: "වින්‍යාස කළ කාලයෙන් පසු නැවත පුරනය වීමට පරිශීලකයාගෙන් විමසනු ඇත.",
+                label: "මාව මතක තබා ගන්න කාලය",
+                placeholder: "මතක තබා ගැනීමේ කාල සීමාව මිනිත්තු කිහිපයකින් ඇතුළත් කරන්න"
+            },
+            validation: {
+                idleSessionTimeout: "Idle Session Timeout ධන නිඛිලයක් විය යුතුය.",
+                rememberMePeriod: "Remember Me Period ධන නිඛිලයක් විය යුතුය."
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "සැසි කළමනාකරණ සැකසුම් ලබා ගැනීමේදී දෝෂයක් සිදු විය.",
+                    message: "දෝෂයක් සිදුවී"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "සැසි කළමනාකරණ සැකසුම් යාවත්කාලීන කිරීමේදී දෝෂයක් සිදු විය.",
+                    message: "දෝෂයක් සිදුවී"
+                },
+                success: {
+                    description: "සැසි කළමනාකරණ සැකසීම් සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                    message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                }
+            }
+        }
+    },
+
+    wsFederationConfig: {
+        title: "WS-සම්මේලනයේ වින්යාසය",
+        description: "ඔබගේ අයදුම්පත් සඳහා WS-සම්මේලනයේ ප්රොටෝකෝලය වින්යාස කරන්න.",
+        form: {
+            enableRequestSigning: {
+                label: "සත්යාපනය ඉල්ලීම් අත්සන් කරන්න"
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "WS-සම්මේලන වින්යාසයන් ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
+                    message: "දෝෂයක් සිදුවී"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "WS-සම්මේලන වින්යාසයන් යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය.",
+                    message: "දෝෂයක් සිදුවී"
+                },
+                success: {
+                    description: "WS-සම්මේලන වින්යාසයන් සාර්ථකව යාවත්කාලීන කරන ලදි.",
+                    message: "යාවත්කාලීන කිරීම සාර්ථකයි"
                 }
             }
         }

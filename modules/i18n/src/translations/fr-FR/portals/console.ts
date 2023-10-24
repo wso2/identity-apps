@@ -1044,6 +1044,9 @@ export const console: ConsoleNS = {
                             samlHeading: "Détails du connexion",
                             samlSubHeading: "Les détails de l'IdP suivants vous seront utiles pour implémenter et " +
                                 "configurer l'authentification pour votre application à l'aide de SAML 2.0.",
+                            wsFedHeading: "Détails de la connexion",
+                            wsFedSubHeading: "Les détails IDP suivants seront utiles pour que vous puissiez implémenter et " +
+                                "Configurer l'authentification pour votre application à l'aide de WS-Federation.",
                             tabName: "Info"
                         },
                         provisioning: {
@@ -2567,14 +2570,19 @@ export const console: ConsoleNS = {
                                 oidcConfigurations: {
                                     labels: {
                                         authorize: "Authorize",
+                                        dynamicClientRegistration: "Enregistrement client dynamique",
                                         endSession: "Se déconnecter",
                                         introspection: "Introspection",
                                         issuer: "Émetteur",
                                         jwks: "JWKS",
                                         keystore: "Key Set",
+                                        openIdServer: "Serveur OpenID",
+                                        pushedAuthorizationRequest: "Demande d'autorisation poussée",
                                         revoke: "Révoquer",
+                                        sessionIframe: "Iframe de session",
                                         token: "Token",
                                         userInfo: "UserInfo",
+                                        webFinger: "Web Finger",
                                         wellKnown: "Discovery"
                                     }
                                 },
@@ -2588,7 +2596,9 @@ export const console: ConsoleNS = {
                                         issuer: "Émetteur",
                                         metadata: "Métadonnées de l'IDP",
                                         slo: "Déconnexion unique",
-                                        sso: "Authentification unique"
+                                        sso: "Authentification unique",
+                                        destinationURL: "URL de destination",
+                                        artifactResolutionUrl: "URL de résolution des artefacts"
                                     }
                                 },
                                 trySample: {
@@ -2606,6 +2616,11 @@ export const console: ConsoleNS = {
                                     subTitle: "Installez et utilisez nos SDK pour intégrer l'authentification " +
                                         "à votre application avec un nombre minimum de lignes de code.",
                                     title: "Intégrez votre propre application"
+                                },
+                                wsFedConfigurations: {
+                                    labels: {
+                                        passiveSTSUrl: "URL STS passive"
+                                    }
                                 }
                             },
                             heading: "Quelle est la suite ?"
@@ -10459,6 +10474,111 @@ export const console: ConsoleNS = {
             tags: {
                 premium: {
                     warning: "Ceci est une fonctionnalité premium et sera bientôt désactivée pour le plan d'abonnement gratuit. Mettez à niveau votre abonnement pour un accès ininterrompu à cette fonctionnalité."
+                }
+            }
+        }
+    },
+    saml2Config: {
+        title: "Configuration SAML2 Web SSO",
+        description: "Configurer SAML2 Web SSO pour vos applications.",
+        form: {
+            metadataValidityPeriod: {
+                hint: "Réglez la période de validité des métadonnées SAML en quelques minutes.",
+                label: "Période de validité des métadonnées"
+            },
+            destinationUrl: {
+                hint: "L'emplacement pour envoyer la réponse SAML, telle que définie dans l'affirmation SAML.",
+                label: "URL de destination"
+            },
+            enableMetadataSigning: {
+                label: "Activer la signature des métadonnées"
+            },
+            validation: {
+                metadataValidityPeriod: "La période de validité des métadonnées devrait être un entier positif.",
+                destinationURLs: "Les URL de destination doivent être des URL valides et ne doivent pas être vides."
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Une erreur s'est produite tout en récupérant les configurations SAML2.",
+                    message: "Erreur est survenue"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "L'erreur s'est produite lors de la mise à jour des configurations SAML2.",
+                    message: "Erreur est survenue"
+                },
+                success: {
+                    description: "Mis à jour avec succès les configurations SAML2.",
+                    message: "Mise à jour réussie"
+                }
+            }
+        }
+    },
+    sessionManagement: {
+        description: "Gérez les paramètres liés à la session de vos utilisateurs.",
+        title: "Gestion des sessions",
+        form: {
+            idleSessionTimeout: {
+                hint: "L'utilisateur sera automatiquement déconnecté après l'heure configurée.",
+                label: "Délai d'expiration de la session inactive",
+                placeholder: "Entrez le délai d'expiration de la session inactive en minutes"
+            },
+            rememberMePeriod: {
+                hint: "L'utilisateur sera invité à se reconnecter après l'heure configurée.",
+                label: "Période Souviens-toi de moi",
+                placeholder: "Entrez la période de mémorisation en minutes"
+            },
+            validation: {
+                idleSessionTimeout: "Le délai d'expiration de la session inactive doit être un entier positif.",
+                rememberMePeriod: "La période Remember Me doit être un entier positif."
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Une erreur s'est produite lors de la récupération des paramètres de gestion de session.",
+                    message: "Erreur est survenue"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "Une erreur s'est produite lors de la mise à jour des paramètres de gestion de session.",
+                    message: "Erreur est survenue"
+                },
+                success: {
+                    description: "Mise à jour réussie des paramètres de gestion de session.",
+                    message: "Mise à jour réussie"
+                }
+            }
+        }
+    },
+
+    wsFederationConfig: {
+        title: "Configuration WS-Federation",
+        description: "Configurer le protocole WS-Federation pour vos applications.",
+        form: {
+            enableRequestSigning: {
+                label: "Activer la signature des demandes d'authentification"
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Une erreur s'est produite tout en récupérant les configurations de fédération WS.",
+                    message: "Erreur est survenue"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "L'erreur s'est produite lors de la mise à jour des configurations de fédération WS.",
+                    message: "Erreur est survenue"
+                },
+                success: {
+                    description: "Mis à jour avec succès les configurations WS-Federation.",
+                    message: "Mise à jour réussie"
                 }
             }
         }

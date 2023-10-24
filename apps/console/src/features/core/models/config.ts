@@ -61,6 +61,10 @@ export interface FeatureConfigInterface {
      */
     administrators?: FeatureAccessConfigInterface;
     /**
+     * Analytics feature.
+     */
+    analytics?: FeatureAccessConfigInterface;
+    /**
      * API resources feature.
      */
     apiResources?: FeatureAccessConfigInterface;
@@ -137,9 +141,21 @@ export interface FeatureConfigInterface {
      */
     remoteFetchConfig?: FeatureAccessConfigInterface;
     /**
+     * Resident IDP Config management feature.
+     */
+    residentIdp?: FeatureAccessConfigInterface;
+    /**
      * Role management feature.
      */
     roles?: FeatureAccessConfigInterface;
+    /**
+     * Saml2 Configurations feature.
+     */
+    saml2Configuration?: FeatureAccessConfigInterface;
+    /**
+     * Session management Configurations feature
+     */
+    sessionManagement?: FeatureAccessConfigInterface;
     /**
      * User store configurations feature.
      */
@@ -172,6 +188,10 @@ export interface FeatureConfigInterface {
      * Bulk Import Feature
      */
     bulkUserImport?: FeatureAccessConfigInterface;
+    /**
+     * WS Federation Configurations feature
+     */
+    wsFedConfiguration?: FeatureAccessConfigInterface;
 }
 
 /**

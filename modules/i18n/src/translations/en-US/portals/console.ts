@@ -1046,6 +1046,9 @@ export const console: ConsoleNS = {
                             samlHeading: "Connection Details",
                             samlSubHeading: "The following IdP details will be useful for you to implement and " +
                                 "configure authentication for your application using SAML 2.0.",
+                            wsFedHeading: "Connection Details",
+                            wsFedSubHeading: "The following IdP details will be useful for you to implement and " +
+                                "configure authentication for your application using WS-Federation.",
                             tabName: "Info"
                         },
                         provisioning: {
@@ -2532,14 +2535,19 @@ export const console: ConsoleNS = {
                                 oidcConfigurations: {
                                     labels: {
                                         authorize: "Authorize",
+                                        dynamicClientRegistration: "Dynamic Client Registration",
                                         endSession: "Logout",
                                         introspection: "Introspection",
                                         issuer: "Issuer",
                                         jwks: "JWKS",
                                         keystore: "Key Set",
+                                        openIdServer: "OpenID Server",
+                                        pushedAuthorizationRequest: "Pushed Authorization Request",
                                         revoke: "Revoke",
+                                        sessionIframe: "Session Iframe",
                                         token: "Token",
                                         userInfo: "UserInfo",
+                                        webFinger: "Web Finger",
                                         wellKnown: "Discovery"
                                     }
                                 },
@@ -2553,7 +2561,9 @@ export const console: ConsoleNS = {
                                         issuer: "Issuer",
                                         metadata: "IdP Metadata",
                                         slo: "Single Logout",
-                                        sso: "Single Sign-On"
+                                        sso: "Single Sign-On",
+                                        destinationURL: "Destination URLs",
+                                        artifactResolutionUrl: "Artifact Resolution URL"
                                     }
                                 },
                                 trySample: {
@@ -2570,6 +2580,11 @@ export const console: ConsoleNS = {
                                     subTitle: "Install and use our SDKs to integrate authentication to your " +
                                         "application with minimum number of code lines.",
                                     title: "Integrate your own app"
+                                },
+                                wsFedConfigurations: {
+                                    labels: {
+                                        passiveSTSUrl: "Passive STS URL"
+                                    }
                                 }
                             },
                             heading: "What's Next?"
@@ -12151,6 +12166,110 @@ export const console: ConsoleNS = {
                     1: "Please bare with us and come back later. Thank you for your patience."
                 },
                 title: "Page under construction"
+            }
+        }
+    },
+    saml2Config: {
+        title: "SAML2 Web SSO Configuration",
+        description: "Configure SAML2 Web SSO for your applications.",
+        form: {
+            metadataValidityPeriod: {
+                hint: "Set the SAML metadata validity period in minutes.",
+                label: "Metadata Validity Period"
+            },
+            destinationUrl: {
+                hint: "The location to send the SAML Response, as defined in the SAML assertion.",
+                label: "Destination URLs"
+            },
+            enableMetadataSigning: {
+                label: "Enable Metadata Signing"
+            },
+            validation: {
+                metadataValidityPeriod: "Metadata validity period should be a positive integer.",
+                destinationURLs: "Destination URL should be a valid URL."
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Error occurred while fetching saml2 configurations.",
+                    message: "Error occurred"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "Error occurred while updating saml2 configurations.",
+                    message: "Error occurred"
+                },
+                success: {
+                    description: "Successfully updated the saml2 configurations.",
+                    message: "Update successful"
+                }
+            }
+        }
+    },
+    sessionManagement: {
+        description: "Manage settings related to the session of your users.",
+        title: "Session Management",
+        form: {
+            idleSessionTimeout: {
+                hint: "The user will be logged out automatically after the configured time.",
+                label: "Idle Session Timeout",
+                placeholder: "Enter the idle session timeout in minutes"
+            },
+            rememberMePeriod: {
+                hint: "The user will be prompted to login again after the configured time.",
+                label: "Remember Me Period",
+                placeholder: "Enter the remember me period in minutes"
+            },
+            validation: {
+                idleSessionTimeout: "Idle Session Timeout should be a positive integer.",
+                rememberMePeriod: "Remember Me Period should be a positive integer."
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Error occurred while fetching session management settings.",
+                    message: "Error occurred"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "Error occurred while updating session management settings.",
+                    message: "Error occurred"
+                },
+                success: {
+                    description: "Successfully updated the session management settings.",
+                    message: "Update successful"
+                }
+            }
+        }
+    },
+    wsFederationConfig: {
+        title: "WS-Federation Configuration",
+        description: "Configure WS-Federation protocol for your applications.",
+        form: {
+            enableRequestSigning: {
+                label: "Enable Authentication Requests Signing"
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Error occurred while fetching WS-Federation configurations.",
+                    message: "Error occurred"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "Error occurred while updating WS-Federation configurations.",
+                    message: "Error occurred"
+                },
+                success: {
+                    description: "Successfully updated the WS-Federation configurations.",
+                    message: "Update successful"
+                }
             }
         }
     }

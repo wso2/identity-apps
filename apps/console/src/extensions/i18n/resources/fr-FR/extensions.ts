@@ -3731,6 +3731,63 @@ export const extensions: Extensions = {
                 subHeading: "Configurez les paramètres de sécurité pour protéger les comptes d'utilisateurs."
             },
             additionalSettings: "Paramètres additionnels",
+            analytics: {
+                heading: "Moteur d'analyse",
+                subHeading: "Configurez le moteur d'analyse pour votre organisation.",
+                form: {
+                    fields: {
+                        hostUrl: {
+                            label: "URL de l'hôte",
+                            placeholder: "Entrez l'URL de l'hôte",
+                            hint: "L'URL du moteur d'analyse."
+                        },
+                        hostBasicAuthEnable: {
+                            label: "Activer l'authentification de base",
+                            hint: "Activez l'authentification de base pour le moteur d'analyse."
+                        },
+                        hostUsername: {
+                            label: "Nom d'utilisateur",
+                            placeholder: "Entrez le nom d'utilisateur",
+                            hint: "Le nom d'utilisateur pour s'authentifier dans le moteur d'analyse."
+                        },
+                        hostPassword: {
+                            label: "Mot de passe",
+                            placeholder: "Entrer le mot de passe",
+                            hint: "Le mot de passe pour s'authentifier dans le moteur d'analyse."
+                        },
+                        hostConnectionTimeout: {
+                            label: "Délai d'expiration de la connexion HTTP",
+                            placeholder: "Entrez le délai d'expiration de la connexion",
+                            hint: "Entrez la valeur du délai d'expiration de la connexion en millisecondes."
+                        },
+                        hostReadTimeout: {
+                            label: "Délai d'expiration de lecture HTTP",
+                            placeholder: "Entrez le délai de lecture",
+                            hint: "Entrez la valeur du délai de lecture en millisecondes."
+                        },
+                        hostConnectionRequestTimeout: {
+                            label: "Expiration du délai de demande de connexion HTTP",
+                            placeholder: "Entrez le délai d'expiration de la demande de connexion",
+                            hint: "Entrez la valeur du délai d'expiration de la demande de connexion en millisecondes."
+                        },
+                        hostNameVerification: {
+                            label: "Vérification du nom d'hôte",
+                            placeholder: "Entrez la vérification du nom d'hôte",
+                            hint: "Activez la vérification du nom d'hôte pour le moteur d'analyse. (STRICT | ALLOW_ALL)"
+                        }
+                    },
+                    notification: {
+                        error: {
+                            description: "Une erreur s'est produite lors de la mise à jour des configurations du moteur d'analyse.",
+                            message: "Erreur est survenue"
+                        },
+                        success: {
+                            description: "Mis à jour avec succès les configurations du moteur d'analyse.",
+                            message: "Mise à jour réussie"
+                        }
+                    }
+                }
+            },
             generalBackButton: "Retourner",
             generalDisabledLabel: "désactivé",
             generalEnabledLabel: "activé",

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,8 +22,14 @@ import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { LocalAuthenticatorInterface } from "../../../features/identity-providers/models/identity-provider";
 import { store } from "../../core";
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface
+} from "../../core/hooks/use-request";
 import { ServerConfigurationsConstants } from "../constants";
 import {
+    GovernanceCategoryForOrgsInterface,
     GovernanceConnectorInterface,
     RealmConfigInterface,
     UpdateGovernanceConnectorConfigInterface
@@ -35,6 +41,37 @@ import {
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance());
+
+/**
+ * Get governance connector categories.
+ * 
+ * @returns the governance connector categories.
+ */
+export const useGovernanceConnectorCategories = <
+    Data = GovernanceCategoryForOrgsInterface[], 
+    Error = RequestErrorInterface
+> 
+    (shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.governanceConnectorCategories
+    };
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig: null);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate: mutate
+    };
+};
 
 export const getData = (url: string): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {

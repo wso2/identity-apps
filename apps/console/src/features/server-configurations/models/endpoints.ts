@@ -28,12 +28,14 @@ export interface ServerConfigurationsResourceEndpointsInterface {
     governanceConnectorCategories: string;
     loginPolicies: string;
     multiFactorAuthenticators: string;
+    passiveStsConfigurations: string;
     passwordExpiry: string;
     passwordHistory: string;
     passwordPolicies: string;
     passwordPoliciesUpdate: string;
     passwordPolicy: string;
     remoteLogging: string;
+    saml2Configurations: string;
     selfSignUp: string;
     serverConfigurations: string;
     serverSupportedSchemas: string;

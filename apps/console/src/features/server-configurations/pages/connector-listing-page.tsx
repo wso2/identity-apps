@@ -23,6 +23,7 @@ import {
     HexagonTwoIcon, 
     PadlockAsteriskIcon, 
     ShieldCheckIcon,
+    UserDatabaseIcon,
     UserPlusIcon,
     VerticleFilterBarsIcon
 } from "@oxygen-ui/react-icons";
@@ -102,11 +103,40 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         getConnectorCategories()
             .then((response: GovernanceConnectorInterface[]) => {
 
-                setConnectorCategories(response?.filter((category: GovernanceConnectorCategoryInterface) => {
-                    return serverConfigurationConfig.connectorCategoriesToShow.includes(category.id); 
-                }
-                ));
+                const connectorCategoryArray: GovernanceConnectorCategoryInterface[] = [];
 
+                // Add session management category to the connector categories.
+                if (featureConfig?.sessionManagement?.enabled) {
+                    connectorCategoryArray.push({
+                        id: ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR,
+                        name: t("console:sessionManagement.title") ,
+                        route: AppConstants.getPaths().get("SESSION_MANAGEMENT")
+                    });
+                }
+
+                // Add SAML2 SSO category to the connector categories.
+                if (featureConfig?.saml2Configuration?.enabled) {
+                    connectorCategoryArray.push({
+                        id: ServerConfigurationsConstants.SAML2_SSO_CONNECTOR,
+                        name: t("console:saml2Config.title"),
+                        route: AppConstants.getPaths().get("SAML2_CONFIGURATION")
+                    });
+                }
+
+                // Add WS Federation category to the connector categories.
+                if (featureConfig?.wsFedConfiguration?.enabled) {
+                    connectorCategoryArray.push({
+                        id: ServerConfigurationsConstants.WS_FEDERATION_CONNECTOR,
+                        name: t("console:wsFederationConfig.title"),
+                        route: AppConstants.getPaths().get("WSFED_CONFIGURATION")
+                    });
+                }
+
+                connectorCategoryArray.push(...response?.filter((category: GovernanceConnectorCategoryInterface) => {
+                    return serverConfigurationConfig.connectorCategoriesToShow.includes(category.id); 
+                }));
+
+                setConnectorCategories(connectorCategoryArray);
             })
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.detail) {
@@ -133,7 +163,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
     useEffect(() => {
         connectorCategories?.forEach((connectorCategory: GovernanceConnectorCategoryInterface) => {
-            loadCategoryConnectors(connectorCategory.id);
+            !serverConfigurationConfig.customConnectors.includes(connectorCategory.id)
+            && loadCategoryConnectors(connectorCategory.id);
         });
     }, [ connectorCategories ]);
 
@@ -233,10 +264,14 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         );
     };
 
-    const handleConnectorCategoryAction = (connectorCategoryId: string): void => {
-        history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTORS")
-            .replace(":id", connectorCategoryId)
-        );
+    const handleConnectorCategoryAction = (connectorCategory: GovernanceConnectorCategoryInterface) => {        
+        if (serverConfigurationConfig.customConnectors.includes(connectorCategory?.id)) {
+            history.push(connectorCategory?.route);
+        } else {
+            history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTORS")
+                .replace(":id", connectorCategory?.id)
+            );
+        }
     };
 
     /**
@@ -276,6 +311,10 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 return (
                     <ShieldCheckIcon className="icon" />
                 );
+            case ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR:
+                return (
+                    <UserDatabaseIcon className="icon" />
+                );
             default:
                 return <GearIcon className="icon" />;
         }
@@ -297,7 +336,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         ) }
                         icon={ () => resolveConnectorCategoryIcon(connectorCategory?.id) }
                         header={ connectorCategory.name }
-                        onPrimaryActionClick={ () => handleConnectorCategoryAction(connectorCategory?.id) }
+                        onPrimaryActionClick={ () => handleConnectorCategoryAction(connectorCategory) }
                         primaryAction={ t("common:configure") }
                     />
                 </Grid>
