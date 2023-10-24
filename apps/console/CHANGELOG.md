@@ -1,5 +1,22 @@
 # @wso2is/console
 
+## 2.2.0
+
+### Minor Changes
+
+- [#4163](https://github.com/wso2/identity-apps/pull/4163) [`4ca9ebc2d1`](https://github.com/wso2/identity-apps/commit/4ca9ebc2d1782ba55db7770643c3c5749f8b06cc) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add resident IdP feature
+
+### Patch Changes
+
+- [#4310](https://github.com/wso2/identity-apps/pull/4310) [`383105e141`](https://github.com/wso2/identity-apps/commit/383105e1416bb73c7493c8d7a3d5ce6d6d45c435) Thanks [@savindi7](https://github.com/savindi7)! - Add Admin Advisory Banner to Login & Registration page
+
+* [#4288](https://github.com/wso2/identity-apps/pull/4288) [`5ac60cf193`](https://github.com/wso2/identity-apps/commit/5ac60cf19378a0ab4844485f33ac57e4bf419a52) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update default logos in email template previews
+
+* Updated dependencies [[`4ca9ebc2d1`](https://github.com/wso2/identity-apps/commit/4ca9ebc2d1782ba55db7770643c3c5749f8b06cc)]:
+  - @wso2is/react-components@2.0.10
+  - @wso2is/theme@2.0.23
+  - @wso2is/i18n@2.0.16
+
 ## 2.1.14
 
 ### Patch Changes
