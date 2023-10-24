@@ -30,8 +30,10 @@ import {
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
-import CustomizeStepsIllustration from "./assets/customize-steps.png";
+import BuildLoginFlowIllustration from 
+    "../../../../features/connections/components/authenticators/fido/assets/build-login-flow.png";
+import CustomizeStepsIllustration from 
+    "../../../../features/connections/components/authenticators/fido/assets/customize-steps.png";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../component-extensions";
 import ApplicationSelectionModal from "../../shared/application-selection-modal";
 

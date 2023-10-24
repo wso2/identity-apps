@@ -23,7 +23,6 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 
-
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -45,13 +44,12 @@
     if (!authAPIURL.endsWith("/")) {
         authAPIURL += "/";
     }
-    authAPIURL += "context/" + request.getParameter("sessionDataKey");
+    authAPIURL += "context/" + Encode.forUriComponent(request.getParameter("sessionDataKey"));
     String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
     Gson gson = new Gson();
     Map data = gson.fromJson(contextProperties, Map.class);
     
     boolean enablePasskeyProgressiveEnrollment = (boolean) data.get("FIDO.EnablePasskeyProgressiveEnrollment");
-
 %>
 
 <%-- Branding Preferences --%>
@@ -65,9 +63,9 @@
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
     %>
-    <jsp:include page="extensions/header.jsp"/>
+        <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-    <jsp:include page="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
 
     <%-- analytics --%>
@@ -115,12 +113,12 @@
                     if ("true".equals(isKeyExist)) {
                     %>
                         <span id="fido-key-exist-header">
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.title.passkey.exist" )%>
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.title.passkey.exist")%>
                         </span>
                         
                     <% } else { %>
                         <span id="fido-reg-consent-header">
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.title.passkey.not.found" )%>
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.title.passkey.not.found")%>
                         </span>
                     <% } %>
                 </h3>
@@ -131,19 +129,19 @@
                         <div id="fido-key-exist-content" class="middle aligned row">
                             <div class="sixteen wide column">
                                 <p>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.info.passkey.exist" )%>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.info.passkey.exist")%>
                                 </p>
                                 <div class="mt-4">
                                     <div class="buttons">
                                         <button class="ui primary fluid large button" type="button" onclick="authenticationFlow()">
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.login" )%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.login")%>
                                         </button>
                                     </div>
                                 </div>
                                 <div class="mt-3">
                                     <div class="buttons">
                                         <button class="ui secondary fluid large button" type="button" onclick="cancelFlow()">
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel")%>
                                         </button>
                                     </div>
                                 </div>
@@ -153,9 +151,9 @@
                         <div id="fido-reg-consent-content" class="middle aligned row">
                             <div class="sixteen wide column">
                                 <p>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.info.passkey.not.found" )%>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.info.passkey.not.found")%>
                                     <% if(!enablePasskeyProgressiveEnrollment){ %>
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.registration.option.info" )%>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.registration.option.info")%>
                                         <a target="_blank" id="my-account-link">My Account.</a>
                                     <% } %>
                                 </p>
@@ -164,7 +162,7 @@
                                         <div class="buttons">
                                             <button class="ui primary fluid large button" type="button" onclick="passkeyEnrollmentFlow()"
                                                 data-testid="login-page-fido-register-button">
-                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.register" )%>
+                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.register")%>
                                             </button>
                                         </div>
                                     </div>
@@ -172,7 +170,7 @@
                                 <div class="mt-3">
                                     <div class="column buttons">
                                         <button class="ui secondary fluid large button" type="button" onclick="cancelFlow()">
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel")%>
                                         </button>
                                     </div>
                                 </div>
@@ -187,15 +185,15 @@
                 </form>
             </div>
         </layout:component>
-        <layout:component componentName="ProductFooter" >
+        <layout:component componentName="ProductFooter">
             <%-- product-footer --%>
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
                 if (productFooterFile.exists()) {
             %>
-            <jsp:include page="extensions/product-footer.jsp"/>
+                <jsp:include page="extensions/product-footer.jsp"/>
             <% } else { %>
-            <jsp:include page="includes/product-footer.jsp"/>
+                <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
     </layout:main>
@@ -205,9 +203,9 @@
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
     %>
-    <jsp:include page="extensions/footer.jsp"/>
+        <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-    <jsp:include page="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <script type="text/javascript" src="js/u2f-api.js"></script>
@@ -227,7 +225,6 @@
     </script>
 
     <script type="text/javascript">
-
         function cancelFlow(){
             var form = document.getElementById('form');
             var scenario = document.getElementById('scenario');
@@ -248,7 +245,6 @@
             scenario.value = "INIT_FIDO_AUTH" ;
             form.submit();
         }
-
     </script>
 </body>
 </html>

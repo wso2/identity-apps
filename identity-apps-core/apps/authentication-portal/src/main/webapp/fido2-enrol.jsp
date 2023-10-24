@@ -50,9 +50,7 @@
 %>
 
 <%
-
     String regRequest = request.getParameter("data");
-
 %>
 
 <!doctype html>
@@ -77,7 +75,7 @@
     <% } %>
 
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
-        <layout:component componentName="ProductHeader" >
+        <layout:component componentName="ProductHeader">
             <%-- product-title --%>
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -88,7 +86,7 @@
                 <jsp:include page="includes/product-title.jsp"/>
             <% } %>
         </layout:component>
-        <layout:component componentName="MainSection" >
+        <layout:component componentName="MainSection">
             <div class="ui segment">
                 <div id="loader-bar" class="loader-bar"></div>
 
@@ -114,11 +112,11 @@
                             </p>
                             <div id="safari-instruction" style="display:none">
                                 <p>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.failed.instruction" )%>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.failed.instruction")%>
                                 </p>
                                 <div class="ui divider hidden"></div>
                                 <button class="ui primary fluid large button" id="initiateFlow" type="button" onclick="talkToDevice()">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.proceed" )%>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.proceed")%>
                                 </button>
                             </div>
                         </div>
@@ -126,26 +124,29 @@
                     <div id="fido-keyname-content" style="display: none;" class="middle aligned row">
                         <div class="sixteen wide column">
                             <p>
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.info.name.passkey" )%>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.info.name.passkey")%>
                             </p>
                             <div class="ui form">
                                 <!-- Add an element to display the error message -->
-                                <div class="ui red message" id="keynameError" style="display: none;"> Passkey name cannot be empty.</div>
+                                <div class="ui red message" id="keynameError" style="display: none;">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.error.name.passkey")%>
+                                </div>
                                 <div class="field">
-                                    <input type="text" id="keynameInput" placeholder="Enter your passkey name.">
+                                    <input type="text" id="keynameInput" 
+                                        placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.placeholder.name.passkey")%>">
                                 </div>
                             </div>
                             <div class="mt-4">
                                 <div class="buttons">
                                     <button class="ui primary fluid large button" type="button" onclick="finishFidoFlow()">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.submit" )%>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.submit")%>
                                     </button>
                                 </div>
                             </div>
                             <div class="mt-3">
                                 <div class="column buttons">
                                     <button class="ui secondary fluid large button" type="button" onclick="cancelFlow()">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel")%>
                                     </button>
                                 </div>
                             </div>
@@ -154,13 +155,13 @@
                     <div id="fido-error-content" style="display: none;" class="middle aligned row">
                         <div class="sixteen wide column">
                             <p>
-                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.info.error.registration" )%>
+                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.info.error.registration")%>
                             </p>
                             <div class="mt-4">
                                 <div class="column buttons">
                                     <button class="ui primary fluid large button" type="button" onclick="retry()"
                                         data-testid="registration-page-fido-retry-button">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.retry" )%>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.retry")%>
                                     </button>
                                 </div>
                             </div>
@@ -168,7 +169,7 @@
                                 <div class="column buttons">
                                     <button class="ui secondary fluid large button" type="button" onclick="cancelFlow()"
                                         data-testid="registration-page-fido-cancel-button">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel")%>
                                     </button>
                                 </div>
                             </div>
@@ -217,7 +218,6 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-
             if(navigator ){
                 let userAgent = navigator.userAgent;
                 let browserName;
@@ -287,7 +287,6 @@
         function extend(obj, more) {
             return Object.assign({}, obj, more);
         }
-
 
         function decodePublicKeyCredentialCreationOptions (request) {
             // Decode the excludeCredentials field if it exists.
@@ -394,7 +393,7 @@
             // Get the keyname input value and trim whitespace
             var keyname = keynameInput.value.trim();
 
-            // Check if the keyname is not empty
+            // Check if the keyname is empty
             if (keyname === '') {
                 // Show the error message
                 keynameError.style.display = 'block';

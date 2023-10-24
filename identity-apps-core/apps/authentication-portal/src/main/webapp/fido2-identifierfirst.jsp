@@ -59,13 +59,12 @@
     if (!authAPIURL.endsWith("/")) {
         authAPIURL += "/";
     }
-    authAPIURL += "context/" + request.getParameter("sessionDataKey");
+    authAPIURL += "context/" + Encode.forUriComponent(request.getParameter("sessionDataKey"));
     String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
     Gson gson = new Gson();
     Map data = gson.fromJson(contextProperties, Map.class);
     
     boolean enablePasskeyProgressiveEnrollment = (boolean) data.get("FIDO.EnablePasskeyProgressiveEnrollment");
-
 %>
 
 <%-- Branding Preferences --%>
@@ -125,12 +124,11 @@
             <div class="ui segment">
                 <h3 class="ui header ellipsis">
                     <span id="fido-identifier-header">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.title.login" )%>
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.title.login")%>
                     </span>
                 </h3>
 
-                <form class="ui large form" action="<%=commonauthURL%>" method="post" id="identifierForm" >
-
+                <form class="ui large form" action="<%=commonauthURL%>" method="post" id="identifierForm">
                     <div class="ui visible negative message" style="display: none;" id="error-msg"></div>
                     <div class="field">
                         <div class="ui fluid left icon input">
@@ -166,7 +164,7 @@
                                     id="registerLink"
                                     role="button"
                                 >
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.register" )%>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.register")%>
                                 </button>
                             </div>
                         <% } %>

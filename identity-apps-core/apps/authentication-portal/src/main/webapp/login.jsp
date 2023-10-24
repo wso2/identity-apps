@@ -865,10 +865,10 @@
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.authenticator" )%>"
                                         data-componentid="login-page-sign-in-with-fido"
                                     >
-                                        <img 
-                                            class="ui image" 
-                                            src="libs/themes/default/assets/images/authenticators/fido-passkey-black.svg" 
-                                            alt="Fido Logo" 
+                                        <img
+                                            class="ui image"
+                                            src="libs/themes/default/assets/images/authenticators/fido-passkey-black.svg"
+                                            alt="Fido Logo"
                                             role="presentation" />
                                         <span>
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>

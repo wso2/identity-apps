@@ -1390,8 +1390,8 @@ export const console: ConsoleNS = {
                                                     + "biometrics.",
                                                 heading: "Add Passkey Login",
                                                 info: " On-the-fly passkey enrollment is available exclusively " +
-                                                "for FIDO2 supported passkey and further users wishing to register " +
-                                                "multiple passkey, they must do so via MyAccount."
+                                                "for FIDO2 supported passkeys and further users wishing to enroll " +
+                                                "multiple passkeys, they must do so via MyAccount."
                                             },
                                             emailOTP: {
                                                 description: "Enable additional authentication layer with Email based OTP.",
