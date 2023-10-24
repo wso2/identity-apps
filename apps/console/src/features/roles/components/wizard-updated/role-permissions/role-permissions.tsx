@@ -37,7 +37,7 @@ import { SelectedPermissionsInterface } from "../../../models/roles";
 /**
  * Interface to capture permission list props
  */
-interface RolePermissionsListProp extends  IdentifiableComponentInterface {
+interface RolePermissionsListProp extends IdentifiableComponentInterface {
     /**
      * Selected permissions.
      */
@@ -135,7 +135,6 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                     })
                 );
                 setIsPermissionStepNextButtonDisabled(true);
-
             } else {
                 setIsPermissionStepNextButtonDisabled(false);
             }
