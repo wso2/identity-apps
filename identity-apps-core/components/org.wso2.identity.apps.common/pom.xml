@@ -65,6 +65,10 @@
             <artifactId>org.wso2.carbon.identity.application.mgt</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.wso2.carbon.identity.framework</groupId>
+            <artifactId>org.wso2.carbon.identity.role.v2.mgt.core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.wso2.carbon.identity.inbound.auth.oauth2</groupId>
             <artifactId>org.wso2.carbon.identity.oauth</artifactId>
         </dependency>
@@ -79,6 +83,10 @@
         <dependency>
             <groupId>org.wso2.carbon.identity.organization.management.core</groupId>
             <artifactId>org.wso2.carbon.identity.organization.management.service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.organization.management</groupId>
+            <artifactId>org.wso2.carbon.identity.organization.management.application</artifactId>
         </dependency>
         <!-- To fix travis build -->
         <dependency>
@@ -117,7 +125,9 @@
             org.wso2.carbon.identity.core.util.*; version="${carbon.identity.framework.imp.pkg.version.range}",
             org.wso2.carbon.identity.application.mgt.*; version="${carbon.identity.framework.imp.pkg.version.range}",
             org.wso2.carbon.identity.application.common.*; version="${carbon.identity.framework.imp.pkg.version.range}",
-            org.wso2.carbon.identity.organization.management.service.*; version="${identity.org.mgt.core.version.range}"
+            org.wso2.carbon.identity.role.v2.mgt.core.*; version="${carbon.identity.framework.imp.pkg.version.range}",
+            org.wso2.carbon.identity.organization.management.service.*; version="${identity.org.mgt.core.version.range}",
+            org.wso2.carbon.identity.organization.management.application.*; version="${identity.org.mgt.application.version.range}"
         </import.package>
         <dsannotations>*</dsannotations>
     </properties>
