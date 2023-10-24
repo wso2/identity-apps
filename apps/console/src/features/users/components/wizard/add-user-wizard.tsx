@@ -165,12 +165,12 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ viewNextButton, setViewNextButton ] = useState<boolean>(true);
-    const [ isUserSummaryEnabled ] = useState(false);
-    const [ , setIsStepsUpdated ] = useState(false);
     const [ isAlphanumericUsername, setIsAlphanumericUsername ] = useState<boolean>(false);
     const [ askPasswordFromUser ] = useState<boolean>(true);
-    const [ , setFinishButtonDisabled ] = useState<boolean>(false);
-    const [ , setBasicDetailsLoading ] = useState<boolean>(false);
+    const [ isFinishButtonDisabled, setFinishButtonDisabled ] = useState<boolean>(false);
+    const [ isBasicDetailsLoading, setBasicDetailsLoading ] = useState<boolean>(false);
+    const [ isStepsUpdated, setIsStepsUpdated ] = useState(false);
+    const [ isUserSummaryEnabled ] = useState(false);
 
     const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) =>
         state.organization.organization);
@@ -347,12 +347,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         }
     }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain ]);
 
-    /**
-     * Update wizard steps and related state based on various conditions
-     */
     useEffect(() => {
-
-        if (!wizardState) {
+        if (!(wizardState && wizardState[ WizardStepsFormTypes.USER_TYPE ])) {
             return;
         }
 
@@ -372,9 +368,12 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     return;
                 }
                 setWizardSteps(filterSteps([
-                    // TODO: Enable temporarily disabled the USER_TYPE step.
+                    // Temporarily disable the USER_TYPE step.
+                    // WizardStepsFormTypes.USER_TYPE,
                     WizardStepsFormTypes.BASIC_DETAILS
-                    // TODO: Enable temporarily disabled the summary step.
+                    // Commented to temporarily disable the summary step.
+                    // ,
+                    // WizardStepsFormTypes.SUMMARY
                 ]));
                 setIsStepsUpdated(true);
 
@@ -411,7 +410,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         }
 
     }, [ fixedGroupList, wizardState && wizardState[ WizardStepsFormTypes.USER_TYPE ].userType, 
-        isUserSummaryEnabled, defaultUserTypeSelection ]);
+        isUserSummaryEnabled ]);
 
     /**
      * Function to fetch and update group list for a given domain
@@ -1034,16 +1033,16 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         let wizardTitle: string = "";
 
         if (defaultUserTypeSelection === UserAccountTypes.USER) {
-            wizardTitle += t("extensions:manage.users.wizard.addUser.title");
+            wizardTitle = t("extensions:manage.users.wizard.addUser.title");
             if (userTypeSelection === UserAccountTypesMain.EXTERNAL) {
-                wizardTitle += t("console:manage.features.parentOrgInvitations.addUserWizard.heading"); 
+                wizardTitle = t("console:manage.features.parentOrgInvitations.addUserWizard.heading"); 
             } 
         } 
         
         if (defaultUserTypeSelection === UserAccountTypes.ADMINISTRATOR) {
-            wizardTitle += t("extensions:manage.users.wizard.addAdmin.internal.title");
+            wizardTitle = t("extensions:manage.users.wizard.addAdmin.internal.title");
             if (adminTypeSelection === AdminAccountTypes.INTERNAL) {
-                wizardTitle += t("extensions:manage.users.wizard.addAdmin.external.title");
+                wizardTitle = t("extensions:manage.users.wizard.addAdmin.external.title");
             }
         }
 
@@ -1060,9 +1059,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         let wizardSubHeading: string = "";
 
         if (defaultUserTypeSelection === UserAccountTypes.USER) {
-            wizardSubHeading += t("extensions:manage.users.wizard.addUser.subtitle");
+            wizardSubHeading = t("extensions:manage.users.wizard.addUser.subtitle");
             if (userTypeSelection === UserAccountTypesMain.EXTERNAL) {
-                wizardSubHeading += t("console:manage.features.parentOrgInvitations.addUserWizard.description");
+                wizardSubHeading = t("console:manage.features.parentOrgInvitations.addUserWizard.description");
             }
         }
 
@@ -1354,6 +1353,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                     data-testid={ `${ testId }-next-button` }
                                     floated="right"
                                     onClick={ navigateToNext }
+                                    loading={ isBasicDetailsLoading }
                                 >
                                     { t("console:manage.features.user.modals.addUserWizard.buttons.next") }
                                     <Icon name="arrow right"/>
@@ -1365,7 +1365,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                     floated="right"
                                     onClick={ navigateToNext }
                                     loading={ isSubmitting }
-                                    disabled={ isSubmitting }
+                                    disabled={ isSubmitting || isFinishButtonDisabled }
                                 >
                                         Finish</PrimaryButton>
                             ) }
@@ -1387,39 +1387,41 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     };
 
     return (
-        <Modal
-            data-testid={ testId }
-            open={ true }
-            className="wizard application-create-wizard"
-            dimmer="blurring"
-            size="small"
-            onClose={ closeWizard }
-            closeOnDimmerClick={ false }
-            closeOnEscape
-        >
-            <Modal.Header className="wizard-header">
-                {
-                    wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName
-                        ? " - " + wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName
-                        : ""
-                }
-                { resolveWizardTitle() }
-                <Heading as="h6">
-                    { resolveWizardSubHeading() }
-                </Heading>
-            </Modal.Header>
-            { isSubOrg ? (
-                <>
-                    { (userTypeSelection === UserAccountTypesMain.INTERNAL) && showInternalUserWizard() }
-                    { (userTypeSelection === UserAccountTypesMain.EXTERNAL) && showExternalUserWizard() }
-                </>
-            ) : (
-                <>
-                    { showInternalUserWizard() }
-                </>
-            ) }
-            { handleModalAction() }
-        </Modal>
+        wizardSteps && isStepsUpdated ? (
+            <Modal
+                data-testid={ testId }
+                open={ true }
+                className="wizard application-create-wizard"
+                dimmer="blurring"
+                size="small"
+                onClose={ closeWizard }
+                closeOnDimmerClick={ false }
+                closeOnEscape
+            >
+                <Modal.Header className="wizard-header">
+                    {
+                        wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName
+                            ? " - " + wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName
+                            : ""
+                    }
+                    { resolveWizardTitle() }
+                    <Heading as="h6">
+                        { resolveWizardSubHeading() }
+                    </Heading>
+                </Modal.Header>
+                { isSubOrg ? (
+                    <>
+                        { (userTypeSelection === UserAccountTypesMain.INTERNAL) && showInternalUserWizard() }
+                        { (userTypeSelection === UserAccountTypesMain.EXTERNAL) && showExternalUserWizard() }
+                    </>
+                ) : (
+                    <>
+                        { showInternalUserWizard() }
+                    </>
+                ) }
+                { handleModalAction() }
+            </Modal>
+        ) : null
     );
 };
 

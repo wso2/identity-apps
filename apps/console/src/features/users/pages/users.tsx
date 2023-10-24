@@ -148,8 +148,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ invitationStatusOption, setInvitationStatusOption ] = useState<string>(InvitationStatus.PENDING);
     const [ isUsersNextPageAvailable ] = useState<boolean>(undefined);
     const [ isSelectedUserStoreReadOnly ] = useState<boolean>(false);
-    const [ , setIsInvitationStatusOptionChanged ] = useState<boolean>(false);
+    const [ isInvitationStatusOptionChanged, setIsInvitationStatusOptionChanged ] = useState<boolean>(false);
+    const [ filterGuestList, setFilterGuestList ] = useState<UserInviteInterface[]>();
     const [ finalGuestList, setFinalGuestList ] = useState<UserInviteInterface[]>([]);
+    const [ paginatedGuestList, setPaginateGuestList ] = useState<UserInviteInterface[]>([]);
 
 
     const init : MutableRefObject<boolean> = useRef(true);
@@ -162,7 +164,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const modifiedLimit: number = listItemLimit + TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET;
     const excludedAttributes: string = UsersConstants.GROUPS_AND_ROLES_ATTRIBUTE;
-
 
     const invitationStatusOptions: DropdownItemProps[] = [
         {
@@ -238,6 +239,52 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         getList(listItemLimit, listOffset, null, attributes, userStore);
     }, [ listItemLimit, listOffset, userStore ]);
 
+    /**
+     * Handles the parent user invitations search query changes.
+     */
+    useEffect(() => {
+        setListOffset(0);
+        if (searchQuery === "userName co " || searchQuery === "" || searchQuery === null) {
+            setPaginateGuestList(parentOrgUserInviteList?.invitations);
+            setFilterGuestList([]);
+    
+            return;
+        } else if (searchQuery) {
+            let searchList: UserInviteInterface[] = parentOrgUserInviteList?.invitations;
+    
+            if (filterGuestList?.length > 0) {
+                searchList = filterGuestList;
+            }
+            if (searchQuery.includes("userName sw ")) {
+                const searchValue: string = searchQuery.split("sw ")[1];
+    
+                searchList = searchList?.filter((invite: UserInviteInterface) => {
+                    return invite?.username.startsWith(searchValue);
+                });
+            } else if (searchQuery.includes("userName ew ")) {
+                const searchValue: string = searchQuery.split("ew ")[1];
+    
+                searchList = searchList?.filter((invite: UserInviteInterface) => {
+                    return invite?.username.endsWith(searchValue);
+                });
+            } else if (searchQuery.includes("userName eq ")) {
+                const searchValue: string = searchQuery.split("eq ")[1];
+    
+                searchList = searchList?.filter((invite: UserInviteInterface) => {
+                    return (invite?.username === searchValue);
+                });
+            } else if (searchQuery.includes("userName co ")) {
+                const searchValue: string = searchQuery.split("co ")[1];
+    
+                searchList = searchList?.filter((invite: UserInviteInterface) => {
+                    return invite?.username.includes(searchValue);
+                });
+            }
+            setPaginateGuestList(searchList);
+            setFilterGuestList(searchList);
+        }
+    }, [ searchQuery ]);
+
     useEffect(() => {
         if (!isListUpdated) {
             return;
@@ -266,6 +313,27 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             invitation.status === InvitationStatus.PENDING.toUpperCase()));
 
     }, [ parentOrgUserInviteList?.invitations ]);
+
+    /**
+     * User effect to handle Pagination for pending/expired Guest.
+     */
+    useEffect(() => {
+        if (invitationStatusOption === InvitationStatus.ACCEPTED) {
+            return;
+        }
+    
+        let finalInvitations: UserInviteInterface[] = paginatedGuestList?.filter(
+            (invitation: UserInviteInterface) => invitation.status === invitationStatusOption.toUpperCase());
+    
+        if (finalInvitations?.length > listItemLimit) {
+            finalInvitations = finalInvitations.slice(listOffset, listOffset + listItemLimit);
+            setFinalGuestList(finalInvitations);
+            setIsNextPageAvailable(finalInvitations.length === listItemLimit);
+        } else {
+            setFinalGuestList(finalInvitations);
+            setIsNextPageAvailable(false);
+        }
+    }, [ paginatedGuestList, listOffset, listItemLimit, isInvitationStatusOptionChanged, invitationStatusOption ]);
 
     const getReadOnlyUserStoresList = (): void => {
         SharedUserStoreUtils.getReadOnlyUserStores().then((response: string[]) => {
@@ -683,7 +751,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         readOnlyUserStores={ readOnlyUserStoresList }
                         featureConfig={ featureConfig }
                     />)
-                } 
+                }
                 {
                     showWizard && ( showUserWizard() )
                 }
