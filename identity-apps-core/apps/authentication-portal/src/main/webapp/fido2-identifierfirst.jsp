@@ -21,7 +21,6 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
-<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
@@ -34,20 +33,6 @@
 <%@include file="includes/init-url.jsp" %>
 
 <%
-    String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
-    Boolean isEmailUsernameEnabled;
-    String usernameLabel = "username";
-
-    if (StringUtils.isNotBlank(emailUsernameEnable)) {
-        isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
-    } else {
-        isEmailUsernameEnabled = isEmailUsernameEnabled();
-    }
-
-    if (isEmailUsernameEnabled == true) {
-        usernameLabel = "email.username";
-    }
-
     String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
 
     if (StringUtils.isBlank(authAPIURL)) {
@@ -78,9 +63,9 @@
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
     %>
-    <jsp:include page="extensions/header.jsp"/>
+        <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-    <jsp:include page="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
 
     <%-- analytics --%>
@@ -121,15 +106,13 @@
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection">
-            <div class="ui segment">
+            <div class="ui segment left aligned">
                 <h3 class="ui header ellipsis">
                     <span id="fido-identifier-header">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.title.login")%>
                     </span>
                 </h3>
-
                 <form class="ui large form" action="<%=commonauthURL%>" method="post" id="identifierForm">
-                    <div class="ui visible negative message" style="display: none;" id="error-msg"></div>
                     <div class="field">
                         <div class="ui fluid left icon input">
                             <input
@@ -139,16 +122,26 @@
                                 name="username"
                                 maxlength="50"
                                 tabindex="0"
-                                placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%>"
+                                placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "username")%>"
                                 required />
                             <i aria-hidden="true" class="user icon"></i>
                         </div>
+                        <div class="mt-1 left aligned" id="usernameError" style="display: none;">
+                            <i class="red exclamation circle fitted icon"></i>
+                            <span class="validation-error-message" id="usernameErrorText">
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "username.cannot.be.empty")%>
+                            </span>
+                        </div>
+                        <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute
+                            (request.getParameter("sessionDataKey"))%>'/>
+                        <input type="hidden" name="scenario" id="scenario" value="INIT_FIDO_AUTH"/>
                     </div>
                     <div class="mt-4">
                         <div class="buttons">
                             <button
                                 class="ui primary fluid large button"
-                                type="submit"
+                                type="button"
+                                onclick="validateForm() && identifierForm.submit()"
                             >
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.continue")%>
                             </button>
@@ -159,19 +152,15 @@
                             </div>
                             <div class="buttons">
                                 <button
-                                    onclick="initiatePasskeyCreationFlow()"
                                     class="ui secondary fluid large button"
-                                    id="registerLink"
-                                    role="button"
+                                    type="button"
+                                    onclick="validateForm() && initiatePasskeyCreationFlow()"
                                 >
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.register")%>
                                 </button>
                             </div>
                         <% } %>
                     </div>
-                    <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute
-                        (request.getParameter("sessionDataKey"))%>'/>
-                    <input type="hidden" name="scenario" id="scenario" value="INIT_FIDO_AUTH"/>
                 </form>
             </div>
         </layout:component>
@@ -199,6 +188,18 @@
     <% } %>
 
     <script>
+        function validateForm() {
+            var username = document.getElementById('username').value;
+            var usernameError = document.getElementById('usernameError');
+            
+            if(username.trim() === "") {
+                usernameError.style.display = "block";
+                return false;
+            } else {
+                usernameError.style.display = "none";
+                return true;
+            }
+        }
         function initiatePasskeyCreationFlow(){
             var form = document.getElementById('identifierForm');
             var scenario = document.getElementById('scenario');
