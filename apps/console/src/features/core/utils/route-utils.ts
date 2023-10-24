@@ -298,6 +298,11 @@ export class RouteUtils {
             order: 4
         };
 
+        const other: NavCategory = {
+            id: "other",
+            order: 5
+        };
+
         const pathsToCheck: string[] = [
             `${AppConstants.getAdminViewBasePath()}/governance-connectors/`,
             `${AppConstants.getAdminViewBasePath()}/connector/`,
@@ -400,7 +405,7 @@ export class RouteUtils {
                 id: "logs"            
             },
             {
-                category: settings,       
+                category: other,       
                 id: "remoteLogging"
             },
             {
@@ -409,12 +414,12 @@ export class RouteUtils {
             },
             {
                 category: settings,
-                id: "adminAdvisoryBanner"
-            },
-            {
-                category: settings,
                 id: "loginAndRegistration",
                 selected: pathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
+            },
+            {
+                category: other,
+                id: "analytics"
             }
         ];
 
