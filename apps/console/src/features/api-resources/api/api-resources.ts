@@ -305,3 +305,35 @@ export const createAPIResource = (
                 error.config);
         });
 };
+
+/**
+ * Delete a scope from an API resource.
+ * 
+ * @param apiResourceId - UUID of the API resource.
+ * @param deleteScopeName - Name of the scope that needs to be deleted.
+ * @returns `Promise<null | IdentityAppsApiException>`
+ */
+export const deleteScopeFromAPIResource = (
+    apiResourceId: string, 
+    deletingScopeName: string
+): Promise<null | IdentityAppsApiException> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        method: HttpMethods.DELETE,
+        url: `${store.getState().config.endpoints.apiResources}/${apiResourceId}/scopes/${deletingScopeName}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                error.message,
+                error.stack,
+                error.response?.data?.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
