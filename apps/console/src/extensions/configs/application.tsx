@@ -81,6 +81,9 @@ const IS_ENTERPRISELOGIN_MANAGEMENT_APP: string = "isEnterpriseLoginManagementAp
 // Relative tab indexes.
 const API_AUTHORIZATION_INDEX: number = 4;
 const APPLICATION_ROLES_INDEX: number = 4;
+const M2M_API_AUTHORIZATION_INDEX: number = 2;
+
+const featureConfig: FeatureConfigInterface = window[ "AppUtils" ].getConfig().ui.features;
 
 /**
  * Check whether claims is  identity claims or not.
@@ -134,6 +137,10 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
             ApplicationManagementConstants.SAML2_BEARER,
             ApplicationManagementConstants.JWT_BEARER
+        ],
+        [ "m2m-application" ]: [
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
         ],
         [ "mobile-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
@@ -385,12 +392,15 @@ export const applicationConfig: ApplicationConfig = {
                     || application?.templateId === MobileAppTemplate?.id
                     || application?.templateId === OIDCWebAppTemplate?.id
                     || application?.templateId === SinglePageAppTemplate?.id
+                    || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                 )
             ) {
                 tabExtensions.push(
                     {
                         componentId: "api-authorization",
-                        index: API_AUTHORIZATION_INDEX + tabExtensions.length,
+                        index: application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID 
+                            ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length 
+                            : API_AUTHORIZATION_INDEX + tabExtensions.length,
                         menuItem: I18n.instance.t(
                             "extensions:develop.applications.edit.sections.apiAuthorization.title"
                         ),
@@ -646,6 +656,7 @@ export const applicationConfig: ApplicationConfig = {
     },
     templates:{
         custom: true,
+        m2m: !featureConfig?.applications?.disabledFeatures?.includes("m2mTemplate"),
         mobile: true,
         oidc: true,
         saml: false,

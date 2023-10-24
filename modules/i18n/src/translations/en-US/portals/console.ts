@@ -1623,7 +1623,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "A valid access URL must be provided to make this application discoverable.",
                                     invalid: "Enter a valid URL"
-                                }
+                                },
+                                ariaLabel: "Application access URL"
                             },
                             description: {
                                 label: "Description",
@@ -1860,6 +1861,17 @@ export const console: ConsoleNS = {
                                             "needs to present the <1>access_token</1> + cookie for successful "+
                                             "authorization.",
                                         label: "Validate token bindings"
+                                    },
+                                    audience: {
+                                        hint: "Specify the recipient(s) that this <1>access_token</1> is intended for." +
+                                        " By default, the client ID of this application is added as an audience.",
+                                        label: "Audience",
+                                        placeholder: "Enter Audience",
+                                        validations: {
+                                            duplicate: "Audience contains duplicate values",
+                                            empty: "Please fill the audience",
+                                            invalid: "Please avoid special characters like commas (,)"
+                                        }
                                     }
                                 },
                                 heading: "Access Token",

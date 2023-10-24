@@ -354,7 +354,7 @@
                 }
             },
             "applications": {
-                "disabledFeatures": [],
+                "disabledFeatures": [""],
                 "enabled": true,
                 "scopes": {
                     "feature": [

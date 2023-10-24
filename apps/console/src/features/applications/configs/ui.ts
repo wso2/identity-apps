@@ -1,10 +1,19 @@
 /**
- * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
  *
- * This software is the property of WSO2 LLC. and its suppliers, if any.
- * Dissemination of any information or reproduction of any material contained
- * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- * You may not alter or remove any copyright or other notice from copies of this content.
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 import { FunctionComponent, SVGProps } from "react";
 import BasicAuthIcon from "../../../themes/default/assets/images/authenticators/basic-auth.png";
@@ -88,6 +97,9 @@ import {
     ReactComponent as globalIllustration
 } from "../../../themes/default/assets/images/illustrations/global.svg";
 import {
+    ReactComponent as M2MTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/m2m-app-illustration.svg";
+import {
     ReactComponent as OIDCMobileTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/oidc-mobile-template-illustration.svg";
 import {
@@ -121,6 +133,7 @@ import {
     ReactComponent as ZoomTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/zoom-template-illustration.svg";
 import OAuth2OpenIDLogo from "../../../themes/default/assets/images/protocols/oauth2-oidc.png";
+import OAuth2Logo from "../../../themes/default/assets/images/protocols/oauth2.png";
 import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
@@ -132,6 +145,7 @@ import { SupportedAuthProtocolTypes } from "../models";
 
 export const getInboundProtocolLogos = (): {
     general: FunctionComponent<SVGProps<SVGSVGElement>>;
+    oauth2: string;
     oidc: string;
     openid: string;
     "passive-sts": string;
@@ -144,6 +158,7 @@ export const getInboundProtocolLogos = (): {
 
     return {
         general: ProtocolIllustration,
+        oauth2: OAuth2Logo,
         oidc: OpenIDLogo,
         openid: OpenIDLogo,
         "passive-sts": WSFedLogo,
@@ -158,6 +173,7 @@ export const getInboundProtocolLogos = (): {
 export const getApplicationTemplateIllustrations = (): {
     box: FunctionComponent<SVGProps<SVGSVGElement>>;
     customApp: FunctionComponent<SVGProps<SVGSVGElement>>;
+    m2m: FunctionComponent<SVGProps<SVGSVGElement>>;
     oidcMobile: FunctionComponent<SVGProps<SVGSVGElement>>;
     oidcWebApp: FunctionComponent<SVGProps<SVGSVGElement>>;
     passiveSTS: FunctionComponent<SVGProps<SVGSVGElement>>;
@@ -173,6 +189,7 @@ export const getApplicationTemplateIllustrations = (): {
     return {
         box: BoxTemplateIllustration,
         customApp: CustomApplicationTemplateIllustration,
+        m2m: M2MTemplateIllustration,
         oidcMobile: OIDCMobileTemplateIllustration,
         oidcWebApp: OIDCWebAppTemplateIllustration,
         passiveSTS: PassiveSTSTemplateIllustration,

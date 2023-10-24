@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -316,7 +316,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         application.templateId = selectedTemplate.id;
         // If the application is a OIDC standard-based application
         if (customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
-            && selectedTemplate?.templateId === "custom-application") {
+            && (selectedTemplate?.templateId === "custom-application" 
+                || selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)) {
             application.isManagementApp = generalFormValues.get("isManagementApp").length >= 2
                 ? true
                 : false;
@@ -353,6 +354,17 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             } else if (customApplicationProtocol === SupportedAuthProtocolTypes.WS_FEDERATION) {
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS;
             }
+        }
+
+        if (selectedTemplate.id === ApplicationTemplateIdTypes.M2M_APPLICATION) {
+            // M2M Apps are created with `client_credentials` grant by default.
+            application.inboundProtocolConfiguration = {
+                oidc: {
+                    grantTypes: [
+                        "client_credentials"
+                    ]
+                }
+            };
         }
 
         setIsSubmitting(true);
@@ -649,6 +661,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
         if (selectedTemplate.id === CustomApplicationTemplate.id) {
             selectedProtocol = customApplicationProtocol;
+        } else if (selectedTemplate.id === ApplicationTemplateIdTypes.M2M_APPLICATION) {
+            selectedProtocol = SupportedAuthProtocolTypes.OAUTH2_OIDC;
         }
 
         if (selectedProtocol === SupportedAuthProtocolTypes.OIDC) {
@@ -1022,8 +1036,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     </Grid.Row>
                     {
                         // The Management App checkbox is only present in OIDC Standard-Based apps
-                        (customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
-                            && selectedTemplate?.templateId === "custom-application") && (
+                        (customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC && 
+                            (selectedTemplate?.templateId === "custom-application" || 
+                            selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)
+                        ) && (
                             <div className="pt-0 mt-0">
                                 <Field
                                     data-testid={ `${ testId }-management-app-checkbox` }
