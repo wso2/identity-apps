@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -101,7 +101,7 @@ export const USERSTORE_TYPE_DISPLAY_NAMES: UserStoreTypeDisplayNamesInterface = 
     ReadOnlyLDAPUserStoreManager: "Read Only LDAP",
     ReadWriteLDAPUserStoreManager: "Read Write LDAP",
     UniqueIDActiveDirectoryUserStoreManager: "Active Directory",
-    UniqueIDJDBCUserStoreManager: "JDBC",
+    UniqueIDJDBCUserStoreManager: "Database",
     UniqueIDReadOnlyLDAPUserStoreManager: "Read Only LDAP",
     UniqueIDReadWriteLDAPUserStoreManager: "Read Write LDAP"
 };

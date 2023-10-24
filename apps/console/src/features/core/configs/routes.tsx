@@ -731,7 +731,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             }
                         ],
                         component: lazy(() =>
-                            import("../../server-configurations/pages/admin-advisory-banner-page")
+                            import("../../server-configurations/pages/connector-listing-page")
                         ),
                         exact: true,
                         icon: {
@@ -742,7 +742,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 22,
                         path: AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:develop.sidePanel.categories.AccountManagement",

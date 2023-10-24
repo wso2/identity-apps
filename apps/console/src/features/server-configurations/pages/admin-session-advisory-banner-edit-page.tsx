@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -101,7 +101,7 @@ export const AdminSessionAdvisoryBannerEditPage: FC<AdmindvisoryBannerEditPageIn
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-        history.push(AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER"));
+        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
     };
 
     const handleToggleChange = (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
@@ -191,8 +191,7 @@ export const AdminSessionAdvisoryBannerEditPage: FC<AdmindvisoryBannerEditPageIn
             backButton={ {
                 "data-testid": `${ componentId }-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("console:manage.features.serverConfigs.adminAdvisory." + 
-                    "configurationEditSection.backButtonLabel")
+                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
             } }
             bottomMargin={ false }
             contentTopMargin={ true }

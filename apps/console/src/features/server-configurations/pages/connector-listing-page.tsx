@@ -51,6 +51,7 @@ import {
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorInterface
 } from "../models";
+import AdminAdvisoryBannerSection from "../settings/admin-advisory-banner-section";
 import { EditConnector } from "../settings/edit-connector";
 import { SettingsSection } from "../settings/settings-section";
 
@@ -281,9 +282,9 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     };
 
     /**
-     * Render connector categories which generate the connector forms dynamically.
+     * Get connector categories which generate the connector forms dynamically.
      */
-    const renderDynamicCategoryConnectors = (): ReactElement[] => {
+    const getDynamicCategoryConnectors = (): ReactElement[] => {
         if (connectorCategories && Array.isArray(connectorCategories) && connectorCategories.length > 0) {
             return connectorCategories.map((connectorCategory: GovernanceConnectorCategoryInterface, index: number) => (
                 <Grid xs={ 12 } lg={ 6 } key={ index }>
@@ -307,9 +308,9 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     };
 
     /**
-     * Render connectors.
+     * Get connectors.
      */
-    const renderStaticConnectors = (): ReactElement[] => {
+    const getStaticConnectors = (): ReactElement[] => {
         if (connectors && Array.isArray(connectors) && connectors.length > 0) {
             return connectors.map((connector: GovernanceConnectorWithRef, index: number) => {
                 if (serverConfigurationConfig.connectorsToShow.includes(connector?.name)) {
@@ -341,10 +342,10 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const renderConnectors = (): ReactElement[] => {
 
         if (serverConfigurationConfig.dynamicConnectors) {
-            return renderDynamicCategoryConnectors();
+            return getDynamicCategoryConnectors();
         }
 
-        return renderStaticConnectors();
+        return getStaticConnectors();
     };
 
     return (
@@ -364,56 +365,61 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                                     renderConnectors()
                                 }
                                 {
-                                    (!serverConfigurationConfig.dynamicConnectors) && (
-                                        <>
+                                    serverConfigurationConfig.dynamicConnectors
+                                        ? (
                                             <Grid xs={ 12 } lg={ 6 }>
-                                                <SettingsSection
-                                                    data-componentid={ "account-login-page-section" }
-                                                    data-testid={ "account-login-page-section" }
-                                                    description={ 
-                                                        t("extensions:manage.accountLogin." +
-                                                        "editPage.description") 
-                                                    }
-                                                    icon={ UsernameValidationIcon }
-                                                    header={ 
-                                                        t("extensions:manage.accountLogin.editPage.pageTitle") 
-                                                    }
-                                                    onPrimaryActionClick={ handleSelection }
-                                                    primaryAction={ t("common:configure") }
-                                                />
+                                                <AdminAdvisoryBannerSection />
                                             </Grid>
-                                            <Grid xs={ 12 } lg={ 6 }>
-                                                <SettingsSection
-                                                    data-componentid={
-                                                        "account-login-page-alternative-login-" +
-                                                        "identifier-section"
-                                                    }
-                                                    data-testid={
-                                                        "account-login-page-alternative-login-" +
-                                                        "identifier-section"
-                                                    }
-                                                    description={
-                                                        t("extensions:manage.accountLogin." +
-                                                        "alternativeLoginIdentifierPage.description") }
-                                                    icon={ <ArrowLoopRightUserIcon className="icon" /> }
-                                                    header={
-                                                        t("extensions:manage.accountLogin." +
-                                                        "alternativeLoginIdentifierPage.pageTitle")
-                                                    }
-                                                    onPrimaryActionClick={
-                                                        handleAlternativeLoginIdentifierSelection
-                                                    }
-                                                    primaryAction={ t("common:configure") }
-                                                />
-                                            </Grid>
-                                            <Grid xs={ 12 } lg={ 6 }>
-                                                <ValidationConfigPage/>
-                                            </Grid>
-                                            <Grid xs={ 12 } lg={ 6 }>
-                                                <PrivateKeyJWTConfig/>
-                                            </Grid>
-                                        </>
-                                    ) }
+                                        ) : (
+                                            <>
+                                                <Grid xs={ 12 } lg={ 6 }>
+                                                    <SettingsSection
+                                                        data-componentid={ "account-login-page-section" }
+                                                        data-testid={ "account-login-page-section" }
+                                                        description={ 
+                                                            t("extensions:manage.accountLogin." +
+                                                            "editPage.description") 
+                                                        }
+                                                        icon={ UsernameValidationIcon }
+                                                        header={ 
+                                                            t("extensions:manage.accountLogin.editPage.pageTitle") 
+                                                        }
+                                                        onPrimaryActionClick={ handleSelection }
+                                                        primaryAction={ t("common:configure") }
+                                                    />
+                                                </Grid>
+                                                <Grid xs={ 12 } lg={ 6 }>
+                                                    <SettingsSection
+                                                        data-componentid={
+                                                            "account-login-page-alternative-login-" +
+                                                            "identifier-section"
+                                                        }
+                                                        data-testid={
+                                                            "account-login-page-alternative-login-" +
+                                                            "identifier-section"
+                                                        }
+                                                        description={
+                                                            t("extensions:manage.accountLogin." +
+                                                            "alternativeLoginIdentifierPage.description") }
+                                                        icon={ <ArrowLoopRightUserIcon className="icon" /> }
+                                                        header={
+                                                            t("extensions:manage.accountLogin." +
+                                                            "alternativeLoginIdentifierPage.pageTitle")
+                                                        }
+                                                        onPrimaryActionClick={
+                                                            handleAlternativeLoginIdentifierSelection
+                                                        }
+                                                        primaryAction={ t("common:configure") }
+                                                    />
+                                                </Grid>
+                                                <Grid xs={ 12 } lg={ 6 }>
+                                                    <ValidationConfigPage/>
+                                                </Grid>
+                                                <Grid xs={ 12 } lg={ 6 }>
+                                                    <PrivateKeyJWTConfig/>
+                                                </Grid>
+                                            </>
+                                        ) }
                             </Grid>
                         )
                 }
