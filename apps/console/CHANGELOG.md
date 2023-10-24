@@ -1,5 +1,21 @@
 # @wso2is/console
 
+## 2.1.12
+
+### Patch Changes
+
+- [#4297](https://github.com/wso2/identity-apps/pull/4297) [`990032d4d9`](https://github.com/wso2/identity-apps/commit/990032d4d9e4f2c0e711c6caacba19b5696ea30e) Thanks [@savindi7](https://github.com/savindi7)! - Revamp the UI of Login & Registration page
+
+* [#4301](https://github.com/wso2/identity-apps/pull/4301) [`673488e54b`](https://github.com/wso2/identity-apps/commit/673488e54bc8c04ba2f4721a370292ae9fc65db8) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Remove legacy SMSOTP and EmailOTP authenticators
+
+- [#4307](https://github.com/wso2/identity-apps/pull/4307) [`d017fb3b5c`](https://github.com/wso2/identity-apps/commit/d017fb3b5c5f042b5b6f6b98265cd66e5266edae) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Fix API Scope deletion issue
+
+- Updated dependencies [[`990032d4d9`](https://github.com/wso2/identity-apps/commit/990032d4d9e4f2c0e711c6caacba19b5696ea30e)]:
+  - @wso2is/react-components@2.0.9
+  - @wso2is/theme@2.0.20
+  - @wso2is/core@2.0.5
+  - @wso2is/i18n@2.0.13
+
 ## 2.1.11
 
 ### Patch Changes
