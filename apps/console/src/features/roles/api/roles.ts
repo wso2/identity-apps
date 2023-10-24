@@ -427,7 +427,7 @@ export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInter
  * @param domain - User store domain.
  * @param filter - Search filter.
  * @returns The object containing the roles list.
- * @deprecated This is a temporary hook until the API resources is moved to features.
+ * @deprecated This is a temporary hook until the API resource feature moved to the features folder.
  */
 export const useAPIResourcesList = <Data = APIResourceListInterface, Error = RequestErrorInterface>(
     filter?: string
@@ -468,7 +468,7 @@ export const useAPIResourcesList = <Data = APIResourceListInterface, Error = Req
  * @param apiResourceId - id of the API resource
  * @returns `Promise<APIResourceInterface>`
  * @throws `IdentityAppsApiException`
- * @deprecated This is a temporary hook until the API resources is moved to features.
+ * @deprecated This is a temporary hook until the API resource feature moved to the features folder.
  */
 export const useAPIResourceDetails = <Data = APIResourceInterface, Error = RequestErrorInterface>(
     apiResourceId: string
@@ -503,7 +503,7 @@ export const useAPIResourceDetails = <Data = APIResourceInterface, Error = Reque
  * @param appId - Application ID.
  * 
  * @returns A promise containing the response.
- * @deprecated This is a temporary hook until the API resources is moved to features.
+ * @deprecated This is a temporary hook until the API resource feature moved to the features folder.
  */
 export const useGetAuthorizedAPIList = <Data = AuthorizedAPIListItemInterface[], Error = RequestErrorInterface>(
     applicationId: string

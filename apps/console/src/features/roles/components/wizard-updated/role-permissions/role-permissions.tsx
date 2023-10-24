@@ -147,17 +147,19 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             const options: DropdownProps[] = [];
 
             if(roleAudience === RoleAudienceTypes.ORGANIZATION) {
-                // // API resources list options when role audience is "organization".
-                apiResourcesList?.apiResources?.map((apiResource: APIResourceInterface) => {
-                    if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) => 
-                        selectedAPIResource?.id === apiResource?.id)) {
-                        options.push({
-                            key: apiResource.id,
-                            text: apiResource.name,
-                            value: apiResource.id
-                        });
-                    }
-                });
+                // API resources list options when role audience is "organization".
+                apiResourcesList?.apiResources?.map(
+                    (apiResource: APIResourceInterface) => {
+                        if (!selectedAPIResources.find(
+                            (selectedAPIResource: APIResourceInterface) => 
+                                selectedAPIResource?.id === apiResource?.id)) {
+                            options.push({
+                                key: apiResource.id,
+                                text: apiResource.name,
+                                value: apiResource.id
+                            });
+                        }
+                    });
             } else {
                 // API resources list options when role audience is "application".
                 authorizedAPIListForApplication?.map((api: AuthorizedAPIListItemInterface) => {
