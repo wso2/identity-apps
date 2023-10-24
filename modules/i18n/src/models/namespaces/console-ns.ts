@@ -5069,6 +5069,9 @@ export interface ConsoleNS {
                                     removeAPIResource: string;
                                 }
                             };
+                            notes: {
+                                applicationRoles: string;
+                            };
                             notifications: {
                                 fetchAPIResourceError: Notification;
                             };

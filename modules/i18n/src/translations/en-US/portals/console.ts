@@ -9873,6 +9873,9 @@ export const console: ConsoleNS = {
                                     removeAPIResource: "Remove API resource"
                                 }
                             },
+                            notes: {
+                                applicationRoles: "Only the APIs and the scopes(permissions) that are authorized in the selected application(<1>{{applicationName}}</1>) will be listed to select."
+                            },
                             notifications: {
                                 fetchAPIResourceError: {
                                     error: {

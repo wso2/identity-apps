@@ -28,7 +28,7 @@ import useRequest, {
     RequestResultInterface 
 } from "../../core/hooks/use-request";
 import { CreateRoleInterface, PatchRoleDataInterface, RolesV2ResponseInterface, SearchRoleInterface } from "../models";
-import { APIResourceInterface, APIResourceListInterface } from "../models/apiResources";
+import { APIResourceInterface, APIResourceListInterface, AuthorizedAPIListItemInterface } from "../models/apiResources";
 
 /**
  * Initialize an axios Http client.
@@ -185,6 +185,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
 
 /**
  * Delete a selected role with a given role ID.
+ * TODO:ROLEV2 Need to update the url once the API is ready.
  *
  * @param roleId - Id of the role which needs to be deleted.
  * @returns A promise containing the status of the delete.
@@ -196,7 +197,7 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config.endpoints.roles + "/" + roleId
+        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
     };
 
     return httpClient(requestConfig)
@@ -209,10 +210,11 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
 
 /**
  * Create a role in the system with role data given by user.
+ * TODO:ROLEV2 Need to update the url once the API is ready.
  *
  * @param data - data object used to create the role
  */
-export const createRole = (data: CreateRoleInterface): Promise<any> => {
+export const createRole = (data: CreateRoleInterface): Promise<AxiosResponse> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
@@ -220,7 +222,7 @@ export const createRole = (data: CreateRoleInterface): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.roles
+        url: store.getState().config.endpoints.rolesV2
     };
 
     return httpClient(requestConfig)
@@ -466,7 +468,7 @@ export const useAPIResourcesList = <Data = APIResourceListInterface, Error = Req
  * @param apiResourceId - id of the API resource
  * @returns `Promise<APIResourceInterface>`
  * @throws `IdentityAppsApiException`
- *  @deprecated This is a temporary hook until the API resources is moved to features.
+ * @deprecated This is a temporary hook until the API resources is moved to features.
  */
 export const useAPIResourceDetails = <Data = APIResourceInterface, Error = RequestErrorInterface>(
     apiResourceId: string
@@ -485,6 +487,36 @@ export const useAPIResourceDetails = <Data = APIResourceInterface, Error = Reque
      * Pass `null` if the `apiResourceId` is not available. This will prevent the request from being called.
      */
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(apiResourceId ? requestConfig : null);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate
+    };
+};
+
+/**
+ * Get the authorized APIs of the application with authorized permissions.
+ *
+ * @param appId - Application ID.
+ * 
+ * @returns A promise containing the response.
+ * @deprecated This is a temporary hook until the API resources is moved to features.
+ */
+export const useGetAuthorizedAPIList = <Data = AuthorizedAPIListItemInterface[], Error = RequestErrorInterface>(
+    applicationId: string
+): RequestResultInterface<Data, Error> => {
+    const requestConfig: RequestConfigInterface = {
+        method: HttpMethods.GET,
+        url: `${ store.getState().config.endpoints.applications }/${ applicationId }/authorized-apis`
+    };
+
+    /**
+     * Pass `null` if the `apiResourceId` is not available. This will prevent the request from being called.
+     */
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(applicationId ? requestConfig : null);
 
     return {
         data,

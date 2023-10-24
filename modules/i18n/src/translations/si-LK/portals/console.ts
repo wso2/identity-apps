@@ -7944,6 +7944,9 @@ export const console: ConsoleNS = {
                                     removeAPIResource: "API සම්පත ඉවත් කරන්න"
                                 }
                             },
+                            notes: {
+                                applicationRoles: "තෝරාගත් අයදුම්පතේ(<1>{{applicationName}}</1>) තෝරා ගැනීමට ලැයිස්තුගත කර ඇති APIs සහ විෂය පථයන් පමණක් තෝරා ගැනීමට ලැයිස්තුගත කර ඇත."
+                            },
                             notifications: {
                                 fetchAPIResourceError: {
                                     error: {
