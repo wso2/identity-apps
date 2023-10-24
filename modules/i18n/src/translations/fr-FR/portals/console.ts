@@ -7518,39 +7518,39 @@ export const console: ConsoleNS = {
                     form: {
                         dropdown: {
                             filterAttributeOptions: {
-                                organizationName: "Organization Name"
+                                organizationName: "nom de l'organisation"
                             }
                         },
                         inputs: {
                             filterAttribute: {
-                                placeholder: "E.g. Organization Name etc."
+                                placeholder: "Par exemple. Nom de l'organisation, etc."
                             },
                             filterCondition: {
-                                placeholder: "E.g. Starts with etc."
+                                placeholder: "Par exemple. Commence par etc."
                             },
                             filterValue: {
-                                placeholder: "Enter value to search"
+                                placeholder: "Entrez la valeur à rechercher"
                             }
                         }
                     },
-                    placeholder: "Search by Organization Name"
+                    placeholder: "Rechercher par nom d'organisation"
                 },
                 emailDomains: {
                     actions: {
                         assign: "Attribuer un domaine de messagerie",
-                        enable: "Enable email domain discovery"
+                        enable: "Activer la découverte de domaines de messagerie"
                     }
                 },
                 edit: {
-                    back: "Back",
-                    description: ",Edit Email Domains",
+                    back: "Dos",
+                    description: "Modifier les domaines de messagerie",
                     fields: {
                         name: {
-                            label: "Organization Name"
+                            label: "nom de l'organisation"
                         },
                         emailDomains: {
-                            label: "Email Domains",
-                            placeHolder: "Enter email domains"
+                            label: "Domaines de messagerie",
+                            placeHolder: "Entrez les domaines de messagerie"
                         }
                     }
                 },
@@ -7558,84 +7558,84 @@ export const console: ConsoleNS = {
                     disableEmailDomainDiscovery: {
                         error: {
                             description: "{{description}}",
-                            message: "Error while disabling email domain discovery"
+                            message: "Erreur lors de la désactivation de la découverte de domaine de messagerie"
                         },
                         genericError: {
-                            description: "An error occurred while disabling email domain discovery",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la désactivation de la découverte de domaines de messagerie",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Successfully disabled email domain discovery",
-                            message: "Email domain discovery disabled successfully"
+                            description: "La découverte du domaine de messagerie a été désactivée avec succès",
+                            message: "La découverte du domaine de messagerie a été désactivée avec succès"
                         }
                     },
                     enableEmailDomainDiscovery: {
                         error: {
                             description: "{{description}}",
-                            message: "Error while enabling email domain discovery"
+                            message: "Erreur lors de l'activation de la découverte de domaines de messagerie"
                         },
                         genericError: {
-                            description: "An error occurred while enabling email domain discovery",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de l'activation de la découverte de domaines de messagerie",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Successfully enabled email domain discovery",
-                            message: "Email domain discovery enabled successfully"
+                            description: "La découverte du domaine de messagerie a été activée avec succès",
+                            message: "La découverte du domaine de messagerie a été activée avec succès"
                         }
                     },
                     fetchOrganizationDiscoveryAttributes: {
                         error: {
                             description: "{{description}}",
-                            message: "Error while fetching the organization discovery attributes"
+                            message: "Erreur lors de la récupération des attributs de découverte de l'organisation"
                         },
                         genericError: {
-                            description: "An error occurred while fetching the organization discovery attributes",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la récupération des attributs de découverte de l'organisation",
+                            message: "Quelque chose s'est mal passé"
                         }
                     },
                     getEmailDomainDiscovery: {
                         error: {
                             description: "{{description}}",
-                            message: "Error while retrieving email domain discovery configuration"
+                            message: "Erreur lors de la récupération de la configuration de la découverte du domaine de messagerie"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving email domain discovery configuration",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la récupération de la configuration de la découverte du domaine de messagerie",
+                            message: "Quelque chose s'est mal passé"
                         }
                     },
                     getOrganizationListWithDiscovery: {
                         error: {
                             description: "{{description}}",
-                            message: "Error while getting the organization list with discovery attributes"
+                            message: "Erreur lors de l'obtention de la liste des organisations avec les attributs de découverte"
                         },
                         genericError: {
-                            description: "An error occurred while getting the organization list with discovery attributes",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de l'obtention de la liste des organisations avec les attributs de découverte",
+                            message: "Quelque chose s'est mal passé"
                         }
                     },
                     updateOrganizationDiscoveryAttributes: {
                         error: {
                             description: "{{description}}",
-                            message: "Error while updating the organization discovery attributes"
+                            message: "Erreur lors de la mise à jour des attributs de découverte de l'organisation"
                         },
                         genericError: {
-                            description: "An error occurred while updating the organization discovery attributes",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la mise à jour des attributs de découverte de l'organisation",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Successfully updated the organization discovery attributes",
-                            message: "Organization discovery attributes updated successfully"
+                            description: "Mise à jour réussie des attributs de découverte de l'organisation",
+                            message: "Attributs de découverte d'organisation mis à jour avec succès"
                         }
                     }
                 },
                 placeholders: {
                     emptyList: {
-                        action: "Assign Email Domain",
-                        subtitles: "There are no organizations with email domains assigned.",
-                        title: "Assign Email Domain"
+                        action: "Attribuer un domaine de messagerie",
+                        subtitles: "Aucune organisation ne dispose de domaines de messagerie attribués.",
+                        title: "Attribuer un domaine de messagerie"
                     }
                 },
-                title: "Email Domain Discovery"
+                title: "Découverte de domaines de messagerie"
             },
             organizations: {
                 advancedSearch: {

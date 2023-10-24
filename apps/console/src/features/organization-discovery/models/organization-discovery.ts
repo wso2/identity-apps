@@ -24,7 +24,7 @@ export interface OrganizationInterface {
 }
 
 export interface OrganizationDiscoveryConfigInterface {
-	properties: OrganizationDiscoveryConfigPropertyInterface[];
+    properties: OrganizationDiscoveryConfigPropertyInterface[];
 }
 
 export interface OrganizationDiscoveryInterface {
