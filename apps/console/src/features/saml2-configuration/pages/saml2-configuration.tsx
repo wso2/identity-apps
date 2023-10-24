@@ -57,24 +57,24 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
     const url: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
 
-    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes : string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     
-    const isReadOnly : boolean = useMemo(() => !hasRequiredScopes(
+    const isReadOnly: boolean = useMemo(() => !hasRequiredScopes(
         featureConfig?.residentIdp,
         featureConfig?.residentIdp?.scopes?.update,
         allowedScopes
     ), [ featureConfig, allowedScopes ]);
 
-    const dispatch : Dispatch<any> = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const { t } = useTranslation();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ saml2Config , setSaml2Config ] = 
         useState<Saml2ConfigFormValuesInterface>(undefined);
-    const [ destinationUrls, setDestinationUrls ] = useState("");
-    const [ showURLError, setShowURLError ] = useState(false);
+    const [ destinationUrls, setDestinationUrls ] = useState<string>("");
+    const [ showURLError, setShowURLError ] = useState<boolean>(false);
 
     const {
         data: originalSaml2Config,
@@ -101,7 +101,7 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
         });
         setDestinationUrls(originalSaml2Config.destinationURLs.length > 0
             ? originalSaml2Config.destinationURLs.toString()
-            : "");        
+            : "");
     }, [ originalSaml2Config ]);
 
     /**
@@ -182,7 +182,7 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
     /**
      * Handle saml2 configuration form submit.
      */
-    const handleSubmit = (values: Saml2ConfigFormValuesInterface) => {        
+    const handleSubmit = (values: Saml2ConfigFormValuesInterface) => {
         setIsSubmitting(true);
 
         const data: Saml2ConfigAPIResponseInterface = {
@@ -252,8 +252,8 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
             } }
             bottomMargin={ false }
             contentTopMargin={ false }
-            pageHeaderMaxWidth={ true }
             data-componentid={ `${ componentId }-form-layout` }
+            pageHeaderMaxWidth
         >
             <Ref innerRef={ pageContextRef }>
                 <Grid className={ "mt-2" } >
@@ -278,7 +278,8 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                     <Grid.Row columns={ 1 } key={ 3 }>
                                                         <Grid.Column width={ 10 }>
                                                             <Field.Checkbox
-                                                                ariaLabel="Enable metadata signing checkbox"
+                                                                ariaLabel={ t("console:saml2Config.form." +
+                                                                "enableMetadataSigning.label") }
                                                                 name="enableMetadataSigning"
                                                                 label={ t("console:saml2Config.form." +
                                                                     "enableMetadataSigning.label") }
@@ -294,7 +295,8 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                             <Field.Input
                                                                 min={ Saml2ConfigurationConstants
                                                                     .SAML2_CONFIG_FIELD_MIN_LENGTH }
-                                                                ariaLabel="Metadata Validity Period Field"
+                                                                ariaLabel={ t("console:saml2Config.form." +
+                                                                "metadataValidityPeriod.label") }
                                                                 inputType="number"
                                                                 name="metadataValidityPeriod"
                                                                 label={ t("console:saml2Config.form." +

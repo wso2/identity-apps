@@ -25,6 +25,7 @@ import {
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
+import { GearIcon } from "@oxygen-ui/react-icons";
 import { AccessControlUtils } from "@wso2is/access-control";
 import useDeploymentConfig from "@wso2is/common/src/hooks/use-deployment-configs";
 import useResourceEndpoints from "@wso2is/common/src/hooks/use-resource-endpoints";
@@ -748,7 +749,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             ),
                             exact: true,
                             icon: {
-                                icon: getSidePanelIcons().gears
+                                icon: <GearIcon />
                             },
                             id: category.id,
                             name: category.name,

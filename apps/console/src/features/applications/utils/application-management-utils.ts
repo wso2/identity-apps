@@ -203,7 +203,7 @@ export class ApplicationManagementUtils {
      */
     public static getSAMLApplicationMeta = (): Promise<void> => {
         return getSAMLApplicationConfigurations()
-            .then((response) => {                
+            .then((response) => {
                 store.dispatch(setSAMLApplicationConfigs(response));
             })
             .catch((error) => {
@@ -248,7 +248,7 @@ export class ApplicationManagementUtils {
             doc = parser.parseFromString(strXML, "text/xml");
         }
 
-        const childNodeArray = doc.getElementsByTagName("IDPSSODescriptor")[0]?.childNodes;
+        const childNodeArray: any = doc.getElementsByTagName("IDPSSODescriptor")[0]?.childNodes;
 
         samlConfigs.issuer = doc.getElementsByTagName("EntityDescriptor")[0].attributes[1].value;
         samlConfigs.certificate = doc.getElementsByTagName("X509Certificate")[0].innerHTML;

@@ -29,7 +29,6 @@ import useRequest, {
 import { Saml2ConfigurationConstants } from "../constants/saml2-configuration";
 import { Saml2ConfigAPIResponseInterface } from "../models/saml2-configuration";
 
-
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 

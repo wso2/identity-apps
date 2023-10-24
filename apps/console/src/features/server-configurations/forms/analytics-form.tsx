@@ -130,21 +130,21 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                 case ServerConfigurationsConstants.ANALYTICS_HTTP_CONNECTION_TIMEOUT:
                     resolvedInitialValues = {
                         ...resolvedInitialValues,
-                        httpConnectionTimeout: parseInt(property.value)
+                        httpConnectionTimeout: property.value ? parseInt(property.value) : 0
                     };
 
                     break;
                 case ServerConfigurationsConstants.ANALYTICS_HTTP_READ_TIMEOUT:
                     resolvedInitialValues = {
                         ...resolvedInitialValues,
-                        httpReadTimeout: parseInt(property.value)
+                        httpReadTimeout: property.value ? parseInt(property.value) : 0
                     };
 
                     break;
                 case ServerConfigurationsConstants.ANALYTICS_HTTP_CONNECTION_REQUEST_TIMEOUT:
                     resolvedInitialValues = {
                         ...resolvedInitialValues,
-                        httpConnectionRequestTimeout: parseInt(property.value)
+                        httpConnectionRequestTimeout: property.value ? parseInt(property.value) : 0
                     };
 
                     break;
@@ -158,7 +158,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
 
             }
         });
-        setInitialConnectorValues(resolvedInitialValues);        
+        setInitialConnectorValues(resolvedInitialValues);
     }, [ initialValues ]);
 
     /**
@@ -191,7 +191,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
             <Form
                 id={ FORM_ID }
                 initialValues={ initialConnectorValues }
-                onSubmit={ (values: any) => onSubmit(getUpdatedConfigurations(values)) }
+                onSubmit={ (values: AnalyticsFormValuesInterface) => onSubmit(getUpdatedConfigurations(values)) }
                 uncontrolledForm={ false }
             >
                 <Field.Input

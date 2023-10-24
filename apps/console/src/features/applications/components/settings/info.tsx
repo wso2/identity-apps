@@ -113,7 +113,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     }, [ inboundProtocols ]);
 
     useEffect(() => {
-        if (templateId == ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+        if (templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
             setIsWSFed(true);
         } 
     }, [ templateId ]);

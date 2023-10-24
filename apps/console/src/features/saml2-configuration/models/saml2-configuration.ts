@@ -16,7 +16,6 @@
  * under the License.
  */
 
-
 /**
  * The interface for saml2 configuration config form.
  */

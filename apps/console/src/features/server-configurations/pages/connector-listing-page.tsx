@@ -335,7 +335,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         ) }
                         icon={ () => resolveConnectorCategoryIcon(connectorCategory?.id) }
                         header={ connectorCategory.name }
-                        onPrimaryActionClick={ () => handleConnectorCategoryAction(connectorCategory?.id) }
+                        onPrimaryActionClick={ () => handleConnectorCategoryAction(connectorCategory) }
                         primaryAction={ t("common:configure") }
                     />
                 </Grid>
