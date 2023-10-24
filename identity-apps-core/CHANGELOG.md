@@ -1,5 +1,14 @@
 # @wso2is/identity-apps-core
 
+## 2.0.24
+
+### Patch Changes
+
+- [#4297](https://github.com/wso2/identity-apps/pull/4297) [`990032d4d9`](https://github.com/wso2/identity-apps/commit/990032d4d9e4f2c0e711c6caacba19b5696ea30e) Thanks [@savindi7](https://github.com/savindi7)! - Revamp the UI of Login & Registration page
+
+- Updated dependencies [[`990032d4d9`](https://github.com/wso2/identity-apps/commit/990032d4d9e4f2c0e711c6caacba19b5696ea30e)]:
+  - @wso2is/theme@2.0.20
+
 ## 2.0.23
 
 ### Patch Changes
