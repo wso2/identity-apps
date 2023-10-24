@@ -740,7 +740,8 @@
                 "enabled": true,
                 "scopes": {
                     "create": [
-                        "internal_role_mgt_create"
+                        "internal_role_mgt_create",
+                        "internal_application_mgt_view"
                     ],
                     "feature": [
                         "console:roles"
@@ -755,7 +756,10 @@
                         "internal_role_mgt_update"
                     ],
                     "delete": [
-                        "internal_role_mgt_delete"
+                        "internal_role_mgt_delete",
+                        "internal_application_mgt_view",
+                        "internal_user_mgt_view",
+                        "internal_group_mgt_view"
                     ]
                 }
             },

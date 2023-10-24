@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Grid from "@oxygen-ui/react/Grid";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -23,20 +24,20 @@ import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps } from "semantic-ui-react";
 import { RoleAPIResourcesListItem } from "./components/role-api-resources-list-item";
-import { useAPIResourceDetails, useAPIResourcesList } from "../../../api";
-import { RoleConstants } from "../../../constants/role-constants";
-import { APIResourceInterface, ScopeInterface } from "../../../models/apiResources";
+import { useAPIResourceDetails, useAPIResourcesList, useGetAuthorizedAPIList } from "../../../api";
+import { RoleAudienceTypes, RoleConstants } from "../../../constants/role-constants";
+import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../../models/apiResources";
 import { SelectedPermissionsInterface } from "../../../models/roles";
 
 /**
  * Interface to capture permission list props
  */
-interface RolePermissionsListProp extends  IdentifiableComponentInterface {
+interface RolePermissionsListProp extends IdentifiableComponentInterface {
     /**
      * Selected permissions.
      */
@@ -49,6 +50,18 @@ interface RolePermissionsListProp extends  IdentifiableComponentInterface {
      * Callback to set the next button state of the permission step.
      */
     setIsPermissionStepNextButtonDisabled: (isPermissionStepNextButtonDisabled: boolean) => void;
+    /**
+     * Role audience.
+     */
+    roleAudience: RoleAudienceTypes;
+    /**
+     * Assigned application id.
+     */
+    assignedApplicationId?: string;
+    /**
+     * Assigned application name.
+     */
+    assignedApplicationName?: string;
 }
 
 export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> = 
@@ -58,12 +71,16 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             selectedPermissions,
             setSelectedPermissions,
             setIsPermissionStepNextButtonDisabled,
+            roleAudience,
+            assignedApplicationId,
+            assignedApplicationName,
             [ "data-componentid" ]: componentId
         } = props;
         
         const { t } = useTranslation();
         const dispatch: Dispatch = useDispatch();
 
+        const [ previousRoleAudience, setPreviousRoleAudience ] = useState<RoleAudienceTypes>(undefined);
         const [ apiResourcesListOptions, setAPIResourcesListOptions ] = useState<DropdownProps[]>([]);
         const [ selectedAPIResources, setSelectedAPIResources ] = useState<APIResourceInterface[]>([]);
         const [ apiResourceSearchQuery, setAPIResourceSearchQuery ] = useState<string>(undefined);
@@ -84,11 +101,30 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             error: selectedAPIResourceFetchRequestError
         } = useAPIResourceDetails(selectedAPIResourceId);
 
+        const {
+            data: authorizedAPIListForApplication,
+            isLoading: isAuthorizedAPIListForApplicationLoading,
+            error: authorizedAPIListForApplicationError
+        } = useGetAuthorizedAPIList(assignedApplicationId);
+
+        /**
+         * Reset the selected API resources list when the role audience is changed.
+         */
+        useEffect(() => {
+            if (roleAudience !== previousRoleAudience) {
+                setSelectedAPIResources([]);
+                setSelectedPermissions([]);
+                setPreviousRoleAudience(roleAudience);
+            }
+        }, [ roleAudience ]);
+
         /**
          * Show error if the API resource fetch request failed.
          */ 
         useEffect(() => {
-            if ( selectedAPIResourceFetchRequestError ||  apiResourcsListFetchRequestError) {
+            if ( selectedAPIResourceFetchRequestError 
+                || apiResourcsListFetchRequestError 
+                || authorizedAPIListForApplicationError ) {
                 dispatch(
                     addAlert({
                         description: t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
@@ -104,22 +140,42 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             }
         }, [ selectedAPIResourceFetchRequestError, apiResourcsListFetchRequestError ]);
 
+        /**
+         * API resources list options.
+         */
         useEffect(() => {
             const options: DropdownProps[] = [];
-    
-            apiResourcesList?.apiResources?.map((apiResource: APIResourceInterface) => {
-                if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) => 
-                    selectedAPIResource?.id === apiResource?.id)) {
-                    options.push({
-                        key: apiResource.id,
-                        text: apiResource.name,
-                        value: apiResource.id
+
+            if(roleAudience === RoleAudienceTypes.ORGANIZATION) {
+                // API resources list options when role audience is "organization".
+                apiResourcesList?.apiResources?.map(
+                    (apiResource: APIResourceInterface) => {
+                        if (!selectedAPIResources.find(
+                            (selectedAPIResource: APIResourceInterface) => 
+                                selectedAPIResource?.id === apiResource?.id)) {
+                            options.push({
+                                key: apiResource.id,
+                                text: apiResource.name,
+                                value: apiResource.id
+                            });
+                        }
                     });
-                }
-            });
+            } else {
+                // API resources list options when role audience is "application".
+                authorizedAPIListForApplication?.map((api: AuthorizedAPIListItemInterface) => {
+                    if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) => 
+                        selectedAPIResource?.id === api?.id)) {
+                        options.push({
+                            key: api.id,
+                            text: api.displayName,
+                            value: api.id
+                        });
+                    }
+                });
+            }
         
             setAPIResourcesListOptions(options);
-        }, [ apiResourcesList, selectedAPIResources ]);
+        }, [ authorizedAPIListForApplication, apiResourcesList, selectedAPIResources ]);
 
         /**
          * Add API resource to the selected API resources list.
@@ -154,15 +210,36 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
          * Handles the change of the search query of application list.
          */
         const onSearchChangeAPIResourcs = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-            setAPIResourcesSearching(true);
-            searchAPIResources(data?.searchQuery?.toString().trim());
+            // Only search the role audience is "organization".
+            if (roleAudience === RoleAudienceTypes.ORGANIZATION) {
+                setAPIResourcesSearching(true);
+                searchAPIResources(data?.searchQuery?.toString().trim());
+            }
         };
 
         /**
          * Handles the selection of an API resource.
+         * 
+         * Only retrieve the API resource details when the role audience is "organization",
+         * else add the API resource to the selected API resources list from the authorized API list.
          */
         const onAPIResourceSelected = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-            setSelectedAPIResourceId(data.value.toString());
+            if(roleAudience === RoleAudienceTypes.ORGANIZATION) {
+                setSelectedAPIResourceId(data.value.toString());
+            } else {
+                const selectedAPIResource: AuthorizedAPIListItemInterface = authorizedAPIListForApplication.find(
+                    (api: AuthorizedAPIListItemInterface) => api.id === data.value.toString()
+                );
+
+                setSelectedAPIResources([ 
+                    {
+                        id: selectedAPIResource.id,
+                        name: selectedAPIResource.displayName,
+                        scopes: selectedAPIResource.authorizedScopes
+                    }, 
+                    ...selectedAPIResources 
+                ]);
+            }
         };
 
         /**
@@ -181,6 +258,9 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             }));
         };
 
+        /**
+         * Handles the change of the assigned scopes(permissions) of a role.
+         */
         const onChangeScopes = (apiResource: APIResourceInterface, scopes: ScopeInterface[]): void => {
             const selectedScopes: SelectedPermissionsInterface[] = selectedPermissions.filter(
                 (selectedPermission: SelectedPermissionsInterface) => 
@@ -199,6 +279,24 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
 
         return (
             <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={ 2 }>
+                {
+                    roleAudience === RoleAudienceTypes.APPLICATION 
+                        ? (
+                            <Grid xs={ 12 }>
+                                <Alert severity="info">
+                                    <Trans 
+                                        i18nKey= { "console:manage.features.roles.addRoleWizard.forms." + 
+                                            "rolePermission.notes.applicationRoles" }
+                                        tOptions={ { applicationName: assignedApplicationName } }
+                                    >
+                                        Only the APIs and the scopes(permissions) that are authorized in the selected 
+                                        application (<b>{ assignedApplicationName }</b>) will be listed to select
+                                    </Trans>
+                                    
+                                </Alert>
+                            </Grid>
+                        ) : null
+                }
                 <Grid xs={ 12 }>
                     <Form
                         id={ componentId } 
@@ -237,11 +335,13 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                                     </label>
                                     <EmphasizedSegment
                                         data-componentid={ componentId }
+                                        className="role-permission-list"
                                         basic
                                         loading={ 
                                             selectedAPIResourceId &&
                                             (isSelectedAPIResourceFetchRequestLoading 
-                                                || isSelectedAPIResourceFetchRequestValidating) 
+                                            || isSelectedAPIResourceFetchRequestValidating
+                                            || isAuthorizedAPIListForApplicationLoading) 
                                         }
                                     >
                                         {

@@ -8118,6 +8118,9 @@ export const console: ConsoleNS = {
                                     removeAPIResource: "Supprimer la ressource API"
                                 }
                             },
+                            notes: {
+                                applicationRoles: "Seules les API et les étendues (autorisations) autorisées dans l'application sélectionnée(<1>{{applicationName}}</1>) seront répertoriées pour être sélectionnées."
+                            },
                             notifications: {
                                 fetchAPIResourceError: {
                                     error: {
