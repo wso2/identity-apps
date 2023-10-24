@@ -851,7 +851,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         id: "analytics",
                         name: "Analytics",
                         order: 24,
-                        path: AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
+                        path: AppConstants.getPaths().get("ANALYTICS")
                             .replace(
                                 ":categoryId",
                                 ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
