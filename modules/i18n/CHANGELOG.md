@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.14
+
+### Patch Changes
+
+- [#4305](https://github.com/wso2/identity-apps/pull/4305) [`0b0edf4707`](https://github.com/wso2/identity-apps/commit/0b0edf470794779de8e7a27b08c323c965772c2b) Thanks [@Achintha444](https://github.com/Achintha444)! - Complete role creation
+
 ## 2.0.13
 
 ### Patch Changes
