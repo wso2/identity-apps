@@ -308,7 +308,8 @@ export class RouteUtils {
             `${AppConstants.getAdminViewBasePath()}/connector/`,
             AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"),
             AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"),
-            AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT")
+            AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
+            AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT")
         ];
 
         const CategoryMappedRoutes: Omit<RouteInterface, "showOnSidePanel">[] = [
