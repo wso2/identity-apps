@@ -628,6 +628,27 @@
                 },
                 "disabledFeatures": []
             },
+            "organizationDiscovery": {
+                "enabled": true,
+                "scopes": {
+                    "feature": [
+                        "console:organizationDiscovery"
+                    ],
+                    "create": [
+                        "internal_organization_create"
+                    ],
+                    "delete": [
+                        "internal_organization_delete"
+                    ],
+                    "read": [
+                        "internal_organization_view"
+                    ],
+                    "update": [
+                        "internal_organization_update"
+                    ]
+                },
+                "disabledFeatures": []
+            },
             "manageGettingStarted": {
                 "disabledFeatures": [],
                 "enabled": true,

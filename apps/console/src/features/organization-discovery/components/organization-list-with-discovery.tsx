@@ -196,14 +196,14 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
                 "data-componentid": `${ componentId }-item-edit-button`,
                 hidden: (): boolean =>
                     !isFeatureEnabled(
-                        featureConfig?.organizations,
-                        OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
+                        featureConfig?.organizationDiscovery,
+                        OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_EMAIL_DOMAIN_UPDATE")
                     ),
                 icon: (): SemanticICONS => {
 
                     return !hasRequiredScopes(
-                        featureConfig?.organizations,
-                        featureConfig?.organizations?.scopes?.update,
+                        featureConfig?.organizationDiscovery,
+                        featureConfig?.organizationDiscovery?.scopes?.update,
                         allowedScopes
                     )
                         ? "eye"
@@ -214,8 +214,8 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
                 popupText: (): string => {
 
                     return !hasRequiredScopes(
-                        featureConfig?.organizations,
-                        featureConfig?.organizations?.scopes?.update,
+                        featureConfig?.organizationDiscovery,
+                        featureConfig?.organizationDiscovery?.scopes?.update,
                         allowedScopes
                     )
                         ? t("common:view")

@@ -23,40 +23,31 @@ import {
 } from "@mui/material";
 import { Chip, TextField } from "@oxygen-ui/react";
 import InputLabel from "@oxygen-ui/react/InputLabel/InputLabel";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
 import {
     AlertLevels,
     SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
 import {
     ContentLoader,
     EmphasizedSegment,
     PrimaryButton
 } from "@wso2is/react-components";
-import moment from "moment";
 import React, {
     FunctionComponent,
     ReactElement,
-    useCallback,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Divider, Form as SemanticForm, Grid } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../../core";
+import { FeatureConfigInterface } from "../../../core";
 import { updateOrganizationDiscoveryAttributes } from "../../api";
 import {
     OrganizationDiscoveryAttributeDataInterface,
     OrganizationResponseInterface,
 } from "../../models";
-
-interface OrganizationEditFormProps {
-    name: string;
-    description?: string;
-}
 
 interface EditOrganizationEmailDomainsPropsInterface
     extends SBACInterface<FeatureConfigInterface>,
@@ -79,8 +70,6 @@ interface EditOrganizationEmailDomainsPropsInterface
     onOrganizationUpdate: (organizationId: string) => void;
 }
 
-const FORM_ID: string = "edit-organization-email-domains-form";
-
 /**
  * Organization overview component.
  *
@@ -101,12 +90,8 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const editableFields: Array<string> = [ "name", "description" ];
-
     const [ isSubmitting, setIsSubmitting ] = useState(false);
     const [ emailDomainData, setEmailDomainData ] = useState<string[]>();
-    const [ isEmailDataError, setIsEmailDataError ] = useState<boolean>(false);
-    const [ emailDataError, setEmailDataError ] = useState<string>("");
 
     const optionsArray: string[] = [];
 
@@ -127,13 +112,13 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.organizationDiscovery.notifications.updateOrganizationDiscoveryAttributes." +
-                            "success.description"
+                            "console:manage.features.organizationDiscovery.notifications." +
+                            "updateOrganizationDiscoveryAttributes.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.organizationDiscovery.notifications.updateOrganizationDiscoveryAttributes." +
-                            "success.message"
+                            "console:manage.features.organizationDiscovery.notifications." +
+                            "updateOrganizationDiscoveryAttributes.success.message"
                         )
                     })
                 );
@@ -147,8 +132,8 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
                             description: error.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.organizationDiscovery.notifications.updateOrganizationDiscoveryAttributes." +
-                                "error.message"
+                                "console:manage.features.organizationDiscovery.notifications." +
+                                "updateOrganizationDiscoveryAttributes.error.message"
                             )
                         })
                     );
@@ -225,11 +210,6 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
                                         </InputLabel>
                                         <TextField
                                             id="tags-filled"
-                                            // error={ isEmailDataError }
-                                            // helperText= { 
-                                            //     isEmailDataError
-                                            //     && emailDataError
-                                            // }
                                             InputLabelProps= { {
                                                 required: true
                                             } }
@@ -246,10 +226,6 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
                                     value: string[]
                                 ) => {
                                     setEmailDomainData(value);
-                                    // validateEmailDomain(value);
-                                } }
-                                onInputChange={ () => {
-                                    setIsEmailDataError(false);
                                 } }
                             />
                             

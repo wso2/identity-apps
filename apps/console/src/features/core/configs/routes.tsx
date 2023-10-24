@@ -443,7 +443,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         icon: {
                             icon: <HierarchyIcon fill="black" />
                         },
-                        id: "emailDomainDiscovery",
+                        id: "organizationDiscovery",
                         name: "console:manage.features.sidePanel.emailDomainDiscovery",
                         order: 12,
                         path: AppConstants.getPaths().get("EMAIL_DOMAIN_DISCOVERY"),

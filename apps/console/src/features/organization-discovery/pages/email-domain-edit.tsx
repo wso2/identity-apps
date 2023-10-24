@@ -57,8 +57,8 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     useEffect(() => {
         setIsReadOnly(
             !isFeatureEnabled(
-                featureConfig?.organizations,
-                OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
+                featureConfig?.organizationDiscovery,
+                OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_EMAIL_DOMAIN_UPDATE")
             ));
     }, [ featureConfig, organization ]);
 

@@ -136,9 +136,9 @@ export const deleteOrganizationDiscoveryConfig = (
  * @returns a promise containing the response
  */
 export const getOrganizationDiscovery = (
-    filter: string,
-    offset: number,
-    limit: number
+    filter?: string,
+    offset?: number,
+    limit?: number
 ): Promise< OrganizationListWithDiscoveryInterface> => {
     const config: HttpRequestConfig = {
         headers: {

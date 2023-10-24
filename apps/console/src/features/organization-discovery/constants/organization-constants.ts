@@ -16,78 +16,14 @@
  * under the License.
  */
 
-import { IdentityAppsError } from "@wso2is/core/errors";
-import { OrganizationInterface } from "../models";
-
 export class OrganizationManagementConstants {
     /**
      * Set of keys used to enable/disable features.
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("ORGANIZATION_CREATE", "organizations.create")
-        .set("ORGANIZATION_UPDATE", "organizations.update")
-        .set("ORGANIZATION_DELETE", "organizations.delete")
-        .set("ORGANIZATION_READ", "organizations.read");
-
-    /**
-     * Super organization id as per alpha pack 2
-     */
-    public static readonly ROOT_ORGANIZATION_ID: string = "10084a8d-113f-4211-a0d5-efe36b082211";
-
-    /**
-     * Super organization object.
-     *
-     */
-    public static readonly ROOT_ORGANIZATION: OrganizationInterface = {
-        id: this.ROOT_ORGANIZATION_ID,
-        name: "Super",
-        ref: "",
-        status: "ACTIVE"
-    };
-
-    public static readonly ORGANIZATION_ROUTES: string = "organizations";
+        .set("ORGANIZATION_EMAIL_DOMAIN_CREATE", "organizationDiscovery.create")
+        .set("ORGANIZATION_EMAIL_DOMAIN_UPDATE", "organizationDiscovery.update")
+        .set("ORGANIZATION_EMAIL_DOMAIN_DELETE", "organizationDiscovery.delete")
+        .set("ORGANIZATION_EMAIL_DOMAIN_READ", "organizationDiscovery.read");
     
-}
-
-export enum ORGANIZATION_TYPE {
-    STRUCTURAL = "STRUCTURAL",
-    TENANT = "TENANT"
-}
-
-/**
- * Role constants
- */
-export class OrganizationRoleManagementConstants {
-    /**
-     * Set of keys used to enable/disable features.
-     */
-    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("ORGANIZATION_ROLE_CREATE", "organization-roles.create")
-        .set("ORGANIZATION_ROLE_UPDATE", "organization-roles.update")
-        .set("ORGANIZATION_ROLE_DELETE", "organization-roles.delete")
-        .set("ORGANIZATION_ROLE_READ", "organization-roles.read");
-
-    public static readonly SUPER_ADMIN_PERMISSION_KEY: string = "/permission/protected";
-    public static readonly ORG_CREATOR_ROLE_NAME: string = "org-creator";
-    public static readonly ORG_ADMIN_ROLE_NAME: string = "Administrator";
-}
-
-export const APPLICATION_DOMAIN: string = "Application/";
-export const INTERNAL_DOMAIN: string = "Internal";
-export const PRIMARY_DOMAIN: string = "Primary";
-export const ROLE_VIEW_PATH: string = "/organization-roles/";
-
-export const ORGANIZATION_NAME_MIN_LENGTH: number = 3;
-export const ORGANIZATION_NAME_MAX_LENGTH: number = 32;
-export const ORGANIZATION_DESCRIPTION_MIN_LENGTH: number = 3;
-export const ORGANIZATION_DESCRIPTION_MAX_LENGTH: number = 300;
-
-/**
- * Contains all the possible types of organizations.
- */
-export enum OrganizationType {
-    SUBORGANIZATION = "SUBORGANIZATION",
-    TENANT = "TENANT",
-    FIRST_LEVEL_ORGANIZATION = "FIRST_LEVEL_ORGANIZATION",
-    SUPER_ORGANIZATION= "SUPER_ORGANIZATION"
 }
