@@ -28,6 +28,7 @@ import {
     Popup,
     TabPageLayout
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import orderBy from "lodash-es/orderBy";
 import React, {
@@ -84,7 +85,6 @@ import {
 } from "../models/connection";
 import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
 import { ConnectionsManagementUtils, handleGetConnectionsMetaDataError } from "../utils/connection-utils";
-import { AxiosError } from "axios";
 
 /**
  * Proptypes for the IDP edit page component.
@@ -170,13 +170,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                     return {
                         ...template,
                         templateGroup: "enterprise-protocols"
-                    };
-                }
-
-                if (template.id === "linkedin-idp") {
-                    return {
-                        ...template,
-                        comingSoon: true
                     };
                 }
 

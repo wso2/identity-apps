@@ -161,13 +161,6 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                     };
                 }
 
-                if (template.id === "linkedin-idp") {
-                    return {
-                        ...template,
-                        comingSoon: true
-                    };
-                }
-
                 if (template.displayOrder < 0) {
                 
                     return;
