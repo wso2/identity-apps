@@ -1034,15 +1034,17 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         let wizardTitle: string = "";
 
         if (defaultUserTypeSelection === UserAccountTypes.USER) {
-            userTypeSelection === (UserAccountTypesMain.INTERNAL) 
-                ? wizardTitle += t("extensions:manage.users.wizard.addUser.title") 
-                : wizardTitle += t("console:manage.features.parentOrgInvitations.addUserWizard.heading"); 
+            wizardTitle += t("extensions:manage.users.wizard.addUser.title");
+            if (userTypeSelection === UserAccountTypesMain.EXTERNAL) {
+                wizardTitle += t("console:manage.features.parentOrgInvitations.addUserWizard.heading"); 
+            } 
         } 
         
         if (defaultUserTypeSelection === UserAccountTypes.ADMINISTRATOR) {
-            adminTypeSelection === AdminAccountTypes.INTERNAL
-                ? wizardTitle += t("extensions:manage.users.wizard.addAdmin.internal.title")
-                : wizardTitle += t("extensions:manage.users.wizard.addAdmin.external.title");
+            wizardTitle += t("extensions:manage.users.wizard.addAdmin.internal.title");
+            if (adminTypeSelection === AdminAccountTypes.INTERNAL) {
+                wizardTitle += t("extensions:manage.users.wizard.addAdmin.external.title");
+            }
         }
 
         if (wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName) {
@@ -1058,9 +1060,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         let wizardSubHeading: string = "";
 
         if (defaultUserTypeSelection === UserAccountTypes.USER) {
-            (userTypeSelection === UserAccountTypesMain.INTERNAL)
-                ? wizardSubHeading += t("extensions:manage.users.wizard.addUser.subtitle")
-                : wizardSubHeading += t("console:manage.features.parentOrgInvitations.addUserWizard.description");
+            wizardSubHeading += t("extensions:manage.users.wizard.addUser.subtitle");
+            if (userTypeSelection === UserAccountTypesMain.EXTERNAL) {
+                wizardSubHeading += t("console:manage.features.parentOrgInvitations.addUserWizard.description");
+            }
         }
 
         return wizardSubHeading;
