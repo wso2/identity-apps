@@ -1136,6 +1136,25 @@ export const extensions: Extensions = {
                                 }
                             }
                         }
+                    },
+                    rolesV2: {
+                        heading: "භූමිකාවන්",
+                        subHeading: "අයදුම්පතේ පවරා ඇති කාර්යභාරය කළමනාකරණය කරන්න.",
+                        roleAudience: "භූමිකාව ප්රේක්ෂකයින්",
+                        organization: "ආයතනය",
+                        application: "අයදුම්පත",
+                        assignedRoles: "පවරා ඇති භූමිකාවන්",
+                        removedRoles: "ඉවත් කරන ලද භූමිකාවන්",
+                        searchPlaceholder: "භූමිකාව අනුව සොයන්න",
+                        switchRoleAudience: {
+                            confirmationModal: {
+                                assertionHint: "කරුණාකර ඔබේ ක්රියාව තහවුරු කරන්න.",
+                                content: "ඔබ භූමිකාව වෙනස් කරන්නේ නම්, වර්තමාන ප්රේක්ෂකයින් හා සම්බන්ධ භූමිකාවන් වනු ඇත " +
+                                    "මකා දැමිය යුතුය.කරුණාකර ප්රවේශමෙන් ඉදිරියට යන්න.",
+                                header: "ඔයාට විශ්වාස ද?",
+                                message: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි වන අතර පවතින භූමිකාවන් ස්ථිරවම මකා දමනු ඇත."
+                            }
+                        }
                     }
                 }
             },

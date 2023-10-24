@@ -1626,7 +1626,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "A valid access URL must be provided to make this application discoverable.",
                                     invalid: "Enter a valid URL"
-                                }
+                                },
+                                ariaLabel: "Application access URL"
                             },
                             description: {
                                 label: "Description",
@@ -1863,6 +1864,17 @@ export const console: ConsoleNS = {
                                             "needs to present the <1>access_token</1> + cookie for successful "+
                                             "authorization.",
                                         label: "Validate token bindings"
+                                    },
+                                    audience: {
+                                        hint: "Specify the recipient(s) that this <1>access_token</1> is intended for." +
+                                        " By default, the client ID of this application is added as an audience.",
+                                        label: "Audience",
+                                        placeholder: "Enter Audience",
+                                        validations: {
+                                            duplicate: "Audience contains duplicate values",
+                                            empty: "Please fill the audience",
+                                            invalid: "Please avoid special characters like commas (,)"
+                                        }
                                     }
                                 },
                                 heading: "Access Token",
@@ -8124,6 +8136,7 @@ export const console: ConsoleNS = {
                 connectorCategories: {
                     passwordPolicies : {
                         name: "Password Policies",
+                        description: "Configure password policies to enhance user password strength.",
                         connectors: {
                             passwordHistory: {
                                 friendlyName: "Password History",
@@ -8167,6 +8180,7 @@ export const console: ConsoleNS = {
                     },
                     userOnboarding : {
                         name: "User Onboarding",
+                        description: "Configure user onboarding settings.",
                         connectors: {
                             selfSignUp: {
                                 friendlyName: "Self Registration",
@@ -8307,6 +8321,7 @@ export const console: ConsoleNS = {
                     },
                     loginAttemptsSecurity : {
                         name: "Login Attempts Security",
+                        description: "Configure login attempt security settings.",
                         connectors: {
                             accountLockHandler: {
                                 friendlyName: "Account Lock",
@@ -8358,6 +8373,7 @@ export const console: ConsoleNS = {
                     },
                     accountManagement : {
                         name: "Account Management",
+                        description: "Configure account management settings.",
                         connectors: {
                             suspensionNotification: {
                                 friendlyName: "Idle Account Suspend",
@@ -8502,6 +8518,7 @@ export const console: ConsoleNS = {
                     },
                     otherSettings : {
                         name: "Other Settings",
+                        description: "Configure other settings.",
                         connectors: {
                             piiController: {
                                 friendlyName: "Consent Information Controller",
@@ -8669,6 +8686,7 @@ export const console: ConsoleNS = {
                     },
                     multiFactorAuthenticators : {
                         name: "Multi Factor Authenticators",
+                        description: "Configure multi factor authenticator settings.",
                         connectors: {
                             backupCodeAuthenticator: {
                                 friendlyName: "Backup Code Authenticator",
@@ -9873,6 +9891,32 @@ export const console: ConsoleNS = {
                                     empty: "Assigned application is required to create an application-scoped role."
                                 }
                             }
+                        },
+                        rolePermission: {
+                            apiResource: {
+                                label: "Select API Resource",
+                                placeholder: "Select an API resource to assign scopes(permissions)"
+                            },
+                            permissions: {
+                                label: "Select scopes(permissions) from the selected API resources",
+                                placeholder: "Select scopes(permissions)",
+                                tooltips: {
+                                    noScopes: "No scopes available for the selected API resource",
+                                    selectAllScopes: "Select all scopes(permissions)",
+                                    removeAPIResource: "Remove API resource"
+                                }
+                            },
+                            notes: {
+                                applicationRoles: "Only the APIs and the scopes(permissions) that are authorized in the selected application(<1>{{applicationName}}</1>) will be listed to select."
+                            },
+                            notifications: {
+                                fetchAPIResourceError: {
+                                    error: {
+                                        description: "Something went wrong while fetching API resources. Please try again.",
+                                        message: "Something went wrong"
+                                    }
+                                }
+                            }
                         }
                     },
                     heading: "Create {{type}}",
@@ -9935,6 +9979,16 @@ export const console: ConsoleNS = {
                     placeholder: "Search by role name"
                 },
                 edit: {
+                    placeholders: {
+                        errorPlaceHolder: {
+                            action: "Go back",
+                            subtitles: {
+                                0: "An error occurred while retrieving the requested role, possibly because the role does not exist.",
+                                1: "Please try again."
+                            },
+                            title: "Something went wrong"
+                        }
+                    },
                     basics: {
                         buttons: {
                             update: "Update"
@@ -10095,6 +10149,10 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         lastModified: "Modified Time",
+                        managedBy: {
+                            label: "Managed by",
+                            header: "Managed By"
+                        },
                         name: "Role"
                     },
                     confirmations: {
@@ -10129,6 +10187,15 @@ export const console: ConsoleNS = {
                     popups: {
                         delete: "Delete {{type}}",
                         edit: "Edit {{type}}"
+                    },
+                    filterOptions: {
+                        all: "Show All",
+                        applicationRoles: "Application Roles",
+                        organizationRoles: "Organization Roles"
+                    },
+                    filterAttirbutes: {
+                        name: "Name",
+                        audience: "Role Audience"
                     }
                 },
                 notifications: {
@@ -10177,6 +10244,12 @@ export const console: ConsoleNS = {
                     fetchRoles: {
                         genericError: {
                             description: "An error occurred while retrieving roles.",
+                            message: "Something went wrong"
+                        }
+                    },
+                    fetchRole: {
+                        genericError: {
+                            description: "An error occurred while retrieving the role.",
                             message: "Something went wrong"
                         }
                     },
@@ -10693,8 +10766,8 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Bulk Import Users",
-                        subTitle: "Import multiple users using a CSV file.",
+                        title: "Invite multiple users",
+                        subTitle: "Invite multiple users to the organization.",
                         wizardSummary: {
                             successCount: "Successful Imports",
                             failedCount: "Failed Imports",
@@ -10730,7 +10803,22 @@ export const console: ConsoleNS = {
                                 placeholder: "Search by Username"
                             },
                             disabledSecondaryStoreInfo: "Bulk import to external user stores is not available " +
-                                "at the moment."
+                                "at the moment.",
+                            manualCreation: {
+                                hint: "Add emails and send invitations to multiple users.",
+                                emailsLabel: "Emails",
+                                emailsPlaceholder: "Enter email addresses",
+                                disabledHint: "The manual option is disabled due to the usage of alphanumeric usernames in your organization.",
+                                upload: {
+                                    buttonText: "Upload CSV File",
+                                    description: "Drag and drop a CSV file here."
+                                },
+                                primaryButton: "Invite",
+                                warningMessage: "The manual option to invite multiple users is available only when email as username is enabled."
+                            },
+                            fileBased: {
+                                hint: "Bulk invite multiple users using a CSV file."
+                            }
                         },
                         buttons: {
                             import: "Import"
@@ -11205,8 +11293,8 @@ export const console: ConsoleNS = {
                     metaColumnBtn: "Columns"
                 },
                 addUserDropDown: {
-                    addNewUser:  "Add User",
-                    bulkImport: "Bulk Import"
+                    addNewUser:  "Single User",
+                    bulkImport: "Multiple Users"
                 },
                 confirmations: {
                     terminateAllSessions: {

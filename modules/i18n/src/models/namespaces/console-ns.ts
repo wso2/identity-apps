@@ -1011,6 +1011,7 @@ export interface ConsoleNS {
                                     type: FormAttributes;
                                     revokeToken: FormAttributes;
                                     validateBinding: FormAttributes;
+                                    audience: FormAttributes;
                                 };
                             };
                             idToken: {
@@ -4243,6 +4244,7 @@ export interface ConsoleNS {
                 connectorCategories: {
                     passwordPolicies : {
                         name: string;
+                        description: string;
                         connectors: {
                             passwordHistory: {
                                 friendlyName: string;
@@ -4286,6 +4288,7 @@ export interface ConsoleNS {
                     };
                     userOnboarding : {
                         name: string;
+                        description: string;
                         connectors: {
                             selfSignUp: {
                                 friendlyName: string;
@@ -4426,6 +4429,7 @@ export interface ConsoleNS {
                     };
                     loginAttemptsSecurity : {
                         name: string;
+                        description: string;
                         connectors: {
                             accountLockHandler: {
                                 friendlyName: string;
@@ -4477,6 +4481,7 @@ export interface ConsoleNS {
                     };
                     accountManagement : {
                         name: string;
+                        description: string;
                         connectors: {
                             suspensionNotification: {
                                 friendlyName: string;
@@ -4621,6 +4626,7 @@ export interface ConsoleNS {
                     };
                     otherSettings : {
                         name: string;
+                        description: string;
                         connectors: {
                             piiController: {
                                 friendlyName: string;
@@ -4788,6 +4794,7 @@ export interface ConsoleNS {
                     };
                     multiFactorAuthenticators : {
                         name: string;
+                        description: string;
                         connectors: {
                             backupCodeAuthenticator: {
                                 friendlyName: string;
@@ -5057,6 +5064,27 @@ export interface ConsoleNS {
                                 cannotCreateRole: string
                             }
                         };
+                        rolePermission: {
+                            apiResource: {
+                                label: string;
+                                placeholder: string;
+                            };
+                            permissions: {
+                                label: string;
+                                placeholder: string;
+                                tooltips: {
+                                    noScopes: string;
+                                    selectAllScopes: string;
+                                    removeAPIResource: string;
+                                }
+                            };
+                            notes: {
+                                applicationRoles: string;
+                            };
+                            notifications: {
+                                fetchAPIResourceError: Notification;
+                            };
+                        };
                     };
                     heading: string;
                     permissions: {
@@ -5118,6 +5146,9 @@ export interface ConsoleNS {
                     placeholder: string;
                 };
                 edit: {
+                    placeholders: {
+                        errorPlaceHolder: Placeholder;
+                    };
                     basics: {
                         buttons: {
                             update: string;
@@ -5210,6 +5241,10 @@ export interface ConsoleNS {
                         actions: string;
                         lastModified: string;
                         name: string;
+                        managedBy: {
+                            label: string;
+                            header: string;
+                        };
                     };
                     confirmations: {
                         deleteItem: Confirmation;
@@ -5222,10 +5257,20 @@ export interface ConsoleNS {
                         delete: string;
                         edit: string;
                     };
+                    filterOptions: {
+                        all: string;
+                        applicationRoles: string;
+                        organizationRoles: string;
+                    };
+                    filterAttirbutes: {
+                        name: string;
+                        audience: string;
+                    };
                 };
                 notifications: {
                     deleteRole: Notification;
                     fetchRoles: Notification;
+                    fetchRole: Notification;
                     updateRole: Notification;
                     createRole: Notification;
                     createPermission: Notification;
@@ -5612,6 +5657,21 @@ export interface ConsoleNS {
                                 placeholder: string;
                             };
                             disabledSecondaryStoreInfo: string;
+                            manualCreation: {
+                                hint: string;
+                                emailsLabel: string;
+                                emailsPlaceholder: string;
+                                disabledHint: string;
+                                upload: {
+                                    buttonText: string;
+                                    description: string;
+                                };
+                                primaryButton: string;
+                                warningMessage: string;
+                            };
+                            fileBased: {
+                                hint: string;
+                            }
                         };
                         buttons: {
                             import: string;

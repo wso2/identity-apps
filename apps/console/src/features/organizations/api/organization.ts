@@ -132,8 +132,8 @@ export function useAuthorizedOrganizationsList<Data = OrganizationListInterface,
             recursive
         },
         url: `${ isRoot
-            ? store.getState().config.endpoints.rootOrganization
-            : store.getState().config.endpoints.organizations }/organizations/me`
+            ? store.getState().config.endpoints.rootUsersOrganization
+            : store.getState().config.endpoints.usersOrganization }/me/organizations`
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);

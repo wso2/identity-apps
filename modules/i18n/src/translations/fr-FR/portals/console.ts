@@ -1656,7 +1656,8 @@ export const console: ConsoleNS = {
                                     empty: "Une URL d'accès valide doit être fournie pour" +
                                         " rendre cette application détectable.",
                                     invalid: "Ceci n'est pas une URL valide"
-                                }
+                                },
+                                ariaLabel: "URL d'accès à l'application"
                             },
                             description: {
                                 label: "Description",
@@ -1896,6 +1897,18 @@ export const console: ConsoleNS = {
                                             " client doit présenter le <1>jeton_d'accès</1> + cookie pour une" +
                                             " autorisation réussie.",
                                         label: "Valider les liaisons des jetons"
+                                    },
+                                    audience: {
+                                        hint: "Spécifiez le destinataire auquel ce <1>jeton_d'accès</1> est " +
+                                            "destiné. Par défaut, l'ID client de cette application est " +
+                                            "ajouté en tant qu'audience.",
+                                        label: "Audience",
+                                        placeholder: "Saisir l'audience",
+                                        validations: {
+                                            duplicate: "L'audience contient des valeurs en double",
+                                            empty: "Veuillez remplir le public",
+                                            invalid: "Veuillez ajouter une audience valide."
+                                        }
                                     }
                                 },
                                 heading: "Jeton d'accès",
@@ -6508,6 +6521,7 @@ export const console: ConsoleNS = {
                 connectorCategories: {
                     passwordPolicies: {
                         name: "Politiques de mot de passe",
+                        description: "Configurer les stratégies de mot de passe pour améliorer la force du mot de passe utilisateur.",
                         connectors: {
                             passwordHistory: {
                                 friendlyName: "Historique du mot de passe",
@@ -6551,6 +6565,7 @@ export const console: ConsoleNS = {
                     },
                     userOnboarding: {
                         name: "Intégration de l'utilisateur",
+                        description: "Configurer les paramètres d'intégration de l'utilisateur.",
                         connectors: {
                             selfSignUp: {
                                 friendlyName: "Auto-inscription",
@@ -6691,6 +6706,7 @@ export const console: ConsoleNS = {
                     },
                     loginAttemptsSecurity: {
                         name: "La connexion tente la sécurité",
+                        description: "Configurer les paramètres de sécurité des tentatives de connexion.",
                         connectors: {
                             accountLockHandler: {
                                 friendlyName: "Verrouillage du compte",
@@ -6742,6 +6758,7 @@ export const console: ConsoleNS = {
                     },
                     accountManagement: {
                         name: "Gestion de compte",
+                        description: "Configurer les paramètres de gestion des comptes.",
                         connectors: {
                             suspensionNotification: {
                                 friendlyName: "Suspende du compte inactif",
@@ -6886,6 +6903,7 @@ export const console: ConsoleNS = {
                     },
                     otherSettings: {
                         name: "Autres réglages",
+                        description: "Configurer d'autres paramètres.",
                         connectors: {
                             piiController: {
                                 friendlyName: "Contrôleur d'information sur le consentement",
@@ -7053,6 +7071,7 @@ export const console: ConsoleNS = {
                     },
                     multiFactorAuthenticators: {
                         name: "Authentificateurs multi-facteurs",
+                        description: "Configurer les paramètres d'authentificateur multi-facteurs.",
                         connectors: {
                             backupCodeAuthenticator: {
                                 friendlyName: "Authentificateur de code de sauvegarde",
@@ -8112,6 +8131,32 @@ export const console: ConsoleNS = {
                                     empty: "L'application attribuée est nécessaire pour créer un rôle à application."
                                 }
                             }
+                        },
+                        rolePermission: {
+                            apiResource: {
+                                label: "Sélectionnez la ressource API",
+                                placeholder: "Sélectionnez une ressource API pour attribuer des scopes (autorisations)"
+                            },
+                            permissions: {
+                                label: "Sélectionnez Scopes (autorisations) dans les ressources API sélectionnées",
+                                placeholder: "Sélectionnez des lunettes (autorisations)",
+                                tooltips: {
+                                    noScopes: "Aucune portée disponible pour la ressource API sélectionnée",
+                                    selectAllScopes: "Sélectionnez toutes les portées (autorisations)",
+                                    removeAPIResource: "Supprimer la ressource API"
+                                }
+                            },
+                            notes: {
+                                applicationRoles: "Seules les API et les étendues (autorisations) autorisées dans l'application sélectionnée(<1>{{applicationName}}</1>) seront répertoriées pour être sélectionnées."
+                            },
+                            notifications: {
+                                fetchAPIResourceError: {
+                                    error: {
+                                        description: "Quelque chose s'est mal passé tout en récupérant les ressources d'API.Veuillez réessayer.",
+                                        message: "Quelque chose s'est mal passé"
+                                    }
+                                }
+                            }
                         }
                     },
                     heading: "Créer un {{type}}",
@@ -8175,6 +8220,16 @@ export const console: ConsoleNS = {
                     placeholder: "Rechercher par nom de rôle"
                 },
                 edit: {
+                    placeholders: {
+                        errorPlaceHolder: {
+                            action: "Retourner",
+                            subtitles: {
+                                0: "Une erreur s'est produite lors de la récupération du rôle demandé, peut-être parce que le rôle n'existe pas.",
+                                1: "Please try again."
+                            },
+                            title: "Quelque chose s'est mal passé"
+                        }
+                    },
                     basics: {
                         buttons: {
                             update: "Mettre à jour"
@@ -8338,6 +8393,10 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         lastModified: "Dernière modification",
+                        managedBy: {
+                            label: "Dirigé par",
+                            header: "Dirigé par"
+                        },
                         name: "Nom"
                     },
                     confirmations: {
@@ -8374,6 +8433,15 @@ export const console: ConsoleNS = {
                     popups: {
                         delete: "Supprimer le {{type}}",
                         edit: "Modifier le {{type}}"
+                    },
+                    filterOptions: {
+                        all: "Afficher tout",
+                        applicationRoles: "Rôles d'application",
+                        organizationRoles: "Rôles d'organisation"
+                    },
+                    filterAttirbutes: {
+                        name: "Nom",
+                        audience: "Rôle public"
                     }
                 },
                 notifications: {
@@ -8422,6 +8490,12 @@ export const console: ConsoleNS = {
                     fetchRoles: {
                         genericError: {
                             description: "Une erreur s'est produite lors de la récupération des rôles.",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
+                    fetchRole: {
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération du rôle.",
                             message: "Quelque chose s'est mal passé"
                         }
                     },
@@ -8960,8 +9034,8 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Importer des utilisateurs en masse",
-                        subTitle: "Importez plusieurs utilisateurs à l'aide d'un fichier CSV..",
+                        title: "Inviter plusieurs utilisateurs",
+                        subTitle: "Invitez plusieurs utilisateurs dans l’organisation.",
                         wizardSummary: {
                             successCount: "Nombre de réussites",
                             failedCount: "Nombre d'échecs",
@@ -8997,7 +9071,22 @@ export const console: ConsoleNS = {
                                 placeholder: "Rechercher par nom d'utilisateur"
                             },
                             disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
-                                "externes n’est pas disponible pour le moment."
+                                "externes n’est pas disponible pour le moment.",
+                            manualCreation: {
+                                hint: "Ajoutez des e-mails et envoyez des invitations à plusieurs utilisateurs.",
+                                emailsLabel: "E-mails",
+                                emailsPlaceholder: "Entrez les adresses e-mail",
+                                disabledHint: "TL'option manuelle est désactivée en raison de l'utilisation de noms d'utilisateur alphanumériques dans votre organisation.",
+                                upload: {
+                                    buttonText: "Télécharger le fichier CSV",
+                                    description: "Faites glisser et déposez un fichier CSV ici."
+                                },
+                                primaryButton: "Inviter",
+                                warningMessage: "The manual option to invite multiple users is available only when email as username is enabled."
+                            },
+                            fileBased: {
+                                hint: "Invitez plusieurs utilisateurs en masse à l’aide d’un fichier CSV."
+                            }
                         },
                         buttons: {
                             import: "Importer"

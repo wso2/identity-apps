@@ -126,8 +126,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             requestPathAuthenticators: "",
             resourceTypes: "",
             roles: "",
+            rolesV2: "",
             rolesWithoutOrgPath: "",
             rootOrganization: "",
+            rootUsersOrganization: "",
             saml2Configurations: "",
             saml2Meta: "",
             schemas: "",
@@ -141,6 +143,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             userSessions: "",
             userStores: "",
             users: "",
+            usersOrganization: "",
             usersSuperOrganization: "",
             validationServiceMgt: "",
             wellKnown: ""

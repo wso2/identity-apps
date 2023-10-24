@@ -1002,6 +1002,24 @@ export interface Extensions {
                             };
                         };
                     };
+                    rolesV2: {
+                        heading: string;
+                        subHeading: string;
+                        roleAudience: string;
+                        organization: string;
+                        application: string;
+                        assignedRoles: string;
+                        removedRoles: string;
+                        searchPlaceholder: string;
+                        switchRoleAudience: {
+                            confirmationModal: {
+                                assertionHint: string;
+                                header: string;
+                                content: string;
+                                message: string;
+                            };
+                        };
+                    }
                 };
             };
             quickstart: {

@@ -1148,6 +1148,25 @@ export const extensions: Extensions = {
                                 }
                             }
                         }
+                    },
+                    rolesV2: {
+                        heading: "Roles",
+                        subHeading: "Manage assigned roles in the application.",
+                        roleAudience: "Role Audience",
+                        organization: "Organization",
+                        application: "Application",
+                        assignedRoles: "Assigned Roles",
+                        removedRoles: "Removed Roles",
+                        searchPlaceholder: "Search by Role name",
+                        switchRoleAudience: {
+                            confirmationModal: {
+                                assertionHint: "Please confirm your action.",
+                                content: "If you change the Role Audience, the roles associated with the current audience will " +
+                                    "be deleted. Please proceed with caution.",
+                                header: "Are you sure?",
+                                message: "This action is irreversible and will permanently delete the existing roles."
+                            }
+                        }
                     }
                 }
             },

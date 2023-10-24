@@ -269,36 +269,6 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
-                        category: "extensions:manage.sidePanel.categories.userManagement",
-                        children: [
-                            {
-                                component: lazy(() => import("../../application-roles/pages/application-role-edit")),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "applicationRolesEdit",
-                                name: "Edit Role",
-                                path: AppConstants.getPaths().get("APPLICATION_ROLES_EDIT"),
-                                protected: true,
-                                showOnSidePanel: false
-                            }
-                        ],
-                        component: lazy(() => import("../../application-roles/pages/application-roles")),
-                        exact: true,
-                        featureStatus: "NEW",
-                        featureStatusLabel: "common:new",
-                        icon: {
-                            icon: getSidePanelIcons().roles
-                        },
-                        id: "applicationRoles",
-                        name: "Roles",
-                        order: 8,
-                        path: AppConstants.getPaths().get("APPLICATION_ROLES"),
-                        protected: true,
-                        showOnSidePanel: true
-                    },
-                    {
                         category: "extensions:manage.sidePanel.categories.attributeManagement",
                         children: [
                             {
@@ -1118,6 +1088,36 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 category: "extensions:manage.sidePanel.categories.userManagement",
                 children: [
                     {
+                        component: lazy(() => import("../../application-roles/pages/application-role-edit")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "applicationRolesEdit",
+                        name: "Edit Role",
+                        path: AppConstants.getPaths().get("APPLICATION_ROLES_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() => import("../../application-roles/pages/application-roles")),
+                exact: true,
+                featureStatus: "NEW",
+                featureStatusLabel: "common:new",
+                icon: {
+                    icon: getSidePanelIcons().roles
+                },
+                id: "applicationRoles",
+                name: "Roles",
+                order: 8,
+                path: AppConstants.getPaths().get("APPLICATION_ROLES"),
+                protected: true,
+                showOnSidePanel: true
+            },
+            {
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                children: [
+                    {
                         component: lazy(() => import("../../../features/userstores/pages/user-stores-edit")),
                         exact: true,
                         icon: {
@@ -1262,7 +1262,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         name: "extensions:develop.sidePanel.apiResources",
                         path: APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     }
                 ],
                 component: lazy(() =>

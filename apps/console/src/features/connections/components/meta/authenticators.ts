@@ -101,9 +101,9 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
             name: AuthenticatorManagementConstants.LEGACY_EMAIL_OTP_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_META_ID,
+            authenticatorId: AuthenticatorManagementConstants.LEGACY_SMS_OTP_AUTHENTICATOR_ID,
             description: AuthenticatorMeta
-                .getAuthenticatorDescription(AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_META_ID),
+                .getAuthenticatorDescription(AuthenticatorManagementConstants.LEGACY_SMS_OTP_AUTHENTICATOR_ID),
             displayName: "SMS OTP",
             icon: getConnectionIcons().smsOTP,
             name: AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_NAME

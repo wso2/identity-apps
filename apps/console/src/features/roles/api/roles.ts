@@ -19,7 +19,7 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { RoleConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods, RoleListInterface } from "@wso2is/core/models";
+import { HttpMethods, RoleListInterface, RolesInterface } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
 import useRequest, { 
@@ -27,7 +27,8 @@ import useRequest, {
     RequestErrorInterface, 
     RequestResultInterface 
 } from "../../core/hooks/use-request";
-import { CreateRoleInterface, PatchRoleDataInterface, SearchRoleInterface } from "../models";
+import { CreateRoleInterface, PatchRoleDataInterface, RolesV2ResponseInterface, SearchRoleInterface } from "../models";
+import { APIResourceInterface, APIResourceListInterface, AuthorizedAPIListItemInterface } from "../models/apiResources";
 
 /**
  * Initialize an axios Http client.
@@ -36,9 +37,49 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
+ * Get the application roles by audience.
+ *
+ * @param audience - audience.
+ * @param before - Before link.
+ * @param after - After link.
+ * @param limit - Limit.
+ * 
+ * @returns A promise containing the response.
+ */
+export const getApplicationRolesByAudience = (
+    audience: string,
+    before: string,
+    after: string,
+    limit: number
+):Promise<RolesV2ResponseInterface> => {
+
+    const filter: string = `audience.type eq ${ audience.toLowerCase() }`;
+
+    const requestConfig: RequestConfigInterface = {
+        method: HttpMethods.GET,
+        params: {
+            after,
+            before,
+            filter,
+            limit
+        },
+        url:  `${ store.getState().config.endpoints.rolesV2 }`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {            
+            return Promise.resolve(response.data as RolesV2ResponseInterface);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
  * Retrieve Role details for a give role id.
  *
  * @param roleId - role id to retrieve role details
+ * @deprecated Use `useGetRoleById` instead.
  */
 export const getRoleById = (roleId: string): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
@@ -56,6 +97,41 @@ export const getRoleById = (roleId: string): Promise<any> => {
         }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
+};
+
+/**
+ * Retrieve Role details for a given role id.
+ *
+ * @param roleId - role id to retrieve role details
+ */
+export const useGetRoleById = <Data = RolesInterface, Error = RequestErrorInterface>(
+    roleId: string
+): RequestResultInterface<Data, Error> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.rolesV2}/${roleId}`
+    };
+
+    const {
+        data,
+        error,
+        isValidating,
+        mutate,
+        response
+    } = useRequest<Data, Error>(roleId ? requestConfig : null);
+
+    return {
+        data,
+        error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate,
+        response
+    };
 };
 
 /**
@@ -109,6 +185,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
 
 /**
  * Delete a selected role with a given role ID.
+ * TODO:ROLEV2 Need to update the url once the API is ready.
  *
  * @param roleId - Id of the role which needs to be deleted.
  * @returns A promise containing the status of the delete.
@@ -133,10 +210,11 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
 
 /**
  * Create a role in the system with role data given by user.
+ * TODO:ROLEV2 Need to update the url once the API is ready.
  *
  * @param data - data object used to create the role
  */
-export const createRole = (data: CreateRoleInterface): Promise<any> => {
+export const createRole = (data: CreateRoleInterface): Promise<AxiosResponse> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
@@ -306,7 +384,8 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
  * @returns The object containing the roles list.
  */
 export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInterface>(
-    domain: string,
+    count?: number, 
+    startIndex?: number, 
     filter?: string
 ): RequestResultInterface<Data, Error> => {
 
@@ -317,10 +396,11 @@ export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInter
         },
         method: HttpMethods.GET,
         params: {
-            domain,
-            filter
+            count,
+            filter,
+            startIndex
         },
-        url: store.getState().config.endpoints.roles
+        url: store.getState().config.endpoints.rolesV2
     };
 
     const {
@@ -338,5 +418,111 @@ export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInter
         isValidating,
         mutate,
         response
+    };
+};
+
+/**
+ * Hook to get the retrieve the list of API resources that are currently in the system.
+ *
+ * @param domain - User store domain.
+ * @param filter - Search filter.
+ * @returns The object containing the roles list.
+ * @deprecated This is a temporary hook until the API resource feature moved to the features folder.
+ */
+export const useAPIResourcesList = <Data = APIResourceListInterface, Error = RequestErrorInterface>(
+    filter?: string
+): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: {
+            filter
+        },
+        url: store.getState().config.endpoints.apiResources
+    };
+
+    const {
+        data,
+        error,
+        isValidating,
+        mutate,
+        response
+    } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate,
+        response
+    };
+};
+
+/**
+ * 
+ * @param apiResourceId - id of the API resource
+ * @returns `Promise<APIResourceInterface>`
+ * @throws `IdentityAppsApiException`
+ * @deprecated This is a temporary hook until the API resource feature moved to the features folder.
+ */
+export const useAPIResourceDetails = <Data = APIResourceInterface, Error = RequestErrorInterface>(
+    apiResourceId: string
+): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.apiResources}/${apiResourceId}`
+    };
+
+    /**
+     * Pass `null` if the `apiResourceId` is not available. This will prevent the request from being called.
+     */
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(apiResourceId ? requestConfig : null);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate
+    };
+};
+
+/**
+ * Get the authorized APIs of the application with authorized permissions.
+ *
+ * @param appId - Application ID.
+ * 
+ * @returns A promise containing the response.
+ * @deprecated This is a temporary hook until the API resource feature moved to the features folder.
+ */
+export const useGetAuthorizedAPIList = <Data = AuthorizedAPIListItemInterface[], Error = RequestErrorInterface>(
+    applicationId: string
+): RequestResultInterface<Data, Error> => {
+    const requestConfig: RequestConfigInterface = {
+        method: HttpMethods.GET,
+        url: `${ store.getState().config.endpoints.applications }/${ applicationId }/authorized-apis`
+    };
+
+    /**
+     * Pass `null` if the `apiResourceId` is not available. This will prevent the request from being called.
+     */
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(applicationId ? requestConfig : null);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate
     };
 };

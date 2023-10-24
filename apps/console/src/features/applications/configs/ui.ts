@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -105,6 +105,9 @@ import {
     ReactComponent as globalIllustration
 } from "../../../themes/default/assets/images/illustrations/global.svg";
 import {
+    ReactComponent as M2MTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/m2m-app-illustration.svg";
+import {
     ReactComponent as OIDCMobileTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/oidc-mobile-template-illustration.svg";
 import {
@@ -138,6 +141,7 @@ import {
     ReactComponent as ZoomTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/zoom-template-illustration.svg";
 import OAuth2OpenIDLogo from "../../../themes/default/assets/images/protocols/oauth2-oidc.png";
+import OAuth2Logo from "../../../themes/default/assets/images/protocols/oauth2.png";
 import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
 import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
@@ -149,6 +153,7 @@ import { SupportedAuthProtocolTypes } from "../models";
 
 export const getInboundProtocolLogos = (): {
     general: FunctionComponent<SVGProps<SVGSVGElement>>;
+    oauth2: string;
     oidc: string;
     openid: string;
     "passive-sts": string;
@@ -161,6 +166,7 @@ export const getInboundProtocolLogos = (): {
 
     return {
         general: ProtocolIllustration,
+        oauth2: OAuth2Logo,
         oidc: OpenIDLogo,
         openid: OpenIDLogo,
         "passive-sts": WSFedLogo,
@@ -175,6 +181,7 @@ export const getInboundProtocolLogos = (): {
 export const getApplicationTemplateIllustrations = (): {
     box: FunctionComponent<SVGProps<SVGSVGElement>>;
     customApp: FunctionComponent<SVGProps<SVGSVGElement>>;
+    m2m: FunctionComponent<SVGProps<SVGSVGElement>>;
     oidcMobile: FunctionComponent<SVGProps<SVGSVGElement>>;
     oidcWebApp: FunctionComponent<SVGProps<SVGSVGElement>>;
     passiveSTS: FunctionComponent<SVGProps<SVGSVGElement>>;
@@ -190,6 +197,7 @@ export const getApplicationTemplateIllustrations = (): {
     return {
         box: BoxTemplateIllustration,
         customApp: CustomApplicationTemplateIllustration,
+        m2m: M2MTemplateIllustration,
         oidcMobile: OIDCMobileTemplateIllustration,
         oidcWebApp: OIDCWebAppTemplateIllustration,
         passiveSTS: PassiveSTSTemplateIllustration,

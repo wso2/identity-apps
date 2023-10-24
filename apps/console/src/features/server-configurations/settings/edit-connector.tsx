@@ -19,7 +19,6 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider } from "semantic-ui-react";
 import { SettingsSection } from "./settings-section";
 import { serverConfigurationConfig } from "../../../extensions/configs";
 import { AppConstants, history } from "../../core";
@@ -175,7 +174,6 @@ export const EditConnector: FunctionComponent<EditConnectorProps> = (
             primaryAction={ "Configure" }
             connectorEnabled={ enableOption }
         >
-            <Divider hidden/>
         </SettingsSection>
     );
 };
