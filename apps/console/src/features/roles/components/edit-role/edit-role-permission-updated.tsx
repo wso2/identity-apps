@@ -35,7 +35,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps } from "semantic-ui-react";
 import { RoleAPIResourcesListItem } from "./edit-role-common/role-api-resources-list-item";
-import { getAPIResourceDetails, updateRoleDetails, useAPIResourceDetails, useAPIResourcesList } from "../../api";
+import { getAPIResourceDetailsBulk, updateRoleDetails, useAPIResourceDetails, useAPIResourcesList } from "../../api";
 import { RoleConstants } from "../../constants/role-constants";
 import { PatchRoleDataInterface, PermissionUpdateInterface, SelectedPermissionsInterface } from "../../models";
 import { APIResourceInterface, ScopeInterface } from "../../models/apiResources";
@@ -164,25 +164,23 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         
     const getAPIResourceById = async (initialAPIResourceIds: string[]): Promise<void> => {
         const apiResourceIds: string[] = initialAPIResourceIds;
-        const apiResources: APIResourceInterface[] = [];
 
         if (apiResourceIds.length === 0) {
             return;
         }
 
-        for (const apiResourceId of apiResourceIds) {
-            try {
-                apiResources.push(await getAPIResourceDetails(apiResourceId));
-            } catch (error) {
+        getAPIResourceDetailsBulk(apiResourceIds)
+            .then((response: APIResourceInterface[]) => {
+                setSelectedAPIResources(response);
+            })
+            .catch(() => {
                 handleAlerts({
                     description: t("console:manage.features.roles.notifications." +
                         "fetchAPIResource.error.description"),
                     level: AlertLevels.ERROR,
                     message: t("console:manage.features.roles.notifications.fetchAPIResource.error.message")
                 });
-            }
-        }
-        setSelectedAPIResources(apiResources);
+            });
     };
 
     const getExistingAPIResources = (): void => {

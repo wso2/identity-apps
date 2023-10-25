@@ -90,7 +90,7 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
         };
 
         return (
-            <Accordion disableGutters defaultExpanded elevation={ 1 }>
+            <Accordion disableGutters defaultExpanded elevation={ 1 } variant="elevation">
                 <AccordionSummary expandIcon={ <ChevronDownIcon /> }>
                     <ListItem
                         secondaryAction={ ( 
