@@ -8860,7 +8860,7 @@ export const console: ConsoleNS = {
                             },
                             responseOperationType: {
                                 userCreation: "පරිශීලක නිර්මාණය",
-                                userAssignment: "භූමිකාව/කණ්ඩායම් පැවරුම"
+                                roleAssignment: "භූමිකාව/කණ්ඩායම් පැවරුම"
                             }
                         },
                         buttons: {

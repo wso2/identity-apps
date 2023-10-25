@@ -10794,7 +10794,7 @@ export const console: ConsoleNS = {
                             },
                             responseOperationType: {
                                 userCreation: "User Creation",
-                                userAssignment: "Role/Group Assignment"
+                                roleAssignment: "Role/Group Assignment"
                             }
                         },
                         buttons: {

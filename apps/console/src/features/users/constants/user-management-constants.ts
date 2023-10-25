@@ -199,5 +199,5 @@ export enum BulkUserImportStatus {
  */
 export enum BulkImportResponseOperationTypes {
     USER_CREATION = "userCreation",
-    USER_ASSIGNMENT = "userAssignment",
+    ROLE_ASSIGNMENT = "roleAssignment",
 }

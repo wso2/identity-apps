@@ -9065,7 +9065,7 @@ export const console: ConsoleNS = {
                             },
                             responseOperationType: {
                                 userCreation: "Création d'utilisateur",
-                                userAssignment: "Affectation de rôle/groupe"
+                                roleAssignment: "Affectation de rôle/groupe"
                             }
                         },
                         buttons: {

@@ -5670,7 +5670,7 @@ export interface ConsoleNS {
                             };
                             responseOperationType: {
                                 userCreation: string;
-                                userAssignment: string;
+                                roleAssignment: string;
                             }
                         };
                         buttons: {

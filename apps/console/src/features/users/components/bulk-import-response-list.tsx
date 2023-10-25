@@ -21,6 +21,7 @@ import Alert from "@oxygen-ui/react/Alert";
 import Tab from "@oxygen-ui/react/Tab";
 import Tabs from "@oxygen-ui/react/Tabs";
 import Typography from "@oxygen-ui/react/Typography";
+import { DropdownChild } from "@wso2is/forms";
 import {
     DataTable,
     EmptyPlaceholder,
@@ -106,8 +107,8 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
         {
             key: 1,
             text: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
-                "responseOperationType.userAssignment"),
-            value: BulkImportResponseOperationTypes.USER_ASSIGNMENT
+                "responseOperationType.roleAssignment"),
+            value: BulkImportResponseOperationTypes.ROLE_ASSIGNMENT
         }
     ];
 
@@ -212,14 +213,14 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
      * Filters the response list based on the search query and the selected status.
      */
     const filterBulkUsersResponseList = () => {
-        let filteredList: BulkUserImportOperationResponse[] = responseList.filter(
+        let filteredList: BulkUserImportOperationResponse[] = responseList?.filter(
             (response: BulkUserImportOperationResponse) => {
-                return response.operationType === responseOperationType;
+                return response?.operationType === responseOperationType;
             });
 
         if (searchQuery && searchQuery !== "") {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const [ search , condition, value ] = searchQuery.split(" ");
+            const [ , condition, value ] = searchQuery.split(" ");
             
             filteredList = filteredList.filter((item: BulkUserImportOperationResponse) => {
                 if (
@@ -308,12 +309,13 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
      * @param newTabIndex - New tab index.
      */
     const handleTabChange = (_: React.SyntheticEvent, newTabIndex: number): void => {
-        bulkResponseOperationTypes.map((item: DropdownItemProps) => {
-            if (item.key === newTabIndex) {
-                setResponseOperationType(item.value as BulkImportResponseOperationTypes);
-                setResponseOperationTypeTab(newTabIndex);
-            }
-        });
+        const item: DropdownItemProps = bulkResponseOperationTypes.find((item: DropdownItemProps) =>
+            item.key === newTabIndex);
+
+        if (item) {
+            setResponseOperationType(item.value as BulkImportResponseOperationTypes);
+            setResponseOperationTypeTab(newTabIndex);
+        }
     };
 
     /**
@@ -324,9 +326,9 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
             <Tabs
                 value={ responseOperationTypeTab }
                 onChange={ handleTabChange }
-                aria-label="basic tabs example"
+                component-id={ `${componentId}-operation-type-tab` }
             >
-                { bulkResponseOperationTypes.map(( item: DropdownItemProps) => (
+                { bulkResponseOperationTypes.map((item: DropdownItemProps) => (
                     <Tab
                         key={ item.key }
                         label={ (
@@ -342,16 +344,37 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     };
 
     const isResponseStatusFilterDisabled = (): boolean => {
-        if (responseOperationType === BulkImportResponseOperationTypes.USER_CREATION &&
-            (bulkResponseSummary.failedUserCreation === 0 || bulkResponseSummary.successUserCreation === 0)) {
-            return true;
-        } else if (responseOperationType === BulkImportResponseOperationTypes.USER_ASSIGNMENT &&
-            bulkResponseSummary.failedUserAssignment === 0 || bulkResponseSummary.successUserAssignment === 0) {
-            return true;
-        }
-
-        return false;
+        const isUserCreation: boolean = responseOperationType === BulkImportResponseOperationTypes.USER_CREATION;
+        const isRoleAssignment: boolean = responseOperationType === BulkImportResponseOperationTypes.ROLE_ASSIGNMENT;
+    
+        const noFailedOrSuccessfulUserCreation: boolean =
+            (bulkResponseSummary.failedUserCreation === 0 || bulkResponseSummary.successUserCreation === 0);
+        const noFailedOrSuccessfulUserAssignment: boolean =
+            (bulkResponseSummary.failedUserAssignment === 0 || bulkResponseSummary.successUserAssignment === 0);
+    
+        return (isUserCreation && noFailedOrSuccessfulUserCreation) ||
+            (isRoleAssignment && noFailedOrSuccessfulUserAssignment);
     };
+    
+
+    const advanceSearchFilterOptions: DropdownChild[] =
+        responseOperationType === BulkImportResponseOperationTypes.USER_CREATION
+            ? [
+                {
+                    key: 0,
+                    text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                    "filterAttributeOptions.username"),
+                    value: "userName"
+                }
+            ]
+            : [
+                {
+                    key: 1,
+                    text:  t("console:manage.features.user.modals.bulkImportUserWizard." +
+                "wizardSummary.advanceSearch.roleGroupFilterAttributePlaceHolder"),
+                    value: "roleName"
+                }
+            ];
 
     return (
         <>
@@ -408,34 +431,13 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                         advancedSearch={ (
                             <AdvancedSearchWithBasicFilters
                                 onFilter={ handleUserFilter }
-                                filterAttributeOptions={
-                                    responseOperationType === BulkImportResponseOperationTypes.USER_CREATION ?
-                                        [
-                                            {
-                                                key: 0,
-                                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
-                                                    "filterAttributeOptions.username"),
-                                                value: "userName"
-                                            }
-                                    
-                                        ] :
-                                        [
-                                            {
-                                                key: 1,
-                                                text:  t("console:manage.features.user.modals.bulkImportUserWizard." +
-                                                "wizardSummary.advanceSearch.roleGroupFilterAttributePlaceHolder"),
-                                                value: "roleName"
-                                            }
-                                        
-                                        ]
-                                }
+                                filterAttributeOptions={ advanceSearchFilterOptions }
                                 filterAttributePlaceholder={
                                     responseOperationType === BulkImportResponseOperationTypes.USER_CREATION ?
                                         t("console:manage.features.users.advancedSearch.form.dropdown." +
                                         "filterAttributeOptions.username") :
                                         t("console:manage.features.user.modals.bulkImportUserWizard." +
-                                        "wizardSummary.advanceSearch.roleGroupFilterAttributePlaceHolder")
-                                    
+                                        "wizardSummary.advanceSearch.roleGroupFilterAttributePlaceHolder") 
                                 }
                                 filterConditionsPlaceholder={
                                     t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +

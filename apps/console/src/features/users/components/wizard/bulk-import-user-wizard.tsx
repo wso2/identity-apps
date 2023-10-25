@@ -89,7 +89,6 @@ import {
 import { UserManagementUtils } from "../../utils";
 import { BulkImportResponseList } from "../bulk-import-response-list";
 
-
 /**
  * Prototypes for the BulkImportUserWizardComponent.
  */
@@ -213,15 +212,16 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * Fetch the user roles list.
      */
     useEffect(() => {
-        const newRoles: Record<string, RoleUserAssociation> = {};
-    
-        rolesList?.Resources?.map((role: RolesInterface) => {
-            newRoles[role.displayName.toLowerCase()] = {
-                displayName: role.displayName,
-                id: role.id,
+        const newRoles: Record<string, RoleUserAssociation> = rolesList?.Resources?.reduce((
+            acc: Record<string, RoleUserAssociation>, role: RolesInterface) => {
+            acc[role?.displayName.toLowerCase()] = {
+                displayName: role?.displayName,
+                id: role?.id,
                 users: []
             };
-        });
+
+            return acc;
+        }, {});
     
         setRoleUserAssociations(newRoles);
     }, [ rolesList ]);
@@ -234,18 +234,22 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         getUserStoreList();
     }, [ userstore ]);
 
+    /**
+     * Fetch the group list.
+     */
     const getGroupMemberAssociation = async (): Promise<Record<string, GroupMemberAssociation>> => {
         try {
             const response: any = await getGroupList(null);
-            const newGroups: Record<string, GroupMemberAssociation> = {};
-
-            response.data.Resources.map((group: GroupsInterface) => {
-                newGroups[group.displayName.toLowerCase()] = {
-                    displayName: group.displayName,
-                    id: group.id,
+            const newGroups: Record<string, GroupMemberAssociation> = response?.data?.Resources?.reduce((
+                acc: Record<string, GroupMemberAssociation>, group: GroupsInterface) => {
+                acc[group?.displayName.toLowerCase()] = {
+                    displayName: group?.displayName,
+                    id: group?.id,
                     members: []
                 };
-            });
+
+                return acc;
+            }, {});
 
             return newGroups;
         } catch (error) {
@@ -1223,7 +1227,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     "internalErrorMessage")
             };
         } else if (operation?.method === HttpMethods.PATCH) {
-            operationType = BulkImportResponseOperationTypes.USER_ASSIGNMENT;
+            operationType = BulkImportResponseOperationTypes.ROLE_ASSIGNMENT;
             statusMessages = {
                 200: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
                 "userAssignmentSuccessMessage", { resource: resourceIdentifier }),
