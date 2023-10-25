@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.2.3
+
+### Patch Changes
+
+- [#4286](https://github.com/wso2/identity-apps/pull/4286) [`c4aa16987c`](https://github.com/wso2/identity-apps/commit/c4aa16987c10d7afe6925578d97ec4a9bad5f749) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Add support for inviting users from parent organization to sub-organization
+
+* [#4318](https://github.com/wso2/identity-apps/pull/4318) [`581cb0c891`](https://github.com/wso2/identity-apps/commit/581cb0c89179626c5a4761d6eccfeca1092449bf) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Remove API authorization policy for M2M applications
+
+* Updated dependencies [[`c4aa16987c`](https://github.com/wso2/identity-apps/commit/c4aa16987c10d7afe6925578d97ec4a9bad5f749), [`581cb0c891`](https://github.com/wso2/identity-apps/commit/581cb0c89179626c5a4761d6eccfeca1092449bf)]:
+  - @wso2is/i18n@2.0.19
+
 ## 2.2.2
 
 ### Patch Changes
