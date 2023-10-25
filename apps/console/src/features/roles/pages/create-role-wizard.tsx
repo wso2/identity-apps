@@ -26,20 +26,20 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { RoleBasics } from "./role-basics";
-import { RolePermissionsList } from "./role-permissions/role-permissions";
-import { AppConstants } from "../../../core/constants";
-import { history } from "../../../core/helpers";
-import { store } from "../../../core/store";
-import { createRole } from "../../api/roles";
-import { RoleAudienceTypes } from "../../constants";
+import { AppConstants } from "../../core/constants";
+import { history } from "../../core/helpers";
+import { store } from "../../core/store";
+import { createRole } from "../api/roles";
+import { RoleBasics } from "../components/wizard-updated/role-basics";
+import { RolePermissionsList } from "../components/wizard-updated/role-permissions/role-permissions";
+import { RoleAudienceTypes } from "../constants";
 import {
     CreateRoleFormData,
     CreateRoleInterface,
     CreateRoleStateInterface,
     CreateRoleStepsFormTypes,
     SelectedPermissionsInterface
-} from "../../models";
+} from "../models";
 
 /**
  * Interface which captures create role props.
@@ -51,7 +51,7 @@ type CreateRoleProps = IdentifiableComponentInterface;
  *
  * @param props - props related to the create role stepper
  */
-export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: CreateRoleProps): ReactElement => {
+const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: CreateRoleProps): ReactElement => {
 
     const { [ "data-componentid" ]: componentId } = props;
 
@@ -217,7 +217,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                                 stepContent={ creationFlowSteps }
                                 isNextEnabled={ true }
                                 data-componentid={ `${componentId}-vertical-stepper` }
-                                handleFinishAction={ () => addRole() }
+                                handleFinishAction={ addRole }
                             />
                         </Grid>
                     </Grid>
@@ -233,3 +233,5 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
 CreateRoleWizard.defaultProps = {
     "data-componentid": "create-role-wizard"
 };
+
+export default CreateRoleWizard;

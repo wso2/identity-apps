@@ -326,6 +326,7 @@ export class AppConstants {
             [ "PRIVACY", `${ AppConstants.getMainViewBasePath() }/privacy` ],
             [ "REMOTE_REPO_CONFIG", `${ AppConstants.getAdminViewBasePath() }/remote-repository-config` ],
             [ "ROLES", `${ AppConstants.getAdminViewBasePath() }/roles` ],
+            [ "ROLE_CREATE", `${ AppConstants.getAdminViewBasePath() }/create-role` ],
             [ "ROLE_EDIT", `${ AppConstants.getAdminViewBasePath() }/roles/:id` ],
             [ "ROOT", "/" ],
             [ "GOVERNANCE_CONNECTORS", `${AppConstants.getAdminViewBasePath()}/governance-connectors/:id` ],

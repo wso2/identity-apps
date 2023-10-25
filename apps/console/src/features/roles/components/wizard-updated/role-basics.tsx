@@ -20,7 +20,6 @@ import { Alert, ListItemText } from "@oxygen-ui/react";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Link } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import React, {
     FunctionComponent,
@@ -38,9 +37,9 @@ import { useApplicationList } from "../../../applications/api/application";
 import { ApplicationListItemInterface } from "../../../applications/models";
 import { history } from "../../../core";
 import { AppConstants } from "../../../core/constants";
-import { searchRoleList } from "../../api/roles";
+import { useRolesList } from "../../api/roles";
 import { RoleAudienceTypes, RoleConstants } from "../../constants";
-import { CreateRoleFormData, SearchRoleInterface } from "../../models";
+import { CreateRoleFormData } from "../../models";
 
 const FORM_ID: string = "add-role-basics-form";
 
@@ -90,6 +89,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const [ applicationSearchQuery, setApplicationSearchQuery ] = useState<string>(undefined);
     const [ assignedApplicationsSearching, setAssignedApplicationsSearching ] = useState<boolean>(false);
     const [ applicationListOptions, setApplicationListOptions ] = useState<DropdownProps[]>([]);
+    const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
     const noApplicationsAvailable: MutableRefObject<boolean> = useRef<boolean>(false);
 
     const {
@@ -98,6 +98,12 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
     } = useApplicationList("clientId", null, null, applicationSearchQuery);
+
+    const {
+        data: rolesList,
+        isLoading: isRolesListLoading,
+        isValidating: isRolesListValidating
+    } = useRolesList(undefined, undefined, roleNameSearchQuery);
 
     useEffect(() => {
         if (applicationListFetchRequestError) {
@@ -221,19 +227,14 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             errors.roleName = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
                 "validations.empty", { type: "Role" });
         } else {
-            const searchData: SearchRoleInterface = {
-                filter: "displayName eq " + values.roleName.toString(),
-                schemas: [
-                    "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
-                ],
-                startIndex: 1
-            };
-            const response: AxiosResponse = await searchRoleList(searchData);
-    
-            if (response?.data?.totalResults > 0) {
-                errors.roleName = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+            setRoleNameSearchQuery(`displayName eq ${values.roleName.toString()}`);
+
+            if (!isRolesListLoading || !isRolesListValidating) {
+                if (rolesList?.totalResults > 0) {
+                    errors.roleName = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
                         "roleName.validations.duplicate", { type: "Role" });
-            }    
+                }
+            }   
         }
 
         if (errors.roleName || errors.assignedApplicationId) {

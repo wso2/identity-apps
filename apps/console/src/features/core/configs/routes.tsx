@@ -1437,6 +1437,18 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         path: AppConstants.getPaths().get("ROLE_EDIT"),
                         protected: true,
                         showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() => import("../../roles/pages/create-role-wizard")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "rolesCreate",
+                        name: "console:manage.features.sidePanel.createRole",
+                        path: AppConstants.getPaths().get("ROLE_CREATE"),
+                        protected: true,
+                        showOnSidePanel: true
                     }
                 ],
                 component: lazy(() => import("../../roles/pages/role")),
