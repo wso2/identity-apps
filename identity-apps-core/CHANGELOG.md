@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.27
+
+### Patch Changes
+
+- [#4324](https://github.com/wso2/identity-apps/pull/4324) [`6b34048047`](https://github.com/wso2/identity-apps/commit/6b34048047e35018ebdaf7f03f34c751e34f5281) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Fix tenant domain resolving issue.
+
 ## 2.0.26
 
 ### Patch Changes
