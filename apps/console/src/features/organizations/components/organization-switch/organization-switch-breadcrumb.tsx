@@ -77,10 +77,8 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
-    const isShowSwitcher: boolean = (
-        (organizationConfigs?.showSwitcherInTenants && !isSubOrg) ||
-        (!organizationConfigs?.showSwitcherInTenants && isSubOrg)
-    );
+    const isShowSwitcher: boolean = 
+    organizationConfigs?.showOrganizationDropdown || (!organizationConfigs?.showOrganizationDropdown) && isSubOrg;
 
     useEffect(() => {
         if (!error) {
@@ -180,22 +178,15 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         ) : (
             <>
                 {
-                    !organizationConfigs.showSwitcherInTenants
-                        ? (
+                    organizationConfigs?.showSwitcherInTenants ? (
+                        breadcrumbList.length <= 4 && (
                             <Icon
                                 key={ index }
                                 name={ isDropDownOpen ? "angle up" : "angle down" }
                                 className="separator-icon organization-breadcrumb-icon"
                             />
-                        ) : (
-                            breadcrumbList.length <= 4 && (
-                                <Icon
-                                    key={ index }
-                                    name={ isDropDownOpen ? "angle up" : "angle down" }
-                                    className="separator-icon organization-breadcrumb-icon"
-                                />
-                            )
                         )
+                    ) : null
                 }
             </>
         );
@@ -211,7 +202,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                 <>
                     { breadcrumbList?.map(
                         (breadcrumb: BreadcrumbItem, index: number) => {
-                            if (index === 0 && !organizationConfigs.showSwitcherInTenants) {
+                            if (index === 0) {
                                 return (
                                     <>
                                         { generateSuperBreadcrumbItem(breadcrumb) }
@@ -387,8 +378,6 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
             />
         );
     }
-
-    return null;
 };
 
 OrganizationSwitchBreadcrumb.defaultProps = {
