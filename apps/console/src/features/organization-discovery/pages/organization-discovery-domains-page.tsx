@@ -344,7 +344,7 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                             onClick={ () => {
                                 eventPublisher.publish("organization-click-assign-email-domain-button");
                                 history.push(
-                                    AppConstants.getPaths().get("ASSIGN_ORGANIZATION_DISCOVERY_DOMAINS_DOMAINS")
+                                    AppConstants.getPaths().get("ASSIGN_ORGANIZATION_DISCOVERY_DOMAINS")
                                 );
                             } }
                             data-componentid={ `${ testId }-list-layout-assign-button` }
@@ -416,7 +416,7 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                     <DiscoverableOrganizationsList
                         list={ discoverableOrganizations }
                         onEmptyListPlaceholderActionClick={ () => {
-                            history.push(AppConstants.getPaths().get("ASSIGN_ORGANIZATION_DISCOVERY_DOMAINS_DOMAINS"));
+                            history.push(AppConstants.getPaths().get("ASSIGN_ORGANIZATION_DISCOVERY_DOMAINS"));
                         } }
                         onSearchQueryClear={ handleSearchQueryClear }
                         searchQuery={ searchQuery }

@@ -276,7 +276,7 @@ export class AppConstants {
             [ "CUSTOMIZE", `${ AppConstants.getMainViewBasePath() }/customize` ],
             [ "DEVELOPER_OVERVIEW", `${ AppConstants.getDeveloperViewBasePath() }/overview` ],
             [
-                "ASSIGN_ORGANIZATION_DISCOVERY_DOMAINS_DOMAINS",
+                "ASSIGN_ORGANIZATION_DISCOVERY_DOMAINS",
                 `${AppConstants.getAdminViewBasePath()}/email-domain-assign`
             ],
             [ "ORGANIZATION_DISCOVERY_DOMAINS", `${AppConstants.getAdminViewBasePath()}/email-domain-discovery` ],

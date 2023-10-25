@@ -404,7 +404,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 },
                                 id: "email-domain-assign",
                                 name: "Email Domain Assign",
-                                path: AppConstants.getPaths().get("ASSIGN_ORGANIZATION_DISCOVERY_DOMAINS_DOMAINS"),
+                                path: AppConstants.getPaths().get("ASSIGN_ORGANIZATION_DISCOVERY_DOMAINS"),
                                 protected: true,
                                 showOnSidePanel: false
                             },
