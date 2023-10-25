@@ -1443,6 +1443,9 @@ export const console: ConsoleNS = {
                                 }
                             },
                             tabName: "Sign-in Method"
+                        },
+                        apiAuthorization: {
+                            m2mPolicyMessage: "All the authorized scopes of an API resource are available for an M2M application despite the authorization policy specified for the resource."
                         }
                     }
                 },

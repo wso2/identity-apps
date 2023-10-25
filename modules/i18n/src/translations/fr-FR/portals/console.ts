@@ -1470,6 +1470,9 @@ export const console: ConsoleNS = {
                                 }
                             },
                             tabName: "Méthode de connexion"
+                        },
+                        apiAuthorization: {
+                            m2mPolicyMessage: "Toutes les étendues autorisées d'une ressource API sont disponibles pour une application M2M malgré la politique d'autorisation spécifiée pour la ressource."
                         }
                     }
                 },

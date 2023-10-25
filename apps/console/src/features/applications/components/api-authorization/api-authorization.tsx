@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -54,15 +54,27 @@ import {
 } from "../../models/api-authorization";
 
 /**
+ * Prop types for the API resources list component.
+ */
+interface APIAuthorizationResourcesProps extends
+    SBACInterface<FeatureConfigInterface>, IdentifiableComponentInterface {
+    /**
+     * Template ID.
+     */
+    templateId: string;
+}
+
+/**
  * API Authorization component.
  * 
  * @param props - Props related to API authorization component.
  */
-export const APIAuthorization: FunctionComponent<IdentifiableComponentInterface> = (
-    props: IdentifiableComponentInterface
+export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps> = (
+    props: APIAuthorizationResourcesProps
 ): ReactElement => {
 
     const {
+        templateId,
         ["data-componentid"]: componentId
     } = props;
 
@@ -362,6 +374,7 @@ export const APIAuthorization: FunctionComponent<IdentifiableComponentInterface>
                 <Divider hidden />
                 <SubscribedAPIResources
                     appId={ appId }
+                    templateId={ templateId }
                     allAPIResourcesListData={ allAPIResourcesListData?.apiResources }
                     allAPIResourcesFetchRequestError={ allAPIResourcesFetchRequestError }
                     allAuthorizedScopes={ allAuthorizedScopes }
@@ -418,6 +431,7 @@ export const APIAuthorization: FunctionComponent<IdentifiableComponentInterface>
             {
                 isAuthorizeAPIResourceWizardOpen && (
                     <AuthorizeAPIResource 
+                        templateId={ templateId }
                         subscribedAPIResourcesListData={ subscribedAPIResourcesListData }
                         closeWizard={ (): void => setIsAuthorizeAPIResourceWizardOpen(false) }
                         handleCreateAPIResource= { handleCreateAPIResource } />

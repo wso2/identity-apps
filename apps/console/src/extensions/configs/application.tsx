@@ -406,7 +406,7 @@ export const applicationConfig: ApplicationConfig = {
                         ),
                         render: () => (
                             <ResourceTab.Pane controlledSegmentation>
-                                <APIAuthorization />
+                                <APIAuthorization templateId={ application?.templateId } />
                             </ResourceTab.Pane>
                         )
                     }

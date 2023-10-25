@@ -912,6 +912,9 @@ export interface ConsoleNS {
                             stopSharingNotification: Notification
                             getSharedOrganizations: Notification;
                         };
+                        apiAuthorization: {
+                            m2mPolicyMessage: string;
+                        }
                     };
                 };
                 forms: {

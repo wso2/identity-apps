@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Button from "@oxygen-ui/react/Button";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -43,9 +44,14 @@ import { APIResourcesConstants } from "../../../../api-resources/constants";
 import { APIResourceInterface, APIResourcePermissionInterface } from "../../../../api-resources/models";
 import useScopesOfAPIResources from "../../../api/use-scopes-of-api-resources";
 import { Policy, PolicyInfo, policyDetails } from "../../../constants/api-authorization";
+import { ApplicationTemplateIdTypes } from "../../../models";
 import { AuthorizedAPIListItemInterface } from "../../../models/api-authorization";
 
 interface AuthorizeAPIResourcePropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Template ID.
+     */
+    templateId: string,
     /**
      * List of subscribed API Resources
      */
@@ -68,6 +74,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
 ): ReactElement => {
 
     const {
+        templateId,
         subscribedAPIResourcesListData,
         closeWizard,
         handleCreateAPIResource,
@@ -95,6 +102,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const [ selectedPolicy, setSelectedPolicy ] = useState<Policy>(Policy.ROLE);
     const [ isSelectAllHidden, setIsSelectAllHidden ] = useState<boolean>(false);
     const [ isSelectNoneHidden, setIsSelectNoneHidden ] = useState<boolean>(true);
+    const [ m2mApplication, setM2MApplication ] = useState<boolean>(false);
 
     const {
         data: currentAPIResourcesListData,
@@ -269,13 +277,19 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
         setIsSelectNoneHidden(authorizedScopes?.length === 0);
     }, [ authorizedScopes ]);
 
+    /**
+     * Check whether application is an M2M application.
+     */
+    useEffect(() => {
+        setM2MApplication(templateId == ApplicationTemplateIdTypes.M2M_APPLICATION);
+    }, [ templateId ]);
 
     /**
      * Set the selected API resource ID.
      */
     const handleAPIResourceDropdownChange = (isPure: boolean, values: Map<string, FormValue>) => {
         const currentAPIResourceId: string = values.get("apiResource").toString();
-        const currentPolicy: Policy = values.get("policy").toString() as Policy;
+        const currentPolicy: Policy = values.get("policy")?.toString() as Policy;
 
         if (currentAPIResourceId !== selectedAPIResource?.id) {
             const currentAPIResource: APIResourceInterface = allAPIResourcesListData?.find(
@@ -330,7 +344,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
      */
     const handleFormSubmit = () => {
         setIsSubmitting(true);
-        handleCreateAPIResource(selectedAPIResource.id, authorizedScopes, selectedPolicy.toString(), callBack);
+        handleCreateAPIResource(selectedAPIResource.id, authorizedScopes, selectedPolicy?.toString(), callBack);
     };
 
     /**
@@ -474,58 +488,87 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                         </Hint>
                                     </Grid.Column>
                                 </Grid.Row>
-                                <Grid.Row columns={ 1 } className="pt-2">
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                                        <Popup
-                                            content={ t("extensions:develop.applications.edit.sections." +
-                                                "apiAuthorization.sections.apiSubscriptions.wizards." +
-                                                "authorizeAPIResource.rbacPolicyMessage") }
-                                            disabled={ !selectedAPIResource
-                                                || !selectedAPIResourceRequiresAuthorization }
-                                            inverted
-                                            trigger={ (
-                                                <label>
-                                                    <Text
-                                                        size={ 13 }
-                                                        className="mb-1"
-                                                        muted={ !selectedAPIResource
-                                                            || selectedAPIResourceRequiresAuthorization }
-                                                    >
-                                                        { t("extensions:develop.applications.edit.sections." +
+                                {
+                                    !m2mApplication && (
+                                        <Grid.Row columns={ 1 } className="pt-2">
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                                                <Popup
+                                                    content={ 
+                                                        t(
+                                                            "extensions:develop.applications.edit.sections." +
                                                             "apiAuthorization.sections.apiSubscriptions.wizards." +
-                                                            "authorizeAPIResource.fields.policy.label") }
-                                                    </Text>
-                                                </label>
-                                            ) }
-                                        />
-                                        <Field
-                                            data-componentid={ `${componentId}-policy` }
-                                            type="dropdown"
-                                            name="policy"
-                                            key="policy"
-                                            children={ policyDropdownOptions }
-                                            tabIndex={ 4 }
-                                            default={ policyDetails.get(Policy.ROLE).policyIdentifier() }
-                                            loading={ isPolicyDropdownLoading }
-                                            disabled={ !selectedAPIResource
-                                                || selectedAPIResourceRequiresAuthorization }
-                                            search
-                                            selection
-                                            scrolling
-                                        />
-                                        <Hint
-                                            className="mb-1"
-                                            disabled={ !selectedAPIResource
-                                                || selectedAPIResourceRequiresAuthorization }>
-                                            { t("extensions:develop.applications.edit.sections." +
-                                                "apiAuthorization.sections.apiSubscriptions.wizards." +
-                                                "authorizeAPIResource.fields.policy.hint") }
-                                        </Hint>
-                                    </Grid.Column>
-                                </Grid.Row>
+                                                            "authorizeAPIResource.rbacPolicyMessage"
+                                                        ) 
+                                                    }
+                                                    disabled={ 
+                                                        !selectedAPIResource
+                                                        || !selectedAPIResourceRequiresAuthorization 
+                                                    }
+                                                    inverted
+                                                    trigger={ (
+                                                        <label>
+                                                            <Text
+                                                                size={ 13 }
+                                                                className="mb-1"
+                                                                muted={ 
+                                                                    !selectedAPIResource
+                                                                    || selectedAPIResourceRequiresAuthorization 
+                                                                }
+                                                            >
+                                                                { 
+                                                                    t(
+                                                                        "extensions:develop.applications.edit." +
+                                                                        "sections.apiAuthorization.sections." +
+                                                                        "apiSubscriptions.wizards." +
+                                                                        "authorizeAPIResource.fields.policy.label"
+                                                                    ) 
+                                                                }
+                                                            </Text>
+                                                        </label>
+                                                    ) }
+                                                />
+                                                <Field
+                                                    data-componentid={ `${componentId}-policy` }
+                                                    type="dropdown"
+                                                    name="policy"
+                                                    key="policy"
+                                                    children={ policyDropdownOptions }
+                                                    tabIndex={ 4 }
+                                                    default={ policyDetails.get(Policy.ROLE).policyIdentifier() }
+                                                    loading={ isPolicyDropdownLoading }
+                                                    disabled={ 
+                                                        !selectedAPIResource
+                                                        || selectedAPIResourceRequiresAuthorization 
+                                                    }
+                                                    search
+                                                    selection
+                                                    scrolling
+                                                />
+                                                <Hint
+                                                    className="mb-1"
+                                                    disabled={ 
+                                                        !selectedAPIResource
+                                                        || selectedAPIResourceRequiresAuthorization 
+                                                    }
+                                                >
+                                                    { 
+                                                        t(
+                                                            "extensions:develop.applications.edit.sections." +
+                                                            "apiAuthorization.sections.apiSubscriptions.wizards." +
+                                                            "authorizeAPIResource.fields.policy.hint"
+                                                        ) 
+                                                    }
+                                                </Hint>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    )
+                                }
+                               
                                 { /* Need to add doc links to the following content of the message box */ }
                                 {
-                                    selectedAPIResource && (
+                                    !m2mApplication 
+                                    && selectedAPIResource 
+                                    && (
                                         <Grid.Row columns={ 1 } className="pt-0">
                                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                                                 <Message
@@ -545,6 +588,22 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                         </>)
                                                     }
                                                 />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    )
+                                }
+                                {
+                                    m2mApplication && (
+                                        <Grid.Row columns={ 1 } className="pt-0">
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                                                <Alert severity="info">
+                                                    {
+                                                        t(
+                                                            "console:develop.features.applications.edit." + 
+                                                            "sections.apiAuthorization.m2mPolicyMessage"
+                                                        )
+                                                    }
+                                                </Alert>
                                             </Grid.Column>
                                         </Grid.Row>
                                     )
