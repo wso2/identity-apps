@@ -9401,7 +9401,7 @@ export const console: ConsoleNS = {
                             },
                             organizationName: {
                                 label: "Organization Name",
-                                hint: "Enter the name of the organization you wish to add the domain mapping."
+                                hint: "The name of the organization to which the domain mapping are added."
                             }
                         }
                     }
