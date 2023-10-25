@@ -48,6 +48,7 @@ import {
     updateApplicationDetails,
     updateAuthProtocolConfig
 } from "../../api";
+import { useGetApplication } from "../../api/use-get-application";
 import { getInboundProtocolLogos } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
@@ -57,7 +58,8 @@ import {
     ApplicationTemplateIdTypes,
     ApplicationTemplateListItemInterface,
     AuthProtocolMetaInterface,
-    CertificateInterface, OIDCDataInterface,
+    CertificateInterface,
+    OIDCDataInterface,
     OIDCMetadataInterface,
     SAML2ConfigurationInterface,
     SAMLConfigModes,
@@ -183,6 +185,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const { getLink } = useDocumentation();
 
     const dispatch: Dispatch = useDispatch();
+
+    const {
+        mutate: mutateApplicationGetRequest
+    } = useGetApplication(application.id);
 
     const authProtocolMeta: AuthProtocolMetaInterface = useSelector(
         (state: AppState) => state.application.meta.protocolMeta);
@@ -345,6 +351,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         updateApplicationDetails({ id: appId, ...values.general })
             .then(async () => {
                 await handleInboundConfigFormSubmit(values.inbound, selectedProtocol);
+
+                mutateApplicationGetRequest();
             })
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -796,9 +804,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                             className={ "mt-1" }
                         >
                             <strong>
-                                {  
+                                {
                                     ApplicationManagementUtils
-                                        .resolveProtocolDisplayName(SupportedAuthProtocolTypes.OAUTH2) 
+                                        .resolveProtocolDisplayName(SupportedAuthProtocolTypes.OAUTH2)
                                 }
                             </strong>
                         </Header.Content>

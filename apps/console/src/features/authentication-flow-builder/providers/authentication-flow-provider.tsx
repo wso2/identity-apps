@@ -145,6 +145,13 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
     }, []);
 
     /**
+     * When `application` state changes, update the `authenticationSequence`.
+     */
+    useEffect(() => {
+        setAuthenticationSequence(application?.authenticationSequence);
+    }, [ application ]);
+
+    /**
      * Separates out the different authenticators to their relevant categories.
      */
     useEffect(() => {
@@ -169,10 +176,10 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                 );
             }
 
-            authenticator.image = authenticator.idp === AuthenticatorCategories.LOCAL || 
-            authenticator.defaultAuthenticator?.authenticatorId === 
+            authenticator.image = authenticator.idp === AuthenticatorCategories.LOCAL ||
+            authenticator.defaultAuthenticator?.authenticatorId ===
             AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
-                ? authenticator.image 
+                ? authenticator.image
                 : ConnectionsManagementUtils
                     .resolveConnectionResourcePath(
                         connectionResourcesUrl, authenticator.image);
