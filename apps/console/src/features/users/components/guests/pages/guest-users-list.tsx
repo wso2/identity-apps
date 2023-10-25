@@ -25,12 +25,11 @@ import {
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
-    Hint,
     LinkButton,
     TableColumnInterface
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
