@@ -17,7 +17,7 @@
  */
 
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -47,14 +47,14 @@ const AssignOrganizationDiscoverDomainsPage: FunctionComponent<EmailDomainAssign
 
     const { t } = useTranslation();
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => {
-        return state.config.ui.features.organizationDiscovery;
+    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state.config?.ui?.features?.organizationDiscovery;
     });
 
     const isReadOnly: boolean = useMemo(() => {
         return (
             !isFeatureEnabled(
-                featureConfig?.organizations,
+                featureConfig,
                 OrganizationDiscoveryConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
             )
         );
@@ -66,13 +66,13 @@ const AssignOrganizationDiscoverDomainsPage: FunctionComponent<EmailDomainAssign
 
     return (
         <PageLayout
-            title={ "Email Domains" }
-            pageTitle={ "Email Domains" }
-            description={ "Add email domains for sub organizations" }
+            title={ t("console:manage.features.organizationDiscovery.assign.title") }
+            pageTitle="Assign Email Domains"
+            description={ t("console:manage.features.organizationDiscovery.assign.description") }
             backButton={ {
                 "data-componentid": "assign-discovery-domains-page-back-button",
                 onClick: goBackToOrganizationListWithDomains,
-                text: t("console:manage.features.organizationDiscovery.edit.back")
+                text: t("common:back")
             } }
             titleTextAlign="left"
             bottomMargin={ false }

@@ -9365,7 +9365,7 @@ export const console: ConsoleNS = {
                     placeholder: "Search by Organization Name"
                 },
                 assign: {
-                    title: "Email Domains",
+                    title: "Assign Email Domains",
                     description: "Add email domains for sub organizations.",
                     form: {
                         fields: {

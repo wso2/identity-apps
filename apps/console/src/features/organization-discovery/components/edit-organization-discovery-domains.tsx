@@ -16,10 +16,14 @@
  * under the License.
  */
 
-import { Autocomplete, AutocompleteRenderGetTagProps, AutocompleteRenderInputParams } from "@mui/material";
-import { Chip, TextField } from "@oxygen-ui/react";
+import Autocomplete, {
+    AutocompleteRenderGetTagProps,
+    AutocompleteRenderInputParams
+} from "@oxygen-ui/react/Autocomplete";
+import Chip from "@oxygen-ui/react/Chip";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import InputLabel from "@oxygen-ui/react/InputLabel";
+import TextField from "@oxygen-ui/react/TextField";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -28,7 +32,7 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import { ContentLoader, EmphasizedSegment, Hint, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -53,7 +57,7 @@ export interface EditOrganizationDiscoveryDomainsPropsInterface
     /**
      * Organization discovery info
      */
-    organizationDiscoveryData: OrganizationDiscoveryAttributeDataInterface;
+    organizationDiscoveryAttributes: OrganizationDiscoveryAttributeDataInterface;
     /**
      * Is read only view
      */
@@ -87,18 +91,27 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
 ): ReactElement => {
     const {
         organization,
-        organizationDiscoveryData,
+        organizationDiscoveryAttributes,
         isReadOnly,
         onOrganizationUpdate,
         ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
+
     const dispatch: Dispatch<any> = useDispatch();
 
-    const [ emailDomains, setEmailDomains ] = useState<string[]>();
+    const [ emailDomains, setEmailDomains ] = useState<string[]>([]);
 
     const optionsArray: string[] = [];
+
+    /**
+     * Need to assign the default value explicitly overcome async issues in the `Autocomplete` component.
+     * https://github.com/mui/material-ui/issues/31952#issuecomment-1077525449
+     */
+    useEffect(() => {
+        setEmailDomains(organizationDiscoveryAttributes?.attributes[0]?.values ?? []);
+    }, [ organizationDiscoveryAttributes ]);
 
     /**
      * Function to handle the form submit action.
@@ -110,7 +123,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
             attributes: [
                 {
                     type: "emailDomain",
-                    values: emailDomains || organizationDiscoveryData?.attributes[0]?.values
+                    values: emailDomains || organizationDiscoveryAttributes?.attributes[0]?.values
                 }
             ]
         };
@@ -206,7 +219,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                 size="small"
                                 id="tags-filled"
                                 options={ optionsArray.map((option: string) => option) }
-                                defaultValue={ organizationDiscoveryData?.attributes[0]?.values }
+                                value={ emailDomains }
                                 renderTags={ (value: readonly string[], getTagProps: AutocompleteRenderGetTagProps) => {
                                     return value.map((option: string, index: number) => (
                                         <Chip

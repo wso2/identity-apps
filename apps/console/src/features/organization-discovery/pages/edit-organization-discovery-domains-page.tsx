@@ -78,7 +78,7 @@ const EditOrganizationDiscoveryDomainsPage: FunctionComponent<EditOrganizationDi
         mutate: mutateOrganizationDiscoveryAttributesFetchRequest
     } = useGetOrganizationDiscoveryAttributes(!!organizationId, organizationId);
 
-    const [ isReadOnly, setIsReadOnly ] = useState(true);
+    const [ isReadOnly, setIsReadOnly ] = useState<boolean>(true);
 
     /**
      * Set the isReadOnly state based on the feature config.
@@ -150,7 +150,7 @@ const EditOrganizationDiscoveryDomainsPage: FunctionComponent<EditOrganizationDi
         >
             <EditOrganizationDiscoveryDomains
                 organization={ organization }
-                organizationDiscoveryData = { organizationDiscoveryAttributes }
+                organizationDiscoveryAttributes = { organizationDiscoveryAttributes }
                 isReadOnly={ isReadOnly }
                 onOrganizationUpdate={ () => mutateOrganizationDiscoveryAttributesFetchRequest() }
             />

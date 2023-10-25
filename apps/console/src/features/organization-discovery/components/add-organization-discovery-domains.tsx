@@ -16,9 +16,14 @@
  * under the License.
  */
 
-import { Autocomplete, AutocompleteRenderGetTagProps, AutocompleteRenderInputParams } from "@mui/material";
-import { Chip, FormHelperText, TextField } from "@oxygen-ui/react";
-import InputLabel from "@oxygen-ui/react/InputLabel/InputLabel";
+import Autocomplete, {
+    AutocompleteRenderGetTagProps,
+    AutocompleteRenderInputParams
+} from "@oxygen-ui/react/Autocomplete";
+import Chip from "@oxygen-ui/react/Chip";
+import FormHelperText from "@oxygen-ui/react/FormHelperText";
+import InputLabel from "@oxygen-ui/react/InputLabel";
+import TextField from "@oxygen-ui/react/TextField";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -38,6 +43,7 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useMemo, useSta
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { AppConstants } from "../../core/constants/app-constants";
 import { history } from "../../core/helpers/history";
 import { FeatureConfigInterface } from "../../core/models/config";
 import useGetOrganizations from "../../organizations/api/use-get-organizations";
@@ -46,7 +52,6 @@ import addOrganizationEmailDomain from "../api/add-organization-email-domains";
 import useGetOrganizationDiscovery from "../api/use-get-organization-discovery";
 import { OrganizationDiscoveryInterface } from "../models/organization-discovery";
 import "./add-organization-discovery-domains.scss";
-import { AppConstants } from "../../core/constants/app-constants";
 
 /**
  * Props interface of {@link AddOrganizationDiscoveryDomains}
