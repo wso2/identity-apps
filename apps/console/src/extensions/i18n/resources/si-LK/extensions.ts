@@ -1848,10 +1848,6 @@ export const extensions: Extensions = {
                         description: "Branding preference updated successfully for {{ tenant }}.",
                         message: "යාවත්කාලීන කිරීම සාර්ථකයි"
                     },
-                    tenantMismatch: {
-                        description: "{{ tenant }} සඳහා සන්නම් මනාප යාවත්කාලීන කිරීමේදී දෝෂයක් සිදු විය.",
-                        message: "යාවත්කාලීන දෝෂයක්"
-                    },
                     successWaiting: {
                         description: "{{ tenant }} සඳහා වෙළඳ නාමකරණ මනාප යාවත්කාලීන කිරීම."+
                             "වෙනස්කම් පිළිබිඹු වන වෙනස්කම් සඳහා ටික කාලයක් ගතවනු ඇත.",
@@ -1861,6 +1857,10 @@ export const extensions: Extensions = {
                         description: "{{ tenant }} සඳහා වෙළඳ නාමකරණ මනාප යාවත්කාලීන කිරීම."+
                             "පිළිබිඹු කළ යුතු වෙනස්කම් සඳහා මිනිත්තු 10 ක් පමණ ගතවිය හැකි බව සලකන්න.",
                         message: "සන්නම් මනාප යාවත්කාලීන කිරීම"
+                    },
+                    tenantMismatch: {
+                        description: "{{ tenant }} සඳහා සන්නම් මනාප යාවත්කාලීන කිරීමේදී දෝෂයක් සිදු විය.",
+                        message: "යාවත්කාලීන දෝෂයක්"
                     }
                 }
             },
