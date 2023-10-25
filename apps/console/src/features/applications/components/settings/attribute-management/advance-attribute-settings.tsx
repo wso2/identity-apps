@@ -134,6 +134,12 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         }
     }, [ dropDownOptions ]);
 
+    useEffect( () => {
+        if (!selectedSubjectType) {
+            setSelectedSubjectType(SubjectTypes.PUBLIC);
+        }
+    });
+
     useEffect(() => {
         if(selectedSubjectValue) {
             setSelectedValue(selectedSubjectValue);
@@ -178,7 +184,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         if (multipleCallbacksConfigured && !values.sectorIdentifierURI ) {
             errors.sectorIdentifierURI= t("console:develop.features.applications.forms.advancedAttributeSettings" +
                 ".sections.subject.fields.sectorIdentifierURI.validations.required");
-        } else if (!URLUtils.isHttpsUrl(values.sectorIdentifierURI)) {
+        } else if (values.sectorIdentifierURI && !URLUtils.isHttpsUrl(values.sectorIdentifierURI)) {
             errors.sectorIdentifierURI= t("console:develop.features.applications.forms.advancedAttributeSettings" +
                 ".sections.subject.fields.sectorIdentifierURI.validations.invalid");
         }
@@ -449,7 +455,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             inputType="url"
                             name="sectorIdentifierURI"
                             label={ t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                ".sections.subject.fields.sectorIdentifierURI.multipleCallbackError")
+                                ".sections.subject.fields.sectorIdentifierURI.label")
                             }
                             required={ multipleCallbacksConfigured }
                             placeholder={
