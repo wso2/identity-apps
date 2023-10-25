@@ -22,7 +22,8 @@ import {
     AlertInterface,
     AlertLevels,
     IdentifiableComponentInterface,
-    RolePermissionInterface
+    RolePermissionInterface,
+    RolesInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -34,17 +35,32 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps } from "semantic-ui-react";
 import { RoleAPIResourcesListItem } from "./edit-role-common/role-api-resources-list-item";
-import { getAPIResourceDetails, updateRoleDetails, useAPIResourceDetails, useAPIResourcesList } from "../../api";
+import { getAPIResourceDetailsBulk, updateRoleDetails, useAPIResourceDetails, useAPIResourcesList } from "../../api";
 import { RoleConstants } from "../../constants/role-constants";
-import { 
-    PatchRoleDataInterface, 
-    PermissionUpdateInterface, 
-    RoleEditSectionsInterface, 
-    SelectedPermissionsInterface 
-} from "../../models";
+import { PatchRoleDataInterface, PermissionUpdateInterface, SelectedPermissionsInterface } from "../../models";
 import { APIResourceInterface, ScopeInterface } from "../../models/apiResources";
 
-type RolePermissionDetailProps = IdentifiableComponentInterface & RoleEditSectionsInterface;
+/**
+ * Interface to capture permission edit props.
+ */
+interface RolePermissionDetailProps extends IdentifiableComponentInterface {
+    /**
+     * Role details
+     */
+    role: RolesInterface;
+    /**
+     * Handle role update callback.
+     */
+    onRoleUpdate: (activeTabIndex: number) => void;
+    /**
+     * Tab index
+     */
+    tabIndex: number;
+    /**
+     * Show if the user is read only.
+     */
+    isReadOnly?: boolean;
+}
 
 /**
  * Component to update permissions of the selected role.
@@ -148,25 +164,23 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         
     const getAPIResourceById = async (initialAPIResourceIds: string[]): Promise<void> => {
         const apiResourceIds: string[] = initialAPIResourceIds;
-        const apiResources: APIResourceInterface[] = [];
 
         if (apiResourceIds.length === 0) {
             return;
         }
 
-        for (const apiResourceId of apiResourceIds) {
-            try {
-                apiResources.push(await getAPIResourceDetails(apiResourceId));
-            } catch (error) {
+        getAPIResourceDetailsBulk(apiResourceIds)
+            .then((response: APIResourceInterface[]) => {
+                setSelectedAPIResources(response);
+            })
+            .catch(() => {
                 handleAlerts({
                     description: t("console:manage.features.roles.notifications." +
                         "fetchAPIResource.error.description"),
                     level: AlertLevels.ERROR,
                     message: t("console:manage.features.roles.notifications.fetchAPIResource.error.message")
                 });
-            }
-        }
-        setSelectedAPIResources(apiResources);
+            });
     };
 
     const getExistingAPIResources = (): void => {
@@ -216,7 +230,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     };
 
     /**
-     * Handles the update of the role permissions.
+     * The following function handles the update of the role permissions.
      */
     const updateRolePermissions = (): void => {
         setIsSubmitting(true);
@@ -331,10 +345,10 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         <EmphasizedSegment padded="very">
             <Grid xs={ 8 }>
                 <Heading as="h4">
-                    { t("console:manage.features.roles.edit.permissions.heading") }                
+                    { t("console:manage.features.roles.edit.permissions.heading") }
                 </Heading>
                 <Heading as="h6" color="grey" subHeading className="mb-5">
-                    { t("console:manage.features.roles.edit.permissions.subHeading") }                
+                    { t("console:manage.features.roles.edit.permissions.subHeading") }
                 </Heading>
             </Grid>
             <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={ 2 }>
@@ -379,7 +393,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                                         data-componentid={ componentId }
                                         basic
                                         loading={ 
-                                            selectedAPIResourceId && 
+                                            selectedAPIResourceId &&
                                             (isSelectedAPIResourceFetchRequestLoading 
                                                 || isSelectedAPIResourceFetchRequestValidating) 
                                         }

@@ -10295,6 +10295,7 @@ export const console: ConsoleNS = {
                     },
                     permissions: {
                         heading: "Assigned Permissions",
+                        removedPermissions: "Removed Permissions",
                         subHeading: "Manage assigned permissions in the role."
                     }
                 },

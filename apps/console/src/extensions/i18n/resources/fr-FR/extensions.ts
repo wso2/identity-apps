@@ -1161,11 +1161,18 @@ export const extensions: Extensions = {
                         removedRoles: "Rôles supprimés",
                         searchPlaceholder: "Recherche par nom de rôle",
                         switchRoleAudience: {
-                            confirmationModal: {
+                            applicationConfirmationModal: {
                                 assertionHint: "Veuillez confirmer votre action.",
-                                content: "Si vous modifiez le public du rôle, les rôles associés au public actuel " +
-                                    "être supprimé.Veuillez procéder avec prudence.",
-                                header: "Es-tu sûr?",
+                                content: "Si vous changez le rôle de rôle en application, l'association avec "+
+                                    "Les rôles de l'organisation seront supprimés de la demande. Veuillez procéder à la prudence.",
+                                header: "Passer à l'application du rôle de rôle?",
+                                message: "Cette action est irréversible et supprimera les associations de rôle existantes."
+                            },
+                            organizationConfirmationModal: {
+                                assertionHint: "Veuillez confirmer votre action.",
+                                content: "Si vous modifiez le rôle de rôle en organisation, les rôles d'application "+
+                                    "Associé à la demande sera supprimé en permanence. Veuillez procéder à la prudence.",
+                                header: "Changer le rôle de rôle à l'organisation?",
                                 message: "Cette action est irréversible et supprimera en permanence les rôles existants."
                             }
                         }

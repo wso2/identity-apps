@@ -8362,6 +8362,7 @@ export const console: ConsoleNS = {
                     },
                     permissions: {
                         heading: "පවරා ඇති අවසර",
+                        removedPermissions: "අවසර ඉවත් කරන ලද අවසර",
                         subHeading: "මෙම භූමිකාව තුළ පවරා ඇති අවසරයන් කළමනාකරණය කරන්න."
                     }
                 },

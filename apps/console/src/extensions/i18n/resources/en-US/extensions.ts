@@ -1159,11 +1159,18 @@ export const extensions: Extensions = {
                         removedRoles: "Removed Roles",
                         searchPlaceholder: "Search by Role name",
                         switchRoleAudience: {
-                            confirmationModal: {
+                            applicationConfirmationModal: {
                                 assertionHint: "Please confirm your action.",
-                                content: "If you change the Role Audience, the roles associated with the current audience will " +
-                                    "be deleted. Please proceed with caution.",
-                                header: "Are you sure?",
+                                content: "If you change the Role Audience to Application, the association with " +
+                                    "organization roles will be deleted from the application. Please proceed with caution.",
+                                header: "Switch role audience to Application?",
+                                message: "This action is irreversible and will remove the existing role associations."
+                            },
+                            organizationConfirmationModal: {
+                                assertionHint: "Please confirm your action.",
+                                content: "If you change the Role Audience to Organization, the application roles currently " +
+                                    "associated with the application will be permanently deleted. Please proceed with caution.",
+                                header: "Switch role audience to Organization?",
                                 message: "This action is irreversible and will permanently delete the existing roles."
                             }
                         }

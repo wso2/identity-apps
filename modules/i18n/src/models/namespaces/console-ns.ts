@@ -5286,6 +5286,7 @@ export interface ConsoleNS {
                     permissions: {
                         heading: string;
                         subHeading: string;
+                        removedPermissions: string;
                     };
                 };
                 list: {

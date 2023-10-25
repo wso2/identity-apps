@@ -8539,6 +8539,7 @@ export const console: ConsoleNS = {
                     },
                     permissions: {
                         heading: "Autorisations attribuées",
+                        removedPermissions: "Autorisations supprimées",
                         subHeading: "Gérer les autorisations attribuées dans le rôle."
                     }
                 },

@@ -1012,7 +1012,13 @@ export interface Extensions {
                         removedRoles: string;
                         searchPlaceholder: string;
                         switchRoleAudience: {
-                            confirmationModal: {
+                            applicationConfirmationModal: {
+                                assertionHint: string;
+                                header: string;
+                                content: string;
+                                message: string;
+                            };
+                            organizationConfirmationModal: {
                                 assertionHint: string;
                                 header: string;
                                 content: string;
