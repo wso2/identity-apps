@@ -30,6 +30,7 @@ import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
 import { AppConstants, AppState, UIConfigInterface } from "../../../core";
+import { OrganizationType } from "../../../organizations/constants";
 import { useMyAccountStatus } from "../../api";
 import { ApplicationManagementConstants } from "../../constants";
 import { ApplicationInterface } from "../../models";
@@ -169,6 +170,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+    const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     /**
      * Prepare form values for submitting.
@@ -332,7 +334,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             ".placeholder")
                     }
                     value={ name }
-                    readOnly={ readOnly }
+                    readOnly={ readOnly || orgType === OrganizationType.SUBORGANIZATION }
                     validation ={ (value: string) => validateName(value.toString().trim()) }
                     maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                     minLength={ 3 }
@@ -440,7 +442,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         width={ 16 }
                     /> ) : null
             }
-            { 
+            {
                 !isM2MApplication && (
                     <Field.Input
                         ariaLabel={
@@ -470,9 +472,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         data-testid={ `${ testId }-application-access-url-input` }
                         hint={ t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.hint") }
                         width={ 16 }
-                    />) 
+                    />)
             }
-            
+
             <Field.Button
                 form={ FORM_ID }
                 size="small"
