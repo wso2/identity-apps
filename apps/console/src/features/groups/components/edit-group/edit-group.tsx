@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,21 +18,22 @@
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface } from "@wso2is/core/models";
-import { ResourceTab } from "@wso2is/react-components";
+import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 // TODO: Move to shared components.
 import { useSelector } from "react-redux";
 import { BasicGroupDetails } from "./edit-group-basic";
-import { GroupRolesList } from "./edit-group-roles";
+import { EditGroupRoles } from "./edit-group-roles";
 import { GroupUsersList } from "./edit-group-users";
 import { FeatureConfigInterface } from "../../../core/models";
 import { AppState } from "../../../core/store";
+import { GenericOrganization } from "../../../organizations/models/organizations";
 import { OrganizationUtils } from "../../../organizations/utils";
 import { getUsersList } from "../../../users/api";
-import { UserBasicInterface } from "../../../users/models";
+import { UserBasicInterface, UserListInterface } from "../../../users/models";
 import { GroupConstants } from "../../constants";
-import { GroupsInterface } from "../../models";
+import { GroupsInterface, GroupsMemberInterface } from "../../models";
 
 /**
  * Captures props needed for edit group component
@@ -85,8 +86,8 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     const [ selectedUsersList, setSelectedUsersList ] = useState<UserBasicInterface[]>([]);
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
 
-    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
-    const isRootOrganization = useMemo(() =>
+    const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
+    const isRootOrganization: boolean = useMemo(() =>
         OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
 
     useEffect(() => {
@@ -99,7 +100,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
             return;
         }
 
-        const userStore = group?.displayName.split("/");
+        const userStore: string[] = group?.displayName.split("/");
 
         if (!isFeatureEnabled(featureConfig?.groups, GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
             || readOnlyUserStores?.includes(userStore?.toString())
@@ -121,7 +122,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
         setIsUsersFetchRequestLoading(true);
 
         getUsersList(null, null, null, null, userstore)
-            .then((response) => {
+            .then((response: UserListInterface) => {
                 setUsersList(response.Resources);
                 setSelectedUsersList(filterUsersList([ ...response.Resources ]));
             })
@@ -148,7 +149,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
             .slice()
             .reverse()
             .forEach((user: UserBasicInterface) => {
-                group.members.forEach(assignedUser => {
+                group.members.forEach((assignedUser: GroupsMemberInterface) => {
                     if (user.id === assignedUser.value) {
                         selectedUserList.push(user);
                         usersToFilter.splice(usersToFilter.indexOf(user), 1);
@@ -156,7 +157,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                 });
             });
 
-        selectedUserList.sort((userObject, comparedUserObject) =>
+        selectedUserList.sort((userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>
             userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
         );
 
@@ -164,7 +165,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     };
 
     const resolveResourcePanes = () => {
-        const panes = [
+        const panes: ResourceTabPaneInterface[] = [
             {
                 menuItem: t("console:manage.features.roles.edit.menuItems.basic"),
                 render: () => (
@@ -201,12 +202,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                 menuItem: t("console:manage.features.roles.edit.menuItems.roles"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <GroupRolesList
-                            data-testid="group-mgt-edit-group-roles"
-                            group={ group }
-                            onGroupUpdate={ onGroupUpdate }
-                            isReadOnly={ isReadOnly }
-                        />
+                        <EditGroupRoles group={ group } />
                     </ResourceTab.Pane>
                 )
             } : null

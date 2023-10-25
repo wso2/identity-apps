@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,14 +26,16 @@ import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
-import { UserRolesList } from "./user-roles-edit";
+import { UserRolesList } from "./user-roles-list";
 import { UserSessions } from "./user-sessions";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
-import { getServerConfigs } from "../../../features/server-configurations";
+import { ServerConfigurationsInterface, getServerConfigs } from "../../../features/server-configurations";
 import { FeatureConfigInterface } from "../../core/models";
 import { AppState, store } from "../../core/store";
+import { GenericOrganization } from "../../organizations/models/organizations";
 import { OrganizationUtils } from "../../organizations/utils";
 import { ConnectorPropertyInterface } from "../../server-configurations/models";
 import { UserManagementConstants } from "../constants";
@@ -85,11 +87,9 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const isGroupAndRoleSeparationEnabled: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ isSuperAdmin, setIsSuperAdmin ] = useState<boolean>(false);
@@ -101,8 +101,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const [ hideTermination, setHideTermination ] = useState<boolean>(false);
     const [ user, setUser ] = useState<ProfileInfoInterface>(selectedUser);
 
-    const currentOrganization = useSelector((state: AppState) => state.organization.organization);
-    const isRootOrganization = useMemo(() =>
+    const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
+    const isRootOrganization: boolean = useMemo(() =>
         OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
 
     useEffect(() => {
@@ -117,7 +117,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     }, [ selectedUser ]);
 
     useEffect(() => {
-        const userStore = user?.userName?.split("/").length > 1
+        const userStore: string = user?.userName?.split("/").length > 1
             ? user?.userName?.split("/")[0]
             : UserstoreConstants.PRIMARY_USER_STORE;
 
@@ -150,7 +150,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         setIsSuperAdminIdentifierFetchRequestLoading(true);
 
         getServerConfigs()
-            .then((response) => {
+            .then((response: ServerConfigurationsInterface) => {
                 const loggedUserName: string = store.getState().profile.profileInfo.userName;
                 const adminUser: string = response?.realmConfig.adminUser;
 
@@ -230,13 +230,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             menuItem: t("console:manage.features.users.editUser.tab.menuItems.2"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <UserRolesList
-                        isGroupAndRoleSeparationEnabled={ isGroupAndRoleSeparationEnabled }
-                        onAlertFired={ handleAlerts }
-                        user={ user }
-                        handleUserUpdate={ handleUserUpdate }
-                        isReadOnly={ isReadOnly }
-                    />
+                    <UserRolesList user={ user } />
                 </ResourceTab.Pane>
             )
         } : null,

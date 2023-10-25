@@ -5283,6 +5283,10 @@ export interface ConsoleNS {
                             }
                         };
                     };
+                    permissions: {
+                        heading: string;
+                        subHeading: string;
+                    };
                 };
                 list: {
                     buttons: {

@@ -8507,6 +8507,10 @@ export const console: ConsoleNS = {
                                 placeholder: "Restaurer les utilisateurs"
                             }
                         }
+                    },
+                    permissions: {
+                        heading: "Autorisations attribuées",
+                        subHeading: "Gérer les autorisations attribuées dans le rôle."
                     }
                 },
                 list: {

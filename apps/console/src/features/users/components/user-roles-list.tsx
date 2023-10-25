@@ -16,9 +16,12 @@
  * under the License.
  */
 
-import { Autocomplete, AutocompleteRenderGetTagProps, AutocompleteRenderInputParams } from "@mui/material";
+import Autocomplete, {  
+    AutocompleteRenderGetTagProps, 
+    AutocompleteRenderInputParams 
+} from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
-import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, ProfileInfoInterface, RolesMemberInterface } from "@wso2is/core/models";
 import { EmphasizedSegment, EmptyPlaceholder, Heading } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
@@ -28,23 +31,22 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { getEmptyPlaceholderIllustrations } from "../../../core/configs/ui";
-import { GroupsInterface } from "../../models/groups";
-import { AutoCompleteRenderOption } from "../group-common-components/auto-complete-render-option";
-import { RenderChip } from "../group-common-components/render-chip";
+import { AutoCompleteRenderOption } from "./user-common-components/auto-complete-render-option";
+import { RenderChip } from "./user-common-components/render-chip";
+import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
 
-interface EditGroupRolesPropsInterface extends IdentifiableComponentInterface {
+interface UserRoleEditPropsInterface extends IdentifiableComponentInterface {
     /**
-     * Group profile
+     * User profile
      */
-    group: GroupsInterface;
+    user: ProfileInfoInterface;
 }
 
-export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
-    props: EditGroupRolesPropsInterface
+export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
+    props: UserRoleEditPropsInterface
 ): ReactElement => {
 
-    const { group } = props;
+    const { user } = props;
 
     const { t } = useTranslation();
 
@@ -56,12 +58,12 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
      * Set initial selected roles options
      */
     useEffect(() => {
-        if ( group?.roles?.length > 0 ) {
-            setInitialSelectedRolesOptions(group.roles);
+        if ( user?.roles?.length > 0 ) {
+            setInitialSelectedRolesOptions(user.roles);
         } else {
             setShowEmptyRolesListPlaceholder(true);
         }
-    }, [ group ]);
+    }, [ user ]);
 
     /**
      * Get the place holder components.
@@ -90,8 +92,8 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
                 { t("console:manage.features.user.updateUser.roles.editRoles.heading") }
             </Heading>
             <Heading subHeading ellipsis as="h6">
-                { /* TODO: Need to replace this with "View assigned roles for the group." */ }
-                { t("console:manage.features.groups.edit.roles.subHeading") }
+                { /* TODO: Need to replace this with "View assigned roles for the user." */ }
+                { t("console:manage.features.user.updateUser.roles.editRoles.subHeading") }
             </Heading>
             {
                 showEmptyRolesListPlaceholder
@@ -106,8 +108,8 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
                             renderInput={ (params: AutocompleteRenderInputParams) => (
                                 <TextField
                                     { ...params }
-                                    placeholder= { t("console:manage.features.transferList.searchPlaceholder",
-                                        { type: "Roles" }) }
+                                    placeholder= { t("console:manage.features.user.updateUser.roles.editRoles" + 
+                                        ".searchPlaceholder") }
                                 />
                             ) }
                             renderTags={ (
@@ -143,6 +145,6 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
 /**
  * Default props for application roles tab component.
  */
-EditGroupRoles.defaultProps = {
-    "data-componentid": "edit-group-roles"
+UserRolesList.defaultProps = {
+    "data-componentid": "edit-user-roles"
 };

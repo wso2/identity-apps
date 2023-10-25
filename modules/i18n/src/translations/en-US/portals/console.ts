@@ -10263,6 +10263,10 @@ export const console: ConsoleNS = {
                             user: "User",
                             organization: "Managed By"
                         }
+                    },
+                    permissions: {
+                        heading: "Assigned Permissions",
+                        subHeading: "Manage assigned permissions in the role."
                     }
                 },
                 list: {
