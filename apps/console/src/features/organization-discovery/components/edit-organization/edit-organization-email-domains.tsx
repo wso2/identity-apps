@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,46 +23,33 @@ import {
 } from "@mui/material";
 import { Chip, TextField } from "@oxygen-ui/react";
 import InputLabel from "@oxygen-ui/react/InputLabel/InputLabel";
-import { AccessControlConstants, Show } from "@wso2is/access-control";
 import {
     AlertLevels,
     SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
 import {
     ContentLoader,
     EmphasizedSegment,
     PrimaryButton
 } from "@wso2is/react-components";
-import moment from "moment";
+import { IdentityAppsError } from "modules/core/dist/types/errors";
 import React, {
     FunctionComponent,
     ReactElement,
-    useCallback,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Divider, Form as SemanticForm, Grid } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../../core";
-import {
-    ORGANIZATION_DESCRIPTION_MAX_LENGTH,
-    ORGANIZATION_DESCRIPTION_MIN_LENGTH,
-    ORGANIZATION_NAME_MAX_LENGTH,
-    ORGANIZATION_NAME_MIN_LENGTH
-} from "../../constants";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { Divider, Grid, Form as SemanticForm } from "semantic-ui-react";
+import { FeatureConfigInterface } from "../../../core";
 import { updateOrganizationDiscoveryAttributes } from "../../api";
 import {
     OrganizationDiscoveryAttributeDataInterface,
-    OrganizationResponseInterface,
+    OrganizationResponseInterface
 } from "../../models";
-
-interface OrganizationEditFormProps {
-    name: string;
-    description?: string;
-}
 
 interface EditOrganizationEmailDomainsPropsInterface
     extends SBACInterface<FeatureConfigInterface>,
@@ -85,8 +72,6 @@ interface EditOrganizationEmailDomainsPropsInterface
     onOrganizationUpdate: (organizationId: string) => void;
 }
 
-const FORM_ID: string = "edit-organization-email-domains-form";
-
 /**
  * Organization overview component.
  *
@@ -105,14 +90,10 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
-
-    const editableFields: Array<string> = [ "name", "description" ];
+    const dispatch: Dispatch<any> = useDispatch();
 
     const [ isSubmitting, setIsSubmitting ] = useState(false);
     const [ emailDomainData, setEmailDomainData ] = useState<string[]>();
-    const [ isEmailDataError, setIsEmailDataError ] = useState<boolean>(false);
-    const [ emailDataError, setEmailDataError ] = useState<string>("");
 
     const optionsArray: string[] = [];
 
@@ -129,32 +110,32 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
         };
 
         updateOrganizationDiscoveryAttributes(organization.id, emailDomainDiscoveryData)
-            .then(_response => {
+            .then(() => {
                 dispatch(
                     addAlert({
                         description: t(
-                            "console:manage.features.organizationDiscovery.notifications.updateOrganizationDiscoveryAttributes." +
-                            "success.description"
+                            "console:manage.features.organizationDiscovery.notifications." +
+                            "updateOrganizationDiscoveryAttributes.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.organizationDiscovery.notifications.updateOrganizationDiscoveryAttributes." +
-                            "success.message"
+                            "console:manage.features.organizationDiscovery.notifications." +
+                            "updateOrganizationDiscoveryAttributes.success.message"
                         )
                     })
                 );
 
                 onOrganizationUpdate(organization.id);
             })
-            .catch(error => {
+            .catch((error: IdentityAppsError) => {
                 if (error.description) {
                     dispatch(
                         addAlert({
                             description: error.description,
                             level: AlertLevels.ERROR,
                             message: t(
-                                "console:manage.features.organizationDiscovery.notifications.updateOrganizationDiscoveryAttributes." +
-                                "error.message"
+                                "console:manage.features.organizationDiscovery.notifications." +
+                                "updateOrganizationDiscoveryAttributes.error.message"
                             )
                         })
                     );
@@ -177,7 +158,7 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
                 );
             })
             .finally(() => setIsSubmitting(false));
-        };
+    };
 
     return organization ? (
         <>
@@ -189,7 +170,9 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
                                 <SemanticForm.Field
                                     data-testid={ `${ testId }-email-domain-form-name-input` }
                                 >
-                                    <label>{ t("console:manage.features.organizationDiscovery.edit.fields.name.label") }</label>
+                                    <label>
+                                        { t("console:manage.features.organizationDiscovery.edit.fields.name.label") }
+                                    </label>
                                     <input value={ organization.name } readOnly />
                                 </SemanticForm.Field>
                             </SemanticForm>
@@ -226,23 +209,20 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
                                             className="mt-2"
                                         >
                                             {
-                                                t("console:manage.features.organizationDiscovery.edit.fields.emailDomains.label")
+                                                t("console:manage.features.organizationDiscovery.edit.fields." +
+                                                "emailDomains.label")
                                             }
                                         </InputLabel>
                                         <TextField
                                             id="tags-filled"
-                                            // error={ isEmailDataError }
-                                            // helperText= {
-                                            //     isEmailDataError
-                                            //     && emailDataError
-                                            // }
                                             InputLabelProps= { {
                                                 required: true
                                             } }
                                             { ...params }
                                             required
                                             placeholder={
-                                                t("console:manage.features.organizationDiscovery.edit.fields.emailDomains.placeHolder")
+                                                t("console:manage.features.organizationDiscovery.edit.fields." +
+                                                "emailDomains.placeHolder")
                                             }
                                         />
                                     </>
@@ -252,10 +232,6 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
                                     value: string[]
                                 ) => {
                                     setEmailDomainData(value);
-                                    // validateEmail(value);
-                                } }
-                                onInputChange={ () => {
-                                    setIsEmailDataError(false);
                                 } }
                             />
 
@@ -263,14 +239,16 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
                     </Grid.Row>
                 </Grid>
                 <Divider hidden />
-                <PrimaryButton
-                    data-testid="group-mgt-update-roles-modal-save-button"
-                    disabled={ isSubmitting }
-                    loading={ isSubmitting }
-                    onClick={ () => handleSubmit() }
-                >
-                    { t("common:update") }
-                </PrimaryButton>
+                { !isReadOnly && (
+                    <PrimaryButton
+                        data-testid="group-mgt-update-roles-modal-save-button"
+                        disabled={ isSubmitting }
+                        loading={ isSubmitting }
+                        onClick={ () => handleSubmit() }
+                    >
+                        { t("common:update") }
+                    </PrimaryButton>
+                ) }
             </EmphasizedSegment>
         </>
     ) : (
