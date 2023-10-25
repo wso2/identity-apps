@@ -438,22 +438,22 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                         ? t("console:manage.features.users.advancedSearch.form.dropdown." +
                                             "filterAttributeOptions.username")
                                         : t("console:manage.features.user.modals.bulkImportUserWizard." +
-                                        "wizardSummary.advanceSearch.roleGroupFilterAttributePlaceHolder") 
+                                            "wizardSummary.advanceSearch.roleGroupFilterAttributePlaceHolder") 
                                 }
                                 filterConditionsPlaceholder={
                                     t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
-                                            ".placeholder")
+                                    ".placeholder")
                                 }
                                 filterValuePlaceholder={
                                     t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
-                                            ".placeholder")
+                                    ".placeholder")
                                 }
                                 placeholder={
                                     responseOperationType === BulkImportResponseOperationTypes.USER_CREATION
                                         ? t("console:manage.features.user.modals.bulkImportUserWizard." +
                                             "wizardSummary.advanceSearch.searchByUsername")
                                         : t("console:manage.features.user.modals.bulkImportUserWizard." +
-                                        "wizardSummary.advanceSearch.searchByRoleOrGroup")
+                                            "wizardSummary.advanceSearch.searchByRoleOrGroup")
                                 }
                                 defaultSearchAttribute="resourceName"
                                 defaultSearchOperator="co"
@@ -493,11 +493,11 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                 responseOperationType === BulkImportResponseOperationTypes.USER_CREATION
                                     ? (
                                         t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
-                                 "totalUserCreationCount") + " : " + totalUserCreationCount
+                                        "totalUserCreationCount") + " : " + totalUserCreationCount
                                     )
                                     : (
                                         t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
-                                "totalUserAssignmentCount") + " : " + totalUserAssignmentCount
+                                        "totalUserAssignmentCount") + " : " + totalUserAssignmentCount
                                     )
                             }
                         </Typography>
