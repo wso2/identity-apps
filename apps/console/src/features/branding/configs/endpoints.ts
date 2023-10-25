@@ -24,9 +24,10 @@ import { BrandingPreferenceResourceEndpointsInterface } from "../models/endpoint
  * @param serverHost - Server Host.
  * @returns The resource endpoints for the Branding Preference feature.
  */
-export const getBrandingResourceEndpoints = (serverHost: string): BrandingPreferenceResourceEndpointsInterface => {
-    return {
-        brandingPreference: `${ serverHost }/api/server/v1/branding-preference`,
-        brandingTextPreference: `${ serverHost }/api/server/v1/branding-preference/text`
+export const getBrandingResourceEndpoints = 
+    (serverHostWithOrgPath: string): BrandingPreferenceResourceEndpointsInterface => {
+        return {
+            brandingPreference: `${ serverHostWithOrgPath }/api/server/v1/branding-preference`,
+            brandingTextPreference: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/text`
+        };
     };
-};

@@ -437,7 +437,8 @@ export class AppConstants {
         "userRoles",
         "applications",
         "emailTemplates",
-        "governanceConnectors"
+        "governanceConnectors",
+        "branding"
     ];
 
     /**

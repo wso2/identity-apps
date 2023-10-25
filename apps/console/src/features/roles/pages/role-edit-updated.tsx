@@ -96,7 +96,7 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     action={ (
                         <Button onClick={ handleBackButtonClick }> 
-                            { t("console:manage.features.roles.edit.placeholders.errorPlaceHolder.subtitles.0") } 
+                            { t("console:manage.features.roles.edit.placeholders.errorPlaceHolder.action") } 
                         </Button>
                     ) }
                     imageSize="tiny"

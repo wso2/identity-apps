@@ -1828,6 +1828,16 @@ export const extensions: Extensions = {
                     success: {
                         description: "Successfully reverted Branding preferences for {{ tenant }}.",
                         message: "Revert successful"
+                    },
+                    successWaiting: {
+                        description: "Reverting Branding preferences for {{ tenant }}. " +
+                            "It may take a while for the changes to be reflected.",
+                        message: "Reverting branding preferences"
+                    },
+                    successWaitingAlert: {
+                        description: "Reverting Branding preferences for {{ tenant }}. " +
+                            "Note that it can take up to 10 minutes for the changes to be reflected.",
+                        message: "Reverting branding preferences"
                     }
                 },
                 fetch: {
@@ -1860,6 +1870,16 @@ export const extensions: Extensions = {
                     success: {
                         description: "Branding preference updated successfully for {{ tenant }}.",
                         message: "Update Successful"
+                    },
+                    successWaiting: {
+                        description: "Updating Branding preferences for {{ tenant }}. " +
+                            "It may take a while for the changes to be reflected.",
+                        message: "Updating branding preferences"
+                    },
+                    successWaitingAlert: {
+                        description: "Updating Branding preferences for {{ tenant }}. " +
+                            "Note that it can take up to 10 minutes for the changes to be reflected.",
+                        message: "Updating branding preferences"
                     },
                     tenantMismatch: {
                         description: "Something went wrong while updating branding preferences for {{ tenant }}.",
