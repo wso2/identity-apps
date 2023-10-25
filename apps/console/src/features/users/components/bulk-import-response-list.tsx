@@ -219,7 +219,6 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
             });
 
         if (searchQuery && searchQuery !== "") {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const [ , condition, value ] = searchQuery.split(" ");
             
             filteredList = filteredList.filter((item: BulkUserImportOperationResponse) => {
