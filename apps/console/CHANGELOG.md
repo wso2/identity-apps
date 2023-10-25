@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.2.2
+
+### Patch Changes
+
+- [#4316](https://github.com/wso2/identity-apps/pull/4316) [`63345be54b`](https://github.com/wso2/identity-apps/commit/63345be54b290d1b17fc083e886dbc55b5503001) Thanks [@savindi7](https://github.com/savindi7)! - Add dividers in User attributes tab of an app
+
+* [#4326](https://github.com/wso2/identity-apps/pull/4326) [`317543c8be`](https://github.com/wso2/identity-apps/commit/317543c8be8c0461214e6e67425f492c835d6bd7) Thanks [@Achintha444](https://github.com/Achintha444)! - Enable role V2 feature
+
+- [#4321](https://github.com/wso2/identity-apps/pull/4321) [`9037f7c323`](https://github.com/wso2/identity-apps/commit/9037f7c3238d990b7e135daabccb91f1b3f5ce73) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Set the shared app name to readonly for sub-organizations
+
+* [#4265](https://github.com/wso2/identity-apps/pull/4265) [`25a1a1b85d`](https://github.com/wso2/identity-apps/commit/25a1a1b85d94d098bac73b7dfc791e7996e25760) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add v2 role support for bulk user import
+
+* Updated dependencies [[`317543c8be`](https://github.com/wso2/identity-apps/commit/317543c8be8c0461214e6e67425f492c835d6bd7), [`25a1a1b85d`](https://github.com/wso2/identity-apps/commit/25a1a1b85d94d098bac73b7dfc791e7996e25760)]:
+  - @wso2is/i18n@2.0.18
+
 ## 2.2.1
 
 ### Patch Changes
