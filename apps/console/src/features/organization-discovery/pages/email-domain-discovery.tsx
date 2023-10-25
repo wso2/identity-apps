@@ -47,7 +47,7 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, AppConstants, EventPublisher, history, UIConstants } from "../../core";
+import { AdvancedSearchWithBasicFilters, AppConstants, EventPublisher, UIConstants, history } from "../../core";
 import { addOrganizationDiscoveryConfig, 
     deleteOrganizationDiscoveryConfig, 
     getOrganizationDiscovery, 
@@ -97,8 +97,6 @@ const EmailDomainDiscoveryPage: FunctionComponent<EmailDomainDiscoveryPageInterf
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ isOrganizationListRequestLoading, setOrganizationListRequestLoading ] = useState<boolean>(true);
-    const [ isOrganizationsNextPageAvailable, setIsOrganizationsNextPageAvailable ] = useState<boolean>(undefined);
-    const [ isOrganizationsPrevPageAvailable, setIsOrganizationsPrevPageAvailable ] = useState<boolean>(undefined);
     const [ organizationDiscoveryEnabled, setOrganizationDiscoveryEnabled ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
@@ -508,10 +506,6 @@ const EmailDomainDiscoveryPage: FunctionComponent<EmailDomainDiscoveryPageInterf
                         sortStrategy={ listSortingStrategy }
                         totalPages={ 10 }
                         totalListSize={ organizationList?.organizations?.length }
-                        paginationOptions={ {
-                            disableNextButton: !isOrganizationsNextPageAvailable,
-                            disablePreviousButton: !isOrganizationsPrevPageAvailable
-                        } }
                         isLoading={ isOrganizationListRequestLoading }
                         data-componentid={ `${ testId }-list-layout` }
                     >
