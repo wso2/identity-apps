@@ -176,8 +176,7 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
                                 renderInput={ (params: AutocompleteRenderInputParams) => (
                                     <TextField
                                         { ...params }
-                                        label={ t("extensions:develop.applications.edit.sections." +
-                                            "rolesV2.removedPermissions") }
+                                        label={ "Removed Permissions" }
                                         placeholder= { t("console:manage.features.roles.addRoleWizard." +
                                             "forms.rolePermission.permissions.placeholder") }
                                     />

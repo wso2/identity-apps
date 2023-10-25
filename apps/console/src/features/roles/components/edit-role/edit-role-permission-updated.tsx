@@ -248,7 +248,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
 
         const roleData: PatchRoleDataInterface = {
             Operations: [ {
-                "op": "add",
+                "op": "replace",
                 "value": {
                     "permissions": permissionArray
                 }
@@ -256,7 +256,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
-        updateRoleDetails(roleObject.id, roleData)
+        updateRoleDetails(roleObject?.id, roleData)
             .then(() => {
                 onRoleUpdate();
                 handleAlerts({
