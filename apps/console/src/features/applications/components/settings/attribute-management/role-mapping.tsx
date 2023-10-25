@@ -88,7 +88,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                 return !(role.displayName.includes("Application/") || role.displayName.includes("Internal/"));
             });
 
-        return filterRole.map(role => {
+        return filterRole.map((role: RolesInterface) => {
             return {
                 id: role.displayName,
                 value: role.displayName
