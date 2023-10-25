@@ -460,9 +460,23 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         exact: true,
                         icon: { icon: getSidePanelIcons().emailTemplates },
                         id: "communication-management",
-                        name: "Email",
+                        name: "Email Templates",
                         order: 14,
                         path: `${ AppConstants.getDeveloperViewBasePath() }/email-management`,
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
+                        category: "extensions:develop.sidePanel.categories.branding",
+                        component: lazy(() =>
+                            import("../../../features/notification-channels/" + "pages/notification-channels")
+                        ),
+                        exact: true,
+                        icon: { icon: <EnvelopeGearIcon fill="black" className="icon" /> },
+                        id: "notification-channels",
+                        name: "Notification Channels",
+                        order: 15,
+                        path: `${ AppConstants.getDeveloperViewBasePath() }/notification-channels`,
                         protected: true,
                         showOnSidePanel: true
                     },
@@ -496,7 +510,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 16,
                         path: AppConstants.getPaths().get("SMS_PROVIDER"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.AccountManagement",

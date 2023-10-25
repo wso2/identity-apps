@@ -2069,6 +2069,11 @@ export const extensions: Extensions = {
                 }
             }
         },
+        notificationChannel: {
+            heading: "Notification Channels",
+            title: "Notification Channels",
+            description: "Configure the notification channels for your organization."
+        },
         smsProviders: {
             heading: "SMS Provider",
             subHeading: "Configure a custom SMS provider to send SMS to your users.",

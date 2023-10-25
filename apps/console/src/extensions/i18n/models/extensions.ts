@@ -1832,6 +1832,11 @@ export interface Extensions {
                 }
             };
         };
+        notificationChannel: {
+            heading: string;
+            title: string;
+            description: string;
+        };
         smsProviders: {
             heading: string;
             subHeading: string;

@@ -2044,6 +2044,11 @@ export const extensions: Extensions = {
                 }
             }
         },
+        notificationChannel: {
+            heading: "නිවේදන නාලිකා",
+            title: "නිවේදන නාලිකා",
+            description: "ඔබේ සංවිධානය සඳහා දැනුම්දීම් නාලිකා වින්‍යාස කරන්න."
+        },
         smsProviders: {
             heading: "SMS සපයන්නා",
             subHeading: "ඔබගේ පරිශීලකයින්ට SMS යැවීමට අභිරුචි SMS සපයන්නෙකු වින්‍යාස කරන්න.",

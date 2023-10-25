@@ -50,7 +50,7 @@ export interface ExtendedFeatureResourceEndpointsInterface {
     emailProviderEndpoint : string;
 
     /**
-     * Event Publishing API endpoint.
+     * SMS Publishing API endpoint.
      */
     smsProviderEndpoint : string;
 
