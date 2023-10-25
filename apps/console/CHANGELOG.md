@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.3.0
+
+### Minor Changes
+
+- [#4336](https://github.com/wso2/identity-apps/pull/4336) [`5d46e14141`](https://github.com/wso2/identity-apps/commit/5d46e14141817ddbaaf06a00aefc10f655511ce9) Thanks [@brionmario](https://github.com/brionmario)! - Disable `applications.loginFlow.legacyEditor` by default
+
+### Patch Changes
+
+- [#4335](https://github.com/wso2/identity-apps/pull/4335) [`47236bbe24`](https://github.com/wso2/identity-apps/commit/47236bbe242d8ed5a96b2cf00120784a3d79aaf6) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Relocate reset password option to danger zone
+
+* [#4333](https://github.com/wso2/identity-apps/pull/4333) [`9509c76c79`](https://github.com/wso2/identity-apps/commit/9509c76c795fe0956d429be9ef4e2d6f8127c4d0) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix multi attribute login configuration issue
+
 ## 2.2.3
 
 ### Patch Changes
