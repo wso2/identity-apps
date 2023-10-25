@@ -32,7 +32,7 @@ import { Dispatch } from "redux";
 import { AppState } from "../../core/store";
 import deleteCustomTextPreference from "../api/delete-custom-text-preference";
 import updateCustomTextPreference from "../api/update-custom-text-preference";
-import useGetBrandingPreference from "../api/use-get-branding-preference";
+import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-resolve";
 import useGetCustomTextPreference from "../api/use-get-custom-text-preference";
 import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
 import useGetCustomTextPreferenceMeta from "../api/use-get-custom-text-preference-meta";
@@ -93,7 +93,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
 
     const {
         data: brandingPreference
-    } = useGetBrandingPreference(tenantDomain);
+    } = useGetBrandingPreferenceResolve("709f41e2-a5d3-4ff2-83f1-dad522ca72f8");
 
     const {
         data: customTextCommons

@@ -16,7 +16,9 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { OrganizationType } from "@wso2is/common";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -43,11 +45,12 @@ import { Dispatch } from "redux";
 import { ExtendedFeatureConfigInterface } from "../../../extensions/configs/models";
 import { EventPublisher } from "../../core";
 import { AppState } from "../../core/store";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { deleteBrandingPreference, updateBrandingPreference } from "../api";
-import useGetBrandingPreference from "../api/use-get-branding-preference";
+import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-resolve";
 import { BrandingPreferenceTabs } from "../components";
 import { BrandingPreferencesConstants } from "../constants";
-import { BrandingPreferenceMeta,LAYOUT_PROPERTY_KEYS } from "../meta";
+import { BrandingPreferenceMeta, LAYOUT_PROPERTY_KEYS } from "../meta";
 import {
     BrandingPreferenceAPIResponseInterface,
     BrandingPreferenceInterface,
@@ -86,6 +89,7 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
     const { isGreaterThanComputerViewport } = useMediaContext();
+    const orgType: OrganizationType = useGetOrganizationType();
 
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const productName: string = useSelector((state: AppState) => state.config.ui.productName);
@@ -135,6 +139,8 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
         setShowBrandingPublishStatusConfirmationModal
     ] = useState<boolean>(false);
     const [ isBrandingPublished, setIsBrandingPublished ] = useState<boolean>(false);
+    const [ showSubOrgBrandingUpdateAlert, setShowSubOrgBrandingUpdateAlert ] = useState<boolean>(false);
+    const [ showSubOrgBrandingDeleteAlert, setShowSubOrgBrandingDeleteAlert ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -149,7 +155,7 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
         isLoading: isBrandingPreferenceFetchRequestLoading,
         error: brandingPreferenceFetchRequestError,
         mutate: mutateBrandingPreferenceFetchRequest
-    } = useGetBrandingPreference(tenantDomain);
+    } = useGetBrandingPreferenceResolve(tenantDomain);
 
     const isBrandingPageLoading: boolean = useMemo(
         () =>
@@ -420,12 +426,24 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                 );
 
                 if (shouldShowNotifications) {
-                    dispatch(addAlert<AlertInterface>({
-                        description: t("extensions:develop.branding.notifications.update.success.description",
-                            { tenant: tenantDomain }),
-                        level: AlertLevels.SUCCESS,
-                        message: t("extensions:develop.branding.notifications.update.success.message")
-                    }));
+                    if(orgType !== OrganizationType.SUBORGANIZATION) {
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.branding.notifications.update.success.description",
+                                { tenant: tenantDomain }),
+                            level: AlertLevels.SUCCESS,
+                            message: t("extensions:develop.branding.notifications.update.success.message")
+                        }));
+                    } else {
+                        dispatch(addAlert<AlertInterface>({
+                            description: t("extensions:develop.branding.notifications.update.successWaiting."
+                                + "description", { tenant: tenantDomain }),
+                            level: AlertLevels.WARNING,
+                            message: t("extensions:develop.branding.notifications.update.successWaiting.message")
+                        }));
+
+                        handleSubOrgAlerts();
+                    }
+                    
                 }
             })
             .catch((error: IdentityAppsApiException) => {
@@ -466,6 +484,19 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
     };
 
     /**
+     * Handles the alert for sub-orgs.
+     */
+    const handleSubOrgAlerts = (): void => {
+        if (showSubOrgBrandingUpdateAlert) {
+            setShowSubOrgBrandingUpdateAlert(false);
+            setShowSubOrgBrandingDeleteAlert(true);
+        } else {
+            setShowSubOrgBrandingDeleteAlert(false);
+            setShowSubOrgBrandingUpdateAlert(true);
+        }
+    };
+
+    /**
      * Handles the delete operation of branding preference via the API.
      */
     const handleBrandingPreferenceDelete = (): void => {
@@ -491,12 +522,23 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                 // Increment the tabs component key to remount the component on branding revert.
                 setPreferenceTabsComponentKey(preferenceTabsComponentKey + 1);
 
-                dispatch(addAlert<AlertInterface>({
-                    description: t("extensions:develop.branding.notifications.delete.success.description",
-                        { tenant: tenantDomain }),
-                    level: AlertLevels.SUCCESS,
-                    message: t("extensions:develop.branding.notifications.delete.success.message")
-                }));
+                if(orgType !== OrganizationType.SUBORGANIZATION) {
+                    dispatch(addAlert<AlertInterface>({
+                        description: t("extensions:develop.branding.notifications.delete.success.description",
+                            { tenant: tenantDomain }),
+                        level: AlertLevels.SUCCESS,
+                        message: t("extensions:develop.branding.notifications.delete.success.message")
+                    }));
+                } else {
+                    dispatch(addAlert<AlertInterface>({
+                        description: t("extensions:develop.branding.notifications.delete.successWaiting.description",
+                            { tenant: tenantDomain }),
+                        level: AlertLevels.WARNING,
+                        message: t("extensions:develop.branding.notifications.delete.successWaiting.message")
+                    }));
+
+                    handleSubOrgAlerts();
+                }
             })
             .catch((error: IdentityAppsApiException) => {
 
@@ -585,6 +627,24 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                             data-componentid="branding-preference-preview-disclaimer"
                         />
                     )
+                }
+                {
+                    showSubOrgBrandingUpdateAlert
+                        ? (
+                            <Alert onClose={ () => setShowSubOrgBrandingUpdateAlert(false) } severity="warning">
+                                { t("extensions:develop.branding.notifications.update.successWaitingAlert.description",
+                                    { tenant: tenantDomain }) }
+                            </Alert>
+                        ) : null
+                }
+                {
+                    showSubOrgBrandingDeleteAlert
+                        ? (
+                            <Alert onClose={ () => setShowSubOrgBrandingDeleteAlert(false) } severity="warning">
+                                { t("extensions:develop.branding.notifications.delete.successWaitingAlert.description",
+                                    { tenant: tenantDomain }) }
+                            </Alert>
+                        ) : null
                 }
                 <BrandingPreferenceTabs
                     key={ preferenceTabsComponentKey }

@@ -1614,6 +1614,14 @@ export interface Extensions {
                         description: string;
                         message: string;
                     };
+                    successWaiting: {
+                        description: string; 
+                        message: string;
+                    };
+                    successWaitingAlert: {
+                        description: string; 
+                        message: string;
+                    };
                 };
                 fetch: {
                     customLayoutNotFound: {
@@ -1644,6 +1652,14 @@ export interface Extensions {
                     };
                     success: {
                         description: string;
+                        message: string;
+                    };
+                    successWaiting: {
+                        description: string; 
+                        message: string;
+                    };
+                    successWaitingAlert: {
+                        description: string; 
                         message: string;
                     };
                     tenantMismatch: {

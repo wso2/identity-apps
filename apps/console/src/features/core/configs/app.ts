@@ -214,7 +214,7 @@ export class Config {
             ...getAPIResourceEndpoints(this.resolveServerHost()),
             ...getApplicationsResourceEndpoints(this.resolveServerHost()),
             ...getApprovalsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getBrandingResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getBrandingResourceEndpoints(this.resolveServerHost()),
             ...getClaimResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.resolveServerHost()),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getIDPResourceEndpoints(this.resolveServerHost()),

@@ -1850,6 +1850,16 @@ export const extensions: Extensions = {
                     success: {
                         description: "Les préférences de marque ont été rétablies avec succès pour {{ tenant }}.",
                         message: "Rétablissement réussi"
+                    },
+                    successWaiting: {
+                        description: "Retour des préférences de marque pour {{ tenant }}."+
+                            "Il peut prendre un certain temps que les changements soient reflétés.",
+                        message: "Retour des préférences de marque"
+                    },
+                    successWaitingAlert: {
+                        description: "Retour des préférences de marque pour {{ tenant }}."+
+                            "Notez que cela peut prendre jusqu'à 10 minutes pour que les modifications soient reflétées.",
+                        message: "Retour des préférences de marque"
                     }
                 },
                 fetch: {
@@ -1892,6 +1902,16 @@ export const extensions: Extensions = {
                     success: {
                         description: "Préférence de marque mise à jour avec succès pour {{ tenant }}.",
                         message: "Mise à jour réussie"
+                    },
+                    successWaiting: {
+                        description: "Mise à jour des préférences de marque pour {{ tenant }}."+
+                            "Il peut prendre un certain temps que les changements soient reflétés.",
+                        message: "Mise à jour des préférences de marque"
+                    },
+                    successWaitingAlert: {
+                        description: "Mise à jour des préférences de marque pour {{ teant }}."+
+                            "Notez que cela peut prendre jusqu'à 10 minutes pour que les modifications soient reflétées.",
+                        message: "Mise à jour des préférences de marque"
                     },
                     tenantMismatch: {
                         description:
