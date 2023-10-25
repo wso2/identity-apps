@@ -1389,7 +1389,7 @@ export const console: ConsoleNS = {
                                                 description: "Enable users to log in using a passkey, security key or "
                                                     + "biometrics.",
                                                 heading: "Add Passkey Login",
-                                                info: " On-the-fly passkey enrollment is available exclusively " +
+                                                info: "On-the-fly passkey enrollment is available exclusively " +
                                                 "for FIDO2 supported passkeys and further users wishing to enroll " +
                                                 "multiple passkeys, they must do so via MyAccount."
                                             },
@@ -3528,6 +3528,16 @@ export const console: ConsoleNS = {
                                     invalid: "Allowed OTP resend attempt count should be an integer.",
                                     range: "Allowed OTP resend attempt count should be between 0 & 100."
                                 }
+                            }
+                        },
+                        fido2: {
+                            allowProgressiveEnrollment: {
+                                label: "Allow passkey progressive enrollment",
+                                hint: "Please clear this checkbox to disable passkey progressive enrollment."
+                            },
+                            allowUsernamelessAuthentication: {
+                                label: "Allow passkey usernameless authentication",
+                                hint: "Please clear this checkbox to disable usernameless authentication."
                             }
                         },
                         facebook: {

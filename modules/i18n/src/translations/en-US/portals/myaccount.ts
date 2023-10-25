@@ -895,7 +895,7 @@ export const myAccount: MyAccountNS = {
                         }
                     }
                 },
-                tryButton: "Try with an older Passkey"
+                tryButton: "Try with an older passkey"
             },
             smsOtp: {
                 descriptions: {

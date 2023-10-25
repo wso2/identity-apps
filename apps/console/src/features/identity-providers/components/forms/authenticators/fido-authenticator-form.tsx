@@ -136,8 +136,14 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
             <Field.Checkbox
                 ariaLabel="Allow passkey progressive enrollment"
                 name="FIDO_EnablePasskeyProgressiveEnrollment"
-                label={ "Allow passkey progressive enrollment" }
-                hint={ "Please clear this checkbox to disable passkey progressive enrollment." }
+                label={ 
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".fido2.allowProgressiveEnrollment.label")
+                }
+                hint={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".fido2.allowProgressiveEnrollment.hint")
+                }
                 readOnly={ readOnly }
                 width={ 12 }
                 data-testid={ `${ testId }-enable-passkey-progressive-enrollment` }
@@ -145,8 +151,14 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
             <Field.Checkbox
                 ariaLabel="Allow passkey usernameless authentication"
                 name="FIDO_EnableUsernamelessAuthentication"
-                label={ "Allow passkey usernameless authentication" }
-                hint={ "Please clear this checkbox to disable usernameless authentication." }
+                label={ 
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".fido2.allowUsernamelessAuthentication.label")
+                }
+                hint={
+                    t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
+                        ".fido2.allowUsernamelessAuthentication.hint")
+                }
                 readOnly={ readOnly }
                 width={ 12 }
                 data-testid={ `${ testId }-enable-passkey-usernameless-authentication` }
