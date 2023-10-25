@@ -117,7 +117,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
     return (
         <>
             <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                     <Divider />
                     <Heading as="h4">
                         { t("console:develop.features.applications.edit.sections.attributes.roleMapping.heading") }
