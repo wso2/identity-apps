@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.0.18
+
+### Patch Changes
+
+- [#4326](https://github.com/wso2/identity-apps/pull/4326) [`317543c8be`](https://github.com/wso2/identity-apps/commit/317543c8be8c0461214e6e67425f492c835d6bd7) Thanks [@Achintha444](https://github.com/Achintha444)! - Enable role V2 feature
+
+* [#4265](https://github.com/wso2/identity-apps/pull/4265) [`25a1a1b85d`](https://github.com/wso2/identity-apps/commit/25a1a1b85d94d098bac73b7dfc791e7996e25760) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add v2 role support for bulk user import
+
 ## 2.0.17
 
 ### Patch Changes
