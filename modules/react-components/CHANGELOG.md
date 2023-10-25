@@ -1,5 +1,14 @@
 # @wso2is/react-components
 
+## 2.0.10
+
+### Patch Changes
+
+- [#4163](https://github.com/wso2/identity-apps/pull/4163) [`4ca9ebc2d1`](https://github.com/wso2/identity-apps/commit/4ca9ebc2d1782ba55db7770643c3c5749f8b06cc) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add resident IdP feature
+
+- Updated dependencies [[`4ca9ebc2d1`](https://github.com/wso2/identity-apps/commit/4ca9ebc2d1782ba55db7770643c3c5749f8b06cc)]:
+  - @wso2is/theme@2.0.23
+
 ## 2.0.9
 
 ### Patch Changes
