@@ -49,8 +49,16 @@
         lang = localeFromCookie;
 
         try {
-            String langStr = lang.split("_")[0];
-            String langLocale = lang.split("_")[1];
+            String langStr = "en";
+            String langLocale = "US";
+
+            if (lang.contains("_")) {
+                langStr = lang.split("_")[0];
+                langLocale = lang.split("_")[1];
+            } else if (lang.contains("-")) {
+                langStr = lang.split("-")[0];
+                langLocale = lang.split("-")[1];
+            }
 
             userLocale = new Locale(langStr, langLocale);
         } catch (Exception e) {
@@ -59,8 +67,16 @@
         }
     } else if (uiLocaleFromURL != null) {
         for (String localeStr : uiLocaleFromURL.split(" ")) {
-            String langStr = localeStr.split("_")[0];
-            String langLocale = localeStr.split("_")[1];
+            String langStr = "en";
+            String langLocale = "US";
+
+            if (localeStr.contains("_")) {
+                langStr = localeStr.split("_")[0];
+                langLocale = localeStr.split("_")[1];
+            } else if (localeStr.contains("-")) {
+                langStr = localeStr.split("-")[0];
+                langLocale = localeStr.split("-")[1];
+            }
 
             Locale tempLocale = new Locale(langStr, langLocale);
 
