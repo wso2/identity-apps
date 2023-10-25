@@ -118,7 +118,7 @@
 
         String _serviceProvider = request.getParameter("sp");
         String _userTenantDomain = request.getParameter("t");
-        String _tenantDomain = getTenantDomainFromContext();
+        String _tenantDomain = resolveTenantDomain();
         ApplicationDataRetrievalClient _client = new ApplicationDataRetrievalClient();
         String _accessUrl = _client.getApplicationAccessURL(_tenantDomain, _serviceProvider);
 
