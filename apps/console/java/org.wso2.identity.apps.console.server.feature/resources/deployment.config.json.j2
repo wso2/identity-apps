@@ -1087,6 +1087,36 @@
                 ]
             },
             {% endif %}
+            {% if console.organization_discovery is defined %}
+            "organizationDiscovery": {
+                "enabled": {% if console.organization_discovery.enabled is defined %} {{ console.organization_discovery.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.organization_discovery.scopes is defined %}
+                    {% for operation, scopes in console.organization_discovery.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                },
+                "disabledFeatures": [
+                    {% if console.organization_discovery.disabled_features is defined %}
+                    {% for feature in console.organization_discovery.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ]
+            },
+            {% endif %}
             {% if console.resident_idp is defined %}
             "residentIdp": {
                 "disabledFeatures": [

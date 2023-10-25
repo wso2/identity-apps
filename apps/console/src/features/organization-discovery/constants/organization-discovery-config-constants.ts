@@ -16,5 +16,14 @@
  * under the License.
  */
 
-export * from "./endpoints";
-export * from "./organization-discovery";
+/**
+ * Class containing Organization Discovery config related constants.
+ */
+export class OrganizationDiscoveryConfigConstants {
+    /**
+     * Private constructor to avoid object instantiation from outside the class.
+     */
+    private constructor() {}
+
+    public static readonly ORGANIZATION_DISCOVERY_DOMAINS_NOT_CONFIGURED_ERROR_CODE: string = "OCM-60002";
+}
