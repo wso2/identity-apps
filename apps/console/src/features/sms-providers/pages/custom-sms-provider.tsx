@@ -21,6 +21,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField, TextFieldAdapter } from "@wso2is/form";
 import {
     EmphasizedSegment,
+    Hint,
     PrimaryButton
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -47,9 +48,13 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
 
     return (
         <div>
-
             <EmphasizedSegment className="form-wrapper" padded={ "very" }>
                 <Grid>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column>
+                            <h2>{ t("extensions:develop.smsProviders.form.custom.subHeading") }</h2>
+                        </Grid.Column>
+                    </Grid.Row>
                     <Grid.Row columns={ 2 }>
                         <Grid.Column>
                             <FinalFormField
@@ -61,13 +66,15 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 ariaLabel="provider"
                                 readOnly={ isReadOnly }
                                 required={ true }
-                                data-componentid={ `${componentId}-${"provider"}` }
+                                data-componentid={ `${componentId}-provider` }
                                 name="provider"
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.custom.providerName.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.custom" +
                                 ".providerName.placeholder") }
-                                helperText={ (t("extensions:develop.smsProviders.form.custom.providerName.hint")) }
+                                helperText={ (<Hint>
+                                    { t("extensions:develop.smsProviders.form.custom.providerName.hint") }
+                                </Hint>) }
                                 component={ TextFieldAdapter }
                                 maxLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -75,29 +82,27 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 minLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH
                                 }
-                                InputProps={ {
-                                    endAdornment: ""
-                                } }
                                 autoComplete="new-password"
                             />
-
                         </Grid.Column>
                         <Grid.Column>
                             <FinalFormField
-                                key={ "providerURL" }
+                                key="providerURL"
                                 fullWidth
                                 FormControlProps={ {
                                     margin: "dense"
                                 } }
-                                ariaLabel={ "providerURL" }
+                                ariaLabel="providerURL"
                                 readOnly={ isReadOnly }
                                 required={ true }
-                                data-componentid={ `${componentId}-${"providerURL"}` }
-                                name={ "providerURL" }
+                                data-componentid={ `${componentId}-providerURL` }
+                                name="providerURL"
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.custom.providerUrl.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.custom.providerUrl.placeholder") }
-                                helperText={ (t("extensions:develop.smsProviders.form.custom.providerUrl.hint")) }
+                                helperText={ (<Hint>
+                                    { t("extensions:develop.smsProviders.form.custom.providerUrl.hint") }
+                                </Hint>) }
                                 component={ TextFieldAdapter }
                                 maxLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -105,31 +110,29 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 minLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH
                                 }
-                                InputProps={ {
-                                    endAdornment: ""
-                                } }
                                 autoComplete="new-password"
                             />
                         </Grid.Column>
-
                     </Grid.Row>
                     <Grid.Row columns={ 2 }>
                         <Grid.Column>
                             <FinalFormField
-                                key={ "key" }
+                                key="key"
                                 width={ 16 }
                                 FormControlProps={ {
                                     margin: "dense"
                                 } }
-                                ariaLabel={ "key" }
+                                ariaLabel="key"
                                 required={ true }
                                 readOnly={ isReadOnly }
-                                data-componentid={ `${componentId}-${"key"}` }
-                                name={ "key" }
+                                data-componentid={ `${componentId}-key` }
+                                name="key"
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.custom.key.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.custom.key.placeholder") }
-                                helperText={ (t("extensions:develop.smsProviders.form.custom.key.hint")) }
+                                helperText={ (<Hint>
+                                    { t("extensions:develop.smsProviders.form.custom.key.hint") }
+                                </Hint>) }
                                 component={ TextFieldAdapter }
                                 maxLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -137,28 +140,27 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 minLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH
                                 }
-                                InputProps={ {
-                                    endAdornment: ""
-                                } }
                                 autoComplete="new-password"
                             />
                         </Grid.Column>
                         <Grid.Column>
                             <FinalFormField
-                                key={ "secret" }
+                                key="secret"
                                 fullWidth
                                 FormControlProps={ {
                                     margin: "dense"
                                 } }
-                                ariaLabel={ "secret" }
+                                ariaLabel="secret"
                                 readOnly={ isReadOnly }
                                 required={ true }
-                                data-componentid={ `${componentId}-${"secret"}` }
-                                name={ "secret" }
+                                data-componentid={ `${componentId}-secret` }
+                                name="secret"
                                 type="password"
                                 label={ t("extensions:develop.smsProviders.form.custom.secret.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.custom.secret.placeholder") }
-                                helperText={ (t("extensions:develop.smsProviders.form.custom.secret.hint")) }
+                                helperText={ (<Hint>
+                                    { t("extensions:develop.smsProviders.form.custom.secret.hint") }
+                                </Hint>) }
                                 component={ TextFieldAdapter }
                                 maxLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -166,33 +168,29 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 minLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH
                                 }
-                                InputProps={ {
-                                    endAdornment: ""
-                                } }
                                 autoComplete="new-password"
                             />
                         </Grid.Column>
-
-
-
                     </Grid.Row>
                     <Grid.Row columns={ 2 }>
                         <Grid.Column>
                             <FinalFormField
-                                key={ "sender" }
+                                key="sender"
                                 fullWidth
                                 FormControlProps={ {
                                     margin: "dense"
                                 } }
-                                ariaLabel={ "sender" }
+                                ariaLabel="sender"
                                 readOnly={ isReadOnly }
                                 required={ true }
-                                data-componentid={ `${componentId}-${"sender"}` }
-                                name={ "sender" }
+                                data-componentid={ `${componentId}-sender` }
+                                name="sender"
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.custom.sender.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.custom.sender.placeholder") }
-                                helperText={ t("extensions:develop.smsProviders.form.custom.sender.hint") }
+                                helperText={ (<Hint>
+                                    { t("extensions:develop.smsProviders.form.custom.sender.hint") }
+                                </Hint>) }
                                 component={ TextFieldAdapter }
                                 maxLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -200,28 +198,27 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 minLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH
                                 }
-                                InputProps={ {
-                                    endAdornment: ""
-                                } }
                                 autoComplete="new-password"
                             />
                         </Grid.Column>
                         <Grid.Column>
                             <FinalFormField
-                                key={ "contentType" }
+                                key="contentType"
                                 fullWidth
                                 FormControlProps={ {
                                     margin: "dense"
                                 } }
-                                ariaLabel={ "contentType" }
+                                ariaLabel="contentType"
                                 readOnly={ isReadOnly }
                                 required={ true }
-                                data-componentid={ `${componentId}-${"contentType"}` }
-                                name={ "contentType" }
+                                data-componentid={ `${componentId}-contentType` }
+                                name="contentType"
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.custom.contentType.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.custom.contentType.placeholder") }
-                                helperText={ t("extensions:develop.smsProviders.form.custom.contentType.hint") }
+                                helperText={ (<Hint>
+                                    { t("extensions:develop.smsProviders.form.custom.contentType.hint") }
+                                </Hint>) }
                                 component={ TextFieldAdapter }
                                 maxLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -229,31 +226,29 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 minLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH
                                 }
-                                InputProps={ {
-                                    endAdornment: ""
-                                } }
                                 autoComplete="new-password"
                             />
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row columns={ 2 } >
-
                         <Grid.Column>
                             <FinalFormField
-                                key={ "headers" }
+                                key="headers"
                                 fullWidth
                                 FormControlProps={ {
                                     margin: "dense"
                                 } }
-                                ariaLabel={ "headers" }
+                                ariaLabel="headers"
                                 readOnly={ isReadOnly }
                                 required={ true }
-                                data-componentid={ `${componentId}-${"headers"}` }
-                                name={ "headers" }
+                                data-componentid={ `${componentId}-headers` }
+                                name="headers"
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.custom.headers.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.custom.headers.placeholder") }
-                                helperText={ (t("extensions:develop.smsProviders.form.custom.headers.hint")) }
+                                helperText={ (<Hint>
+                                    { t("extensions:develop.smsProviders.form.custom.headers.hint") }
+                                </Hint>) }
                                 component={ TextFieldAdapter }
                                 maxLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -261,29 +256,27 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 minLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH
                                 }
-                                InputProps={ {
-                                    endAdornment: ""
-                                } }
                                 autoComplete="new-password"
                             />
                         </Grid.Column>
-
                         <Grid.Column>
                             <FinalFormField
-                                key={ "httpMethod" }
+                                key="httpMethod"
                                 fullWidth
                                 FormControlProps={ {
                                     margin: "dense"
                                 } }
-                                ariaLabel={ "httpMethod" }
+                                ariaLabel="httpMethod"
                                 readOnly={ isReadOnly }
                                 required={ true }
-                                data-componentid={ `${componentId}-${"httpMethod"}` }
-                                name={ "httpMethod" }
+                                data-componentid={ `${componentId}-httpMethod` }
+                                name="httpMethod"
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.custom.httpMethod.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.custom.httpMethod.placeholder") }
-                                helperText={ t("extensions:develop.smsProviders.form.custom.httpMethod.hint") }
+                                helperText={ (<Hint>
+                                    { t("extensions:develop.smsProviders.form.custom.httpMethod.hint") }
+                                </Hint>) }
                                 component={ TextFieldAdapter }
                                 maxLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -291,9 +284,6 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 minLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH
                                 }
-                                InputProps={ {
-                                    endAdornment: ""
-                                } }
                                 autoComplete="new-password"
                             />
                         </Grid.Column>
@@ -301,20 +291,22 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column>
                             <FinalFormField
-                                key={ "payload" }
+                                key="payload"
                                 fullWidth
                                 FormControlProps={ {
                                     margin: "dense"
                                 } }
-                                ariaLabel={ "payload" }
+                                ariaLabel="payload"
                                 readOnly={ isReadOnly }
                                 required={ true }
-                                data-componentid={ `${componentId}-${"payload"}` }
-                                name={ "payload" }
+                                data-componentid={ `${componentId}-payload` }
+                                name="payload"
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.custom.payload.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.custom.payload.placeholder") }
-                                helperText={ t("extensions:develop.smsProviders.form.custom.payload.hint") }
+                                helperText={ (<Hint>
+                                    { t("extensions:develop.smsProviders.form.custom.payload.hint") }
+                                </Hint>) }
                                 component={ TextFieldAdapter }
                                 maxLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -322,14 +314,10 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 minLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH
                                 }
-                                InputProps={ {
-                                    endAdornment: ""
-                                } }
                                 autoComplete="new-password"
                             />
                         </Grid.Column>
                     </Grid.Row>
-
                     <Divider hidden />
                     <Grid.Row columns={ 1 } className="mt-6">
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -344,11 +332,8 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>
-
-
                 </Grid>
             </EmphasizedSegment>
-
         </div>
     );
 };

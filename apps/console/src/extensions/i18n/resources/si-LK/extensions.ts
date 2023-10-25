@@ -2067,6 +2067,7 @@ export const extensions: Extensions = {
             },
             form: {
                 twilio: {
+                    subHeading: "Twilio සැකසුම්",
                     accountSID: {
                         label: "Twilio ගිණුම් SID",
                         placeholder: "Twilio ගිණුමේ SID ඇතුලත් කරන්න",
@@ -2087,6 +2088,7 @@ export const extensions: Extensions = {
                     }
                 },
                 vonage: {
+                    subHeading: "Vonage සැකසුම්",
                     accountSID: {
                         label: "Vonage ගිණුම් SID",
                         placeholder: "Vonage ගිණුමේ SID ඇතුලත් කරන්න",
@@ -2107,6 +2109,7 @@ export const extensions: Extensions = {
                     }
                 },
                 custom: {
+                    subHeading: "අභිරුචි සැකසුම්",
                     providerName: {
                         label: "SMS සපයන්නාගේ නම",
                         placeholder: "SMS සපයන්නාගේ නම ඇතුළත් කරන්න",

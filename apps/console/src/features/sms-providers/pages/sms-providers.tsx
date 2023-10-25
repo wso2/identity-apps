@@ -43,7 +43,7 @@ import VonageSMSProvider from "./vonage-sms-provider";
 import {
     AppState,
     FeatureConfigInterface
-} from "../../../../features/core";
+} from "../../core";
 import { ListSMSProviders, deleteSMSProviders, updateSMSProvider } from "../api";
 import { getSMSProviderIcons } from "../configs/ui";
 import { SMSProviderConstants } from "../constants";
@@ -87,18 +87,18 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             sender: ""
         },
         TwilioSMSProvider: {
-            key: "",
             name: SMSProviderConstants.SMS_PROVIDER_CONFIG_NAME,
-            provider: "Twilio",
-            secret: "",
-            sender: ""
+            provider: SMSProviderConstants.TWILIO,
+            twilioKey: "",
+            twilioSecret: "",
+            twilioSender: ""
         },
         VonageSMSProvider: {
-            key: "",
             name: SMSProviderConstants.SMS_PROVIDER_CONFIG_NAME,
-            provider: "Vonage",
-            secret: "",
-            sender: ""
+            provider: SMSProviderConstants.VONAGE,
+            vonageKey: "",
+            vonageSecret: "",
+            vonageSender: ""
         }
 
     };
@@ -193,35 +193,46 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             return;
         }
 
-        let configuredProvider: string = "TwilioSMSProvider";
+        let configuredProvider: string = SMSProviderConstants.TWILIO_SMS_PROVIDER;
         const providersObject: { [key: string]: SMSProviderInterface } =
             originalSMSProviderConfig.reduce(
                 (acc: { [key: string]: SMSProviderInterface }, provider: SMSProviderAPIInterface) => {
-                    const smsProviderx: SMSProviderInterface = {
+                    if (provider.provider === SMSProviderConstants.TWILIO) {
+                        configuredProvider = SMSProviderConstants.TWILIO_SMS_PROVIDER;
+                    } else if (provider.provider === SMSProviderConstants.VONAGE) {
+                        configuredProvider = SMSProviderConstants.VONAGE_SMS_PROVIDER;
+                    } else {
+                        configuredProvider = SMSProviderConstants.CUSTOM_SMS_PROVIDER;
+                    }
+                    const configuredSMSProvider: SMSProviderInterface = {
                         contentType: provider.contentType as ContentType,
                         headers: provider.properties.find(
                             (property: SMSProviderPropertiesInterface) => property.key === "http.headers")?.value,
                         httpMethod: provider.properties.find(
                             (property: SMSProviderPropertiesInterface) => property.key === "http.method")?.value,
-                        key: provider.key,
+    
                         name: provider.name,
                         payload: provider.properties.find(
                             (property: SMSProviderPropertiesInterface) => property.key === "body")?.value,
                         provider: provider.provider,
-                        providerURL: provider.providerURL,
-                        secret: provider.secret,
-                        sender: provider.sender
+                        providerURL: provider.providerURL 
                     };
 
-                    if (provider.provider === "Twilio") {
-                        configuredProvider = "TwilioSMSProvider";
-                    } else if (provider.provider === "Vonage") {
-                        configuredProvider = "VonageSMSProvider";
+                    if (configuredProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER) {
+                        configuredSMSProvider.twilioKey = provider.key;
+                        configuredSMSProvider.twilioSecret = provider.secret;
+                        configuredSMSProvider.twilioSender = provider.sender;
+                    } else if (configuredProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER) {
+                        configuredSMSProvider.vonageKey = provider.key;
+                        configuredSMSProvider.vonageSecret = provider.secret;
+                        configuredSMSProvider.vonageSender = provider.sender;
                     } else {
-                        configuredProvider = "CustomSMSProvider";
+                        configuredSMSProvider.key = provider.key;
+                        configuredSMSProvider.secret = provider.secret;
+                        configuredSMSProvider.sender = provider.sender;
                     }
-                    acc[configuredProvider] = smsProviderx;
-                    
+                    acc[configuredProvider] = configuredSMSProvider;
+
                     return acc;
                 }, {});
 
@@ -245,20 +256,25 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         const { selectedProvider } = state;
 
         const properties: SMSProviderPropertiesInterface[] = buildProperties(values);
-        const provider: string = selectedProvider === "TwilioSMSProvider" ?
-            "Twilio" : selectedProvider === "VonageSMSProvider" ?
-                "Vonage" : values.provider;
-        const contentType: ContentType = values.contentType ? values.contentType : ContentType.JSON;
+        const provider: string = selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ? 
+            SMSProviderConstants.TWILIO : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ? 
+                SMSProviderConstants.VONAGE : values.provider;
+        const contentType: ContentType = values.contentType ?? ContentType.JSON;
         const submittingValues: SMSProviderAPIInterface = {
             contentType: contentType,
-            key: values.key,
-            name: "SMSPublisher",
+            key: selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ? 
+                values.twilioKey : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ? 
+                    values.vonageKey : values.key,
             properties: properties,
             provider: provider,
-            secret: values.secret,
-            sender: values.sender
+            secret: selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ? 
+                values.twilioSecret : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ? 
+                    values.vonageSecret : values.secret,
+            sender: selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ? 
+                values.twilioSender : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ? 
+                    values.vonageSender : values.sender
         };
-
+        
         if (values.providerURL) {
             submittingValues.providerURL = values.providerURL;
         }
@@ -292,11 +308,9 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                     .catch(() => {
                         handleUpdateError();
                         setIsSubmitting(false);
-
                     }).finally(() => {
                         setIsSubmitting(false);
                         mutateSMSProviderConfig();
-
                     });
             } else {
                 handleDeleteError();
@@ -334,38 +348,44 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             provider: undefined,
             providerURL: undefined,
             secret: undefined,
-            sender: undefined
+            sender: undefined,
+            twilioKey: undefined,
+            twilioSecret: undefined,
+            twilioSender: undefined,
+            vonageKey: undefined,
+            vonageSecret: undefined,
+            vonageSender: undefined
         };
 
         if (state.selectedProvider === "TwilioSMSProvider") {
-            if (!values?.key) {
-                error.key = t(
+            if (!values?.twilioKey) {
+                error.twilioKey = t(
                     "extensions:develop.smsProviders.form..twilio.validations.required"
                 );
             }
-            if (!values?.secret) {
-                error.secret = t(
+            if (!values?.twilioSecret) {
+                error.twilioSecret = t(
                     "extensions:develop.smsProviders.form.twilio.validations.required"
                 );
             }
-            if (!values?.sender) {
-                error.sender = t(
+            if (!values?.twilioSender) {
+                error.twilioSender = t(
                     "extensions:develop.smsProviders.form.twilio.validations.required"
                 );
             }
         } else if (state.selectedProvider === "VonageSMSProvider") {
-            if (!values?.key) {
-                error.key = t(
+            if (!values?.vonageKey) {
+                error.vonageKey = t(
                     "extensions:develop.smsProviders.form.vonage.validations.required"
                 );
             }
-            if (!values?.secret) {
-                error.secret = t(
+            if (!values?.vonageSecret) {
+                error.vonageSecret = t(
                     "extensions:develop.smsProviders.form.vonage.validations.required"
                 );
             }
-            if (!values?.sender) {
-                error.sender = t(
+            if (!values?.vonageSender) {
+                error.vonageSender = t(
                     "extensions:develop.smsProviders.form.vonage.validations.required"
                 );
             }
@@ -406,7 +426,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                 );
             }
         }
-        
+
         return error;
     };
 
@@ -416,7 +436,8 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         return deleteSMSProviders()
             .then(() => {
                 !deleteBeforeUpdate && handleDeleteSuccess();
-                !deleteBeforeUpdate && setState({ providerParams: {}, selectedProvider: "TwilioSMSProvider" });
+                !deleteBeforeUpdate && setState({ providerParams: {}, 
+                    selectedProvider: SMSProviderConstants.TWILIO_SMS_PROVIDER });
                 !deleteBeforeUpdate && mutateSMSProviderConfig();
 
                 return true;
@@ -504,7 +525,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             pageHeaderMaxWidth={ true }
             data-componentid={ `${componentId}-form-layout` }
         >
-
             { isSMSProviderConfigFetchRequestLoading || isDeleting || isLoading ? (
                 renderLoadingPlaceholder()
             ) : (
@@ -512,7 +532,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                     <EmphasizedSegment className="form-wrapper" padded={ "very" }>
                         <Grid className={ "mt-2" } >
                             <Grid.Row columns={ 1 }>
-
                                 <Grid.Column >
                                     <FinalForm
                                         onSubmit={ handleSubmit }
@@ -527,9 +546,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                             { providerCards.map(
                                                                 (provider: SMSProviderCardInterface) => (
                                                                     <Grid.Column width={ 5 } key={ provider.id }>
-
                                                                         <InfoCard
-
                                                                             fluid
                                                                             data-componentid=
                                                                                 { `${componentId}
@@ -550,12 +567,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                                             showSetupGuideButton={ false }
                                                                             showCardAction={ false }
                                                                         />
-
                                                                     </Grid.Column>
                                                                 )) }
                                                         </Grid.Row>
                                                     </Grid>
-
                                                 </div>
                                                 { state.selectedProvider && (
                                                     <div>
@@ -564,19 +579,22 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                 ) }
                                                 { state.selectedProvider && (
                                                     <div>
-                                                        { state.selectedProvider === "CustomSMSProvider" && (
+                                                        { state.selectedProvider === 
+                                                        SMSProviderConstants.CUSTOM_SMS_PROVIDER && (
                                                             <CustomSMSProvider
                                                                 isReadOnly={ isReadOnly }
                                                                 onSubmit={ handleSubmit }
                                                             />
                                                         ) }
-                                                        { state.selectedProvider === "TwilioSMSProvider" && (
+                                                        { state.selectedProvider === 
+                                                        SMSProviderConstants.TWILIO_SMS_PROVIDER && (
                                                             <TwilioSMSProvider
                                                                 isReadOnly={ isReadOnly }
                                                                 onSubmit={ handleSubmit }
                                                             />
                                                         ) }
-                                                        { state.selectedProvider === "VonageSMSProvider" && (
+                                                        { state.selectedProvider === 
+                                                        SMSProviderConstants.VONAGE_SMS_PROVIDER && (
                                                             <VonageSMSProvider
                                                                 isReadOnly={ isReadOnly }
                                                                 onSubmit={ handleSubmit }
@@ -592,7 +610,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                         </Grid>
                     </EmphasizedSegment>
                 </>
-
             ) }
             {
                 !isLoading && !isSMSProviderConfigFetchRequestLoading && (
@@ -657,7 +674,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                         </ConfirmationModal>
                     </>
                 ) }
-
         </PageLayout>
     );
 };

@@ -23,6 +23,12 @@ export class SMSProviderConstants {
     private constructor() { }
     
     public static readonly SMS_PROVIDER_CONFIG_NAME: string = "SMSPublisher";
+    public static readonly TWILIO_SMS_PROVIDER: string = "TwilioSMSProvider";
+    public static readonly TWILIO: string = "Twilio";
+    public static readonly VONAGE_SMS_PROVIDER: string = "VonageSMSProvider";
+    public static readonly VONAGE: string = "Vonage";
+    public static readonly CUSTOM_SMS_PROVIDER: string = "CustomSMSProvider";
+    public static readonly CUSTOM: string = "Custom";
 
 	public static readonly SMS_PROVIDER_CONFIG_FETCH_ERROR_CODE: string = "ASG-SPC-00001";
     public static readonly SMS_PROVIDER_CONFIG_FETCH_INVALID_STATUS_CODE_ERROR_CODE: string = "ASG-SPC-00002";

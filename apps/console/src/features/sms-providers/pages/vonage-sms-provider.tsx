@@ -20,6 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField, TextFieldAdapter } from "@wso2is/form";
 import {
     EmphasizedSegment,
+    Hint,
     PrimaryButton
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -27,19 +28,20 @@ import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { SMSProviderConstants } from "../constants";
 
-interface TwilioSMSProviderPageInterface extends IdentifiableComponentInterface {
+interface VonageSMSProviderPageInterface extends IdentifiableComponentInterface {
     isReadOnly: boolean;
     onSubmit: (values: any) => void;
 }
 
-const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
-    props: TwilioSMSProviderPageInterface
+const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
+    props: VonageSMSProviderPageInterface
 ): ReactElement => {
     const {
         ["data-componentid"]: componentId,
-        onSubmit,
-        isReadOnly
+        isReadOnly,
+        onSubmit
     } = props;
+
     const { t } = useTranslation();
 
     return (
@@ -48,85 +50,82 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column>
-                            <h2>Twilio Settings</h2>
+                            <h2>{ t("extensions:develop.smsProviders.form.vonage.subHeading") }</h2>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row columns={ 2 }>
                         <Grid.Column>
                             <FinalFormField
-                                key={ "key" }
+                                key="vonageKey" 
                                 width={ 16 }
                                 FormControlProps={ {
                                     margin: "dense"
                                 } }
-                                ariaLabel={ "key" }
+                                ariaLabel="vonageKey" 
                                 readOnly={ isReadOnly }
                                 required={ true }
-                                data-componentid={ `${componentId}-${"key"}` }
-                                name={ "key" }
+                                data-componentid={ `${componentId}-vonage-key` }
+                                name="vonageKey" 
                                 type="text"
-                                label={ t("extensions:develop.smsProviders.form.twilio.accountSID.label") }
-                                placeholder={ t("extensions:develop.smsProviders.form.twilio.accountSID.placeholder") }
-                                helperText={ t("extensions:develop.smsProviders.form.twilio.accountSID.hint") }
+                                label={ t("extensions:develop.smsProviders.form.vonage.accountSID.label") }
+                                placeholder={ t("extensions:develop.smsProviders.form.vonage.accountSID.placeholder") }
+                                helperText={ (<Hint>
+                                    { t("extensions:develop.smsProviders.form.vonage.accountSID.hint") }
+                                </Hint>) }
                                 component={ TextFieldAdapter }
                                 maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                 minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
-                                InputProps={ {
-                                    endAdornment: ""
-                                } }
                                 autoComplete="new-password"
                             />
                         </Grid.Column>
                         <Grid.Column>
                             <FinalFormField
-                                key={ "secret" }
+                                key="vonageSecret"
                                 width={ 16 }
                                 FormControlProps={ {
                                     margin: "dense"
                                 } }
+                                ariaLabel="vonageSecret"
                                 readOnly={ isReadOnly }
-                                ariaLabel={ "secret" }
                                 required={ true }
-                                data-componentid={ `${componentId}-${"secret"}` }
-                                name={ "secret" }
+                                data-componentid={ `${componentId}-vonage-secret` }
+                                name="vonageSecret"
+                                inputType="password"
                                 type="password"
-                                label={ t("extensions:develop.smsProviders.form.twilio.authToken.label") }
-                                placeholder={ t("extensions:develop.smsProviders.form.twilio.authToken.placeholder") }
-                                helperText={ t("extensions:develop.smsProviders.form.twilio.authToken.hint") }
+                                label={ t("extensions:develop.smsProviders.form.vonage.authToken.label") }
+                                placeholder={ t("extensions:develop.smsProviders.form.vonage.authToken.placeholder") }
+                                helperText={ (<Hint>
+                                    { t("extensions:develop.smsProviders.form.vonage.authToken.hint") } 
+                                </Hint>) }
                                 component={ TextFieldAdapter }
                                 maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                 minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
-                                InputProps={ {
-                                    endAdornment: ""
-                                } }
                                 autoComplete="new-password"
                             />
                         </Grid.Column>
                     </Grid.Row>
-
                     <Grid.Row columns={ 2 }>
                         <Grid.Column>
                             <FinalFormField
-                                key={ "sender" }
+                                key="vonageSender"
                                 width={ 16 }
                                 FormControlProps={ {
                                     margin: "dense"
                                 } }
+                                ariaLabel="vonageSender"
                                 readOnly={ isReadOnly }
-                                ariaLabel={ "sender" }
                                 required={ true }
-                                data-componentid={ `${componentId}-${"sender"}` }
-                                name={ "sender" }
+                                data-componentid={ `${componentId}-vonage-sender` }
+                                name="vonageSender"
                                 type="text"
-                                label={ t("extensions:develop.smsProviders.form.twilio.sender.label") }
-                                placeholder={ t("extensions:develop.smsProviders.form.twilio.sender.placeholder") }
-                                helperText={ t("extensions:develop.smsProviders.form.twilio.sender.hint") }
+                                label={ t("extensions:develop.smsProviders.form.vonage.sender.label") }
+                                placeholder={ t("extensions:develop.smsProviders.form.vonage.sender.placeholder") }
+                                helperText={ (<Hint>
+                                    { t("extensions:develop.smsProviders.form.vonage.sender.hint") } 
+                                </Hint>) }
                                 component={ TextFieldAdapter }
                                 maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                 minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
-                                InputProps={ {
-                                    endAdornment: ""
-                                } }
                                 autoComplete="new-password"
                             />
                         </Grid.Column>
@@ -137,9 +136,10 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                             <PrimaryButton
                                 size="small"
                                 onClick={ onSubmit }
-                                readOnly={ isReadOnly }
+                                disabled={ isReadOnly }
                                 ariaLabel="SMS provider form update button"
                                 data-componentid={ `${componentId}-update-button` }
+                                readOnly={ isReadOnly }
                             >
                                 { "Submit" }
                             </PrimaryButton>
@@ -147,9 +147,8 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                     </Grid.Row>
                 </Grid>
             </EmphasizedSegment>
-
         </div>
     );
 };
 
-export default TwilioSMSProvider;
+export default VonageSMSProvider;

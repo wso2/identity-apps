@@ -96,6 +96,7 @@ import {
 import { ReactComponent as PinIcon } from "../../../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../../../themes/default/assets/images/icons/plug-icon.svg";
 import { ReactComponent as ScopeIcon } from "../../../themes/default/assets/images/icons/scope.svg";
+import { ReactComponent as SMSIcon } from "../../../themes/default/assets/images/icons/sms-icon.svg";
 import {
     ReactComponent as LockIconFilled
 } from "../../../themes/default/assets/images/icons/secret-grey.svg";
@@ -260,6 +261,7 @@ export type GetSidePanelIconsInterface = {
     scopes: FunctionComponent | ReactNode,
     secrets: FunctionComponent | ReactNode,
     serverConfigurations: FunctionComponent | ReactNode,
+    sms: FunctionComponent | ReactNode,
     userStore: FunctionComponent | ReactNode,
     users: FunctionComponent | ReactNode,
     insights: FunctionComponent | ReactNode
@@ -310,6 +312,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         scopes: ScopeIcon,
         secrets: KeyOutlineIcon,
         serverConfigurations: GearsIcon,
+        sms: SMSIcon,
         userStore: DatabaseIcon,
         users: UserIcon
     };

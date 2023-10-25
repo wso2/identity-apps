@@ -418,6 +418,11 @@ export class RouteUtils {
                 id: "logs"
             },
             {
+                category: build,
+                id: "smsProviders",
+                parent: branding
+            },
+            {
                 category: other,
                 id: "remoteLogging"
             },

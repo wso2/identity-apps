@@ -2094,6 +2094,7 @@ export const extensions: Extensions = {
             },
             form: {
                 twilio: {
+                    subHeading: "Twilio Settings",
                     accountSID: {
                         label: "Twilio Account SID",
                         placeholder: "Enter the Twilio account SID",
@@ -2114,6 +2115,7 @@ export const extensions: Extensions = {
                     }
                 },
                 vonage: {
+                    subHeading: "Vonage Settings",
                     accountSID: {
                         label: "Vonage Account SID",
                         placeholder: "Enter the Vonage account SID",
@@ -2134,6 +2136,7 @@ export const extensions: Extensions = {
                     }
                 },
                 custom: {
+                    subHeading: "Custom Settings",
                     providerName: {
                         label: "SMS Provider Name",
                         placeholder: "Enter the SMS provider name",

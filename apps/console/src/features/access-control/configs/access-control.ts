@@ -129,6 +129,8 @@ export class AccessControlUtils {
                 featureConfig?.identityProviders?.scopes?.create, allowedScopes),
             [ AccessControlConstants.IDP_EDIT ] : hasRequiredScopes(featureConfig?.identityProviders,
                 featureConfig?.identityProviders?.scopes?.update, allowedScopes),
+            [ AccessControlConstants.PROVIDER_EDIT ] : hasRequiredScopes(featureConfig?.smsProviders,
+                featureConfig?.smsProviders?.scopes?.create, allowedScopes),
             [ AccessControlConstants.IDP_DELETE ] : hasRequiredScopes(featureConfig?.identityProviders,
                 featureConfig?.identityProviders?.scopes?.delete, allowedScopes),
             

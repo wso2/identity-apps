@@ -485,14 +485,14 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                     {
                         category: "extensions:develop.sidePanel.categories.smsProvider",
                         component: lazy(() =>
-                            import("../../../extensions/components/sms-providers" + "/pages/sms-providers")
+                            import("../../../features/sms-providers" + "/pages/sms-providers")
                         ),
                         exact: true,
                         icon: {
-                            icon: <EnvelopeGearIcon fill="black" className="icon" />
+                            icon: getSidePanelIcons().sms 
                         },
                         id: "smsProviders",
-                        name: "extensions:develop.sidePanel.smsProvider",
+                        name: "SMS",
                         order: 16,
                         path: AppConstants.getPaths().get("SMS_PROVIDER"),
                         protected: true,

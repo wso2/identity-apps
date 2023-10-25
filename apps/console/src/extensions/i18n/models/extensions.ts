@@ -1855,6 +1855,7 @@ export interface Extensions {
             };
             form: {
                 twilio: {
+                    subHeading: string;
                     accountSID: {
                         label: string;
                         placeholder: string;
@@ -1875,6 +1876,7 @@ export interface Extensions {
                     };
                 },
                 vonage: {
+                    subHeading: string;
                     accountSID: {
                         label: string;
                         placeholder: string;
@@ -1895,6 +1897,7 @@ export interface Extensions {
                     };
                 },
                 custom: {
+                    subHeading: string;
                     providerName: {
                         label: string;
                         placeholder: string;

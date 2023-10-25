@@ -16,19 +16,17 @@
  * under the License.
  */
 
-import  CustomLogo  from "../../../../themes/default/assets/images/third-party/custom-sms-provider.png";
-import TwilioLogo  from "../../../../themes/default/assets/images/third-party/twilio-sms-provider.png";
-import   VonageLogo  from "../../../../themes/default/assets/images/third-party/vonage-sms-provider.png";
+import { FunctionComponent, ReactNode } from "react";
+import { ReactComponent as SMSIcon } from "../../../themes/default/assets/images/icons/sms-icon.svg";
 
 export const getSMSProviderIcons = (): {
-    twilio: any;
-    vonage: any;
-    custom: any;
+    twilio: FunctionComponent | ReactNode;
+    vonage: FunctionComponent | ReactNode;
+    custom: FunctionComponent | ReactNode;
 } => {
-
     return {
-        custom: CustomLogo,
-        twilio: TwilioLogo,
-        vonage: VonageLogo
+        custom: SMSIcon,
+        twilio: SMSIcon,
+        vonage: SMSIcon
     };
 };

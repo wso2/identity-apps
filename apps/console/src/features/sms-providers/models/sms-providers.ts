@@ -42,11 +42,23 @@ export interface SMSProviderInterface {
     
     providerURL?: string;
     
-    key: string;
+    key?: string;
+
+    twilioKey?: string;
+
+    vonageKey?: string;
     
-    secret: string;
+    secret?: string;
+
+    twilioSecret?: string;
+
+    vonageSecret?: string;
     
-    sender: string;
+    sender?: string;
+
+    twilioSender?: string;
+
+    vonageSender?: string;
     
     contentType?: ContentType;
    
@@ -103,6 +115,18 @@ export interface SMSProviderConfigFormErrorValidationsInterface {
     sender?: string;
 
     contentType?: string;
+    
+    twilioKey?: string;
+    
+    twilioSecret?: string;
+    
+    twilioSender?: string;
+    
+    vonageKey?: string;
+    
+    vonageSecret?: string;
+    
+    vonageSender?: string;
 }
 
 export interface SMSProviderCardInterface {
