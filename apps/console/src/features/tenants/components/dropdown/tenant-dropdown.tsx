@@ -573,7 +573,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                         data-componentid={ "sub-organizations-menu" }
                                                     >
                                                         <HierarchyIcon fill="black" />
-                                                        Sub Organizations
+                                                        Organizations
                                                     </Dropdown.Item>
                                                 </>
                                             )
