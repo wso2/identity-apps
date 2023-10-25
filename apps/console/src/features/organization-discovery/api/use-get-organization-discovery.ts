@@ -49,7 +49,7 @@ const useGetOrganizationDiscovery = <
         },
         method: HttpMethods.GET,
         params: {
-            //filter
+            filter
         },
         url: `${ store.getState().config.endpoints.organizations }/organizations/discovery`
     };
