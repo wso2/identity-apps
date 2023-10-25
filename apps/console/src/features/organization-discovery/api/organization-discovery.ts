@@ -130,15 +130,15 @@ export const deleteOrganizationDiscoveryConfig = (
  * Get a list of organizations.
  *
  * @param filter - The filter query.
- * @param offset - The maximum number of organizations to return.
- * @param limit  - Number of records to skip for pagination.
+ * @param _offset - The maximum number of organizations to return.
+ * @param _limit  - Number of records to skip for pagination.
  *
  * @returns a promise containing the response
  */
 export const getOrganizationDiscovery = (
     filter?: string,
-    offset?: number,
-    limit?: number
+    _offset?: number,
+    _limit?: number
 ): Promise< OrganizationListWithDiscoveryInterface> => {
     const config: HttpRequestConfig = {
         headers: {
@@ -147,9 +147,7 @@ export const getOrganizationDiscovery = (
         },
         method: "GET",
         params: {
-            filter,
-            // offset,
-            // limit
+            filter
         },
         url: `${ store.getState().config.endpoints.organizations }/organizations/discovery`
     };

@@ -32,12 +32,12 @@ import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
 import { OrganizationDiscoveryAttributeDataInterface, OrganizationResponseInterface } from "../models";
 
-interface OrganizationEditPagePropsInterface extends SBACInterface<FeatureConfigInterface>,
+interface OrganizationEmailDomainEditPagePropsInterface extends SBACInterface<FeatureConfigInterface>,
     TestableComponentInterface, RouteChildrenProps{
 }
 
-const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface> = (
-    props: OrganizationEditPagePropsInterface
+const OrganizationEmailDomainEditPage: FunctionComponent<OrganizationEmailDomainEditPagePropsInterface> = (
+    props: OrganizationEmailDomainEditPagePropsInterface
 ): ReactElement => {
 
     const {
@@ -160,4 +160,4 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     );
 };
 
-export default OrganizationEditPage;
+export default OrganizationEmailDomainEditPage;
