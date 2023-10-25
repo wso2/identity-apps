@@ -7282,6 +7282,35 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            parentOrgInvitations: {
+                addUserWizard: {
+                    heading: "Inviter un utilisateur parent",
+                    description: "Invitez un utilisateur de l’organisation parente.",
+                    hint: "Les utilisateurs invités sont gérés par l'organisation <1>{{currentOrganization}></1>.",
+                    usernameHint: "Le nom d'utilisateur doit appartenir à un utilisateur " +
+                        "de l'organisation <1>{{currentOrganization}></1>."
+                },
+                tab: {
+                    usersTab: "Utilisateurs",
+                    invitationsTab: "Invitations"
+                },
+                searchPlaceholder: "Rechercher par nom d'utilisateur",
+                searchdropdown: {
+                    pendingLabel: "En attente",
+                    expiredLabel: "Expiré"
+                },
+                createDropdown: {
+                    createLabel: "Créer un utilisateur",
+                    inviteLabel: "Inviter un utilisateur parent"
+                },
+                filterLabel: "Filtrer par: ",
+                emptyPlaceholder: {
+                    noPendingInvitations: "Il n'y a aucune invitation en attente pour le moment.",
+                    noExpiredInvitations: "Il y a des invitations expirées pour le moment.",
+                    noInvitations: "Il n'y a aucune invitation pour le moment.",
+                    noCollaboratorUserInvitations: "Il n’y a actuellement aucun utilisateur collaborateur dont les invitations ont expiré."
+                }
+            },
             oidcScopes: {
                 viewAttributes: "Afficher les attributs",
                 manageAttributes: "Gérer les attributs",

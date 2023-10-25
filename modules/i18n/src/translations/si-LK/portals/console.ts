@@ -7124,6 +7124,34 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            parentOrgInvitations: {
+                addUserWizard: {
+                    heading: "මාපිය පරිශීලකයාට ආරාධනා කරන්න",
+                    description: "මව් සංවිධානයෙන් පරිශීලකයෙකුට ආරාධනා කරන්න.",
+                    hint: "ආරාධිත පරිශීලකයින් කළමනාකරණය කරනු ලබන්නේ <1>{{currentOrganization}}</1> සංවිධානය විසිනි.",
+                    usernameHint: "පරිශීලක නාමය <1>{{currentOrganization}}</1> සංවිධානයේ පරිශීලකයෙකුට අයත් විය යුතුය."
+                },
+                tab: {
+                    usersTab: "පරිශීලකයන්",
+                    invitationsTab: "ආරාධනා"
+                },
+                searchPlaceholder: "පරිශීලක නාමයෙන් සොයන්න",
+                searchdropdown: {
+                    pendingLabel: "පොරොත්තුවෙන්",
+                    expiredLabel: "කල් ඉකුත් වී ඇත"
+                },
+                createDropdown: {
+                    createLabel: "පරිශීලකයා සාදන්න",
+                    inviteLabel: "මාපිය පරිශීලකයාට ආරාධනා කරන්න"
+                },
+                filterLabel: "පෙරහන් කරන්න: ",
+                emptyPlaceholder: {
+                    noPendingInvitations: "මේ මොහොතේ පොරොත්තු ආරාධනා නැත.",
+                    noExpiredInvitations: "මේ මොහොතේ කල් ඉකුත් වූ ආරාධනා ඇත.",
+                    noInvitations: "දැනට ආරාධනා නැහැ.",
+                    noCollaboratorUserInvitations: "මේ මොහොතේ කල් ඉකුත් වූ ආරාධනා සහිත සහකාරක පරිශීලකයන් නොමැත."
+                }
+            },
             oidcScopes: {
                 viewAttributes: "ගුණාංග පෙන්වන්න",
                 manageAttributes: "ගුණාංග කළමනාකරණය කරන්න",

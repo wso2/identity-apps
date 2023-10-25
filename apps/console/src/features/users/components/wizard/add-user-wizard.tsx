@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,23 +20,30 @@ import { AlertLevels, RolesInterface, TestableComponentInterface } from "@wso2is
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
+import { 
+    InternalAdminFormDataInterface, 
+    UserInviteInterface } from "apps/console/src/extensions/components/users/models";
+import { UserTypeSelection } from "apps/console/src/extensions/components/users/wizard";
 import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
+import intersection from "lodash-es/intersection";
 import merge from "lodash-es/merge";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { AnyAction } from "redux";
-import { ThunkDispatch } from "redux-thunk";
+import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
+import { AddConsumerUserWizardSummary } from "./steps/add-consumer-user-wizard-summary";
+import { AddConsumerUserGroups } from "./steps/consumer-user-groups";
 import { RolePermissions } from "./user-role-permissions";
 import { AddUserWizardSummary } from "./wizard-summary";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
-import { UserAccountTypes } from "../../../../extensions/components/users/constants";
+import { UserAccountTypes, UsersConstants } from "../../../../extensions/components/users/constants";
 import { SCIMConfigs } from "../../../../extensions/configs/scim";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
 import { AppState } from "../../../core/store";
+import { GroupsInterface } from "../../../groups";
 import { getGroupList, updateGroupDetails } from "../../../groups/api";
 import { getOrganizationRoles } from "../../../organizations/api";
 import { OrganizationRoleManagementConstants } from "../../../organizations/constants";
@@ -44,23 +51,43 @@ import { OrganizationResponseInterface, OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface } from "../../../organizations/models";
 import { OrganizationUtils } from "../../../organizations/utils";
 import { getRolesList, updateRoleDetails } from "../../../roles/api";
+import { useValidationConfigData } from "../../../validation/api";
 import { addUser } from "../../api";
 import { getUserWizardStepIcons } from "../../configs";
-import { AddUserWizardStateInterface, PayloadInterface, UserDetailsInterface,
-    WizardStepInterface, createEmptyUserDetails } from "../../models";
+import { AdminAccountTypes, UserAccountTypesMain } from "../../constants";
+import { 
+    AddUserWizardStateInterface, 
+    PayloadInterface,
+    UserDetailsInterface, 
+    WizardStepInterface,
+    createEmptyUserDetails } from "../../models";
+import { getUsernameConfiguration } from "../../utils";
 import { AddUser } from "../add-user";
 import { AddUserGroup } from "../add-user-groups";
 import { AddUserRole } from "../add-user-role";
+import { sendParentOrgUserInvite } from "../guests/api/invite";
+import { InviteParentOrgUser } from "../guests/pages/invite-parent-org-user";
 
 interface AddUserWizardPropsInterface extends TestableComponentInterface {
     closeWizard: () => void;
+    compact?: boolean;
     currentStep?: number;
+    submitStep?: WizardStepsFormTypes | string;
     listOffset: number;
     listItemLimit: number;
     updateList: () => void;
-    rolesList: any;
+    onSuccessfulUserAddition?: (id: string) => void;
+    rolesList?: any;
     emailVerificationEnabled: boolean;
     isAdminUser?: boolean;
+    userTypeSelection?: string
+    defaultUserTypeSelection?: string;
+    adminTypeSelection? :string;
+    isSubOrg?: boolean
+    showStepper?: boolean;
+    conditionallyShowStepper?: boolean;
+    requiredSteps?: WizardStepsFormTypes[] | string[];
+    userStore?: string;
 }
 
 /**
@@ -78,7 +105,9 @@ enum WizardStepsFormTypes {
     BASIC_DETAILS = "BasicDetails",
     ROLE_LIST= "RoleList",
     GROUP_LIST= "GroupList",
-    SUMMARY = "summary"
+    SUMMARY = "summary",
+    USER_TYPE = "UserType",
+    USER_SUMMARY = "UserSummary"
 }
 
 /**
@@ -95,20 +124,28 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         currentStep,
         emailVerificationEnabled,
         isAdminUser,
+        userTypeSelection,
+        defaultUserTypeSelection,
+        adminTypeSelection,
+        isSubOrg,
+        requiredSteps,
+        userStore,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
-    const dispatch: ThunkDispatch<AppState, any, AnyAction> = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitRoleList, setSubmitRoleList ] = useTrigger();
     const [ submitGroupList, setSubmitGroupList ] = useTrigger();
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
+    const [ submitUserTypeSelection, setSubmitUserTypeSelection ] = useTrigger();
 
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
+    const [ fixedGroupList, setFixedGroupsList ] = useState<GroupsInterface[]>(undefined);
 
     const [ roleList, setRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>([]);
     const [ tempRoleList, setTempRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>(
@@ -118,16 +155,22 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ initialTempRoleList, setInitialTempRoleList ] = useState<RolesInterface[]
         | OrganizationRoleListItemInterface[]>([]);
 
-    const [ groupList, setGroupsList ] = useState<RolesInterface[]>([]);
-    const [ tempGroupList, setTempGroupList ] = useState<RolesInterface[]>([]);
-    const [ initialGroupList, setInitialGroupList ] = useState<RolesInterface[]>([]);
-    const [ initialTempGroupList, setInitialTempGroupList ] = useState<RolesInterface[]>([]);
+    const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
+    const [ tempGroupList, setTempGroupList ] = useState<GroupsInterface[]>([]);
+    const [ initialGroupList, setInitialGroupList ] = useState<GroupsInterface[]>([]);
+    const [ initialTempGroupList, setInitialTempGroupList ] = useState<GroupsInterface[]>([]);
 
     const [ viewRolePermissions, setViewRolePermissions ] = useState<boolean>(false);
     const [ selectedRoleId,  setSelectedRoleId ] = useState<string>();
     const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ viewNextButton, setViewNextButton ] = useState<boolean>(true);
+    const [ isAlphanumericUsername, setIsAlphanumericUsername ] = useState<boolean>(false);
+    const [ askPasswordFromUser ] = useState<boolean>(true);
+    const [ isFinishButtonDisabled, setFinishButtonDisabled ] = useState<boolean>(false);
+    const [ isBasicDetailsLoading, setBasicDetailsLoading ] = useState<boolean>(false);
+    const [ isStepsUpdated, setIsStepsUpdated ] = useState<boolean>(false);
+    const [ isUserSummaryEnabled ] = useState<boolean>(false);
 
     const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) =>
         state.organization.organization);
@@ -136,12 +179,109 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
+    const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>([]);
+
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>("PRIMARY");
+    const excludedAttributes: string = "members";
+
+    const {
+        data: validationData
+    } = useValidationConfigData();
+
+    /**
+     * Update selected user store when userStore changes
+     */
+    useEffect(() => {
+        setSelectedUserStore(userStore);
+    }, [ userStore ]);
+
+    /**
+     * Toggle view settings based on current wizard step
+     */
     useEffect(() => {
         if (currentWizardStep != 3) {
             setViewRolePermissions(false);
         }
         setViewNextButton(true);
     }, [ currentWizardStep ]);
+
+    /**
+     * Fetch group list based on selected user store or reset groups if not a user
+     */
+    useEffect(() => {
+        if (defaultUserTypeSelection === UserAccountTypes.USER) {
+            getGroupListForDomain(selectedUserStore);
+        } else {
+            setGroupsList([]);
+            setInitialGroupList([]);
+            setFixedGroupsList([]);
+        }
+    }, [ selectedUserStore ]);
+
+    /**
+     * Set user type in wizard state based on defaultUserTypeSelection
+     */
+    useEffect(() => {
+
+        if (!defaultUserTypeSelection) {
+            return;
+        }
+
+        setWizardState({
+            ...wizardState,
+            [ WizardStepsFormTypes.USER_TYPE ]: {
+                userType: defaultUserTypeSelection
+            }
+        });
+
+    }, [ defaultUserTypeSelection ]);
+
+    /**
+     * Determine if alphanumeric username is enabled
+     */
+    useEffect(() => {
+        setIsAlphanumericUsername(
+            getUsernameConfiguration(validationData)?.enableValidator === "true"
+                ? true
+                : false
+        );
+    }, [ validationData ]);
+
+    /**
+     * Toggle view of role permissions based on role selection
+     */
+    useEffect(() => {
+        if (defaultUserTypeSelection === UserAccountTypes.USER) {
+            getGroupListForDomain(selectedUserStore);
+        } else {
+            setGroupsList([]);
+            setInitialGroupList([]);
+            setFixedGroupsList([]);
+        }
+    }, [ selectedUserStore ]);
+
+    useEffect(() => {
+
+        if (!defaultUserTypeSelection) {
+            return;
+        }
+
+        setWizardState({
+            ...wizardState,
+            [ WizardStepsFormTypes.USER_TYPE ]: {
+                userType: defaultUserTypeSelection
+            }
+        });
+
+    }, [ defaultUserTypeSelection ]);
+
+    useEffect(() => {
+        setIsAlphanumericUsername(
+            getUsernameConfiguration(validationData)?.enableValidator === "true"
+                ? true
+                : false
+        );
+    }, [ validationData ]);
 
     useEffect(() => {
         if (!selectedRoleId) {
@@ -153,6 +293,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         }
     }, [ isRoleSelected ]);
 
+    /**
+     * Fetch initial role list based on conditions
+     */
     useEffect(() => {
         if (initialRoleList.length === 0) {
             if (isRootOrganization) {
@@ -195,21 +338,171 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setPartiallyCompletedStep(undefined);
     }, [ partiallyCompletedStep ]);
 
+    /**
+     * Fetch group list based on domain in basic details of wizardState
+     */
     useEffect(() => {
         if ( wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain) {
             getGroupListForDomain(wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain);
         }
     }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain ]);
 
-    const getGroupListForDomain = (domain: string) => {        
-        getGroupList(domain)
+    useEffect(() => {
+        if (!(wizardState && wizardState[ WizardStepsFormTypes.USER_TYPE ])) {
+            return;
+        }
+
+        if (!fixedGroupList) {
+            return;
+        }
+
+        if (wizardState[ WizardStepsFormTypes.USER_TYPE ].userType === UserAccountTypes.USER) {
+            if (fixedGroupList?.length === 0) {
+                if (isUserSummaryEnabled) {
+                    setWizardSteps(filterSteps([
+                        WizardStepsFormTypes.BASIC_DETAILS,
+                        WizardStepsFormTypes.USER_SUMMARY
+                    ]));
+                    setIsStepsUpdated(true);
+
+                    return;
+                }
+                setWizardSteps(filterSteps([
+                    // TODO: Enable temporarily disabled USER_TYPE step.
+                    WizardStepsFormTypes.BASIC_DETAILS
+                    // TODO: Enable temporarily disabled summary step.
+                ]));
+                setIsStepsUpdated(true);
+
+                return;
+            } 
+
+            if (isUserSummaryEnabled) {
+                setWizardSteps(filterSteps([
+                    WizardStepsFormTypes.BASIC_DETAILS,
+                    WizardStepsFormTypes.GROUP_LIST,
+                    WizardStepsFormTypes.USER_SUMMARY
+                ]));
+                setIsStepsUpdated(true);
+
+                return;
+            }
+
+            setWizardSteps(filterSteps([
+                // TODO: Enable temporarily disabled  USER_TYPE step.
+                WizardStepsFormTypes.BASIC_DETAILS,
+                WizardStepsFormTypes.GROUP_LIST
+                // TODO: Enable temporarily disabled summary step.
+            ]));
+            setIsStepsUpdated(true);
+        } else {
+            setWizardSteps(filterSteps([
+                // TODO: Enable temporarily disabled USER_TYPE step.
+                WizardStepsFormTypes.BASIC_DETAILS ]));
+            setIsStepsUpdated(true);
+        }
+
+    }, [ fixedGroupList, wizardState && wizardState[ WizardStepsFormTypes.USER_TYPE ].userType, 
+        isUserSummaryEnabled ]);
+
+    /**
+     * Function to fetch and update group list for a given domain
+     */
+    const getGroupListForDomain = (domain: string) => {
+        setBasicDetailsLoading(true);
+        getGroupList(domain, excludedAttributes)
             .then((response: AxiosResponse) => {
-                setGroupsList(response.data.Resources);
-                setInitialGroupList(response.data.Resources);
-            }).catch(() => {
-                setGroupsList([]);
-                setInitialGroupList([]);
+                if (response.data.totalResults == 0) {
+                    setGroupsList([]);
+                    setInitialGroupList([]);
+                    setFixedGroupsList([]);
+                } else {
+                    setGroupsList(response.data.Resources);
+                    setInitialGroupList(response.data.Resources);
+                    setFixedGroupsList(response.data.Resources);
+                }
+            }).catch((error: AxiosError) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.description ?? error?.response?.data?.detail
+                        ?? 
+                        t("console:manage.features.user.updateUser.groups.notifications" + 
+                        ".fetchUserGroups.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.response?.data?.message
+                        ?? t("console:manage.features.user.updateUser.groups.notifications" + 
+                        ".fetchUserGroups.error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("console:manage.features.user.updateUser.groups.notifications" + 
+                    ".fetchUserGroups.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.user.updateUser.groups.notifications" + 
+                    ".fetchUserGroups.genericError.message")
+                }));
+            }).finally(() => setBasicDetailsLoading(false));
+    };
+
+    /**
+     * Filters the steps evaluating the requested steps.
+     *
+     * @param steps - Steps to filter.
+     * @returns Filtered steps.
+     */
+    const filterSteps = (steps: WizardStepsFormTypes[]): WizardStepInterface[] => {
+
+        const getStepContent = (stepsToFilter: WizardStepsFormTypes[] | string[]) => {
+
+            const filteredSteps: any[] = [];
+
+            stepsToFilter.forEach((step: WizardStepsFormTypes) => {
+                if (step === WizardStepsFormTypes.USER_TYPE) {
+                    filteredSteps.push(getUserSelectionWizardStep());
+                } else if (step === WizardStepsFormTypes.BASIC_DETAILS) {
+                    filteredSteps.push(resolveBasicDetailsStep());
+                } else if (step === WizardStepsFormTypes.GROUP_LIST) {
+                    filteredSteps.push(getUserGroupsWizardStep());
+                } else if (step === WizardStepsFormTypes.SUMMARY) {
+                    filteredSteps.push(getSummaryWizardStep());
+                } else if (step === WizardStepsFormTypes.USER_SUMMARY) {
+                    filteredSteps.push(getUserSummaryWizardStep());
+                }
             });
+
+            return filteredSteps;
+        };
+
+        if (!requiredSteps) {
+            return getStepContent(steps);
+        }
+
+        return getStepContent(intersection(steps, requiredSteps));
+    };
+
+    /**
+     * User Type Selection Wizard Step.
+     * @returns User type wizard step.
+     */
+    const getUserSelectionWizardStep = (): WizardStepInterface => {
+
+        return {
+            content: (
+                <UserTypeSelection
+                    handleTriggerSubmit={ () => setSubmitUserTypeSelection }
+                    triggerSubmit={ submitUserTypeSelection }
+                    initialValues={ wizardState && wizardState[ WizardStepsFormTypes.USER_TYPE ] }
+                    onSubmit={ (values: { userType: string }) => 
+                        handleWizardFormSubmit(values, WizardStepsFormTypes.USER_TYPE) }
+                />
+            ),
+            icon: getUserWizardStepIcons().user,
+            name: WizardStepsFormTypes.USER_TYPE,
+            title: "User Type"
+        };
     };
 
     const handleViewRolePermission = () => {
@@ -242,19 +535,19 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setInitialTempRoleList(newRoleList);
     };
 
-    const handleGroupListChange = (groupList: RolesInterface[]) => {
+    const handleGroupListChange = (groupList: GroupsInterface[]) => {
         setGroupsList(groupList);
     };
 
-    const handleInitialGroupListChange = (groupList: RolesInterface[]) => {
+    const handleInitialGroupListChange = (groupList: GroupsInterface[]) => {
         setInitialGroupList(groupList);
     };
 
-    const handleAddedGroupListChange = (newGroupList: RolesInterface[]) => {
+    const handleAddedGroupListChange = (newGroupList: GroupsInterface[]) => {
         setTempGroupList(newGroupList);
     };
 
-    const handleAddedGroupInitialListChange = (newGroupList: RolesInterface[]) => {
+    const handleAddedGroupInitialListChange = (newGroupList: GroupsInterface[]) => {
         setInitialTempGroupList(newGroupList);
     };
 
@@ -514,9 +807,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 closeWizard();
             })
             .catch((error: AxiosError) => {
-                // Axios throws a generic `Network Error` for 401 status.
-                // As a temporary solution, a check to see if a response
-                // is available has be used.
+                /**
+                 * Axios throws a generic `Network Error` for 401 status.
+                 * As a temporary solution, a check to see if a response
+                 * is available has be used.
+                 */
                 if (!error.response || error.response.status === 401) {
                     closeWizard();
                     dispatch(addAlert({
@@ -619,7 +914,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         if (isAdminUser) {
             // If the user is an admin user, skip the group and role selection steps.
             // Find admin group and add it to the group list.
-            const adminGroup: RolesInterface = initialGroupList.find(
+            const adminGroup: GroupsInterface = initialGroupList.find(
                 (group: RolesInterface) => group.displayName === UserAccountTypes.ADMIN);
             const adminRole: RolesInterface = initialRoleList.find(
                 (role: RolesInterface) => role.displayName === UserAccountTypes.ADMIN) as RolesInterface;
@@ -744,50 +1039,317 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         }
     ];
 
+    /**
+     * Resolves the step content.
+     *
+     * @returns Step content.
+     */
+    const resolveWizardTitle = (): string => {
+        let wizardTitle: string = "";
+
+        if (defaultUserTypeSelection === UserAccountTypes.USER) {
+            wizardTitle = t("extensions:manage.users.wizard.addUser.title");
+            if (userTypeSelection === UserAccountTypesMain.EXTERNAL) {
+                wizardTitle = t("console:manage.features.parentOrgInvitations.addUserWizard.heading"); 
+            } 
+        } 
+        
+        if (defaultUserTypeSelection === UserAccountTypes.ADMINISTRATOR) {
+            wizardTitle = t("extensions:manage.users.wizard.addAdmin.internal.title");
+            if (adminTypeSelection === AdminAccountTypes.INTERNAL) {
+                wizardTitle = t("extensions:manage.users.wizard.addAdmin.external.title");
+            }
+        }
+
+        if (wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName) {
+            wizardTitle += " - " + wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName;
+        } else {
+            wizardTitle += "";
+        }
+
+        return wizardTitle;
+    };
+
+    const resolveWizardSubHeading = (): string => {
+        let wizardSubHeading: string = "";
+
+        if (defaultUserTypeSelection === UserAccountTypes.USER) {
+            wizardSubHeading = t("extensions:manage.users.wizard.addUser.subtitle");
+            if (userTypeSelection === UserAccountTypesMain.EXTERNAL) {
+                wizardSubHeading = t("console:manage.features.parentOrgInvitations.addUserWizard.description");
+            }
+        }
+
+        return wizardSubHeading;
+    };
+    
+    /**
+     * Resolves the basic details step.
+     *
+     * @returns Basic details step.
+     */
+    const resolveBasicDetailsStep = (): WizardStepInterface => {
+
+        if (wizardState && wizardState[ WizardStepsFormTypes.USER_TYPE ].userType === UserAccountTypes.USER) {
+            if (userTypeSelection === UserAccountTypesMain.EXTERNAL) {
+                return getInviteParentOrgUserStep();
+            } 
+        } 
+    };
+
+    /**
+     * User group wizard step.
+     * @returns Group wizard step.
+     */
+    const getUserGroupsWizardStep = (): WizardStepInterface => {
+
+        return {
+            content: (
+                <AddConsumerUserGroups
+                    triggerSubmit={ submitGroupList }
+                    onSubmit={ (values: { groups : GroupsInterface[] }) => 
+                        handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
+                    initialValues={
+                        {
+                            groupList: groupList,
+                            initialGroupList: initialGroupList,
+                            initialTempGroupList: initialTempGroupList,
+                            tempGroupList: tempGroupList
+                        }
+                    }
+                    handleGroupListChange={ 
+                        (groups: GroupsInterface[]) => handleGroupListChange(groups)
+                    }
+                    handleTempListChange={ 
+                        (groups: GroupsInterface[]) => handleAddedGroupListChange(groups)
+                    }
+                    handleInitialTempListChange={ 
+                        (groups: GroupsInterface[]) => handleAddedGroupInitialListChange(groups)
+                    }
+                    handleInitialGroupListChange={ 
+                        (groups: GroupsInterface[]) => handleInitialGroupListChange(groups)
+                    }
+                    handleSetGroupId={ null }
+                />
+            ),
+            icon: getUserWizardStepIcons().groups,
+            name: WizardStepsFormTypes.GROUP_LIST,
+            title: t("console:manage.features.user.modals.addUserWizard.steps.groups")
+        };
+    };
+
+    /**
+     * Summary wizard step.
+     * @returns Summary wizard step.
+     */
+    const getSummaryWizardStep = (): WizardStepInterface => {
+
+        return {
+            content: (
+                <AddConsumerUserWizardSummary
+                    triggerSubmit={ finishSubmit }
+                    onSubmit={ handleWizardFormFinish }
+                    summary={ generateWizardSummary() }
+                    onProfileImageChange={ handleProfileImageChange }
+                />
+            ),
+            icon: getUserWizardStepIcons().summary,
+            name: WizardStepsFormTypes.SUMMARY,
+            title: t("console:manage.features.user.modals.addUserWizard.steps.summary")
+        };
+    };
+
+    /**
+     * User summary wizard step.
+     * @returns User summary wizard step.
+     */
+    const getUserSummaryWizardStep = (): WizardStepInterface => {       
+         
+        return {
+            content: (
+                <AddUserWizardSummary
+                    triggerSubmit={ finishSubmit }
+                    selectedUserStore = { selectedUserStore }
+                    username={ 
+                        isAlphanumericUsername
+                            ? wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.userName
+                            : wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.email
+                    }
+                    password={ wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.newPassword }
+                    isPasswordBased={ askPasswordFromUser }
+                />
+            ),
+            icon: getUserWizardStepIcons().summary,
+            name: WizardStepsFormTypes.USER_SUMMARY,
+            title: t("console:manage.features.user.modals.addUserWizard.steps.summary")
+        };
+    };
+
+    /**
+     * This function handles sending the invitation to the external admin user.
+     */
+    const sendParentOrgInvitation = (invite: UserInviteInterface) => {
+        if (invite != null) {
+            setIsSubmitting(true);
+    
+            sendParentOrgUserInvite(invite)
+                .then(() => {
+                    dispatch(addAlert({
+                        description: t(
+                            "console:manage.features.invite.notifications.sendInvite.success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "console:manage.features.invite.notifications.sendInvite.success.message"
+                        )
+                    }));
+                    closeWizard();
+                })
+                .catch((error: AxiosError) => {
+                    /**
+                     * Axios throws a generic `Network Error` for 401 status.
+                     * As a temporary solution, a check to see if a response
+                     * is available has be used.
+                     */
+                    if (!error.response || error.response.status === 401) {
+                        closeWizard();
+                        dispatch(addAlert({
+                            description: t(
+                                "console:manage.features.invite.notifications.sendInvite.error.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.invite.notifications.sendInvite.error.message"
+                            )
+                        }));
+                    } else if (error.response.status === 403 &&
+                            error?.response?.data?.code === UsersConstants.ERROR_COLLABORATOR_USER_LIMIT_REACHED) {
+                        closeWizard();
+                        dispatch(addAlert({
+                            description: t(
+                                "extensions:manage.invite.notifications.sendInvite.limitReachError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "extensions:manage.invite.notifications.sendInvite.limitReachError.message"
+                            )
+                        }));
+                    } else if (error?.response?.data?.description) {
+                        closeWizard();
+                        dispatch(addAlert({
+                            description: t(
+                                "console:manage.features.invite.notifications.sendInvite.error.description",
+                                { description: error.response.data.description }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.invite.notifications.sendInvite.error.message"
+                            )
+                        }));
+                    } else {
+                        closeWizard();
+                        // Generic error message
+                        dispatch(addAlert({
+                            description: t(
+                                "console:manage.features.invite.notifications.sendInvite.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.invite.notifications.sendInvite.genericError.message"
+                            )
+                        }));
+                    }
+                })
+                .finally(() => {
+                    setIsSubmitting(false);
+                });
+        } 
+    };
+
+    /**
+     * Basic Wizard Step.
+     * @returns Basic details wizard step.
+     */
+    const getInviteParentOrgUserStep = (): WizardStepInterface => {
+        return {
+            content: (
+                <InviteParentOrgUser
+                    triggerSubmit={ submitGeneralSettings }
+                    onSubmit={ (values: InternalAdminFormDataInterface | UserInviteInterface) => 
+                        sendParentOrgInvitation(values as UserInviteInterface)
+                    }
+                    setFinishButtonDisabled={ (setFinishButtonDisabled) }
+                />
+            ),
+            icon: null,
+            name: WizardStepsFormTypes.BASIC_DETAILS,
+            title: t("console:manage.features.user.modals.addUserWizard.steps.basicDetails")
+        };
+    };
+
+    /**
+     * Resolves the step content.
+     *
+     * @returns Step content.
+     */
+    const resolveStepContent = (): ReactElement => {
+        switch (wizardSteps[ currentWizardStep ]?.name) {
+            case WizardStepsFormTypes.USER_TYPE:
+                return getUserSelectionWizardStep()?.content;
+            case WizardStepsFormTypes.BASIC_DETAILS:
+                return resolveBasicDetailsStep()?.content;
+            case WizardStepsFormTypes.GROUP_LIST:
+                return getUserGroupsWizardStep()?.content;
+            case WizardStepsFormTypes.SUMMARY:
+                return getSummaryWizardStep()?.content;
+            case WizardStepsFormTypes.USER_SUMMARY:
+                return getUserSummaryWizardStep()?.content;
+        }
+    };
+
     const STEPS: WizardStepInterface[] = isAdminUser 
         ? [ ALL_STEPS[0], ...ALL_STEPS.slice(3) ]
         : OrganizationUtils.isCurrentOrganizationRoot()
             ? [ ...ALL_STEPS ]
             : [ ...ALL_STEPS.slice(0, 2), ...ALL_STEPS.slice(3) ];
 
+    const showInternalUserWizard = (): ReactElement => {
+        return (
+            <>
+                <Modal.Content className="steps-container">
+                    <Steps.Group
+                        current={ currentWizardStep }
+                    >
+                        { STEPS.map((step: WizardStepInterface, index: number) => (
+                            <Steps.Step
+                                key={ index }
+                                icon={ step.icon }
+                                title={ step.title }
+                            />
+                        )) }
+                    </Steps.Group>
+                </Modal.Content>
+                <Modal.Content className="content-container" scrolling>
+                    { alert && alertComponent }
+                    { resolveStepContent() }
+                    { STEPS[ currentWizardStep ].content }
+                </Modal.Content>
+            </>
+        );
+    };
 
-    return (
-        <Modal
-            data-testid={ testId }
-            open={ true }
-            className="wizard application-create-wizard"
-            dimmer="blurring"
-            size="small"
-            onClose={ closeWizard }
-            closeOnDimmerClick={ false }
-            closeOnEscape
-        >
-            <Modal.Header className="wizard-header">
-                { t("console:manage.features.user.modals.addUserWizard.title") }
-                {
-                    wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName
-                        ? " - " + wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName
-                        : ""
-                }
-                <Heading as="h6">{ t("console:manage.features.user.modals.addUserWizard.subTitle") }</Heading>
-            </Modal.Header>
-            <Modal.Content className="steps-container">
-                <Steps.Group
-                    current={ currentWizardStep }
-                >
-                    { STEPS.map((step: WizardStepInterface, index: number) => (
-                        <Steps.Step
-                            key={ index }
-                            icon={ step.icon }
-                            title={ step.title }
-                        />
-                    )) }
-                </Steps.Group>
-            </Modal.Content>
+    const showExternalUserWizard = (): ReactElement => {
+        return (
             <Modal.Content className="content-container" scrolling>
                 { alert && alertComponent }
-                { STEPS[ currentWizardStep ].content }
+                { resolveStepContent() }
             </Modal.Content>
+
+        );
+    };
+
+    const handleModalAction = (): ReactElement => {
+        return (
             <Modal.Actions>
                 <Grid>
                     <Grid.Row column={ 1 }>
@@ -806,6 +1368,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                     data-testid={ `${ testId }-next-button` }
                                     floated="right"
                                     onClick={ navigateToNext }
+                                    loading={ isBasicDetailsLoading }
                                 >
                                     { t("console:manage.features.user.modals.addUserWizard.buttons.next") }
                                     <Icon name="arrow right"/>
@@ -817,9 +1380,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                     floated="right"
                                     onClick={ navigateToNext }
                                     loading={ isSubmitting }
-                                    disabled={ isSubmitting }
+                                    disabled={ isSubmitting || isFinishButtonDisabled }
                                 >
-                                    Finish</PrimaryButton>
+                                        Finish</PrimaryButton>
                             ) }
                             { currentWizardStep > 0 && (
                                 <LinkButton
@@ -835,7 +1398,45 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     </Grid.Row>
                 </Grid>
             </Modal.Actions>
-        </Modal>
+        );
+    };
+
+    return (
+        wizardSteps && isStepsUpdated ? (
+            <Modal
+                data-testid={ testId }
+                open={ true }
+                className="wizard application-create-wizard"
+                dimmer="blurring"
+                size="small"
+                onClose={ closeWizard }
+                closeOnDimmerClick={ false }
+                closeOnEscape
+            >
+                <Modal.Header className="wizard-header">
+                    {
+                        wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName
+                            ? " - " + wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName
+                            : ""
+                    }
+                    { resolveWizardTitle() }
+                    <Heading as="h6">
+                        { resolveWizardSubHeading() }
+                    </Heading>
+                </Modal.Header>
+                { isSubOrg ? (
+                    <>
+                        { (userTypeSelection === UserAccountTypesMain.INTERNAL) && showInternalUserWizard() }
+                        { (userTypeSelection === UserAccountTypesMain.EXTERNAL) && showExternalUserWizard() }
+                    </>
+                ) : (
+                    <>
+                        { showInternalUserWizard() }
+                    </>
+                ) }
+                { handleModalAction() }
+            </Modal>
+        ) : null
     );
 };
 
@@ -843,7 +1444,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
  * Default props for the add user wizard.
  */
 AddUserWizard.defaultProps = {
+    compact: false,
+    conditionallyShowStepper: false,
     currentStep: 0,
     emailVerificationEnabled: false,
-    isAdminUser: false
+    showStepper: true,
+    // TODO: Submit Step changed to temporarily disable the summary step.
+    submitStep: WizardStepsFormTypes.GROUP_LIST
 };

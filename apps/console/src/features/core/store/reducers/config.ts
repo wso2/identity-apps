@@ -104,6 +104,8 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             getSecretType: "",
             governanceConnectorCategories: "",
             groups: "",
+            guests: "",
+            guestsList: "",
             identityProviders: "",
             jwtAuthenticationServiceMgt: "",
             localAuthenticators: "",

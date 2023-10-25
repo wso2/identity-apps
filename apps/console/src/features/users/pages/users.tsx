@@ -17,13 +17,12 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { CommonHelpers, hasRequiredScopes } from "@wso2is/core/helpers";
-import { 
-    AlertInterface, 
-    AlertLevels, 
-    MultiValueAttributeInterface, 
-    TestableComponentInterface
-} from "@wso2is/core/models";
+import { CommonHelpers } from "@wso2is/core/helpers";
+import {
+    AlertLevels,
+    IdentifiableComponentInterface,
+    MultiValueAttributeInterface,
+    TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import {
@@ -32,46 +31,58 @@ import {
     ListLayout,
     PageLayout,
     Popup,
-    PrimaryButton
+    PrimaryButton,
+    ResourceTab,
+    ResourceTabPaneInterface
 } from "@wso2is/react-components";
+import { UsersConstants } from "apps/console/src/extensions/components/users/constants";
+import { InvitationStatus } from "apps/console/src/extensions/components/users/models";
 import { AxiosError, AxiosResponse } from "axios";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
+import React, {
+    FunctionComponent, 
+    MutableRefObject, 
+    ReactElement, 
+    SyntheticEvent, 
+    useEffect, 
+    useRef, 
+    useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { Dropdown, DropdownItemProps, DropdownProps,Icon, PaginationProps } from "semantic-ui-react";
+import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps, TabProps } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
+    EventPublisher,
     FeatureConfigInterface,
     SharedUserStoreUtils,
     UIConstants,
     UserBasicInterface,
     getAUserStore,
     getEmptyPlaceholderIllustrations,
+    history,
     store
 } from "../../core";
 import { RootOnlyComponent } from "../../organizations/components";
 import { OrganizationUtils } from "../../organizations/utils";
 import {
-    ConnectorPropertyInterface,
-    GovernanceConnectorCategoryInterface,
-    GovernanceConnectorInterface,
     RealmConfigInterface,
-    ServerConfigurationsConstants,
     ServerConfigurationsInterface,
-    getConnectorCategory,
     getServerConfigs
 } from "../../server-configurations";
 import { getUserStoreList } from "../../userstores/api";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../userstores/constants/user-store-constants";
 import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../userstores/models/user-stores";
-import { getUsersList } from "../api";
+import { getUsersList, useUsersList } from "../api";
+import { UserInviteInterface } from "../components/guests/models/invite";
+import { GuestUsersList } from "../components/guests/pages/guest-users-list";
+import { useGetParentOrgUserInvites } from "../components/guests/pages/use-get-parent-org-user-invites";
 import { UsersList } from "../components/users-list";
 import { UsersListOptionsComponent } from "../components/users-list-options";
 import { AddUserWizard } from "../components/wizard/add-user-wizard";
 import { BulkImportUserWizard } from "../components/wizard/bulk-import-user-wizard";
-import { UserAddOptionTypes, UserManagementConstants } from "../constants";
+import { UserAccountTypes, UserAccountTypesMain, UserAddOptionTypes, UserManagementConstants } from "../constants";
 import { UserListInterface } from "../models";
 
 interface UserStoreItem {
@@ -83,12 +94,13 @@ interface UserStoreItem {
 /**
  * Props for the Users page.
  */
-type UsersPageInterface = TestableComponentInterface;
+type UsersPageInterface = IdentifiableComponentInterface & RouteComponentProps & TestableComponentInterface;
 
 /**
  * Temporary value to append to the list limit to figure out if the next button is there.
  */
 const TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET: number = 1;
+const NUMBER_OF_PAGES_FOR_LDAP: number = 100;
 
 /**
  * Users info page.
@@ -101,7 +113,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 ): ReactElement => {
 
     const {
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -109,19 +122,18 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const dispatch: Dispatch<any> = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listOffset, setListOffset ] = useState<number>(0);
+    const [ activeTabIndex, setActiveTabIndex ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ showBulkImportWizard, setShowBulkImportWizard ] = useState<boolean>(false);
     const [ usersList, setUsersList ] = useState<UserListInterface>({});
-    const [ rolesList ] = useState([]);
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ userStore, setUserStore ] = useState("primary");
+    const [ userStore, setUserStore ] = useState(PRIMARY_USERSTORE);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
@@ -129,13 +141,61 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ emailVerificationEnabled, setEmailVerificationEnabled ] = useState<boolean>(undefined);
     const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(undefined);
     const [ realmConfigs, setRealmConfigs ] = useState<RealmConfigInterface>(undefined);
+    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+    const [ selectedAddUserType ] = useState<UserAccountTypes>(UserAccountTypes.USER);
+    const [ userType, setUserType ] = useState<string>();
+    const [ selectedUserStore ] = useState<string>(CONSUMER_USERSTORE);
+    const [ invitationStatusOption, setInvitationStatusOption ] = useState<string>(InvitationStatus.PENDING);
+    const [ isUsersNextPageAvailable ] = useState<boolean>(undefined);
+    const [ isSelectedUserStoreReadOnly ] = useState<boolean>(false);
+    const [ isInvitationStatusOptionChanged, setIsInvitationStatusOptionChanged ] = useState<boolean>(false);
+    const [ filterGuestList, setFilterGuestList ] = useState<UserInviteInterface[]>();
+    const [ finalGuestList, setFinalGuestList ] = useState<UserInviteInterface[]>([]);
+    const [ paginatedGuestList, setPaginateGuestList ] = useState<UserInviteInterface[]>([]);
+
 
     const init : MutableRefObject<boolean> = useRef(true);
 
     const username: string = useSelector((state: AppState) => state.auth.username);
     const tenantName: string = store.getState().config.deployment.tenant;
     const tenantSettings: Record<string, any> = JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenantName));
-    
+
+    const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const modifiedLimit: number = listItemLimit + TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET;
+    const excludedAttributes: string = UsersConstants.GROUPS_AND_ROLES_ATTRIBUTE;
+
+    const invitationStatusOptions: DropdownItemProps[] = [
+        {
+            key: 2,
+            text: t("console:manage.features.parentOrgInvitations.searchdropdown.pendingLabel"),
+            value: "Pending"
+        },
+        {
+            key: 3,
+            text: t("console:manage.features.parentOrgInvitations.searchdropdown.expiredLabel"),
+            value: "Expired"
+        }
+    ];
+
+    const {
+        isLoading: isUserListFetchRequestLoading,
+        mutate: mutateUserListFetchRequest
+    } = useUsersList(
+        modifiedLimit,
+        listOffset,
+        searchQuery === "" ? null : searchQuery,
+        null,
+        selectedUserStore,
+        excludedAttributes
+    );
+
+    const {
+        data: parentOrgUserInviteList,
+        isLoading: isParentOrgUserInviteFetchRequestLoading,
+        mutate: mutateParentOrgUserListFetchRequest
+    } = useGetParentOrgUserInvites();
+
     /**
      * Fetch the list of available userstores.
      */
@@ -179,6 +239,52 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         getList(listItemLimit, listOffset, null, attributes, userStore);
     }, [ listItemLimit, listOffset, userStore ]);
 
+    /**
+     * Handles the parent user invitations search query changes.
+     */
+    useEffect(() => {
+        setListOffset(0);
+        if (searchQuery === "userName co " || searchQuery === "" || searchQuery === null) {
+            setPaginateGuestList(parentOrgUserInviteList?.invitations);
+            setFilterGuestList([]);
+    
+            return;
+        } else if (searchQuery) {
+            let searchList: UserInviteInterface[] = parentOrgUserInviteList?.invitations;
+    
+            if (filterGuestList?.length > 0) {
+                searchList = filterGuestList;
+            }
+            if (searchQuery.includes("userName sw ")) {
+                const searchValue: string = searchQuery.split("sw ")[1];
+    
+                searchList = searchList?.filter((invite: UserInviteInterface) => {
+                    return invite?.username.startsWith(searchValue);
+                });
+            } else if (searchQuery.includes("userName ew ")) {
+                const searchValue: string = searchQuery.split("ew ")[1];
+    
+                searchList = searchList?.filter((invite: UserInviteInterface) => {
+                    return invite?.username.endsWith(searchValue);
+                });
+            } else if (searchQuery.includes("userName eq ")) {
+                const searchValue: string = searchQuery.split("eq ")[1];
+    
+                searchList = searchList?.filter((invite: UserInviteInterface) => {
+                    return (invite?.username === searchValue);
+                });
+            } else if (searchQuery.includes("userName co ")) {
+                const searchValue: string = searchQuery.split("co ")[1];
+    
+                searchList = searchList?.filter((invite: UserInviteInterface) => {
+                    return invite?.username.includes(searchValue);
+                });
+            }
+            setPaginateGuestList(searchList);
+            setFilterGuestList(searchList);
+        }
+    }, [ searchQuery ]);
+
     useEffect(() => {
         if (!isListUpdated) {
             return;
@@ -198,6 +304,36 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             }
         }
     }, [ emailVerificationEnabled ]);
+
+    /**
+     * Handles parent user invitation pagination.
+     */
+    useEffect(() => {
+        setFinalGuestList(parentOrgUserInviteList?.invitations?.filter((invitation: UserInviteInterface) =>
+            invitation.status === InvitationStatus.PENDING.toUpperCase()));
+
+    }, [ parentOrgUserInviteList?.invitations ]);
+
+    /**
+     * User effect to handle Pagination for pending/expired Guest.
+     */
+    useEffect(() => {
+        if (invitationStatusOption === InvitationStatus.ACCEPTED) {
+            return;
+        }
+    
+        let finalInvitations: UserInviteInterface[] = paginatedGuestList?.filter(
+            (invitation: UserInviteInterface) => invitation.status === invitationStatusOption.toUpperCase());
+    
+        if (finalInvitations?.length > listItemLimit) {
+            finalInvitations = finalInvitations.slice(listOffset, listOffset + listItemLimit);
+            setFinalGuestList(finalInvitations);
+            setIsNextPageAvailable(finalInvitations.length === listItemLimit);
+        } else {
+            setFinalGuestList(finalInvitations);
+            setIsNextPageAvailable(false);
+        }
+    }, [ paginatedGuestList, listOffset, listItemLimit, isInvitationStatusOptionChanged, invitationStatusOption ]);
 
     const getReadOnlyUserStoresList = (): void => {
         SharedUserStoreUtils.getReadOnlyUserStores().then((response: string[]) => {
@@ -313,6 +449,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const getUserStores = () => {
         const storeOptions: UserStoreItem[] = [
             {
+                key: -2,
+                text: t("console:manage.features.users.userstores.userstoreOptions.all"),
+                value: "all"
+            },
+            {
                 key: -1,
                 text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
                 value: "primary"
@@ -424,15 +565,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     /**
-     * Dispatches the alert object to the redux store.
-     *
-     * @param alert - Alert object.
-     */
-    const handleAlerts = (alert: AlertInterface) => {
-        dispatch(addAlert(alert));
-    };
-
-    /**
      * The following method set the list of columns selected by the user to
      * the state.
      *
@@ -451,24 +583,14 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         setListUpdated(true);
     };
 
-    /**
-     * Handles the `onFilter` callback action from the
-     * users search component.
-     *
-     * @param query - Search query.
-     */
     const handleUserFilter = (query: string): void => {
-        const attributes: string = generateAttributesString(userListMetaContent.values());
-
         if (query === "userName sw ") {
-            getList(listItemLimit, listOffset, null, attributes, userStore);
+            mutateUserListFetchRequest();
 
             return;
         }
 
         setSearchQuery(query);
-        setListOffset(0);
-        getList(listItemLimit, listOffset, query, attributes, userStore);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
@@ -487,38 +609,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         setListUpdated(true);
     };
 
-    /**
-     * Handles the click event of the create new user button.
-     */
-    const handleAddNewUserWizardClick = (): void => {
 
-        getConnectorCategory(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
-            .then((response: GovernanceConnectorCategoryInterface) => {
-                const connectors: GovernanceConnectorInterface[]  = response?.connectors;
-                const userOnboardingConnector: GovernanceConnectorInterface = connectors.find(
-                    (connector: GovernanceConnectorInterface) => connector.id
-                        === ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID
-                );
-
-                const emailVerification: ConnectorPropertyInterface = userOnboardingConnector.properties.find(
-                    (property: ConnectorPropertyInterface) => 
-                        property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED);
-
-                setEmailVerificationEnabled(emailVerification.value === "true");
-            }).catch((error: AxiosError) => {
-                handleAlerts({
-                    description: error?.response?.data?.description ?? t(
-                        "console:manage.features.governanceConnectors.notifications." +
-                        "getConnector.genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: error?.response?.data?.message ?? t(
-                        "console:manage.features.governanceConnectors.notifications." +
-                        "getConnector.genericError.message"
-                    )
-                });
-            });
-    };
 
     const addUserDropdownTrigger: ReactElement = (
         <PrimaryButton
@@ -531,59 +622,42 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         </PrimaryButton>
     );
 
-    const getAddUserOptions = () => {
-        const options: DropdownItemProps[] = [
-            {
-                "data-componentid": `${ testId }-add-user-dropdown-item`,
-                "data-testid": `${ testId }-add-user-dropdown-item`,
-                key: 1,
-                text: t("console:manage.features.users.addUserDropDown.addNewUser"),
-                value: UserAddOptionTypes.MANUAL_INPUT
-            },
-            {
-                "data-componentid": `${ testId }-bulk-import-users-dropdown-item`,
-                "data-testid": `${ testId }-bulk-import-users-dropdown-item`,
-                key: 2,
-                text: t("console:manage.features.users.addUserDropDown.bulkImport"),
-                value: UserAddOptionTypes.BULK_IMPORT
+
+    const advancedSearchFilter = (): ReactElement => (
+        <AdvancedSearchWithBasicFilters
+            onFilter={ handleUserFilter }
+            filterAttributeOptions={ [
+                {
+                    key: 0,
+                    text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                        "filterAttributeOptions.username"),
+                    value: "userName"
+                },
+                {
+                    key: 1,
+                    text: t("console:manage.features.users.advancedSearch.form.dropdown." +
+                        "filterAttributeOptions.email"),
+                    value: "emails"
+                }
+            ] }
+            filterAttributePlaceholder={
+                t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute" +
+                    ".placeholder")
             }
-        ];
-    
-        return options;
-    };
-
-    const addUserDropDown: ReactElement = (
-        <Dropdown
-            data-testid={ `${ testId }-add-user-dropdown` }
-            data-componentid={ `${ testId }-add-user-dropdown` }
-            direction="left"
-            floating
-            icon={ null }
-            trigger={ addUserDropdownTrigger }
-        >
-            <Dropdown.Menu >
-                { getAddUserOptions().map((option: DropdownItemProps) => (
-                    <Dropdown.Item
-                        key={ option.value as string }
-                        onClick={ ()=> handleDropdownItemChange(option.value as string) }
-                        { ...option }
-                    />
-                )) }
-            </Dropdown.Menu>
-        </Dropdown>
+            filterConditionsPlaceholder={
+                t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
+                    ".placeholder")
+            }
+            filterValuePlaceholder={
+                t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
+                    ".placeholder")
+            }
+            placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
+            defaultSearchAttribute="emails"
+            defaultSearchOperator="co"
+            triggerClearQuery={ triggerClearQuery }
+        />
     );
-
-    /**
-     * Handle Add user dropdown item change.
-     * @param value - Dropdown item value.
-     */
-    const handleDropdownItemChange = (value: string): void => {
-        if (value === UserAddOptionTypes.MANUAL_INPUT) {
-            handleAddNewUserWizardClick();
-        } else if (value === UserAddOptionTypes.BULK_IMPORT) {
-            setShowBulkImportWizard(true);
-        }
-    };
 
     /**
      * Handles the `onClose` callback action from the bulk import wizard.
@@ -593,78 +667,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         getList(listItemLimit, listOffset, null, null, userStore);
     };
 
-    return (
-        <PageLayout
-            action={
-                !isUserListRequestLoading
-                && (
-                    <Show when={ AccessControlConstants.USER_WRITE }>
-                        { featureConfig?.bulkUserImport?.enabled &&
-                            hasRequiredScopes(
-                                featureConfig?.bulkUserImport,
-                                featureConfig?.bulkUserImport.scopes.create,
-                                allowedScopes
-                            )
-                            ? (
-                                addUserDropDown 
-                            ) : (
-                                <PrimaryButton
-                                    data-componentid={ `${ testId }-add-user-button` }
-                                    data-testid={ `${ testId }-add-user-button` }
-                                    onClick={ () => {
-                                        setShowWizard(true);
-                                    } }
-                                >
-                                    <Icon name="add"/>
-                                    { t("extensions:manage.users.buttons.addUserBtn") }
-                                </PrimaryButton>
-                            ) } 
-                        
-                    </Show>
-                )
-                
-            }
-            title={ t("console:manage.pages.users.title") }
-            pageTitle={ t("console:manage.pages.users.title") }
-            description={ t("console:manage.pages.users.subTitle") }
-            data-testid={ `${ testId }-page-layout` }
-        >
+    const renderUsersList = (): ReactElement => {
+        return (
             <ListLayout
                 // TODO add sorting functionality.
-                advancedSearch={ (
-                    <AdvancedSearchWithBasicFilters
-                        onFilter={ handleUserFilter }
-                        filterAttributeOptions={ [
-                            {
-                                key: 0,
-                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
-                                    "filterAttributeOptions.username"),
-                                value: "userName"
-                            },
-                            {
-                                key: 1,
-                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
-                                    "filterAttributeOptions.email"),
-                                value: "emails"
-                            }
-                        ] }
-                        filterAttributePlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute.placeholder")
-                        }
-                        filterConditionsPlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
-                                ".placeholder")
-                        }
-                        filterValuePlaceholder={
-                            t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
-                                ".placeholder")
-                        }
-                        placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
-                        defaultSearchAttribute="emails"
-                        defaultSearchOperator="co"
-                        triggerClearQuery={ triggerClearQuery }
-                    />
-                ) }
+                advancedSearch={ advancedSearchFilter() }
                 currentListSize={ usersList.itemsPerPage }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
@@ -732,45 +739,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         imageSize="tiny"
                     />)
                     : (<UsersList
-                        advancedSearch={ (
-                            <AdvancedSearchWithBasicFilters
-                                onFilter={ handleUserFilter }
-                                filterAttributeOptions={ [
-                                    {
-                                        key: 0,
-                                        text: t("console:manage.features.users.advancedSearch.form.dropdown." +
-                                            "filterAttributeOptions.username"),
-                                        value: "userName"
-                                    },
-                                    {
-                                        key: 1,
-                                        text: t("console:manage.features.users.advancedSearch.form.dropdown." +
-                                            "filterAttributeOptions.email"),
-                                        value: "emails"
-                                    }
-                                ] }
-                                filterAttributePlaceholder={
-                                    t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute" +
-                                        ".placeholder")
-                                }
-                                filterConditionsPlaceholder={
-                                    t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
-                                        ".placeholder")
-                                }
-                                filterValuePlaceholder={
-                                    t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
-                                        ".placeholder")
-                                }
-                                placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
-                                defaultSearchAttribute="emails"
-                                defaultSearchOperator="co"
-                                triggerClearQuery={ triggerClearQuery }
-                            />
-                        ) }
+                        advancedSearch={ advancedSearchFilter() }
                         usersList={ usersList }
                         onUserDelete={ onUserDelete }
                         userMetaListContent={ userListMetaContent }
                         realmConfigs={ realmConfigs }
+                        onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                         onSearchQueryClear={ handleSearchQueryClear }
                         searchQuery={ searchQuery }
                         data-testid="user-mgt-user-list"
@@ -779,31 +753,280 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     />)
                 }
                 {
-                    showWizard && (
-                        <AddUserWizard
-                            data-testid="user-mgt-add-user-wizard-modal"
-                            closeWizard={ () => {
-                                setShowWizard(false);
-                                setEmailVerificationEnabled(undefined);
-                            } }
-                            listOffset={ listOffset }
-                            listItemLimit={ listItemLimit }
-                            updateList={ () => setListUpdated(true) }
-                            rolesList={ rolesList }
-                            emailVerificationEnabled={ emailVerificationEnabled }
-                        />
-                    )
-                }
-                {
-                    showBulkImportWizard && (
-                        <BulkImportUserWizard
-                            data-componentid="user-mgt-bulk-import-user-wizard-modal"
-                            closeWizard={ handleBulkImportWizardClose }
-                            userstore={ PRIMARY_USERSTORE }
-                        />
-                    )
+                    showWizard && ( showUserWizard() )
                 }
             </ListLayout>
+        );
+    };
+
+    const addUserOptions: DropdownItemProps[] = [
+        {
+            "data-componentid": `${ componentId }-add-internal-user`,
+            key: 1,
+            text: t("console:manage.features.parentOrgInvitations.createDropdown.createLabel"),
+            value: UserAccountTypesMain.INTERNAL
+        },
+        {
+            "data-componentid": `${ componentId }-add-external-user`,
+            key: 2,
+            text: t("console:manage.features.parentOrgInvitations.createDropdown.inviteLabel"),
+            value: UserAccountTypesMain.EXTERNAL
+        },
+        {
+            "data-componentid": `${ testId }-bulk-import-users-dropdown-item`,
+            "data-testid": `${ testId }-bulk-import-users-dropdown-item`,
+            key: 3,
+            text: t("console:manage.features.users.addUserDropDown.bulkImport"),
+            value: UserAddOptionTypes.BULK_IMPORT
+        }
+    ];
+    
+    const handleDropdownItemChange = (value: string): void => {
+        if (value === UserAccountTypesMain.INTERNAL) {
+            eventPublisher.publish("manage-users-click-create-new", {
+                type: "user"
+            });
+            setShowWizard(true);
+            setUserType(UserAccountTypesMain.INTERNAL);
+        } else if (value === UserAccountTypesMain.EXTERNAL) {
+            eventPublisher.publish("manage-users-click-create-invite", {
+                type: "user"
+            });
+            setShowWizard(true);
+            setUserType(UserAccountTypesMain.EXTERNAL);
+        } else if (value === UserAddOptionTypes.BULK_IMPORT) {
+            setShowBulkImportWizard(true);
+        }
+    };
+    
+    const handleTabChange = (e: SyntheticEvent, data: TabProps): void => {
+        setActiveTabIndex(data.activeIndex as number);
+        handleSearchQueryClear();
+        if (data.activeIndex === 0) {
+            setUserType(UserAccountTypesMain.INTERNAL);
+        } else if (data.activeIndex === 1) {
+            setUserType(UserAccountTypesMain.EXTERNAL);
+        }
+    };
+    
+    const renderUserDropDown = (): ReactElement => {
+        return (
+            <Dropdown
+                data-componentid={ `${ componentId }-add-user-dropdown` }
+                direction="left"
+                floating
+                icon={ null }
+                trigger={ addUserDropdownTrigger }
+            >
+                <Dropdown.Menu >
+                    { addUserOptions.map((option: {
+                        "data-componentid": string;
+                        key: number;
+                        text: string;
+                        value: UserAccountTypes;
+                    }) => (
+                        <Dropdown.Item
+                            key={ option.value }
+                            onClick={ ()=> handleDropdownItemChange(option.value) }
+                            { ...option }
+                        />
+                    )) }
+                </Dropdown.Menu>
+            </Dropdown>
+        );
+    };
+    
+    const showUserWizard = (): ReactElement => {
+        return (
+            <AddUserWizard
+                data-componentid={ `${ componentId }-user-mgt-add-user-wizard-modal` }
+                data-testid={ `${ testId }-user-mgt-add-user-wizard-modal` }
+                isSubOrg={ isSubOrg }
+                closeWizard={ () => {
+                    setShowWizard(false);
+                    setEmailVerificationEnabled(undefined);
+                } }
+                emailVerificationEnabled={ emailVerificationEnabled }
+                onSuccessfulUserAddition={ (id: string) => {
+                    mutateParentOrgUserListFetchRequest();
+                    eventPublisher.publish("manage-users-finish-creating-user");
+                    history.push(UsersConstants.getPaths().get("CUSTOMER_USER_EDIT_PATH")
+                        .replace(":id", id));
+                } }
+                defaultUserTypeSelection={ selectedAddUserType }
+                userTypeSelection={ userType }
+                listOffset={ listOffset }
+                listItemLimit={ listItemLimit }
+                updateList={ () => setListUpdated(true) }
+                userStore= { userStore }
+            />
+        );
+    };
+    
+    const resolveAdminTabPanes = (): ResourceTabPaneInterface[] => {
+        const panes: ResourceTabPaneInterface[] = [];
+    
+        panes.push({
+            componentId: "users",
+            menuItem: {
+                content: t("console:manage.features.parentOrgInvitations.tab.usersTab")
+            },
+            render: renderUsersList
+        });
+    
+        panes.push({
+            componentId: "invitations",
+            menuItem: {
+                content: t("console:manage.features.parentOrgInvitations.tab.invitationsTab")
+            },
+            render: renderInvitationsList
+        });
+    
+        return panes;
+    };
+    
+    const renderInvitationsList = (): ReactElement => {
+        return (
+            <ListLayout
+                advancedSearch={ advancedSearchFilter() }
+                currentListSize={ usersList?.itemsPerPage }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                data-componentid={ `${ componentId }-user-mgt-user-list-layout` }
+                data-testid={ `${ testId }-user-mgt-user-list-layout` }
+                onPageChange={ handlePaginationChange }
+                showPagination={ true }
+                totalPages={ resolveTotalPages() }
+                totalListSize={ usersList?.totalResults }
+                isLoading={
+                    isUserListFetchRequestLoading
+                    || isParentOrgUserInviteFetchRequestLoading
+                }
+                paginationOptions={ {
+                    disableNextButton: !isUsersNextPageAvailable,
+                    showItemsPerPageDropdown: selectedUserStore === CONSUMER_USERSTORE
+                        ? true
+                        : false
+                } }
+                showPaginationPageLimit={ !isSelectedUserStoreReadOnly }
+                leftActionPanel={
+                    (
+                        <Dropdown
+                            data-componentid={ `${ componentId }-list-userstore-dropdown` }
+                            selection
+                            options={ invitationStatusOptions }
+                            onChange={ handleAccountStatusChange }
+                            text={
+                                t("console:manage.features.parentOrgInvitations.filterLabel")
+                                +  invitationStatusOption
+                            }
+                            disabled={
+                                isParentOrgUserInviteFetchRequestLoading
+                            }
+                        />
+                    )
+                }
+            >
+                {
+                    userStoreError
+                        ? (
+                            <EmptyPlaceholder
+                                subtitle={ [ t("console:manage.features.users.placeholders.userstoreError.subtitles.0"),
+                                    t("console:manage.features.users.placeholders.userstoreError.subtitles.1") ] }
+                                title={ t("console:manage.features.users.placeholders.userstoreError.title") }
+                                image={ getEmptyPlaceholderIllustrations().genericError }
+                                imageSize="tiny"
+                            />
+                        )
+                        : (
+                            <GuestUsersList
+                                invitationStatusOption={ null }
+                                onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
+                                onboardedGuestUserList={ usersList }
+                                onSearchQueryClear={ handleSearchQueryClear }
+                                guestUsersList={ finalGuestList }
+                                getGuestUsersList={ () => mutateParentOrgUserListFetchRequest() }
+                                searchQuery={ searchQuery }
+                                userTypeSelection={ UserAccountTypesMain.EXTERNAL }
+                                data-testid={ testId }
+                            />
+                        )
+                }
+            </ListLayout>
+        );
+    };
+    
+    const handleAccountStatusChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
+        setInvitationStatusOption(data.value as string);
+        setIsInvitationStatusOptionChanged(true);
+    };
+    
+    const resolveTotalPages = (): number => {
+        if (selectedUserStore === CONSUMER_USERSTORE) {
+            return Math.ceil(usersList?.totalResults / listItemLimit);
+        } else {
+            /** Response from the LDAP only contains the total items per page.
+             * No way to resolve the total number of items. So a large value will be set here and the
+             * next button will be disabled if there are no more items to fetch.
+            */
+            return NUMBER_OF_PAGES_FOR_LDAP;
+        }
+    };
+    
+    return (
+        <PageLayout
+            action={
+                !isUserListFetchRequestLoading
+                && !isParentOrgUserInviteFetchRequestLoading
+                && (
+                    <Show when={ AccessControlConstants.USER_WRITE }>
+                        { !isSubOrg ? (
+                            <PrimaryButton
+                                data-componentid={ `${ componentId }-add-user-button` }
+                                data-testid={ `${ testId }-add-user-button` }
+                                onClick={ () => {
+                                    eventPublisher.publish("manage-users-click-create-new", {
+                                        type: "user"
+                                    });
+                                    setShowWizard(true);
+                                } }
+                            >
+                                <Icon name="add"/>
+                                { t("extensions:manage.users.buttons.addUserBtn") }
+                            </PrimaryButton>
+                        ) : (
+                            renderUserDropDown()
+                        ) }
+                    </Show>
+                )
+            }
+            title={ t("console:manage.pages.users.title") }
+            pageTitle={ t("console:manage.pages.users.title") }
+            description={ t("console:manage.pages.users.subTitle") }
+            data-testid={ `${ testId }-page-layout` }
+        >
+            { isSubOrg ?
+                ( <ResourceTab
+                    activeIndex= { activeTabIndex }
+                    data-testid= { `${ testId }-administrator-tabs` }
+                    defaultActiveIndex={ 0 }
+                    onTabChange={ handleTabChange }
+                    panes= { resolveAdminTabPanes() }
+                /> )
+                : renderUsersList()
+            }
+            {
+                showWizard && ( showUserWizard())
+            } 
+            {
+                showBulkImportWizard && (
+                    <BulkImportUserWizard
+                        data-componentid="user-mgt-bulk-import-user-wizard-modal"
+                        closeWizard={ handleBulkImportWizardClose }
+                        userstore={ PRIMARY_USERSTORE }
+                    />
+                )
+            }
         </PageLayout>
     );
 };
@@ -812,6 +1035,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
  * Default props for the component.
  */
 UsersPage.defaultProps = {
+    "data-componentid": "users",
     "data-testid": "users"
 };
 
