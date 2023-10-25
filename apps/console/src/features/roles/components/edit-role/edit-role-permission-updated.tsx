@@ -131,9 +131,9 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) => 
                 selectedAPIResource?.id === apiResource?.id)) {
                 options.push({
-                    key: apiResource.id,
-                    text: apiResource.name,
-                    value: apiResource.id
+                    key: apiResource?.id,
+                    text: apiResource?.name,
+                    value: apiResource?.id
                 });
             }
         });
@@ -182,7 +182,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 });
             }
         }
-        setSelectedAPIResources(apiResources);        
+        setSelectedAPIResources(apiResources);
     };
 
     const getExistingAPIResources = (): void => {
@@ -197,7 +197,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 // Populate the selected permissions list.
                 if (!currentPermissions.find((selectedPermission: SelectedPermissionsInterface) =>
                     selectedPermission.apiResourceId === apiResourceId)) {
-                    // Found a new API resource id                                        
+                    // Found a new API resource id.                 
                     uniqueAPIResourceIds.push(apiResourceId);
                     
                     // Add it to the selected API resources list.
@@ -238,7 +238,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         setIsSubmitting(true);
         const permissionArray: PermissionUpdateInterface[] = [];
 
-        selectedPermissions.map((selectedPermission: SelectedPermissionsInterface) => {
+        selectedPermissions.forEach((selectedPermission: SelectedPermissionsInterface) => {
             selectedPermission.scopes.map((scope: ScopeInterface) => {
                 permissionArray.push({
                     value: scope.name
@@ -294,7 +294,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 setAPIResourcesSearching(false);
                 setAPIResourceSearchQuery(undefined);
             });
-        }, RoleConstants.DEBOUNCE_TIMEOUT), []);    
+        }, RoleConstants.DEBOUNCE_TIMEOUT), []);
 
     /**
      * Handles the selection of an API resource.

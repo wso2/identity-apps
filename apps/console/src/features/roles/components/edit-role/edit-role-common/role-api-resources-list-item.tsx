@@ -30,7 +30,7 @@ import { useTranslation } from "react-i18next";
 import { PermissionsList } from "./permissions-list";
 import { APIResourceInterface, ScopeInterface } from "../../../models/apiResources";
 
-interface RoleAPIResourcesListItemProp extends  IdentifiableComponentInterface {
+interface RoleAPIResourcesListItemProp extends IdentifiableComponentInterface {
     /**
      * API resource.
      */
@@ -67,7 +67,7 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
 
         const { t } = useTranslation();
 
-        // check if all scopes are selected from the api resource
+        // Check if all scopes are selected from the api resource
         const isAllScopesSelected = (): boolean => 
             apiResource?.scopes?.length === selectedPermissions?.length;
         

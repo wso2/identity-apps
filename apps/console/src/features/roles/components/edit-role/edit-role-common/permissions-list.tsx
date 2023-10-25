@@ -89,14 +89,10 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
          * @param remainingPermissions - remaining permissions
          */
         const handleRestorePermissions = (remainingPermissions: ScopeInterface[]) => {
-            const removedRoles: ScopeInterface[] = [];
-
-            removedPermissions.forEach((permission: ScopeInterface) => {
-                if (!remainingPermissions?.find((remainingPermission: ScopeInterface) =>
-                    remainingPermission.name === permission.name)) {
-                    removedRoles.push(permission);
-                }
-            });
+            const removedRoles: ScopeInterface[] = removedPermissions.filter((permission: ScopeInterface) => 
+                !remainingPermissions?.some((remainingPermission: ScopeInterface) =>
+                    remainingPermission.name === permission.name)
+            );
 
             handleScopeSelection([
                 ...selectedPermissions,

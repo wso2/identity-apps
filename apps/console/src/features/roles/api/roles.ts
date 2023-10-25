@@ -314,6 +314,7 @@ export const getPermissionsForRole = (roleId: string): Promise<any> => {
 };
 
 /**
+ * Retrieves API resource details for the given API resource ID.
  * 
  * @param apiResourceId - id of the API resource
  * @returns `Promise<APIResourceInterface>`
@@ -381,7 +382,7 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
         params: {
             domain
         },
-        url: store.getState().config.endpoints.rolesV2
+        url: store.getState().config.endpoints.roles
     };
 
     return httpClient(requestConfig)
