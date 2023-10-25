@@ -410,7 +410,7 @@ export class RouteUtils {
             },
             {
                 category: manage,
-                id: "emailDomainDiscovery",
+                id: "organizationDiscovery",
                 parent: organizationManagement
             },
             {

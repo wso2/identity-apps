@@ -7684,27 +7684,6 @@ export const console: ConsoleNS = {
                             description: "Mise à jour réussie des attributs de découverte de l'organisation",
                             message: "Attributs de découverte d'organisation mis à jour avec succès"
                         }
-                    },
-                    updateOrganizationDiscoveryAttributes: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error while updating the organization discovery attributes"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the organization discovery attributes",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "Successfully updated the organization discovery attributes",
-                            message: "Organization discovery attributes updated successfully"
-                        }
-                    }
-                },
-                placeholders: {
-                    emptyList: {
-                        action: "Assign Email Domain",
-                        subtitles: "There are no organizations with email domains assigned.",
-                        title: "Assign Email Domain"
                     }
                 },
                 placeholders: {
@@ -8707,7 +8686,7 @@ export const console: ConsoleNS = {
                             bannerContent: {
                                 label: "Contenu de la bannière",
                                 hint: "C'est le contenu qui sera affiché dans la bannière sur la page de connexion.",
-                                placeholder: "Attention : l'utilisation non autorisée de cet outil " +
+                                placeholder: "Attention : l'utilisation non autorisée de cet outil " +
                                     "est strictement interdite."
                             }
                         }
@@ -9924,15 +9903,15 @@ export const console: ConsoleNS = {
                                 message: "En-têtes de colonnes obligatoires manquants"
                             },
                             blockedHeaderError: {
-                                description: "Les en-têtes suivants ne sont pas autorisés : {{headers}}.",
+                                description: "Les en-têtes suivants ne sont pas autorisés : {{headers}}.",
                                 message: "En-têtes de colonnes bloqués"
                             },
                             duplicateHeaderError: {
-                                description: "Le(s) en-tête(s) suivant(s) sont dupliqués : {{headers}}.",
+                                description: "Le(s) en-tête(s) suivant(s) sont dupliqués : {{headers}}.",
                                 message: "En-têtes de colonnes en double"
                             },
                             invalidHeaderError: {
-                                description: "Le ou les en-têtes suivants ne sont pas valides : {{headers}}.",
+                                description: "Le ou les en-têtes suivants ne sont pas valides : {{headers}}.",
                                 message: "En-têtes de colonnes invalides"
                             },
                             emptyDataField: {
@@ -10604,10 +10583,6 @@ export const console: ConsoleNS = {
             },
             emailDomainDiscovery: {
                 subTitle: "Configurez la découverte de domaines de messagerie pour les organisations.",
-                title: "Découverte de domaines de messagerie"
-            },
-            emailDomainDiscovery: {
-                subTitle: "Configurez la découverte de domaines de messagerie pour les sous-organisations.",
                 title: "Découverte de domaines de messagerie"
             },
             emailLocaleAdd: {

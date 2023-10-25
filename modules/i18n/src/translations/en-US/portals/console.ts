@@ -10681,7 +10681,6 @@ export const console: ConsoleNS = {
                 editUsers: "Edit User",
                 editUserstore: "Edit User Store",
                 emailDomainDiscovery: "Email Domain Discovery",
-                emailDomainDiscovery: "Email Domain Discovery",
                 emailTemplateTypes: "",
                 emailTemplates: "Email Templates",
                 generalConfigurations: "General",
