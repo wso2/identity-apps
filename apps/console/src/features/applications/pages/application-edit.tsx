@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -47,7 +47,7 @@ import {
     toggleHelpPanelVisibility
 } from "../../core";
 import { IdentityProviderConstants } from "../../identity-providers/constants";
-import { getApplicationDetails } from "../api";
+import { useGetApplication } from "../api/use-get-application";
 import { EditApplication } from "../components/edit-application";
 import { InboundProtocolDefaultFallbackTemplates } from "../components/meta/inbound-protocols.meta";
 import { ApplicationManagementConstants } from "../constants";
@@ -55,16 +55,13 @@ import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationAccessTypes,
-    ApplicationInterface,
     ApplicationTemplateListItemInterface,
     State,
     SupportedAuthProtocolTypes,
-    emptyApplication,
     idpInfoTypeInterface
 } from "../models";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
 import { ApplicationTemplateManagementUtils } from "../utils/application-template-management-utils";
-import { useGetApplication } from "../api/use-get-application";
 
 /**
  * Proptypes for the applications edit page component.
@@ -123,18 +120,23 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         error: applicationGetRequestError
     } = useGetApplication(applicationId, !!applicationId);
 
+    /**
+     * Sets the internal state of the application loading status when the SWR `isLoading` state changes.
+     * TODO: Remove this once `setIsLoading` is removed from the nested components.
+     */
     useEffect(() => {
         setApplicationRequestLoading(isApplicationGetRequestLoading);
     }, [ isApplicationGetRequestLoading ]);
 
+    /**
+     * Handles the application get request error.
+     */
     useEffect(() => {
         if (!applicationGetRequestError) {
             return;
         }
 
-        if (applicationGetRequestError.response
-            && applicationGetRequestError.response.data
-            && applicationGetRequestError.response.data.description) {
+        if (applicationGetRequestError.response?.data?.description) {
             dispatch(addAlert({
                 description: applicationGetRequestError.response.data.description,
                 level: AlertLevels.ERROR,
@@ -381,7 +383,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }
 
         setApplicationTemplate(template);
-
     };
 
     /**
@@ -410,7 +411,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      *
      * @param id - Application id.
      */
-    const handleApplicationUpdate = (id: string): void => {
+    const handleApplicationUpdate = (): void => {
         mutateApplicationGetRequest();
     };
 

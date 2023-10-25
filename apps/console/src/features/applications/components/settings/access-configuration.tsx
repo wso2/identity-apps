@@ -48,6 +48,7 @@ import {
     updateApplicationDetails,
     updateAuthProtocolConfig
 } from "../../api";
+import { useGetApplication } from "../../api/use-get-application";
 import { getInboundProtocolLogos } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
@@ -57,7 +58,8 @@ import {
     ApplicationTemplateIdTypes,
     ApplicationTemplateListItemInterface,
     AuthProtocolMetaInterface,
-    CertificateInterface, OIDCDataInterface,
+    CertificateInterface,
+    OIDCDataInterface,
     OIDCMetadataInterface,
     SAML2ConfigurationInterface,
     SAMLConfigModes,
@@ -68,7 +70,6 @@ import { setAuthProtocolMeta } from "../../store";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { InboundFormFactory } from "../forms";
 import { ApplicationCreateWizard } from "../wizard";
-import { useGetApplication } from "../../api/use-get-application";
 
 /**
  * Prop-types for the applications settings component.
@@ -186,7 +187,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const dispatch: Dispatch = useDispatch();
 
     const {
-        mutate: mutateApplicationGetRequest,
+        mutate: mutateApplicationGetRequest
     } = useGetApplication(application.id);
 
     const authProtocolMeta: AuthProtocolMetaInterface = useSelector(
@@ -803,9 +804,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                             className={ "mt-1" }
                         >
                             <strong>
-                                {  
+                                {
                                     ApplicationManagementUtils
-                                        .resolveProtocolDisplayName(SupportedAuthProtocolTypes.OAUTH2) 
+                                        .resolveProtocolDisplayName(SupportedAuthProtocolTypes.OAUTH2)
                                 }
                             </strong>
                         </Header.Content>
