@@ -9364,6 +9364,25 @@ export const console: ConsoleNS = {
                     },
                     placeholder: "Search by Organization Name"
                 },
+                assign: {
+                    title: "Email Domains",
+                    description: "Add email domains for sub organizations.",
+                    form: {
+                        fields: {
+                            emailDomains: {
+                                label : "Email Domains",
+                                placeholder: "Enter emial domains",
+                                hint: "Enter the email domains you wish to map to the organization. Separate multiple domains by hitting enter and typing the next domain."
+                            },
+                            organizationName: {
+                                label: "Organization Name",
+                                placeholder: "Select an organization",
+                                emptyPlaceholder: "All the organization have assigned domains",
+                                hint: "Enter the name of the organization you wish to add the domain mapping."
+                            }
+                        }
+                    }
+                },
                 emailDomains: {
                     actions: {
                         assign: "Assign Email Domain",
@@ -9373,87 +9392,77 @@ export const console: ConsoleNS = {
                 edit: {
                     back: "Back",
                     description: "Edit Email Domains",
-                    fields: {
-                        name: {
-                            label: "Organization Name"
-                        },
-                        emailDomains: {
-                            label : "Email Domains",
-                            placeHolder: "Enter email domains"
+                    form: {
+                        fields: {
+                            emailDomains: {
+                                label : "Email Domains",
+                                placeholder: "Enter emial domains",
+                                hint: "Enter the email domains you wish to map to the organization. Separate multiple domains by hitting enter and typing the next domain."
+                            },
+                            organizationName: {
+                                label: "Organization Name",
+                                hint: "Enter the name of the organization you wish to add the domain mapping."
+                            }
                         }
                     }
                 },
                 notifications: {
+                    addEmailDomains: {
+                        error: {
+                            description: "Adding the email domains to the organization was unsuccessful.",
+                            message: "Adding unsuccessful"
+                        },
+                        success: {
+                            description: "Email domains added successfully",
+                            message: "Added successfully"
+                        }
+                    },
                     disableEmailDomainDiscovery: {
                         error: {
-                            description: "{{description}}",
-                            message: "Error while disabling email domain discovery"
-                        },
-                        genericError: {
                             description: "An error occurred while disabling email domain discovery",
-                            message: "Something went wrong"
+                            message: "Disabling unsuccessful"
                         },
                         success: {
                             description: "Successfully disabled email domain discovery",
-                            message: "Email domain discovery disabled successfully"
+                            message: "Disabled successfully"
                         }
                     },
                     enableEmailDomainDiscovery: {
                         error: {
-                            description: "{{description}}",
-                            message: "Error while enabling email domain discovery"
-                        },
-                        genericError: {
                             description: "An error occurred while enabling email domain discovery",
-                            message: "Something went wrong"
+                            message: "Enabling unsuccessful"
                         },
                         success: {
                             description: "Successfully enabled email domain discovery",
-                            message: "Email domain discovery enabled successfully"
+                            message: "Enabled successfully"
                         }
                     },
                     fetchOrganizationDiscoveryAttributes: {
                         error: {
-                            description: "{{description}}",
-                            message: "Error while fetching the organization discovery attributes"
-                        },
-                        genericError: {
                             description: "An error occurred while fetching the organization discovery attributes",
-                            message: "Something went wrong"
+                            message: "Retrieval unsuccessful"
                         }
                     },
                     getEmailDomainDiscovery: {
                         error: {
-                            description: "{{description}}",
-                            message: "Error while retrieving email domain discovery configuration"
-                        },
-                        genericError: {
                             description: "An error occurred while retrieving email domain discovery configuration",
-                            message: "Something went wrong"
+                            message: "Retrieval unsuccessful"
                         }
                     },
                     getOrganizationListWithDiscovery: {
                         error: {
-                            description: "{{description}}",
-                            message: "Error while getting the organization list with discovery attributes"
-                        },
-                        genericError: {
                             description: "An error occurred while getting the organization list with discovery attributes",
-                            message: "Something went wrong"
+                            message: "Retrieval unsuccessful"
                         }
                     },
                     updateOrganizationDiscoveryAttributes: {
                         error: {
-                            description: "{{description}}",
-                            message: "Error while updating the organization discovery attributes"
-                        },
-                        genericError: {
                             description: "An error occurred while updating the organization discovery attributes",
-                            message: "Something went wrong"
+                            message: "Updated unsuccessful"
                         },
                         success: {
                             description: "Successfully updated the organization discovery attributes",
-                            message: "Organization discovery attributes updated successfully"
+                            message: "Updated successful"
                         }
                     }
                 },

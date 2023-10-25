@@ -7593,6 +7593,25 @@ export const console: ConsoleNS = {
                     },
                     placeholder: "Rechercher par nom d'organisation"
                 },
+                assign: {
+                    title: "Email Domains",
+                    description: "Add email domains for sub organizations.",
+                    form: {
+                        fields: {
+                            emailDomains: {
+                                label : "Domaines de messagerie",
+                                placeholder: "Entrez les domaines de messagerie",
+                                hint: "Entrez les domaines de messagerie que vous souhaitez mapper à l'organisation.Séparez plusieurs domaines en appuyant sur Entrée et en tapant le domaine suivant."
+                            },
+                            organizationName: {
+                                label: "nom de l'organisation",
+                                placeholder: "Sélectionnez une organisation",
+                                emptyPlaceholder: "Toutes les organisations ont attribué des domaines",
+                                hint: "Entrez le nom de l'organisation que vous souhaitez ajouter le mappage de domaine."
+                            }
+                        }
+                    }
+                },
                 emailDomains: {
                     actions: {
                         assign: "Attribuer un domaine de messagerie",
@@ -7602,24 +7621,34 @@ export const console: ConsoleNS = {
                 edit: {
                     back: "Dos",
                     description: "Modifier les domaines de messagerie",
-                    fields: {
-                        name: {
-                            label: "nom de l'organisation"
-                        },
-                        emailDomains: {
-                            label: "Domaines de messagerie",
-                            placeHolder: "Entrez les domaines de messagerie"
+                    form: {
+                        fields: {
+                            emailDomains: {
+                                label : "Domaines de messagerie",
+                                placeholder: "Entrez les domaines de messagerie",
+                                hint: "Entrez les domaines de messagerie que vous souhaitez mapper à l'organisation.Séparez plusieurs domaines en appuyant sur Entrée et en tapant le domaine suivant."
+                            },
+                            organizationName: {
+                                label: "nom de l'organisation",
+                                hint: "Entrez le nom de l'organisation que vous souhaitez ajouter la cartographie du domaine."
+                            }
                         }
                     }
                 },
                 notifications: {
+                    addEmailDomains: {
+                        error: {
+                            description: "L'ajout des domaines de messagerie à l'organisation a échoué.",
+                            message: "Impossible d'ajouter des domaines de messagerie"
+                        },
+                        success: {
+                            description: "Les domaines de messagerie ajoutés avec succès",
+                            message: "Ajout avec succès les domaines de messagerie à l'organisation."
+                        }
+                    },
                     disableEmailDomainDiscovery: {
                         error: {
-                            description: "{{description}}",
-                            message: "Erreur lors de la désactivation de la découverte de domaine de messagerie"
-                        },
-                        genericError: {
-                            description: "Une erreur s'est produite lors de la désactivation de la découverte de domaines de messagerie",
+                            description: "Erreur lors de la désactivation de la découverte de domaine de messagerie",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
@@ -7629,10 +7658,6 @@ export const console: ConsoleNS = {
                     },
                     enableEmailDomainDiscovery: {
                         error: {
-                            description: "{{description}}",
-                            message: "Erreur lors de l'activation de la découverte de domaines de messagerie"
-                        },
-                        genericError: {
                             description: "Une erreur s'est produite lors de l'activation de la découverte de domaines de messagerie",
                             message: "Quelque chose s'est mal passé"
                         },
@@ -7643,40 +7668,24 @@ export const console: ConsoleNS = {
                     },
                     fetchOrganizationDiscoveryAttributes: {
                         error: {
-                            description: "{{description}}",
-                            message: "Erreur lors de la récupération des attributs de découverte de l'organisation"
-                        },
-                        genericError: {
                             description: "Une erreur s'est produite lors de la récupération des attributs de découverte de l'organisation",
                             message: "Quelque chose s'est mal passé"
                         }
                     },
                     getEmailDomainDiscovery: {
                         error: {
-                            description: "{{description}}",
-                            message: "Erreur lors de la récupération de la configuration de la découverte du domaine de messagerie"
-                        },
-                        genericError: {
                             description: "Une erreur s'est produite lors de la récupération de la configuration de la découverte du domaine de messagerie",
                             message: "Quelque chose s'est mal passé"
                         }
                     },
                     getOrganizationListWithDiscovery: {
                         error: {
-                            description: "{{description}}",
-                            message: "Erreur lors de l'obtention de la liste des organisations avec les attributs de découverte"
-                        },
-                        genericError: {
                             description: "Une erreur s'est produite lors de l'obtention de la liste des organisations avec les attributs de découverte",
                             message: "Quelque chose s'est mal passé"
                         }
                     },
                     updateOrganizationDiscoveryAttributes: {
                         error: {
-                            description: "{{description}}",
-                            message: "Erreur lors de la mise à jour des attributs de découverte de l'organisation"
-                        },
-                        genericError: {
                             description: "Une erreur s'est produite lors de la mise à jour des attributs de découverte de l'organisation",
                             message: "Quelque chose s'est mal passé"
                         },

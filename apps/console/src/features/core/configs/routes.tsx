@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { 
+import {
     ArrowRightToBracketPencilIcon,
     BoltIcon,
     EnvelopeGearIcon,
-    HierarchyIcon, 
+    HierarchyIcon,
     UserGroupIcon
 } from "@oxygen-ui/react-icons";
 import { RouteInterface } from "@wso2is/core/models";
@@ -114,8 +114,8 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             )
                         ),
                         exact: false,
-                        icon: { 
-                            icon: <ArrowRightToBracketPencilIcon /> 
+                        icon: {
+                            icon: <ArrowRightToBracketPencilIcon />
                         },
                         id: "loginAndRegistration",
                         name: "console:common.sidePanel.loginAndRegistration.label",
@@ -394,30 +394,47 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         category: "console:manage.features.sidePanel.categories.organizations",
                         children: [
                             {
-                                component: lazy(() =>
-                                    import("../../../features/organization-discovery/pages/email-domain-edit")
-                                ),
+                                component: lazy(() => {
+                                    // eslint-disable-next-line max-len
+                                    return import("../../organization-discovery/pages/assign-organization-discovery-domains-page");
+                                }),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().organization
+                                },
+                                id: "email-domain-assign",
+                                name: "Email Domain Assign",
+                                path: AppConstants.getPaths().get("ASSIGN_ORGANIZATION_DISCOVERY_DOMAINS_DOMAINS"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() => {
+                                    // eslint-disable-next-line max-len
+                                    return import("../../organization-discovery/pages/edit-organization-discovery-domains-page");
+                                }),
                                 exact: true,
                                 icon: {
                                     icon: getSidePanelIcons().organization
                                 },
                                 id: "email-domain-edit",
                                 name: "Email Domain Edit",
-                                path: AppConstants.getPaths().get("EMAIL_DOMAIN_UPDATE"),
+                                path: AppConstants.getPaths().get("UPDATE_ORGANIZATION_DISCOVERY_DOMAINS"),
                                 protected: true,
                                 showOnSidePanel: false
-                            },
+                            }
                         ],
-                        component: lazy(() => import("../../../features/organization-discovery/pages/" +
-                        "email-domain-discovery")),
+                        component: lazy(() => {
+                            return import("../../organization-discovery/pages/organization-discovery-domains-page");
+                        }),
                         exact: true,
                         icon: {
                             icon: <HierarchyIcon fill="black" />
                         },
-                        id: "emailDomainDiscovery",
+                        id: "organizationDiscovery",
                         name: "console:manage.features.sidePanel.emailDomainDiscovery",
                         order: 12,
-                        path: AppConstants.getPaths().get("EMAIL_DOMAIN_DISCOVERY"),
+                        path: AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
                         protected: true,
                         showOnSidePanel: true
                     },

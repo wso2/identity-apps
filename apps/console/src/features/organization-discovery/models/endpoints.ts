@@ -17,11 +17,15 @@
  */
 
 /**
- * Interface for the Organization Management feature resource endpoints.
+ * Interface for the Organization Discovery feature resource endpoints.
  */
-export interface OrganizationResourceEndpointsInterface {
-    organizations: string;
-    rootOrganization: string;
-    usersSuperOrganization: string;
-    breadcrumb: string;
+export interface getOrganizationsDiscoveryResourceEndpointsInterface {
+    /**
+     * Endpoint to get the organization discovery.
+     */
+    organizationDiscovery: string;
+    /**
+     * Endpoint to get the organization discovery configs.
+     */
+    organizationDiscoveryConfigs: string;
 }
