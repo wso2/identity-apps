@@ -54,6 +54,7 @@ export interface GovernanceConnectorCategoryInterface {
 	name?: string;
 	description?: string;
 	connectors?: GovernanceConnectorInterface[];
+	route?: string;
 }
 
 export interface GovernanceConnectorsInterface {

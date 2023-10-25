@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Code, Heading, Hint } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
@@ -51,7 +51,7 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
     onlyOIDCConfigured?:boolean;
 }
 
-export const SubjectAttributeFieldName = "subjectAttribute";
+export const SubjectAttributeFieldName: string = "subjectAttribute";
 
 const FORM_ID: string = "application-attributes-advance-settings-form";
 
@@ -90,13 +90,17 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     useEffect(() => {
         if (claimMappingOn && dropDownOptions && dropDownOptions.length > 0) {
             if (selectedSubjectValueLocalClaim) {
-                const index = dropDownOptions.findIndex(option => option?.key === selectedSubjectValueLocalClaim);
+                const index: number = dropDownOptions.findIndex(
+                    (option: DropdownOptionsInterface) => option?.key === selectedSubjectValueLocalClaim
+                );
 
                 if (index > -1) {
                     setSelectedSubjectValue(dropDownOptions[ index ]?.value);
                 } else {
-                    const defaultSubjectClaimIndex =
-                        dropDownOptions.findIndex(option => option?.key === defaultSubjectAttribute);
+                    const defaultSubjectClaimIndex: number =
+                        dropDownOptions.findIndex(
+                            (option: DropdownOptionsInterface) => option?.key === defaultSubjectAttribute
+                        );
 
                     setSelectedSubjectValue(
                         defaultSubjectClaimIndex > -1
@@ -105,8 +109,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     );
                 }
             } else if (selectedSubjectValue) {
-                const subjectValueLocalMapping =
-                    dropDownOptions.find(option => option?.value === selectedSubjectValue)?.key;
+                const subjectValueLocalMapping: string =
+                    dropDownOptions.find(
+                        (option: DropdownOptionsInterface) => option?.value === selectedSubjectValue
+                    )?.key;
 
                 if (subjectValueLocalMapping) {
                     setSelectedSubjectValueLocalClaim(subjectValueLocalMapping);
@@ -117,7 +123,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             }
         } else if (selectedSubjectValue) {
             if (dropDownOptions && dropDownOptions.length > 0 &&
-                dropDownOptions.findIndex(option => option?.value === selectedSubjectValue) < 0) {
+                dropDownOptions.findIndex(
+                    (option: DropdownOptionsInterface) => option?.value === selectedSubjectValue
+                ) < 0) {
                 setSelectedSubjectValue(defaultSubjectAttribute);
             }
         } else {
@@ -133,8 +141,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
     useEffect(() => {
         if (selectedSubjectValue && dropDownOptions) {
-            const subjectValueLocalMapping =
-                dropDownOptions.find(option => option?.value === selectedSubjectValue)?.key;
+            const subjectValueLocalMapping: string =
+                dropDownOptions.find(
+                    (option: DropdownOptionsInterface) => option?.value === selectedSubjectValue
+                )?.key;
 
             setSelectedSubjectValueLocalClaim(subjectValueLocalMapping);
         }
@@ -143,11 +153,14 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     /**
      * Check whether initial value is exist in dropdown list.
      */
-    const getDefaultDropDownValue = ((options, checkValue): string => {
+    const getDefaultDropDownValue = ((
+        options: DropdownOptionsInterface[], 
+        checkValue: string
+    ): string => {
         const dropDownOptions: DropdownOptionsInterface[] = options as DropdownOptionsInterface[];
-        let claimURI = "";
+        let claimURI: string = "";
 
-        dropDownOptions.map((option) => {
+        dropDownOptions.map((option: DropdownOptionsInterface) => {
             if (option.value === checkValue) {
                 claimURI = checkValue;
             }
@@ -156,7 +169,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         return claimURI;
     });
 
-    const submitValues = (values) => {
+    const submitValues = (values: Record<string, any>) => {
 
         const settingValues: {
             role: RoleInterface;
@@ -175,7 +188,15 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             }
         };
 
-        const config = applicationConfig.attributeSettings.advancedAttributeSettings;
+        const config: {
+            showIncludeTenantDomain: boolean;
+            showIncludeUserstoreDomainRole: boolean;
+            showIncludeUserstoreDomainSubject: boolean;
+            showRoleAttribute: boolean;
+            showRoleMapping: boolean;
+            showUseMappedLocalSubject: boolean;
+            showSubjectAttribute: boolean;
+        } = applicationConfig.attributeSettings.advancedAttributeSettings;
 
         !config.showIncludeUserstoreDomainSubject && delete settingValues.subject.includeUserDomain;
         !config.showIncludeTenantDomain && delete settingValues.subject.includeTenantDomain;
@@ -265,11 +286,12 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         !onlyOIDCConfigured &&
                         { subjectAttribute: selectedSubjectValue }
                     }
-                    onSubmit={ (values) => {
+                    onSubmit={ (values: Record<string, any>) => {
                         submitValues(values);
                     } }
-                    triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
+                    triggerSubmit={ (submitFunction: FormEvent<HTMLFormElement>) => triggerSubmission(submitFunction) }
                 >
+                    <Divider />
                     <Heading
                         hidden={
                             onlyOIDCConfigured &&
@@ -361,6 +383,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             "sections.subject.fields.subjectUseMappedLocalSubject.hint")
                         }
                     />
+                    <Divider />
                     {
                         applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute && (
                             <>

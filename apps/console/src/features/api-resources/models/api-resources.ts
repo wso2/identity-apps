@@ -191,6 +191,10 @@ export interface APIResourcePanesCommonPropsInterface {
      * Function to handle the API resource update.
      */
     handleUpdateAPIResource?: (updatedAPIResource: UpdatedAPIResourceInterface, callback?: () => void) => void;
+    /**
+     * Function to handle the API scope delete.
+     */
+    handleDeleteAPIScope?: (scopeId: string, callback?: () => void) => void;
 }
 
 /**

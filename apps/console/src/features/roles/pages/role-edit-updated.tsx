@@ -34,7 +34,7 @@ import { FeatureConfigInterface } from "../../core/models/config";
 import { AppState } from "../../core/store/index";
 import { useGetRoleById } from "../api";
 import { EditRole } from "../components/edit-role/edit-role-updated";
-import { RoleAudiences } from "../models/roles";
+import { RoleAudienceTypes } from "../constants/role-constants";
 
 type RoleEditPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps;
 
@@ -96,7 +96,7 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     action={ (
                         <Button onClick={ handleBackButtonClick }> 
-                            { t("console:manage.features.roles.edit.placeholders.errorPlaceHolder.subtitles.0") } 
+                            { t("console:manage.features.roles.edit.placeholders.errorPlaceHolder.action") } 
                         </Button>
                     ) }
                     imageSize="tiny"
@@ -143,9 +143,9 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
                             <Grid>
                                 <Label
                                     className = {
-                                        RoleAudiences.APPLICATION === roleObject?.audience?.type
-                                            ? "client-id-label"
-                                            : "issuer-label"
+                                        RoleAudienceTypes.ORGANIZATION === roleObject?.audience?.type.toUpperCase()
+                                            ? "issuer-label"
+                                            : "client-id-label"
                                     }
                                 >
                                     { roleObject?.audience?.display }

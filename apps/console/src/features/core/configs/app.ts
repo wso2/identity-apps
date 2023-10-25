@@ -214,7 +214,7 @@ export class Config {
             ...getAPIResourceEndpoints(this.resolveServerHost()),
             ...getApplicationsResourceEndpoints(this.resolveServerHost()),
             ...getApprovalsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getBrandingResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getBrandingResourceEndpoints(this.resolveServerHost()),
             ...getClaimResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.resolveServerHost()),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getIDPResourceEndpoints(this.resolveServerHost()),
@@ -260,6 +260,10 @@ export class Config {
             applicationTemplateLoadingStrategy:
                 window[ "AppUtils" ]?.getConfig()?.ui?.applicationTemplateLoadingStrategy,
             connectionResourcesUrl: window[ "AppUtils" ]?.getConfig()?.ui?.connectionResourcesUrl,
+            emailTemplates: {
+                defaultLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultLogoUrl,
+                defaultWhiteLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultWhiteLogoUrl
+            },
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
             googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
             gravatarConfig: window[ "AppUtils" ]?.getConfig()?.ui?.gravatarConfig,

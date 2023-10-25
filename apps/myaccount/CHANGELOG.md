@@ -1,5 +1,37 @@
 # @wso2is/myaccount
 
+## 2.1.9
+
+### Patch Changes
+
+- [#4255](https://github.com/wso2/identity-apps/pull/4255) [`0716ce8389`](https://github.com/wso2/identity-apps/commit/0716ce8389a7147aadb8f664c830cd96735854df) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Add M2M template
+
+- Updated dependencies [[`0716ce8389`](https://github.com/wso2/identity-apps/commit/0716ce8389a7147aadb8f664c830cd96735854df)]:
+  - @wso2is/theme@2.0.22
+  - @wso2is/i18n@2.0.15
+
+## 2.1.8
+
+### Patch Changes
+
+- [#4305](https://github.com/wso2/identity-apps/pull/4305) [`0b0edf4707`](https://github.com/wso2/identity-apps/commit/0b0edf470794779de8e7a27b08c323c965772c2b) Thanks [@Achintha444](https://github.com/Achintha444)! - Complete role creation
+
+- Updated dependencies [[`0b0edf4707`](https://github.com/wso2/identity-apps/commit/0b0edf470794779de8e7a27b08c323c965772c2b)]:
+  - @wso2is/i18n@2.0.14
+  - @wso2is/theme@2.0.21
+
+## 2.1.7
+
+### Patch Changes
+
+- [#4297](https://github.com/wso2/identity-apps/pull/4297) [`990032d4d9`](https://github.com/wso2/identity-apps/commit/990032d4d9e4f2c0e711c6caacba19b5696ea30e) Thanks [@savindi7](https://github.com/savindi7)! - Revamp the UI of Login & Registration page
+
+- Updated dependencies [[`990032d4d9`](https://github.com/wso2/identity-apps/commit/990032d4d9e4f2c0e711c6caacba19b5696ea30e)]:
+  - @wso2is/react-components@2.0.9
+  - @wso2is/theme@2.0.20
+  - @wso2is/core@2.0.5
+  - @wso2is/i18n@2.0.13
+
 ## 2.1.6
 
 ### Patch Changes

@@ -1046,6 +1046,9 @@ export const console: ConsoleNS = {
                             samlHeading: "Connection Details",
                             samlSubHeading: "The following IdP details will be useful for you to implement and " +
                                 "configure authentication for your application using SAML 2.0.",
+                            wsFedHeading: "Connection Details",
+                            wsFedSubHeading: "The following IdP details will be useful for you to implement and " +
+                                "configure authentication for your application using WS-Federation.",
                             tabName: "Info"
                         },
                         provisioning: {
@@ -1623,7 +1626,8 @@ export const console: ConsoleNS = {
                                 validations: {
                                     empty: "A valid access URL must be provided to make this application discoverable.",
                                     invalid: "Enter a valid URL"
-                                }
+                                },
+                                ariaLabel: "Application access URL"
                             },
                             description: {
                                 label: "Description",
@@ -1860,6 +1864,17 @@ export const console: ConsoleNS = {
                                             "needs to present the <1>access_token</1> + cookie for successful "+
                                             "authorization.",
                                         label: "Validate token bindings"
+                                    },
+                                    audience: {
+                                        hint: "Specify the recipient(s) that this <1>access_token</1> is intended for." +
+                                        " By default, the client ID of this application is added as an audience.",
+                                        label: "Audience",
+                                        placeholder: "Enter Audience",
+                                        validations: {
+                                            duplicate: "Audience contains duplicate values",
+                                            empty: "Please fill the audience",
+                                            invalid: "Please avoid special characters like commas (,)"
+                                        }
                                     }
                                 },
                                 heading: "Access Token",
@@ -2520,14 +2535,19 @@ export const console: ConsoleNS = {
                                 oidcConfigurations: {
                                     labels: {
                                         authorize: "Authorize",
+                                        dynamicClientRegistration: "Dynamic Client Registration",
                                         endSession: "Logout",
                                         introspection: "Introspection",
                                         issuer: "Issuer",
                                         jwks: "JWKS",
                                         keystore: "Key Set",
+                                        openIdServer: "OpenID Server",
+                                        pushedAuthorizationRequest: "Pushed Authorization Request",
                                         revoke: "Revoke",
+                                        sessionIframe: "Session Iframe",
                                         token: "Token",
                                         userInfo: "UserInfo",
+                                        webFinger: "Web Finger",
                                         wellKnown: "Discovery"
                                     }
                                 },
@@ -2541,7 +2561,9 @@ export const console: ConsoleNS = {
                                         issuer: "Issuer",
                                         metadata: "IdP Metadata",
                                         slo: "Single Logout",
-                                        sso: "Single Sign-On"
+                                        sso: "Single Sign-On",
+                                        destinationURL: "Destination URLs",
+                                        artifactResolutionUrl: "Artifact Resolution URL"
                                     }
                                 },
                                 trySample: {
@@ -2558,6 +2580,11 @@ export const console: ConsoleNS = {
                                     subTitle: "Install and use our SDKs to integrate authentication to your " +
                                         "application with minimum number of code lines.",
                                     title: "Integrate your own app"
+                                },
+                                wsFedConfigurations: {
+                                    labels: {
+                                        passiveSTSUrl: "Passive STS URL"
+                                    }
                                 }
                             },
                             heading: "What's Next?"
@@ -8109,6 +8136,7 @@ export const console: ConsoleNS = {
                 connectorCategories: {
                     passwordPolicies : {
                         name: "Password Policies",
+                        description: "Configure password policies to enhance user password strength.",
                         connectors: {
                             passwordHistory: {
                                 friendlyName: "Password History",
@@ -8152,6 +8180,7 @@ export const console: ConsoleNS = {
                     },
                     userOnboarding : {
                         name: "User Onboarding",
+                        description: "Configure user onboarding settings.",
                         connectors: {
                             selfSignUp: {
                                 friendlyName: "Self Registration",
@@ -8292,6 +8321,7 @@ export const console: ConsoleNS = {
                     },
                     loginAttemptsSecurity : {
                         name: "Login Attempts Security",
+                        description: "Configure login attempt security settings.",
                         connectors: {
                             accountLockHandler: {
                                 friendlyName: "Account Lock",
@@ -8343,6 +8373,7 @@ export const console: ConsoleNS = {
                     },
                     accountManagement : {
                         name: "Account Management",
+                        description: "Configure account management settings.",
                         connectors: {
                             suspensionNotification: {
                                 friendlyName: "Idle Account Suspend",
@@ -8487,6 +8518,7 @@ export const console: ConsoleNS = {
                     },
                     otherSettings : {
                         name: "Other Settings",
+                        description: "Configure other settings.",
                         connectors: {
                             piiController: {
                                 friendlyName: "Consent Information Controller",
@@ -8654,6 +8686,7 @@ export const console: ConsoleNS = {
                     },
                     multiFactorAuthenticators : {
                         name: "Multi Factor Authenticators",
+                        description: "Configure multi factor authenticator settings.",
                         connectors: {
                             backupCodeAuthenticator: {
                                 friendlyName: "Backup Code Authenticator",
@@ -9306,6 +9339,130 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            organizationDiscovery: {
+                advancedSearch: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                organizationName: "Organization Name"
+                            }
+                        },
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Organization Name etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "Enter value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by Organization Name"
+                },
+                emailDomains: {
+                    actions: {
+                        assign: "Assign Email Domain",
+                        enable: "Enable email domain discovery"
+                    }
+                },
+                edit: {
+                    back: "Back",
+                    description: "Edit Email Domains",
+                    fields: {
+                        name: {
+                            label: "Organization Name"
+                        },
+                        emailDomains: {
+                            label : "Email Domains",
+                            placeHolder: "Enter email domains"
+                        }
+                    }
+                },
+                notifications: {
+                    disableEmailDomainDiscovery: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while disabling email domain discovery"
+                        },
+                        genericError: {
+                            description: "An error occurred while disabling email domain discovery",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully disabled email domain discovery",
+                            message: "Email domain discovery disabled successfully"
+                        }
+                    },
+                    enableEmailDomainDiscovery: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while enabling email domain discovery"
+                        },
+                        genericError: {
+                            description: "An error occurred while enabling email domain discovery",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully enabled email domain discovery",
+                            message: "Email domain discovery enabled successfully"
+                        }
+                    },
+                    fetchOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while fetching the organization discovery attributes"
+                        },
+                        genericError: {
+                            description: "An error occurred while fetching the organization discovery attributes",
+                            message: "Something went wrong"
+                        }
+                    },
+                    getEmailDomainDiscovery: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while retrieving email domain discovery configuration"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving email domain discovery configuration",
+                            message: "Something went wrong"
+                        }
+                    },
+                    getOrganizationListWithDiscovery: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while getting the organization list with discovery attributes"
+                        },
+                        genericError: {
+                            description: "An error occurred while getting the organization list with discovery attributes",
+                            message: "Something went wrong"
+                        }
+                    },
+                    updateOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while updating the organization discovery attributes"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the organization discovery attributes",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the organization discovery attributes",
+                            message: "Organization discovery attributes updated successfully"
+                        }
+                    }
+                },
+                placeholders: {
+                    emptyList: {
+                        action: "Assign Email Domain",
+                        subtitles: "There are no organizations with email domains assigned.",
+                        title: "Assign Email Domain"
+                    }
+                },
+                title: "Email Domain Discovery"
+            },
             organizations: {
                 advancedSearch: {
                     form: {
@@ -9901,6 +10058,9 @@ export const console: ConsoleNS = {
                                     selectAllScopes: "Select all scopes(permissions)",
                                     removeAPIResource: "Remove API resource"
                                 }
+                            },
+                            notes: {
+                                applicationRoles: "Only the APIs and the scopes(permissions) that are authorized in the selected application(<1>{{applicationName}}</1>) will be listed to select."
                             },
                             notifications: {
                                 fetchAPIResourceError: {
@@ -10513,6 +10673,7 @@ export const console: ConsoleNS = {
                 editRoles: "Edit Role",
                 editUsers: "Edit User",
                 editUserstore: "Edit User Store",
+                emailDomainDiscovery: "Email Domain Discovery",
                 emailTemplateTypes: "",
                 emailTemplates: "Email Templates",
                 generalConfigurations: "General",
@@ -10764,7 +10925,8 @@ export const console: ConsoleNS = {
                         wizardSummary: {
                             successCount: "Successful Imports",
                             failedCount: "Failed Imports",
-                            totalCount: "Total Count",
+                            totalUserCreationCount: "Total user creation count",
+                            totalUserAssignmentCount: "Total role/group assigment count ",
                             tableHeaders: {
                                 username: "Username",
                                 status: "Status",
@@ -10775,7 +10937,11 @@ export const console: ConsoleNS = {
                                 invalidDataMessage: "Invalid data provided",
                                 userAlreadyExistsMessage: "User already exists",
                                 userCreationAcceptedMessage: "User creation accepted",
-                                internalErrorMessage: "Error occured while importing users"
+                                internalErrorMessage: "Error occured while importing users",
+                                userAssignmentSuccessMessage: "Users were successfully assigned to {{resource}}",
+                                userAssignmentFailedMessage: "User assignment to {{resource}} failed",
+                                userAssignmentInternalErrorMessage: "An error occurred while assigning users to " +
+                                    "{{resource}}"
                             },
                             tableStatus: {
                                 success: "Success",
@@ -10788,12 +10954,16 @@ export const console: ConsoleNS = {
                                     message: "Import Successful"
                                 },
                                 importFailed: {
-                                    description: "Issues encountered in <1>{{failedCount}} import(s)</1>.",
+                                    description: "Issues encountered in <1>{{failedUserCreationCount}} user " +
+                                        "creation operations(s)</1> and <3>{{failedUserAssignmentCount}} role/group " +
+                                        "assignment operation(s)</3>.",
                                     message: "Review Required"
                                 }
                             },
                             advanceSearch: {
-                                placeholder: "Search by Username"
+                                searchByUsername: "Search by Username",
+                                searchByRoleOrGroup: "Search by Role/Group",
+                                roleGroupFilterAttributePlaceHolder: "Role/Group Name"
                             },
                             disabledSecondaryStoreInfo: "Bulk import to external user stores is not available " +
                                 "at the moment.",
@@ -10811,6 +10981,10 @@ export const console: ConsoleNS = {
                             },
                             fileBased: {
                                 hint: "Bulk invite multiple users using a CSV file."
+                            },
+                            responseOperationType: {
+                                userCreation: "User Creation",
+                                roleAssignment: "Role/Group Assignment"
                             }
                         },
                         buttons: {
@@ -11381,6 +11555,20 @@ export const console: ConsoleNS = {
                             message: "User added successfully"
                         }
                     },
+                    addUserPendingApproval: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error adding the new user"
+                        },
+                        genericError: {
+                            description: "Couldn't add the new user",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The new user was accepted and pending approval.",
+                            message: "User accepted for creation"
+                        }
+                    },
                     bulkImportUser: {
                         validation: {
                             emptyRowError: {
@@ -11416,6 +11604,14 @@ export const console: ConsoleNS = {
                             emptyDataField: {
                                 description: "The data field '{{dataField}}' must not be empty.",
                                 message: "Empty Data Field"
+                            },
+                            invalidRole: {
+                                description: "{{role}} does not exist.",
+                                message: "Role Not Found"
+                            },
+                            invalidGroup: {
+                                description: "{{group}} does not exist.",
+                                message: "Group Not Found"
                             }
                         },
                         submit: {
@@ -12070,6 +12266,10 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: "{{template}}"
             },
+            emailDomainDiscovery: {
+                subTitle: "Configure email domain discovery for organizations.",
+                title: "Email Domain Discovery"
+            },
             emailLocaleAdd: {
                 backButton: "Go back to {{name}} template",
                 subTitle: null,
@@ -12159,6 +12359,110 @@ export const console: ConsoleNS = {
                     1: "Please bare with us and come back later. Thank you for your patience."
                 },
                 title: "Page under construction"
+            }
+        }
+    },
+    saml2Config: {
+        title: "SAML2 Web SSO Configuration",
+        description: "Configure SAML2 Web SSO for your applications.",
+        form: {
+            metadataValidityPeriod: {
+                hint: "Set the SAML metadata validity period in minutes.",
+                label: "Metadata Validity Period"
+            },
+            destinationUrl: {
+                hint: "The location to send the SAML Response, as defined in the SAML assertion.",
+                label: "Destination URLs"
+            },
+            enableMetadataSigning: {
+                label: "Enable Metadata Signing"
+            },
+            validation: {
+                metadataValidityPeriod: "Metadata validity period should be a positive integer.",
+                destinationURLs: "Destination URL should be a valid URL."
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Error occurred while fetching saml2 configurations.",
+                    message: "Error occurred"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "Error occurred while updating saml2 configurations.",
+                    message: "Error occurred"
+                },
+                success: {
+                    description: "Successfully updated the saml2 configurations.",
+                    message: "Update successful"
+                }
+            }
+        }
+    },
+    sessionManagement: {
+        description: "Manage settings related to the session of your users.",
+        title: "Session Management",
+        form: {
+            idleSessionTimeout: {
+                hint: "The user will be logged out automatically after the configured time.",
+                label: "Idle Session Timeout",
+                placeholder: "Enter the idle session timeout in minutes"
+            },
+            rememberMePeriod: {
+                hint: "The user will be prompted to login again after the configured time.",
+                label: "Remember Me Period",
+                placeholder: "Enter the remember me period in minutes"
+            },
+            validation: {
+                idleSessionTimeout: "Idle Session Timeout should be a positive integer.",
+                rememberMePeriod: "Remember Me Period should be a positive integer."
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Error occurred while fetching session management settings.",
+                    message: "Error occurred"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "Error occurred while updating session management settings.",
+                    message: "Error occurred"
+                },
+                success: {
+                    description: "Successfully updated the session management settings.",
+                    message: "Update successful"
+                }
+            }
+        }
+    },
+    wsFederationConfig: {
+        title: "WS-Federation Configuration",
+        description: "Configure WS-Federation protocol for your applications.",
+        form: {
+            enableRequestSigning: {
+                label: "Enable Authentication Requests Signing"
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Error occurred while fetching WS-Federation configurations.",
+                    message: "Error occurred"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "Error occurred while updating WS-Federation configurations.",
+                    message: "Error occurred"
+                },
+                success: {
+                    description: "Successfully updated the WS-Federation configurations.",
+                    message: "Update successful"
+                }
             }
         }
     }

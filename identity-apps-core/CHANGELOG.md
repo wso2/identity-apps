@@ -1,5 +1,47 @@
 # @wso2is/identity-apps-core
 
+## 2.0.27
+
+### Patch Changes
+
+- [#4324](https://github.com/wso2/identity-apps/pull/4324) [`6b34048047`](https://github.com/wso2/identity-apps/commit/6b34048047e35018ebdaf7f03f34c751e34f5281) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Fix tenant domain resolving issue.
+
+## 2.0.26
+
+### Patch Changes
+
+- [#4255](https://github.com/wso2/identity-apps/pull/4255) [`0716ce8389`](https://github.com/wso2/identity-apps/commit/0716ce8389a7147aadb8f664c830cd96735854df) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Add M2M template
+
+- Updated dependencies [[`0716ce8389`](https://github.com/wso2/identity-apps/commit/0716ce8389a7147aadb8f664c830cd96735854df)]:
+  - @wso2is/theme@2.0.22
+
+## 2.0.25
+
+### Patch Changes
+
+- [#4305](https://github.com/wso2/identity-apps/pull/4305) [`0b0edf4707`](https://github.com/wso2/identity-apps/commit/0b0edf470794779de8e7a27b08c323c965772c2b) Thanks [@Achintha444](https://github.com/Achintha444)! - Complete role creation
+
+- Updated dependencies [[`0b0edf4707`](https://github.com/wso2/identity-apps/commit/0b0edf470794779de8e7a27b08c323c965772c2b)]:
+  - @wso2is/theme@2.0.21
+
+## 2.0.24
+
+### Patch Changes
+
+- [#4297](https://github.com/wso2/identity-apps/pull/4297) [`990032d4d9`](https://github.com/wso2/identity-apps/commit/990032d4d9e4f2c0e711c6caacba19b5696ea30e) Thanks [@savindi7](https://github.com/savindi7)! - Revamp the UI of Login & Registration page
+
+- Updated dependencies [[`990032d4d9`](https://github.com/wso2/identity-apps/commit/990032d4d9e4f2c0e711c6caacba19b5696ea30e)]:
+  - @wso2is/theme@2.0.20
+
+## 2.0.23
+
+### Patch Changes
+
+- [#4298](https://github.com/wso2/identity-apps/pull/4298) [`80eccfdaff`](https://github.com/wso2/identity-apps/commit/80eccfdaffd2b1ef47e314d62f1d3d82ea45c3b2) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with SWE icon on the sign in page
+
+- Updated dependencies [[`80eccfdaff`](https://github.com/wso2/identity-apps/commit/80eccfdaffd2b1ef47e314d62f1d3d82ea45c3b2)]:
+  - @wso2is/theme@2.0.19
+
 ## 2.0.22
 
 ### Patch Changes

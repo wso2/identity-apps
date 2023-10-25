@@ -101,7 +101,7 @@ export const USERSTORE_TYPE_DISPLAY_NAMES: UserStoreTypeDisplayNamesInterface = 
     ReadOnlyLDAPUserStoreManager: "Read Only LDAP",
     ReadWriteLDAPUserStoreManager: "Read Write LDAP",
     UniqueIDActiveDirectoryUserStoreManager: "Active Directory",
-    UniqueIDJDBCUserStoreManager: "JDBC",
+    UniqueIDJDBCUserStoreManager: "Database",
     UniqueIDReadOnlyLDAPUserStoreManager: "Read Only LDAP",
     UniqueIDReadWriteLDAPUserStoreManager: "Read Write LDAP"
 };

@@ -141,6 +141,7 @@ import {
 } from "../../../themes/default/assets/images/placeholder-illustrations/page-not-found-illustration.svg";
 import AxschemaLogo from "../../../themes/default/assets/images/protocols/axschema.png";
 import EidasLogo from "../../../themes/default/assets/images/protocols/eidas.png";
+import OAuth2Logo from "../../../themes/default/assets/images/protocols/oauth2.png";
 import OIDCFullLogo from "../../../themes/default/assets/images/protocols/oidc.png";
 import OIDCLogo from "../../../themes/default/assets/images/protocols/openid-connect.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
@@ -183,6 +184,7 @@ interface GetTechnologyLogosInterface {
     javascript: FunctionComponent | ReactNode,
     macos: string,
     nodejs: FunctionComponent | ReactNode,
+    oauth2: string,
     oidc: string,
     openidconnect: string,
     python: FunctionComponent | ReactNode,
@@ -215,6 +217,7 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
         javascript: JavaScriptLogo,
         macos: MacOSLogo,
         nodejs: NodeJSLogo,
+        oauth2: OAuth2Logo,
         oidc: OIDCLogo,
         openidconnect: OIDCFullLogo,
         python: PythonLogo,
@@ -241,6 +244,7 @@ export type GetSidePanelIconsInterface = {
     connections: FunctionComponent | ReactNode,
     connectors: Record<string, FunctionComponent | ReactNode>,
     emailTemplates: FunctionComponent | ReactNode,
+    gears: FunctionComponent | ReactNode,
     groups: FunctionComponent | ReactNode,
     home: FunctionComponent | ReactNode,
     identityProviders: FunctionComponent | ReactNode,
@@ -289,6 +293,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
             default: PlugIcon
         },
         emailTemplates: EmailIcon,
+        gears: GearsIcon,
         groups: UserGroupIcon,
         home: HomeIcon,
         identityProviders: IDPOutlineIcon,

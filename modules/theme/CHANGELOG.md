@@ -1,5 +1,35 @@
 # @wso2is/theme
 
+## 2.0.23
+
+### Patch Changes
+
+- [#4163](https://github.com/wso2/identity-apps/pull/4163) [`4ca9ebc2d1`](https://github.com/wso2/identity-apps/commit/4ca9ebc2d1782ba55db7770643c3c5749f8b06cc) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add resident IdP feature
+
+## 2.0.22
+
+### Patch Changes
+
+- [#4255](https://github.com/wso2/identity-apps/pull/4255) [`0716ce8389`](https://github.com/wso2/identity-apps/commit/0716ce8389a7147aadb8f664c830cd96735854df) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Add M2M template
+
+## 2.0.21
+
+### Patch Changes
+
+- [#4305](https://github.com/wso2/identity-apps/pull/4305) [`0b0edf4707`](https://github.com/wso2/identity-apps/commit/0b0edf470794779de8e7a27b08c323c965772c2b) Thanks [@Achintha444](https://github.com/Achintha444)! - Complete role creation
+
+## 2.0.20
+
+### Patch Changes
+
+- [#4297](https://github.com/wso2/identity-apps/pull/4297) [`990032d4d9`](https://github.com/wso2/identity-apps/commit/990032d4d9e4f2c0e711c6caacba19b5696ea30e) Thanks [@savindi7](https://github.com/savindi7)! - Revamp the UI of Login & Registration page
+
+## 2.0.19
+
+### Patch Changes
+
+- [#4298](https://github.com/wso2/identity-apps/pull/4298) [`80eccfdaff`](https://github.com/wso2/identity-apps/commit/80eccfdaffd2b1ef47e314d62f1d3d82ea45c3b2) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with SWE icon on the sign in page
+
 ## 2.0.18
 
 ### Patch Changes

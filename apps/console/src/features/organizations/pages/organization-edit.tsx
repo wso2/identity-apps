@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

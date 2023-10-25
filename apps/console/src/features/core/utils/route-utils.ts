@@ -267,6 +267,12 @@ export class RouteUtils {
             name: "User Attributes & Stores"
         };
 
+        const organizationManagement: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: BuildingGearIcon,
+            id: "organizationManagement",
+            name: "Organization Management"
+        };
+
         const branding: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: PaletteIcon,
             id: "customization",
@@ -298,12 +304,18 @@ export class RouteUtils {
             order: 4
         };
 
+        const other: NavCategory = {
+            id: "other",
+            order: 5
+        };
+
         const pathsToCheck: string[] = [
             `${AppConstants.getAdminViewBasePath()}/governance-connectors/`,
             `${AppConstants.getAdminViewBasePath()}/connector/`,
             AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"),
             AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"),
-            AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT")
+            AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
+            AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT")
         ];
 
         const CategoryMappedRoutes: Omit<RouteInterface, "showOnSidePanel">[] = [
@@ -393,14 +405,20 @@ export class RouteUtils {
             },
             {
                 category: manage,
-                id: "organizations"
+                id: "organizations",
+                parent: organizationManagement
+            },
+            {
+                category: manage,
+                id: "organizationDiscovery",
+                parent: organizationManagement
             },
             {
                 category: monitoring,
                 id: "logs"            
             },
             {
-                category: settings,       
+                category: other,
                 id: "remoteLogging"
             },
             {
@@ -409,12 +427,12 @@ export class RouteUtils {
             },
             {
                 category: settings,
-                id: "adminAdvisoryBanner"
-            },
-            {
-                category: settings,
                 id: "loginAndRegistration",
                 selected: pathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
+            },
+            {
+                category: other,
+                id: "analytics"
             }
         ];
 

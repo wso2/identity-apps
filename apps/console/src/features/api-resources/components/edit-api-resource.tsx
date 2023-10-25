@@ -25,7 +25,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AuthorizationAPIResource, GeneralAPIResource, PermissionAPIResource } from "./api-resource-panes";
 import { FeatureConfigInterface } from "../../core";
-import { updateAPIResource } from "../api";
+import { deleteScopeFromAPIResource, updateAPIResource } from "../api";
 import { APIResourceInterface, UpdatedAPIResourceInterface } from "../models";
 
 /**
@@ -102,7 +102,8 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
                         isAPIResourceDataLoading={ isAPIResourceDataLoading }
                         isSubmitting = { isSubmitting }
                         isReadOnly={ isReadOnly }
-                        handleUpdateAPIResource = { handleUpdateAPIResource }/>
+                        handleUpdateAPIResource = { handleUpdateAPIResource }
+                        handleDeleteAPIScope = { handleDeleteAPIScope } />
                 </ResourceTab.Pane>
             )
         },
@@ -119,7 +120,7 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
     ]);
 
     /**
-     * Handles form submit action.
+     * Handles API Resource update actions.
      *
      * @param updatedDetails - Form values.
      * @param callback - Callback function to be executed after the update is completed.
@@ -128,6 +129,42 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
         setIsSubmitting(true);
 
         updateAPIResource(apiResourceData.id, updatedAPIResource)
+            .then(() => {
+                dispatch(addAlert<AlertInterface>({
+                    description: t("extensions:develop.apiResource.notifications.updateAPIResource.success" +
+                        ".description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("extensions:develop.apiResource.notifications.updateAPIResource.success.message")
+                }));
+                mutateAPIResource();
+            })
+            .catch(() => {
+                dispatch(addAlert<AlertInterface>({
+                    description: t("extensions:develop.apiResource.notifications.updateAPIResource" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("extensions:develop.apiResource.notifications.updateAPIResource" +
+                        ".genericError.message")
+                }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+                
+                // Callback function to be executed after the update is completed.
+                callback && callback();
+            });
+    };
+
+    /**
+     * Handles API scope delete action.
+     *
+     * @param deletingScopeName - Name of the scope that needs to be deleted.
+     * @param callback - Callback function to be executed after the update is completed.
+     */
+    const handleDeleteAPIScope = (deletingScopeName: string, callback?: () => void): void => {
+        setIsSubmitting(true);
+
+        deleteScopeFromAPIResource(apiResourceData.id, deletingScopeName)
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.apiResource.notifications.updateAPIResource.success" +

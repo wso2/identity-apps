@@ -18,19 +18,27 @@
 
 import { Grid } from "@oxygen-ui/react";
 import { VerticalStepper, VerticalStepperStepInterface } from "@wso2is/common";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { RoleBasics } from "./role-basics";
 import { RolePermissionsList } from "./role-permissions/role-permissions";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
-import { 
-    CreateRoleFormData, 
-    CreateRoleStateInterface, 
-    CreateRoleStepsFormTypes, 
-    SelectedPermissionsInterface 
+import { store } from "../../../core/store";
+import { createRole } from "../../api/roles";
+import { RoleAudienceTypes } from "../../constants";
+import {
+    CreateRoleFormData,
+    CreateRoleInterface,
+    CreateRoleStateInterface,
+    CreateRoleStepsFormTypes,
+    SelectedPermissionsInterface
 } from "../../models";
 
 /**
@@ -48,11 +56,13 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     const { [ "data-componentid" ]: componentId } = props;
 
     const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
 
     const [ stepperState, setStepperState ] = useState<CreateRoleStateInterface>(undefined);
     const [ isBasicDetailsNextButtonDisabled, setIsBasicDetailsNextButtonDisabled ] = useState<boolean>(true);
-    const [ isPermissionStepNextButtonDisabled, setIsPermissionStepNextButtonDisabled ] = useState<boolean>(false);
+    const [ isPermissionStepNextButtonDisabled, setIsPermissionStepNextButtonDisabled ] = useState<boolean>(true);
     const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface[]>([]);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     // External trigger to submit the authorization step. 
     let submitRoleBasic: () => void;
@@ -65,6 +75,78 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
      */
     const handleWizardSubmit = (values: CreateRoleFormData, formType: CreateRoleStepsFormTypes) => {
         setStepperState({ ...stepperState, [ formType ]: values });
+    };
+
+    /**
+     * Handle create role action when create role wizard finish action is triggered.
+     *
+     * @param basicData - basic data required to create role.
+     */
+    const addRole = (): void => {
+        if (!isPermissionStepNextButtonDisabled) {
+            setIsSubmitting(true);
+
+            const roleAudience: string = stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ].roleAudience;
+            const organizationId: string = store.getState().organization.organization.id;
+    
+            const roleData: CreateRoleInterface = {
+                audience: roleAudience === RoleAudienceTypes.ORGANIZATION
+                    ? {
+                        type: roleAudience,
+                        value: organizationId
+                    }    
+                    : {
+                        type: roleAudience,
+                        value: stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ].assignedApplicationId
+                    },
+                displayName: stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ].roleName,
+                permissions: [],
+                schemas: []
+            };
+    
+            // Create Role API Call.
+            createRole(roleData)
+                .then((response: AxiosResponse) => {
+                    if (response.status === 201) {
+                        dispatch(addAlert({
+                            description: t("console:manage.features.roles.notifications.createRole.success" +
+                                ".description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("console:manage.features.roles.notifications.createRole.success.message")
+                        }));
+    
+                        history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", response.data.id));
+                    }
+                })
+                .catch((error: AxiosError) => {
+                    if (!error.response || error.response.status === 401) {
+                        dispatch(addAlert({
+                            description: t("console:manage.features.roles.notifications.createRole.error" +
+                                    ".description"),
+                            level: AlertLevels.ERROR,
+                            message: t("console:manage.features.roles.notifications.createRole.error.message")
+                        }));
+                    } else if (error.response && error.response.data.detail) {
+                        dispatch(addAlert({
+                            description: t("console:manage.features.roles.notifications.createRole.error" +
+                                ".description",
+                            { description: error.response.data.detail }),
+                            level: AlertLevels.ERROR,
+                            message: t("console:manage.features.roles.notifications.createRole.error.message")
+                        }));
+                    } else {
+                        dispatch(addAlert({
+                            description: t("console:manage.features.roles.notifications.createRole.genericError" +
+                                ".description"),
+                            level: AlertLevels.ERROR,
+                            message: t("console:manage.features.roles.notifications.createRole.genericError.message")
+                        }));
+                    }
+                })
+                .finally(() => {
+                    setIsSubmitting(false);
+                });
+        }
     };
 
     const creationFlowSteps: VerticalStepperStepInterface[] = [
@@ -92,6 +174,18 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                     selectedPermissions={ selectedPermissions }
                     setSelectedPermissions={ setSelectedPermissions }
                     setIsPermissionStepNextButtonDisabled={ setIsPermissionStepNextButtonDisabled }
+                    roleAudience={ 
+                        stepperState && 
+                        stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ]?.roleAudience as RoleAudienceTypes 
+                    }
+                    assignedApplicationId={
+                        stepperState &&
+                        stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ]?.assignedApplicationId
+                    }
+                    assignedApplicationName={
+                        stepperState &&
+                        stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ]?.assignedApplicationName
+                    }
                 />
             ),
             stepTitle: t("console:manage.features.roles.addRoleWizard.wizardSteps.1")
@@ -114,7 +208,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             data-componentid={ `${componentId}-page-layout` }
         >
             <div className="remote-user-store-create-section">
-                <EmphasizedSegment padded="very">
+                <EmphasizedSegment padded="very" loading={ isSubmitting }>
                     <Grid container>
                         <Grid>
                             <VerticalStepper
@@ -123,7 +217,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                                 stepContent={ creationFlowSteps }
                                 isNextEnabled={ true }
                                 data-componentid={ `${componentId}-vertical-stepper` }
-                                handleFinishAction={ () => null }
+                                handleFinishAction={ () => addRole() }
                             />
                         </Grid>
                     </Grid>

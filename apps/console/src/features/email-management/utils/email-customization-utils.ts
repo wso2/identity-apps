@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppConstants } from "@wso2is/common";
+import { store } from "../../../features/core/store";
 import {
     BrandingPreferenceInterface,
     BrandingPreferenceThemeInterface,
@@ -28,18 +30,36 @@ import processCustomTextTemplateLiterals from "../../branding/utils/process-cust
 
 export class EmailCustomizationUtils {
 
+    public static getDefaultLogoUrls(): {
+        fallbackDarkThemeUrl: string;
+        fallbackLightThemeUrl: string;
+        } {
+        const fallbackLightThemeUrl: string = AppConstants.getClientOrigin() +
+                "/" + AppConstants.getAppBasename() +
+                store.getState()?.config?.ui.emailTemplates?.defaultLogoUrl;
+        
+        const fallbackDarkThemeUrl: string = AppConstants.getClientOrigin() +
+                "/" + AppConstants.getAppBasename() +
+                store.getState()?.config?.ui.emailTemplates?.defaultWhiteLogoUrl;
+
+        return {
+            fallbackDarkThemeUrl,
+            fallbackLightThemeUrl
+        };
+    }
+
     private static readonly brandingFallBackValues: Record<string, string> = {
         background_color: "#F8F9FA",
         button_font_color: "#FFFFFF",
         copyright_text: "&#169; YYYY WSO2 LLC.",
         dark_background_color: "#111111",
         dark_border_color: "#333333",
-        dark_logo_url: "https://wso2.cachefly.net/wso2/sites/all/2022/images/asgadeo-logo-white.png",
+        dark_logo_url: EmailCustomizationUtils.getDefaultLogoUrls().fallbackDarkThemeUrl,
         font_color: "#231F20",
         font_style: "Montserrat",
         light_background_color: "#FFFFFF",
         light_border_color: "transparent",
-        light_logo_url: "https://wso2.cachefly.net/wso2/sites/all/2021/images/asgardeo-wso2-logo-white.png",
+        light_logo_url: EmailCustomizationUtils.getDefaultLogoUrls().fallbackLightThemeUrl,
         primary_color: "#FF7300"
     }
 

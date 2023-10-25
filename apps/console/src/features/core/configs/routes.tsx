@@ -58,6 +58,7 @@ import { AppConstants } from "../constants";
  *     path: "/applications"
  *  \}
  */
+
 export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInterface[] => {
 
     const routes: RouteInterface[] = values(
@@ -78,9 +79,38 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
+                        children: [
+                            {
+                                component: lazy(() => import("../../session-management/pages/session-management")),
+                                exact: true,
+                                id: "sessionManagement",
+                                name: "console:sessionManagement.title",
+                                path: AppConstants.getPaths().get("SESSION_MANAGEMENT"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() => import("../../saml2-configuration/pages/saml2-configuration")),
+                                exact: true,
+                                id: "saml2Configuration",
+                                name: "console:saml2Config.title",
+                                path: AppConstants.getPaths().get("SAML2_CONFIGURATION"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() => import("../../wsfed-configuration/pages/wsfed-configuration")),
+                                exact: true,
+                                id: "wsFedConfiguration",
+                                name: "console:wsFederationConfig.title",
+                                path: AppConstants.getPaths().get("WSFED_CONFIGURATION"),
+                                protected: true,
+                                showOnSidePanel: false
+                            }
+                        ],
                         component: lazy(() =>
                             import(
-                                "../../../features/server-configurations/" + "pages/connector-listing-page"
+                                "../../../features/server-configurations/pages/connector-listing-page"
                             )
                         ),
                         exact: false,
@@ -490,7 +520,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../features/server-configurations/" + "pages/connector-listing-page"
+                                "../../../features/server-configurations/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -566,7 +596,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../features/server-configurations/" + "pages/connector-edit-page"
+                                        "../../../features/server-configurations/pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -591,7 +621,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ],
                         component: lazy(() =>
                             import(
-                                "../../../features/server-configurations/" +  "pages/connector-listing-page"
+                                "../../../features/server-configurations/pages/connector-listing-page"
                             )
                         ),
                         exact: true,
@@ -641,7 +671,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             {
                                 component: lazy(() =>
                                     import(
-                                        "../../../features/server-configurations/" + "pages/connector-edit-page"
+                                        "../../../features/server-configurations/pages/connector-edit-page"
                                     )
                                 ),
                                 exact: true,
@@ -731,7 +761,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             }
                         ],
                         component: lazy(() =>
-                            import("../../server-configurations/pages/admin-advisory-banner-page")
+                            import("../../server-configurations/pages/connector-listing-page")
                         ),
                         exact: true,
                         icon: {
@@ -742,7 +772,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 22,
                         path: AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:develop.sidePanel.categories.AccountManagement",
@@ -804,6 +834,32 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         name: "Insights",
                         order: 23,
                         path: AppConstants.getPaths().get("INSIGHTS"),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
+                        category: "extensions:manage.sidePanel.categories.monitor",
+                        component: lazy(() =>
+                            import(
+                                "../../../features/server-configurations/pages/connector-edit-page"
+                            )
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().insights
+                        },
+                        id: "analytics",
+                        name: "Analytics",
+                        order: 24,
+                        path: AppConstants.getPaths().get("ANALYTICS")
+                            .replace(
+                                ":categoryId",
+                                ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
+                            )
+                            .replace(
+                                ":connectorId",
+                                ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
+                            ),
                         protected: true,
                         showOnSidePanel: true
                     },

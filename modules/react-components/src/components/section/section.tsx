@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -171,7 +171,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                             }
                                             { header }
                                         </Header>
-                                        <Card.Meta>{ description }</Card.Meta>
+                                        <Card.Meta className="description">{ description }</Card.Meta>
                                     </Grid.Column>
                                     {
                                         connectorEnabled !== undefined
@@ -205,7 +205,7 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                         className="no-padding"
                                     >
                                         <Header as="h2">{ header }</Header>
-                                        <Card.Meta>{ description }</Card.Meta>
+                                        <Card.Meta className="description">{ description }</Card.Meta>
                                     </Grid.Column>
                                     {
                                         connectorEnabled !== undefined
@@ -290,7 +290,6 @@ export const Section: FunctionComponent<PropsWithChildren<SectionProps>> = (
                                         }
                                     } }
                                 >
-
                                     {
                                         placeholder
                                             ? (

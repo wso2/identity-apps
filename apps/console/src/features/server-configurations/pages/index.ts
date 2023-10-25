@@ -16,7 +16,6 @@
  * under the License.
  */
 
-export * from "./admin-advisory-banner-page";
 export * from "./admin-session-advisory-banner-edit-page";
 export * from "./governance-connectors";
 export * from "./connector-edit-page";

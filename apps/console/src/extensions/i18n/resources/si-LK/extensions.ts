@@ -1805,6 +1805,16 @@ export const extensions: Extensions = {
                     success: {
                         description: "{{ tenant }} සඳහා සන්නම් මනාපයන් සාර්ථකව ප්‍රතිවර්තනය කරන ලදී.",
                         message: "ප්‍රතිවර්තනය සාර්ථකයි"
+                    },
+                    successWaiting: {
+                        description: "{{ tenant }} සඳහා වෙළඳනාම මනාපයන් ආපසු හැරීම."+
+                            "වෙනස්කම් පිළිබිඹු වන වෙනස්කම් සඳහා ටික කාලයක් ගතවනු ඇත.",
+                        message: "සන්නම් මනාප ආපසු හැරවීම"
+                    },
+                    successWaitingAlert: {
+                        description: "{{{ tenant }} සඳහා වෙළඳනාම මනාපයන් ආපසු හැරීම."+
+                            "පිළිබිඹු කළ යුතු වෙනස්කම් සඳහා මිනිත්තු 10 ක් පමණ ගතවිය හැකි බව සලකන්න.",
+                        message: "සන්නම් මනාප ආපසු හැරවීම"
                     }
                 },
                 fetch: {
@@ -1837,6 +1847,16 @@ export const extensions: Extensions = {
                     success: {
                         description: "Branding preference updated successfully for {{ tenant }}.",
                         message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                    },
+                    successWaiting: {
+                        description: "{{ tenant }} සඳහා වෙළඳ නාමකරණ මනාප යාවත්කාලීන කිරීම."+
+                            "වෙනස්කම් පිළිබිඹු වන වෙනස්කම් සඳහා ටික කාලයක් ගතවනු ඇත.",
+                        message: "සන්නම් මනාප යාවත්කාලීන කිරීම"
+                    },
+                    successWaitingAlert: {
+                        description: "{{ tenant }} සඳහා වෙළඳ නාමකරණ මනාප යාවත්කාලීන කිරීම."+
+                            "පිළිබිඹු කළ යුතු වෙනස්කම් සඳහා මිනිත්තු 10 ක් පමණ ගතවිය හැකි බව සලකන්න.",
+                        message: "සන්නම් මනාප යාවත්කාලීන කිරීම"
                     },
                     tenantMismatch: {
                         description: "{{ tenant }} සඳහා සන්නම් මනාප යාවත්කාලීන කිරීමේදී දෝෂයක් සිදු විය.",
@@ -3555,6 +3575,63 @@ export const extensions: Extensions = {
                 subHeading: "පරිශීලක ගිණුම් ආරක්‍ෂා කිරීම සඳහා ආරක්‍ෂක සැකසුම් සකසන්න."
             },
             additionalSettings: "අමතර සැකසුම්",
+            analytics: {
+                heading: "විශ්ලේෂණ එන්ජිම",
+                subHeading: "ඔබේ සංවිධානය සඳහා විශ්ලේෂණ එන්ජිම වින්යාස කරන්න.",
+                form: {
+                    fields: {
+                        hostUrl: {
+                            label: "ධාරක URL",
+                            placeholder: "ධාරක URL ඇතුලත් කරන්න",
+                            hint: "විශ්ලේෂණ එන්ජිමේ URL."
+                        },
+                        hostBasicAuthEnable: {
+                            label: "මූලික සත්යාපනය සක්රීය කරන්න",
+                            hint: "විශ්ලේෂණ එන්ජිම සඳහා මූලික සත්යාපනය සක්රීය කරන්න."
+                        },
+                        hostUsername: {
+                            label: "පරිශීලක නාමය",
+                            placeholder: "පරිශීලක නාමය ඇතුළත් කරන්න",
+                            hint: "විශ්ලේෂණ එන්ජිමට සත්යාපනය කිරීමේ පරිශීලක නාමය."
+                        },
+                        hostPassword: {
+                            label: "මුරපදය",
+                            placeholder: "මුරපදය ඇතුළත් කරන්න",
+                            hint: "විශ්ලේෂණ එන්ජිමට සත්යාපනය කිරීමේ මුරපදය."
+                        },
+                        hostConnectionTimeout: {
+                            label: "Http සම්බන්ධතා කාලය",
+                            placeholder: "සම්බන්ධතා කාලය ඇතුළත් කරන්න",
+                            hint: "මිලි තත්පර වලින් සම්බන්ධ වීමේ කාලකණ්ණි අගය ඇතුළත් කරන්න."
+                        },
+                        hostReadTimeout: {
+                            label: "Http කියවන්න කල් ඉකුත් වීම",
+                            placeholder: "කියවීමේ කාල සීමාව ඇතුළත් කරන්න",
+                            hint: "ඇඹරූ කල් ඉකුත් වීමේ අගය මිලි තත්පර වලින් ඇතුළත් කරන්න."
+                        },
+                        hostConnectionRequestTimeout: {
+                            label: "Http සම්බන්ධතා ඉල්ලීම් කල් ඉකුත් වීම",
+                            placeholder: "සම්බන්ධතා ඉල්ලීම් කල් ඉකුත් වීම ඇතුළත් කරන්න",
+                            hint: "සම්බන්ධතා ඉල්ලීම මිලි තත්පරවල කල් ඉකුත් වීමේ වටිනාකම ඇතුළත් කරන්න."
+                        },
+                        hostNameVerification: {
+                            label: "ධාරක නාම සත්යාපනය",
+                            placeholder: "ධාරක නාම සත්යාපනය ඇතුළත් කරන්න",
+                            hint: "විශ්ලේෂණ එන්ජිම සඳහා සත්කාරක නාම සත්යාපනය සක්රීය කරන්න.(දැඩි | Act_all)"
+                        }
+                    },
+                    notification: {
+                        error: {
+                            description: "විශ්ලේෂණ එන්ජින් වින්යාසයන් යාවත්කාලීන කිරීමේදී දෝෂයක් ඇතිවිය.",
+                            message: "දෝෂයක් සිදුවී"
+                        },
+                        success: {
+                            description: "විශ්ලේෂණ එන්ජින් වින්යාසයන් සාර්ථකව යාවත්කාලීන කරන ලදි.",
+                            message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                        }
+                    }
+                }
+            },
             generalBackButton: "ආපසු යන්න",
             generalDisabledLabel: "අක්‍රිය කර ඇත",
             generalEnabledLabel: "සක්‍රීය කර ඇත",

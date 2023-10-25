@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -134,7 +134,8 @@ export enum SupportedAuthProtocolTypes {
     OAUTH2_OIDC = "oauth2-oidc",
     WS_FEDERATION = "passive-sts",
     WS_TRUST = "ws-trust",
-    CUSTOM= "custom"
+    CUSTOM= "custom",
+    OAUTH2= "oauth2"
 }
 
 /**
@@ -415,6 +416,10 @@ export interface OIDCEndpointsInterface {
      * WellKnown endpoint.
      */
     wellKnown?: string;
+    /**
+     * OpenID server endpoint.
+     */
+    openIdServer?: string;
 }
 
 /**
@@ -435,4 +440,20 @@ export enum SAMLConfigModes {
     MANUAL = "manualConfiguration",
     META_FILE = "metadataFile",
     META_URL = "metadataURL"
+}
+
+export interface SupportedAuthProtocolTypesInterface {
+    [ SupportedAuthProtocolTypes.SAML ]?: string;
+    [ SupportedAuthProtocolTypes.OIDC ]?: string;
+    [ SupportedAuthProtocolTypes.OAUTH2_OIDC ]?: string;
+    [ SupportedAuthProtocolTypes.WS_FEDERATION ]?: string;
+    [ SupportedAuthProtocolTypes.WS_TRUST ]?: string;
+    [ SupportedAuthProtocolTypes.CUSTOM ]?: string;
+    [ SupportedAuthProtocolTypes.OAUTH2 ]?: string;
+}
+
+export interface SAMLConfigurationInterface {
+    [ SAMLConfigModes.MANUAL ]: string;
+    [ SAMLConfigModes.META_FILE ]: string;
+    [ SAMLConfigModes.META_URL ]: string;
 }

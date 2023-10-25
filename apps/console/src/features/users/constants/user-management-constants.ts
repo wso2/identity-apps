@@ -113,6 +113,12 @@ export class UserManagementConstants {
         .set("ACCOUNT_LOCKED", SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked)
         .set("ACCOUNT_DISABLED", SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled)
         .set("ONETIME_PASSWORD", SCIMConfigs.scimEnterpriseUserClaimUri.oneTimePassword);
+    
+    public static readonly ROLES: string = "roles";
+    public static readonly GROUPS: string = "groups";
+    public static readonly SCIM_USER_PATH: string = "/Users";
+    public static readonly SCIM_GROUP_PATH: string = "/Groups";
+    public static readonly SCIM_V2_ROLE_PATH: string = "/v2/Roles";
 }
 
 /**
@@ -152,8 +158,6 @@ export enum UserAccountTypesMain {
  */
 export enum BlockedBulkUserImportAttributes {
     PASSWORD = "password",
-    ROLES = "roles",
-    GROUPS = "groups",
     ONETIME_PASSWORD = "oneTimePassword",
     X509CERTIFICATES = "x509Certificates",
     GTALK = "gtalk",
@@ -197,4 +201,13 @@ export enum UserAddOptionTypes {
 export enum BulkUserImportStatus {
     FAILED = "FAILED",
     SUCCESS = "SUCCESS",
+}
+
+/**
+ * @readonly
+ * @typeParam string - Bulk user import response operation type.
+ */
+export enum BulkImportResponseOperationTypes {
+    USER_CREATION = "userCreation",
+    ROLE_ASSIGNMENT = "roleAssignment",
 }

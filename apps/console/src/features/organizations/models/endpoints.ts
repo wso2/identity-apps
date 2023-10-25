@@ -23,5 +23,7 @@ export interface OrganizationResourceEndpointsInterface {
     organizations: string;
     rootOrganization: string;
     usersSuperOrganization: string;
+    usersOrganization: string;
+    rootUsersOrganization: string;
     breadcrumb: string;
 }

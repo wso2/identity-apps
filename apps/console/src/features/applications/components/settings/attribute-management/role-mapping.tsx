@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,10 +19,12 @@
 import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DynamicField, Heading, KeyValue } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid } from "semantic-ui-react";
+import { Dispatch } from "redux";
+import { Divider, Grid } from "semantic-ui-react";
 import { getRolesList } from "../../../../roles/api";
 import { RoleMappingInterface } from "../../../models";
 
@@ -73,7 +75,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ roleList, setRoleList ] = useState<RolesInterface[]>();
 
@@ -82,11 +84,11 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
      */
     const getFilteredRoles = () => {
         const filterRole: RolesInterface[] = roleList.filter(
-            (role) => {
+            (role: RolesInterface) => {
                 return !(role.displayName.includes("Application/") || role.displayName.includes("Internal/"));
             });
 
-        return filterRole.map(role => {
+        return filterRole.map((role: RolesInterface) => {
             return {
                 id: role.displayName,
                 value: role.displayName
@@ -96,7 +98,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
 
     useEffect(() => {
         getRolesList(null)
-            .then((response) => {
+            .then((response: AxiosResponse) => {
                 if (response.status === 200) {
                     const allRole: RoleListInterface = response.data;
 
@@ -115,7 +117,8 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
     return (
         <>
             <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                    <Divider />
                     <Heading as="h4">
                         { t("console:develop.features.applications.edit.sections.attributes.roleMapping.heading") }
                     </Heading>
@@ -155,7 +158,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                         }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-dynamic-field` } 
-                        listen={ (data) => {
+                        listen={ (data: KeyValue[]) => {
                             if (onChange) {
                                 const finalData: RoleMappingInterface[] = data?.map((mapping: KeyValue) => {
                                     return {

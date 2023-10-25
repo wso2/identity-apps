@@ -139,11 +139,30 @@
         .header-section {
             padding: @settingsCardHeaderPadding;
 
+            &.placeholder {
+                padding-bottom: 50px;
+            }
+
             // override the semantic H2 margin
             .ui.header {
                 font-size: @settingsCardHeaderFontSize;
                 margin-bottom: 5px;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: normal;
             }
+        }
+        .description {
+            height: 62px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
         }
         .top-action-panel {
             background: @settingsCardTopActionPanelBackground;

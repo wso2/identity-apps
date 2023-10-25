@@ -39,8 +39,8 @@ import { ApplicationListItemInterface } from "../../../applications/models";
 import { history } from "../../../core";
 import { AppConstants } from "../../../core/constants";
 import { searchRoleList } from "../../api/roles";
-import { RoleConstants } from "../../constants";
-import { CreateRoleFormData, RoleAudiences, SearchRoleInterface } from "../../models";
+import { RoleAudienceTypes, RoleConstants } from "../../constants";
+import { CreateRoleFormData, SearchRoleInterface } from "../../models";
 
 const FORM_ID: string = "add-role-basics-form";
 
@@ -107,7 +107,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             return;
         }
 
-        if (roleAudience === RoleAudiences.APPLICATION) {
+        if (roleAudience === RoleAudienceTypes.APPLICATION) {
             if (noApplicationsAvailable.current && !applicationSearchQuery) {
                 setIsDisplayNoAppScopeApplicatioError(true);
                 setIsDisplayApplicationList(false);
@@ -161,8 +161,12 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      */
     const getFormValues = (values: CreateRoleFormData): CreateRoleFormData => {
         return {
-            assignedApplication: values.roleAudience === RoleAudiences.APPLICATION 
-                ? values.assignedApplication.toString()
+            assignedApplicationId: values.roleAudience === RoleAudienceTypes.APPLICATION 
+                ? values.assignedApplicationId.toString()
+                : null,
+            assignedApplicationName: values.roleAudience === RoleAudienceTypes.APPLICATION
+                ? applicationListOptions?.find((application: DropdownProps) => 
+                    application.key === values.assignedApplicationId.toString())?.text
                 : null,
             roleAudience: values.roleAudience.toString(),
             roleName: values.roleName.toString()
@@ -202,13 +206,13 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const validateForm = async (values: CreateRoleFormData): Promise<CreateRoleFormData>=> {
 
         const errors: CreateRoleFormData = {
-            assignedApplication: undefined,
+            assignedApplicationId: undefined,
             roleName: undefined
         };
 
         // Handle the case where the user has not selected an assigned application.
-        if (roleAudience === RoleAudiences.APPLICATION && !values.assignedApplication?.toString().trim()) {
-            errors.assignedApplication = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+        if (roleAudience === RoleAudienceTypes.APPLICATION && !values.assignedApplicationId?.toString().trim()) {
+            errors.assignedApplicationId = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
                 "assignedApplication.validations.empty", { type: "Role" });
         }
         
@@ -232,7 +236,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             }    
         }
 
-        if (errors.roleName || errors.assignedApplication) {
+        if (errors.roleName || errors.assignedApplicationId) {
             setIsFormError(true);
         } else {
             setIsFormError(false);
@@ -276,7 +280,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                     { t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails.roleAudience.label") }
                 </label>
                 {
-                    Object.values(RoleAudiences)
+                    Object.values(RoleAudienceTypes)
                         .map((audience: string, index: number) => (
                             <Field.Radio
                                 key={ index }
@@ -289,7 +293,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                 data-componentid={ `${componentId}-${audience}-audience` }
                                 listen={ () => setRoleAudience(audience) }
                                 hint={ 
-                                    index === Object.keys(RoleAudiences).length - 1 
+                                    index === Object.keys(RoleAudienceTypes).length - 1 
                                         ? (
                                             <Trans 
                                                 i18nKey= { "console:manage.features.roles.addRoleWizard.forms." + 
@@ -310,7 +314,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                     ? (
                         <Alert severity="info">
                             {
-                                roleAudience === RoleAudiences.ORG
+                                roleAudience === RoleAudienceTypes.ORGANIZATION
                                     ? t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails.notes" + 
                                         ".orgNote")
                                     : t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails.notes" + 
@@ -343,13 +347,13 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                 isDisplayApplicationList
                     ? (
                         <Field.Dropdown
-                            ariaLabel="assignedApplication"
-                            name="assignedApplication"
+                            ariaLabel="assignedApplicationId"
+                            name="assignedApplicationId"
                             label={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." + 
                                 "assignedApplication.label") }
                             options={ applicationListOptions }
                             required={ isDisplayApplicationList }
-                            value={ initialValues?.assignedApplication }
+                            value={ initialValues?.assignedApplicationId }
                             search
                             loading = { isApplicationListFetchRequestLoading || assignedApplicationsSearching }
                             data-componentid={ `${componentId}-typography-font-family-dropdown` }

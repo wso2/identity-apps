@@ -1614,6 +1614,14 @@ export interface Extensions {
                         description: string;
                         message: string;
                     };
+                    successWaiting: {
+                        description: string; 
+                        message: string;
+                    };
+                    successWaitingAlert: {
+                        description: string; 
+                        message: string;
+                    };
                 };
                 fetch: {
                     customLayoutNotFound: {
@@ -1644,6 +1652,14 @@ export interface Extensions {
                     };
                     success: {
                         description: string;
+                        message: string;
+                    };
+                    successWaiting: {
+                        description: string; 
+                        message: string;
+                    };
+                    successWaitingAlert: {
+                        description: string; 
                         message: string;
                     };
                     tenantMismatch: {
@@ -2959,6 +2975,26 @@ export interface Extensions {
                             description_plural: string;
                             description_singular: string;
                         };
+                    };
+                };
+            };
+            analytics: {
+                heading: string;
+                subHeading: string;
+                form: {
+                    fields: {
+                        hostUrl: FormAttributes;
+                        hostBasicAuthEnable: FormAttributes;
+                        hostUsername: FormAttributes;
+                        hostPassword: FormAttributes;
+                        hostConnectionTimeout: FormAttributes;
+                        hostReadTimeout: FormAttributes;
+                        hostConnectionRequestTimeout: FormAttributes;
+                        hostNameVerification: FormAttributes;
+                    };
+                    notification: {
+                        error: NotificationItem;
+                        success: NotificationItem;
                     };
                 };
             };

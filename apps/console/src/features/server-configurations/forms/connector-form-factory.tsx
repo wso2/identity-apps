@@ -20,6 +20,7 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
+import { AnalyticsConfigurationForm } from "./analytics-form";
 import { LoginAttemptSecurityConfigurationFrom } from "./login-attempt-security-form";
 import { PasswordRecoveryConfigurationForm } from "./password-recovery-form";
 import { SelfRegistrationForm } from "./self-registration-form";
@@ -116,6 +117,16 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ isConnectorEnabled }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
+            return (
+                <AnalyticsConfigurationForm
+                    onSubmit={ onSubmit }
+                    initialValues={ initialValues }
+                    isConnectorEnabled={ true }
                     readOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
                 />

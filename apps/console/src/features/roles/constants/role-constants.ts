@@ -16,12 +16,18 @@
  * under the License.
  */
 
-import { RoleAudiences } from "../models";
-
 export const APPLICATION_DOMAIN: string = "Application/";
 export const INTERNAL_DOMAIN: string = "Internal";
 export const PRIMARY_DOMAIN: string = "Primary";
 export const ROLE_VIEW_PATH: string = "/roles/";
+
+/**
+ * Role audience interface.
+ */
+export enum RoleAudienceTypes {
+    ORGANIZATION = "ORGANIZATION",
+    APPLICATION = "APPLICATION"
+}
 
 /**
  * Class containing role constants.
@@ -65,7 +71,7 @@ export class RoleConstants {
     /**
      * Default role audience.
      */
-    public static readonly DEFAULT_ROLE_AUDIENCE: string = RoleAudiences.ORG;
+    public static readonly DEFAULT_ROLE_AUDIENCE: string = RoleAudienceTypes.ORGANIZATION;
 
     /**
      * Read only applications client ids.
@@ -93,9 +99,4 @@ export enum Schemas {
     SEARCH_REQUEST = "urn:ietf:params:scim:api:messages:2.0:SearchRequest",
     BULK_REQUEST = "urn:ietf:params:scim:api:messages:2.0:BulkRequest",
     PATCH_OP = "urn:ietf:params:scim:api:messages:2.0:PatchOp"
-}
-
-export enum RoleAudienceTypes {
-    ORGANIZATION = "ORGANIZATION",
-    APPLICATION = "APPLICATION"
 }

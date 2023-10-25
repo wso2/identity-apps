@@ -31,7 +31,8 @@ export interface CreateRoleInterface {
     members?: CreateRoleMemberInterface[];
     users?: CreateRoleMemberInterface[];
     groups?: CreateGroupMemberInterface[];
-    permissions?: string[];
+    permissions?: string[] | CreateRolePermissionInterface[];
+    audience?: CreateRoleAudienceInterface;
 }
 
 /**
@@ -48,8 +49,21 @@ export interface CreateRoleMemberInterface {
 export interface CreateRoleFormData {
     domain?: string;
     roleName: string;
-    assignedApplication?: string;
+    assignedApplicationId?: string;
+    assignedApplicationName?: string;
     roleAudience?: string;
+}
+
+/**
+ * Interface to store create role permissions.
+ */
+export interface CreateRolePermissionInterface {
+    value: string;
+}
+
+export interface CreateRoleAudienceInterface {
+    value: string;
+    type: string;
 }
 
 /**
@@ -114,20 +128,6 @@ export interface RoleBasicInterface {
      * Role name.
      */
     roleName: string;
-}
-
-/**
- * Enum for the role audiences.
- */
-export enum RoleAudiences {
-    /**
-     * Organization role audience.
-     */
-    ORG = "organization",
-    /**
-     * Application role audience.
-     */
-    APPLICATION = "application",
 }
 
 /**
@@ -234,4 +234,11 @@ export interface SelectedPermissionsInterface {
  */
 export interface ChipOptionsInterface {
     id?: string;
+}
+
+/**
+ * Interface to capture permission update in role.
+ */
+export interface PermissionUpdateInterface {
+    value: string;
 }

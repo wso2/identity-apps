@@ -45,7 +45,7 @@ import { AppConstants } from "../../core/constants/app-constants";
 import { history } from "../../core/helpers/history";
 import { FeatureConfigInterface } from "../../core/models/config";
 import { AppState } from "../../core/store/index";
-import { RoleAudiences } from "../models";
+import { RoleAudienceTypes } from "../constants/role-constants";
 
 interface RoleListProps extends LoadableComponentInterface, IdentifiableComponentInterface {
     /**
@@ -211,9 +211,9 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                 <Label
                                     size="mini"
                                     className = {
-                                        RoleAudiences.APPLICATION === role?.audience?.type
-                                            ? "client-id-label"
-                                            : "issuer-label"
+                                        RoleAudienceTypes.ORGANIZATION === role?.audience?.type.toUpperCase()
+                                            ? "issuer-label"
+                                            : "client-id-label"
                                     }
                                 >
                                     { role?.audience?.display }

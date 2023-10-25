@@ -116,6 +116,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             myAccountConfigMgt: "",
             oidcScopes: "",
             organizations: "",
+            passiveStsConfigurations: "",
             passwordExpiry: "",
             passwordHistory: "",
             passwordPolicies: "",
@@ -130,6 +131,8 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             rolesV2: "",
             rolesWithoutOrgPath: "",
             rootOrganization: "",
+            rootUsersOrganization: "",
+            saml2Configurations: "",
             saml2Meta: "",
             schemas: "",
             selfSignUp: "",
@@ -142,6 +145,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             userSessions: "",
             userStores: "",
             users: "",
+            usersOrganization: "",
             usersSuperOrganization: "",
             validationServiceMgt: "",
             wellKnown: ""
@@ -171,6 +175,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             appTitle: "",
             applicationTemplateLoadingStrategy: undefined,
             connectionResourcesUrl: "",
+            emailTemplates: {
+                defaultLogoUrl: "",
+                defaultWhiteLogoUrl: ""
+            },
             features: {
                 applications: null,
                 approvals: null,

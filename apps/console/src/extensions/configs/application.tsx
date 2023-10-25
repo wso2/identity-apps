@@ -38,6 +38,7 @@ import { Divider, Icon, Message } from "semantic-ui-react";
 import { ApplicationGeneralTabOverride } from "./components/application-general-tab-overide";
 import { MarketingConsentModalWrapper } from "./components/marketing-consent/components";
 import { ApplicationConfig, ExtendedFeatureConfigInterface } from "./models";
+import { APIAuthorization } from "../../features/applications/components/api-authorization/api-authorization";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
@@ -76,7 +77,13 @@ function isClaimInterface(
 }
 
 const IS_ENTERPRISELOGIN_MANAGEMENT_APP: string = "isEnterpriseLoginManagementApp";
+
+// Relative tab indexes.
+const API_AUTHORIZATION_INDEX: number = 4;
 const APPLICATION_ROLES_INDEX: number = 4;
+const M2M_API_AUTHORIZATION_INDEX: number = 2;
+
+const featureConfig: FeatureConfigInterface = window[ "AppUtils" ].getConfig().ui.features;
 
 /**
  * Check whether claims is  identity claims or not.
@@ -131,6 +138,10 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.SAML2_BEARER,
             ApplicationManagementConstants.JWT_BEARER
         ],
+        [ "m2m-application" ]: [
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+        ],
         [ "mobile-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
@@ -167,7 +178,11 @@ export const applicationConfig: ApplicationConfig = {
         roleMapping: true
     },
     customApplication: {
-        allowedProtocolTypes: [ SupportedAuthProtocolTypes.OAUTH2_OIDC, SupportedAuthProtocolTypes.SAML ],
+        allowedProtocolTypes: [
+            SupportedAuthProtocolTypes.OAUTH2_OIDC,
+            SupportedAuthProtocolTypes.SAML,
+            SupportedAuthProtocolTypes.WS_FEDERATION
+        ],
         defaultTabIndex: 1
     },
     editApplication: {
@@ -372,6 +387,35 @@ export const applicationConfig: ApplicationConfig = {
             const onApplicationUpdate: () => void = props?.onApplicationUpdate as () => void;
 
             const tabExtensions: ResourceTabPaneInterface[] = [];
+
+            // Enable the API authorization tab for supported templates when the api resources config is enabled.
+            if (
+                apiResourceFeatureEnabled && !application?.advancedConfigurations?.fragment &&
+                (
+                    application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                    || application?.templateId === MobileAppTemplate?.id
+                    || application?.templateId === OIDCWebAppTemplate?.id
+                    || application?.templateId === SinglePageAppTemplate?.id
+                    || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
+                )
+            ) {
+                tabExtensions.push(
+                    {
+                        componentId: "api-authorization",
+                        index: application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID 
+                            ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length 
+                            : API_AUTHORIZATION_INDEX + tabExtensions.length,
+                        menuItem: I18n.instance.t(
+                            "extensions:develop.applications.edit.sections.apiAuthorization.title"
+                        ),
+                        render: () => (
+                            <ResourceTab.Pane controlledSegmentation>
+                                <APIAuthorization />
+                            </ResourceTab.Pane>
+                        )
+                    }
+                );
+            }
 
             // Enable the roles tab for supported templates when the api resources config is enabled.
             if (apiResourceFeatureEnabled
@@ -616,6 +660,7 @@ export const applicationConfig: ApplicationConfig = {
     },
     templates:{
         custom: true,
+        m2m: !featureConfig?.applications?.disabledFeatures?.includes("m2mTemplate"),
         mobile: true,
         oidc: true,
         saml: false,

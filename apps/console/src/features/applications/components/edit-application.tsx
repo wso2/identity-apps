@@ -62,6 +62,7 @@ import CustomApplicationTemplate
 import {
     ApplicationInterface,
     ApplicationTabTypes,
+    ApplicationTemplateIdTypes,
     ApplicationTemplateInterface,
     AuthProtocolMetaListItemInterface,
     InboundProtocolListItemInterface,
@@ -183,6 +184,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(undefined);
     const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
+    const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -235,6 +237,16 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             handleActiveTabIndexChange(tabIndex);
         }
     },[ template ]);
+
+    /**
+     * Check whether the application is an M2M Application
+     */
+    useEffect(() => {
+
+        if (template?.id == ApplicationTemplateIdTypes.M2M_APPLICATION) {
+            setM2MApplication(true);
+        }
+    }, [ template ]);
 
     /**
      * Called when the URL fragment updates.
@@ -819,7 +831,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))
-                && !isFragmentApp) {
+                && !isFragmentApp
+                && !isM2MApplication) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES, tenantDomain) &&
@@ -842,7 +855,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 });
             }
             if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))) {
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))
+                && !isM2MApplication) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
@@ -859,7 +873,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (applicationConfig.editApplication.showProvisioningSettings
                 && isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))
-                && !isFragmentApp) {
+                && !isFragmentApp
+                && !isM2MApplication) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING, tenantDomain) &&
@@ -871,7 +886,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))
-                && !isFragmentApp) {
+                && !isFragmentApp
+                && !isM2MApplication) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
@@ -909,8 +925,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
-                 && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-                    && !isFragmentApp) {
+                 && !isFragmentApp) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
