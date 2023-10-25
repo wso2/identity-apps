@@ -241,7 +241,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const tokenEndpointAuthSigningAlg: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const tlsClientAuthSubjectDn: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requirePushedAuthorizationRequests: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const requireSignedRequestObject: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requestObjectSigningAlg: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requestObjectEncryptionAlgorithm: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const requestObjectEncryptionMethod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
@@ -1030,7 +1029,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     enabled: true
                 },
                 requestObjectSigningAlg: values.get("requestObjectSigningAlg"),
-                requireSignedRequestObject : values.get("requireSignedRequestObject")?.length > 0
+                requireSignedRequestObject : false
+            },
+            subject: {
+                sectorIdentifierUri: initialValues?.subject?.sectorIdentifierUri,
+                subjectType: initialValues?.subject?.subjectType
             }
         };
 
@@ -1839,32 +1842,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     <Heading as="h4">
                         { t("console:develop.features.applications.forms.inboundOIDC.sections.requestObject.heading") }
                     </Heading>
-                    <Field
-                        ref={ requireSignedRequestObject }
-                        name={ "requireSignedRequestObject" }
-                        label=""
-                        required={ false }
-                        type="checkbox"
-                        value={ initialValues?.requestObject?.requireSignedRequestObject
-                            ? [ "requireSignedRequestObject" ]
-                            : [] }
-                        children={ [
-                            {
-                                label: t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                    ".requestObject.fields.requireSignedRequestObject.label"),
-                                value: "requireSignedRequestObject"
-                            }
-                        ] }
-                        readOnly={ readOnly }
-                    />
-                    <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".requestObject.fields.requireSignedRequestObject.hint") }
-                    </Hint>
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Field
                         ref={ requestObjectSigningAlg }
                         name="requestObjectSigningAlg"
@@ -3202,6 +3179,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             submitUrl((url: string) => {
                 if (isEmpty(callBackUrls) && isEmpty(url)) {
                     setShowURLError(true);
+                    scrollToInValidField("url");
+                } else if (callBackUrls.split(",").length > 1 &&
+                    initialValues?.subject?.subjectType === "pairwise" &&
+                    !initialValues?.subject?.sectorIdentifierUri) {
+                    setCallbackURLsErrorLabel(<Label className="red pointing basic prompt">
+                        { t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                            ".sections.subject.fields.sectorIdentifierURI.label") }
+                    </Label>);
                     scrollToInValidField("url");
                 } else {
                     submitOrigin((origin: string) => {

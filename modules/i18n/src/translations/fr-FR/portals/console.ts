@@ -1441,7 +1441,11 @@ export const console: ConsoleNS = {
                                             required: "Ce champ est obligatoire pour une application fonctionnelle." +
                                                 " Toutefois, si vous envisagez d’essayer l’exemple d’application, ce" +
                                                 " champ peut être ignoré."
-                                        }
+                                        },
+                                        multipleCallbackError: "Besoin de configurer un URI d'identifiant de secteur" +
+                                            " si plusieurs URL de rappel sont configurées avec un type de sujet par" +
+                                            " paire. Accédez à Attributs utilisateur -> Objet pour configurer l'URI" +
+                                            " de l'identifiant du secteur."
                                     }
                                 },
                                 heading: "Sujet"
@@ -1959,11 +1963,6 @@ export const console: ConsoleNS = {
                             },
                             requestObject: {
                                 fields: {
-                                    requireSignedRequestObject: {
-                                        hint: "Sélectionnez cette option pour rendre obligatoire l'envoi par les " +
-                                            "applications d'objets de demande signés.",
-                                        label: "Exiger que l'objet de la demande soit signé"
-                                    },
                                     requestObjectSigningAlg: {
                                         hint: "La liste déroulante contient les algorithmes de signature d'<1>objet " +
                                             "de requête</1> pris en charge.",

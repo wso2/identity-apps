@@ -1412,9 +1412,13 @@ export const console: ConsoleNS = {
                                             " different hostnames are configured.",
                                         placeholder: "Enter the subject identifier URI",
                                         validations: {
-                                            invalid: "The entered URL isnot HTTPS. Please add a valid URL.",
-                                            required: "This field is required if multiple callback URIs are configured."
-                                        }
+                                            invalid: "The entered URL is not HTTPS. Please add a valid URL.",
+                                            required: "This field is required if multiple callback URIs are" +
+                                                " configured."
+                                        },
+                                        multipleCallbackError: "Need to configure a sector identifier URI if " +
+                                            "multiple callback URLs are configured with subject type pairwise. Go to" +
+                                            " User attributes -> Subject to configure the sector identifier URI."
                                     }
                                 },
                                 heading: "Subject"
@@ -1919,11 +1923,6 @@ export const console: ConsoleNS = {
                             },
                             requestObject: {
                                 fields: {
-                                    requireSignedRequestObject: {
-                                        hint: "Select to make it mandatory for the applications to send signed" +
-                                            " request objects.",
-                                        label: "Require request object signed"
-                                    },
                                     requestObjectSigningAlg: {
                                         hint: "The dropdown contains the supported <1>request object</1> signing" +
                                             " algorithms.",

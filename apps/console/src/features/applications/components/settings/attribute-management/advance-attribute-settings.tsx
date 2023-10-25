@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { Code, Heading, Hint, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -90,11 +91,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
     const [ selectedSubjectValueLocalClaim, setSelectedSubjectValueLocalClaim ] =
         useState<string>();
-    const [ sectorIdentifierURI, setSectorIdentifierURI ] = useState(oidcInitialValues?.subject ?
-        oidcInitialValues.subject.sectorIdentifierUri : null);
     const [ selectedSubjectType, setSelectedSubjectType ] = useState(oidcInitialValues?.subject ?
         oidcInitialValues.subject.subjectType : SubjectTypes.PUBLIC);
-    const multipleCallbacksConfigured = oidcInitialValues?.callbackURLs?.length > 0 ||
+    const multipleCallbacksConfigured = oidcInitialValues?.callbackURLs?.length > 0 &&
         oidcInitialValues.callbackURLs[0].includes("regexp=");
 
     useEffect(() => {
@@ -166,6 +165,28 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         return claimURI;
     });
 
+    interface AdvanceAttributeSettingsErrorValidationInterface {
+
+        sectorIdentifierURI?: string;
+    }
+    function validateForm(values): AdvanceAttributeSettingsErrorValidationInterface {
+
+        const errors: AdvanceAttributeSettingsErrorValidationInterface = {
+            sectorIdentifierURI: undefined
+        };
+
+        if (multipleCallbacksConfigured && !values.sectorIdentifierURI ) {
+            errors.sectorIdentifierURI= t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                ".sections.subject.fields.sectorIdentifierURI.validations.required");
+        } else if (!URLUtils.isHttpsUrl(values.sectorIdentifierURI)) {
+            errors.sectorIdentifierURI= t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                ".sections.subject.fields.sectorIdentifierURI.validations.invalid");
+        }
+
+        return errors;
+
+    }
+
     const submitValues = (values) => {
 
         const settingValues: {
@@ -176,7 +197,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             oidc: {
                 ...oidcInitialValues,
                 subject: {
-                    sectorIdentifierUri: sectorIdentifierURI,
+                    sectorIdentifierUri: values.sectorIdentifierURI,
                     subjectType: selectedSubjectType
                 }
             },
@@ -278,7 +299,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             ? (
                 <Form
                     id={ FORM_ID }
-                    uncontrolledForm={ false }
+                    uncontrolledForm={ true }
                     initialValues={
                         !onlyOIDCConfigured &&
                         {
@@ -286,6 +307,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                             subjectAttribute: selectedSubjectValue
                         }
                     }
+                    validate={ validateForm }
                     onSubmit={ (values) => {
                         submitValues(values);
                     } }
@@ -303,141 +325,147 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     </Heading>
                     <Divider hidden/>
 
-                    <Text>
+                    <div>
+                        <Text>
+                            {
+                                t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                    ".sections.subject.fields.subjectType.label")
+                            }
+                        </Text>
                         {
-                            t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                ".sections.subject.fields.subjectType.label")
-                        }
-                    </Text>
-                    {
-                        Object.keys(SubjectTypes)
-                            .map((subjectTypeKey: SubjectTypes, index: number) => {
-                                const subjectType: SubjectTypes
-                                    = SubjectTypes[subjectTypeKey];
+                            Object.keys(SubjectTypes)
+                                .map((subjectTypeKey: SubjectTypes, index: number) => {
+                                    const subjectType: SubjectTypes
+                                        = SubjectTypes[subjectTypeKey];
 
-                                return (
-                                    <Field.Radio
-                                        key={ index }
-                                        ariaLabel={ `Subject type ${subjectType}` }
-                                        name={ "subjectType" }
-                                        value={ subjectType }
-                                        label={ subjectType }
-                                        checked={selectedSubjectType === subjectType }
-                                        listen={() => {
-                                            setSelectedSubjectType(subjectType);
-                                        } }
-                                    />
-                                );
-                            })
+                                    return (
+                                        <Field.Radio
+                                            key={ index }
+                                            ariaLabel={ `Subject type ${subjectType}` }
+                                            name={ "subjectType" }
+                                            value={ subjectType }
+                                            label={ subjectType }
+                                            checked={selectedSubjectType === subjectType }
+                                            listen={() => {
+                                                setSelectedSubjectType(subjectType);
+                                            } }
+                                        />
+                                    );
+                                })
+                        }
+                    </div>
+
+                    { selectedSubjectType === SubjectTypes.PUBLIC && (
+                        <>
+                            <Field.Dropdown
+                                ariaLabel="Subject attribute"
+                                name="subjectAttribute"
+                                label={
+                                    t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                        ".sections.subject.fields.subjectAttribute.label")
+                                }
+                                required={ claimMappingOn }
+                                value={ selectedSubjectValue }
+                                children={ dropDownOptions }
+                                hidden={
+                                    onlyOIDCConfigured &&
+                                    !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute
+                                }
+                                readOnly={ readOnly }
+                                data-testid={ `${ testId }-subject-attribute-dropdown` }
+                                listen={ subjectAttributeChangeListener }
+                                enableReinitialize={ true }
+                                hint={ resolveSubjectAttributeHint() }
+                            />
+                            <Field.CheckboxLegacy
+                                ariaLabel="Subject include user domain"
+                                name="subjectIncludeUserDomain"
+                                label={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                    "sections.subject.fields.subjectIncludeUserDomain.label") }
+                                required={ false }
+                                value={ initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
+                                readOnly={ readOnly }
+                                data-testid={ `${ testId }-subject-iInclude-user-domain-checkbox` }
+                                hidden={
+                                    !applicationConfig.attributeSettings.advancedAttributeSettings.
+                                        showIncludeUserstoreDomainSubject
+                                }
+                                hint={
+                                    t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                        ".sections.subject.fields.subjectIncludeUserDomain.hint")
+                                }
+                            />
+                            <Field.CheckboxLegacy
+                                ariaLabel="Subject include tenant domain"
+                                name="subjectIncludeTenantDomain"
+                                label={
+                                    t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                        ".sections.subject.fields.subjectIncludeTenantDomain.label")
+                                }
+                                required={ false }
+                                value={ initialSubject?.includeTenantDomain ? [ "includeTenantDomain" ] : [] }
+                                readOnly={ readOnly }
+                                data-testid={ `${ testId }-subject-include-tenant-domain-checkbox` }
+                                hidden={
+                                    !applicationConfig.attributeSettings.advancedAttributeSettings
+                                        .showIncludeTenantDomain
+                                }
+                                hint={
+                                    t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                        ".sections.subject.fields.subjectIncludeTenantDomain.hint")
+                                }
+                            />
+                            <Field.CheckboxLegacy
+                                ariaLabel="Subject use mapped local subject"
+                                name="subjectUseMappedLocalSubject"
+                                label={
+                                    t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                        "sections.subject.fields.subjectUseMappedLocalSubject.label")
+                                }
+                                required={ false }
+                                value={
+                                    initialSubject?.useMappedLocalSubject
+                                        ? [ "useMappedLocalSubject" ]
+                                        : []
+                                }
+                                readOnly={ readOnly }
+                                data-testid={ `${ testId }-subject-use-mapped-local-subject-checkbox` }
+                                hidden={
+                                    !applicationConfig.attributeSettings.advancedAttributeSettings
+                                        .showUseMappedLocalSubject
+                                }
+                                hint={
+                                    t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                    "sections.subject.fields.subjectUseMappedLocalSubject.hint")
+                                }
+                            />
+                        </>
+                    )
                     }
 
-                    <Field.Dropdown
-                        ariaLabel="Subject attribute"
-                        name="subjectAttribute"
-                        label={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                ".sections.subject.fields.subjectAttribute.label")
-                        }
-                        required={ claimMappingOn }
-                        value={ selectedSubjectValue }
-                        children={ dropDownOptions }
-                        hidden={
-                            selectedSubjectType !== SubjectTypes.PUBLIC ||
-                            (onlyOIDCConfigured &&
-                            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute)
-                        }
-                        readOnly={ readOnly }
-                        data-testid={ `${ testId }-subject-attribute-dropdown` }
-                        listen={ subjectAttributeChangeListener }
-                        enableReinitialize={ true }
-                        hint={ resolveSubjectAttributeHint() }
-                    />
-                    <Field.CheckboxLegacy
-                        ariaLabel="Subject include user domain"
-                        name="subjectIncludeUserDomain"
-                        label={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
-                            "sections.subject.fields.subjectIncludeUserDomain.label") }
-                        required={ false }
-                        value={ initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
-                        readOnly={ readOnly }
-                        data-testid={ `${ testId }-subject-iInclude-user-domain-checkbox` }
-                        hidden={
-                            selectedSubjectType !== SubjectTypes.PUBLIC ||
-                            (!applicationConfig.attributeSettings.advancedAttributeSettings.
-                                showIncludeUserstoreDomainSubject)
-                        }
-                        hint={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
-                                "subject.fields.subjectIncludeUserDomain.hint")
-                        }
-                    />
-                    <Field.CheckboxLegacy
-                        ariaLabel="Subject include tenant domain"
-                        name="subjectIncludeTenantDomain"
-                        label={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
-                                "subject.fields.subjectIncludeTenantDomain.label")
-                        }
-                        required={ false }
-                        value={ initialSubject?.includeTenantDomain ? [ "includeTenantDomain" ] : [] }
-                        readOnly={ readOnly }
-                        data-testid={ `${ testId }-subject-include-tenant-domain-checkbox` }
-                        hidden={
-                            selectedSubjectType !== SubjectTypes.PUBLIC ||
-                            (!applicationConfig.attributeSettings.advancedAttributeSettings.showIncludeTenantDomain)
-                        }
-                        hint={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
-                            "subject.fields.subjectIncludeTenantDomain.hint")
-                        }
-                    />
-                    <Field.CheckboxLegacy
-                        ariaLabel="Subject use mapped local subject"
-                        name="subjectUseMappedLocalSubject"
-                        label={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
-                                "subject.fields.subjectUseMappedLocalSubject.label")
-                        }
-                        required={ false }
-                        value={
-                            initialSubject?.useMappedLocalSubject
-                                ? [ "useMappedLocalSubject" ]
-                                : []
-                        }
-                        readOnly={ readOnly }
-                        data-testid={ `${ testId }-subject-use-mapped-local-subject-checkbox` }
-                        hidden={
-                            selectedSubjectType !== SubjectTypes.PUBLIC ||
-                            (!applicationConfig.attributeSettings.advancedAttributeSettings.showUseMappedLocalSubject)
-                        }
-                        hint={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
-                            "sections.subject.fields.subjectUseMappedLocalSubject.hint")
-                        }
-                    />
-
-                    <Field.Input
-                        ariaLabel="Sector Identifier URI"
-                        inputType="url"
-                        name="sectorIdentifierURI"
-                        label={ t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                            ".sections.subject.fields.sectorIdentifierURI.label")
-                        }
-                        required={ multipleCallbacksConfigured }
-                        placeholder={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                ".sections.subject.fields.sectorIdentifierURI.placeholder")
-                        }
-                        hint={ t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                            ".sections.subject.fields.sectorIdentifierURI.hint") }
-                        value={ sectorIdentifierURI }
-                        onChange={ (e) => setSectorIdentifierURI(e.target.value) }
-                        readOnly={ readOnly }
-                        maxLength={ 200 }
-                        minLength={ 3 }
-                        width={ 16 }
-                        hidden={ selectedSubjectType !== SubjectTypes.PAIRWISE }
-                    />
+                    { selectedSubjectType === SubjectTypes.PAIRWISE && (
+                        <Field.Input
+                            ariaLabel="Sector Identifier URI"
+                            inputType="url"
+                            name="sectorIdentifierURI"
+                            label={ t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                ".sections.subject.fields.sectorIdentifierURI.multipleCallbackError")
+                            }
+                            required={ multipleCallbacksConfigured }
+                            placeholder={
+                                t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                    ".sections.subject.fields.sectorIdentifierURI.placeholder")
+                            }
+                            hint={ t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                ".sections.subject.fields.sectorIdentifierURI.hint") }
+                            readOnly={ readOnly }
+                            maxLength={ 200 }
+                            minLength={ 3 }
+                            width={ 16 }
+                            initialValue={ oidcInitialValues?.subject?.sectorIdentifierUri }
+                        />
+                    )
+                    }
 
                     {
                         applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute && (

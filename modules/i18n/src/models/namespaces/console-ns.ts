@@ -941,7 +941,6 @@ export interface ConsoleNS {
                             requestObject: {
                                 heading: string;
                                 fields: {
-                                    requireSignedRequestObject: FormAttributes;
                                     requestObjectSigningAlg: FormAttributes;
                                     requestObjectEncryptionAlgorithm: FormAttributes;
                                     requestObjectEncryptionMethod: FormAttributes;
