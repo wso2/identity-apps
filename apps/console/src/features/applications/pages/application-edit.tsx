@@ -372,13 +372,15 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     const determineApplicationTemplate = () => {
 
-        let template: ApplicationTemplateListItemInterface = applicationTemplates
-            .find((template: ApplicationTemplateListItemInterface) => template.id === application.templateId);
+        let template: ApplicationTemplateListItemInterface = applicationTemplates?.find(
+            (template: ApplicationTemplateListItemInterface) => {
+                return template.id === application.templateId;
+            });
 
         if (application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
             || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
             || application.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
-            template = applicationTemplates.find((template: ApplicationTemplateListItemInterface) =>
+            template = applicationTemplates?.find((template: ApplicationTemplateListItemInterface) =>
                 template.id === CustomApplicationTemplate.id);
         }
 
