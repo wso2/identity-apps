@@ -8309,6 +8309,11 @@ export const console: ConsoleNS = {
                         roles: "Rôles",
                         users: "Utilisateurs"
                     },
+                    permissions: {
+                        heading: "Autorisations attribuées",
+                        removedPermissions: "Autorisations supprimées",
+                        subHeading: "Gérer les autorisations attribuées dans le rôle."
+                    },
                     users: {
                         heading: "Utilisateurs affectés",
                         subHeading: "Ajouter ou supprimer les utilisateurs affectés à ce rôle.Notez que cela affectera l'exécution de certaines tâches.",

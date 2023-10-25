@@ -10065,6 +10065,11 @@ export const console: ConsoleNS = {
                         roles: "Roles",
                         users: "Users"
                     },
+                    permissions: {
+                        heading: "Assigned Permissions",
+                        removedPermissions: "Removed Permissions",
+                        subHeading: "Manage assigned permissions in the role."
+                    },
                     users: {
                         heading: "Assigned Users",
                         subHeading: "Add or remove the users assigned to this role. Note that this will affect performing certain tasks.",

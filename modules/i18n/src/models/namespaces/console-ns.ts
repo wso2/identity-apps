@@ -5198,6 +5198,11 @@ export interface ConsoleNS {
                         users: string;
                         roles: string;
                     };
+                    permissions: {
+                        heading: string;
+                        subHeading: string;
+                        removedPermissions: string;
+                    };
                     users: {
                         heading: string;
                         subHeading: string;
