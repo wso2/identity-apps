@@ -1443,6 +1443,9 @@ export const console: ConsoleNS = {
                                 }
                             },
                             tabName: "පුරනය වීමේ ක්‍රමය"
+                        },
+                        apiAuthorization: {
+                            m2mPolicyMessage: "සම්පත සඳහා නිශ්චිතව දක්වා ඇති අවසර ප්‍රතිපත්තිය නොතකා API සම්පතක සියලුම බලයලත් විෂය පථයන් M2M යෙදුමක් සඳහා ලබා ගත හැකිය."
                         }
                     }
                 },
