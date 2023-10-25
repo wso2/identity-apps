@@ -144,7 +144,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const getApplicationRoles = (): void => {
         getApplicationRolesByAudience(roleAudience, appId, null, null, null)
             .then((response: RolesV2ResponseInterface) => {
-                const rolesArray: BasicRoleInterface[] = [];                
+                const rolesArray: BasicRoleInterface[] = [];
 
                 response?.Resources?.forEach((role: RolesV2Interface) => {
                     rolesArray.push({
