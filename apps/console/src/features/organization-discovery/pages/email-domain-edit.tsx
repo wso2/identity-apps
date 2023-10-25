@@ -26,18 +26,18 @@ import { useDispatch } from "react-redux";
 import { RouteChildrenProps } from "react-router-dom";
 import { Dispatch } from "redux";
 import { AppConstants, FeatureConfigInterface, history } from "../../core";
-import { getOrganization, useAuthorizedOrganizationsList } from "../api";
-import { EditOrganization } from "../components/edit-organization/edit-organization";
+import { getOrganization, getOrganizationDiscoveryAttributes } from "../api";
+import { EditOrganizationEmailDomains } from "../components/edit-organization/edit-organization-email-domains";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
-import { OrganizationResponseInterface } from "../models";
+import { OrganizationDiscoveryAttributeDataInterface, OrganizationResponseInterface } from "../models";
 
-interface OrganizationEditPagePropsInterface extends SBACInterface<FeatureConfigInterface>,
+interface OrganizationEmailDomainEditPagePropsInterface extends SBACInterface<FeatureConfigInterface>,
     TestableComponentInterface, RouteChildrenProps{
 }
 
-const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface> = (
-    props: OrganizationEditPagePropsInterface
+const OrganizationEmailDomainEditPage: FunctionComponent<OrganizationEmailDomainEditPagePropsInterface> = (
+    props: OrganizationEmailDomainEditPagePropsInterface
 ): ReactElement => {
 
     const {
@@ -49,84 +49,23 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     const dispatch: Dispatch = useDispatch();
 
     const [ organization, setOrganization ] = useState<OrganizationResponseInterface>();
+    const [ organizationDiscoveryData, setOrganizationDiscoveryData ] = useState
+    <OrganizationDiscoveryAttributeDataInterface>();
     const [ isReadOnly, setIsReadOnly ] = useState(true);
-    const [ isAuthorizedOrganization, setIsAuthorizedOrganization ] = useState(false);
-    const [ filterQuery, setFilterQuery ] = useState<string>("");
 
 
     useEffect(() => {
         setIsReadOnly(
             !isFeatureEnabled(
-                featureConfig?.organizations,
-                OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
-            ) || organization?.status !== "ACTIVE" || !isAuthorizedOrganization);
-    }, [ featureConfig, organization, isAuthorizedOrganization ]);
-
-    const {
-        data: authorizedOrganizationList,
-        isLoading: isAuthorizedOrganizationListRequestLoading,
-        error: authorizedListFetchRequestError
-    } = useAuthorizedOrganizationsList(filterQuery, 10, null, null, false);
-
-    /**
-     * Handles the authorized list fetch request error.
-     */
-    useEffect(() => {
-        if (!authorizedListFetchRequestError) {
-            return;
-        }
-
-        handleGetAuthoriziedListCallError(authorizedListFetchRequestError);
-    }, [ authorizedListFetchRequestError ]);
-
-    /**
-     * Handle check for authorized organization.
-     */
-    useEffect(() => {
-        if (!authorizedOrganizationList) {
-            return;
-        }
-
-        setIsAuthorizedOrganization(authorizedOrganizationList.organizations?.length === 1);
-    }, [ authorizedOrganizationList ]);
-
-    const handleGetAuthoriziedListCallError = (error: any) => {
-        if (error?.response?.data?.description) {
-            dispatch(
-                addAlert({
-                    description: error?.response?.data?.description,
-                    level: AlertLevels.ERROR,
-                    message: t(
-                        "console:manage.features.organizations.notifications." +
-                        "getOrganizationList.error.message"
-                    )
-                })
-            );
-
-            return;
-        }
-        dispatch(
-            addAlert({
-                description: t(
-                    "console:manage.features.organizations.notifications.getOrganizationList" +
-                    ".genericError.description"
-                ),
-                level: AlertLevels.ERROR,
-                message: t(
-                    "console:manage.features.organizations.notifications." +
-                    "getOrganizationList.genericError.message"
-                )
-            })
-        );
-
-        return;
-    };
+                featureConfig?.organizationDiscovery,
+                OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_EMAIL_DOMAIN_UPDATE")
+            ));
+    }, [ featureConfig, organization ]);
 
     const getOrganizationData: (organizationId: string) => void = useCallback((organizationId: string): void => {
         getOrganization(organizationId)
             .then((organization: OrganizationResponseInterface) => {
                 setOrganization(organization);
-                setFilterQuery("name eq " + organization?.name);
             }).catch((error: any) => {
                 if (error?.description) {
                     dispatch(addAlert({
@@ -149,24 +88,51 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
             });
     }, [ dispatch, t ]);
 
+    const getOrganizationDiscoveryData: (organizationId: string) => void = useCallback(
+        (organizationId: string): void => {
+            getOrganizationDiscoveryAttributes(organizationId)
+                .then((organizationDiscoveryData: OrganizationDiscoveryAttributeDataInterface) => {
+                    setOrganizationDiscoveryData(organizationDiscoveryData);
+                }).catch((error: any) => {
+                    if (error?.description) {
+                        dispatch(addAlert({
+                            description: error.description,
+                            level: AlertLevels.ERROR,
+                            message: t("console:manage.features.organizationDiscovery.notifications." +
+                                "fetchOrganizationDiscoveryAttributes.genericError.message")
+                        }));
+
+                        return;
+                    }
+
+                    dispatch(addAlert({
+                        description: t("console:manage.features.organizationDiscovery.notifications." +
+                            "fetchOrganizationDiscoveryAttributes.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.organizationDiscovery.notifications." +
+                            "fetchOrganizationDiscoveryAttributes.genericError.message")
+                    }));
+                });
+        }, [ dispatch, t ]);
+
     useEffect(() => {
         const path: string[] = location.pathname.split("/");
         const id: string = path[path.length - 1];
 
         getOrganizationData(id);
-    }, [ location, getOrganizationData ]);
+        getOrganizationDiscoveryData(id);
+    }, [ location, getOrganizationData, getOrganizationDiscoveryData ]);
 
-    const goBackToOrganizationList: () => void = useCallback(() =>
-        history.push(AppConstants.getPaths().get("ORGANIZATIONS")),[ history ]
+    const goBackToOrganizationListWithDomains: () => void = useCallback(() =>
+        history.push(AppConstants.getPaths().get("EMAIL_DOMAIN_DISCOVERY")),[ history ]
     );
 
 
     return (
         <PageLayout
-            isLoading={ isAuthorizedOrganizationListRequestLoading }
-            title={ organization?.name ?? t("console:manage.features.organizations.title") }
-            pageTitle={ organization?.name ?? t("console:manage.features.organizations.title") }
-            description={ t("console:manage.features.organizations.edit.description") }
+            title={ organization?.name ?? t("console:manage.features.organizationDiscovery.title") }
+            pageTitle={ organization?.name ?? t("console:manage.features.organizationDiscovery.title") }
+            description={ t("console:manage.features.organizationDiscovery.edit.description") }
             image={ (
                 <GenericIcon
                     defaultIcon
@@ -177,22 +143,21 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
                 />
             ) }
             backButton={ {
-                "data-testid": "org-mgt-edit-org-back-button",
-                onClick: goBackToOrganizationList,
-                text: t("console:manage.features.organizations.edit.back")
+                "data-testid": "org-email-domains-edit-org-back-button",
+                onClick: goBackToOrganizationListWithDomains,
+                text: t("console:manage.features.organizationDiscovery.edit.back")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
         >
-            <EditOrganization
+            <EditOrganizationEmailDomains
                 organization={ organization }
+                organizationDiscoveryData = { organizationDiscoveryData }
                 isReadOnly={ isReadOnly }
-                featureConfig={ featureConfig }
                 onOrganizationUpdate={ getOrganizationData }
-                onOrganizationDelete={ goBackToOrganizationList }
             />
         </PageLayout>
     );
 };
 
-export default OrganizationEditPage;
+export default OrganizationEmailDomainEditPage;

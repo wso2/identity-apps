@@ -267,6 +267,12 @@ export class RouteUtils {
             name: "User Attributes & Stores"
         };
 
+        const organizationManagement: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: BuildingGearIcon,
+            id: "organizationManagement",
+            name: "Organization Management"
+        };
+
         const branding: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: PaletteIcon,
             id: "customization",
@@ -399,7 +405,13 @@ export class RouteUtils {
             },
             {
                 category: manage,
-                id: "organizations"
+                id: "organizations",
+                parent: organizationManagement
+            },
+            {
+                category: manage,
+                id: "organizationDiscovery",
+                parent: organizationManagement
             },
             {
                 category: monitoring,

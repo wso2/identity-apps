@@ -133,6 +133,10 @@ export interface FeatureConfigInterface {
      */
     organizations?: FeatureAccessConfigInterface;
     /**
+     * Organization discovery feature.
+     */
+    organizationDiscovery?: FeatureAccessConfigInterface;
+    /**
      * Organization role management feature.
      */
     organizationsRoles?: FeatureAccessConfigInterface;

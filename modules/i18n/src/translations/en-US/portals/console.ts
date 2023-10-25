@@ -9310,6 +9310,130 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            organizationDiscovery: {
+                advancedSearch: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                organizationName: "Organization Name"
+                            }
+                        },
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "E.g. Organization Name etc."
+                            },
+                            filterCondition: {
+                                placeholder: "E.g. Starts with etc."
+                            },
+                            filterValue: {
+                                placeholder: "Enter value to search"
+                            }
+                        }
+                    },
+                    placeholder: "Search by Organization Name"
+                },
+                emailDomains: {
+                    actions: {
+                        assign: "Assign Email Domain",
+                        enable: "Enable email domain discovery"
+                    }
+                },
+                edit: {
+                    back: "Back",
+                    description: "Edit Email Domains",
+                    fields: {
+                        name: {
+                            label: "Organization Name"
+                        },
+                        emailDomains: {
+                            label : "Email Domains",
+                            placeHolder: "Enter email domains"
+                        }
+                    }
+                },
+                notifications: {
+                    disableEmailDomainDiscovery: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while disabling email domain discovery"
+                        },
+                        genericError: {
+                            description: "An error occurred while disabling email domain discovery",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully disabled email domain discovery",
+                            message: "Email domain discovery disabled successfully"
+                        }
+                    },
+                    enableEmailDomainDiscovery: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while enabling email domain discovery"
+                        },
+                        genericError: {
+                            description: "An error occurred while enabling email domain discovery",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully enabled email domain discovery",
+                            message: "Email domain discovery enabled successfully"
+                        }
+                    },
+                    fetchOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while fetching the organization discovery attributes"
+                        },
+                        genericError: {
+                            description: "An error occurred while fetching the organization discovery attributes",
+                            message: "Something went wrong"
+                        }
+                    },
+                    getEmailDomainDiscovery: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while retrieving email domain discovery configuration"
+                        },
+                        genericError: {
+                            description: "An error occurred while retrieving email domain discovery configuration",
+                            message: "Something went wrong"
+                        }
+                    },
+                    getOrganizationListWithDiscovery: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while getting the organization list with discovery attributes"
+                        },
+                        genericError: {
+                            description: "An error occurred while getting the organization list with discovery attributes",
+                            message: "Something went wrong"
+                        }
+                    },
+                    updateOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error while updating the organization discovery attributes"
+                        },
+                        genericError: {
+                            description: "An error occurred while updating the organization discovery attributes",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully updated the organization discovery attributes",
+                            message: "Organization discovery attributes updated successfully"
+                        }
+                    }
+                },
+                placeholders: {
+                    emptyList: {
+                        action: "Assign Email Domain",
+                        subtitles: "There are no organizations with email domains assigned.",
+                        title: "Assign Email Domain"
+                    }
+                },
+                title: "Email Domain Discovery"
+            },
             organizations: {
                 advancedSearch: {
                     form: {
@@ -10520,6 +10644,7 @@ export const console: ConsoleNS = {
                 editRoles: "Edit Role",
                 editUsers: "Edit User",
                 editUserstore: "Edit User Store",
+                emailDomainDiscovery: "Email Domain Discovery",
                 emailTemplateTypes: "",
                 emailTemplates: "Email Templates",
                 generalConfigurations: "General",
@@ -12090,6 +12215,10 @@ export const console: ConsoleNS = {
                 backButton: "Go back to {{name}} template",
                 subTitle: null,
                 title: "{{template}}"
+            },
+            emailDomainDiscovery: {
+                subTitle: "Configure email domain discovery for organizations.",
+                title: "Email Domain Discovery"
             },
             emailLocaleAdd: {
                 backButton: "Go back to {{name}} template",

@@ -7381,6 +7381,130 @@ export const console: ConsoleNS = {
                     }
                 }
             },
+            organizationDiscovery: {
+                advancedSearch: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                organizationName: "සංවිධානයේ නම"
+                            }
+                        },
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "උදා. සංවිධානයේ නම ආදිය."
+                            },
+                            filterCondition: {
+                                placeholder: "උදා. ආදියෙන් ආරම්භ වේ."
+                            },
+                            filterValue: {
+                                placeholder: "සෙවීමට අගය ඇතුළත් කරන්න"
+                            }
+                        }
+                    },
+                    placeholder: "සංවිධානයේ නම අනුව සොයන්න"
+                },
+                emailDomains: {
+                    actions: {
+                        assign: "විද්‍යුත් තැපැල් වසම පවරන්න",
+                        enable: "ඊමේල් වසම් සොයාගැනීම සබල කරන්න"
+                    }
+                },
+                edit: {
+                    back: "ආපසු",
+                    description: "ඊමේල් වසම් සංස්කරණය කරන්න",
+                    fields: {
+                        name: {
+                            label: "සංවිධානයේ නම"
+                        },
+                        emailDomains: {
+                            label : "ඊමේල් වසම්",
+                            placeHolder: "ඊමේල් වසම් ඇතුලත් කරන්න"
+                        }
+                    }
+                },
+                notifications: {
+                    disableEmailDomainDiscovery: {
+                        error: {
+                            description: "{{description}}",
+                            message: "විද්‍යුත් තැපැල් වසම් සොයාගැනීම අක්‍රිය කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "විද්‍යුත් තැපැල් වසම් සොයාගැනීම අක්‍රිය කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "විද්‍යුත් තැපැල් වසම් සොයා ගැනීම සාර්ථකව අක්‍රීය කරන ලදී",
+                            message: "විද්‍යුත් තැපෑල වසම් සොයා ගැනීම සාර්ථකව අක්‍රීය කර ඇත"
+                        }
+                    },
+                    enableEmailDomainDiscovery: {
+                        error: {
+                            description: "{{description}}",
+                            message: "විද්‍යුත් තැපැල් වසම් සොයාගැනීම සබල කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "විද්‍යුත් තැපෑල වසම් සොයාගැනීම සබල කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "විද්‍යුත් තැපැල් වසම් සොයාගැනීම සාර්ථකව සක්‍රීය කර ඇත",
+                            message: "විද්‍යුත් තැපැල් වසම් සොයා ගැනීම සාර්ථකව සක්‍රීය කර ඇත"
+                        }
+                    },
+                    fetchOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානයේ සොයාගැනීම් ගුණාංග ලබා ගැනීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධානයේ සොයාගැනීම් ගුණාංග ලබා ගැනීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
+                    },
+                    getEmailDomainDiscovery: {
+                        error: {
+                            description: "{{description}}",
+                            message: "විද්‍යුත් තැපැල් වසම් සොයාගැනීමේ වින්‍යාසය ලබා ගැනීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "ඊමේල් වසම් සොයාගැනීමේ වින්‍යාසය ලබා ගැනීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
+                    },
+                    getOrganizationListWithDiscovery: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සොයාගැනීම් ගුණාංග සහිත සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සොයාගැනීම් ගුණාංග සහිත සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        }
+                    },
+                    updateOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: "{{description}}",
+                            message: "සංවිධානයේ සොයාගැනීම් ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "සංවිධානයේ සොයාගැනීම් ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය",
+                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                        },
+                        success: {
+                            description: "සංවිධානයේ සොයාගැනීම් උපලක්ෂණ සාර්ථකව යාවත්කාලීන කරන ලදී",
+                            message: "සංවිධානයේ සොයාගැනීම් උපලක්ෂණ සාර්ථකව යාවත්කාලීන කරන ලදී"
+                        }
+                    }
+                },
+                placeholders: {
+                    emptyList: {
+                        action: "විද්‍යුත් තැපැල් වසම පවරන්න",
+                        subtitles: "පවරන ලද ඊමේල් වසම් සහිත සංවිධාන නොමැත.",
+                        title: "විද්‍යුත් තැපැල් වසම පවරන්න"
+                    }
+                },
+                title: "ඊමේල් වසම් සොයාගැනීම"
+            },
             organizations: {
                 advancedSearch: {
                     form: {
@@ -8588,6 +8712,7 @@ export const console: ConsoleNS = {
                 editRoles: "භූමිකාව සංස්කරණය කරන්න",
                 editUsers: "පරිශීලක සංස්කරණය කරන්න",
                 editUserstore: "පරිශීලක වෙළඳසැල සංස්කරණය කරන්න",
+                emailDomainDiscovery: "ඊමේල් වසම් සොයාගැනීම",
                 emailTemplateTypes: "",
                 emailTemplates: "විද්‍යුත් තැපැල් ආකෘති",
                 generalConfigurations: "ජනරාල්",
@@ -10162,6 +10287,10 @@ export const console: ConsoleNS = {
                 backButton: "{{name}} අච්චුව වෙත ආපසු යන්න",
                 subTitle: null,
                 title: "{{template}}"
+            },
+            emailDomainDiscovery: {
+                subTitle: "ආයතන සඳහා විද්‍යුත් තැපැල් වසම් සොයාගැනීම වින්‍යාස කරන්න..",
+                title: "ඊමේල් වසම් සොයාගැනීම"
             },
             emailLocaleAdd: {
                 backButton: "{{name}} අච්චුව වෙත ආපසු යන්න",
