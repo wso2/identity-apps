@@ -1,5 +1,14 @@
 # @wso2is/i18n
 
+## 2.0.17
+
+### Patch Changes
+
+- [#4319](https://github.com/wso2/identity-apps/pull/4319) [`5ccad73bc0`](https://github.com/wso2/identity-apps/commit/5ccad73bc03fe97e428a3b416a524f70292e3df6) Thanks [@Achintha444](https://github.com/Achintha444)! - Enable branding for sub organizations
+
+- Updated dependencies [[`7c80b2f9ad`](https://github.com/wso2/identity-apps/commit/7c80b2f9ada521232a80e8fe6469cd59d463d0f1)]:
+  - @wso2is/core@2.0.6
+
 ## 2.0.16
 
 ### Patch Changes
