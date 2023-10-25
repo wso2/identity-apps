@@ -26,7 +26,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
-import { DocumentationLink, EmphasizedSegment, Heading, useDocumentation } from "@wso2is/react-components";
+import { EmphasizedSegment, Heading } from "@wso2is/react-components";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -62,7 +62,6 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { getLink } = useDocumentation();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isAPIResourcesSearching, setAPIResourcesSearching ] = useState<boolean>(false);
@@ -217,7 +216,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     };
 
     /**
-     * The following function handles the update of the role permissions.
+     * Handles the update of the role permissions.
      */
     const updateRolePermissions = (): void => {
         setIsSubmitting(true);
@@ -332,15 +331,10 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         <EmphasizedSegment padded="very">
             <Grid xs={ 8 }>
                 <Heading as="h4">
-                    Assigned Permissions
+                    { t("console:manage.features.roles.edit.permissions.heading") }                
                 </Heading>
                 <Heading as="h6" color="grey" subHeading className="mb-5">
-                    Manage assigned permissions in the role.
-                    <DocumentationLink
-                        link={ getLink("develop.emailProviders.learnMore") }
-                    >
-                        { t("extensions:common.learnMore") }
-                    </DocumentationLink>
+                    { t("console:manage.features.roles.edit.permissions.subHeading") }                
                 </Heading>
             </Grid>
             <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={ 2 }>
@@ -385,7 +379,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                                         data-componentid={ componentId }
                                         basic
                                         loading={ 
-                                            selectedAPIResourceId &&
+                                            selectedAPIResourceId && 
                                             (isSelectedAPIResourceFetchRequestLoading 
                                                 || isSelectedAPIResourceFetchRequestValidating) 
                                         }

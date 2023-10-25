@@ -74,7 +74,6 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
     const getPlaceholders = () => {
         if (showEmptyRolesListPlaceholder) {
             return (
-                // TODO: Need to replace the i18N with the correct one.
                 <EmptyPlaceholder
                     subtitle={ 
                         [ t("console:manage.features.roles.edit.groups.placeholders.emptyPlaceholder.subtitles.0") ]

@@ -60,6 +60,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const {
         data: rolesList,
         isLoading: isRolesListLoading,
+        error: rolesListError,
         isValidating: isRolesListValidating
     } = useRolesList( undefined, undefined, roleNameSearchQuery);
 
@@ -101,28 +102,16 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             roleName: undefined
         };
 
-        if (values.roleName?.toString().trim().length >= 3) {
+        if (values.roleName?.toString().trim().length >= RoleConstants.ROLE_NAME_MIN_LENGTH) {
 
-            const roleName: string = values.roleName?.toString().trim();
+            setRoleNameSearchQuery(`displayName eq ${values.roleName?.toString().trim()}`);
 
-            try {
-                setRoleNameSearchQuery(`displayName eq ${roleName}`);
-
-                if (!isRolesListLoading || !isRolesListValidating) {
-                    if (rolesList?.totalResults > 0) {
-                        errors.roleName = t("console:manage.features.roles.addRoleWizard.forms."
-                            + "roleBasicDetails.roleName.validations.duplicate",{ type: "Role" });
-                    }
-                } 
-            } catch (error: unknown) {
-                dispatch(addAlert({
-                    description: t("console:manage.features.roles.notifications." +
-                        "fetchRoles.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.notifications." +
-                        "fetchRoles.genericError.message")
-                }));
-            }
+            if (!isRolesListLoading || !isRolesListValidating) {
+                if (rolesList?.totalResults > 0 || rolesListError) {
+                    errors.roleName = t("console:manage.features.roles.addRoleWizard.forms."
+                        + "roleBasicDetails.roleName.validations.duplicate",{ type: "Role" });
+                }
+            } 
             
             return errors;
         }

@@ -170,7 +170,6 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     const handleCreateRole = () => {
         history.push(AppConstants.getPaths().get("ROLE_CREATE"));
     };
-        
 
     return (
         <PageLayout

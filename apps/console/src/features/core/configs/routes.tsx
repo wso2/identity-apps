@@ -1448,7 +1448,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         name: "console:manage.features.sidePanel.createRole",
                         path: AppConstants.getPaths().get("ROLE_CREATE"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     }
                 ],
                 component: lazy(() => import("../../roles/pages/role")),

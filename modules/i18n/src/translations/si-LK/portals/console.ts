@@ -8331,6 +8331,10 @@ export const console: ConsoleNS = {
                                 placeholder: "පරිශීලකයින් ප්රතිස්ථාපනය කරන්න"
                             }
                         }
+                    },
+                    permissions: {
+                        heading: "පවරා ඇති අවසර",
+                        subHeading: "මෙම භූමිකාව තුළ පවරා ඇති අවසරයන් කළමනාකරණය කරන්න."
                     }
                 },
                 list: {

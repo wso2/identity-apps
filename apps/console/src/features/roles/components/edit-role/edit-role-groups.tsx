@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -115,7 +115,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             setSelectedGroupsOptions(initialSelectedGroupsOptions);
         }
 
-        // set groups options when the user is read only
+        // Set groups options when the user is read only
         if (isReadOnly && initialSelectedGroupsOptions) {
             setGroupsOptions(initialSelectedGroupsOptions);
         }
@@ -145,7 +145,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             }));
         }
     }, [ initialSelectedGroupsOptions, selectedGroupsOptions ]);
-    
+
     /**
      * Call mutateGroupListFetchRequest when the group search value changes
      */
@@ -457,8 +457,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                     )
                             }
 
-                            { /* Removing groups */ }
-                            {
+                            {   
+                                // Removing groups
                                 removedGroupsOptions?.length > 0
                                     ? (
                                         <Autocomplete
@@ -518,9 +518,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                         />
                                     ) : null
                             } 
-
-                            { /* Update Button */ }
                             {
+                                // Update Button
                                 !isReadOnly 
                                     ? (
                                         <Button
