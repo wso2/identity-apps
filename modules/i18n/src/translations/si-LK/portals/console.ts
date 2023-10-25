@@ -8965,7 +8965,8 @@ export const console: ConsoleNS = {
                         wizardSummary: {
                             successCount: "සාර්ථකත්ව ගණන",
                             failedCount: "අසාර්ථක වූ ගණන",
-                            totalCount: "මුළු ගණන",
+                            totalUserCreationCount: "සම්පූර්ණ පරිශීලක නිර්මාණ ගණන",
+                            totalUserAssignmentCount: "සම්පූර්ණ පරිශීලක භූමිකාව/කණ්ඩායම් පැවරුම් ගණන",
                             tableHeaders: {
                                 username: "පරිශීලක නාමය",
                                 status: "තත්ත්වය",
@@ -8976,7 +8977,10 @@ export const console: ConsoleNS = {
                                 invalidDataMessage: "වලංගු නොවන දත්ත සපයා ඇත",
                                 userAlreadyExistsMessage: "පරිශීලකයා දැනටමත් පවතී",
                                 userCreationAcceptedMessage: "පරිශීලක නිර්මාණය පිළිගනු ලැබේ",
-                                internalErrorMessage: "පරිශීලකයින් ආනයනය කිරීමේදී දෝෂයක් සිදු විය"
+                                internalErrorMessage: "පරිශීලකයින් ආනයනය කිරීමේදී දෝෂයක් සිදු විය",
+                                userAssignmentSuccessMessage: "පරිශීලකයන් {{resource}} වෙත සාර්ථකව පවරන ලදී",
+                                userAssignmentFailedMessage: "{{resource}} වෙත පරිශීලක පැවරුම අසාර්ථක විය",
+                                userAssignmentInternalErrorMessage: "පරිශීලකයන් {{resource}} වෙත පැවරීමේදී දෝෂයක් ඇති විය"
                             },
                             tableStatus: {
                                 success: "සාර්ථකයි",
@@ -8989,12 +8993,15 @@ export const console: ConsoleNS = {
                                     message: "ආනයනය සාර්ථකයි"
                                 },
                                 importFailed: {
-                                    description: "<1>{{failedCount}}</1> ආනයන තුළ ගැටළු ඇති වී ඇත​.",
+                                    description: "<1>{{failedUserCreationCount}} පරිශීලක නිර්මාණය</1> කිරීමේ මෙහෙයුම් සහ " +
+                                        "<3>{{failedUserAssignmentCount}} භූමිකාව/කණ්ඩායම් පැවරුම්</3> මෙහෙයුම් තුළ ඇති වූ ගැටළු.",
                                     message: "ගැටළු සමාලෝචනය අවශ්‍යයි."
                                 }
                             },
                             advanceSearch: {
-                                placeholder: "පරිශීලක නාමයෙන් සොයන්න"
+                                searchByUsername: "පරිශීලක නාමයෙන් සොයන්න",
+                                searchByRoleOrGroup: "භූමිකාව/කණ්ඩායම් නම අනුව සොයන්න",
+                                roleGroupFilterAttributePlaceHolder: "භූමිකාව/කණ්ඩායම් නම"
                             },
                             disabledSecondaryStoreInfo: "බාහිර පරිශීලක වෙළඳසැල් වෙත පරිශීලක තොග ආනයනය මේ මොහොතේ ලබා " +
                                 "දිය නොහැක.",
@@ -9012,6 +9019,10 @@ export const console: ConsoleNS = {
                             },
                             fileBased: {
                                 hint: "CSV ගොනුවක් භාවිතයෙන් බහු පරිශීලකයින්ට තොග වශයෙන් ආරාධනා කරන්න."
+                            },
+                            responseOperationType: {
+                                userCreation: "පරිශීලක නිර්මාණය",
+                                roleAssignment: "භූමිකාව/කණ්ඩායම් පැවරුම"
                             }
                         },
                         buttons: {
@@ -9635,6 +9646,14 @@ export const console: ConsoleNS = {
                             emptyDataField: {
                                 description: "'{{dataField}}' දත්ත ක්ෂේත්‍රය හිස් නොවිය යුතුය.",
                                 message: "හිස් දත්ත ක්ෂේත්‍රය"
+                            },
+                            invalidRole: {
+                                description: "{{role}} පරිශීලක භූමිකාව නොපවතී.",
+                                message: "පරිශීලක භූමිකාව හමු නොවීය"
+                            },
+                            invalidGroup: {
+                                description: "{{group}} පරිශීලක කණ්ඩායම  නොපවතියි.",
+                                message: "පරිශීලක කණ්ඩායම හමු නොවීය"
                             }
                         },
                         submit: {

@@ -3554,6 +3554,8 @@ export interface ConsoleNS {
                             duplicateHeaderError: NotificationItem;
                             invalidHeaderError: NotificationItem;
                             emptyDataField: NotificationItem;
+                            invalidRole: NotificationItem;
+                            invalidGroup: NotificationItem;
                         },
                         submit: Notification;
                     }
@@ -5682,7 +5684,8 @@ export interface ConsoleNS {
                         wizardSummary: {
                             successCount: string;
                             failedCount: string;
-                            totalCount: string;
+                            totalUserCreationCount: string;
+                            totalUserAssignmentCount: string;
                             tableHeaders: {
                                 username: string;
                                 status: string;
@@ -5694,6 +5697,9 @@ export interface ConsoleNS {
                                 userAlreadyExistsMessage: string;
                                 userCreationAcceptedMessage: string;
                                 internalErrorMessage: string;
+                                userAssignmentSuccessMessage: string;
+                                userAssignmentFailedMessage: string;
+                                userAssignmentInternalErrorMessage: string;
                             };
                             tableStatus: {
                                 success: string;
@@ -5705,7 +5711,9 @@ export interface ConsoleNS {
                                 importFailed: NotificationItem;
                             };
                             advanceSearch: {
-                                placeholder: string;
+                                searchByUsername: string;
+                                searchByRoleOrGroup: string;
+                                roleGroupFilterAttributePlaceHolder: string;
                             };
                             disabledSecondaryStoreInfo: string;
                             manualCreation: {
@@ -5722,6 +5730,10 @@ export interface ConsoleNS {
                             };
                             fileBased: {
                                 hint: string;
+                            };
+                            responseOperationType: {
+                                userCreation: string;
+                                roleAssignment: string;
                             }
                         };
                         buttons: {
