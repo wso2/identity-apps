@@ -43,6 +43,7 @@ export interface ScopeInterface {
     id: string;
     displayName?: string;
     name?: string;
+    description?: string;
 }
 
 /**

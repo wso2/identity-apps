@@ -27,7 +27,13 @@ import useRequest, {
     RequestErrorInterface, 
     RequestResultInterface 
 } from "../../core/hooks/use-request";
-import { CreateRoleInterface, PatchRoleDataInterface, RolesV2ResponseInterface, SearchRoleInterface } from "../models";
+import { RoleAudienceTypes } from "../constants/role-constants";
+import {
+    CreateRoleInterface,
+    PatchRoleDataInterface,
+    RolesV2ResponseInterface,
+    SearchRoleInterface
+} from "../models";
 import { APIResourceInterface, APIResourceListInterface, AuthorizedAPIListItemInterface } from "../models/apiResources";
 
 /**
@@ -48,12 +54,15 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  */
 export const getApplicationRolesByAudience = (
     audience: string,
+    appId: string,
     before: string,
     after: string,
     limit: number
 ):Promise<RolesV2ResponseInterface> => {
 
-    const filter: string = `audience.type eq ${ audience.toLowerCase() }`;
+    const filter: string = audience === RoleAudienceTypes.APPLICATION
+        ? `audience.value eq ${ appId }`
+        : `audience.type eq ${ audience.toLowerCase() }`;
 
     const requestConfig: RequestConfigInterface = {
         method: HttpMethods.GET,
@@ -88,7 +97,7 @@ export const getRoleById = (roleId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.roles + "/" + roleId
+        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
     };
 
     return httpClient(requestConfig)
@@ -148,7 +157,7 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: store.getState().config.endpoints.roles + "/" + roleId
+        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
     };
 
     return httpClient(requestConfig)
@@ -299,6 +308,31 @@ export const getPermissionsForRole = (roleId: string): Promise<any> => {
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Retrieves API resource details for the given API resource ID.
+ * 
+ * @param apiResourceId - id of the API resource
+ * @returns `Promise<APIResourceInterface>`
+ * @throws `IdentityAppsApiException`
+ */
+export const getAPIResourceDetails = (apiResourceId: string): Promise<APIResourceInterface> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.apiResources}/${apiResourceId}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<APIResourceInterface>) => {
+            return Promise.resolve(response.data);
         }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });

@@ -19,7 +19,7 @@
 import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
-} from "@mui/material/Autocomplete/Autocomplete";
+} from "@oxygen-ui/react/Autocomplete";
 import Chip from "@oxygen-ui/react/Chip";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormGroup from "@oxygen-ui/react/FormGroup";
@@ -142,7 +142,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
      * Fetch application roles.
      */
     const getApplicationRoles = (): void => {
-        getApplicationRolesByAudience(roleAudience, null, null, null)
+        getApplicationRolesByAudience(roleAudience, appId, null, null, null)
             .then((response: RolesV2ResponseInterface) => {
                 const rolesArray: BasicRoleInterface[] = [];
 
