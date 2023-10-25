@@ -27,7 +27,6 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
-import useRequest, { RequestResultInterface } from "../../core/hooks/use-request";
 import {
     OrganizationDiscoveryAttributeDataInterface,
     OrganizationDiscoveryConfigInterface,
@@ -131,15 +130,15 @@ export const deleteOrganizationDiscoveryConfig = (
  * Get a list of organizations.
  *
  * @param filter - The filter query.
- * @param offset - The maximum number of organizations to return.
- * @param limit  - Number of records to skip for pagination.
+ * @param _offset - The maximum number of organizations to return.
+ * @param _limit  - Number of records to skip for pagination.
  *
  * @returns a promise containing the response
  */
 export const getOrganizationDiscovery = (
-    filter: string,
-    offset: number,
-    limit: number
+    filter?: string,
+    _offset?: number,
+    _limit?: number
 ): Promise< OrganizationListWithDiscoveryInterface> => {
     const config: HttpRequestConfig = {
         headers: {
@@ -148,9 +147,7 @@ export const getOrganizationDiscovery = (
         },
         method: "GET",
         params: {
-            // filter,
-            // offset,
-            // limit
+            filter
         },
         url: `${ store.getState().config.endpoints.organizations }/organizations/discovery`
     };
@@ -175,7 +172,8 @@ export const getOrganizationDiscovery = (
  *
  * @returns a promise containing the response
  */
-export const getOrganizationDiscoveryAttributes = (id: string): Promise<OrganizationDiscoveryAttributeDataInterface> => {
+export const getOrganizationDiscoveryAttributes = (id: string):
+Promise<OrganizationDiscoveryAttributeDataInterface> => {
     const config: HttpRequestConfig = {
         headers: {
             Accept: "application/json",
