@@ -133,7 +133,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ userStore, setUserStore ] = useState("primary");
+    const [ userStore, setUserStore ] = useState(PRIMARY_USERSTORE);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
@@ -939,7 +939,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                             />
                         )
                         : (
-    
                             <GuestUsersList
                                 invitationStatusOption={ null }
                                 onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }

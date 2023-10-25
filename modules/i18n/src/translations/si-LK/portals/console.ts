@@ -7114,7 +7114,8 @@ export const console: ConsoleNS = {
                 emptyPlaceholder: {
                     noPendingInvitations: "මේ මොහොතේ පොරොත්තු ආරාධනා නැත.",
                     noExpiredInvitations: "මේ මොහොතේ කල් ඉකුත් වූ ආරාධනා ඇත.",
-                    noInvitations: "දැනට ආරාධනා නැහැ."
+                    noInvitations: "දැනට ආරාධනා නැහැ.",
+                    noCollaboratorUserInvitations: "මේ මොහොතේ කල් ඉකුත් වූ ආරාධනා සහිත සහකාරක පරිශීලකයන් නොමැත."
                 }
             },
             oidcScopes: {

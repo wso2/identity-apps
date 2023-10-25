@@ -169,8 +169,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ askPasswordFromUser ] = useState<boolean>(true);
     const [ isFinishButtonDisabled, setFinishButtonDisabled ] = useState<boolean>(false);
     const [ isBasicDetailsLoading, setBasicDetailsLoading ] = useState<boolean>(false);
-    const [ isStepsUpdated, setIsStepsUpdated ] = useState(false);
-    const [ isUserSummaryEnabled ] = useState(false);
+    const [ isStepsUpdated, setIsStepsUpdated ] = useState<boolean>(false);
+    const [ isUserSummaryEnabled ] = useState<boolean>(false);
 
     const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) =>
         state.organization.organization);
@@ -181,7 +181,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>([]);
 
-    const [ selectedUserStore, setSelectedUserStore ] = useState<string>("PRIMARY"); //TODO change
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>("PRIMARY");
     const excludedAttributes: string = "members";
 
     const {
@@ -421,8 +421,30 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     setInitialGroupList(response.data.Resources);
                     setFixedGroupsList(response.data.Resources);
                 }
-            })
-            .finally(() => setBasicDetailsLoading(false));
+            }).catch((error: AxiosError) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.description ?? error?.response?.data?.detail
+                        ?? 
+                        t("console:manage.features.user.updateUser.groups.notifications" + 
+                        ".fetchUserGroups.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.response?.data?.message
+                        ?? t("console:manage.features.user.updateUser.groups.notifications" + 
+                        ".fetchUserGroups.error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("console:manage.features.user.updateUser.groups.notifications" + 
+                    ".fetchUserGroups.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.user.updateUser.groups.notifications" + 
+                    ".fetchUserGroups.genericError.message")
+                }));
+            }).finally(() => setBasicDetailsLoading(false));
     };
 
     /**
@@ -530,8 +552,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     };
 
     const navigateToNext = () => {
-        // debugger
-        // console.log("STEP: ", currentWizardStep)
         switch (currentWizardStep) {
             case 0:
                 setSubmitGeneralSettings();

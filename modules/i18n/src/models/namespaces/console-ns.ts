@@ -6055,7 +6055,8 @@ export interface ConsoleNS {
                     noPendingInvitations: string;
                     noExpiredInvitations: string;
                     noInvitations: string;
-                }
+                    noCollaboratorUserInvitations: string;
+                };
             };
             onboarded?: {
                 notifications?: {
