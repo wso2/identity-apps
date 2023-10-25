@@ -284,11 +284,13 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
             <EmptyPlaceholder
                 data-testid={ `${componentId}-empty-search-result` }
                 data-componentid={ `${componentId}-empty-search-result` }
-                action={ !searchQuery ? null : (
-                    <LinkButton onClick={ handleSearchQueryClear }>
-                        { t("console:manage.features.users.usersList.search.emptyResultPlaceholder.clearButton") }
-                    </LinkButton>
-                ) }
+                action={ !searchQuery
+                    ? null
+                    : (
+                        <LinkButton onClick={ handleSearchQueryClear }>
+                            { t("console:manage.features.users.usersList.search.emptyResultPlaceholder.clearButton") }
+                        </LinkButton>
+                    ) }
                 image={ getEmptyPlaceholderIllustrations().emptySearch }
                 imageSize="tiny"
                 title={ t("console:manage.features.users.usersList.search.emptyResultPlaceholder.title") }
@@ -355,7 +357,6 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
             (isRoleAssignment && noFailedOrSuccessfulUserAssignment);
     };
     
-
     const advanceSearchFilterOptions: DropdownChild[] =
         responseOperationType === BulkImportResponseOperationTypes.USER_CREATION
             ? [
@@ -370,7 +371,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                 {
                     key: 1,
                     text:  t("console:manage.features.user.modals.bulkImportUserWizard." +
-                "wizardSummary.advanceSearch.roleGroupFilterAttributePlaceHolder"),
+                    "wizardSummary.advanceSearch.roleGroupFilterAttributePlaceHolder"),
                     value: "roleName"
                 }
             ];
@@ -380,9 +381,10 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     {
-                        isLoading || hasError ? null :
-                            bulkResponseSummary.failedUserCreation === 0 ?
-                                (<Alert severity="success" data-componentid={ `${componentId}-success-alert` }>
+                        isLoading || hasError
+                            ? null 
+                            : bulkResponseSummary.failedUserCreation === 0 
+                                ? (<Alert severity="success" data-componentid={ `${componentId}-success-alert` }>
                                     <AlertTitle data-componentid={ `${componentId}-success-alert-title` }>
                                         {
                                             t("console:manage.features.user.modals.bulkImportUserWizard." +
@@ -432,10 +434,10 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                 onFilter={ handleUserFilter }
                                 filterAttributeOptions={ advanceSearchFilterOptions }
                                 filterAttributePlaceholder={
-                                    responseOperationType === BulkImportResponseOperationTypes.USER_CREATION ?
-                                        t("console:manage.features.users.advancedSearch.form.dropdown." +
-                                        "filterAttributeOptions.username") :
-                                        t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                    responseOperationType === BulkImportResponseOperationTypes.USER_CREATION
+                                        ? t("console:manage.features.users.advancedSearch.form.dropdown." +
+                                            "filterAttributeOptions.username")
+                                        : t("console:manage.features.user.modals.bulkImportUserWizard." +
                                         "wizardSummary.advanceSearch.roleGroupFilterAttributePlaceHolder") 
                                 }
                                 filterConditionsPlaceholder={
@@ -447,10 +449,10 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                             ".placeholder")
                                 }
                                 placeholder={
-                                    responseOperationType === BulkImportResponseOperationTypes.USER_CREATION ?
-                                        t("console:manage.features.user.modals.bulkImportUserWizard." +
-                                            "wizardSummary.advanceSearch.searchByUsername") :
-                                        t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                    responseOperationType === BulkImportResponseOperationTypes.USER_CREATION
+                                        ? t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                            "wizardSummary.advanceSearch.searchByUsername")
+                                        : t("console:manage.features.user.modals.bulkImportUserWizard." +
                                         "wizardSummary.advanceSearch.searchByRoleOrGroup")
                                 }
                                 defaultSearchAttribute="resourceName"
@@ -488,13 +490,15 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                     >
                         <Typography variant="body2" style={ { textAlign: "right" } }>
                             {
-                                responseOperationType === BulkImportResponseOperationTypes.USER_CREATION ? (
-                                    t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
+                                responseOperationType === BulkImportResponseOperationTypes.USER_CREATION
+                                    ? (
+                                        t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
                                  "totalUserCreationCount") + " : " + totalUserCreationCount
-                                ): (
-                                    t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
+                                    )
+                                    : (
+                                        t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
                                 "totalUserAssignmentCount") + " : " + totalUserAssignmentCount
-                                )
+                                    )
                             }
                         </Typography>
                         <DataTable<BulkUserImportOperationResponse>
