@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,6 +34,7 @@ import {
     EmphasizedSegment,
     PrimaryButton
 } from "@wso2is/react-components";
+import { IdentityAppsError } from "modules/core/dist/types/errors";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -109,7 +110,7 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
         };
 
         updateOrganizationDiscoveryAttributes(organization.id, emailDomainDiscoveryData)
-            .then(_response => {
+            .then(() => {
                 dispatch(
                     addAlert({
                         description: t(
@@ -126,7 +127,7 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
 
                 onOrganizationUpdate(organization.id);
             })
-            .catch(error => {
+            .catch((error: IdentityAppsError) => {
                 if (error.description) {
                     dispatch(
                         addAlert({
@@ -157,7 +158,7 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
                 );
             })
             .finally(() => setIsSubmitting(false));
-        };
+    };
 
     return organization ? (
         <>
@@ -169,7 +170,9 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
                                 <SemanticForm.Field
                                     data-testid={ `${ testId }-email-domain-form-name-input` }
                                 >
-                                    <label>{ t("console:manage.features.organizationDiscovery.edit.fields.name.label") }</label>
+                                    <label>
+                                        { t("console:manage.features.organizationDiscovery.edit.fields.name.label") }
+                                    </label>
                                     <input value={ organization.name } readOnly />
                                 </SemanticForm.Field>
                             </SemanticForm>
@@ -206,7 +209,8 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
                                             className="mt-2"
                                         >
                                             { 
-                                                t("console:manage.features.organizationDiscovery.edit.fields.emailDomains.label")
+                                                t("console:manage.features.organizationDiscovery.edit.fields." +
+                                                "emailDomains.label")
                                             }
                                         </InputLabel>
                                         <TextField
@@ -217,7 +221,8 @@ export const EditOrganizationEmailDomains: FunctionComponent<EditOrganizationEma
                                             { ...params }
                                             required
                                             placeholder={
-                                                t("console:manage.features.organizationDiscovery.edit.fields.emailDomains.placeHolder") 
+                                                t("console:manage.features.organizationDiscovery.edit.fields." +
+                                                "emailDomains.placeHolder") 
                                             }
                                         />
                                     </>

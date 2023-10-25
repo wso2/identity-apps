@@ -131,7 +131,7 @@ export const deleteOrganizationDiscoveryConfig = (
  *
  * @param filter - The filter query.
  * @param _offset - The maximum number of organizations to return.
- * @param limit  - Number of records to skip for pagination.
+ * @param _limit  - Number of records to skip for pagination.
  *
  * @returns a promise containing the response
  */
