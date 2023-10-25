@@ -1075,6 +1075,18 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             <DangerZoneGroup
                                 sectionHeader={ t("console:manage.features.user.editUser.dangerZoneGroup.header") }
                             >
+                                <Show when={ AccessControlConstants.USER_EDIT }>
+                                    <DangerZone
+                                        data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
+                                        actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                            "passwordResetZone.actionTitle") }
+                                        header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                            "passwordResetZone.header") }
+                                        subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                            "passwordResetZone.subheader") }
+                                        onActionClick={ () => setOpenChangePasswordModal(true) }
+                                    />
+                                </Show> 
                                 {
                                     !allowDeleteOnly && configSettings?.accountDisable === "true" && (
                                         <DangerZone
@@ -1366,32 +1378,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     return (
         !isReadOnlyUserStoresLoading
             ? (<>
-                {
-                    <Grid>
-                        <Grid.Row>
-                            <Grid.Column>
-                                {
-                                    (!isReadOnly && resolveUsernameOrDefaultEmail(user, false) !== "admin" &&
-                                        adminUserType === "None") && (
-                                        <Show
-                                            when={ AccessControlConstants.USER_EDIT }
-                                        >
-                                            <Button
-                                                basic
-                                                color="orange"
-                                                onClick={ () => setOpenChangePasswordModal(true) }
-                                                floated="right"
-                                            >
-                                                <Icon name="redo" />
-                                                { t("console:manage.features.user.modals.changePasswordModal.button") }
-                                            </Button>
-                                        </Show>
-                                    )
-                                }
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                }
                 {
                     !isEmpty(profileInfo) && (
                         <EmphasizedSegment padded="very">
