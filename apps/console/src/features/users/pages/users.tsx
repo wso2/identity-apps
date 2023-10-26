@@ -767,19 +767,20 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             value: UserAccountTypesMain.INTERNAL
         },
         {
-            "data-componentid": `${ componentId }-add-external-user`,
-            key: 2,
-            text: t("console:manage.features.parentOrgInvitations.createDropdown.inviteLabel"),
-            value: UserAccountTypesMain.EXTERNAL
-        },
-        {
             "data-componentid": `${ testId }-bulk-import-users-dropdown-item`,
             "data-testid": `${ testId }-bulk-import-users-dropdown-item`,
-            key: 3,
+            key: 2,
             text: t("console:manage.features.users.addUserDropDown.bulkImport"),
             value: UserAddOptionTypes.BULK_IMPORT
+        },
+        isSubOrg && {
+            "data-componentid": `${ componentId }-add-external-user`,
+            key: 3,
+            text: t("console:manage.features.parentOrgInvitations.createDropdown.inviteLabel"),
+            value: UserAccountTypesMain.EXTERNAL
         }
-    ];
+    ].filter(Boolean);
+
     
     const handleDropdownItemChange = (value: string): void => {
         if (value === UserAccountTypesMain.INTERNAL) {
@@ -980,23 +981,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 && !isParentOrgUserInviteFetchRequestLoading
                 && (
                     <Show when={ AccessControlConstants.USER_WRITE }>
-                        { !isSubOrg ? (
-                            <PrimaryButton
-                                data-componentid={ `${ componentId }-add-user-button` }
-                                data-testid={ `${ testId }-add-user-button` }
-                                onClick={ () => {
-                                    eventPublisher.publish("manage-users-click-create-new", {
-                                        type: "user"
-                                    });
-                                    setShowWizard(true);
-                                } }
-                            >
-                                <Icon name="add"/>
-                                { t("extensions:manage.users.buttons.addUserBtn") }
-                            </PrimaryButton>
-                        ) : (
-                            renderUserDropDown()
-                        ) }
+                        { renderUserDropDown() }
                     </Show>
                 )
             }
