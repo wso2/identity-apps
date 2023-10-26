@@ -93,7 +93,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
 
     const {
         data: brandingPreference
-    } = useGetBrandingPreferenceResolve("709f41e2-a5d3-4ff2-83f1-dad522ca72f8");
+    } = useGetBrandingPreferenceResolve(tenantDomain);
 
     const {
         data: customTextCommons

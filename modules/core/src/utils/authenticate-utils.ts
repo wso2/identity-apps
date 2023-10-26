@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,6 @@ export class AuthenticateUtils {
      * Private constructor to avoid object instantiation from outside
      * the class.
      *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {}
@@ -35,10 +34,10 @@ export class AuthenticateUtils {
     /**
      * Checks if the logged in user has login scope.
      *
-     * @return {boolean} True or false.
+     * @returns `boolean` True or false.
      */
     public static hasLoginPermission(allowedScopes: string): boolean {
-        const scopes = allowedScopes?.split(" ");
+        const scopes: string[] = allowedScopes?.split(" ");
 
         return scopes?.includes(TokenConstants.LOGIN_SCOPE);
     }
@@ -46,10 +45,10 @@ export class AuthenticateUtils {
     /**
      * Checks if the logged in user has a specific scope.
      *
-     * @return {boolean} True or false.
+     * @returns `boolean` True or false.
      */
     public static hasScope(scope: string, allowedScopes: string): boolean {
-        const scopes = allowedScopes?.split(" ");
+        const scopes: string[] = allowedScopes?.split(" ");
 
         return scopes?.includes(scope);
     }
@@ -57,19 +56,19 @@ export class AuthenticateUtils {
     /**
      * Check if the logged in user has atleast one scope.
      * 
-     * @return {boolean} True or false.
+     * @returns `boolean` True or false.
      */
     public static hasScopes(scope: string[], allowedScopes: string): boolean {
         const userScopes: string[] = allowedScopes?.split(" ");
 
-        return scope.every(i => userScopes?.includes(i));
+        return scope.every((i:string) => userScopes?.includes(i));
     }
 
     /**
      * Get the authentication callback URL from the session storage.
      *
-     * @param {string} app - The name of the app.
-     * @return {string} Authentication Callback from session.
+     * @param app - `string` The name of the app.
+     * @returns Authentication Callback from session.
      */
     public static getAuthenticationCallbackUrl(app: string): string {
         return window.sessionStorage.getItem(`auth_callback_url_${app}`);
@@ -78,9 +77,9 @@ export class AuthenticateUtils {
     /**
      * Validates the authentication callback URL by checking if starts with the matcher value.
      *
-     * @param {string} app - The name of the app.
-     * @param {string} matcher - Matcher value.
-     * @return {boolean} Authentication Callback from session.
+     * @param app - `string` The name of the app.
+     * @param matcher - `string` Matcher value.
+     * @returns `boolean` Authentication Callback from session.
      */
     public static isValidAuthenticationCallbackUrl(app: string, matcher: string): boolean {
 
@@ -97,26 +96,26 @@ export class AuthenticateUtils {
      * Update the authentication callback URL in the session storage.
      * This is used to improve UX in automatic sign-out scenarios due to session timeouts etc.
      *
-     * @param {string} app - The name of the app.
-     * @param {string} location - history path.
+     * @param app - `string` The name of the app.
+     * @param location - `string` history path.
      */
     public static updateAuthenticationCallbackUrl(app: string, location: string): void {
         window.sessionStorage.setItem(`auth_callback_url_${app}`, location);
     }
 
     /**
-     * @param {string} app - The name of the app.
+     * @param app - `string` The name of the app.
      * Removes the authentication callback URL from the session storage.
      */
     public static removeAuthenticationCallbackUrl(app: string): void {
         window.sessionStorage.removeItem(`auth_callback_url_${app}`);
     }
 
-   /**
+    /**
     * Tenant domain decoded from the subject claim of the ID Token.
     *
-    * @param {string} sub - Subject claim of the ID Token.
-    * @return {string} Tenant domain.
+    * @param sub - `string` Subject claim of the ID Token.
+    * @returns `string` Tenant domain.
     */
     public static deriveTenantDomainFromSubject(sub: string): string {
         const subParts: string[] = sub.split("@");
@@ -128,10 +127,10 @@ export class AuthenticateUtils {
     /**
     * Get sign in data of the user
     *
-    * @param {BasicUserInfo} response - Sign in user data response
-    * @return {AuthenticatedUserInfo} Associated user's information
+    * @param response - `BasicUserInfo` Sign in user data response
+    * @returns `AuthenticatedUserInfo` Associated user's information
     */
-    public static getSignInState(response: BasicUserInfo): AuthenticatedUserInfo {
+    public static getSignInState(response: BasicUserInfo, tenantDomain?: string): AuthenticatedUserInfo {
     
         return {
             allowedScopes: response?.allowedScopes,
@@ -139,7 +138,7 @@ export class AuthenticateUtils {
             display_name: response?.displayName,
             email: response?.email,
             scope: response?.allowedScopes,
-            tenantDomain: AuthenticateUtils.deriveTenantDomainFromSubject(response?.sub) ,
+            tenantDomain: tenantDomain ? tenantDomain : AuthenticateUtils.deriveTenantDomainFromSubject(response?.sub),
             username: response?.sub
         };
     }
