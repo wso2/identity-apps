@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,9 +35,10 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Grid, Header, Modal } from "semantic-ui-react";
+import { AppState } from "../../../../../../features/core/store";
 import { useAPIResources } from "../../../../api-resources/api";
 import { APIResourcesConstants } from "../../../../api-resources/constants";
 import { APIResourceInterface, APIResourcePermissionInterface } from "../../../../api-resources/models";
@@ -78,6 +79,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
     const [ submitForm, setSubmitForm ] = useTrigger();
+    const productName: string = useSelector((state: AppState) => state.config.ui.productName);
 
     const [ allAPIResourcesListData, setAllAPIResourcesListData ] = useState<APIResourceInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -473,7 +475,8 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                         <Popup
                                             content={ t("extensions:develop.applications.edit.sections." +
                                                 "apiAuthorization.sections.apiSubscriptions.wizards." +
-                                                "authorizeAPIResource.rbacPolicyMessage") }
+                                                "authorizeAPIResource.rbacPolicyMessage", 
+                                            { productName: productName }) }
                                             disabled={ !selectedAPIResource
                                                 || !selectedAPIResourceRequiresAuthorization }
                                             inverted

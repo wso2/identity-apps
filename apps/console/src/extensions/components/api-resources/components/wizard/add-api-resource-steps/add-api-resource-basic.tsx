@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,9 @@ import { Field, FormField, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
+import { AppState } from "../../../../../../features/core/store";
 import { ExtendedFeatureConfigInterface } from "../../../../../configs/models";
 import { getAPIResourcesForIdenitifierValidation } from "../../../api";
 import { APIResourcesConstants } from "../../../constants";
@@ -80,6 +82,7 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
 
     const { t } = useTranslation();
     const identifierRef: MutableRefObject<FormField> = useRef<FormField>();
+    const productName: string = useSelector((state: AppState) => state.config.ui.productName);
 
     /**
      * Prepare form values for submitting.
@@ -146,7 +149,8 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                         <Hint className="mb-0">
                             <Trans 
                                 i18nKey= { "extensions:develop.apiResource.wizard.addApiResource.steps.basic." +
-                                    "form.fields.identifier.hint" }>
+                                    "form.fields.identifier.hint" }
+                                tOptions={ { productName: productName } }>
                                 We recommend using a URI as the identifier, but you do not need to make the URI 
                                 publicly available since Asgardeo will not access your API. 
                                 Asgardeo will use this identifier value as the audience(aud) claim in the 
@@ -173,7 +177,7 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                         />
                         <Hint className="mb-0">
                             { t("extensions:develop.apiResource.wizard.addApiResource.steps.basic.form.fields." +
-                                "name.hint") }
+                                "name.hint", { productName: productName }) }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

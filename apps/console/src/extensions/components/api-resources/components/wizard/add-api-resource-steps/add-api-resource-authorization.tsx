@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,8 @@ import { Field, Form } from "@wso2is/form";
 import { DocumentationLink, Message, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { AppState } from "../../../../../../features/core/store";
 import { ExtendedFeatureConfigInterface } from "../../../../../configs/models";
 import { AuthorizationAPIResourceInterface } from "../../../models";
 
@@ -69,6 +71,7 @@ export const AddAPIResourceAuthorization: FunctionComponent<AddAPIResourceAuthor
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+    const productName: string = useSelector((state: AppState) => state.config.ui.productName);
 
     /**
      * Prepare form values for submitting.
@@ -94,7 +97,7 @@ export const AddAPIResourceAuthorization: FunctionComponent<AddAPIResourceAuthor
                 content={ 
                     (<>
                         { t("extensions:develop.apiResource.wizard.addApiResource.steps.authorization.form." + 
-                            "rbacMessage") }
+                            "rbacMessage", { productName: productName }) }
                         <DocumentationLink
                             link={ getLink("develop.apiResources.addAPIResource.rbacInfoBox.learnMore") }
                         >
