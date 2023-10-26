@@ -97,23 +97,6 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     }, [ sortOrder, sortByStrategy ]);
 
     /**
-     * Filter the list when the seach query changes.
-     * NOTE: This is a fron-end level search since the API does not support search.
-     */
-    // useEffect(() => {
-    //     if (searchQuery.length > 0) {
-    //         const result: OIDCScopesListInterface[] = scopeList.filter((item: OIDCScopesListInterface) =>
-    //             item.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1);
-
-    //         setFilteredScopeList(result);
-
-    //         return;
-    //     }
-
-    //     setFilteredScopeList(undefined);
-    // }, [ searchQuery ]);
-
-    /**
      * Show errors when the API request fails.
      */
     useEffect(() => {
@@ -161,9 +144,15 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     const handleSortStrategyChange = (_event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
         setSortByStrategy(SORT_BY.filter(
             (option: { key: number; text: string; value: string; }) => option.value === data.value)[ 0 ]);
-    };
+    }; 
 
-    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    /**
+     * This the the function which is called when the user types 
+     * in the search box and hits enter.
+     * 
+     * @param event - Keyboard event of the search input.
+     */
+    const handleEnterKeyInSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
             event.preventDefault();
           
@@ -224,7 +213,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                             placeholder={ t("console:manage.features.oidcScopes.list.searchPlaceholder") }
                             floated="right"
                             size="small"
-                            onKeyPress={ (e: React.KeyboardEvent<HTMLInputElement>) => handleKeyPress(e) }
+                            onKeyPress={ (e: React.KeyboardEvent<HTMLInputElement>) => handleEnterKeyInSearch(e) }
                         />
                     </div>
                 ) }
