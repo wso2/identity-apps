@@ -155,7 +155,7 @@
                 white-space: normal;
             }
         }
-        .description {
+        .settings-description {
             height: 62px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -265,7 +265,7 @@
      Basic Card Variation
 ------------------------------*/
 
-.ui.card {
+.ui.card { 
     &.basic-card {
         transition: @basicCardTransition;
         box-shadow: none;
