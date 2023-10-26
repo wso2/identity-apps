@@ -18,6 +18,7 @@
 
 import {
     BuildingGearIcon,
+    DatabaseDocumentIcon,
     PaletteIcon,
     SquareUserIcon
 } from "@oxygen-ui/react-icons";
@@ -262,7 +263,7 @@ export class RouteUtils {
         };
 
         const userAttributesAndStores: Omit<RouteInterface, "showOnSidePanel"> = {
-            icon: BuildingGearIcon,
+            icon: DatabaseDocumentIcon,
             id: "userAttributesAndStores",
             name: "User Attributes & Stores"
         };
@@ -370,16 +371,19 @@ export class RouteUtils {
             {
                 category: manage,
                 id: "userStores",
+                order: 2,
                 parent: userAttributesAndStores
             },
             {
                 category: manage,
                 id: "attributeDialects",
+                order: 1,
                 parent: userAttributesAndStores
             },
             {
                 category: manage,
                 id: "oidcScopes",
+                order: 3,
                 parent: userAttributesAndStores
             },
             {

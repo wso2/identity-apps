@@ -333,6 +333,7 @@ export class AppConstants {
             [ "ROLE_EDIT", `${ AppConstants.getAdminViewBasePath() }/roles/:id` ],
             [ "ROOT", "/" ],
             [ "GOVERNANCE_CONNECTORS", `${AppConstants.getAdminViewBasePath()}/governance-connectors/:id` ],
+            [ "MULTI_ATTRIBUTE_LOGIN", `${AppConstants.getAdminViewBasePath()}/multi-attribute-login` ],
             [ "UNAUTHORIZED", `${AppConstants.getMainViewBasePath()}/unauthorized` ],
             [ "USERS", `${AppConstants.getAdminViewBasePath()}/users` ],
             [ "USER_EDIT", `${AppConstants.getAdminViewBasePath()}/users/:id` ],
