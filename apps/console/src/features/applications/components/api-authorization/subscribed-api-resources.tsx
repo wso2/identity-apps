@@ -42,6 +42,7 @@ import { APIResourcesConstants } from "../../../api-resources/constants";
 import { APIResourceInterface } from "../../../api-resources/models";
 import { FeatureConfigInterface } from "../../../core";
 import { Policy } from "../../constants/api-authorization";
+import { ApplicationTemplateIdTypes } from "../../models";
 import {
     AuthorizedAPIListItemInterface,
     AuthorizedPermissionListItemInterface
@@ -56,6 +57,10 @@ interface SubscribedAPIResourcesProps extends
      * Application ID.
      */
     appId: string;
+    /**
+     * Template ID.
+     */
+    templateId: string;
     /**
      * List of all API Resources
      */
@@ -110,6 +115,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
 
     const {
         appId,
+        templateId,
         allAPIResourcesListData,
         allAPIResourcesFetchRequestError,
         allAuthorizedScopes,
@@ -137,6 +143,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
     const [ searchedSubscribedAPIResources, setSearchedSubscribedAPIResources ] = 
         useState<AuthorizedAPIListItemInterface[]>(null);
     const [ copyScopesValue, setCopyScopesValue ] = useState<string>(null);
+    const [ m2mApplication, setM2MApplication ] = useState<boolean>(false);
 
     /**
      * Initialize the subscribed API Resources list to the searched list.
@@ -157,6 +164,15 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
             );
         }
     }, [ allAuthorizedScopes ]);
+
+    /**
+     * Check whether the application is an M2M application.
+     */
+    useEffect(() => {
+        if (templateId === ApplicationTemplateIdTypes.M2M_APPLICATION) {
+            setM2MApplication(true);
+        }
+    }, [ templateId ]);
 
     /**
      * Navigate to the API Resources page.
@@ -293,17 +309,21 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                             </Header.Subheader>
                         </Header.Content>
                     </Grid.Column>
-                    <Grid.Column width={ 8 }>
-                        {
-                            subscribedAPIResource.identifier
-                                ? (
-                                    <Header.Subheader>
-                                        { renderPolicyForAPIResource(subscribedAPIResource.policyId) }
-                                    </Header.Subheader>
-                                )
-                                : null
-                        }
-                    </Grid.Column>
+                    {
+                        !m2mApplication && (
+                            <Grid.Column width={ 8 }>
+                                {
+                                    subscribedAPIResource.identifier
+                                        ? (
+                                            <Header.Subheader>
+                                                { renderPolicyForAPIResource(subscribedAPIResource.policyId) }
+                                            </Header.Subheader>
+                                        )
+                                        : null
+                                }
+                            </Grid.Column>
+                        )
+                    }
                 </Grid.Row>
             </Grid>
         </Header>

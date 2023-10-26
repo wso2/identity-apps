@@ -1,5 +1,41 @@
 # @wso2is/console
 
+## 2.3.1
+
+### Patch Changes
+
+- [#4330](https://github.com/wso2/identity-apps/pull/4330) [`c991a8b398`](https://github.com/wso2/identity-apps/commit/c991a8b398198169ebd84d7923e3ea3850c79ce4) Thanks [@savindi7](https://github.com/savindi7)! - fix admin delete issue
+
+* [#4341](https://github.com/wso2/identity-apps/pull/4341) [`29c9e682ab`](https://github.com/wso2/identity-apps/commit/29c9e682ab800fdd65436032a69b4baa6663f75e) Thanks [@Rashmini](https://github.com/Rashmini)! - Add feature Organization Discovery
+
+* Updated dependencies [[`29c9e682ab`](https://github.com/wso2/identity-apps/commit/29c9e682ab800fdd65436032a69b4baa6663f75e)]:
+  - @wso2is/common@2.0.3
+  - @wso2is/form@2.0.4
+  - @wso2is/i18n@2.0.20
+
+## 2.3.0
+
+### Minor Changes
+
+- [#4336](https://github.com/wso2/identity-apps/pull/4336) [`5d46e14141`](https://github.com/wso2/identity-apps/commit/5d46e14141817ddbaaf06a00aefc10f655511ce9) Thanks [@brionmario](https://github.com/brionmario)! - Disable `applications.loginFlow.legacyEditor` by default
+
+### Patch Changes
+
+- [#4335](https://github.com/wso2/identity-apps/pull/4335) [`47236bbe24`](https://github.com/wso2/identity-apps/commit/47236bbe242d8ed5a96b2cf00120784a3d79aaf6) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Relocate reset password option to danger zone
+
+* [#4333](https://github.com/wso2/identity-apps/pull/4333) [`9509c76c79`](https://github.com/wso2/identity-apps/commit/9509c76c795fe0956d429be9ef4e2d6f8127c4d0) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix multi attribute login configuration issue
+
+## 2.2.3
+
+### Patch Changes
+
+- [#4286](https://github.com/wso2/identity-apps/pull/4286) [`c4aa16987c`](https://github.com/wso2/identity-apps/commit/c4aa16987c10d7afe6925578d97ec4a9bad5f749) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Add support for inviting users from parent organization to sub-organization
+
+* [#4318](https://github.com/wso2/identity-apps/pull/4318) [`581cb0c891`](https://github.com/wso2/identity-apps/commit/581cb0c89179626c5a4761d6eccfeca1092449bf) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Remove API authorization policy for M2M applications
+
+* Updated dependencies [[`c4aa16987c`](https://github.com/wso2/identity-apps/commit/c4aa16987c10d7afe6925578d97ec4a9bad5f749), [`581cb0c891`](https://github.com/wso2/identity-apps/commit/581cb0c89179626c5a4761d6eccfeca1092449bf)]:
+  - @wso2is/i18n@2.0.19
+
 ## 2.2.2
 
 ### Patch Changes

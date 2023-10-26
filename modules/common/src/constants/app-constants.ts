@@ -253,9 +253,15 @@ export class AppConstants {
             .set("CONNECTION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/connections/:id`)
             .set("CUSTOMIZE", `${ AppConstants.getMainViewBasePath() }/customize`)
             .set("DEVELOPER_OVERVIEW", `${ AppConstants.getDeveloperViewBasePath() }/overview`)
-            .set("EMAIL_DOMAIN_ASSIGN", `${ AppConstants.getAdminViewBasePath() }/email-domain-assign`)
-            .set("EMAIL_DOMAIN_DISCOVERY", `${ AppConstants.getAdminViewBasePath() }/email-domain-discovery`)
-            .set("EMAIL_DOMAIN_UPDATE", `${ AppConstants.getAdminViewBasePath() }/email-domain-edit/:id`)
+            .set(
+                "ASSIGN_ORGANIZATION_DISCOVERY_DOMAINS",
+                `${ AppConstants.getAdminViewBasePath() }/email-domain-assign`
+            )
+            .set("ORGANIZATION_DISCOVERY_DOMAINS", `${ AppConstants.getAdminViewBasePath() }/email-domain-discovery`)
+            .set(
+                "UPDATE_ORGANIZATION_DISCOVERY_DOMAINS",
+                `${ AppConstants.getAdminViewBasePath() }/email-domain-edit/:id`
+            )
             .set("EMAIL_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/email-provider`)
             .set("EMAIL_TEMPLATE_TYPES", `${ AppConstants.getAdminViewBasePath() }/email-templates`)
             .set("EMAIL_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId`)

@@ -1443,6 +1443,9 @@ export const console: ConsoleNS = {
                                 }
                             },
                             tabName: "පුරනය වීමේ ක්‍රමය"
+                        },
+                        apiAuthorization: {
+                            m2mPolicyMessage: "සම්පත සඳහා නිශ්චිතව දක්වා ඇති අවසර ප්‍රතිපත්තිය නොතකා API සම්පතක සියලුම බලයලත් විෂය පථයන් M2M යෙදුමක් සඳහා ලබා ගත හැකිය."
                         }
                     }
                 },
@@ -7440,6 +7443,25 @@ export const console: ConsoleNS = {
                     },
                     placeholder: "සංවිධානයේ නම අනුව සොයන්න"
                 },
+                assign: {
+                    title: "ඊමේල් වසම්",
+                    description: "උප සංවිධාන සඳහා ඊමේල් වසම් එක් කරන්න.",
+                    form: {
+                        fields: {
+                            emailDomains: {
+                                label : "ඊමේල් වසම්",
+                                placeholder: "විද්යුත් තැපැල් වසම් ඇතුළත් කරන්න",
+                                hint: "ඔබට සංවිධානයට සිතියම සිතියම් ගත කිරීමට කැමති ඊමේල් වසම් ඇතුළත් කරන්න.Enter සහ ඊළඟ වසම ටයිප් කිරීමෙන් බහුවිධ වසම් වෙන් කරන්න."
+                            },
+                            organizationName: {
+                                label: "සංවිධානයේ නම",
+                                placeholder: "සංවිධානයක් තෝරන්න",
+                                emptyPlaceholder: "සියලුම සංවිධානයට වසම් පවරා ඇත",
+                                hint: "වසම් සිතියම්කරණය එකතු කිරීමට ඔබ කැමති සංවිධානයේ නම ඇතුළත් කරන්න."
+                            }
+                        }
+                    }
+                },
                 emailDomains: {
                     actions: {
                         assign: "විද්‍යුත් තැපැල් වසම පවරන්න",
@@ -7449,23 +7471,33 @@ export const console: ConsoleNS = {
                 edit: {
                     back: "ආපසු",
                     description: "ඊමේල් වසම් සංස්කරණය කරන්න",
-                    fields: {
-                        name: {
-                            label: "සංවිධානයේ නම"
-                        },
-                        emailDomains: {
-                            label : "ඊමේල් වසම්",
-                            placeHolder: "ඊමේල් වසම් ඇතුලත් කරන්න"
+                    form: {
+                        fields: {
+                            emailDomains: {
+                                label : "ඊමේල් වසම්",
+                                placeholder: "විද්යුත් තැපැල් වසම් ඇතුළත් කරන්න",
+                                hint: "ඔබට සංවිධානයට සිතියම සිතියම් ගත කිරීමට කැමති ඊමේල් වසම් ඇතුළත් කරන්න.Enter සහ ඊළඟ වසම ටයිප් කිරීමෙන් බහුවිධ වසම් වෙන් කරන්න."
+                            },
+                            organizationName: {
+                                label: "සංවිධානයේ නම",
+                                hint: "වසම් සිතියම්කරණය එක් කිරීමට ඔබ කැමති සංවිධානයේ නම ඇතුළත් කරන්න."
+                            }
                         }
                     }
                 },
                 notifications: {
+                    addEmailDomains: {
+                        error: {
+                            description: "සංවිධානයට විද්යුත් තැපැල් වසම් එකතු කිරීම අසාර්ථක විය.",
+                            message: "ඊමේල් වසම් එකතු කිරීමට නොහැකි විය"
+                        },
+                        success: {
+                            description: "ඊමේල් වසම් සාර්ථකව එකතු කරන ලදි",
+                            message: "සංවිධානයට විද්යුත් තැපැල් වසම් සාර්ථකව එක් කළේය."
+                        }
+                    },
                     disableEmailDomainDiscovery: {
                         error: {
-                            description: "{{description}}",
-                            message: "විද්‍යුත් තැපැල් වසම් සොයාගැනීම අක්‍රිය කිරීමේදී දෝෂයකි"
-                        },
-                        genericError: {
                             description: "විද්‍යුත් තැපැල් වසම් සොයාගැනීම අක්‍රිය කිරීමේදී දෝෂයක් ඇති විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         },
@@ -7476,10 +7508,6 @@ export const console: ConsoleNS = {
                     },
                     enableEmailDomainDiscovery: {
                         error: {
-                            description: "{{description}}",
-                            message: "විද්‍යුත් තැපැල් වසම් සොයාගැනීම සබල කිරීමේදී දෝෂයකි"
-                        },
-                        genericError: {
                             description: "විද්‍යුත් තැපෑල වසම් සොයාගැනීම සබල කිරීමේදී දෝෂයක් ඇති විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         },
@@ -7490,40 +7518,24 @@ export const console: ConsoleNS = {
                     },
                     fetchOrganizationDiscoveryAttributes: {
                         error: {
-                            description: "{{description}}",
-                            message: "සංවිධානයේ සොයාගැනීම් ගුණාංග ලබා ගැනීමේදී දෝෂයකි"
-                        },
-                        genericError: {
                             description: "සංවිධානයේ සොයාගැනීම් ගුණාංග ලබා ගැනීමේදී දෝෂයක් ඇති විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         }
                     },
                     getEmailDomainDiscovery: {
                         error: {
-                            description: "{{description}}",
-                            message: "විද්‍යුත් තැපැල් වසම් සොයාගැනීමේ වින්‍යාසය ලබා ගැනීමේදී දෝෂයකි"
-                        },
-                        genericError: {
                             description: "ඊමේල් වසම් සොයාගැනීමේ වින්‍යාසය ලබා ගැනීමේදී දෝෂයක් ඇති විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         }
                     },
                     getOrganizationListWithDiscovery: {
                         error: {
-                            description: "{{description}}",
-                            message: "සොයාගැනීම් ගුණාංග සහිත සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයකි"
-                        },
-                        genericError: {
                             description: "සොයාගැනීම් ගුණාංග සහිත සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයක් ඇති විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         }
                     },
                     updateOrganizationDiscoveryAttributes: {
                         error: {
-                            description: "{{description}}",
-                            message: "සංවිධානයේ සොයාගැනීම් ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයකි"
-                        },
-                        genericError: {
                             description: "සංවිධානයේ සොයාගැනීම් ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය",
                             message: "මොකක්හරි වැරැද්දක් වෙලා"
                         },

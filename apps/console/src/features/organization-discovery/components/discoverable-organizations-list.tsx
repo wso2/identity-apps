@@ -19,6 +19,7 @@
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     LoadableComponentInterface
 } from "@wso2is/core/models";
@@ -40,20 +41,21 @@ import {
     AppConstants,
     AppState,
     EventPublisher,
-    FeatureConfigInterface,
     UIConstants,
     history
 } from "../../core";
 import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
-import { OrganizationIcon } from "../configs";
-import { OrganizationManagementConstants } from "../constants";
-import { OrganizationDiscoveryInterface, OrganizationListWithDiscoveryInterface } from "../models";
+import { OrganizationIcon } from "../configs/ui";
+import { OrganizationDiscoveryConstants } from "../constants/organization-discovery-constants";
+import {
+    OrganizationDiscoveryInterface,
+    OrganizationListWithDiscoveryInterface
+} from "../models/organization-discovery";
 
 /**
- *
- * Proptypes for the organizations list component.
+ * Props interface of {@link DiscoverableOrganizationsList}
  */
-export interface OrganizationListWithDiscoveryPropsInterface
+export interface DiscoverableOrganizationsListPropsInterface
     extends LoadableComponentInterface,
     IdentifiableComponentInterface {
     /**
@@ -91,14 +93,13 @@ export interface OrganizationListWithDiscoveryPropsInterface
 }
 
 /**
- * Organization list component.
+ * This component renders the discoverable organizations list.
  *
  * @param props - Props injected to the component.
- *
- * @returns
+ * @returns Discoverable organizations list component.
  */
-export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWithDiscoveryPropsInterface> = (
-    props: OrganizationListWithDiscoveryPropsInterface
+const DiscoverableOrganizationsList: FunctionComponent<DiscoverableOrganizationsListPropsInterface> = (
+    props: DiscoverableOrganizationsListPropsInterface
 ): ReactElement => {
     const {
         defaultListItemLimit,
@@ -116,7 +117,10 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
     const { t } = useTranslation();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state.config?.ui?.features?.organizationDiscovery;
+    });
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -128,7 +132,7 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
     const handleOrganizationEmailDomainEdit = (organizationId: string): void => {
         history.push({
             pathname: AppConstants.getPaths()
-                .get("EMAIL_DOMAIN_UPDATE")
+                .get("UPDATE_ORGANIZATION_DISCOVERY_DOMAINS")
                 .replace(":id", organizationId)
         });
     };
@@ -136,7 +140,7 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
     /**
      * Resolves data table columns.
      *
-     * @returns
+     * @returns Table columns.
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
@@ -184,7 +188,7 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
     /**
      * Resolves data table actions.
      *
-     * @returns
+     * @returns Table actions.
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
@@ -196,14 +200,16 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
                 "data-componentid": `${ componentId }-item-edit-button`,
                 hidden: (): boolean =>
                     !isFeatureEnabled(
-                        featureConfig?.organizationDiscovery,
-                        OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_EMAIL_DOMAIN_UPDATE")
+                        featureConfig,
+                        OrganizationDiscoveryConstants.FEATURE_DICTIONARY.get(
+                            "ORGANIZATION_UPDATE_ORGANIZATION_DISCOVERY_DOMAINS"
+                        )
                     ),
                 icon: (): SemanticICONS => {
 
                     return !hasRequiredScopes(
-                        featureConfig?.organizationDiscovery,
-                        featureConfig?.organizationDiscovery?.scopes?.update,
+                        featureConfig,
+                        featureConfig?.scopes?.update,
                         allowedScopes
                     )
                         ? "eye"
@@ -214,8 +220,8 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
                 popupText: (): string => {
 
                     return !hasRequiredScopes(
-                        featureConfig?.organizationDiscovery,
-                        featureConfig?.organizationDiscovery?.scopes?.update,
+                        featureConfig,
+                        featureConfig?.scopes?.update,
                         allowedScopes
                     )
                         ? t("common:view")
@@ -229,7 +235,7 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
     /**
      * Resolve the relevant placeholder.
      *
-     * @returns
+     * @returns Placeholders.
      */
     const showPlaceholders = (): ReactElement => {
         if (searchQuery && (isEmpty(list) || list?.organizations?.length === 0)) {
@@ -245,7 +251,7 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
                     title={ t("console:manage.placeholders.emptySearchResult.title") }
                     subtitle={ [
                         t("console:manage.placeholders.emptySearchResult.subtitles.0", {
-                            // searchQuery looks like "name co OrganizationName", so we only remove the filter string 
+                            // searchQuery looks like "name co OrganizationName", so we only remove the filter string
                             // only to get the actual user entered query
                             query: searchQuery.split("organizationName co ")[1]
                         }),
@@ -288,36 +294,36 @@ export const OrganizationListWithDiscovery: FunctionComponent<OrganizationListWi
     };
 
     return (
-        <>
-            <DataTable<OrganizationDiscoveryInterface>
-                className="organizations-table"
-                isLoading={ isLoading }
-                loadingStateOptions={ {
-                    count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
-                    imageType: "square"
-                } }
-                actions={ resolveTableActions() }
-                columns={ resolveTableColumns() }
-                data={ list?.organizations }
-                onRowClick={ (e: SyntheticEvent, organization: OrganizationDiscoveryInterface): void => {
-                    handleOrganizationEmailDomainEdit(organization.organizationId);
-                }
-                }
-                placeholders={ showPlaceholders() }
-                selectable={ selection }
-                showHeader={ false }
-                transparent={ !isLoading && showPlaceholders() !== null }
-                data-componentid={ componentId }
-            />
-        </>
+        <DataTable<OrganizationDiscoveryInterface>
+            className="organizations-table"
+            isLoading={ isLoading }
+            loadingStateOptions={ {
+                count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                imageType: "square"
+            } }
+            actions={ resolveTableActions() }
+            columns={ resolveTableColumns() }
+            data={ list?.organizations }
+            onRowClick={ (e: SyntheticEvent, organization: OrganizationDiscoveryInterface): void => {
+                handleOrganizationEmailDomainEdit(organization.organizationId);
+            }
+            }
+            placeholders={ showPlaceholders() }
+            selectable={ selection }
+            showHeader={ false }
+            transparent={ !isLoading && showPlaceholders() !== null }
+            data-componentid={ componentId }
+        />
     );
 };
 
 /**
- * Default props for the component.
+ * Props interface of {@link DiscoverableOrganizationsList}
  */
-OrganizationListWithDiscovery.defaultProps = {
-    "data-componentid": "organization-list-with-discovery",
+DiscoverableOrganizationsList.defaultProps = {
+    "data-componentid": "discoverable-organizations-list",
     selection: true,
     showListItemActions: true
 };
+
+export default DiscoverableOrganizationsList;

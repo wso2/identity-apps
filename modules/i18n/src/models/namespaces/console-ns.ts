@@ -914,6 +914,9 @@ export interface ConsoleNS {
                             stopSharingNotification: Notification
                             getSharedOrganizations: Notification;
                         };
+                        apiAuthorization: {
+                            m2mPolicyMessage: string;
+                        }
                     };
                 };
                 forms: {
@@ -3265,6 +3268,25 @@ export interface ConsoleNS {
                     };
                     placeholder: string;
                 };
+                assign: {
+                    title: string;
+                    description: string;
+                    form: {
+                        fields: {
+                            emailDomains: {
+                                label : string;
+                                placeholder: string;
+                                hint: string;
+                            },
+                            organizationName: {
+                                label: string;
+                                placeholder: string;
+                                emptyPlaceholder: string;
+                                hint: string;
+                            }
+                        }
+                    }
+                },
                 emailDomains: {
                     actions: {
                         assign: string;
@@ -3274,18 +3296,79 @@ export interface ConsoleNS {
                 edit: {
                     back: string;
                     description: string;
-                    fields: {
-                        name: FormAttributes;
-                        emailDomains: FormAttributes;
-                    }
+                    form: {
+                        fields: {
+                            emailDomains: {
+                                label : string;
+                                placeholder: string;
+                                hint: string;
+                            };
+                            organizationName: {
+                                label: string;
+                                hint: string;
+                            };
+                        };
+                    };
                 };
                 notifications: {
-                    disableEmailDomainDiscovery: Notification;
-                    enableEmailDomainDiscovery: Notification;
-                    fetchOrganizationDiscoveryAttributes: Notification;
-                    getEmailDomainDiscovery: Notification;
-                    getOrganizationListWithDiscovery: Notification;
-                    updateOrganizationDiscoveryAttributes: Notification;
+                    addEmailDomains: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    disableEmailDomainDiscovery: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    enableEmailDomainDiscovery: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    fetchOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    getEmailDomainDiscovery: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    getOrganizationListWithDiscovery: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    updateOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
                 },
                 placeholders: {
                     emptyList: Placeholder;

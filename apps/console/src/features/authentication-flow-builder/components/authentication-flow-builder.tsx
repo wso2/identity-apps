@@ -187,7 +187,9 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                                 onClose={ () => {
                                     setIsScriptEditorSidePanelDrawerOpen(false);
                                 } }
-                                className="script-editor-drawer"
+                                className={
+                                    classNames("script-editor-drawer", { "standalone": !isLegacyEditorEnabled })
+                                }
                                 drawerIcon={ <CodeWindowIcon height={ 16 } width={ 16 } /> }
                                 panel={ isAdaptiveAuthAvailable && <ScriptEditorSidePanel /> }
                                 panelControlsLabel={ t("console:loginFlow.scriptEditor.panelHeader") }
@@ -211,15 +213,10 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                         mode={ flowModeToSwitch }
                         open={ showAuthenticationFlowModeSwitchDisclaimerModal }
                         onPrimaryActionClick={ () => {
-                            const previousFlowMode: AuthenticationFlowBuilderModesInterface = activeFlowMode;
-        
                             setActiveFlowMode(flowModeToSwitch);
                             setFlowModeToSwitch(null);
                             setShowAuthenticationFlowModeSwitchDisclaimerModal(false);
-        
-                            if (previousFlowMode.id === FlowModes[1].id) {
-                                refetchApplication();
-                            }
+                            refetchApplication();
                         } }
                         onClose={ () => {
                             setFlowModeToSwitch(null);

@@ -187,7 +187,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const isFragmentApp: boolean = application.advancedConfigurations?.fragment || false;
+    const isFragmentApp: boolean = application?.advancedConfigurations?.fragment || false;
 
     /**
      * Called when an application updates.
@@ -937,7 +937,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                      render: InfoTabPane
                  });
             }
-            
+
             extensionPanes.forEach(
                 (extensionPane: ResourceTabPaneInterface) => {
                     panes.splice(extensionPane.index, 0, extensionPane);
