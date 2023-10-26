@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.30
+
+### Patch Changes
+
+- [#4351](https://github.com/wso2/identity-apps/pull/4351) [`88f25a128d`](https://github.com/wso2/identity-apps/commit/88f25a128d0a30859aab157d234b787efb0191e1) Thanks [@thanujalk](https://github.com/thanujalk)! - Make console app work with the new authorize run time
+
 ## 2.0.29
 
 ### Patch Changes
