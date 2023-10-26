@@ -51,7 +51,7 @@ import { AccessControlConstants } from "../../../../access-control/constants/acc
 import { getAllExternalClaims, getAllLocalClaims, getDialects } from "../../../../claims/api";
 import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { SubjectAttributeListItem } from "../../../../identity-providers/components/settings";
-import {updateAuthProtocolConfig, updateClaimConfiguration} from "../../../api/";
+import { updateAuthProtocolConfig, updateClaimConfiguration } from "../../../api/";
 import {
     AppClaimInterface,
     ClaimConfigurationInterface,

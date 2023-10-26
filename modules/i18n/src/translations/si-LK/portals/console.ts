@@ -1955,7 +1955,7 @@ export const console: ConsoleNS = {
                                     signing: {
                                         hint: "පතනයෙහි සහය දක්වන <1>id_token</1> අත්සන් කිරීමේ ඇල්ගොරිතම අඩංගු වේ.",
                                         label: "ID ටෝකන් ප්‍රතිචාර අත්සන් කිරීමේ ඇල්ගොරිතම",
-                                        placeholder: "ඇල්ගොරිතම තෝරන්න",
+                                        placeholder: "ඇල්ගොරිතම තෝරන්න"
                                     }
                                 },
                                 heading: "ID ටෝකන්"

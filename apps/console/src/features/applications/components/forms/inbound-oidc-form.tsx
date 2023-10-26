@@ -41,6 +41,7 @@ import intersection from "lodash-es/intersection";
 import isEmpty from "lodash-es/isEmpty";
 import union from "lodash-es/union";
 import React, {
+    ChangeEvent,
     Fragment,
     FunctionComponent,
     MouseEvent,
@@ -170,8 +171,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         [ "data-testid" ]: testId
     } = props;
 
-    const [subjectDN, setTLSClientAuthSubjectDN] = useState(initialValues?.clientAuthentication ?
-            initialValues.clientAuthentication.tlsClientAuthSubjectDn : null);
+    const [ subjectDN, setTLSClientAuthSubjectDN ] = useState(initialValues?.clientAuthentication ?
+        initialValues.clientAuthentication.tlsClientAuthSubjectDn : null);
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
@@ -615,6 +616,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     const handleAuthMethodChange = (values: Map<string, FormValue>) => {
         const authMethod: string = values.get("tokenEndpointAuthMethod") as string;
+
         setSelectedAuthMethod(authMethod);
     };
 
@@ -1855,7 +1857,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         ".clientAuthentication.fields.subjectDN.placeholder")
                                 }
                                 value={ subjectDN }
-                                onChange={ (e) => setTLSClientAuthSubjectDN(e.target.value) }
+                                onChange={ (e: ChangeEvent<HTMLInputElement>) =>
+                                    setTLSClientAuthSubjectDN(e.target.value) }
                                 readOnly={ false }
                                 maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                                 minLength={ 3 }
@@ -1879,7 +1882,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     <Heading as="h4">
                         { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".pushedAuthorization.heading")}
+                            ".pushedAuthorization.heading") }
                     </Heading>
                     <Field
                         ref={ requirePushedAuthorizationRequests }

@@ -83,7 +83,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         technology,
         onlyOIDCConfigured,
         oidcInitialValues,
-        ["data-testid"]: testId,
+        ["data-testid"]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -186,7 +186,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
         sectorIdentifierURI?: string;
     }
-    function validateForm(values): AdvanceAttributeSettingsErrorValidationInterface {
+    function validateForm(values: Record<string, any>): AdvanceAttributeSettingsErrorValidationInterface {
 
         const errors: AdvanceAttributeSettingsErrorValidationInterface = {
             sectorIdentifierURI: undefined
@@ -452,8 +452,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                                 name={ "subjectType" }
                                                 value={ subjectType }
                                                 label={ subjectType }
-                                                checked={selectedSubjectType === subjectType }
-                                                listen={() => {
+                                                checked={ selectedSubjectType === subjectType }
+                                                listen={ () => {
                                                     setSelectedSubjectType(subjectType);
                                                 } }
                                             />
