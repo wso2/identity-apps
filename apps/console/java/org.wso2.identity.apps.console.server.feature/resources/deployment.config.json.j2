@@ -51,6 +51,9 @@
     {% if console.super_tenant_proxy_name is defined %}
         "superTenantProxy" : "{{ console.super_tenant_proxy_name }}",
     {% endif %}
+    {% if tenant_context.require_super_tenant_in_urls is defined %}
+        "superTenantRequiredInUrl" : "{{ tenant_context.require_super_tenant_in_urls }}",
+    {% endif %}
     {% if console.doc_site_path is defined %}
     "docSiteUrl": "{{ console.doc_site_path }}",
     {% endif %}

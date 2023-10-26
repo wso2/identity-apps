@@ -233,6 +233,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
                     "authentication.framework.util.FrameworkUtils.isOrganizationManagementEnabled\"%>"
                     : "",
+                getSuperTenantRequiredInUrlConfig: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"static org.wso2.carbon.identity.core.util." +
+                    "IdentityTenantUtil.isSuperTenantRequiredInUrl\"%>"
+                    : "",
                 hash: true,
                 importStringUtils: "<%@ page import=\"org.apache.commons.lang.StringUtils\" %>",
                 importSuperTenantConstant: !isDeployedOnExternalTomcatServer
@@ -249,6 +253,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     : "",
                 isOrganizationManagementEnabled: !isDeployedOnExternalTomcatServer
                     ? "<%= isOrganizationManagementEnabled() %>"
+                    : "false",
+                isSuperTenantRequiredInUrl: !isDeployedOnExternalTomcatServer
+                    ? "<%= isSuperTenantRequiredInUrl() %>"
                     : "false",
                 minify: false,
                 publicPath: baseHref,
@@ -284,6 +291,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     ? "<%@ page import=\"static org.wso2.carbon.identity.application." +
                     "authentication.framework.util.FrameworkUtils.isOrganizationManagementEnabled\"%>"
                     : "",
+                getSuperTenantRequiredInUrlConfig: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"static org.wso2.carbon.identity.core.util." +
+                    "IdentityTenantUtil.isSuperTenantRequiredInUrl\"%>"
+                    : "",
                 hash: true,
                 importOwaspEncode: "<%@ page import=\"org.owasp.encoder.Encode\" %>",
                 importSuperTenantConstant: !isDeployedOnExternalTomcatServer
@@ -301,6 +312,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 inject: false,
                 isOrganizationManagementEnabled: !isDeployedOnExternalTomcatServer
                     ? "<%= isOrganizationManagementEnabled() %>"
+                    : "false",
+                isSuperTenantRequiredInUrl: !isDeployedOnExternalTomcatServer
+                    ? "<%= isSuperTenantRequiredInUrl() %>"
                     : "false",
                 minify: false,
                 publicPath: baseHref,

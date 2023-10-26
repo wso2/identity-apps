@@ -10,6 +10,7 @@
 <%= htmlWebpackPlugin.options.contentType %>
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importOwaspEncode %>
+<%= htmlWebpackPlugin.options.getSuperTenantRequiredInUrlConfig %>
 
 <script>
     var userAccessedPath = window.location.href;
@@ -60,7 +61,7 @@
             .pre-loader-logo {
                 margin-top: -0.1rem;
             }
-    
+
             .content-loader {
                 display: flex;
                 flex-direction: column;
@@ -68,24 +69,24 @@
                 align-items: center;
                 user-select: none;
             }
-    
+
             .content-loader .ui.loader {
                 display: block;
                 position: relative;
                 margin-top: 10px;
                 margin-bottom: 25px;
             }
-    
+
             @keyframes loader {
                 0% {
                     transform: rotate(0)
                 }
-    
+
                 to {
                     transform: rotate(1turn)
                 }
             }
-    
+
             .content-loader .ui.loader:before {
                 content: "";
                 display: block;
@@ -94,7 +95,7 @@
                 border: .2em solid rgba(0,0,0,.1);
                 border-radius: 500rem;
             }
-    
+
             .content-loader .ui.loader:after {
                 content: "";
                 position: absolute;
@@ -146,7 +147,7 @@
                 var trifactaPreLoader = document.getElementById("trifacta-pre-loader");
                 var defaultPreLoader = document.getElementById("default-pre-loader");
                 var loader = document.getElementById("loader");
-        
+
                 if (startupConfig.enableDefaultPreLoader) {
                     defaultPreLoader.style.display = 'block';
                     trifactaPreLoader.style.display = 'none';
@@ -188,6 +189,12 @@
 
                     return serverOrigin;
                 }
+                function appendSuperTenantProxyToUrl() {
+                    if (startupConfig.superTenantProxy == "carbon.super" && "<%= htmlWebpackPlugin.options.isSuperTenantRequiredInUrl %>" === "false") {
+                        return false;
+                    }
+                    return true;
+                }
 
                 /**
                  * Get the organization name.
@@ -221,7 +228,7 @@
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
                 var authConfig = {
-                    signInRedirectURL: applicationDomain.replace(/\/+$/, '') + getOrganizationPath() 
+                    signInRedirectURL: applicationDomain.replace(/\/+$/, '') + getOrganizationPath()
                         + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>",
                     signOutRedirectURL: applicationDomain.replace(/\/+$/, '') + getOrganizationPath(),
                     clientID: "<%= htmlWebpackPlugin.options.clientID %>",
@@ -230,13 +237,13 @@
                     scope: ["openid SYSTEM profile"],
                     storage: "webWorker",
                     endpoints: {
-                        authorizationEndpoint: getApiPath(userTenant 
+                        authorizationEndpoint: getApiPath(userTenant
                             ? "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize" + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
-                            : "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize"),
+                            : appendSuperTenantProxyToUrl() ? "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize" : "/oauth2/authorize"),
                         clockTolerance: 300,
                         jwksEndpointURL: undefined,
-                        logoutEndpointURL: getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout"),
-                        oidcSessionIFrameEndpointURL: getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession"),
+                        logoutEndpointURL: getApiPath(appendSuperTenantProxyToUrl() ? "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout" : "/oidc/logout"),
+                        oidcSessionIFrameEndpointURL: getApiPath(appendSuperTenantProxyToUrl() ? "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession" : "/oidc/checksession"),
                         tokenEndpointURL: undefined,
                         tokenRevocationEndpointURL: undefined
                     },

@@ -89,7 +89,9 @@
     {% if myaccount.super_tenant_proxy_name is defined %}
         "superTenantProxy" : "{{ myaccount.super_tenant_proxy_name }}",
     {% endif %}
-    "superTenantRequired" : false,
+    {% if tenant_context.require_super_tenant_in_urls is defined %}
+        "superTenantRequiredInUrl" : "{{ tenant_context.require_super_tenant_in_urls }}",
+    {% endif %}
     {% if myaccount.idp_configs is defined %}
     "idpConfigs": {
         {% if myaccount.idp_configs.items() is defined %}

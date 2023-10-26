@@ -10,6 +10,7 @@
 <%= htmlWebpackPlugin.options.contentType %>
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importOwaspEncode %>
+<%= htmlWebpackPlugin.options.getSuperTenantRequiredInUrlConfig %>
 
 <script>
     var userAccessedPath = window.location.href;
@@ -198,9 +199,15 @@
 
                     return serverOrigin;
                 }
+                function appendSuperTenantProxyToUrl() {
+                    if (startupConfig.superTenantProxy == "carbon.super" && "<%= htmlWebpackPlugin.options.isSuperTenantRequiredInUrl %>" === "false") {
+                        return false;
+                    }
+                    return true;
+                }
 
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
-                var superTenantRequiredinUrl = false;
+                var superTenantRequiredinUrl = "<%= htmlWebpackPlugin.options.isSuperTenantRequiredInUrl %>" === "true";
 
                 var authConfig = {
                     signInRedirectURL: applicationDomain.replace(/\/+$/, '')
@@ -212,11 +219,11 @@
                     scope: ["openid SYSTEM"],
                     storage: "webWorker",
                     endpoints: {
-                        authorizationEndpoint: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oauth2/authorize") : superTenantRequiredinUrl == "true" ? getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize") : getApiPath("/oauth2/authorize"),
+                        authorizationEndpoint: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oauth2/authorize") : appendSuperTenantProxyToUrl() ? getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize") : getApiPath("/oauth2/authorize"),
                         clockTolerance: 300,
                         jwksEndpointURL: undefined,
-                        logoutEndpointURL: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/logout") : superTenantRequiredinUrl == "true" ? getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout") : getApiPath("/oidc/logout"),
-                        oidcSessionIFrameEndpointURL: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/checksession") : superTenantRequiredinUrl == "true" ? getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession") : "/oidc/checksession",
+                        logoutEndpointURL: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/logout") : appendSuperTenantProxyToUrl() ? getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout") : getApiPath("/oidc/logout"),
+                        oidcSessionIFrameEndpointURL: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/checksession") : appendSuperTenantProxyToUrl() ? getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession") : "/oidc/checksession",
                         tokenEndpointURL: undefined,
                         tokenRevocationEndpointURL: undefined,
                     },
