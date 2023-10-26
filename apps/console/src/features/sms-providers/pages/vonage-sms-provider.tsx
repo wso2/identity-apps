@@ -45,115 +45,113 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
     const { t } = useTranslation();
 
     return (
-        <>
-            <EmphasizedSegment className="form-wrapper" padded={ "very" }>
-                <Grid>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column>
-                            <h2>{ t("extensions:develop.smsProviders.form.vonage.subHeading") }</h2>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 2 }>
-                        <Grid.Column>
-                            <FinalFormField
-                                key="vonageKey" 
-                                width={ 16 }
-                                FormControlProps={ {
-                                    margin: "dense"
-                                } }
-                                ariaLabel="vonageKey" 
-                                readOnly={ isReadOnly }
-                                required={ true }
-                                data-componentid={ `${componentId}-vonage-key` }
-                                name="vonageKey" 
-                                type="text"
-                                label={ t("extensions:develop.smsProviders.form.vonage.accountSID.label") }
-                                placeholder={ t("extensions:develop.smsProviders.form.vonage.accountSID.placeholder") }
-                                helperText={ (
-                                    <Hint>
-                                        { t("extensions:develop.smsProviders.form.vonage.accountSID.hint") }
-                                    </Hint>
-                                ) }
-                                component={ TextFieldAdapter }
-                                maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
-                                minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
-                                autoComplete="new-password"
-                            />
-                        </Grid.Column>
-                        <Grid.Column>
-                            <FinalFormField
-                                key="vonageSecret"
-                                width={ 16 }
-                                FormControlProps={ {
-                                    margin: "dense"
-                                } }
-                                ariaLabel="vonageSecret"
-                                readOnly={ isReadOnly }
-                                required={ true }
-                                data-componentid={ `${componentId}-vonage-secret` }
-                                name="vonageSecret"
-                                inputType="password"
-                                type="password"
-                                label={ t("extensions:develop.smsProviders.form.vonage.authToken.label") }
-                                placeholder={ t("extensions:develop.smsProviders.form.vonage.authToken.placeholder") }
-                                helperText={ (
-                                    <Hint>
-                                        { t("extensions:develop.smsProviders.form.vonage.authToken.hint") } 
-                                    </Hint>
-                                ) }
-                                component={ TextFieldAdapter }
-                                maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
-                                minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
-                                autoComplete="new-password"
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 2 }>
-                        <Grid.Column>
-                            <FinalFormField
-                                key="vonageSender"
-                                width={ 16 }
-                                FormControlProps={ {
-                                    margin: "dense"
-                                } }
-                                ariaLabel="vonageSender"
-                                readOnly={ isReadOnly }
-                                required={ true }
-                                data-componentid={ `${componentId}-vonage-sender` }
-                                name="vonageSender"
-                                type="text"
-                                label={ t("extensions:develop.smsProviders.form.vonage.sender.label") }
-                                placeholder={ t("extensions:develop.smsProviders.form.vonage.sender.placeholder") }
-                                helperText={ (
-                                    <Hint>
-                                        { t("extensions:develop.smsProviders.form.vonage.sender.hint") } 
-                                    </Hint>
-                                ) }
-                                component={ TextFieldAdapter }
-                                maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
-                                minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
-                                autoComplete="new-password"
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Divider hidden />
-                    <Grid.Row columns={ 1 } className="mt-6">
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <PrimaryButton
-                                size="small"
-                                onClick={ onSubmit }
-                                disabled={ isReadOnly }
-                                ariaLabel="SMS provider form update button"
-                                data-componentid={ `${componentId}-update-button` }
-                                readOnly={ isReadOnly }
-                            >
-                                { "Submit" }
-                            </PrimaryButton>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </EmphasizedSegment>
-        </>
+        <EmphasizedSegment className="form-wrapper" padded={ "very" }>
+            <Grid>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column>
+                        <h2>{ t("extensions:develop.smsProviders.form.vonage.subHeading") }</h2>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column>
+                        <FinalFormField
+                            key="vonageKey" 
+                            width={ 16 }
+                            FormControlProps={ {
+                                margin: "dense"
+                            } }
+                            ariaLabel="vonageKey" 
+                            readOnly={ isReadOnly }
+                            required={ true }
+                            data-componentid={ `${componentId}-vonage-key` }
+                            name="vonageKey" 
+                            type="text"
+                            label={ t("extensions:develop.smsProviders.form.vonage.accountSID.label") }
+                            placeholder={ t("extensions:develop.smsProviders.form.vonage.accountSID.placeholder") }
+                            helperText={ (
+                                <Hint>
+                                    { t("extensions:develop.smsProviders.form.vonage.accountSID.hint") }
+                                </Hint>
+                            ) }
+                            component={ TextFieldAdapter }
+                            maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
+                            minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
+                            autoComplete="new-password"
+                        />
+                    </Grid.Column>
+                    <Grid.Column>
+                        <FinalFormField
+                            key="vonageSecret"
+                            width={ 16 }
+                            FormControlProps={ {
+                                margin: "dense"
+                            } }
+                            ariaLabel="vonageSecret"
+                            readOnly={ isReadOnly }
+                            required={ true }
+                            data-componentid={ `${componentId}-vonage-secret` }
+                            name="vonageSecret"
+                            inputType="password"
+                            type="password"
+                            label={ t("extensions:develop.smsProviders.form.vonage.authToken.label") }
+                            placeholder={ t("extensions:develop.smsProviders.form.vonage.authToken.placeholder") }
+                            helperText={ (
+                                <Hint>
+                                    { t("extensions:develop.smsProviders.form.vonage.authToken.hint") } 
+                                </Hint>
+                            ) }
+                            component={ TextFieldAdapter }
+                            maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
+                            minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
+                            autoComplete="new-password"
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column>
+                        <FinalFormField
+                            key="vonageSender"
+                            width={ 16 }
+                            FormControlProps={ {
+                                margin: "dense"
+                            } }
+                            ariaLabel="vonageSender"
+                            readOnly={ isReadOnly }
+                            required={ true }
+                            data-componentid={ `${componentId}-vonage-sender` }
+                            name="vonageSender"
+                            type="text"
+                            label={ t("extensions:develop.smsProviders.form.vonage.sender.label") }
+                            placeholder={ t("extensions:develop.smsProviders.form.vonage.sender.placeholder") }
+                            helperText={ (
+                                <Hint>
+                                    { t("extensions:develop.smsProviders.form.vonage.sender.hint") } 
+                                </Hint>
+                            ) }
+                            component={ TextFieldAdapter }
+                            maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
+                            minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
+                            autoComplete="new-password"
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Divider hidden />
+                <Grid.Row columns={ 1 } className="mt-6">
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <PrimaryButton
+                            size="small"
+                            onClick={ onSubmit }
+                            disabled={ isReadOnly }
+                            ariaLabel="SMS provider form update button"
+                            data-componentid={ `${componentId}-update-button` }
+                            readOnly={ isReadOnly }
+                        >
+                            { "Submit" }
+                        </PrimaryButton>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </EmphasizedSegment>
     );
 };
 

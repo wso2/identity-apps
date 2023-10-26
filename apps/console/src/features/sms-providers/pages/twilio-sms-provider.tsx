@@ -43,114 +43,112 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
     } = props;
     const { t } = useTranslation();
 
-    return (
-        <>
-            <EmphasizedSegment className="form-wrapper" padded={ "very" }>
-                <Grid>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column>
-                            <h2>{ t("extensions:develop.smsProviders.form.twilio.subHeading") }</h2>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 2 }>
-                        <Grid.Column>
-                            <FinalFormField
-                                key="twilioKkey"
-                                width={ 16 }
-                                FormControlProps={ {
-                                    margin: "dense"
-                                } }
-                                ariaLabel="twilioKey"
-                                readOnly={ isReadOnly }
-                                required={ true }
-                                data-componentid={ `${componentId}-twilio-key` }
-                                name="twilioKey"
-                                type="text"
-                                label={ t("extensions:develop.smsProviders.form.twilio.accountSID.label") }
-                                placeholder={ t("extensions:develop.smsProviders.form.twilio.accountSID.placeholder") }
-                                helperText={ (
-                                    <Hint>
-                                        { t("extensions:develop.smsProviders.form.twilio.accountSID.hint") } 
-                                    </Hint>
-                                ) }
-                                component={ TextFieldAdapter }
-                                maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
-                                minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
-                                autoComplete="new-password"
-                            />
-                        </Grid.Column>
-                        <Grid.Column>
-                            <FinalFormField
-                                key="twilioSecret"
-                                width={ 16 }
-                                FormControlProps={ {
-                                    margin: "dense"
-                                } }
-                                readOnly={ isReadOnly }
-                                ariaLabel="twilioSecret"
-                                required={ true }
-                                data-componentid={ `${componentId}-twilio-secret` }
-                                name="twilioSecret"
-                                type="password"
-                                label={ t("extensions:develop.smsProviders.form.twilio.authToken.label") }
-                                placeholder={ t("extensions:develop.smsProviders.form.twilio.authToken.placeholder") }
-                                helperText={ (
-                                    <Hint>
-                                        { t("extensions:develop.smsProviders.form.twilio.authToken.hint") }
-                                    </Hint>
-                                ) }
-                                component={ TextFieldAdapter }
-                                maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
-                                minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH } 
-                                autoComplete="new-password"
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 2 }>
-                        <Grid.Column>
-                            <FinalFormField
-                                key="twilioSender"
-                                width={ 16 }
-                                FormControlProps={ {
-                                    margin: "dense"
-                                } }
-                                readOnly={ isReadOnly }
-                                ariaLabel="twilioSender"
-                                required={ true }
-                                data-componentid={ `${componentId}-twilio-sender` }
-                                name="twilioSender"
-                                type="text"
-                                label={ t("extensions:develop.smsProviders.form.twilio.sender.label") }
-                                placeholder={ t("extensions:develop.smsProviders.form.twilio.sender.placeholder") }
-                                helperText={ (
-                                    <Hint>
-                                        { t("extensions:develop.smsProviders.form.twilio.sender.hint") }
-                                    </Hint>
-                                ) }
-                                component={ TextFieldAdapter }
-                                maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
-                                minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
-                                autoComplete="new-password"
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Divider hidden />
-                    <Grid.Row columns={ 1 } className="mt-6">
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <PrimaryButton
-                                size="small"
-                                onClick={ onSubmit }
-                                readOnly={ isReadOnly }
-                                ariaLabel="SMS provider form update button"
-                                data-componentid={ `${componentId}-update-button` }
-                            >
-                                { "Submit" }
-                            </PrimaryButton>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </EmphasizedSegment>
-        </>
+    return (  
+        <EmphasizedSegment className="form-wrapper" padded={ "very" }>
+            <Grid>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column>
+                        <h2>{ t("extensions:develop.smsProviders.form.twilio.subHeading") }</h2>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column>
+                        <FinalFormField
+                            key="twilioKkey"
+                            width={ 16 }
+                            FormControlProps={ {
+                                margin: "dense"
+                            } }
+                            ariaLabel="twilioKey"
+                            readOnly={ isReadOnly }
+                            required={ true }
+                            data-componentid={ `${componentId}-twilio-key` }
+                            name="twilioKey"
+                            type="text"
+                            label={ t("extensions:develop.smsProviders.form.twilio.accountSID.label") }
+                            placeholder={ t("extensions:develop.smsProviders.form.twilio.accountSID.placeholder") }
+                            helperText={ (
+                                <Hint>
+                                    { t("extensions:develop.smsProviders.form.twilio.accountSID.hint") } 
+                                </Hint>
+                            ) }
+                            component={ TextFieldAdapter }
+                            maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
+                            minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
+                            autoComplete="new-password"
+                        />
+                    </Grid.Column>
+                    <Grid.Column>
+                        <FinalFormField
+                            key="twilioSecret"
+                            width={ 16 }
+                            FormControlProps={ {
+                                margin: "dense"
+                            } }
+                            readOnly={ isReadOnly }
+                            ariaLabel="twilioSecret"
+                            required={ true }
+                            data-componentid={ `${componentId}-twilio-secret` }
+                            name="twilioSecret"
+                            type="password"
+                            label={ t("extensions:develop.smsProviders.form.twilio.authToken.label") }
+                            placeholder={ t("extensions:develop.smsProviders.form.twilio.authToken.placeholder") }
+                            helperText={ (
+                                <Hint>
+                                    { t("extensions:develop.smsProviders.form.twilio.authToken.hint") }
+                                </Hint>
+                            ) }
+                            component={ TextFieldAdapter }
+                            maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
+                            minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH } 
+                            autoComplete="new-password"
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column>
+                        <FinalFormField
+                            key="twilioSender"
+                            width={ 16 }
+                            FormControlProps={ {
+                                margin: "dense"
+                            } }
+                            readOnly={ isReadOnly }
+                            ariaLabel="twilioSender"
+                            required={ true }
+                            data-componentid={ `${componentId}-twilio-sender` }
+                            name="twilioSender"
+                            type="text"
+                            label={ t("extensions:develop.smsProviders.form.twilio.sender.label") }
+                            placeholder={ t("extensions:develop.smsProviders.form.twilio.sender.placeholder") }
+                            helperText={ (
+                                <Hint>
+                                    { t("extensions:develop.smsProviders.form.twilio.sender.hint") }
+                                </Hint>
+                            ) }
+                            component={ TextFieldAdapter }
+                            maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
+                            minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
+                            autoComplete="new-password"
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Divider hidden />
+                <Grid.Row columns={ 1 } className="mt-6">
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <PrimaryButton
+                            size="small"
+                            onClick={ onSubmit }
+                            readOnly={ isReadOnly }
+                            ariaLabel="SMS provider form update button"
+                            data-componentid={ `${componentId}-update-button` }
+                        >
+                            { "Submit" }
+                        </PrimaryButton>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </EmphasizedSegment>
     );
 };
 

@@ -37,7 +37,6 @@ export interface SMSProviderPropertiesObjectInterface {
 }
 
 export interface SMSProviderInterface {
-
     name: string;
     provider?: string;
     providerURL?: string;
@@ -57,7 +56,6 @@ export interface SMSProviderInterface {
 }
 
 export interface SMSProviderAPIInterface {
-
     name?: string;
     provider: string;
     providerURL?: string;

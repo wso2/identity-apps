@@ -20,7 +20,6 @@ import Grid from "@oxygen-ui/react/Grid";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
