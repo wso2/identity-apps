@@ -130,7 +130,7 @@ export const MultiAttributeLoginEdit: FunctionComponent<GovernanceConnectorsPage
         history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
     };
 
-    if(isConnectorRequestLoading && !connector) {
+    if (isConnectorRequestLoading && !connector) {
         return <ContentLoader />;
     }
 
