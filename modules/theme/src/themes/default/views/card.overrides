@@ -265,7 +265,7 @@
      Basic Card Variation
 ------------------------------*/
 
-.ui.card { 
+.ui.card {
     &.basic-card {
         transition: @basicCardTransition;
         box-shadow: none;
