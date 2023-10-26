@@ -175,6 +175,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             appTitle: "",
             applicationTemplateLoadingStrategy: undefined,
             connectionResourcesUrl: "",
+            cookiePolicyUrl: "",
             emailTemplates: {
                 defaultLogoUrl: "",
                 defaultWhiteLogoUrl: ""

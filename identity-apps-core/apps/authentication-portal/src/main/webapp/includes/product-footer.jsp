@@ -59,6 +59,10 @@
 %>
         <jsp:include page="/extensions/cookie-consent-banner.jsp"/>
 <%
+    } else {
+%>
+        <jsp:include page="/includes/cookie-consent-banner.jsp"/>
+<%
     }
 %>
 

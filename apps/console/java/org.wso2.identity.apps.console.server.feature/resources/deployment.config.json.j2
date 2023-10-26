@@ -1508,6 +1508,9 @@
         {% if console.ui.is_cookie_consent_banner_enabled is defined %}
         "isCookieConsentBannerEnabled": {{ console.ui.is_cookie_consent_banner_enabled }},
         {% endif %}
+        {% if console.ui.cookie_policy_url is defined %}
+        "cookiePolicyUrl": "{{ console.ui.cookie_policy_url }}",
+        {% endif %}
         {% if console.ui.is_marketing_consent_banner_enabled is defined %}
         "isMarketingConsentBannerEnabled": {{ console.ui.is_marketing_consent_banner_enabled }},
         {% endif %}

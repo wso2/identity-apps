@@ -582,31 +582,9 @@
         }
 
         &.policy-page-layout {
-            background-image: @policyPageBackgroundImage;
-
-            .policy-page {
-                .policy-page-content {
-                    color: @white;
-
-                    .toc {
-                        background: @policyPageTOCBackground;
-                        border: none;
-                        box-shadow: none;
-                        color: @white;
-
-                        ul.ui.list.nav>li>a {
-                            color: @white;
-
-                            &:hover {
-                                color: @primaryColor;
-                            }
-                        }
-
-                        ul.ui.list li:before {
-                            color: @white;
-                        }
-                    }
-                }
+            .app-header {
+                background: @policyHeaderBackground;
+                border-bottom: @policyHeaderBorderBotton;
             }
         }
 

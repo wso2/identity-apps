@@ -332,6 +332,9 @@
         {% if myaccount.ui.is_cookie_consent_banner_enabled is defined %}
         "isCookieConsentBannerEnabled": {{ myaccount.ui.is_cookie_consent_banner_enabled }},
         {% endif %}
+        {% if myaccount.ui.cookie_policy_url is defined %}
+        "cookiePolicyUrl": "{{ myaccount.ui.cookie_policy_url }}",
+        {% endif %}
         {% if myaccount.ui.is_header_avatar_label_allowed is defined %}
         "isHeaderAvatarLabelAllowed": {{ myaccount.ui.is_header_avatar_label_allowed }},
         {% endif %}
