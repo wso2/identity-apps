@@ -327,6 +327,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isMarketingConsentBannerEnabled: boolean;
     /**
+     * Whether a SAAS deployment or not.
+     */
+    isSAASDeployment: boolean;
+    /**
      * Enable signature validation certificate alias.
      */
     isSignatureValidationCertificateAliasEnabled?: boolean;

@@ -958,6 +958,7 @@
         "isHeaderAvatarLabelAllowed": false,
         "isRequestPathAuthenticationEnabled": false,
         "isLeftNavigationCategorized": true,
+        "isSAASDeployment": false,
         "isSignatureValidationCertificateAliasEnabled": false,
         "listAllAttributeDialects": true,
         "privacyPolicyConfigs": {},

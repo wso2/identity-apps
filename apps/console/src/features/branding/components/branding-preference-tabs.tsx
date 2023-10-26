@@ -142,6 +142,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
     const systemTheme: string = useSelector((state: AppState) => state.config.ui.theme?.name);
     const supportEmail: string = useSelector((state: AppState) =>
         state.config.deployment.extensions?.supportEmail as string);
+    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(isUpdating);
     const [
@@ -434,12 +435,14 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
             menuItem: (
                 <Menu.Item key="text">
                     { t("console:branding.tabs.text.label") }
-                    <Chip
-                        size="small"
-                        sx={ { marginLeft: 1 } }
-                        label={ t("common:beta").toUpperCase() }
-                        className="oxygen-chip-beta"
-                    />
+                    { isSAASDeployment && (
+                        <Chip
+                            size="small"
+                            sx={ { marginLeft: 1 } }
+                            label={ t("common:beta").toUpperCase() }
+                            className="oxygen-chip-beta"
+                        />
+                    ) }
                 </Menu.Item>
             ),
             render: TextPreferenceTabPane

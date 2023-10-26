@@ -26,12 +26,14 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, SVGAttributes, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { ReactFlowProvider } from "reactflow";
 import AuthenticationFlowModeSwitchDisclaimerModal from "./authentication-flow-mode-switch-disclaimer-modal";
 import AuthenticationFlowVisualEditor from "./authentication-flow-visual-editor";
 import PredefinedFlowsSidePanel from "./predefined-flows-side-panel/predefined-flows-side-panel";
 import ScriptEditorSidePanel from "./script-editor-side-panel/script-editor-side-panel";
 import SidePanelDrawer from "./side-panel-drawer";
+import { AppState } from "../../core/store";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import { AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
 import "./sign-in-methods.scss";
@@ -98,6 +100,8 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         }
     ];
 
+    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
+
     const [ activeFlowMode, setActiveFlowMode ] = useState<AuthenticationFlowBuilderModesInterface>(FlowModes[0]);
     const [ flowModeToSwitch, setFlowModeToSwitch ] = useState<AuthenticationFlowBuilderModesInterface>(null);
     const [ isScriptEditorSidePanelDrawerOpen, setIsScriptEditorSidePanelDrawerOpen ] = useState<boolean>(false);
@@ -158,7 +162,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                                             label={ (
                                                 <div className="beta-feature-tab-item">
                                                     <Typography sx={ { fontWeight: 500 } }>{ mode.label }</Typography>
-                                                    { mode.extra }
+                                                    { isSAASDeployment && mode.extra }
                                                 </div>
                                             ) }
                                             data-componentid={ `${componentId}-${ mode.id }-tab` }
