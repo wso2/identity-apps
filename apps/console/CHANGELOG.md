@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.3.3
+
+### Patch Changes
+
+- [#4337](https://github.com/wso2/identity-apps/pull/4337) [`12b32fedb5`](https://github.com/wso2/identity-apps/commit/12b32fedb5c30c3a0b08e089e2bd6146c73f467f) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce deployment config to show/hide feature status labels
+
 ## 2.3.2
 
 ### Patch Changes
