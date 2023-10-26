@@ -171,7 +171,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                             }
                                             { header }
                                         </Header>
-                                        <Card.Meta className="description">{ description }</Card.Meta>
+                                        <Card.Meta className="settings-description">{ description }</Card.Meta>
                                     </Grid.Column>
                                     {
                                         connectorEnabled !== undefined
