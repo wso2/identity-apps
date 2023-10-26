@@ -6936,6 +6936,15 @@ export const console: ConsoleNS = {
                                 }
                             }
                         }
+                    },
+                    sessionManagement: {
+                        description: "ඔබගේ පරිශීලකයින්ගේ සැසිවාරයට අදාළ සැකසුම් කළමනාකරණය කරන්න."
+                    },
+                    saml2WebSsoConfiguration: {
+                        description: "ඔබගේ යෙදුම් සඳහා SamL2 වෙබ් SSO වින්යාස කරන්න."
+                    },
+                    wsFederationConfiguration: {
+                        description: "ඔබගේ අයදුම්පත් සඳහා WS- සම්මේලනයේ ප්රොටෝකෝලය වින්යාස කරන්න."
                     }
                 },
                 disabled: "අක්‍රීය කර ඇත",
@@ -8374,6 +8383,7 @@ export const console: ConsoleNS = {
                     },
                     permissions: {
                         heading: "පවරා ඇති අවසර",
+                        removedPermissions: "අවසර ඉවත් කරන ලද අවසර",
                         subHeading: "මෙම භූමිකාව තුළ පවරා ඇති අවසරයන් කළමනාකරණය කරන්න."
                     }
                 },
@@ -8384,6 +8394,7 @@ export const console: ConsoleNS = {
                     },
                     columns: {
                         actions: "ක්‍රියා",
+                        audience: "ප්‍රවේශමෙන්නිය",
                         lastModified: "අවසන් වරට වෙනස් කරන ලදි",
                         managedBy: {
                             label: "කළමනාකරණය",

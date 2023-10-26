@@ -200,29 +200,33 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             },
             {
                 allowToggleVisibility: false,
-                dataIndex: "managedBy",
-                id: "managedBy",
-                key: "managedBy",
+                dataIndex: "audience",
+                id: "audience",
+                key: "audience",
                 render: (role: RolesInterface) => (
                     <Header as="h6" data-componentid={ `${ componentId }-col-2-item-heading` }>
                         <Header.Content>
                             <Header.Subheader data-componentid={ `${ componentId }-col-2-item-sub-heading` }>
                                 { role?.audience?.type.charAt(0).toUpperCase() + role?.audience?.type.slice(1) }
-                                <Label
-                                    size="mini"
-                                    className = {
-                                        RoleAudienceTypes.ORGANIZATION === role?.audience?.type.toUpperCase()
-                                            ? "issuer-label"
-                                            : "client-id-label"
-                                    }
-                                >
-                                    { role?.audience?.display }
-                                </Label>   
+                                {
+                                    RoleAudienceTypes.APPLICATION === role?.audience?.type.toUpperCase() && (
+                                        <Label
+                                            size="mini"
+                                            className="client-id-label"
+                                        >
+                                            { role?.audience?.display }
+                                        </Label>   
+                                    )
+                                }
                             </Header.Subheader>
                         </Header.Content>
                     </Header>
                 ),
-                title: t("console:manage.features.roles.list.columns.managedBy.header")
+                title: (
+                    <div className="pl-3">
+                        { t("console:manage.features.roles.list.columns.audience") }
+                    </div>
+                )
             },
             {
                 allowToggleVisibility: false,

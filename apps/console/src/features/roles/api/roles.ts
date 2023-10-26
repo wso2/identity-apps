@@ -144,6 +144,20 @@ export const useGetRoleById = <Data = RolesInterface, Error = RequestErrorInterf
 };
 
 /**
+ * Retrieves API resource details for the given API resource IDs.
+ * 
+ * @param apiResourceIds - ids of the API resources
+ * @returns `Promise<APIResourceInterface[]>`
+ * @throws `IdentityAppsApiException`
+ */
+export const getAPIResourceDetailsBulk = (apiResourceIds: string[]): Promise<APIResourceInterface[]> => {
+    // send the request for each ID and return the response.
+    return Promise.all(apiResourceIds.map((apiResourceId: string) => {
+        return getAPIResourceDetails(apiResourceId);
+    }));
+};
+
+/**
  * Update Data of the matched ID or the role
  *
  * @param roleId - role id to update role details

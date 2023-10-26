@@ -4946,6 +4946,15 @@ export interface ConsoleNS {
                             };
                         };
                     };
+                    sessionManagement: {
+                        description: string;
+                    };
+                    saml2WebSsoConfiguration: {
+                        description: string;
+                    };
+                    wsFederationConfiguration: {
+                        description: string;
+                    };
                 };
             };
             helpPanel: {
@@ -5369,6 +5378,7 @@ export interface ConsoleNS {
                     permissions: {
                         heading: string;
                         subHeading: string;
+                        removedPermissions: string;
                     };
                 };
                 list: {
@@ -5384,6 +5394,7 @@ export interface ConsoleNS {
                             label: string;
                             header: string;
                         };
+                        audience: string;
                     };
                     confirmations: {
                         deleteItem: Confirmation;

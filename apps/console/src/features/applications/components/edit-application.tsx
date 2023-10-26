@@ -26,7 +26,6 @@ import {
     ResourceTabPaneInterface
 } from "@wso2is/react-components";
 import Axios, { AxiosError, AxiosResponse } from "axios";
-import inRange from "lodash-es/inRange";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -265,15 +264,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
             const tabIndex: number = parseInt(urlFragment[1], 10);
 
-            if(inRange(tabIndex,  0, totalTabs)) {
-                if(tabIndex === activeTabIndex) {
-                    return;
-                }
-                handleActiveTabIndexChange(tabIndex);
-            } else {
-                // Change the tab index to defaultActiveIndex for invalid URL fragments.
-                handleDefaultTabIndexChange(defaultActiveIndex);
+            if(tabIndex === activeTabIndex) {
+                return;
             }
+
+            handleActiveTabIndexChange(tabIndex);
         } else if (window.location.hash.includes(ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG)) {
             // Handle loading sign-in method tab when redirecting from the "Connected Apps" Tab of an IdP.
             const renderedTabPanes: ResourceTabPaneInterface[] = resolveTabPanes();

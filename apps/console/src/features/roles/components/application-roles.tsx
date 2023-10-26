@@ -146,10 +146,10 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             .then((response: RolesV2ResponseInterface) => {
                 const rolesArray: BasicRoleInterface[] = [];
 
-                response.Resources.forEach((role: RolesV2Interface) => {
+                response?.Resources?.forEach((role: RolesV2Interface) => {
                     rolesArray.push({
-                        id: role.id,
-                        name: role.displayName
+                        id: role?.id,
+                        name: role?.displayName
                     });
                 });
                 
@@ -493,22 +493,34 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 <ConfirmationModal.Header
                     data-componentid={ `${ componentId }-switch-role-audience-confirmation-modal-header` }
                 >
-                    { t("extensions:develop.applications.edit.sections." +
-                        "rolesV2.switchRoleAudience.confirmationModal.header") }
+                    { tempRoleAudience === RoleAudienceTypes.APPLICATION
+                        ? t("extensions:develop.applications.edit.sections." +
+                        "rolesV2.switchRoleAudience.applicationConfirmationModal.header")
+                        : t("extensions:develop.applications.edit.sections." +
+                        "rolesV2.switchRoleAudience.organizationConfirmationModal.header")
+                    }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
                     negative
                     data-componentid={ `${ componentId }-switch-role-audience-confirmation-modal-message` }
                 >
-                    { t("extensions:develop.applications.edit.sections." +
-                        "rolesV2.switchRoleAudience.confirmationModal.message") }
+                    { tempRoleAudience === RoleAudienceTypes.APPLICATION
+                        ? t("extensions:develop.applications.edit.sections." +
+                        "rolesV2.switchRoleAudience.applicationConfirmationModal.message")
+                        : t("extensions:develop.applications.edit.sections." +
+                        "rolesV2.switchRoleAudience.organizationConfirmationModal.message")
+                    }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content
                     data-componentid={ `${ componentId }-switch-role-audience-confirmation-modal-content` }
                 >
-                    { t("extensions:develop.applications.edit.sections." +
-                        "rolesV2.switchRoleAudience.confirmationModal.content") }
+                    { tempRoleAudience === RoleAudienceTypes.APPLICATION
+                        ? t("extensions:develop.applications.edit.sections." +
+                        "rolesV2.switchRoleAudience.applicationConfirmationModal.content")
+                        : t("extensions:develop.applications.edit.sections." +
+                        "rolesV2.switchRoleAudience.organizationConfirmationModal.content")
+                    }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>

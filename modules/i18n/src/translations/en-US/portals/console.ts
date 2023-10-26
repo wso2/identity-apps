@@ -8705,6 +8705,15 @@ export const console: ConsoleNS = {
                                 }
                             }
                         }
+                    },
+                    sessionManagement: {
+                        description: "Manage settings related to the session of your users."
+                    },
+                    saml2WebSsoConfiguration: {
+                        description: "Configure SAML2 Web SSO for your applications."
+                    },
+                    wsFederationConfiguration: {
+                        description: "Configure WS-Federation protocol for your applications."
                     }
                 },
                 disabled: "Disabled",
@@ -10307,6 +10316,7 @@ export const console: ConsoleNS = {
                     },
                     permissions: {
                         heading: "Assigned Permissions",
+                        removedPermissions: "Removed Permissions",
                         subHeading: "Manage assigned permissions in the role."
                     }
                 },
@@ -10317,6 +10327,7 @@ export const console: ConsoleNS = {
                     },
                     columns: {
                         actions: "Actions",
+                        audience: "Audience",
                         lastModified: "Modified Time",
                         managedBy: {
                             label: "Managed by",
