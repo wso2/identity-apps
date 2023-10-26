@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.0.7
+
+### Patch Changes
+
+- [#4182](https://github.com/wso2/identity-apps/pull/4182) [`a57e0d8773`](https://github.com/wso2/identity-apps/commit/a57e0d87739e4ebe8c358e54145688305159a665) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Addressed the problem where branding changes in the cookie policy were not being displayed.
+
 ## 2.0.6
 
 ### Patch Changes

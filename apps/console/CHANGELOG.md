@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.3.2
+
+### Patch Changes
+
+- [#4329](https://github.com/wso2/identity-apps/pull/4329) [`9d7867c224`](https://github.com/wso2/identity-apps/commit/9d7867c22480f92e07614d1b874efa1102dc71bb) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Improvements to roles feature
+
+* [#4343](https://github.com/wso2/identity-apps/pull/4343) [`e0d2a3b9db`](https://github.com/wso2/identity-apps/commit/e0d2a3b9dbbdeabca55d08386f8d4c099bb399b3) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Update the super dropdown for single user and multiple users
+
+- [#4182](https://github.com/wso2/identity-apps/pull/4182) [`a57e0d8773`](https://github.com/wso2/identity-apps/commit/a57e0d87739e4ebe8c358e54145688305159a665) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Addressed the problem where branding changes in the cookie policy were not being displayed.
+
+- Updated dependencies [[`9d7867c224`](https://github.com/wso2/identity-apps/commit/9d7867c22480f92e07614d1b874efa1102dc71bb), [`a57e0d8773`](https://github.com/wso2/identity-apps/commit/a57e0d87739e4ebe8c358e54145688305159a665)]:
+  - @wso2is/i18n@2.0.21
+  - @wso2is/theme@2.0.24
+  - @wso2is/core@2.0.7
+
 ## 2.3.1
 
 ### Patch Changes
