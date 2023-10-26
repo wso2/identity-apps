@@ -54,6 +54,7 @@ export interface GovernanceConnectorCategoryInterface {
 	name?: string;
 	description?: string;
 	connectors?: GovernanceConnectorInterface[];
+	route?: string;
 }
 
 export interface GovernanceConnectorsInterface {
@@ -103,14 +104,25 @@ export interface AdminAdvisoryBannerConfigurationInterface {
 
 export enum LogType {
     AUDIT = "AUDIT",
-    CARBON = "CARBON",
-    ALL = "ALL"
+    CARBON = "CARBON"
 }
 
 export interface RemoteLogPublishingConfigurationInterface {
+	/**
+	 * Destination to where the logs should be published.
+	 */
 	remoteUrl: string,
+	/**
+	 * Connection timeout in milliseconds.
+	 */
 	connectTimeoutMillis: string,
+	/**
+	 * Should hostname be verified.
+	 */
 	verifyHostname: boolean,
+	/**
+	 * Log type for which the configurations should be applied.
+	 */
 	logType: LogType.AUDIT | LogType.CARBON,
 	/**
 	 * Remote server username
@@ -120,8 +132,20 @@ export interface RemoteLogPublishingConfigurationInterface {
 	 * Remote server password
 	 */
 	password: string,
+	/**
+	 * Path to keystore location.
+	 */
 	keystoreLocation: string,
+	/**
+	 * Keystore password.
+	 */
 	keystorePassword: string,
+	/**
+	 * Path to truststore location.
+	 */
 	truststoreLocation: string,
+	/**
+	 * Truststore password.
+	 */
 	truststorePassword: string
 }

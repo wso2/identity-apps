@@ -228,3 +228,30 @@ export class ConnectionManagementConstants {
         [ "trusted-token-issuer", "develop.connections.newConnection.trustedTokenIssuer.learnMore" ]
     ]);
 }
+
+export class SIWEConstants {
+
+    public static readonly SIWE_REGISTRATION_INVALID_STATUS_CODE_ERROR_CODE: string = "ASG-CON-SIWE-00001";
+    public static readonly SIWE_REGISTRATION_ERROR_CODE: string = "ASG-CON-SIWE-00002";
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+]     */
+    private constructor() { }
+
+    public static readonly SIWE_CLIENT_REGISTRATION_DOCS_URL: string = "https://docs.login.xyz/servers/" +
+        "oidc-provider/hosted-oidc-provider#openid-connect-client-registration";
+
+    // eslint-disable-next-line max-len
+    public static readonly SIWE_CLIENT_REGISTRATION_CURL_COMMAND: string = "curl -X POST https://oidc.signinwithethereum.org/register -H 'Content-Type: application/json' -d '{\"redirect_uris\": [ \"${commonauth}\" ]}'";
+
+    /**
+     * SIWE Scope mappings.
+]     */
+    public static readonly SIWE_SCOPE_DICTIONARY: Record<string, string> = {
+        OPENID: "openid",
+        PROFILE: "profile"
+    };
+}

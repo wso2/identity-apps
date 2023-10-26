@@ -34,7 +34,7 @@
     String userTenant;
     String spAppName;
     if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
-        tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
+        tenantDomain = IdentityTenantUtil.resolveTenantDomain();
         tenantForTheming = tenantDomain;
         userTenant = tenantDomain;
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,6 +25,7 @@ import {
     ValidationFormInterface,
     ValidationPropertyInterface
 } from "../../validation/models";
+import { MultipleInviteMode, MultipleInvitesDisplayNames } from "../models";
 
 /**
  * Utility class for user management operations.
@@ -56,6 +57,16 @@ export class UserManagementUtils {
             role.display === administratorConfig.adminRoleName
         );
     };
+
+    /**
+     * Resolves the display name of Multiple Users mode.
+     *
+     * @param mode - Config mode.
+     * @returns Display name of Multiple Users mode.
+     */
+    public static resolveMultipleInvitesDisplayName(mode: MultipleInviteMode): string {
+        return MultipleInvitesDisplayNames[mode];
+    }
 }
 
 /**

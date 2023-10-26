@@ -21,6 +21,7 @@ import { DocumentationProviders, DocumentationStructureFileTypes } from "@wso2is
 import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
 import { getFeatureGateResourceEndpoints } from "../../../extensions/components/feature-gate/configs";
 import { getExtendedFeatureResourceEndpoints } from "../../../extensions/configs/endpoints";
+import { getAPIResourceEndpoints } from "../../api-resources/configs/endpoint";
 import { getApplicationsResourceEndpoints } from "../../applications/configs/endpoints";
 import { getBrandingResourceEndpoints } from "../../branding/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "../../certificates";
@@ -210,9 +211,10 @@ export class Config {
      */
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
+            ...getAPIResourceEndpoints(this.resolveServerHost()),
             ...getApplicationsResourceEndpoints(this.resolveServerHost()),
             ...getApprovalsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
-            ...getBrandingResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getBrandingResourceEndpoints(this.resolveServerHost()),
             ...getClaimResourceEndpoints(this.getDeploymentConfig()?.serverHost, this.resolveServerHost()),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getIDPResourceEndpoints(this.resolveServerHost()),
@@ -231,7 +233,7 @@ export class Config {
             ...getSecretsManagementEndpoints(this.getDeploymentConfig()?.serverHost),
             ...getExtendedFeatureResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig()),
             ...getOrganizationsResourceEndpoints(this.resolveServerHost(true), this.getDeploymentConfig().serverHost),
-            ...getTenantResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getTenantResourceEndpoints(this.getDeploymentConfig().serverOrigin),
             ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),
             ...getInsightsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
@@ -259,6 +261,10 @@ export class Config {
                 window[ "AppUtils" ]?.getConfig()?.ui?.applicationTemplateLoadingStrategy,
             connectionResourcesUrl: window[ "AppUtils" ]?.getConfig()?.ui?.connectionResourcesUrl,
             cookiePolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl,
+            emailTemplates: {
+                defaultLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultLogoUrl,
+                defaultWhiteLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultWhiteLogoUrl
+            },
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
             googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
             gravatarConfig: window[ "AppUtils" ]?.getConfig()?.ui?.gravatarConfig,

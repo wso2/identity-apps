@@ -1148,6 +1148,25 @@ export const extensions: Extensions = {
                                 }
                             }
                         }
+                    },
+                    rolesV2: {
+                        heading: "Roles",
+                        subHeading: "Manage assigned roles in the application.",
+                        roleAudience: "Role Audience",
+                        organization: "Organization",
+                        application: "Application",
+                        assignedRoles: "Assigned Roles",
+                        removedRoles: "Removed Roles",
+                        searchPlaceholder: "Search by Role name",
+                        switchRoleAudience: {
+                            confirmationModal: {
+                                assertionHint: "Please confirm your action.",
+                                content: "If you change the Role Audience, the roles associated with the current audience will " +
+                                    "be deleted. Please proceed with caution.",
+                                header: "Are you sure?",
+                                message: "This action is irreversible and will permanently delete the existing roles."
+                            }
+                        }
                     }
                 }
             },
@@ -1296,21 +1315,21 @@ export const extensions: Extensions = {
                                     "Link to a document or a webpage with detailed information on all cookies " +
                                     "used by your applications and the purpose of each of them.",
                                 label: "Cookie Policy",
-                                placeholder: "https://asgardeo.io/cookie-policy"
+                                placeholder: "https://myapp.com/cookie-policy"
                             },
                             privacyPolicyURL: {
                                 hint:
                                     "Link to a statement or a legal document that states how your organization " +
                                     "collects, handles, and processes the data of your customers and visitors.",
                                 label: "Privacy Policy",
-                                placeholder: "https://asgardeo.io/privacy-policy"
+                                placeholder: "https://myapp.com/privacy-policy"
                             },
                             termsOfUseURL: {
                                 hint:
                                     "Link to an agreement that your customers must agree to and abide by in " +
                                     "order to use your organization's applications or other services.",
                                 label: "Terms of Service",
-                                placeholder: "https://asgardeo.io/terms-of-service"
+                                placeholder: "https://myapp.com/terms-of-service"
                             }
                         },
                         heading: "Links"
@@ -1809,6 +1828,16 @@ export const extensions: Extensions = {
                     success: {
                         description: "Successfully reverted Branding preferences for {{ tenant }}.",
                         message: "Revert successful"
+                    },
+                    successWaiting: {
+                        description: "Reverting Branding preferences for {{ tenant }}. " +
+                            "It may take a while for the changes to be reflected.",
+                        message: "Reverting branding preferences"
+                    },
+                    successWaitingAlert: {
+                        description: "Reverting Branding preferences for {{ tenant }}. " +
+                            "Note that it can take up to 10 minutes for the changes to be reflected.",
+                        message: "Reverting branding preferences"
                     }
                 },
                 fetch: {
@@ -1841,6 +1870,16 @@ export const extensions: Extensions = {
                     success: {
                         description: "Branding preference updated successfully for {{ tenant }}.",
                         message: "Update Successful"
+                    },
+                    successWaiting: {
+                        description: "Updating Branding preferences for {{ tenant }}. " +
+                            "It may take a while for the changes to be reflected.",
+                        message: "Updating branding preferences"
+                    },
+                    successWaitingAlert: {
+                        description: "Updating Branding preferences for {{ tenant }}. " +
+                            "Note that it can take up to 10 minutes for the changes to be reflected.",
+                        message: "Updating branding preferences"
                     },
                     tenantMismatch: {
                         description: "Something went wrong while updating branding preferences for {{ tenant }}.",
@@ -3566,6 +3605,63 @@ export const extensions: Extensions = {
                 subHeading: "Configure security settings to protect user accounts."
             },
             additionalSettings: "Additional Settings",
+            analytics: {
+                heading: "Analytics Engine",
+                subHeading: "Configure the analytics engine for your organization.",
+                form: {
+                    fields: {
+                        hostUrl: {
+                            label: "Host URL",
+                            placeholder: "Enter the host URL",
+                            hint: "The URL of the analytics engine."
+                        },
+                        hostBasicAuthEnable: {
+                            label: "Enable Basic Authentication",
+                            hint: "Enable basic authentication for the analytics engine."
+                        },
+                        hostUsername: {
+                            label: "Username",
+                            placeholder: "Enter the username",
+                            hint: "The username to authenticate into the analytics engine."
+                        },
+                        hostPassword: {
+                            label: "Password",
+                            placeholder: "Enter the password",
+                            hint: "The password to authenticate into the analytics engine."
+                        },
+                        hostConnectionTimeout: {
+                            label: "HTTP Connection Timeout",
+                            placeholder: "Enter the connection timeout",
+                            hint: "Enter the connection timeout value in milliseconds."
+                        },
+                        hostReadTimeout: {
+                            label: "HTTP Read Timeout",
+                            placeholder: "Enter the read timeout",
+                            hint: "Enter the read timeout value in milliseconds."
+                        },
+                        hostConnectionRequestTimeout: {
+                            label: "HTTP Connection Request Timeout",
+                            placeholder: "Enter the connection request timeout",
+                            hint: "Enter the connection request timeout value in milliseconds."
+                        },
+                        hostNameVerification: {
+                            label: "Hostname Verification",
+                            placeholder: "Enter the hostname verification",
+                            hint: "Enable hostname verification for the analytics engine. (STRICT | ALLOW_ALL)"
+                        }
+                    },
+                    notification: {
+                        error: {
+                            description: "Error occurred while updating the analytics engine configurations.",
+                            message: "Error Occurred"
+                        },
+                        success: {
+                            description: "Successfully updated the analytics engine configurations.",
+                            message: "Update Successful"
+                        }
+                    }
+                }
+            },
             generalBackButton: "Go back",
             generalDisabledLabel: "Disabled",
             generalEnabledLabel: "Enabled",

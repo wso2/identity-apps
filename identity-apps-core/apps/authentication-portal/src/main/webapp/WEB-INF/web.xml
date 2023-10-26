@@ -368,6 +368,11 @@
     </servlet>
 
     <servlet>
+        <servlet-name>org_discovery.do</servlet-name>
+        <jsp-file>/org_discovery.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
         <servlet-name>select_org.do</servlet-name>
         <jsp-file>/select_org.jsp</jsp-file>
     </servlet>
@@ -430,6 +435,11 @@
     <servlet-mapping>
         <servlet-name>org_name.do</servlet-name>
         <url-pattern>/org_name.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>org_discovery.do</servlet-name>
+        <url-pattern>/org_discovery.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

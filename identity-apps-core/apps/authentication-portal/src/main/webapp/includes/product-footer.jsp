@@ -129,7 +129,7 @@
             <%
                 List<String> langSwitcherEnabledServlets = Arrays.asList("/oauth2_login.do", "/oauth2_error.do",
                     "/confirmregistration.do", "/confirmrecovery.do", "/claims.do", "/oauth2_consent.do",
-                    "/fido2-auth.jsp", "/email_otp.do", "/org_name.do", "/retry.do", "/totp_enroll.do", "/backup_code.do", "/device.do", "/error.do");
+                    "/fido2-auth.jsp", "/email_otp.do", "/org_name.do", "/org_discovery.do", "/retry.do", "/totp_enroll.do", "/backup_code.do", "/device.do", "/error.do");
                 if (langSwitcherEnabledServlets.contains(request.getServletPath())) {
             %>
                 <jsp:include page="language-switcher.jsp"/>

@@ -17,21 +17,22 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/form";
+import { DropdownChild, Field, Form } from "@wso2is/form";
 import { Code, FormInputLabel, FormSection } from "@wso2is/react-components";
+import { identityProviderConfig } from "apps/console/src/extensions";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid, SemanticWIDTHS } from "semantic-ui-react";
 import { AppState, ConfigReducerStateInterface } from "../../../../../core";
 import {
-    FederatedAuthenticatorInterface,
-    FederatedAuthenticatorWithMetaInterface
-} from "../../../../models/connection";
-import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormInitialValuesInterface
 } from "../../../../models/authenticators";
+import {
+    FederatedAuthenticatorInterface,
+    FederatedAuthenticatorWithMetaInterface
+} from "../../../../models/connection";
 import {
     DEFAULT_NAME_ID_FORMAT,
     DEFAULT_PROTOCOL_BINDING,
@@ -96,6 +97,18 @@ export interface SamlPropertiesInterface {
     IsLogoutReqSigned?: boolean;
     IsSLORequestAccepted?: boolean;
     IsUserIdInClaims?: boolean;
+    ArtifactResolveUrl?: string;
+    ISArtifactBindingEnabled?: boolean,
+
+    /**
+     * https://github.com/wso2/product-is/issues/17004
+     */
+    ISArtifactResolveReqSigned?: string, 
+    ISArtifactResponseSigned?: string,
+    
+    isEnableAssertionSigning?: boolean,   
+    attributeConsumingServiceIndex?: string;
+    AuthnContextComparisonLevel?: string;
 }
 
 const FORM_ID: string = "saml-authenticator-form";
@@ -128,6 +141,55 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
     const [ isUserIdInClaims, setIsUserIdInClaims ] = useState<boolean>(false);
     const [ isLogoutEnabled, setIsLogoutEnabled ] = useState<boolean>(false);
 
+    const [ includeCert, setIncludeCert ] = useState<boolean>(false);
+    const [ includeNameIDPolicy, setIncludeNameIDPolicy ] = useState<boolean>(false);
+    const [ isEnableAssetionEncription, setIsEnableAssetionEncription ] = useState<boolean>(false);
+    const [ isArtifactBindingEnabled, setIsArtifactBindingEnabled ] = useState<boolean>(false);
+
+    const getIncludeAuthenticationContextOptions = (): DropdownChild[] => {
+        return [
+            { key: 1, text: "Yes", value: "yes" },
+            { key: 2, text: "No", value: "no" },
+            { key: 3, text: "As request", value: "as_request" }
+        ];
+    };
+
+    const getForceAuthenticationOptions = (): DropdownChild[] => {
+        return [
+            { key: 1, text: "Yes", value: "yes" },
+            { key: 2, text: "No", value: "no" },
+            { key: 3, text: "As request", value: "no-authn" }
+        ];
+    };
+
+    const getAvailableAuthContextComparisonLevelOptions = (): DropdownChild[] => {
+        return [
+            { key: 1, text: "Exact", value: "Exact" },
+            { key: 2, text: "Minimum", value: "Minimum" },
+            { key: 3, text: "Maximum", value: "Maximum" },
+            { key: 4, text: "Better", value: "Better" }
+        ];
+    };
+
+    const getResponseAuthnContextClassRefOptions = (): DropdownChild[] => {
+        return [
+
+            { key: 1, text: "Default", value: "default" },
+            { key: 2, text: "As response", value: "as_response" }
+        ];
+    };
+
+    const getSaml2WebSSOUserIdLocationOptions = () => {
+        return [ {
+            text: "User ID found in 'Name Identifier'",
+            value: 0
+        },
+        {
+            text: "User ID found among claims",
+            value: 1
+        } ];
+    };
+
     const authorizedRedirectURL: string = config?.deployment?.customServerHost + "/commonauth" ;
 
     /**
@@ -149,8 +211,19 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         const [ findPropVal, findMeta ] = fastSearch(authenticator);
 
         return {
+            ArtifactResolveUrl: findPropVal<string>({ defaultValue: "", key: "ArtifactResolveUrl" }),
             AuthRedirectUrl: findPropVal<string>({ defaultValue: authorizedRedirectURL, key: "AuthRedirectUrl" }),
+            AuthnContextComparisonLevel: findPropVal<string>({ defaultValue: "", key: "AuthnContextComparisonLevel" }),
             DigestAlgorithm: findPropVal<string>({ defaultValue: "SHA256", key: "DigestAlgorithm" }),
+            ISArtifactBindingEnabled:  findPropVal<boolean>({ defaultValue: false, key: "ISArtifactBindingEnabled" }),
+            /**
+             * https://github.com/wso2/product-is/issues/17004
+             */
+            ISArtifactResolveReqSigned: findPropVal<string>({ 
+                defaultValue: "string", 
+                key: "ISArtifactResolveReqSigned" }
+            ),
+            ISArtifactResponseSigned: findPropVal<string>({ defaultValue: "string", key: "ISArtifactResponseSigned" }),
             ISAuthnReqSigned: findPropVal<boolean>({ defaultValue: false, key: "ISAuthnReqSigned" }),
             IdPEntityId: findPropVal<string>({ defaultValue: "", key: "IdPEntityId" }),
             IncludeProtocolBinding: findPropVal<boolean>({ defaultValue: false, key: "IncludeProtocolBinding" }),
@@ -176,10 +249,16 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             SPEntityId: findPropVal<string>({ defaultValue: "", key: "SPEntityId" }),
             SSOUrl: findPropVal<string>({ defaultValue: "", key: "SSOUrl" }),
             SignatureAlgorithm: findPropVal<string>({ defaultValue: "RSA with SHA256", key: "SignatureAlgorithm" }),
-            commonAuthQueryParams: findPropVal<string>({ defaultValue: "", key: "commonAuthQueryParams" })
+            commonAuthQueryParams: findPropVal<string>({ defaultValue: "", key: "commonAuthQueryParams" }),
+            /**
+             * https://github.com/wso2/product-is/issues/17004
+             */
+            isEnableAssertionSigning: findPropVal<boolean>({ defaultValue: false, key: "isEnableAssertionSigning" })
         } as SamlPropertiesInterface;
 
     }, []);
+
+   
 
     useEffect(() => {
         setIsSLORequestAccepted(initialFormValues.IsSLORequestAccepted);
@@ -188,6 +267,8 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         setIsLogoutEnabled(initialFormValues.IsLogoutEnabled);
         setIsLogoutReqSigned(initialFormValues.IsLogoutReqSigned);
         setIsAuthnReqSigned(initialFormValues.ISAuthnReqSigned);
+
+        setIsArtifactBindingEnabled(initialFormValues.ISArtifactBindingEnabled);
         setFormValues({ ...initialFormValues });
     }, [ initialFormValues ]);
 
@@ -582,6 +663,212 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             readOnly={ readOnly }
                         />
                     </SectionRow>
+
+                    { identityProviderConfig?.extendedSamlConfig?.enableAssertionSigningEnabled && (
+                        <SectionRow>
+                            <Field.Checkbox
+                                required={ false }
+                                name="isEnableAssertionSigning"
+                                defaultValue={ Boolean(initialFormValues.isEnableAssertionSigning) }
+                                ariaLabel={ "Enable Assertion Signing" }
+                                data-testid={ `${ testId }-isEnableAssertionSigning-field` }
+                                label={ (
+                                    <FormInputLabel htmlFor="isEnableAssertionSigning">
+                                        { t(`${ I18N_TARGET_KEY }.isEnableAssertionSigning.label`) }
+                                    </FormInputLabel>
+                                ) }
+                                hint={ t(`${ I18N_TARGET_KEY }.isEnableAssertionSigning.hint`) }
+                                readOnly={ readOnly }
+                            />
+                        </SectionRow>
+                    ) }
+                   
+                    { identityProviderConfig?.extendedSamlConfig?.includePublicCertEnabled && (
+                        <SectionRow>
+                            <Field.Checkbox
+                                required={ false }
+                                name="includeCert"
+                                initialValue={ includeCert }
+                                ariaLabel={ "Include public certificate" }
+                                data-testid={ `${ testId }-includeCert-field` }
+                                label={ (
+                                    <FormInputLabel htmlFor="includeCert">
+                                        { t(`${ I18N_TARGET_KEY }.includeCert.label`) }
+                                    </FormInputLabel>
+                                ) }
+                                hint={ t(`${ I18N_TARGET_KEY }.includeCert.hint`) }
+                                listen={ (value: any) => setIncludeCert(Boolean(value)) }
+                                readOnly={ readOnly }
+                            />
+                        </SectionRow>
+                    ) }
+                
+                    { /* Include Name ID policy */ }
+                    { identityProviderConfig?.extendedSamlConfig?.includeNameIDPolicyEnabled && (
+                        <SectionRow>
+                            <Field.Checkbox
+                                required={ false }
+                                name="IncludeNameIDPolicy"
+                                initialValue={ includeNameIDPolicy }
+                                ariaLabel={ "Include Name ID Policy" }
+                                data-testid={ `${ testId }-includeNameIDPolicy-field` }
+                                label={ (
+                                    <FormInputLabel htmlFor="IncludeNameIDPolicy">
+                                        { t(`${ I18N_TARGET_KEY }.includeNameIDPolicy.label`) }
+                                    </FormInputLabel>
+                                ) }
+                                hint={ t(`${ I18N_TARGET_KEY }.includeNameIDPolicy.hint`) }
+                                listen={ (value: any) => setIncludeNameIDPolicy(Boolean(value)) }
+                                readOnly={ readOnly }
+                            />
+                        </SectionRow>
+                    ) }
+                   
+
+                
+                    { /* IsEnableAssetionEncription */ }
+                    { identityProviderConfig?.extendedSamlConfig?.isAssertionEncryptionEnabled && (
+                        <SectionRow>
+                            <Field.Checkbox
+                                required={ false }
+                                name="IsEnableAssetionEncription"
+                                initialValue={ isEnableAssetionEncription }
+                                ariaLabel={ "Enable Assertion Encryption" }
+                                data-testid={ `${ testId }-isEnableAssertionEncryption-field` }
+                                label={ (
+                                    <FormInputLabel htmlFor="IsEnableAssertionEncription">
+                                        { t(`${ I18N_TARGET_KEY }.isEnableAssertionEncryption.label`) }
+                                    </FormInputLabel>
+                                ) }
+                                hint={ t(`${ I18N_TARGET_KEY }.isEnableAssertionEncryption.hint`) }
+                                listen={ (value: any) => setIsEnableAssetionEncription(Boolean(value)) }
+                                readOnly={ readOnly }
+                            />
+                        </SectionRow>
+                    ) }
+                   
+                    { identityProviderConfig.extendedSamlConfig.includeAuthenticationContextEnabled && (
+                        <SectionRow>
+                            { /* IncludeAuthnContext */ }
+                            <p>Include authentication context</p>
+                            { getIncludeAuthenticationContextOptions().map((option: DropdownChild,index: number) => (
+                                <Field.Radio
+                                    key={ index }
+                                    ariaLabel={ `${option.value} layout swatch` }
+                                    name={ "IncludeAuthnContext" }
+                                    label={
+                                        option.text
+                                    }
+                                    required={ false }
+                                    value={ option.value }
+                                />
+                            )) } 
+                        </SectionRow>
+                    ) }
+
+
+                    { identityProviderConfig.extendedSamlConfig.forceAuthenticationEnabled && (
+                        <SectionRow>
+                            { /* ForceAuthentication */ }
+                            <p>Force authentication</p>
+                            { getForceAuthenticationOptions().map((option: DropdownChild,index: number) => (
+                                <Field.Radio
+                                    key={ index }
+                                    ariaLabel={ `${option.value} layout swatch` }
+                                    name={ "ForceAuthentication" }
+                                    label={ option.text }
+                                    required={ false }
+                                    value={ option.value }
+                                />
+                            )) }
+                        </SectionRow> 
+                    ) }
+
+                    { identityProviderConfig.extendedSamlConfig.responseAuthenticationContextClassEnabled && (
+                        <SectionRow>
+                            <p>Response Authentication Context Class</p>
+                            { /* ResponseAuthnContextClassRef */ }
+                            { getResponseAuthnContextClassRefOptions().map((option: DropdownChild, index: number) => (
+                                <Field.Radio
+                                    key={ index }
+                                    ariaLabel={ `${option.value} layout swatch` }
+                                    name={ "ResponseAuthnContextClassRef" }
+                                    label={
+                                        option.text
+                                    }
+                                    required={ false }
+                                    value={ option.value }
+                                />
+                            )) }
+                        </SectionRow>
+                    ) }      
+
+                    { identityProviderConfig.extendedSamlConfig.authContextComparisonLevelEnabled && (
+                        <SectionRow>
+                            <Field.Dropdown
+                                required={ false }
+                                name="AuthnContextComparisonLevel"
+                                defaultValue={ initialFormValues?.AuthnContextComparisonLevel }
+                                placeholder={ t(`${ I18N_TARGET_KEY }.authContextComparisonLevel.placeholder`) }
+                                ariaLabel={ t(`${ I18N_TARGET_KEY }.authContextComparisonLevel.ariaLabel`) }
+                                data-testid={ `${ testId }-authContextComparisonLevel-field` }
+                                options={ getAvailableAuthContextComparisonLevelOptions() }
+                                label={ (
+                                    <FormInputLabel htmlFor="AuthnContextComparisonLevel">
+                                        { t(`${ I18N_TARGET_KEY }.authContextComparisonLevel.label`) }
+                                    </FormInputLabel>
+                                ) }
+                                validate={ required }
+                                hint={ t(`${ I18N_TARGET_KEY }.authContextComparisonLevel.hint`) }
+                                readOnly={ readOnly }
+                            /> 
+                        </SectionRow>
+                    ) }
+
+                    
+                    { identityProviderConfig.extendedSamlConfig.saml2WebSSOUserIdLocationEnabled && (
+                        <SectionRow>
+                            <p>SAML 2 Web SSO User ID location</p>
+                            { getSaml2WebSSOUserIdLocationOptions().map((option: {
+                                text: string;
+                                value: number;
+                            },index: number) => (
+                                <Field.Radio
+                                    key={ index }
+                                    ariaLabel={ `${option.value} layout swatch` }
+                                    name={ "saml2_sso_user_id_location" }
+                                    label={
+                                        option.text
+                                    }
+                                    required={ false }
+                                    value={ option.value }
+                                />
+                            )) }
+                        </SectionRow>
+                    ) }
+                    { identityProviderConfig.extendedSamlConfig.attributeConsumingServiceIndexEnabled && (
+                        <SectionRow>
+                            <Field.Input
+                                name="AttributeConsumingServiceIndex"
+                                value={ formValues?.attributeConsumingServiceIndex }
+                                inputType="default"
+                                placeholder={ t(`${ I18N_TARGET_KEY }.attributeConsumingServiceIndex.placeholder`) }
+                                ariaLabel={ t(`${ I18N_TARGET_KEY }.attributeConsumingServiceIndex.ariaLabel`) }
+                                data-testid={ `${ testId }-attributeConsumingServiceIndex-field` }
+                                label={ (
+                                    <FormInputLabel htmlFor="AttributeConsumingServiceIndex">
+                                        { t(`${ I18N_TARGET_KEY }.attributeConsumingServiceIndex.label`) }
+                                    </FormInputLabel>
+                                ) }
+                                maxLength={ LOGOUT_URL_LENGTH.max }
+                                minLength={ LOGOUT_URL_LENGTH.min }
+                                hint={ t(`${ I18N_TARGET_KEY }.attributeConsumingServiceIndex.hint`) }
+                                readOnly={ readOnly }
+                            />
+                        </SectionRow>
+                    ) }   
+
+                   
                     <SectionRow>
                         <Field.QueryParams
                             value={ formValues?.commonAuthQueryParams }
@@ -594,6 +881,85 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 </Grid>
                 <Divider hidden/>
             </FormSection>
+
+            { identityProviderConfig.extendedSamlConfig.isArtifactBindingEnabled && (
+                <FormSection heading="Artifact Binding">
+                    <Grid>
+                        <SectionRow>
+                            <Field.Checkbox
+                                required={ false }
+                                name="ISArtifactBindingEnabled"
+                                initialValue={ initialFormValues.ISArtifactBindingEnabled }
+                                ariaLabel={ t(`${ I18N_TARGET_KEY }.isArtifactBindingEnabled.label`) }
+                                data-testid={ `${ testId }-isArtifactBindingEnabled-field` }
+                                label={ (
+                                    <FormInputLabel htmlFor="isArtifactBindingEnabled">
+                                        { t(`${ I18N_TARGET_KEY }.isArtifactBindingEnabled.label`) }
+                                    </FormInputLabel>
+                                ) }
+                                hint={ t(`${ I18N_TARGET_KEY }.isArtifactBindingEnabled.hint`) }
+                                readOnly={ readOnly }
+                            /> 
+                        </SectionRow>
+
+                        <SectionRow>
+                            <Field.Input
+                                name="ArtifactResolveUrl"
+                                value={ formValues?.ArtifactResolveUrl }
+                                inputType="url"
+                                placeholder={ t(`${ I18N_TARGET_KEY }.artifactResolveEndpointUrl.placeholder`) }
+                                ariaLabel={ t(`${ I18N_TARGET_KEY }.artifactResolveEndpointUrl.ariaLabel`) }
+                                data-testid={ `${ testId }-artifactResolveEndpointUrl-field` }
+                                label={ (
+                                    <FormInputLabel htmlFor="artifactResolveEndpointUrl">
+                                        { t(`${ I18N_TARGET_KEY }.artifactResolveEndpointUrl.label`) }
+                                    </FormInputLabel>
+                                ) }
+                                maxLength={ LOGOUT_URL_LENGTH.max }
+                                minLength={ LOGOUT_URL_LENGTH.min }
+                                hint={ t(`${ I18N_TARGET_KEY }.artifactResolveEndpointUrl.hint`) }
+                                readOnly={ readOnly }
+                                disabled={ !isArtifactBindingEnabled }
+                            />
+                        </SectionRow>
+
+                        <SectionRow>
+                            <Field.Checkbox
+                                required={ false }
+                                name="ISArtifactResolveReqSigned"
+                                value={ initialFormValues.ISArtifactResolveReqSigned === "true" }
+                                ariaLabel={ "Enable Artifact resolve request signing" }
+                                data-testid={ `${ testId }-isArtifactResolveReqSigned-field` }
+                                label={ (
+                                    <FormInputLabel htmlFor="isArtifactResolveReqSigned">
+                                        { t(`${ I18N_TARGET_KEY }.isArtifactResolveReqSigned.label`) }
+                                    </FormInputLabel>
+                                ) }
+                                hint={ t(`${ I18N_TARGET_KEY }.isArtifactResolveReqSigned.hint`) }
+                                readOnly={ readOnly }
+                                disabled={ !isArtifactBindingEnabled }
+                            />
+                        </SectionRow>
+                        <SectionRow>
+                            <Field.Checkbox
+                                required={ false }
+                                name="ISArtifactResponseSigned"
+                                value={ initialFormValues.ISArtifactResponseSigned === "true" }
+                                ariaLabel={ "Enable artifact response signing" }
+                                data-testid={ `${ testId }-isArtifactResponseSigned-field` }
+                                label={ (
+                                    <FormInputLabel htmlFor="isArtifactResponseSigned">
+                                        { t(`${ I18N_TARGET_KEY }.isArtifactResponseSigned.label`) }
+                                    </FormInputLabel>
+                                ) }
+                                hint={ t(`${ I18N_TARGET_KEY }.isArtifactResponseSigned.hint`) }
+                                readOnly={ readOnly }
+                                disabled={ !isArtifactBindingEnabled }
+                            /> 
+                        </SectionRow>
+                    </Grid>
+                </FormSection>
+            ) }
 
             <Field.Button
                 form={ FORM_ID }

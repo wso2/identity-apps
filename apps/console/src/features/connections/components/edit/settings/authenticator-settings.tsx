@@ -48,6 +48,7 @@ import {
     updateFederatedAuthenticators
 } from "../../../api/authenticators";
 import { getConnectionIcons } from "../../../configs/ui";
+import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import {
     AuthenticatorSettingsFormModes,
@@ -165,7 +166,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     const isActiveTemplateExpertMode: boolean = useMemo(() => {
         return identityProviderConfig?.templates?.expertMode &&
             (identityProvider.templateId === ConnectionManagementConstants
-                .EXPERT_MODE_TEMPLATE_ID && !identityProvider.templateId);
+                .EXPERT_MODE_TEMPLATE_ID);
     }, [ identityProvider, identityProviderConfig  ]);
 
     useEffect(() => {
@@ -185,8 +186,19 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      */
     const getAuthenticators = () => {
         return getFederatedAuthenticatorsList()
-            .then((response: FederatedAuthenticatorMetaInterface): void => {
-                setAvailableFederatedAuthenticators(response);
+            .then((response: FederatedAuthenticatorMetaInterface[]): void => {
+
+                // Filter out legacy SMS and Email OTP authenticators.
+                const filteredAuthenticators: FederatedAuthenticatorMetaInterface[] = response.filter(
+                    (authenticator: FederatedAuthenticatorMetaInterface) => {
+                        return authenticator.authenticatorId !== AuthenticatorManagementConstants
+                            .LEGACY_SMS_OTP_AUTHENTICATOR_ID && 
+                            authenticator.authenticatorId !== AuthenticatorManagementConstants
+                                .LEGACY_EMAIL_OTP_AUTHENTICATOR_ID;
+                    }
+                );
+
+                setAvailableFederatedAuthenticators(filteredAuthenticators);
             })
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {

@@ -250,6 +250,10 @@ export class AppConstants {
             [ "ADMIN_OVERVIEW", `${ AppConstants.getAdminViewBasePath() }/overview` ],
             [ "ADMIN_ADVISORY_BANNER", `${ AppConstants.getAdminViewBasePath() }/admin-advisory` ],
             [ "ADMIN_ADVISORY_BANNER_EDIT", `${ AppConstants.getAdminViewBasePath() }/admin-advisory-banner-edit` ],
+            [
+                "ANALYTICS",
+                `${AppConstants.getAdminViewBasePath()}/analytics/:categoryId/:connectorId`
+            ],
             [ "APPLICATIONS", `${ AppConstants.getDeveloperViewBasePath() }/applications` ],
             [ "APPLICATION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/applications/templates` ],
             [ "APPLICATION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/applications/:id` ],
@@ -271,6 +275,12 @@ export class AppConstants {
             [ "CONNECTION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/connections/:id` ],
             [ "CUSTOMIZE", `${ AppConstants.getMainViewBasePath() }/customize` ],
             [ "DEVELOPER_OVERVIEW", `${ AppConstants.getDeveloperViewBasePath() }/overview` ],
+            [
+                "ASSIGN_ORGANIZATION_DISCOVERY_DOMAINS",
+                `${AppConstants.getAdminViewBasePath()}/email-domain-assign`
+            ],
+            [ "ORGANIZATION_DISCOVERY_DOMAINS", `${AppConstants.getAdminViewBasePath()}/email-domain-discovery` ],
+            [ "UPDATE_ORGANIZATION_DISCOVERY_DOMAINS", `${AppConstants.getAdminViewBasePath()}/email-domain-edit/:id` ],
             [ "EMAIL_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/email-provider` ],
             [ "EMAIL_TEMPLATE_TYPES", `${ AppConstants.getAdminViewBasePath() }/email-templates` ],
             [ "EMAIL_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId` ],
@@ -319,6 +329,7 @@ export class AppConstants {
             [ "PRIVACY", `${ AppConstants.getMainViewBasePath() }/privacy` ],
             [ "REMOTE_REPO_CONFIG", `${ AppConstants.getAdminViewBasePath() }/remote-repository-config` ],
             [ "ROLES", `${ AppConstants.getAdminViewBasePath() }/roles` ],
+            [ "ROLE_CREATE", `${ AppConstants.getAdminViewBasePath() }/create-role` ],
             [ "ROLE_EDIT", `${ AppConstants.getAdminViewBasePath() }/roles/:id` ],
             [ "ROOT", "/" ],
             [ "GOVERNANCE_CONNECTORS", `${AppConstants.getAdminViewBasePath()}/governance-connectors/:id` ],
@@ -356,8 +367,14 @@ export class AppConstants {
                 "PRIVATE_KEY_JWT_CONFIG_EDIT", 
                 `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration` 
             ],
-            [ "INSIGHTS",`${AppConstants.getAdminViewBasePath()}/insights` ],
-            [ "REMOTE_LOGGING",`${AppConstants.getAdminViewBasePath()}/logs` ]
+            [ "INSIGHTS", `${AppConstants.getAdminViewBasePath()}/insights` ],
+            [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/logs` ],
+            [ "SESSION_MANAGEMENT",
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/session-management` ],
+            [ "SAML2_CONFIGURATION",
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/saml2-configuration` ],
+            [ "WSFED_CONFIGURATION",
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/wsfed-configuration` ]
         ]);
 
         return paths;
@@ -424,7 +441,8 @@ export class AppConstants {
         "userRoles",
         "applications",
         "emailTemplates",
-        "governanceConnectors"
+        "governanceConnectors",
+        "branding"
     ];
 
     /**

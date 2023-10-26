@@ -82,6 +82,10 @@ interface UsersListProps extends SBACInterface<FeatureConfigInterface>, Loadable
      */
     onColumnSelectionChange?: (columns: TableColumnInterface[]) => void;
     /**
+     * Callback to be fired when the empty list placeholder action is clicked.
+     */
+    onEmptyListPlaceholderActionClick?: () => void;
+    /**
      * On list item select callback.
      */
     onListItemClick?: (event: SyntheticEvent, data: ListItemProps) => void;
@@ -218,7 +222,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 render: (user: UserBasicInterface): ReactNode => {
                     let header: string | MultiValueAttributeInterface;
                     let subHeader: string | MultiValueAttributeInterface;
-                    const isNameAvailable: boolean = 
+                    const isNameAvailable: boolean =
                     user.name?.familyName === undefined && user.name?.givenName === undefined;
 
                     if (user[SCIMConfigs.scim.enterpriseSchema]?.userSourceId) {

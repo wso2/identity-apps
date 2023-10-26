@@ -1,5 +1,79 @@
 # @wso2is/myaccount
 
+## 2.1.9
+
+### Patch Changes
+
+- [#4255](https://github.com/wso2/identity-apps/pull/4255) [`0716ce8389`](https://github.com/wso2/identity-apps/commit/0716ce8389a7147aadb8f664c830cd96735854df) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Add M2M template
+
+- Updated dependencies [[`0716ce8389`](https://github.com/wso2/identity-apps/commit/0716ce8389a7147aadb8f664c830cd96735854df)]:
+  - @wso2is/theme@2.0.22
+  - @wso2is/i18n@2.0.15
+
+## 2.1.8
+
+### Patch Changes
+
+- [#4305](https://github.com/wso2/identity-apps/pull/4305) [`0b0edf4707`](https://github.com/wso2/identity-apps/commit/0b0edf470794779de8e7a27b08c323c965772c2b) Thanks [@Achintha444](https://github.com/Achintha444)! - Complete role creation
+
+- Updated dependencies [[`0b0edf4707`](https://github.com/wso2/identity-apps/commit/0b0edf470794779de8e7a27b08c323c965772c2b)]:
+  - @wso2is/i18n@2.0.14
+  - @wso2is/theme@2.0.21
+
+## 2.1.7
+
+### Patch Changes
+
+- [#4297](https://github.com/wso2/identity-apps/pull/4297) [`990032d4d9`](https://github.com/wso2/identity-apps/commit/990032d4d9e4f2c0e711c6caacba19b5696ea30e) Thanks [@savindi7](https://github.com/savindi7)! - Revamp the UI of Login & Registration page
+
+- Updated dependencies [[`990032d4d9`](https://github.com/wso2/identity-apps/commit/990032d4d9e4f2c0e711c6caacba19b5696ea30e)]:
+  - @wso2is/react-components@2.0.9
+  - @wso2is/theme@2.0.20
+  - @wso2is/core@2.0.5
+  - @wso2is/i18n@2.0.13
+
+## 2.1.6
+
+### Patch Changes
+
+- [#4290](https://github.com/wso2/identity-apps/pull/4290) [`d32dfab48d`](https://github.com/wso2/identity-apps/commit/d32dfab48d2deb5ac94e5c056f018bb891b3b74b) Thanks [@Achintha444](https://github.com/Achintha444)! - Update the basic section of the role
+
+- Updated dependencies [[`eeb2da4a7c`](https://github.com/wso2/identity-apps/commit/eeb2da4a7c57d8870e6d1aef37a4337a151e1e6c), [`d32dfab48d`](https://github.com/wso2/identity-apps/commit/d32dfab48d2deb5ac94e5c056f018bb891b3b74b)]:
+  - @wso2is/i18n@2.0.12
+
+## 2.1.5
+
+### Patch Changes
+
+- [#4278](https://github.com/wso2/identity-apps/pull/4278) [`8be0337845`](https://github.com/wso2/identity-apps/commit/8be03378456c5b8799fc3052e4b7a315b65f7013) Thanks [@Achintha444](https://github.com/Achintha444)! - Add permissions selection section to the create role interface
+
+* [#4280](https://github.com/wso2/identity-apps/pull/4280) [`7ee4e2e360`](https://github.com/wso2/identity-apps/commit/7ee4e2e360f463be9b9ca72814e4ee90077995da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update roles list interface
+
+* Updated dependencies [[`8be0337845`](https://github.com/wso2/identity-apps/commit/8be03378456c5b8799fc3052e4b7a315b65f7013), [`7ee4e2e360`](https://github.com/wso2/identity-apps/commit/7ee4e2e360f463be9b9ca72814e4ee90077995da)]:
+  - @wso2is/i18n@2.0.11
+  - @wso2is/theme@2.0.18
+
+## 2.1.4
+
+### Patch Changes
+
+- [#4275](https://github.com/wso2/identity-apps/pull/4275) [`c34909a7c1`](https://github.com/wso2/identity-apps/commit/c34909a7c10c3f9cc9bde49dba118ea384f8ba9e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the logo theme issue
+
+* [#4274](https://github.com/wso2/identity-apps/pull/4274) [`aa6e1e6012`](https://github.com/wso2/identity-apps/commit/aa6e1e6012fea5ec6c04d54f4c6e6b17e268239e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add class for the `Reject All` button in the cookie banner
+
+* Updated dependencies [[`c34909a7c1`](https://github.com/wso2/identity-apps/commit/c34909a7c10c3f9cc9bde49dba118ea384f8ba9e), [`aa6e1e6012`](https://github.com/wso2/identity-apps/commit/aa6e1e6012fea5ec6c04d54f4c6e6b17e268239e)]:
+  - @wso2is/theme@2.0.17
+
+## 2.1.3
+
+### Patch Changes
+
+- [#4266](https://github.com/wso2/identity-apps/pull/4266) [`d94fa3f961`](https://github.com/wso2/identity-apps/commit/d94fa3f9610eb933210e930a54499bdbf097c32b) Thanks [@Achintha444](https://github.com/Achintha444)! - Add create role UI
+
+- Updated dependencies [[`583e0aa16a`](https://github.com/wso2/identity-apps/commit/583e0aa16a3ff394f62baa837e8be395557b7f70), [`ed53722390`](https://github.com/wso2/identity-apps/commit/ed5372239055ab28d75f9bb3630870cf4c0b4905), [`c0ea5f71e6`](https://github.com/wso2/identity-apps/commit/c0ea5f71e62471f207bca1e927eefa56cd3c224a), [`d94fa3f961`](https://github.com/wso2/identity-apps/commit/d94fa3f9610eb933210e930a54499bdbf097c32b), [`199144fe70`](https://github.com/wso2/identity-apps/commit/199144fe70a3a6a7167c5e97ecdd9cddec1f3d45)]:
+  - @wso2is/i18n@2.0.10
+  - @wso2is/theme@2.0.16
+
 ## 2.1.2
 
 ### Patch Changes

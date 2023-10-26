@@ -104,6 +104,8 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             getSecretType: "",
             governanceConnectorCategories: "",
             groups: "",
+            guests: "",
+            guestsList: "",
             identityProviders: "",
             jwtAuthenticationServiceMgt: "",
             localAuthenticators: "",
@@ -114,6 +116,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             myAccountConfigMgt: "",
             oidcScopes: "",
             organizations: "",
+            passiveStsConfigurations: "",
             passwordExpiry: "",
             passwordHistory: "",
             passwordPolicies: "",
@@ -125,8 +128,11 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             requestPathAuthenticators: "",
             resourceTypes: "",
             roles: "",
+            rolesV2: "",
             rolesWithoutOrgPath: "",
             rootOrganization: "",
+            rootUsersOrganization: "",
+            saml2Configurations: "",
             saml2Meta: "",
             schemas: "",
             selfSignUp: "",
@@ -139,6 +145,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             userSessions: "",
             userStores: "",
             users: "",
+            usersOrganization: "",
             usersSuperOrganization: "",
             validationServiceMgt: "",
             wellKnown: ""
@@ -169,6 +176,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             applicationTemplateLoadingStrategy: undefined,
             connectionResourcesUrl: "",
             cookiePolicyUrl: "",
+            emailTemplates: {
+                defaultLogoUrl: "",
+                defaultWhiteLogoUrl: ""
+            },
             features: {
                 applications: null,
                 approvals: null,

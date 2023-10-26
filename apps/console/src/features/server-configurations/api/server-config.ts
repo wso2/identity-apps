@@ -26,7 +26,11 @@ import { store } from "../../core";
 import useRequest,
 { RequestConfigInterface, RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
 import { ServerConfigurationsConstants } from "../constants";
-import { AdminAdvisoryBannerConfigurationInterface, RemoteLogPublishingConfigurationInterface } from "../models";
+import { 
+    AdminAdvisoryBannerConfigurationInterface, 
+    LogType, 
+    RemoteLogPublishingConfigurationInterface 
+} from "../models";
 
 /**
  * Initialize an axios Http client.
@@ -218,9 +222,11 @@ export const useRemoteLogPublishingConfigs = <Data = RemoteLogPublishingConfigur
  *
  * @returns a promise containing the response.
  */
-export const updateRemoteLogPublishingConfiguration = (
-    data: RemoteLogPublishingConfigurationInterface[]
-) : Promise<AxiosResponse> => {
+export const updateRemoteLogPublishingConfigurationByLogType = (
+    config: RemoteLogPublishingConfigurationInterface
+): Promise<AxiosResponse> => {
+
+    const { logType, ...data } = config;
 
     const requestConfig: RequestConfigInterface = {
         data,
@@ -229,7 +235,7 @@ export const updateRemoteLogPublishingConfiguration = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: store.getState().config.endpoints.remoteLogging
+        url: store.getState().config.endpoints.remoteLogging + "/" + logType
     };
 
     return httpClient(requestConfig)
@@ -249,10 +255,12 @@ export const updateRemoteLogPublishingConfiguration = (
 
 /**
  * Restore remote log publishing configurations.
+ * 
+ * @param logType - Log type.
  *
  * @returns a promise containing the response.
  */
-export const restoreRemoteLogPublishingConfiguration = () : Promise<AxiosResponse> => {
+export const restoreRemoteLogPublishingConfigurationByLogType = (logType: LogType): Promise<AxiosResponse> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -260,7 +268,7 @@ export const restoreRemoteLogPublishingConfiguration = () : Promise<AxiosRespons
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config.endpoints.remoteLogging
+        url: store.getState().config.endpoints.remoteLogging + "/" + logType
     };
 
     return httpClient(requestConfig)

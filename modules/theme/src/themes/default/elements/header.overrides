@@ -96,7 +96,6 @@ h6.ui.header .sub.header {
 
     &.oxygen-header .oxygen-brand-portal-name {
         font-size: 13px;
-        margin-bottom: 3px;
         margin-top: 0px;
         width: 100%;
     }

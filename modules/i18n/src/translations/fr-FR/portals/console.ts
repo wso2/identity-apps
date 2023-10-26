@@ -1044,6 +1044,9 @@ export const console: ConsoleNS = {
                             samlHeading: "Détails du connexion",
                             samlSubHeading: "Les détails de l'IdP suivants vous seront utiles pour implémenter et " +
                                 "configurer l'authentification pour votre application à l'aide de SAML 2.0.",
+                            wsFedHeading: "Détails de la connexion",
+                            wsFedSubHeading: "Les détails IDP suivants seront utiles pour que vous puissiez implémenter et " +
+                                "Configurer l'authentification pour votre application à l'aide de WS-Federation.",
                             tabName: "Info"
                         },
                         provisioning: {
@@ -1470,6 +1473,9 @@ export const console: ConsoleNS = {
                                 }
                             },
                             tabName: "Méthode de connexion"
+                        },
+                        apiAuthorization: {
+                            m2mPolicyMessage: "Toutes les étendues autorisées d'une ressource API sont disponibles pour une application M2M malgré la politique d'autorisation spécifiée pour la ressource."
                         }
                     }
                 },
@@ -1653,7 +1659,8 @@ export const console: ConsoleNS = {
                                     empty: "Une URL d'accès valide doit être fournie pour" +
                                         " rendre cette application détectable.",
                                     invalid: "Ceci n'est pas une URL valide"
-                                }
+                                },
+                                ariaLabel: "URL d'accès à l'application"
                             },
                             description: {
                                 label: "Description",
@@ -1893,6 +1900,18 @@ export const console: ConsoleNS = {
                                             " client doit présenter le <1>jeton_d'accès</1> + cookie pour une" +
                                             " autorisation réussie.",
                                         label: "Valider les liaisons des jetons"
+                                    },
+                                    audience: {
+                                        hint: "Spécifiez le destinataire auquel ce <1>jeton_d'accès</1> est " +
+                                            "destiné. Par défaut, l'ID client de cette application est " +
+                                            "ajouté en tant qu'audience.",
+                                        label: "Audience",
+                                        placeholder: "Saisir l'audience",
+                                        validations: {
+                                            duplicate: "L'audience contient des valeurs en double",
+                                            empty: "Veuillez remplir le public",
+                                            invalid: "Veuillez ajouter une audience valide."
+                                        }
                                     }
                                 },
                                 heading: "Jeton d'accès",
@@ -2554,14 +2573,19 @@ export const console: ConsoleNS = {
                                 oidcConfigurations: {
                                     labels: {
                                         authorize: "Authorize",
+                                        dynamicClientRegistration: "Enregistrement client dynamique",
                                         endSession: "Se déconnecter",
                                         introspection: "Introspection",
                                         issuer: "Émetteur",
                                         jwks: "JWKS",
                                         keystore: "Key Set",
+                                        openIdServer: "Serveur OpenID",
+                                        pushedAuthorizationRequest: "Demande d'autorisation poussée",
                                         revoke: "Révoquer",
+                                        sessionIframe: "Iframe de session",
                                         token: "Token",
                                         userInfo: "UserInfo",
+                                        webFinger: "Web Finger",
                                         wellKnown: "Discovery"
                                     }
                                 },
@@ -2575,7 +2599,9 @@ export const console: ConsoleNS = {
                                         issuer: "Émetteur",
                                         metadata: "Métadonnées de l'IDP",
                                         slo: "Déconnexion unique",
-                                        sso: "Authentification unique"
+                                        sso: "Authentification unique",
+                                        destinationURL: "URL de destination",
+                                        artifactResolutionUrl: "URL de résolution des artefacts"
                                     }
                                 },
                                 trySample: {
@@ -2593,6 +2619,11 @@ export const console: ConsoleNS = {
                                     subTitle: "Installez et utilisez nos SDK pour intégrer l'authentification " +
                                         "à votre application avec un nombre minimum de lignes de code.",
                                     title: "Intégrez votre propre application"
+                                },
+                                wsFedConfigurations: {
+                                    labels: {
+                                        passiveSTSUrl: "URL STS passive"
+                                    }
                                 }
                             },
                             heading: "Quelle est la suite ?"
@@ -5595,10 +5626,6 @@ export const console: ConsoleNS = {
                             "utilisateur qui seront utilisés dans l'API OpenID Connect.",
                         heading: "OpenID Connect"
                     },
-                    openid: {
-                        description: "La représentation du protocole OpenID pour les attributs utilisateur.",
-                        heading: "OpenID"
-                    },
                     scim: {
                         description: "Représentation du protocole SCIM2 pour les attributs " +
                             "utilisateur qui seront utilisés dans l'API SCIM2.",
@@ -6497,6 +6524,7 @@ export const console: ConsoleNS = {
                 connectorCategories: {
                     passwordPolicies: {
                         name: "Politiques de mot de passe",
+                        description: "Configurer les stratégies de mot de passe pour améliorer la force du mot de passe utilisateur.",
                         connectors: {
                             passwordHistory: {
                                 friendlyName: "Historique du mot de passe",
@@ -6540,6 +6568,7 @@ export const console: ConsoleNS = {
                     },
                     userOnboarding: {
                         name: "Intégration de l'utilisateur",
+                        description: "Configurer les paramètres d'intégration de l'utilisateur.",
                         connectors: {
                             selfSignUp: {
                                 friendlyName: "Auto-inscription",
@@ -6680,6 +6709,7 @@ export const console: ConsoleNS = {
                     },
                     loginAttemptsSecurity: {
                         name: "La connexion tente la sécurité",
+                        description: "Configurer les paramètres de sécurité des tentatives de connexion.",
                         connectors: {
                             accountLockHandler: {
                                 friendlyName: "Verrouillage du compte",
@@ -6731,6 +6761,7 @@ export const console: ConsoleNS = {
                     },
                     accountManagement: {
                         name: "Gestion de compte",
+                        description: "Configurer les paramètres de gestion des comptes.",
                         connectors: {
                             suspensionNotification: {
                                 friendlyName: "Suspende du compte inactif",
@@ -6875,6 +6906,7 @@ export const console: ConsoleNS = {
                     },
                     otherSettings: {
                         name: "Autres réglages",
+                        description: "Configurer d'autres paramètres.",
                         connectors: {
                             piiController: {
                                 friendlyName: "Contrôleur d'information sur le consentement",
@@ -7042,6 +7074,7 @@ export const console: ConsoleNS = {
                     },
                     multiFactorAuthenticators: {
                         name: "Authentificateurs multi-facteurs",
+                        description: "Configurer les paramètres d'authentificateur multi-facteurs.",
                         connectors: {
                             backupCodeAuthenticator: {
                                 friendlyName: "Authentificateur de code de sauvegarde",
@@ -7250,6 +7283,35 @@ export const console: ConsoleNS = {
                             message: "Panneau d'aide {{state}}"
                         }
                     }
+                }
+            },
+            parentOrgInvitations: {
+                addUserWizard: {
+                    heading: "Inviter un utilisateur parent",
+                    description: "Invitez un utilisateur de l’organisation parente.",
+                    hint: "Les utilisateurs invités sont gérés par l'organisation <1>{{currentOrganization}></1>.",
+                    usernameHint: "Le nom d'utilisateur doit appartenir à un utilisateur " +
+                        "de l'organisation <1>{{currentOrganization}></1>."
+                },
+                tab: {
+                    usersTab: "Utilisateurs",
+                    invitationsTab: "Invitations"
+                },
+                searchPlaceholder: "Rechercher par nom d'utilisateur",
+                searchdropdown: {
+                    pendingLabel: "En attente",
+                    expiredLabel: "Expiré"
+                },
+                createDropdown: {
+                    createLabel: "Créer un utilisateur",
+                    inviteLabel: "Inviter un utilisateur parent"
+                },
+                filterLabel: "Filtrer par: ",
+                emptyPlaceholder: {
+                    noPendingInvitations: "Il n'y a aucune invitation en attente pour le moment.",
+                    noExpiredInvitations: "Il y a des invitations expirées pour le moment.",
+                    noInvitations: "Il n'y a aucune invitation pour le moment.",
+                    noCollaboratorUserInvitations: "Il n’y a actuellement aucun utilisateur collaborateur dont les invitations ont expiré."
                 }
             },
             oidcScopes: {
@@ -7508,6 +7570,139 @@ export const console: ConsoleNS = {
                         title: "Créer le scope OIDC"
                     }
                 }
+            },
+            organizationDiscovery: {
+                advancedSearch: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                organizationName: "nom de l'organisation"
+                            }
+                        },
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: "Par exemple. Nom de l'organisation, etc."
+                            },
+                            filterCondition: {
+                                placeholder: "Par exemple. Commence par etc."
+                            },
+                            filterValue: {
+                                placeholder: "Entrez la valeur à rechercher"
+                            }
+                        }
+                    },
+                    placeholder: "Rechercher par nom d'organisation"
+                },
+                assign: {
+                    title: "Affecter les domaines e-mail",
+                    description: "Add email domains for sub organizations.",
+                    form: {
+                        fields: {
+                            emailDomains: {
+                                label : "Domaines de messagerie",
+                                placeholder: "Entrez les domaines de messagerie",
+                                hint: "Entrez les domaines de messagerie que vous souhaitez mapper à l'organisation.Séparez plusieurs domaines en appuyant sur Entrée et en tapant le domaine suivant."
+                            },
+                            organizationName: {
+                                label: "nom de l'organisation",
+                                placeholder: "Sélectionnez une organisation",
+                                emptyPlaceholder: "Toutes les organisations ont attribué des domaines",
+                                hint: "Entrez le nom de l'organisation que vous souhaitez ajouter le mappage de domaine."
+                            }
+                        }
+                    }
+                },
+                emailDomains: {
+                    actions: {
+                        assign: "Attribuer un domaine de messagerie",
+                        enable: "Activer la découverte de domaines de messagerie"
+                    }
+                },
+                edit: {
+                    back: "Dos",
+                    description: "Modifier les domaines de messagerie",
+                    form: {
+                        fields: {
+                            emailDomains: {
+                                label : "Domaines de messagerie",
+                                placeholder: "Entrez les domaines de messagerie",
+                                hint: "Entrez les domaines de messagerie que vous souhaitez mapper à l'organisation.Séparez plusieurs domaines en appuyant sur Entrée et en tapant le domaine suivant."
+                            },
+                            organizationName: {
+                                label: "nom de l'organisation",
+                                hint: "Entrez le nom de l'organisation que vous souhaitez ajouter la cartographie du domaine."
+                            }
+                        }
+                    }
+                },
+                notifications: {
+                    addEmailDomains: {
+                        error: {
+                            description: "L'ajout des domaines de messagerie à l'organisation a échoué.",
+                            message: "Impossible d'ajouter des domaines de messagerie"
+                        },
+                        success: {
+                            description: "Les domaines de messagerie ajoutés avec succès",
+                            message: "Ajout avec succès les domaines de messagerie à l'organisation."
+                        }
+                    },
+                    disableEmailDomainDiscovery: {
+                        error: {
+                            description: "Erreur lors de la désactivation de la découverte de domaine de messagerie",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "La découverte du domaine de messagerie a été désactivée avec succès",
+                            message: "La découverte du domaine de messagerie a été désactivée avec succès"
+                        }
+                    },
+                    enableEmailDomainDiscovery: {
+                        error: {
+                            description: "Une erreur s'est produite lors de l'activation de la découverte de domaines de messagerie",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "La découverte du domaine de messagerie a été activée avec succès",
+                            message: "La découverte du domaine de messagerie a été activée avec succès"
+                        }
+                    },
+                    fetchOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: "Une erreur s'est produite lors de la récupération des attributs de découverte de l'organisation",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
+                    getEmailDomainDiscovery: {
+                        error: {
+                            description: "Une erreur s'est produite lors de la récupération de la configuration de la découverte du domaine de messagerie",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
+                    getOrganizationListWithDiscovery: {
+                        error: {
+                            description: "Une erreur s'est produite lors de l'obtention de la liste des organisations avec les attributs de découverte",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
+                    updateOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: "Une erreur s'est produite lors de la mise à jour des attributs de découverte de l'organisation",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Mise à jour réussie des attributs de découverte de l'organisation",
+                            message: "Attributs de découverte d'organisation mis à jour avec succès"
+                        }
+                    }
+                },
+                placeholders: {
+                    emptyList: {
+                        action: "Attribuer un domaine de messagerie",
+                        subtitles: "Aucune organisation ne dispose de domaines de messagerie attribués.",
+                        title: "Attribuer un domaine de messagerie"
+                    }
+                },
+                title: "Découverte de domaines de messagerie"
             },
             organizations: {
                 advancedSearch: {
@@ -8080,14 +8275,14 @@ export const console: ConsoleNS = {
                                 hint: "Définissez le public du rôle.<1> Notez que le public du rôle ne peut pas être modifié. </1>",
                                 label: "Sélectionnez le rôle de rôle",
                                 values: {
-                                    organization: "Rôle de l'organisation",
-                                    application: "Rôle appliqué"
+                                    organization: "Organisation",
+                                    application: "Application"
                                 }
                             },
                             notes: {
-                                orgNote: "Lorsque le rôle que le public est encope, vous ne pouvez attribuer le rôle qu'aux applications qui soutiennent exclusivement les rôles qui soutiennent l'organisation.",
-                                appNote: "Lorsque le rôle que le public est encope des applications, vous ne pouvez attribuer le rôle qu'aux applications qui prennent en charge exclusivement les rôles qui prennent des applications.",
-                                cannotCreateRole: "Vous ne pouvez pas créer de rôle encopique appliqué car il n'y a actuellement aucune application qui prend en charge le rôle de lacopie appliquée.S'il vous plaît <1> Créer une application </1> qui prend en charge les rôles à application pour continuer."
+                                orgNote: "Lorsque le rôle d'audience est l'organisation, vous pouvez associer le rôle à une application qui permet des rôles d'audience d'organisation.",
+                                appNote: "Lorsque le rôle d'audience est une application, vous pouvez associer le rôle à une application qui permet des rôles d'audience d'application.",
+                                cannotCreateRole: "Vous ne pouvez pas créer un rôle avec le public de rôle en tant qu'application car il n'y a actuellement aucune application qui prend en charge les rôles d'audience d'application.S'il vous plaît <1> Créer une application </1> qui prend en charge les rôles d'audience d'application pour continuer."
                             },
                             assignedApplication: {
                                 hint: "Attribuer une application pour le rôle. Notez que l'application attribuée pour ce rôle ne peut pas être modifiée après la création du rôle.",
@@ -8101,6 +8296,32 @@ export const console: ConsoleNS = {
                                     empty: "L'application attribuée est nécessaire pour créer un rôle à application."
                                 }
                             }
+                        },
+                        rolePermission: {
+                            apiResource: {
+                                label: "Sélectionnez la ressource API",
+                                placeholder: "Sélectionnez une ressource API pour attribuer des scopes (autorisations)"
+                            },
+                            permissions: {
+                                label: "Sélectionnez Scopes (autorisations) dans les ressources API sélectionnées",
+                                placeholder: "Sélectionnez des lunettes (autorisations)",
+                                tooltips: {
+                                    noScopes: "Aucune portée disponible pour la ressource API sélectionnée",
+                                    selectAllScopes: "Sélectionnez toutes les portées (autorisations)",
+                                    removeAPIResource: "Supprimer la ressource API"
+                                }
+                            },
+                            notes: {
+                                applicationRoles: "Seules les API et les étendues (autorisations) autorisées dans l'application sélectionnée(<1>{{applicationName}}</1>) seront répertoriées pour être sélectionnées."
+                            },
+                            notifications: {
+                                fetchAPIResourceError: {
+                                    error: {
+                                        description: "Quelque chose s'est mal passé tout en récupérant les ressources d'API.Veuillez réessayer.",
+                                        message: "Quelque chose s'est mal passé"
+                                    }
+                                }
+                            }
                         }
                     },
                     heading: "Créer un {{type}}",
@@ -8112,6 +8333,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     subHeading: "Créer un nouveau {{type}} dans le système avec des permissions spécifiques",
+                    back: "Retourner",
                     summary: {
                         labels: {
                             domain: {
@@ -8163,6 +8385,16 @@ export const console: ConsoleNS = {
                     placeholder: "Rechercher par nom de rôle"
                 },
                 edit: {
+                    placeholders: {
+                        errorPlaceHolder: {
+                            action: "Retourner",
+                            subtitles: {
+                                0: "Une erreur s'est produite lors de la récupération du rôle demandé, peut-être parce que le rôle n'existe pas.",
+                                1: "Please try again."
+                            },
+                            title: "Quelque chose s'est mal passé"
+                        }
+                    },
                     basics: {
                         buttons: {
                             update: "Mettre à jour"
@@ -8316,6 +8548,10 @@ export const console: ConsoleNS = {
                                 placeholder: "Restaurer les utilisateurs"
                             }
                         }
+                    },
+                    permissions: {
+                        heading: "Autorisations attribuées",
+                        subHeading: "Gérer les autorisations attribuées dans le rôle."
                     }
                 },
                 list: {
@@ -8326,6 +8562,10 @@ export const console: ConsoleNS = {
                     columns: {
                         actions: "Actions",
                         lastModified: "Dernière modification",
+                        managedBy: {
+                            label: "Dirigé par",
+                            header: "Dirigé par"
+                        },
                         name: "Nom"
                     },
                     confirmations: {
@@ -8362,6 +8602,15 @@ export const console: ConsoleNS = {
                     popups: {
                         delete: "Supprimer le {{type}}",
                         edit: "Modifier le {{type}}"
+                    },
+                    filterOptions: {
+                        all: "Afficher tout",
+                        applicationRoles: "Rôles d'application",
+                        organizationRoles: "Rôles d'organisation"
+                    },
+                    filterAttirbutes: {
+                        name: "Nom",
+                        audience: "Rôle public"
                     }
                 },
                 notifications: {
@@ -8413,6 +8662,12 @@ export const console: ConsoleNS = {
                             message: "Quelque chose s'est mal passé"
                         }
                     },
+                    fetchRole: {
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération du rôle.",
+                            message: "Quelque chose s'est mal passé"
+                        }
+                    },
                     updateRole: {
                         error: {
                             description: "{{description}}",
@@ -8440,7 +8695,7 @@ export const console: ConsoleNS = {
                             bannerContent: {
                                 label: "Contenu de la bannière",
                                 hint: "C'est le contenu qui sera affiché dans la bannière sur la page de connexion.",
-                                placeholder: "Attention : l'utilisation non autorisée de cet outil " +
+                                placeholder: "Attention : l'utilisation non autorisée de cet outil " +
                                     "est strictement interdite."
                             }
                         }
@@ -8574,15 +8829,15 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
-                        title: "Restaurer la configuration par défaut",
-                        header: "Restaurer la configuration par défaut",
-                        subheader: "Cette action supprimera la configuration existante. Soyez certain avant de continuer.",
+                        title: "Restaurer la configuration par défaut pour les journaux {{logType}}",
+                        header: "Restaurer la configuration par défaut pour les journaux {{logType}}",
+                        subheader: "Cette action supprimera la configuration existante pour les journaux {{logType}}. Veuillez en être sûr avant de continuer.",
                         confirmation: {
                             hint: "Veuillez confirmer votre action.",
                             header: "Êtes-vous sûr?",
-                            message: "Si vous restaurez la configuration par défaut, la publication des journaux à distance risque de ne pas fonctionner correctement. " +
+                            message: "Si vous restaurez la configuration par défaut, la publication de journaux à distance pour les journaux {{logType}} risque de ne pas fonctionner correctement. " +
                             "Veuillez procéder avec prudence.",
-                            content: "Cette action restaurera la configuration de publication des journaux par défaut."
+                            content: "Cette action restaurera la configuration de publication de journaux par défaut pour les journaux {{logType}}."
                         }
                     },
                     notification: {
@@ -8695,6 +8950,7 @@ export const console: ConsoleNS = {
                 editRoles: "Modifier le rôle",
                 editUsers: "Modifier l'utilisateur",
                 editUserstore: "Modifier l'annuaire",
+                emailDomainDiscovery: "Découverte de domaines de messagerie",
                 emailTemplateTypes: "",
                 emailTemplates: "Modèles d'e-mail",
                 generalConfigurations: "Général",
@@ -8948,12 +9204,13 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Importer des utilisateurs en masse",
-                        subTitle: "Importez plusieurs utilisateurs à l'aide d'un fichier CSV..",
+                        title: "Inviter plusieurs utilisateurs",
+                        subTitle: "Invitez plusieurs utilisateurs dans l’organisation.",
                         wizardSummary: {
                             successCount: "Nombre de réussites",
                             failedCount: "Nombre d'échecs",
-                            totalCount: "Le compte total",
+                            totalUserCreationCount: "Nombre total de créations d'utilisateurs",
+                            totalUserAssignmentCount: "Nombre total d'attributions de rôles/groupes",
                             tableHeaders: {
                                 username: "Nom d'utilisateur",
                                 status: "Statut",
@@ -8964,7 +9221,14 @@ export const console: ConsoleNS = {
                                 invalidDataMessage: "Données non valides fournies",
                                 userAlreadyExistsMessage: "L'utilisateur existe déjà",
                                 userCreationAcceptedMessage: "Création d'utilisateur acceptée",
-                                internalErrorMessage: "Une erreur s'est produite lors de l'importation des utilisateurs"
+                                internalErrorMessage: "Une erreur s'est produite lors de l'importation des " +
+                                    "utilisateurs",
+                                userAssignmentSuccessMessage: "Les utilisateurs ont été attribués avec succès à " + 
+                                    "{{resource}}",
+                                userAssignmentFailedMessage: "L'affectation de l'utilisateur à {{resource}} a échoué",
+                                userAssignmentInternalErrorMessage: "Une erreur s'est produite lors de " +
+                                    "l'attribution d'utilisateurs à {{resource}}"
+
                             },
                             tableStatus: {
                                 success: "Succès",
@@ -8977,12 +9241,38 @@ export const console: ConsoleNS = {
                                     message: "Importation réussie"
                                 },
                                 importFailed: {
-                                    description: "Problèmes rencontrés dans <1>{{failedCount}} importations</1>.",
+                                    description: "Problèmes rencontrés dans <1>{{failedUserCreationCount}} " +
+                                        "opération(s)</1> de création d'utilisateur et " +
+                                        "<3>{{failedUserAssignmentCount}} opération(s) </3> d'attribution de " +
+                                        "rôle/groupe.",
                                     message: "Révision requise."
                                 }
                             },
                             advanceSearch: {
-                                placeholder: "Rechercher par nom d'utilisateur"
+                                searchByUsername: "Rechercher par nom d'utilisateur",
+                                searchByRoleOrGroup: "Recherche par nom de rôle/groupe",
+                                roleGroupFilterAttributePlaceHolder: "Nom du rôle/groupe"
+                            },
+                            disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
+                                "externes n’est pas disponible pour le moment.",
+                            manualCreation: {
+                                hint: "Ajoutez des e-mails et envoyez des invitations à plusieurs utilisateurs.",
+                                emailsLabel: "E-mails",
+                                emailsPlaceholder: "Entrez les adresses e-mail",
+                                disabledHint: "TL'option manuelle est désactivée en raison de l'utilisation de noms d'utilisateur alphanumériques dans votre organisation.",
+                                upload: {
+                                    buttonText: "Télécharger le fichier CSV",
+                                    description: "Faites glisser et déposez un fichier CSV ici."
+                                },
+                                primaryButton: "Inviter",
+                                warningMessage: "The manual option to invite multiple users is available only when email as username is enabled."
+                            },
+                            fileBased: {
+                                hint: "Invitez plusieurs utilisateurs en masse à l’aide d’un fichier CSV."
+                            },
+                            responseOperationType: {
+                                userCreation: "Création d'utilisateur",
+                                roleAssignment: "Affectation de rôle/groupe"
                             }
                         },
                         buttons: {
@@ -9095,7 +9385,7 @@ export const console: ConsoleNS = {
                         }
                     },
                     notifications: {
-                        
+
                         changeUserPassword: {
                             error: {
                                 description: "{{description}}",
@@ -9586,6 +9876,20 @@ export const console: ConsoleNS = {
                             message: "Ajout d'utilisateur réussi"
                         }
                     },
+                    addUserPendingApproval: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur d'ajout de l'utilisateur"
+                        },
+                        genericError: {
+                            description: "Impossible d'ajouter l'utilisateur",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Le nouvel utilisateur a été accepté et est en attente d'approbation.",
+                            message: "Utilisateur accepté pour création"
+                        }
+                    },
                     bulkImportUser: {
                         validation: {
                             emptyRowError: {
@@ -9608,20 +9912,28 @@ export const console: ConsoleNS = {
                                 message: "En-têtes de colonnes obligatoires manquants"
                             },
                             blockedHeaderError: {
-                                description: "Les en-têtes suivants ne sont pas autorisés : {{headers}}.",
+                                description: "Les en-têtes suivants ne sont pas autorisés : {{headers}}.",
                                 message: "En-têtes de colonnes bloqués"
                             },
                             duplicateHeaderError: {
-                                description: "Le(s) en-tête(s) suivant(s) sont dupliqués : {{headers}}.",
+                                description: "Le(s) en-tête(s) suivant(s) sont dupliqués : {{headers}}.",
                                 message: "En-têtes de colonnes en double"
                             },
                             invalidHeaderError: {
-                                description: "Le ou les en-têtes suivants ne sont pas valides : {{headers}}.",
+                                description: "Le ou les en-têtes suivants ne sont pas valides : {{headers}}.",
                                 message: "En-têtes de colonnes invalides"
                             },
                             emptyDataField: {
                                 description: "Le champ de données '{{dataField}}' ne doit pas être vide.",
                                 message: "Champ de données vide"
+                            },
+                            invalidRole: {
+                                description: "{{role}} n'existe pas.",
+                                message: "Rôle introuvable"
+                            },
+                            invalidGroup: {
+                                description: "{{group}} n'existe pas.",
+                                message: "Groupe introuvable"
                             }
                         },
                         submit: {
@@ -9891,6 +10203,7 @@ export const console: ConsoleNS = {
                 },
                 forms: {
                     connection: {
+                        updatePassword: "Mettre à jour le mot de passe de connexion",
                         connectionErrorMessage: "Veuillez vérifier les informations de connexion "
                             + "que vous avez saisis : URL, utilisateur, mot de passe, pilote",
                         testButton: "Tester la connexion"
@@ -10277,6 +10590,10 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: "{{template}}"
             },
+            emailDomainDiscovery: {
+                subTitle: "Configurez la découverte de domaines de messagerie pour les organisations.",
+                title: "Découverte de domaines de messagerie"
+            },
             emailLocaleAdd: {
                 backButton: "Revenir au modèle {{name}}",
                 subTitle: null,
@@ -10370,6 +10687,111 @@ export const console: ConsoleNS = {
             tags: {
                 premium: {
                     warning: "Ceci est une fonctionnalité premium et sera bientôt désactivée pour le plan d'abonnement gratuit. Mettez à niveau votre abonnement pour un accès ininterrompu à cette fonctionnalité."
+                }
+            }
+        }
+    },
+    saml2Config: {
+        title: "Configuration SAML2 Web SSO",
+        description: "Configurer SAML2 Web SSO pour vos applications.",
+        form: {
+            metadataValidityPeriod: {
+                hint: "Réglez la période de validité des métadonnées SAML en quelques minutes.",
+                label: "Période de validité des métadonnées"
+            },
+            destinationUrl: {
+                hint: "L'emplacement pour envoyer la réponse SAML, telle que définie dans l'affirmation SAML.",
+                label: "URL de destination"
+            },
+            enableMetadataSigning: {
+                label: "Activer la signature des métadonnées"
+            },
+            validation: {
+                metadataValidityPeriod: "La période de validité des métadonnées devrait être un entier positif.",
+                destinationURLs: "Les URL de destination doivent être des URL valides et ne doivent pas être vides."
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Une erreur s'est produite tout en récupérant les configurations SAML2.",
+                    message: "Erreur est survenue"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "L'erreur s'est produite lors de la mise à jour des configurations SAML2.",
+                    message: "Erreur est survenue"
+                },
+                success: {
+                    description: "Mis à jour avec succès les configurations SAML2.",
+                    message: "Mise à jour réussie"
+                }
+            }
+        }
+    },
+    sessionManagement: {
+        description: "Gérez les paramètres liés à la session de vos utilisateurs.",
+        title: "Gestion des sessions",
+        form: {
+            idleSessionTimeout: {
+                hint: "L'utilisateur sera automatiquement déconnecté après l'heure configurée.",
+                label: "Délai d'expiration de la session inactive",
+                placeholder: "Entrez le délai d'expiration de la session inactive en minutes"
+            },
+            rememberMePeriod: {
+                hint: "L'utilisateur sera invité à se reconnecter après l'heure configurée.",
+                label: "Période Souviens-toi de moi",
+                placeholder: "Entrez la période de mémorisation en minutes"
+            },
+            validation: {
+                idleSessionTimeout: "Le délai d'expiration de la session inactive doit être un entier positif.",
+                rememberMePeriod: "La période Remember Me doit être un entier positif."
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Une erreur s'est produite lors de la récupération des paramètres de gestion de session.",
+                    message: "Erreur est survenue"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "Une erreur s'est produite lors de la mise à jour des paramètres de gestion de session.",
+                    message: "Erreur est survenue"
+                },
+                success: {
+                    description: "Mise à jour réussie des paramètres de gestion de session.",
+                    message: "Mise à jour réussie"
+                }
+            }
+        }
+    },
+
+    wsFederationConfig: {
+        title: "Configuration WS-Federation",
+        description: "Configurer le protocole WS-Federation pour vos applications.",
+        form: {
+            enableRequestSigning: {
+                label: "Activer la signature des demandes d'authentification"
+            }
+        },
+        notifications: {
+            getConfiguration: {
+                error: {
+                    description: "Une erreur s'est produite tout en récupérant les configurations de fédération WS.",
+                    message: "Erreur est survenue"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "L'erreur s'est produite lors de la mise à jour des configurations de fédération WS.",
+                    message: "Erreur est survenue"
+                },
+                success: {
+                    description: "Mis à jour avec succès les configurations WS-Federation.",
+                    message: "Mise à jour réussie"
                 }
             }
         }

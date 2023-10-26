@@ -267,6 +267,12 @@ export class RouteUtils {
             name: "User Attributes & Stores"
         };
 
+        const organizationManagement: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: BuildingGearIcon,
+            id: "organizationManagement",
+            name: "Organization Management"
+        };
+
         const branding: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: PaletteIcon,
             id: "customization",
@@ -298,12 +304,18 @@ export class RouteUtils {
             order: 4
         };
 
+        const other: NavCategory = {
+            id: "other",
+            order: 5
+        };
+
         const pathsToCheck: string[] = [
             `${AppConstants.getAdminViewBasePath()}/governance-connectors/`,
             `${AppConstants.getAdminViewBasePath()}/connector/`,
             AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"),
             AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"),
-            AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT")
+            AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
+            AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT")
         ];
 
         const CategoryMappedRoutes: Omit<RouteInterface, "showOnSidePanel">[] = [
@@ -379,7 +391,7 @@ export class RouteUtils {
                 category: build,
                 id: "communication-management",
                 parent: branding,
-                selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") || 
+                selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
                     history.location.pathname === `${ AppConstants.getDeveloperViewBasePath() }/email-management`
             },
             {
@@ -393,15 +405,21 @@ export class RouteUtils {
             },
             {
                 category: manage,
-                id: "organizations"
+                id: "organizations",
+                parent: organizationManagement
+            },
+            {
+                category: manage,
+                id: "organizationDiscovery",
+                parent: organizationManagement
             },
             {
                 category: monitoring,
-                id: "logs"            
+                id: "logs"
             },
             {
-                category: settings,       
-                id: "remoteLogIngest"
+                category: other,
+                id: "remoteLogging"
             },
             {
                 category: settings,
@@ -409,12 +427,12 @@ export class RouteUtils {
             },
             {
                 category: settings,
-                id: "adminAdvisoryBanner"
-            },
-            {
-                category: settings,
                 id: "loginAndRegistration",
                 selected: pathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
+            },
+            {
+                category: other,
+                id: "analytics"
             }
         ];
 
@@ -424,9 +442,9 @@ export class RouteUtils {
 
             return !saasFeatureIsEnabled;
         }).map((route: RouteInterface) => {
-            const categoryMappedRoute: Omit<RouteInterface, "showOnSidePanel"> 
+            const categoryMappedRoute: Omit<RouteInterface, "showOnSidePanel">
                 = CategoryMappedRoutes.find((item: RouteInterface) => item.id === route.id);
-            
+
             return {
                 ...route,
                 navCategory: categoryMappedRoute?.category,
@@ -452,9 +470,9 @@ export class RouteUtils {
             }));
 
         const ungroupedItems: NavRouteInterface[] = itemsWithCategory.filter((item: NavRouteInterface) => !item.parent);
-        
+
         return sortBy(
-            sortBy([ ...updatedGroupedItems, ...ungroupedItems ], (item: NavRouteInterface) => item.order), 
+            sortBy([ ...updatedGroupedItems, ...ungroupedItems ], (item: NavRouteInterface) => item.order),
             (item: NavRouteInterface) => item.navCategory?.order
         );
     }

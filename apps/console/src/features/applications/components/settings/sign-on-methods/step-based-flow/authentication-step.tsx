@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, GenericIcon, Heading, LinkButton, Popup, Tooltip } from "@wso2is/react-components";
 import classNames from "classnames";
@@ -23,6 +24,9 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { Card, Checkbox, Form, Icon, Label, Radio } from "semantic-ui-react";
 import useAuthenticationFlow from "../../../../../authentication-flow-builder/hooks/use-authentication-flow";
+import { AuthenticatorManagementConstants } from "../../../../../connections";
+import { AuthenticatorCategories } from "../../../../../connections/models/authenticators";
+import { ConnectionsManagementUtils } from "../../../../../connections/utils/connection-utils";
 import { getGeneralIcons } from "../../../../../core";
 import {
     IdentityProviderManagementConstants
@@ -142,6 +146,9 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
     } = props;
 
     const { t } = useTranslation();
+    const { UIConfig } = useUIConfig();
+
+    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     const classes: string = classNames("authentication-step-container timeline-body", className);
 
@@ -341,7 +348,15 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                         size="micro"
                                         spaced="right"
                                         floated="left"
-                                        icon={ authenticator.image }
+                                        icon={ 
+                                            authenticator.idp === AuthenticatorCategories.LOCAL || 
+                                            authenticator.defaultAuthenticator?.authenticatorId === 
+                                            AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
+                                                ? authenticator.image 
+                                                : ConnectionsManagementUtils
+                                                    .resolveConnectionResourcePath(
+                                                        connectionResourcesUrl, authenticator.image)
+                                        }
                                         data-componentid={ `${ componentId }-image` }
                                         transparent
                                     />

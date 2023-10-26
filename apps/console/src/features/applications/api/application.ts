@@ -64,8 +64,8 @@ const httpClientAll: (config: HttpRequestConfig[]) => Promise<AxiosResponse[]> =
 /**
  * Gets the basic information about the application.
  *
+ * @deprecated Use `useGetApplication` SWR hook instead.
  * @param id - ID of the application.
- *
  * @returns A promise containing the response.
  */
 export const getApplicationDetails = (id: string): Promise<any> => {
@@ -208,7 +208,7 @@ export const useApplicationList = <Data = ApplicationListInterface, Error = Requ
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
-    const requestConfig: AxiosRequestConfig = shouldFetch 
+    const requestConfig: AxiosRequestConfig = shouldFetch
         ? {
             headers: {
                 "Accept": "application/json",
@@ -935,12 +935,16 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
 
             const oidcConfigs: OIDCApplicationConfigurationInterface = {
                 authorizeEndpoint: response.data.authorization_endpoint,
+                dynamicClientRegistrationEndpoint: response.data.registration_endpoint,
                 endSessionEndpoint: response.data.end_session_endpoint,
                 introspectionEndpoint: response.data.introspection_endpoint,
                 jwksEndpoint: response.data.jwks_uri,
+                pushedAuthorizationRequestEndpoint: response.data.pushed_authorization_request_endpoint,
+                sessionIframeEndpoint: response.data.check_session_iframe,
                 tokenEndpoint: response.data.token_endpoint,
                 tokenRevocationEndpoint: response.data.revocation_endpoint,
                 userEndpoint: response.data.userinfo_endpoint,
+                webFingerEndpoint: "",
                 wellKnownEndpoint: `${ response.data.token_endpoint }/.well-known/openid-configuration`
             };
 

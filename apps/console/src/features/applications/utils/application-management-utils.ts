@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -248,13 +248,28 @@ export class ApplicationManagementUtils {
             doc = parser.parseFromString(strXML, "text/xml");
         }
 
+        const childNodeArray: any = doc.getElementsByTagName("IDPSSODescriptor")[0]?.childNodes;
+
         samlConfigs.issuer = doc.getElementsByTagName("EntityDescriptor")[0].attributes[1].value;
         samlConfigs.certificate = doc.getElementsByTagName("X509Certificate")[0].innerHTML;
-        samlConfigs.ssoUrl = doc.getElementsByTagName(
-            "IDPSSODescriptor")[0].childNodes[6].attributes.Location.nodeValue;
-        samlConfigs.sloUrl = doc.getElementsByTagName(
-            "IDPSSODescriptor")[0].childNodes[2].attributes.Location.nodeValue;
+        samlConfigs.ssoUrl = childNodeArray[6]?.attributes?.Location?.nodeValue;
+        samlConfigs.sloUrl = childNodeArray[2]?.attributes?.Location?.nodeValue;
         samlConfigs.metadata = strXML;
+        samlConfigs.artifactResolutionUrl = childNodeArray[1]?.attributes?.Location?.nodeValue;
+
+        // Generate the destination URLs.
+        const destinationURLs: string[] = [];
+
+        for (let i: number = 0; i < childNodeArray.length; i++) {
+            if (childNodeArray[i]?.nodeName === "SingleSignOnService") {
+                if (childNodeArray[i]?.attributes?.Binding?.nodeValue ===
+                        "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST") {
+                    destinationURLs.push(childNodeArray[i]?.attributes?.Location?.nodeValue);
+                }
+            }
+        }
+
+        samlConfigs.destinationURLs = destinationURLs;
 
         return samlConfigs;
     };

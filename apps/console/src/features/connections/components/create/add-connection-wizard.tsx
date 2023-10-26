@@ -295,6 +295,8 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
         const updatedProperties: { key: string; value: string }[] = connectionMetaDetails?.create?.properties?.map(
             (property: { key: string; value: string }) => {
 
+                const CALLBACK_URL_KEY: string = "callbackUrl";
+
                 const convertedKey: string = property?.key?.charAt(0)
                     .toLowerCase() + property?.key?.slice(1);
           
@@ -302,8 +304,8 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                     return { ...property, value: values[convertedKey] };
                 }
           
-                if (convertedKey === "callbackUrl") {
-                    return { ...property, value: deploymentConfig.clientHost + property.value };
+                if (convertedKey.toString().toLowerCase() === CALLBACK_URL_KEY.toString().toLowerCase()) {
+                    return { ...property, value: deploymentConfig.customServerHost + property.value };
                 }
           
                 return property;

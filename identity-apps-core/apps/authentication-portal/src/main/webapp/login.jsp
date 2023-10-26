@@ -172,13 +172,24 @@
     String multiOptionURIParam = "";
     if (localAuthenticatorNames.size() > 1 || idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1) {
         String baseURL;
-        try {
-            baseURL = ServiceURLBuilder.create().addPath(request.getRequestURI()).build().getRelativePublicURL();
-        } catch (URLBuilderException e) {
-            request.setAttribute(STATUS, AuthenticationEndpointUtil.i18n(resourceBundle, "internal.error.occurred"));
-            request.setAttribute(STATUS_MSG, AuthenticationEndpointUtil.i18n(resourceBundle, "error.when.processing.authentication.request"));
-            request.getRequestDispatcher("error.do").forward(request, response);
-            return;
+        // Check whether authentication endpoint is hosted externally.
+        String isHostedExternally = application.getInitParameter("IsHostedExternally");
+        if (Boolean.parseBoolean(isHostedExternally)) {
+            String requestURI = request.getRequestURI();
+            if (StringUtils.isNotBlank(requestURI)) {
+                requestURI = requestURI.startsWith("/") ? requestURI : "/" + requestURI;
+                requestURI = requestURI.endsWith("/") ? requestURI.substring(0, requestURI.length() - 1) : requestURI;
+            }
+            baseURL = requestURI;
+        } else {
+            try {
+                baseURL = ServiceURLBuilder.create().addPath(request.getRequestURI()).build().getRelativePublicURL();
+            } catch (URLBuilderException e) {
+                request.setAttribute(STATUS, AuthenticationEndpointUtil.i18n(resourceBundle, "internal.error.occurred"));
+                request.setAttribute(STATUS_MSG, AuthenticationEndpointUtil.i18n(resourceBundle, "error.when.processing.authentication.request"));
+                request.getRequestDispatcher("error.do").forward(request, response);
+                return;
+            }
         }
 
         // Build the query string using the parameter map since the query string can contain fewer parameters
@@ -790,7 +801,17 @@
                                         </div>
                                     </div>
                                     <br>
-                                    <% } else { %>
+                                    <% } else {
+
+                                        String logoPath = imageURL;
+                                        
+                                        if (!imageURL.isEmpty() && imageURL.contains("/")) {
+                                            String[] imageURLSegements = imageURL.split("/");
+                                            String logoFileName = imageURLSegements[imageURLSegements.length - 1];
+
+                                            logoPath = "libs/themes/default/assets/images/identity-providers/" + logoFileName;
+                                        }
+                                    %>
                                     <div class="social-login blurring social-dimmer">
                                         <div class="field">
                                             <button
@@ -806,7 +827,7 @@
                                                         role="presentation"
                                                         alt="sign-in-with-<%=Encode.forHtmlContent(idpName)%> icon"
                                                         class="ui image"
-                                                        src="<%=Encode.forHtmlAttribute(imageURL)%>">
+                                                        src="<%=Encode.forHtmlAttribute(logoPath)%>">
                                                     <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpDisplayName)%></span>
                                             </button>
                                         </div>

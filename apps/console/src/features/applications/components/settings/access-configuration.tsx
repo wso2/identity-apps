@@ -48,15 +48,18 @@ import {
     updateApplicationDetails,
     updateAuthProtocolConfig
 } from "../../api";
+import { useGetApplication } from "../../api/use-get-application";
 import { getInboundProtocolLogos } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationInterface,
+    ApplicationTemplateIdTypes,
     ApplicationTemplateListItemInterface,
     AuthProtocolMetaInterface,
-    CertificateInterface, OIDCDataInterface,
+    CertificateInterface,
+    OIDCDataInterface,
     OIDCMetadataInterface,
     SAML2ConfigurationInterface,
     SAMLConfigModes,
@@ -182,6 +185,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const { getLink } = useDocumentation();
 
     const dispatch: Dispatch = useDispatch();
+
+    const {
+        mutate: mutateApplicationGetRequest
+    } = useGetApplication(application.id);
 
     const authProtocolMeta: AuthProtocolMetaInterface = useSelector(
         (state: AppState) => state.application.meta.protocolMeta);
@@ -344,6 +351,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         updateApplicationDetails({ id: appId, ...values.general })
             .then(async () => {
                 await handleInboundConfigFormSubmit(values.inbound, selectedProtocol);
+
+                mutateApplicationGetRequest();
             })
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -452,6 +461,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         }
 
         if (applicationTemplateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC) {
+            return [ SupportedAuthProtocolTypes.OAUTH2_OIDC ];
+        }
+
+        if (applicationTemplateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID) {
             return [ SupportedAuthProtocolTypes.OAUTH2_OIDC ];
         }
 
@@ -776,6 +789,34 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             );
         }
 
+        if (applicationTemplateId === ApplicationTemplateIdTypes.M2M_APPLICATION) {
+            return (
+                <>
+                    <Header as="h3" className="display-flex">
+                        <GenericIcon
+                            transparent
+                            width="auto"
+                            icon={ getInboundProtocolLogos()[ SupportedAuthProtocolTypes.OAUTH2 ] }
+                            size="x30"
+                            verticalAlign="middle"
+                        />
+                        <Header.Content
+                            className={ "mt-1" }
+                        >
+                            <strong>
+                                {
+                                    ApplicationManagementUtils
+                                        .resolveProtocolDisplayName(SupportedAuthProtocolTypes.OAUTH2)
+                                }
+                            </strong>
+                        </Header.Content>
+                    </Header>
+                    { resolveProtocolDescription() }
+                    <Divider hidden/>
+                </>
+            );
+        }
+
         return (
             <>
                 <Header as="h3" className="display-flex">
@@ -852,7 +893,11 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                             "console:develop.features.applications.forms.inboundOIDC.description",
                             {
                                 protocol: ApplicationManagementUtils
-                                    .resolveProtocolDisplayName(SupportedAuthProtocolTypes.OAUTH2_OIDC)
+                                    .resolveProtocolDisplayName(
+                                        applicationTemplateId === ApplicationTemplateIdTypes.M2M_APPLICATION
+                                            ? SupportedAuthProtocolTypes.OAUTH2
+                                            : SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                    )
                             }
                         )
                     }

@@ -72,7 +72,7 @@ export class ServerConfigurationsConstants {
 	 * UUID of the identity governance analytics engine connector.
 	 *
 	 */
-	public static readonly ANALYTICS_ENGINE_CONNECTOR_ID: string = "YW5hbHl0aWNzLWVuZ2luZQ";
+	public static readonly ANALYTICS_ENGINE_CONNECTOR_ID: string = "ZWxhc3RpYy1hbmFseXRpY3MtZW5naW5l";
 
 	/**
 	 * UUID of the identity governance user claim update connector.
@@ -145,7 +145,7 @@ export class ServerConfigurationsConstants {
      *
      */
     public static readonly MULTI_ATTRIBUTE_CLAIM_LIST_REGEX_PATTERN: RegExp =
-        new RegExp("^(?:[a-zA-Z0-9:./]+,)+[a-zA-Z0-9:./]+$");
+        new RegExp("^(?:[a-zA-Z0-9:./]+,)*[a-zA-Z0-9:./]+$");
 
 	/**
 	 * UUID of the user on boarding connector.
@@ -242,6 +242,8 @@ export class ServerConfigurationsConstants {
 	 * Login policies - account locking API Keyword constants.
 	 */
 	public static readonly ACCOUNT_LOCK_ENABLE: string = "account.lock.handler.lock.on.max.failed.attempts.enable";
+	public static readonly ANALYTICS_ENGINE_ENABLE: string = "adaptive_authentication.analytics.basicAuth.enabled";
+
 	public static readonly MAX_FAILED_LOGIN_ATTEMPTS_TO_ACCOUNT_LOCK: string =
 		"account.lock.handler.On.Failure.Max.Attempts";
 
@@ -326,10 +328,35 @@ export class ServerConfigurationsConstants {
     public static readonly MULTI_ATTRIBUTE_CLAIM_LIST: string = "account-multiattributelogin-handler-allowedattributes";
 
 	/**
+	 * Analytics Engine Connector Constants.
+	 */
+	public static readonly ANALYTICS_HOST: string = "adaptive_authentication.elastic.receiver";
+	public static readonly ANALYTICS_BASIC_AUTH_ENABLE: string = "adaptive_authentication.elastic.basicAuth.enabled";
+	public static readonly ANALYTICS_BASIC_AUTH_USERNAME: string = "adaptive_authentication.elastic.basicAuth.username";
+	public static readonly ANALYTICS_BASIC_AUTH_PASSWORD: string = 
+		"__secret__adaptive_authentication.elastic.basicAuth.password";
+
+	public static readonly ANALYTICS_HTTP_CONNECTION_TIMEOUT: string =
+		"adaptive_authentication.elastic.HTTPConnectionTimeout";
+
+	public static readonly ANALYTICS_HTTP_READ_TIMEOUT: string = "adaptive_authentication.elastic.HTTPReadTimeout";
+	public static readonly ANALYTICS_HTTP_CONNECTION_REQUEST_TIMEOUT: string =
+		"adaptive_authentication.elastic.HTTPConnectionRequestTimeout";
+
+	public static readonly ANALYTICS_HOSTNAME_VERIFICATION: string = "adaptive_authentication.elastic.hostnameVerfier";
+
+	/**
 	 * Extensions Constants.
 	 */
-	public  static  readonly ALL: string = "all";
-	
+	public static readonly ALL: string = "all";
+
+	/**
+	 * Custom connector IDs.
+	 */
+	public static readonly SAML2_SSO_CONNECTOR: string = "saml2-sso"
+	public static readonly SESSION_MANAGEMENT_CONNECTOR: string = "session-management"
+	public static readonly WS_FEDERATION_CONNECTOR: string = "ws-fed"
+
 	/**
 	 * Multi Attribute Login Constants.
 	 */

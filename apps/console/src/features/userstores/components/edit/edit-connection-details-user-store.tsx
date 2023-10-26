@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Checkbox } from "@oxygen-ui/react";
+import { Box, Checkbox } from "@oxygen-ui/react";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
@@ -309,47 +309,40 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                         isPassword
                                             ? (
                                                 <>
-                                                    <Grid divided="vertically" style={ { height: "60px" } }>
-                                                        <Grid.Row columns={ 2 } height={ "100%" }>
-                                                            <Grid.Column width={ 1 } height={ 1 }>
-                                                                <Checkbox 
-                                                                    sx={ { pl: 0,pt: 0 } }
-                                                                    onChange={ (_e: React.SyntheticEvent) => {
-                                                                        setIsPasswordEditing(!isPasswordEditing);
-                                                                    } }
-                                                                />
-                                                            </Grid.Column>
-                                                            <Grid.Column width={ 6 } height={ 1 }>
-                                                                <p>Update connection password</p>
-                                                            </Grid.Column>                
-                                                        </Grid.Row>
-                                                    </Grid>
-                                                
-                                                    { isPasswordEditing && (
-                                                        <Field
-                                                            name={ property.name }
-                                                            className="addon-field-wrapper"
-                                                            type="password"
-                                                            key={ index }
-                                                            required={ true }
-                                                            label={ name }
-                                                            requiredErrorMessage={
-                                                                `${property.description.split("#")[ 0 ]} is  required`
-                                                            }
-                                                            showPassword={ t("common:showPassword") }
-                                                            hidePassword={ t("common:hidePassword") }
-                                                            placeholder={
-                                                                t("console:manage.features.userstores.forms." +
-                                                            "custom.placeholder",
-                                                                {
-                                                                    name: property.description.split("#")[ 0 ]
-                                                                })
-                                                            }
-                                                            data-testid={ 
-                                                                `${ testId }-form-password-input-${ property.name }` 
-                                                            }
+                                                    <Box display="flex" flexDirection="row">
+                                                        <Checkbox 
+                                                            sx={ { pb: 1.4, pl: 0,pr: 1, pt: 0 } }
+                                                            onChange={ (_e: React.SyntheticEvent) => {
+                                                                setIsPasswordEditing(!isPasswordEditing);
+                                                            } }
                                                         />
-                                                    ) }
+                                                        <p>{ t("console:manage.features.userstores.forms." + 
+                                                               "connection.updatePassword") }</p>
+                                                    </Box>
+                                                    <Field
+                                                        name={ property.name }
+                                                        className="addon-field-wrapper"
+                                                        type="password"
+                                                        disabled={ !isPasswordEditing }
+                                                        key={ index }
+                                                        required={ true }
+                                                        label={ name }
+                                                        requiredErrorMessage={
+                                                            `${property.description.split("#")[ 0 ]} is  required`
+                                                        }
+                                                        showPassword={ t("common:showPassword") }
+                                                        hidePassword={ t("common:hidePassword") }
+                                                        placeholder={
+                                                            t("console:manage.features.userstores.forms." +
+                                                            "custom.placeholder",
+                                                            {
+                                                                name: property.description.split("#")[ 0 ]
+                                                            })
+                                                        }
+                                                        data-testid={ 
+                                                            `${ testId }-form-password-input-${ property.name }` 
+                                                        }
+                                                    />
                                                 
                                                 </>
                                             )

@@ -61,6 +61,10 @@ export interface FeatureConfigInterface {
      */
     administrators?: FeatureAccessConfigInterface;
     /**
+     * Analytics feature.
+     */
+    analytics?: FeatureAccessConfigInterface;
+    /**
      * API resources feature.
      */
     apiResources?: FeatureAccessConfigInterface;
@@ -68,6 +72,10 @@ export interface FeatureConfigInterface {
      * Application management feature.
      */
     applications?: FeatureAccessConfigInterface;
+    /**
+     * Application roles feature.
+     */
+    applicationRoles?: FeatureAccessConfigInterface;
     /**
      * Workflow approvals feature.
      */
@@ -125,6 +133,10 @@ export interface FeatureConfigInterface {
      */
     organizations?: FeatureAccessConfigInterface;
     /**
+     * Organization discovery feature.
+     */
+    organizationDiscovery?: FeatureAccessConfigInterface;
+    /**
      * Organization role management feature.
      */
     organizationsRoles?: FeatureAccessConfigInterface;
@@ -133,9 +145,21 @@ export interface FeatureConfigInterface {
      */
     remoteFetchConfig?: FeatureAccessConfigInterface;
     /**
+     * Resident IDP Config management feature.
+     */
+    residentIdp?: FeatureAccessConfigInterface;
+    /**
      * Role management feature.
      */
     roles?: FeatureAccessConfigInterface;
+    /**
+     * Saml2 Configurations feature.
+     */
+    saml2Configuration?: FeatureAccessConfigInterface;
+    /**
+     * Session management Configurations feature
+     */
+    sessionManagement?: FeatureAccessConfigInterface;
     /**
      * User store configurations feature.
      */
@@ -168,6 +192,10 @@ export interface FeatureConfigInterface {
      * Bulk Import Feature
      */
     bulkUserImport?: FeatureAccessConfigInterface;
+    /**
+     * WS Federation Configurations feature
+     */
+    wsFedConfiguration?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -314,6 +342,13 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Hidden userstores
      */
     hiddenUserStores: string[];
+    /**
+     * Email templates
+     */
+    emailTemplates: {
+        defaultLogoUrl: string;
+        defaultWhiteLogoUrl: string;
+    };
 }
 
 /**

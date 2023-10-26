@@ -23,21 +23,24 @@ import {
     HexagonTwoIcon, 
     PadlockAsteriskIcon, 
     ShieldCheckIcon,
+    UserDatabaseIcon,
     UserPlusIcon,
     VerticleFilterBarsIcon
 } from "@oxygen-ui/react-icons";
+import Grid from "@oxygen-ui/react/Grid";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import { GridLayout, PageLayout } from "@wso2is/react-components";
+import { PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import camelCase from "lodash-es/camelCase";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Grid, Placeholder, Ref } from "semantic-ui-react";
+import { Placeholder, Ref } from "semantic-ui-react";
 import UsernameValidationIcon from "../../../extensions/assets/images/icons/username-validation-icon.svg";
 import { serverConfigurationConfig } from "../../../extensions/configs/server-configuration";
 import { AppConstants, AppState, FeatureConfigInterface, history, store } from "../../core";
@@ -49,6 +52,7 @@ import {
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorInterface
 } from "../models";
+import AdminAdvisoryBannerSection from "../settings/admin-advisory-banner-section";
 import { EditConnector } from "../settings/edit-connector";
 import { SettingsSection } from "../settings/settings-section";
 
@@ -99,11 +103,40 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         getConnectorCategories()
             .then((response: GovernanceConnectorInterface[]) => {
 
-                setConnectorCategories(response?.filter((category: GovernanceConnectorCategoryInterface) => {
-                    return serverConfigurationConfig.connectorCategoriesToShow.includes(category.id); 
-                }
-                ));
+                const connectorCategoryArray: GovernanceConnectorCategoryInterface[] = [];
 
+                // Add session management category to the connector categories.
+                if (featureConfig?.sessionManagement?.enabled) {
+                    connectorCategoryArray.push({
+                        id: ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR,
+                        name: t("console:sessionManagement.title") ,
+                        route: AppConstants.getPaths().get("SESSION_MANAGEMENT")
+                    });
+                }
+
+                // Add SAML2 SSO category to the connector categories.
+                if (featureConfig?.saml2Configuration?.enabled) {
+                    connectorCategoryArray.push({
+                        id: ServerConfigurationsConstants.SAML2_SSO_CONNECTOR,
+                        name: t("console:saml2Config.title"),
+                        route: AppConstants.getPaths().get("SAML2_CONFIGURATION")
+                    });
+                }
+
+                // Add WS Federation category to the connector categories.
+                if (featureConfig?.wsFedConfiguration?.enabled) {
+                    connectorCategoryArray.push({
+                        id: ServerConfigurationsConstants.WS_FEDERATION_CONNECTOR,
+                        name: t("console:wsFederationConfig.title"),
+                        route: AppConstants.getPaths().get("WSFED_CONFIGURATION")
+                    });
+                }
+
+                connectorCategoryArray.push(...response?.filter((category: GovernanceConnectorCategoryInterface) => {
+                    return serverConfigurationConfig.connectorCategoriesToShow.includes(category.id); 
+                }));
+
+                setConnectorCategories(connectorCategoryArray);
             })
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.detail) {
@@ -130,7 +163,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
     useEffect(() => {
         connectorCategories?.forEach((connectorCategory: GovernanceConnectorCategoryInterface) => {
-            loadCategoryConnectors(connectorCategory.id);
+            !serverConfigurationConfig.customConnectors.includes(connectorCategory.id)
+            && loadCategoryConnectors(connectorCategory.id);
         });
     }, [ connectorCategories ]);
 
@@ -189,25 +223,26 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     };
 
     /**
-     * This function returns loading placeholder.
+     * This function returns loading placeholders.
      */
     const renderLoadingPlaceholder = (): ReactElement => {
-        return (
-            <Grid.Row columns={ 1 }>
-                <div>
-                    <div 
+        const placeholders: ReactElement[] = [];
+
+        for (let loadedPlaceholders: number = 0; loadedPlaceholders <= 1; loadedPlaceholders++) {
+            placeholders.push(
+                <Grid xs={ 12 } lg={ 6 } key={ loadedPlaceholders }>
+                    <div
                         className="ui card fluid settings-card"
                         data-testid={ `${testId}-loading-card` }
                     >
                         <div className="content no-padding">
-                            <div className="header-section">
+                            <div className="header-section placeholder">
                                 <Placeholder>
                                     <Placeholder.Header>
                                         <Placeholder.Line length="medium" />
                                         <Placeholder.Line length="full" />
                                     </Placeholder.Header>
                                 </Placeholder>
-                                <Divider hidden />
                             </div>
                         </div>
                         <div className="content extra extra-content">
@@ -218,16 +253,25 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                             </div>
                         </div>
                     </div>
-                    <Divider hidden/>
-                </div>
-            </Grid.Row>
+                </Grid>
+            );
+        }
+
+        return (
+            <Grid container rowSpacing={ 2 } columnSpacing={ { md: 3, sm: 2, xs: 1 } }>
+                { placeholders }
+            </Grid>
         );
     };
 
-    const handleConnectorCategoryAction = (connectorCategoryId: string): void => {
-        history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTORS")
-            .replace(":id", connectorCategoryId)
-        );
+    const handleConnectorCategoryAction = (connectorCategory: GovernanceConnectorCategoryInterface) => {        
+        if (serverConfigurationConfig.customConnectors.includes(connectorCategory?.id)) {
+            history.push(connectorCategory?.route);
+        } else {
+            history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTORS")
+                .replace(":id", connectorCategory?.id)
+            );
+        }
     };
 
     /**
@@ -267,9 +311,80 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 return (
                     <ShieldCheckIcon className="icon" />
                 );
+            case ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR:
+                return (
+                    <UserDatabaseIcon className="icon" />
+                );
             default:
                 return <GearIcon className="icon" />;
         }
+    };
+
+    /**
+     * Get connector categories which generate the connector forms dynamically.
+     */
+    const getDynamicCategoryConnectors = (): ReactElement[] => {
+        if (connectorCategories && Array.isArray(connectorCategories) && connectorCategories.length > 0) {
+            return connectorCategories.map((connectorCategory: GovernanceConnectorCategoryInterface, index: number) => (
+                <Grid xs={ 12 } lg={ 6 } key={ index }>
+                    <SettingsSection
+                        data-testid={ `${testId}-${connectorCategory?.id}` }
+                        description={ t(
+                            `console:manage.features.governanceConnectors.connectorCategories.${camelCase(
+                                connectorCategory.name
+                            )}.description`
+                        ) }
+                        icon={ () => resolveConnectorCategoryIcon(connectorCategory?.id) }
+                        header={ connectorCategory.name }
+                        onPrimaryActionClick={ () => handleConnectorCategoryAction(connectorCategory) }
+                        primaryAction={ t("common:configure") }
+                    />
+                </Grid>
+            ));
+        }
+
+        return null;
+    };
+
+    /**
+     * Get connectors.
+     */
+    const getStaticConnectors = (): ReactElement[] => {
+        if (connectors && Array.isArray(connectors) && connectors.length > 0) {
+            return connectors.map((connector: GovernanceConnectorWithRef, index: number) => {
+                if (serverConfigurationConfig.connectorsToShow.includes(connector?.name)) {
+                    return (
+                        <Grid xs={ 12 } lg={ 6 } key={ index }>
+                            <div ref={ connector.ref }>
+                                <EditConnector
+                                    connector={ connector }
+                                    categoryID={ connector.categoryId }
+                                    data-testid={ `${testId}-${connector?.id}` }
+                                    onUpdate={ () => loadCategoryConnectors(connector.categoryId) }
+                                    connectorToggleName={ 
+                                        serverConfigurationConfig.connectorToggleName[connector?.name] 
+                                    }
+                                />
+                            </div>
+                        </Grid>
+                    );
+                }
+            });
+        }
+
+        return null;
+    };
+
+    /**
+     * Render Connectors conditionally.
+     */
+    const renderConnectors = (): ReactElement[] => {
+
+        if (serverConfigurationConfig.dynamicConnectors) {
+            return getDynamicCategoryConnectors();
+        }
+
+        return getStaticConnectors();
     };
 
     return (
@@ -280,137 +395,73 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
             data-testid={ `${ testId }-page-layout` }
         >
             <Ref innerRef={ pageContextRef }>
-                <GridLayout
-                    showTopActionPanel={ false }
-                >
-                    {
-                        isConnectorCategoryLoading 
-                            ? renderLoadingPlaceholder() 
-                            : (
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column width={ 12 }>
-                                        {
-                                            !serverConfigurationConfig.dynamicConnectors &&
-                                                ( 
-                                                    <>
-                                                        <SettingsSection
-                                                            data-componentid={ "account-login-page-section" }
-                                                            data-testid={ "account-login-page-section" }
-                                                            description={ 
-                                                                t("extensions:manage.accountLogin." +
-                                                                "editPage.description") 
-                                                            }
-                                                            icon={ UsernameValidationIcon }
-                                                            header={ 
-                                                                t("extensions:manage.accountLogin.editPage.pageTitle") 
-                                                            }
-                                                            onPrimaryActionClick={ handleSelection }
-                                                            primaryAction={ "Configure" }
-                                                        >
-                                                            <Divider hidden />
-                                                        </SettingsSection>
-                                                        <SettingsSection
-                                                            data-componentid={ 
-                                                                "account-login-page-alternative-login-" +
-                                                                "identifier-section"
-                                                            }
-                                                            data-testid={ 
-                                                                "account-login-page-alternative-login-" +
-                                                                "identifier-section"
-                                                            }
-                                                            description={ 
-                                                                t("extensions:manage.accountLogin." +
-                                                                "alternativeLoginIdentifierPage.description") }
-                                                            icon={ <ArrowLoopRightUserIcon className="icon" /> }
-                                                            header={ 
-                                                                t("extensions:manage.accountLogin." +
-                                                                "alternativeLoginIdentifierPage.pageTitle") 
-                                                            }
-                                                            onPrimaryActionClick={ 
-                                                                handleAlternativeLoginIdentifierSelection 
-                                                            }
-                                                            primaryAction={ "Configure" }
-                                                        >
-                                                            <Divider hidden />
-                                                        </SettingsSection>
-                                                    </>
-                                                )
-                                        }
-                                        {
-                                            serverConfigurationConfig.dynamicConnectors ?
-                                                (
-                                                    connectorCategories 
-                                                && Array.isArray(connectorCategories) 
-                                                && connectorCategories.length > 0)
-                                                    ? connectorCategories.map(
-                                                        (connectorCategory: GovernanceConnectorWithRef, 
-                                                            index: number) => {
-                                                            return (
-                                                                <SettingsSection
-                                                                    key={ index }
-                                                                    data-testid={ `${testId}-` + connectorCategory?.id }
-                                                                    description={ connectorCategory?.description }
-                                                                    icon={ () => 
-                                                                        resolveConnectorCategoryIcon(
-                                                                            connectorCategory?.id
-                                                                        ) 
-                                                                    }
-                                                                    header={ connectorCategory.name }
-                                                                    onPrimaryActionClick={ 
-                                                                        () => handleConnectorCategoryAction(
-                                                                            connectorCategory?.id
-                                                                        ) 
-                                                                    }
-                                                                    primaryAction={ "Configure" }
-                                                                >
-                                                                    <Divider hidden />
-                                                                </SettingsSection>     
-                                                            );
-                                                        }) : null
-                                                :
-                                                (connectors && Array.isArray(connectors) && connectors.length > 0)
-                                                    ? connectors.map(
-                                                        (connector: GovernanceConnectorWithRef, index: number) => {
-                                                            if (serverConfigurationConfig.connectorsToShow
-                                                                .includes(connector?.name)) {
-                                                                return (
-                                                                    <div ref={ connector.ref } key={ index }>
-                                                                        <EditConnector
-                                                                            connector={ connector }
-                                                                            categoryID={ connector.categoryId }
-                                                                            data-testid={ `${testId}-` + connector?.id }
-                                                                            onUpdate={ 
-                                                                                () => loadCategoryConnectors(
-                                                                                    connector.categoryId
-                                                                                ) 
-                                                                            }
-                                                                            connectorToggleName={
-                                                                                serverConfigurationConfig.
-                                                                                    connectorToggleName[
-                                                                                        connector?.name
-                                                                                    ]
-                                                                            }
-                                                                        />
-                                                                        <Divider hidden/>
-                                                                    </div>
-                                                                );
-                                                            }
-                                                        })
-                                                    : null
-                                        }
-                                        { (!serverConfigurationConfig.dynamicConnectors) && (
-                                            <div>
-                                                <ValidationConfigPage/>
-                                                <Divider hidden/>
-                                                <PrivateKeyJWTConfig/>
-                                                <Divider hidden/>
-                                            </div>
+                {
+                    isConnectorCategoryLoading
+                        ? renderLoadingPlaceholder()
+                        : (
+                            <Grid container rowSpacing={ 2 } columnSpacing={ 3 }>
+                                {
+                                    renderConnectors()
+                                }
+                                {
+                                    serverConfigurationConfig.dynamicConnectors
+                                        ? (
+                                            <Grid xs={ 12 } lg={ 6 }>
+                                                <AdminAdvisoryBannerSection />
+                                            </Grid>
+                                        ) : (
+                                            <>
+                                                <Grid xs={ 12 } lg={ 6 }>
+                                                    <SettingsSection
+                                                        data-componentid={ "account-login-page-section" }
+                                                        data-testid={ "account-login-page-section" }
+                                                        description={ 
+                                                            t("extensions:manage.accountLogin." +
+                                                            "editPage.description") 
+                                                        }
+                                                        icon={ UsernameValidationIcon }
+                                                        header={ 
+                                                            t("extensions:manage.accountLogin.editPage.pageTitle") 
+                                                        }
+                                                        onPrimaryActionClick={ handleSelection }
+                                                        primaryAction={ t("common:configure") }
+                                                    />
+                                                </Grid>
+                                                <Grid xs={ 12 } lg={ 6 }>
+                                                    <SettingsSection
+                                                        data-componentid={
+                                                            "account-login-page-alternative-login-" +
+                                                            "identifier-section"
+                                                        }
+                                                        data-testid={
+                                                            "account-login-page-alternative-login-" +
+                                                            "identifier-section"
+                                                        }
+                                                        description={
+                                                            t("extensions:manage.accountLogin." +
+                                                            "alternativeLoginIdentifierPage.description") }
+                                                        icon={ <ArrowLoopRightUserIcon className="icon" /> }
+                                                        header={
+                                                            t("extensions:manage.accountLogin." +
+                                                            "alternativeLoginIdentifierPage.pageTitle")
+                                                        }
+                                                        onPrimaryActionClick={
+                                                            handleAlternativeLoginIdentifierSelection
+                                                        }
+                                                        primaryAction={ t("common:configure") }
+                                                    />
+                                                </Grid>
+                                                <Grid xs={ 12 } lg={ 6 }>
+                                                    <ValidationConfigPage/>
+                                                </Grid>
+                                                <Grid xs={ 12 } lg={ 6 }>
+                                                    <PrivateKeyJWTConfig/>
+                                                </Grid>
+                                            </>
                                         ) }
-                                    </Grid.Column>
-                                </Grid.Row>
-                            )
-                    }
-                </GridLayout>
+                            </Grid>
+                        )
+                }
             </Ref>
         </PageLayout>
     );

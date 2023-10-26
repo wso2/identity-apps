@@ -1150,6 +1150,25 @@ export const extensions: Extensions = {
                                 }
                             }
                         }
+                    },
+                    rolesV2: {
+                        heading: "Les rôles",
+                        subHeading: "Gérer les rôles attribués dans l'application.",
+                        roleAudience: "Rôle public",
+                        organization: "Organisation",
+                        application: "application",
+                        assignedRoles: "Rôles attribués",
+                        removedRoles: "Rôles supprimés",
+                        searchPlaceholder: "Recherche par nom de rôle",
+                        switchRoleAudience: {
+                            confirmationModal: {
+                                assertionHint: "Veuillez confirmer votre action.",
+                                content: "Si vous modifiez le public du rôle, les rôles associés au public actuel " +
+                                    "être supprimé.Veuillez procéder avec prudence.",
+                                header: "Es-tu sûr?",
+                                message: "Cette action est irréversible et supprimera en permanence les rôles existants."
+                            }
+                        }
                     }
                 }
             },
@@ -1299,7 +1318,7 @@ export const extensions: Extensions = {
                                     "d'entre eux. S'il n'est pas défini, les valeurs par défaut de " +
                                     "{{ productName }} seront utilisées.",
                                 label: "Politique relative aux cookies",
-                                placeholder: "https://asgardeo.io/cookie-policy"
+                                placeholder: "https://myapp.com/cookie-policy"
                             },
                             privacyPolicyURL: {
                                 hint:
@@ -1308,7 +1327,7 @@ export const extensions: Extensions = {
                                     "organisation. S'il n'est pas défini, les valeurs par défaut de " +
                                     "{{ productName }} seront utilisées.",
                                 label: "Politique de confidentialité",
-                                placeholder: "https://asgardeo.io/privacy-policy"
+                                placeholder: "https://myapp.com/privacy-policy"
                             },
                             termsOfUseURL: {
                                 hint:
@@ -1317,7 +1336,7 @@ export const extensions: Extensions = {
                                     "vos clients et visiteurs. S'il n'est pas défini, les valeurs par défaut " +
                                     "de {{ productName }} seront utilisées.",
                                 label: "Conditions d'utilisation",
-                                placeholder: "https://asgardeo.io/terms-of-service"
+                                placeholder: "https://myapp.com/terms-of-service"
                             }
                         },
                         heading: "Liens"
@@ -1831,6 +1850,16 @@ export const extensions: Extensions = {
                     success: {
                         description: "Les préférences de marque ont été rétablies avec succès pour {{ tenant }}.",
                         message: "Rétablissement réussi"
+                    },
+                    successWaiting: {
+                        description: "Retour des préférences de marque pour {{ tenant }}."+
+                            "Il peut prendre un certain temps que les changements soient reflétés.",
+                        message: "Retour des préférences de marque"
+                    },
+                    successWaitingAlert: {
+                        description: "Retour des préférences de marque pour {{ tenant }}."+
+                            "Notez que cela peut prendre jusqu'à 10 minutes pour que les modifications soient reflétées.",
+                        message: "Retour des préférences de marque"
                     }
                 },
                 fetch: {
@@ -1873,6 +1902,16 @@ export const extensions: Extensions = {
                     success: {
                         description: "Préférence de marque mise à jour avec succès pour {{ tenant }}.",
                         message: "Mise à jour réussie"
+                    },
+                    successWaiting: {
+                        description: "Mise à jour des préférences de marque pour {{ tenant }}."+
+                            "Il peut prendre un certain temps que les changements soient reflétés.",
+                        message: "Mise à jour des préférences de marque"
+                    },
+                    successWaitingAlert: {
+                        description: "Mise à jour des préférences de marque pour {{ teant }}."+
+                            "Notez que cela peut prendre jusqu'à 10 minutes pour que les modifications soient reflétées.",
+                        message: "Mise à jour des préférences de marque"
                     },
                     tenantMismatch: {
                         description:
@@ -3712,6 +3751,63 @@ export const extensions: Extensions = {
                 subHeading: "Configurez les paramètres de sécurité pour protéger les comptes d'utilisateurs."
             },
             additionalSettings: "Paramètres additionnels",
+            analytics: {
+                heading: "Moteur d'analyse",
+                subHeading: "Configurez le moteur d'analyse pour votre organisation.",
+                form: {
+                    fields: {
+                        hostUrl: {
+                            label: "URL de l'hôte",
+                            placeholder: "Entrez l'URL de l'hôte",
+                            hint: "L'URL du moteur d'analyse."
+                        },
+                        hostBasicAuthEnable: {
+                            label: "Activer l'authentification de base",
+                            hint: "Activez l'authentification de base pour le moteur d'analyse."
+                        },
+                        hostUsername: {
+                            label: "Nom d'utilisateur",
+                            placeholder: "Entrez le nom d'utilisateur",
+                            hint: "Le nom d'utilisateur pour s'authentifier dans le moteur d'analyse."
+                        },
+                        hostPassword: {
+                            label: "Mot de passe",
+                            placeholder: "Entrer le mot de passe",
+                            hint: "Le mot de passe pour s'authentifier dans le moteur d'analyse."
+                        },
+                        hostConnectionTimeout: {
+                            label: "Délai d'expiration de la connexion HTTP",
+                            placeholder: "Entrez le délai d'expiration de la connexion",
+                            hint: "Entrez la valeur du délai d'expiration de la connexion en millisecondes."
+                        },
+                        hostReadTimeout: {
+                            label: "Délai d'expiration de lecture HTTP",
+                            placeholder: "Entrez le délai de lecture",
+                            hint: "Entrez la valeur du délai de lecture en millisecondes."
+                        },
+                        hostConnectionRequestTimeout: {
+                            label: "Expiration du délai de demande de connexion HTTP",
+                            placeholder: "Entrez le délai d'expiration de la demande de connexion",
+                            hint: "Entrez la valeur du délai d'expiration de la demande de connexion en millisecondes."
+                        },
+                        hostNameVerification: {
+                            label: "Vérification du nom d'hôte",
+                            placeholder: "Entrez la vérification du nom d'hôte",
+                            hint: "Activez la vérification du nom d'hôte pour le moteur d'analyse. (STRICT | ALLOW_ALL)"
+                        }
+                    },
+                    notification: {
+                        error: {
+                            description: "Une erreur s'est produite lors de la mise à jour des configurations du moteur d'analyse.",
+                            message: "Erreur est survenue"
+                        },
+                        success: {
+                            description: "Mis à jour avec succès les configurations du moteur d'analyse.",
+                            message: "Mise à jour réussie"
+                        }
+                    }
+                }
+            },
             generalBackButton: "Retourner",
             generalDisabledLabel: "désactivé",
             generalEnabledLabel: "activé",

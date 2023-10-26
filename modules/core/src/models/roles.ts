@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,10 +22,12 @@
 export interface RolesInterface {
     displayName: string;
     id: string;
-    meta: RolesMetaInterface;
+    meta?: RolesMetaInterface;
     groups?: RoleGroupsInterface[];
     users?: RolesMemberInterface[];
-    permissions: string[];
+    permissions?: string[] | RolePermissionInterface[];
+    audience?: RoleAudiencesInterface;
+    associatedApplications?: RoleConnectedApplicationInterface[];
 }
 
 /**
@@ -43,9 +45,9 @@ export interface RoleListInterface {
  * Interface to contain Role meta information
  */
 export interface RolesMetaInterface {
-    created: string;
+    created?: string;
     location: string;
-    lastModified: string;
+    lastModified?: string;
 }
 
 /**
@@ -66,4 +68,32 @@ export interface RoleGroupsInterface {
     display: string;
     value: string;
     $ref: string;
+}
+
+/**
+ * Interface to contain role audiences information
+ */
+export interface RoleAudiencesInterface {
+    value: string;
+    display: string;
+    type: string;
+}
+
+/**
+ * Interface to contain role permissions information
+ */
+export interface RolePermissionInterface {
+    displayName: string;
+    value: string;
+    $ref?: string;
+    display?: string;
+}
+
+/**
+ * Interface to contain role connected applications information
+ */
+export interface RoleConnectedApplicationInterface {
+    displayName: string;
+    value: string;
+    $ref?: string;
 }

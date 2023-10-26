@@ -1,5 +1,17 @@
 # @wso2is/core
 
+## 2.0.6
+
+### Patch Changes
+
+- [#4312](https://github.com/wso2/identity-apps/pull/4312) [`7c80b2f9ad`](https://github.com/wso2/identity-apps/commit/7c80b2f9ada521232a80e8fe6469cd59d463d0f1) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add permission assignment UI to roles
+
+## 2.0.5
+
+### Patch Changes
+
+- [#4297](https://github.com/wso2/identity-apps/pull/4297) [`990032d4d9`](https://github.com/wso2/identity-apps/commit/990032d4d9e4f2c0e711c6caacba19b5696ea30e) Thanks [@savindi7](https://github.com/savindi7)! - Revamp the UI of Login & Registration page
+
 ## 2.0.4
 
 ### Patch Changes

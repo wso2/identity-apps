@@ -105,14 +105,11 @@ export class ClaimManagementConstants {
     ];
 
     public static readonly AXSCHEMA_MAPPING: string = "http://axschema.org";
-    public static readonly OPENID_MAPPING: string = "http://schema.openid.net/2007/05/claims";
-    public static readonly XMLSOAP_MAPPING: string = "http://schemas.xmlsoap.org/ws/2005/05/identity";
 
     public static readonly OIDC: string = "oidc";
     public static readonly SCIM: string = "scim";
     public static readonly AXSCHEMA: string = "axschema";
     public static readonly EIDAS: string = "eidas";
-    public static readonly OPENID: string = "openid";
     public static readonly OTHERS: string = "others";
 
     public static readonly SCIM_TABS: {

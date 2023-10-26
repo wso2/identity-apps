@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,14 @@ export const APPLICATION_DOMAIN: string = "Application/";
 export const INTERNAL_DOMAIN: string = "Internal";
 export const PRIMARY_DOMAIN: string = "Primary";
 export const ROLE_VIEW_PATH: string = "/roles/";
+
+/**
+ * Role audience interface.
+ */
+export enum RoleAudienceTypes {
+    ORGANIZATION = "ORGANIZATION",
+    APPLICATION = "APPLICATION"
+}
 
 /**
  * Class containing role constants.
@@ -59,6 +67,29 @@ export class RoleConstants {
      * Minimum length of the role name.
      */
     public static readonly ROLE_NAME_MIN_LENGTH: number = 3;
+
+    /**
+     * Default role audience.
+     */
+    public static readonly DEFAULT_ROLE_AUDIENCE: string = RoleAudienceTypes.ORGANIZATION;
+
+    /**
+     * Read only applications client ids.
+     */
+    public static readonly READONLY_APPLICATIONS_CLIENT_IDS: string[] = [
+        "CONSOLE",
+        "MY_ACCOUNT"
+    ];
+
+    /**
+     * Filter query for audience type application.
+     */
+    public static readonly ROLE_AUDIENCE_APPLICATION_FILTER: string = "audience.type eq application";
+
+    /**
+     * filter query for audience type organization.
+     */
+    public static readonly ROLE_AUDIENCE_ORGANIZATION_FILTER: string = "audience.type eq organization";
 }
 
 /**

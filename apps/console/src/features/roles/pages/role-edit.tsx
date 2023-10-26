@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,45 +16,42 @@
  * under the License.
  */
 
-import { RolesInterface } from "@wso2is/core/models";
-import { TabPageLayout } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
+import { Grid } from "@oxygen-ui/react";
+import Button from "@oxygen-ui/react/Button";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { EmptyPlaceholder, TabPageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
-import { EditRole } from "../../roles/components/edit-role/edit-role";
-import { getRoleById } from "../api";
+import { useDispatch, useSelector } from "react-redux";
+import { RouteComponentProps } from "react-router";
+import { Dispatch } from "redux";
+import { Label } from "semantic-ui-react";
+import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
+import { AppConstants } from "../../core/constants/app-constants";
+import { history } from "../../core/helpers/history";
+import { FeatureConfigInterface } from "../../core/models/config";
+import { AppState } from "../../core/store/index";
+import { useGetRoleById } from "../api";
+import { EditRole } from "../components/edit-role/edit-role";
+import { RoleAudienceTypes } from "../constants/role-constants";
 
-const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
+type RoleEditPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps;
+
+const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
+    props: RoleEditPagePropsInterface
+): ReactElement =>  {
+
+    const {
+        [ "data-componentid" ]: componentId
+    } = props;
 
     const { t } = useTranslation();
-
+    const dispatch: Dispatch = useDispatch();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ roleId, setRoleId ] = useState<string>(undefined);
-    const [ roleObject, setRoleObject ] = useState<RolesInterface>();
-    const [ isRoleDetailsRequestLoading, setIsRoleDetailsRequestLoading ] = useState<boolean>(false);
-
-    const getRoleDetails = (roleId: string ): void => {
-        setIsRoleDetailsRequestLoading(true);
-
-        getRoleById(roleId)
-            .then((response: AxiosResponse) => {
-                if (response.status === 200) {
-                    setRoleObject(response.data);
-                }
-            }).catch(() => {
-                // TODO: handle error
-            })
-            .finally(() => {
-                setIsRoleDetailsRequestLoading(false);
-            });
-    };
-
-    const onRoleUpdate = (): void => {
-        getRoleDetails(roleId);
-    };
+    const [ currentActiveTabIndex, setCurrentActiveTabIndex ] = useState<number>(0);
 
     /**
      * Get Role data from URL id
@@ -64,38 +61,123 @@ const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
         const roleId: string = path[ path.length - 1 ];
 
         setRoleId(roleId);
-        getRoleDetails(roleId);
     }, []);
 
+    const {
+        data: roleObject,
+        isLoading: isRoleDetailsRequestLoading,
+        error: roleDetailsRequestError,
+        mutate: mutateRoleObject
+    } = useGetRoleById(roleId);
+
+    /**
+     * Handle if any error occurs while fetching the role details.
+     */
+    useEffect(() => {
+        if(roleDetailsRequestError) {
+            dispatch(addAlert<AlertInterface>({
+                description: t("console:manage.features.roles.notifications.fetchRole.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.roles.notifications.fetchRole.genericError.message")
+            }));
+        }
+    }, [ roleDetailsRequestError ]);
+
+    /**
+     * Get the placeholders.
+     */
+    const getPlaceholders = (): ReactElement => {
+        if (roleDetailsRequestError) {
+            return (
+                <EmptyPlaceholder
+                    subtitle={ [ t("console:manage.features.roles.edit.placeholders.errorPlaceHolder.subtitles.0"),
+                        t("console:manage.features.roles.edit.placeholders.errorPlaceHolder.subtitles.1") ] }
+                    title={ t("console:manage.features.roles.edit.placeholders.errorPlaceHolder.title") }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
+                    action={ (
+                        <Button onClick={ handleBackButtonClick }> 
+                            { t("console:manage.features.roles.edit.placeholders.errorPlaceHolder.action") } 
+                        </Button>
+                    ) }
+                    imageSize="tiny"
+                />
+            );
+        }
+    };
+
+    /**
+     * Callback to when the role is updated.
+     * 
+     * @param activeTabIndex - Active tab index.
+     */
+    const onRoleUpdate = (activeTabIndex: number): void => {
+        mutateRoleObject();
+        setCurrentActiveTabIndex(activeTabIndex);
+    };
+
+    /**
+     * Handle back button click.
+     */
     const handleBackButtonClick = () => {
         history.push(AppConstants.getPaths().get("ROLES"));
     };
 
     return (
-        <TabPageLayout
-            isLoading={ isRoleDetailsRequestLoading }
-            title={
-                roleObject && roleObject?.displayName ?
-                    roleObject?.displayName :
-                    t("console:manage.pages.rolesEdit.title")
-            }
-            pageTitle={ t("console:manage.pages.rolesEdit.title") }
-            backButton={ {
-                onClick: handleBackButtonClick,
-                text: t("console:manage.pages.rolesEdit.backButton", { type: "roles" })
-            } }
-            titleTextAlign="left"
-            bottomMargin={ false }
-        >
-            <EditRole
-                isLoading={ isRoleDetailsRequestLoading }
-                roleObject={ roleObject }
-                roleId={ roleId }
-                onRoleUpdate={ onRoleUpdate }
-                featureConfig={ featureConfig }
-            />
-        </TabPageLayout>
+        roleDetailsRequestError
+            ? getPlaceholders()
+            : (
+                <TabPageLayout
+                    data-componentid={ componentId }
+                    isLoading={ isRoleDetailsRequestLoading }
+                    title={
+                        roleObject && roleObject?.displayName 
+                            ? roleObject?.displayName
+                            : t("console:manage.pages.rolesEdit.title")
+                    }
+                    description={ (
+                        <Grid container alignItems="center">
+                            <Grid>
+                                { `${t("console:manage.features.roles.list.columns.managedBy.label")}
+                                    ${roleObject?.audience?.type}` }
+                            </Grid>
+                            <Grid>
+                                <Label
+                                    className = {
+                                        RoleAudienceTypes.ORGANIZATION === roleObject?.audience?.type.toUpperCase()
+                                            ? "issuer-label"
+                                            : "client-id-label"
+                                    }
+                                >
+                                    { roleObject?.audience?.display }
+                                </Label>
+                            </Grid>
+                        </Grid>
+                    ) }
+                    pageTitle={ t("console:manage.pages.rolesEdit.title") }
+                    backButton={ {
+                        onClick: handleBackButtonClick,
+                        text: t("console:manage.pages.rolesEdit.backButton", { type: "roles" })
+                    } }
+                    titleTextAlign="left"
+                    bottomMargin={ false }
+                >
+                    <EditRole
+                        isLoading={ isRoleDetailsRequestLoading }
+                        roleObject={ roleObject }
+                        onRoleUpdate={ onRoleUpdate }
+                        featureConfig={ featureConfig }
+                        defaultActiveIndex={ currentActiveTabIndex }
+                    />
+                </TabPageLayout>
+            )
     );
+};
+
+/**
+ * Default props for the component.
+ */
+RoleEditPage.defaultProps = {
+    "data-componentid": "role-mgt-edit"
 };
 
 /**

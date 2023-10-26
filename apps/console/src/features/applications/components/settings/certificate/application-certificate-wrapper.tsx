@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,11 +19,11 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, Forms, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Code, ConfirmationModal, Heading, Hint, Message } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { Dispatch, FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
@@ -31,6 +31,7 @@ import { ApplicationCertificatesListComponent } from "./application-certificate-
 import { commonConfig } from "../../../../../extensions";
 import {
     ApplicationInterface,
+    ApplicationTemplateIdTypes,
     CertificateInterface,
     CertificateTypeInterface,
     SupportedAuthProtocolTypes
@@ -109,7 +110,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const [ certEmpty, setCertEmpty ] = useState(false);
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
@@ -117,6 +118,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
     const [ JWKSValue, setJWKSValue ] = useState<string>(undefined);
     const [ showInvalidOperationModal, setShowInvalidOperationModal ] = useState<boolean>(false);
     const [ showCertificateRemovalWarning, setShowCertificateRemovalWarning ] = useState<boolean>(false);
+    const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
 
     /**
      * Set the certificate type
@@ -169,6 +171,17 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
             setPEMValue("");
         }
     }, [ selectedCertType ]);
+
+    /**
+     * Set Is M2M Application
+     */
+    useEffect(()=> {
+
+        if (application?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION){
+            setM2MApplication(true);
+        }
+
+    }, [ application ]);
 
     /**
      * The following function handle the certificate type change.
@@ -291,7 +304,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                 name="certificateType"
                                 default={ CertificateTypeInterface.NONE }
                                 listen={
-                                    (values) => {
+                                    (values: Map<string, FormValue>) => {
                                         setSelectedCertType(
                                     values.get("certificateType") as CertificateTypeInterface
                                         );
@@ -301,8 +314,8 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                     }
                                 }
                                 onBefore={
-                                    (event,value) => {
-                                        const certType = value as CertificateTypeInterface;
+                                    (event: React.SyntheticEvent, value: string) => {
+                                        const certType: CertificateTypeInterface = value as CertificateTypeInterface;
 
                                         if(CertificateTypeInterface.NONE === certType && 
                                             (canDiscardCertificate && !canDiscardCertificate())){
@@ -404,7 +417,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                         }
                                         onUpdate={ onUpdate }
                                         application={ application }
-                                        updatePEMValue={ (val) => {
+                                        updatePEMValue={ (val: string) => {
                                             setPEMValue(val);
                                         } }
                                         applicationCertificate={ PEMValue }
@@ -449,7 +462,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                             }
                                         } }
                                         listen={
-                                            (values) => {
+                                            (values: Map<string, FormValue>) => {
                                                 setJWKSValue(values.get("jwksValue") as string);
                                             }
                                         }
@@ -474,7 +487,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                     />
                                 )
                             }
-                            { protocol && <Hint>{ resolveHintContent(protocol) }</Hint> }
+                            { protocol && !isM2MApplication && <Hint>{ resolveHintContent(protocol) }</Hint> }
                         </Grid.Column>
                     </Grid.Row>
                     { showInvalidOperationModal && renderInvalidOperationModal() }

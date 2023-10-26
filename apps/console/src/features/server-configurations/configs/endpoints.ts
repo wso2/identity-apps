@@ -50,6 +50,7 @@ export const getServerConfigurationsResourceEndpoints = (
         multiFactorAuthenticators: `${ serverHost }/api/server/v1/identity-governance/${
             ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID
         }`,
+        passiveStsConfigurations: `${ serverHost }/api/server/v1/configs/authentication/inbound/passivests`,
         passwordExpiry: `${ serverHost }/api/server/v1/identity-governance/${
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
         }/connectors/${ServerConfigurationsConstants.PASSWORD_EXPIRY_CONNECTOR_ID}`,
@@ -66,6 +67,7 @@ export const getServerConfigurationsResourceEndpoints = (
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
         }/connectors/${ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID}`,
         remoteLogging: `${ serverHost }/api/server/v1/configs/remote-logging`,
+        saml2Configurations: `${ serverHost }/api/server/v1/configs/authentication/inbound/saml2`,
         selfSignUp: `${ serverHost }/api/server/v1/identity-governance/${
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
         }/connectors/${ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID}`,

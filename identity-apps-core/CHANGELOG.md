@@ -1,5 +1,96 @@
 # @wso2is/identity-apps-core
 
+## 2.0.28
+
+### Patch Changes
+
+- [#4338](https://github.com/wso2/identity-apps/pull/4338) [`238ac3e676`](https://github.com/wso2/identity-apps/commit/238ac3e67651b8a792639835db57ff336017cd7f) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Remove redundant callback URL validation.
+
+* [#4331](https://github.com/wso2/identity-apps/pull/4331) [`77f6e16f1f`](https://github.com/wso2/identity-apps/commit/77f6e16f1fc8d100455c0e38b484237e32d4c085) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Update the ui_locales resolving logic
+
+## 2.0.27
+
+### Patch Changes
+
+- [#4324](https://github.com/wso2/identity-apps/pull/4324) [`6b34048047`](https://github.com/wso2/identity-apps/commit/6b34048047e35018ebdaf7f03f34c751e34f5281) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Fix tenant domain resolving issue.
+
+## 2.0.26
+
+### Patch Changes
+
+- [#4255](https://github.com/wso2/identity-apps/pull/4255) [`0716ce8389`](https://github.com/wso2/identity-apps/commit/0716ce8389a7147aadb8f664c830cd96735854df) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Add M2M template
+
+- Updated dependencies [[`0716ce8389`](https://github.com/wso2/identity-apps/commit/0716ce8389a7147aadb8f664c830cd96735854df)]:
+  - @wso2is/theme@2.0.22
+
+## 2.0.25
+
+### Patch Changes
+
+- [#4305](https://github.com/wso2/identity-apps/pull/4305) [`0b0edf4707`](https://github.com/wso2/identity-apps/commit/0b0edf470794779de8e7a27b08c323c965772c2b) Thanks [@Achintha444](https://github.com/Achintha444)! - Complete role creation
+
+- Updated dependencies [[`0b0edf4707`](https://github.com/wso2/identity-apps/commit/0b0edf470794779de8e7a27b08c323c965772c2b)]:
+  - @wso2is/theme@2.0.21
+
+## 2.0.24
+
+### Patch Changes
+
+- [#4297](https://github.com/wso2/identity-apps/pull/4297) [`990032d4d9`](https://github.com/wso2/identity-apps/commit/990032d4d9e4f2c0e711c6caacba19b5696ea30e) Thanks [@savindi7](https://github.com/savindi7)! - Revamp the UI of Login & Registration page
+
+- Updated dependencies [[`990032d4d9`](https://github.com/wso2/identity-apps/commit/990032d4d9e4f2c0e711c6caacba19b5696ea30e)]:
+  - @wso2is/theme@2.0.20
+
+## 2.0.23
+
+### Patch Changes
+
+- [#4298](https://github.com/wso2/identity-apps/pull/4298) [`80eccfdaff`](https://github.com/wso2/identity-apps/commit/80eccfdaffd2b1ef47e314d62f1d3d82ea45c3b2) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with SWE icon on the sign in page
+
+- Updated dependencies [[`80eccfdaff`](https://github.com/wso2/identity-apps/commit/80eccfdaffd2b1ef47e314d62f1d3d82ea45c3b2)]:
+  - @wso2is/theme@2.0.19
+
+## 2.0.22
+
+### Patch Changes
+
+- [#4290](https://github.com/wso2/identity-apps/pull/4290) [`d32dfab48d`](https://github.com/wso2/identity-apps/commit/d32dfab48d2deb5ac94e5c056f018bb891b3b74b) Thanks [@Achintha444](https://github.com/Achintha444)! - Update the basic section of the role
+
+## 2.0.21
+
+### Patch Changes
+
+- [#4282](https://github.com/wso2/identity-apps/pull/4282) [`17398e8717`](https://github.com/wso2/identity-apps/commit/17398e8717dc45289b366caf2603290b1dd60f74) Thanks [@dewniMW](https://github.com/dewniMW)! - Update web.xml.j2 of authentication portal
+
+* [#4278](https://github.com/wso2/identity-apps/pull/4278) [`8be0337845`](https://github.com/wso2/identity-apps/commit/8be03378456c5b8799fc3052e4b7a315b65f7013) Thanks [@Achintha444](https://github.com/Achintha444)! - Add permissions selection section to the create role interface
+
+- [#4280](https://github.com/wso2/identity-apps/pull/4280) [`7ee4e2e360`](https://github.com/wso2/identity-apps/commit/7ee4e2e360f463be9b9ca72814e4ee90077995da) Thanks [@Achintha444](https://github.com/Achintha444)! - Update roles list interface
+
+- Updated dependencies [[`8be0337845`](https://github.com/wso2/identity-apps/commit/8be03378456c5b8799fc3052e4b7a315b65f7013)]:
+  - @wso2is/theme@2.0.18
+
+## 2.0.20
+
+### Patch Changes
+
+- [#4275](https://github.com/wso2/identity-apps/pull/4275) [`c34909a7c1`](https://github.com/wso2/identity-apps/commit/c34909a7c10c3f9cc9bde49dba118ea384f8ba9e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the logo theme issue
+
+* [#4274](https://github.com/wso2/identity-apps/pull/4274) [`aa6e1e6012`](https://github.com/wso2/identity-apps/commit/aa6e1e6012fea5ec6c04d54f4c6e6b17e268239e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add class for the `Reject All` button in the cookie banner
+
+* Updated dependencies [[`c34909a7c1`](https://github.com/wso2/identity-apps/commit/c34909a7c10c3f9cc9bde49dba118ea384f8ba9e), [`aa6e1e6012`](https://github.com/wso2/identity-apps/commit/aa6e1e6012fea5ec6c04d54f4c6e6b17e268239e)]:
+  - @wso2is/theme@2.0.17
+
+## 2.0.19
+
+### Patch Changes
+
+- [#4221](https://github.com/wso2/identity-apps/pull/4221) [`66694afcff`](https://github.com/wso2/identity-apps/commit/66694afcff8bef267c9e711813b99a5c49e86a52) Thanks [@dewniMW](https://github.com/dewniMW)! - Add organization discovery for b2b login flow
+
+* [#4266](https://github.com/wso2/identity-apps/pull/4266) [`d94fa3f961`](https://github.com/wso2/identity-apps/commit/d94fa3f9610eb933210e930a54499bdbf097c32b) Thanks [@Achintha444](https://github.com/Achintha444)! - Add create role UI
+
+* Updated dependencies [[`d94fa3f961`](https://github.com/wso2/identity-apps/commit/d94fa3f9610eb933210e930a54499bdbf097c32b)]:
+  - @wso2is/theme@2.0.16
+
 ## 2.0.18
 
 ### Patch Changes

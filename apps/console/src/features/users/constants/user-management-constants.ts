@@ -81,13 +81,17 @@ export class UserManagementConstants {
 
     public static readonly TERMINATE_ALL_USER_SESSIONS_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while terminating all the user sessions.";
-        
+
     public static readonly TERMINATE_ALL_USER_SESSIONS_ERROR: string = "Could not terminate all the user sessions " +
         "due to some error.";
-    
+
     public static readonly WSO2_LOCAL_CLAIM_DIALECT: string = "http://wso2.org/claims";
     public static readonly SCIM2_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0:User";
     public static readonly BULK_REQUEST_SCHEMA: string = "urn:ietf:params:scim:api:messages:2.0:BulkRequest";
+
+    // Schema related constants.
+    public static readonly ENTERPRISESCHEMA: string = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
+    public static readonly CUSTOMSCHEMA: string = "urn:scim:wso2:schema";
 
     /**
      * Set of SCIM2 schema names.apps/myaccount/src/store/actions/authenticate.ts
@@ -109,6 +113,12 @@ export class UserManagementConstants {
         .set("ACCOUNT_LOCKED", SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked)
         .set("ACCOUNT_DISABLED", SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled)
         .set("ONETIME_PASSWORD", SCIMConfigs.scimEnterpriseUserClaimUri.oneTimePassword);
+    
+    public static readonly ROLES: string = "roles";
+    public static readonly GROUPS: string = "groups";
+    public static readonly SCIM_USER_PATH: string = "/Users";
+    public static readonly SCIM_GROUP_PATH: string = "/Groups";
+    public static readonly SCIM_V2_ROLE_PATH: string = "/v2/Roles";
 }
 
 /**
@@ -133,13 +143,21 @@ export enum UserAccountTypes {
 }
 
 /**
+ * Enum for user account types.
+ *
+ * @readonly
+ */
+export enum UserAccountTypesMain {
+    INTERNAL = "internal",
+    EXTERNAL = "external"
+}
+
+/**
  * @readonly
  * @typeParam string - Types of attributes that cannot be bulk imported.
  */
 export enum BlockedBulkUserImportAttributes {
     PASSWORD = "password",
-    ROLES = "roles",
-    GROUPS = "groups",
     ONETIME_PASSWORD = "oneTimePassword",
     X509CERTIFICATES = "x509Certificates",
     GTALK = "gtalk",
@@ -183,4 +201,13 @@ export enum UserAddOptionTypes {
 export enum BulkUserImportStatus {
     FAILED = "FAILED",
     SUCCESS = "SUCCESS",
+}
+
+/**
+ * @readonly
+ * @typeParam string - Bulk user import response operation type.
+ */
+export enum BulkImportResponseOperationTypes {
+    USER_CREATION = "userCreation",
+    ROLE_ASSIGNMENT = "roleAssignment",
 }

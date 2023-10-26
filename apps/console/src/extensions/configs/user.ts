@@ -23,6 +23,7 @@ import { deleteUser } from "../../features/users/api/users";
 export const userConfig: User = {
     bulkUserImportLimit: {
         fileSize: 500,
+        inviteEmails: 50,
         userCount: 100
     },
     deleteUser: (user: ProfileInfoInterface): Promise<any> => {

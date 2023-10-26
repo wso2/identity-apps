@@ -59,7 +59,7 @@ export class AuthenticatorMeta {
                 "using one-time passcode sent via email.",
             [ AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
                 "SMS one-time passcode.",
-            [ AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_META_ID ]: "Two-factor authentication using " +
+            [ AuthenticatorManagementConstants.LEGACY_SMS_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
                 "SMS one-time passcode.",
             [ AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: "Email users a magic link to " +
                 "log in passwordless",
