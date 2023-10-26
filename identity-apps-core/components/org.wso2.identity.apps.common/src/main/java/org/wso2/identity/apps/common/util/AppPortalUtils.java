@@ -29,6 +29,7 @@ import org.wso2.carbon.identity.application.common.model.ClaimMapping;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationConfig;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
 import org.wso2.carbon.identity.application.common.model.LocalAndOutboundAuthenticationConfig;
+import org.wso2.carbon.identity.application.common.model.RoleV2;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
 import org.wso2.carbon.identity.application.common.model.ServiceProviderProperty;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
@@ -38,8 +39,12 @@ import org.wso2.carbon.identity.oauth.OAuthUtil;
 import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
 import org.wso2.carbon.identity.oauth2.OAuth2Constants;
 import org.wso2.carbon.identity.role.v2.mgt.core.RoleConstants;
+import org.wso2.carbon.identity.role.v2.mgt.core.RoleManagementService;
+import org.wso2.carbon.identity.role.v2.mgt.core.exception.IdentityRoleManagementException;
+import org.wso2.carbon.identity.role.v2.mgt.core.model.Role;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
+import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.identity.apps.common.internal.AppsCommonDataHolder;
 
 import java.util.Arrays;
@@ -131,7 +136,8 @@ public class AppPortalUtils {
      */
     @Deprecated
     public static void createApplication(String appName, String appOwner, String appDescription, String consumerKey,
-            String consumerSecret, String tenantDomain) throws IdentityApplicationManagementException {
+            String consumerSecret, String tenantDomain) throws IdentityApplicationManagementException,
+        org.wso2.carbon.user.api.UserStoreException, IdentityRoleManagementException {
 
         createApplication(appName, appOwner, appDescription,
                 consumerKey, consumerSecret, tenantDomain, StringUtils.EMPTY);
@@ -150,7 +156,7 @@ public class AppPortalUtils {
      */
     public static void createApplication(String appName, String appOwner, String appDescription, String consumerKey,
                                          String consumerSecret, String tenantDomain, String portalPath)
-            throws IdentityApplicationManagementException {
+        throws IdentityApplicationManagementException, org.wso2.carbon.user.api.UserStoreException, IdentityRoleManagementException {
 
         ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setApplicationName(appName);
@@ -175,6 +181,8 @@ public class AppPortalUtils {
         if (CONSOLE_APP.equals(appName)) {
             AssociatedRolesConfig associatedRolesConfig = new AssociatedRolesConfig();
             associatedRolesConfig.setAllowedAudience(RoleConstants.ORGANIZATION);
+            RoleV2 adminRole = getAdministratorRole(tenantDomain);
+            associatedRolesConfig.setRoles(new RoleV2[] {adminRole});
             serviceProvider.setAssociatedRolesConfig(associatedRolesConfig);
         }
 
@@ -257,8 +265,8 @@ public class AppPortalUtils {
      * @throws UserStoreException
      */
     public static void initiatePortals(String tenantDomain, int tenantId)
-            throws IdentityApplicationManagementException, IdentityOAuthAdminException,
-            UserStoreException {
+        throws IdentityApplicationManagementException, IdentityOAuthAdminException,
+        org.wso2.carbon.user.api.UserStoreException, IdentityRoleManagementException {
 
         ApplicationManagementService applicationMgtService = AppsCommonDataHolder.getInstance()
                 .getApplicationManagementService();
@@ -322,5 +330,20 @@ public class AppPortalUtils {
         }
 
         return null;
+    }
+
+    private static RoleV2 getAdministratorRole(String tenantDomain) throws org.wso2.carbon.user.api.UserStoreException,
+        IdentityRoleManagementException {
+
+        RealmService realmService = AppsCommonDataHolder.getInstance().getRealmService();
+        int tenantId = realmService.getTenantManager().getTenantId(tenantDomain);
+        UserRealm userRealm = (UserRealm) realmService.getTenantUserRealm(tenantId);
+        String roleName = userRealm.getRealmConfiguration().getAdminRoleName();
+        RoleManagementService roleManagementService = AppsCommonDataHolder.getInstance().getRoleManagementServiceV2();
+        Role role = roleManagementService.getRole(roleName, tenantDomain);
+        RoleV2 adminRole = new RoleV2();
+        adminRole.setId(role.getId());
+        adminRole.setName(role.getName());
+        return adminRole;
     }
 }
