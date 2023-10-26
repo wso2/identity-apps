@@ -36,6 +36,7 @@ import { I18n } from "@wso2is/i18n";
 import { PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import camelCase from "lodash-es/camelCase";
+import lowerCase from "lodash-es/lowerCase";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -320,6 +321,10 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         }
     };
 
+    const handleMultiAttributeLoginAction = () => {        
+        history.push(AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN"));
+    };
+
     /**
      * Get connector categories which generate the connector forms dynamically.
      */
@@ -387,6 +392,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         return getStaticConnectors();
     };
 
+    const multiAttributeLoginDescription: string = t("console:manage.features.governanceConnectors." +
+        "connectorSubHeading", { name: lowerCase(t("console:manage.features.governanceConnectors.connectorCategories." +
+        "accountManagement.connectors.multiattributeLoginHandler.friendlyName"))
+    });
+
     return (
         <PageLayout
             pageTitle= { t("console:common.sidePanel.loginAndRegistration.label") }
@@ -406,9 +416,26 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                                 {
                                     serverConfigurationConfig.dynamicConnectors
                                         ? (
-                                            <Grid xs={ 12 } lg={ 6 }>
-                                                <AdminAdvisoryBannerSection />
-                                            </Grid>
+                                            <>
+                                                <Grid xs={ 12 } lg={ 6 }>
+                                                    <AdminAdvisoryBannerSection />
+                                                </Grid>
+                                                <Grid xs={ 12 } lg={ 6 }>
+                                                    <SettingsSection
+                                                        data-componentid={ "multi-attribute-login-section" }
+                                                        data-testid={ "multi-attribute-login-section" }
+                                                        description={ multiAttributeLoginDescription }
+                                                        icon={ <GearIcon className="icon" /> }
+                                                        header={
+                                                            t("console:manage.features.governanceConnectors." +
+                                                            "connectorCategories.accountManagement.connectors." +
+                                                            "multiattributeLoginHandler.friendlyName")
+                                                        }
+                                                        onPrimaryActionClick={ handleMultiAttributeLoginAction }
+                                                        primaryAction={ t("common:configure") }
+                                                    />
+                                                </Grid>
+                                            </>
                                         ) : (
                                             <>
                                                 <Grid xs={ 12 } lg={ 6 }>

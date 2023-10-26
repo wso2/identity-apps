@@ -300,7 +300,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             response = { ...grantResponse };
                         }
                     );
-
+                    
+                    setTenant(response.orgId);
                     dispatch(setCurrentOrganization(response.orgName));
                 }
             }
@@ -436,7 +437,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             dispatch(
                 setSignIn<AuthenticatedUserInfo & TenantListInterface>(
                     Object.assign(
-                        CommonAuthenticateUtils.getSignInState(response),
+                        CommonAuthenticateUtils.getSignInState(response, response.orgId),
                         {
                             associatedTenants: isPrivilegedUser
                                 ? tenantDomain

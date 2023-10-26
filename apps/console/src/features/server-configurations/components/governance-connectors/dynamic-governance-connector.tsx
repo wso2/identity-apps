@@ -129,7 +129,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         const data: UpdateGovernanceConnectorConfigInterface = {
             operation: "UPDATE",
             properties: []
-        };        
+        };
         
         for (const key in values) {
             data.properties.push({
@@ -149,14 +149,14 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
 
         setIsSubmitting(true);
 
-        updateGovernanceConnector(data, connector.categoryId, connector.id)
+        updateGovernanceConnector(data, connector?.categoryId, connector?.id)
             .then(() => {
                 dispatch(
                     addAlert({
                         description: t(
                             "console:manage.features.governanceConnectors.notifications." +
                             "updateConnector.success.description",
-                            { name: connector.friendlyName }
+                            { name: connector?.friendlyName }
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
@@ -197,15 +197,15 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             onSubmit={ handleSubmit }
             connector={ connector }
             props={ {
-                properties: connector.properties.filter(
+                properties: connector?.properties.filter(
                     ((property: ConnectorPropertyInterface) => 
                         serverConfigurationConfig.connectorPropertiesToShow.includes(property.name)
                         || serverConfigurationConfig.connectorPropertiesToShow
                             .includes(ServerConfigurationsConstants.ALL)))
             } }
-            form={ kebabCase(connector.friendlyName) + "-form" }
+            form={ kebabCase(connector?.friendlyName) + "-form" }
             initialValues={ getConnectorInitialValues(connector) }
-            data-testid={ `${ testId }-${ connector.name }-form` }
+            data-testid={ `${ testId }-${ connector?.name }-form` }
             isSubmitting={ isSubmitting }
         />
     );
@@ -245,7 +245,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             return null;
         }
 
-        let connectorName: string = connector.friendlyName;
+        let connectorName: string = connector?.friendlyName;
     
         if (connectorName.includes(ServerConfigurationsConstants.DEPRECATION_MATCHER)) {
             connectorName = connectorName.replace(ServerConfigurationsConstants.DEPRECATION_MATCHER, "");
@@ -268,12 +268,12 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             return null;
         }
 
-        if (connector.id === ServerConfigurationsConstants.WSO2_ANALYTICS_ENGINE_CONNECTOR_CATEGORY_ID) {
+        if (connector?.id === ServerConfigurationsConstants.WSO2_ANALYTICS_ENGINE_CONNECTOR_CATEGORY_ID) {
             return (
                 <Message
                     warning
                     className="mb-5 connector-info"
-                    data-componentid={ `${ componentId }-${ connector.id }-deprecation-warning` }
+                    data-componentid={ `${ componentId }-${ connector?.id }-deprecation-warning` }
                 >
                     <Icon name="warning sign" />
                     {
