@@ -49,7 +49,7 @@ export interface CommonConfigInterface<T, S, U, V, W> {
 /**
  * Common config interface for deployment settings.
  */
-export interface CommonDeploymentConfigInterface<T = {}, S = {}> {
+export interface CommonDeploymentConfigInterface<T = Record<string, unknown>, S = Record<string, unknown>> {
     /**
      * Base name of the application (tenant qualified).
      * ex: `/t/wos2.com/sample-portal`
@@ -108,7 +108,7 @@ export interface CommonDeploymentConfigInterface<T = {}, S = {}> {
     serverHost: string;
     /**
      * Custom branded host of the Identity Sever.
-     * ex: https://localhost:9443/t/test -> https://api.test.com
+     * ex: https://localhost:9443/t/test -\> https://api.test.com
      */
     customServerHost: string;
     /**
@@ -139,7 +139,7 @@ export interface CommonDeploymentConfigInterface<T = {}, S = {}> {
 /**
  * Common config interface for UI settings.
  */
-export interface CommonUIConfigInterface<T = {}> {
+export interface CommonUIConfigInterface<T = Record<string, unknown>> {
     /**
      * Portal Announcement banner.
      */
@@ -378,7 +378,7 @@ export interface SBACInterface<T> {
 /**
  * Interface for IDP configs.
  */
-export interface IdpConfigInterface<T = {}, S = {}> {
+export interface IdpConfigInterface<T = Record<string, unknown>, S = Record<string, unknown>> {
     /**
      * If PKCE enabled or not.
      */
