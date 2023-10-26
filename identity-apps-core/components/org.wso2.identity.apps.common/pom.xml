@@ -109,6 +109,7 @@
             org.apache.commons.lang; version="${commons-lang.version.range}",
             org.apache.commons.logging; version="${commons-logging.imp.pkg.version.range}",
 
+            org.wso2.carbon; version="${carbon.kernel.imp.pkg.version.range}",
             org.wso2.carbon.base; version="${carbon.base.imp.pkg.version.range}",
             org.wso2.carbon.core; version="${carbon.kernel.imp.pkg.version.range}",
             org.wso2.carbon.utils; version="${carbon.kernel.imp.pkg.version.range}",
