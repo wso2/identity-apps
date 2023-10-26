@@ -18,6 +18,7 @@
 
 package org.wso2.identity.apps.common.listner;
 
+import org.wso2.carbon.identity.organization.management.service.util.OrganizationManagementUtil;
 import org.wso2.carbon.stratos.common.beans.TenantInfoBean;
 import org.wso2.carbon.stratos.common.exception.StratosException;
 import org.wso2.carbon.stratos.common.listeners.TenantMgtListener;
@@ -32,9 +33,13 @@ public class AppPortalTenantMgtListener implements TenantMgtListener {
     public void onTenantCreate(TenantInfoBean tenantInfoBean) throws StratosException {
 
         try {
+            if (OrganizationManagementUtil.isOrganization(tenantInfoBean.getTenantId())) {
+                return;
+            }
             AppPortalUtils.initiatePortals(tenantInfoBean.getTenantDomain(), tenantInfoBean.getTenantId());
         } catch (Exception e) {
-            throw new StratosException("Failed to initialize UI portals", e);
+            throw new StratosException("Failed to initialize UI portals for the tenant:"
+                + tenantInfoBean.getTenantDomain(), e);
         }
     }
 
