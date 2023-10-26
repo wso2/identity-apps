@@ -34,7 +34,10 @@ import { LocalStorageUtils, StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import { GenericIcon, useDocumentation } from "@wso2is/react-components";
 import { SubscriptionContext } from "apps/console/src/extensions/components/subscription/contexts/subscription";
-import { TenantTier, TenantTierRequestResponse } from "apps/console/src/extensions/components/subscription/models/subscription";
+import { 
+    TenantTier, 
+    TenantTierRequestResponse 
+} from "apps/console/src/extensions/components/subscription/models/subscription";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
