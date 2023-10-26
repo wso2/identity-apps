@@ -9282,7 +9282,7 @@ export const console: ConsoleNS = {
                         title: "Add a new OIDC Scope"
                     },
                     emptySearch: {
-                        action: "View all",
+                        action: "Clear search query",
                         subtitles: {
                             0: "We couldn't find the scope you searched for.",
                             1: "Please try a different name."
