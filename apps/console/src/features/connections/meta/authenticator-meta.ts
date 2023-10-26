@@ -20,7 +20,6 @@ import get from "lodash-es/get";
 import { ReactNode, lazy } from "react";
 import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
-import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { AuthenticatorCategories, AuthenticatorLabels } from "../models/authenticators";
 
 export class AuthenticatorMeta {
@@ -59,6 +58,8 @@ export class AuthenticatorMeta {
             [ AuthenticatorManagementConstants.LEGACY_EMAIL_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication " +
                 "using one-time passcode sent via email.",
             [ AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
+                "SMS one-time passcode.",
+            [ AuthenticatorManagementConstants.LEGACY_SMS_OTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
                 "SMS one-time passcode.",
             [ AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: "Email users a magic link to " +
                 "log in passwordless",
@@ -156,8 +157,9 @@ export class AuthenticatorMeta {
             [ AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: getConnectionIcons()?.smsOTP,
             [ AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: getConnectionIcons()?.magicLink,
             [ AuthenticatorManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID ]: getConnectionIcons()?.backupCode,
-            [ ConnectionManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_ID ]: getConnectionIcons()?.organizationSSO,
-            [ ConnectionManagementConstants.ORG_SSO_AUTHENTICATOR_ID ]: getConnectionIcons()?.organizationSSO
+            [ 
+            AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID 
+            ]: getConnectionIcons()?.organizationSSO
         }, authenticatorId);
 
         return icon ?? getConnectionIcons().default;

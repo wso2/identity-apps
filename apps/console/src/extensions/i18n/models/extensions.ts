@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -160,7 +160,7 @@ export interface Extensions {
             };
             authenticatorGroups: {
                 goToConnections: string;
-                groupsList:{
+                groupsList: {
                     assignGroups: string;
                     notifications: {
                         fetchAssignedGroups: Notification;
@@ -1002,6 +1002,30 @@ export interface Extensions {
                             };
                         };
                     };
+                    rolesV2: {
+                        heading: string;
+                        subHeading: string;
+                        roleAudience: string;
+                        organization: string;
+                        application: string;
+                        assignedRoles: string;
+                        removedRoles: string;
+                        searchPlaceholder: string;
+                        switchRoleAudience: {
+                            applicationConfirmationModal: {
+                                assertionHint: string;
+                                header: string;
+                                content: string;
+                                message: string;
+                            };
+                            organizationConfirmationModal: {
+                                assertionHint: string;
+                                header: string;
+                                content: string;
+                                message: string;
+                            };
+                        };
+                    }
                 };
             };
             quickstart: {
@@ -1565,17 +1589,12 @@ export interface Extensions {
                 };
                 general: {
                     fields: {
-                        copyrightText: {
-                            hint: string;
-                            label: string;
-                            placeholder: string;
-                        };
-                        siteTitle: {
-                            hint: string;
-                            label: string;
-                            placeholder: string;
-                        };
                         supportEmail: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                        displayName: {
                             hint: string;
                             label: string;
                             placeholder: string;
@@ -1599,6 +1618,14 @@ export interface Extensions {
                     };
                     success: {
                         description: string;
+                        message: string;
+                    };
+                    successWaiting: {
+                        description: string; 
+                        message: string;
+                    };
+                    successWaitingAlert: {
+                        description: string; 
                         message: string;
                     };
                 };
@@ -1631,6 +1658,14 @@ export interface Extensions {
                     };
                     success: {
                         description: string;
+                        message: string;
+                    };
+                    successWaiting: {
+                        description: string; 
+                        message: string;
+                    };
+                    successWaitingAlert: {
+                        description: string; 
                         message: string;
                     };
                     tenantMismatch: {
@@ -1691,22 +1726,34 @@ export interface Extensions {
                                 title: string;
                             };
                             notFoundWithSupport: {
+                                description: string;
                                 subTitle: string;
                                 title: string;
                             };
                         };
                     };
+                    info: {
+                        layout: {
+                            activatedMessage: {
+                                description: string;
+                                subTitle: string;
+                                title: string;
+                            }
+                        }
+                    }
                     label: string;
                 };
             };
         };
         emailProviders: {
+            configureEmailProvider: string;
             heading: string;
             subHeading: string;
             description: string;
             info: string;
             updateButton: string;
             sendTestMailButton: string;
+            goBack: string,
             confirmationModal: {
                 header: string;
                 message: string;
@@ -1771,23 +1818,176 @@ export interface Extensions {
                     };
                 };
                 deleteConfiguration: {
-                    success : {
-                        description : string;
-                        message : string;
+                    success: {
+                        description: string;
+                        message: string;
                     };
-                    error : {
-                        description : string;
-                        message : string;
+                    error: {
+                        description: string;
+                        message: string;
                     };
                 };
                 updateConfiguration: {
-                    success : {
-                        description : string;
-                        message : string;
+                    success: {
+                        description: string;
+                        message: string;
                     };
-                    error : {
-                        description : string;
-                        message : string;
+                    error: {
+                        description: string;
+                        message: string;
+                    };
+                }
+            };
+        };
+        notificationChannel: {
+            heading: string;
+            title: string;
+            description: string;
+        };
+        smsProviders: {
+            heading: string;
+            subHeading: string;
+            description: string;
+            info: string;
+            updateButton: string;
+            sendTestSMSButton: string;
+            goBack: string
+            confirmationModal: {
+                header: string;
+                message: string;
+                content: string;
+                assertionHint: string;
+            };
+            dangerZoneGroup: {
+                header: string;
+                revertConfig: {
+                    heading: string;
+                    subHeading: string;
+                    actionTitle: string;
+                }
+            };
+            form: {
+                twilio: {
+                    subHeading: string;
+                    accountSID: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    authToken: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    sender: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    validations: {
+                        required: string;
+                    };
+                },
+                vonage: {
+                    subHeading: string;
+                    accountSID: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    authToken: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    sender: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    validations: {
+                        required: string;
+                    };
+                },
+                custom: {
+                    subHeading: string;
+                    providerName: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    providerUrl: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    },
+                    httpMethod: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    contentType: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    headers: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    payload: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    key: {
+                        label: string,
+                        placeholder: string,
+                        hint: string
+                    },
+                    secret: {
+                        label: string,
+                        placeholder: string,
+                        hint: string
+                    },
+                    sender: {
+                        label: string,
+                        placeholder: string,
+                        hint: string
+                    }
+                    validations: {
+                        required: string;
+                        methodInvalid: string;
+                        contentTypeInvalid: string;
+                    };
+                }
+            }
+            notifications: {
+                getConfiguration: {
+                    error: {
+                        description: string;
+                        message: string;
+                    };
+                };
+                deleteConfiguration: {
+                    success: {
+                        description: string;
+                        message: string;
+                    };
+                    error: {
+                        description: string;
+                        message: string;
+                    };
+                };
+                updateConfiguration: {
+                    success: {
+                        description: string;
+                        message: string;
+                    };
+                    error: {
+                        description: string;
+                        message: string;
                     };
                 }
             };
@@ -1870,7 +2070,7 @@ export interface Extensions {
                                 message: string;
                                 description: string;
                             };
-                            activeSubs:{
+                            activeSubs: {
                                 message: string;
                                 description: string;
                             };
@@ -2332,24 +2532,27 @@ export interface Extensions {
         sidePanel: {
             apiResources: string;
             branding: string;
+            stylesAndText: string;
             monitor: string;
             categories: {
                 apiResources: string;
                 branding: string;
                 monitor: string;
                 emailProvider: string;
+                smsProvider: string;
             };
             emailProvider: string;
-            eventPublishing : string;
-            emailTemplates : string;
+            smsProvider: string;
+            eventPublishing: string;
+            emailTemplates: string;
             organizationInfo: string;
         };
         eventPublishing: {
             eventsConfiguration: {
                 heading: string;
-                subHeading:  string;
+                subHeading: string;
                 formHeading: string;
-                form : {
+                form: {
                     updateButton: string;
                 };
                 navigateToChoreo: {
@@ -2357,9 +2560,9 @@ export interface Extensions {
                     navigateButton: string;
                 };
             };
-            notifications : {
-                updateConfiguration : {
-                    error : {
+            notifications: {
+                updateConfiguration: {
+                    error: {
                         generic: {
                             description: string;
                             message: string;
@@ -2369,27 +2572,27 @@ export interface Extensions {
                             message: string;
                         };
                     };
-                    success : {
-                        description : string;
-                        message : string;
+                    success: {
+                        description: string;
+                        message: string;
                     };
                 };
-                getConfiguration : {
-                    error : {
-                        description : string;
-                        message : string;
+                getConfiguration: {
+                    error: {
+                        description: string;
+                        message: string;
                     };
-                    success : {
-                        description : string;
-                        message : string;
+                    success: {
+                        description: string;
+                        message: string;
                     };
                 };
             };
         };
         emailTemplates: {
             page: {
-              header: string;
-              description: string;
+                header: string;
+                description: string;
             },
             tabs: {
                 content: {
@@ -2414,8 +2617,8 @@ export interface Extensions {
                 },
                 updateEmailTemplate: {
                     success: {
-                      description: string;
-                      message: string;
+                        description: string;
+                        message: string;
                     },
                     error: {
                         description: string;
@@ -2436,9 +2639,9 @@ export interface Extensions {
             form: {
                 inputs: {
                     template: {
-                      label: string;
-                      placeholder: string;
-                      hint: string;
+                        label: string;
+                        placeholder: string;
+                        hint: string;
                     },
                     locale: {
                         label: string;
@@ -2479,7 +2682,7 @@ export interface Extensions {
             notifications: {
                 success: {
                     description: string;
-                    message:string;
+                    message: string;
                 },
                 error: {
                     description: string;
@@ -2507,6 +2710,21 @@ export interface Extensions {
                 usernameLengthMin: string;
                 usernameLengthMax: string;
             };
+            alternativeLoginIdentifierPage: {
+                pageTitle: string;
+                description: string;
+                loginIdentifierTypes: string;
+                loginIdentifierTypesHint: string;
+                warning: string;
+                info: string;
+                notification: {
+                    error: NotificationItem;
+                    success: NotificationItem;
+                };
+                claimUpdateNotification: {
+                    error: NotificationItem;
+                };
+            };
             pageTitle: string;
             description: string;
             goBackToApplication: string;
@@ -2525,8 +2743,8 @@ export interface Extensions {
             displayNameHint: string;
         };
         features: {
-            header:{
-                links:{
+            header: {
+                links: {
                     billingPortalNav: string;
                 },
             },
@@ -2617,7 +2835,7 @@ export interface Extensions {
                                 subTitle: string;
                                 title: string;
                                 usernameHint: string;
-                                emailUsername:string;
+                                emailUsername: string;
                                 alphanumericUsername: string;
                             };
                             generalSettings: {
@@ -2647,7 +2865,7 @@ export interface Extensions {
                                         };
                                         accessType: {
                                             label: string;
-                                            types : {
+                                            types: {
                                                 readOnly: {
                                                     label: string;
                                                     hint: string;
@@ -2919,6 +3137,26 @@ export interface Extensions {
                             description_plural: string;
                             description_singular: string;
                         };
+                    };
+                };
+            };
+            analytics: {
+                heading: string;
+                subHeading: string;
+                form: {
+                    fields: {
+                        hostUrl: FormAttributes;
+                        hostBasicAuthEnable: FormAttributes;
+                        hostUsername: FormAttributes;
+                        hostPassword: FormAttributes;
+                        hostConnectionTimeout: FormAttributes;
+                        hostReadTimeout: FormAttributes;
+                        hostConnectionRequestTimeout: FormAttributes;
+                        hostNameVerification: FormAttributes;
+                    };
+                    notification: {
+                        error: NotificationItem;
+                        success: NotificationItem;
                     };
                 };
             };

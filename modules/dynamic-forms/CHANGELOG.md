@@ -1,5 +1,15 @@
 # @wso2is/dynamic-forms
 
+## 2.0.5
+
+### Patch Changes
+
+- [#4220](https://github.com/wso2/identity-apps/pull/4220) [`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7) Thanks [@brionmario](https://github.com/brionmario)! - Add Text based UI
+
+- Updated dependencies [[`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7), [`459c9713fb`](https://github.com/wso2/identity-apps/commit/459c9713fb7943244682c632b7ac0b9245874b40)]:
+  - @wso2is/react-components@2.0.7
+  - @wso2is/core@2.0.4
+
 ## 2.0.4
 
 ### Patch Changes

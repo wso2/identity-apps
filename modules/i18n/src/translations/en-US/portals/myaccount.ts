@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -1583,7 +1583,7 @@ export const myAccount: MyAccountNS = {
                     errors: {
                         noAssociation: {
                             content: "It seems like the selected email is not registered on Gravatar. " +
-                                "Sign up for a Gravatar account by visiting Gravatar official website or use " +
+                            "Sign up for a Gravatar account by visiting <1>Gravatar official website</1> or use " +
                                 "one of the following.",
                             header: "No matching Gravatar image found!"
                         }
@@ -1721,7 +1721,7 @@ export const myAccount: MyAccountNS = {
     sections: {
         accountRecovery: {
             description:
-                "Manage recovery information that we can use to help you recover your username or password",
+            "Manage recovery information that we can use to help you recover your password",
             heading: "Account Recovery"
         },
         changePassword: {

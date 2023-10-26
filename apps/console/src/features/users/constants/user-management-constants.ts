@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,29 +34,29 @@ export class UserManagementConstants {
 
     /**
      * Default role list item limit.
-     * @typeparam DEFAULT_ROLE_LIST_ITEM_LIMIT - number
+     * @typeParam DEFAULT_ROLE_LIST_ITEM_LIMIT - number
      * @defaultValue
      */
-    public static readonly DEFAULT_ROLE_LIST_ITEM_LIMIT = 10;
+    public static readonly DEFAULT_ROLE_LIST_ITEM_LIMIT: number = 10;
 
     /**
      * Default email template type list item limit.
-     * @typeparam DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT - number
+     * @typeParam DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT - number
      * @defaultValue
      */
-    public static readonly DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT = 10;
+    public static readonly DEFAULT_EMAIL_TEMPLATE_TYPE_ITEM_LIMIT: number = 10;
 
     /**
      * Default user list attributes.
-     * @typeparam DEFAULT_USER_LIST_ATTRIBUTES - string[]
+     * @typeParam DEFAULT_USER_LIST_ATTRIBUTES - string[]
      * @defaultValue
      */
-    public static readonly DEFAULT_USER_LIST_ATTRIBUTES = [ "name", "emails", "userName", "profileUrl",
+    public static readonly DEFAULT_USER_LIST_ATTRIBUTES: string[] = [ "name", "emails", "userName", "profileUrl",
         "meta.lastModified" ];
 
     /**
      * Set of keys used to enable/disable features.
-     * @typeparam FEATURE_DICTIONARY - `Map<string, string>`
+     * @typeParam FEATURE_DICTIONARY - `Map<string, string>`
      * @defaultValue
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
@@ -81,13 +81,21 @@ export class UserManagementConstants {
 
     public static readonly TERMINATE_ALL_USER_SESSIONS_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while terminating all the user sessions.";
-        
+
     public static readonly TERMINATE_ALL_USER_SESSIONS_ERROR: string = "Could not terminate all the user sessions " +
         "due to some error.";
 
+    public static readonly WSO2_LOCAL_CLAIM_DIALECT: string = "http://wso2.org/claims";
+    public static readonly SCIM2_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0:User";
+    public static readonly BULK_REQUEST_SCHEMA: string = "urn:ietf:params:scim:api:messages:2.0:BulkRequest";
+
+    // Schema related constants.
+    public static readonly ENTERPRISESCHEMA: string = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
+    public static readonly CUSTOMSCHEMA: string = "urn:scim:wso2:schema";
+
     /**
      * Set of SCIM2 schema names.apps/myaccount/src/store/actions/authenticate.ts
-     * @typeparam SCIM2_SCHEMA_DICTIONARY - `Map<string, string>`
+     * @typeParam SCIM2_SCHEMA_DICTIONARY - `Map<string, string>`
      * @defaultValue
      */
     public static readonly SCIM2_SCHEMA_DICTIONARY: Map<string, string> = new Map<string, string>()
@@ -98,13 +106,19 @@ export class UserManagementConstants {
 
     /**
      * Set of SCIM2 enterprise attributes.
-     * @typeparam SCIM2_ATTRIBUTES_DICTIONARY - `Map<string, string>`
+     * @typeParam SCIM2_ATTRIBUTES_DICTIONARY - `Map<string, string>`
      * @defaultValue
      */
     public static readonly SCIM2_ATTRIBUTES_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("ACCOUNT_LOCKED", SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked)
         .set("ACCOUNT_DISABLED", SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled)
         .set("ONETIME_PASSWORD", SCIMConfigs.scimEnterpriseUserClaimUri.oneTimePassword);
+    
+    public static readonly ROLES: string = "roles";
+    public static readonly GROUPS: string = "groups";
+    public static readonly SCIM_USER_PATH: string = "/Users";
+    public static readonly SCIM_GROUP_PATH: string = "/Groups";
+    public static readonly SCIM_V2_ROLE_PATH: string = "/v2/Roles";
 }
 
 /**
@@ -126,4 +140,74 @@ export enum UserAccountTypes {
     USER = "User",
     CUSTOMER = "Customer",
     COLLABORATOR = "Collaborator"
+}
+
+/**
+ * Enum for user account types.
+ *
+ * @readonly
+ */
+export enum UserAccountTypesMain {
+    INTERNAL = "internal",
+    EXTERNAL = "external"
+}
+
+/**
+ * @readonly
+ * @typeParam string - Types of attributes that cannot be bulk imported.
+ */
+export enum BlockedBulkUserImportAttributes {
+    PASSWORD = "password",
+    ONETIME_PASSWORD = "oneTimePassword",
+    X509CERTIFICATES = "x509Certificates",
+    GTALK = "gtalk",
+    SKYPE = "skype"
+}
+
+/**
+ * @readonly
+ * @typeParam string - Types of attributes that should be handled manually.
+ */
+export enum SpecialMultiValuedComplexAttributes {
+    Emails = "emails",
+    PhoneNumbers = "phoneNumbers",
+    Photos = "photos",
+    Addresses = "addresses",
+    Entitlements = "entitlements"
+}
+
+/**
+ * @readonly
+ * @typeParam string - Types of attributes that are required for bulk import.
+ */
+export enum RequiredBulkUserImportAttributes {
+    USERNAME = "userName",
+    EMAILADDRESS = "emailaddress"
+}
+
+/**
+ * @readonly
+ * @typeParam string - User add option types.
+ */
+export enum UserAddOptionTypes {
+    BULK_IMPORT = "bulk-import",
+    MANUAL_INPUT = "manual-input"
+}
+
+/**
+ * @readonly
+ * @typeParam string - Bulk user import status.
+ */
+export enum BulkUserImportStatus {
+    FAILED = "FAILED",
+    SUCCESS = "SUCCESS",
+}
+
+/**
+ * @readonly
+ * @typeParam string - Bulk user import response operation type.
+ */
+export enum BulkImportResponseOperationTypes {
+    USER_CREATION = "userCreation",
+    ROLE_ASSIGNMENT = "roleAssignment",
 }

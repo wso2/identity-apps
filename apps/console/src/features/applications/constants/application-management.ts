@@ -123,6 +123,16 @@ export class ApplicationManagementConstants {
     public static readonly SIGN_IN_METHOD_TAB_URL_FRAG: string = "sign-in-method";
 
     /**
+     * Value for application roles tab url.
+     */
+    public static readonly ROLES_TAB_URL_FRAG: string = "5";
+
+    /**
+     * Role callback redirect type
+     */
+    public static readonly ROLE_CALLBACK_REDIRECT: string = "roles";
+
+    /**
      * Default application template loading strategy.
      */
     public static readonly DEFAULT_APP_TEMPLATE_LOADING_STRATEGY: ApplicationTemplateLoadingStrategies =
@@ -194,50 +204,6 @@ export class ApplicationManagementConstants {
         ApplicationManagementConstants.JWT_BEARER,
         ApplicationManagementConstants.UMA_TICKET
     ];
-
-    /**
-     * Set of grant types allowed for certain templates.
-     */
-    public static readonly TEMPLATE_WISE_ALLOWED_GRANT_TYPES: Record<string, string[]> = {
-        // single page app template
-        [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
-        ],
-        // oidc traditional web app template
-        [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
-        ],
-        // oidc standard app template
-        [ "custom-application" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.PASSWORD,
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
-            ApplicationManagementConstants.DEVICE_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
-            ApplicationManagementConstants.SAML2_BEARER,
-            ApplicationManagementConstants.JWT_BEARER
-        ],
-        [ "mobile-application" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.PASSWORD,
-            ApplicationManagementConstants.DEVICE_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
-        ]
-    };
 
     /**
      * Holds metadata on how to arrange the values when rendering above
@@ -423,10 +389,14 @@ export class ApplicationManagementConstants {
      * Form element constraints.
      */
     public static readonly FORM_FIELD_CONSTRAINTS: {
+        ACCESS_URL_MAX_LENGTH: number,
+        ACCESS_URL_MIN_LENGTH: number,
         APP_DESCRIPTION_PATTERN: RegExp,
         APP_NAME_MAX_LENGTH: number,
         APP_NAME_PATTERN: RegExp
     } = {
+        ACCESS_URL_MAX_LENGTH: 200,
+        ACCESS_URL_MIN_LENGTH: 3,
         APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
         APP_NAME_MAX_LENGTH: 50,
         APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
@@ -443,6 +413,8 @@ export class ApplicationManagementConstants {
     public static readonly CUSTOM_APPLICATION: string = "custom-application";
 
     public static readonly MOBILE: string = "mobile-application";
+
+    public static readonly M2M_APP_TEMPLATE_ID: string = "m2m-application";
 
     public static readonly CHOREO_APP_TEMPLATE_ID: string = "choreo-apim-application-oidc";
 

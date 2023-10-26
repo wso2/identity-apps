@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -139,6 +139,7 @@ export class Config {
             appName: window["AppUtils"]?.getConfig()?.ui?.appName,
             appTitle: window["AppUtils"]?.getConfig()?.ui?.appTitle,
             authenticatorApp: window["AppUtils"]?.getConfig()?.ui?.authenticatorApp,
+            cookiePolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl,
             copyrightText: window["AppUtils"]?.getConfig()?.ui?.appCopyright
                 .replace("${copyright}", "\u00A9")
                 .replace("${year}", new Date().getFullYear()),

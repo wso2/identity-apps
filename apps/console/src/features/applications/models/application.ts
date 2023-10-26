@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { LinkInterface } from "@wso2is/core/models";
 import {
     OIDCDataInterface,
@@ -23,6 +24,7 @@ import {
     WSTrustConfigurationInterface
 } from "./application-inbound";
 import { GenericAuthenticatorInterface } from "../../identity-providers/models/identity-provider";
+import { AssociatedRolesInterface } from "../../roles/models";
 import { TemplateContentInterface } from "../data/application-templates";
 
 /**
@@ -66,6 +68,7 @@ export interface ApplicationInterface extends ApplicationBasicInterface {
     imageUrl?: string;
     claimConfiguration?: ClaimConfigurationInterface;
     advancedConfigurations?: AdvancedConfigurationsInterface;
+    associatedRoles?: AssociatedRolesInterface;
     inboundProtocols?: InboundProtocolListItemInterface[];
     authenticationSequence?: AuthenticationSequenceInterface;
     provisioningConfigurations?: ProvisioningConfigurationInterface;
@@ -622,17 +625,31 @@ export interface OIDCApplicationConfigurationInterface {
     userEndpoint: string;
     jwksEndpoint: string;
     wellKnownEndpoint: string;
+    openIdServerEndpoint?: string;
+    pushedAuthorizationRequestEndpoint?: string;
+    sessionIframeEndpoint?: string;
+    webFingerEndpoint?: string;
+    dynamicClientRegistrationEndpoint?: string;
 }
 
 /**
  * SAML configurations for the application.
  */
 export interface SAMLApplicationConfigurationInterface {
+    destinationURLs?: string[];
+    artifactResolutionUrl?: string;
     issuer: string;
     ssoUrl: string;
     sloUrl: string;
     certificate: string;
     metadata: string;
+}
+
+/**
+ * WS Federation configurations for the application.
+ */
+export interface WSFederationApplicationConfigurationInterface {
+    passiveStsUrl?: string;
 }
 
 /**
@@ -715,7 +732,8 @@ export enum ApplicationTemplateIdTypes {
     SPA = "single-page-application",
     OIDC_WEB_APPLICATION = "oidc-web-application",
     SAML_WEB_APPLICATION = "saml-web-application",
-    MOBILE_APPLICATION = "mobile-application"
+    MOBILE_APPLICATION = "mobile-application",
+    M2M_APPLICATION = "m2m-application"
 }
 
 /**
@@ -767,6 +785,7 @@ export enum ApplicationTabTypes {
     PROTOCOL ="protocol",
     USER_ATTRIBUTES = "user-attributes",
     SIGN_IN_METHOD = "sign-in-method",
+    ROLES = "roles",
     PROVISIONING = "provisioning",
     ADVANCED = "advanced",
     INFO = "info"
@@ -778,6 +797,7 @@ export enum ApplicationTabTypes {
 export interface idpInfoTypeInterface {
     id: string;
     name: string;
+    redirectTo?: string;
 }
 
 export enum SubjectTypes {

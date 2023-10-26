@@ -1,5 +1,21 @@
 # @wso2is/form
 
+## 2.0.4
+
+### Patch Changes
+
+- [#4341](https://github.com/wso2/identity-apps/pull/4341) [`29c9e682ab`](https://github.com/wso2/identity-apps/commit/29c9e682ab800fdd65436032a69b4baa6663f75e) Thanks [@Rashmini](https://github.com/Rashmini)! - Add feature Organization Discovery
+
+## 2.0.3
+
+### Patch Changes
+
+- [#4220](https://github.com/wso2/identity-apps/pull/4220) [`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7) Thanks [@brionmario](https://github.com/brionmario)! - Add Text based UI
+
+- Updated dependencies [[`7db6a4b05f`](https://github.com/wso2/identity-apps/commit/7db6a4b05fff7524f544c28855edd303c2f742c7), [`459c9713fb`](https://github.com/wso2/identity-apps/commit/459c9713fb7943244682c632b7ac0b9245874b40)]:
+  - @wso2is/react-components@2.0.7
+  - @wso2is/core@2.0.4
+
 ## 2.0.2
 
 ### Patch Changes

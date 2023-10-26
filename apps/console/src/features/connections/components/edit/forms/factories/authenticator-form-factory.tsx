@@ -41,6 +41,7 @@ import {
     SMSOTPAuthenticatorForm
 } from "../authenticators";
 import { SamlAuthenticatorSettingsForm } from "../authenticators/saml-authenticator-form";
+import { SIWEAuthenticatorForm } from "../authenticators/swe-authenticator-form";
 
 /**
  * Proptypes for the authenticator form factory component.
@@ -62,9 +63,6 @@ interface AuthenticatorFormFactoryInterface extends TestableComponentInterface {
     initialValues: FederatedAuthenticatorListItemInterface;
     /**
      * Callback to trigger when the form is submitted.
-     * 
-     * @param values - Form values.
-     * @returns 
      */
     onSubmit: (values: FederatedAuthenticatorListItemInterface) => void;
     /**
@@ -239,7 +237,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                 />
             );
         case ConnectionManagementConstants.MICROSOFT_AUTHENTICATOR_ID:
-            if (templateId === "microsoft-idp"){
+            if (templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.MICROSOFT){
                 return(
                     <MicrosoftAuthenticatorForm
                         mode={ mode }
@@ -270,6 +268,45 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     />
                 );
             }
+
+        case ConnectionManagementConstants.SIWE_AUTHENTICATOR_ID:
+            if (templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.SWE) {
+                return (
+                    <SIWEAuthenticatorForm
+                        data-componentid={ testId }
+                        enableSubmitButton={ enableSubmitButton }
+                        initialValues={ initialValues }
+                        isSubmitting={ isSubmitting }
+                        metadata={ metadata }
+                        onSubmit={ onSubmit }
+                        readOnly={ isReadOnly }
+                        showCustomProperties={ showCustomProperties }
+                        triggerSubmit={ triggerSubmit }
+                    />
+                );
+            }
+
+            break;
+
+        case ConnectionManagementConstants.HYPR_AUTHENTICATOR_ID:
+            if (templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.HYPR) {
+                return (
+                    <CommonAuthenticatorForm
+                        mode={ mode }
+                        onSubmit={ onSubmit }
+                        initialValues={ initialValues }
+                        enableSubmitButton={ enableSubmitButton }
+                        triggerSubmit={ triggerSubmit }
+                        metadata={ metadata }
+                        data-testid={ testId }
+                        showCustomProperties={ showCustomProperties }
+                        readOnly={ isReadOnly }
+                    />
+                );
+            }
+
+            break;
+
         case ConnectionManagementConstants.APPLE_AUTHENTICATOR_ID:
             return (
                 <AppleAuthenticatorForm
@@ -285,6 +322,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     isSubmitting={ isSubmitting }
                 />
             );
+            
         default:
             return (
                 <AuthenticatorSettingsForm

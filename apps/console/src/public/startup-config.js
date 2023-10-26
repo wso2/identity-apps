@@ -6,5 +6,6 @@ var startupConfig = {
     serverUrl: "https://localhost:9443",
     serverUrlGlobal: "https://localhost:9443",
     tenantPrefix: "t",
-    orgPrefix: "o"
+    orgPrefix: "o",
+    enableDefaultPreLoader: true
 };

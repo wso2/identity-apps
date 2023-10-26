@@ -885,9 +885,9 @@ export const extensions: Extensions = {
                                             "Veuillez procéder avec prudence."
                                     },
                                     unsubscribeChoreoAPIResource: {
-                                        content: "Le désabonnement de cette ressource API ne sera pas reflété à la" + 
-                                        " fin de Choreo, mais aura un impact / affectera l'autorisation" + 
-                                        " de l'utilisateur car les lunettes autorisées ne seront plus accessibles." + 
+                                        content: "Le désabonnement de cette ressource API ne sera pas reflété à la" +
+                                        " fin de Choreo, mais aura un impact / affectera l'autorisation" +
+                                        " de l'utilisateur car les lunettes autorisées ne seront plus accessibles." +
                                         "<1> procéder à la prudence. </1>"
                                     }
                                 },
@@ -1150,6 +1150,32 @@ export const extensions: Extensions = {
                                 }
                             }
                         }
+                    },
+                    rolesV2: {
+                        heading: "Les rôles",
+                        subHeading: "Gérer les rôles attribués dans l'application.",
+                        roleAudience: "Rôle public",
+                        organization: "Organisation",
+                        application: "application",
+                        assignedRoles: "Rôles attribués",
+                        removedRoles: "Rôles supprimés",
+                        searchPlaceholder: "Recherche par nom de rôle",
+                        switchRoleAudience: {
+                            applicationConfirmationModal: {
+                                assertionHint: "Veuillez confirmer votre action.",
+                                content: "Si vous changez le rôle de rôle en application, l'association avec "+
+                                    "Les rôles de l'organisation seront supprimés de la demande. Veuillez procéder à la prudence.",
+                                header: "Passer à l'application du rôle de rôle?",
+                                message: "Cette action est irréversible et supprimera les associations de rôle existantes."
+                            },
+                            organizationConfirmationModal: {
+                                assertionHint: "Veuillez confirmer votre action.",
+                                content: "Si vous modifiez le rôle de rôle en organisation, les rôles d'application "+
+                                    "Associé à la demande sera supprimé en permanence. Veuillez procéder à la prudence.",
+                                header: "Changer le rôle de rôle à l'organisation?",
+                                message: "Cette action est irréversible et supprimera en permanence les rôles existants."
+                            }
+                        }
                     }
                 }
             },
@@ -1299,7 +1325,7 @@ export const extensions: Extensions = {
                                     "d'entre eux. S'il n'est pas défini, les valeurs par défaut de " +
                                     "{{ productName }} seront utilisées.",
                                 label: "Politique relative aux cookies",
-                                placeholder: "https://asgardeo.io/cookie-policy"
+                                placeholder: "https://myapp.com/cookie-policy"
                             },
                             privacyPolicyURL: {
                                 hint:
@@ -1308,7 +1334,7 @@ export const extensions: Extensions = {
                                     "organisation. S'il n'est pas défini, les valeurs par défaut de " +
                                     "{{ productName }} seront utilisées.",
                                 label: "Politique de confidentialité",
-                                placeholder: "https://asgardeo.io/privacy-policy"
+                                placeholder: "https://myapp.com/privacy-policy"
                             },
                             termsOfUseURL: {
                                 hint:
@@ -1317,7 +1343,7 @@ export const extensions: Extensions = {
                                     "vos clients et visiteurs. S'il n'est pas défini, les valeurs par défaut " +
                                     "de {{ productName }} seront utilisées.",
                                 label: "Conditions d'utilisation",
-                                placeholder: "https://asgardeo.io/terms-of-service"
+                                placeholder: "https://myapp.com/terms-of-service"
                             }
                         },
                         heading: "Liens"
@@ -1792,20 +1818,12 @@ export const extensions: Extensions = {
                 },
                 general: {
                     fields: {
-                        copyrightText: {
+                        displayName: {
                             hint:
-                                "Texte qui apparaît en pied de page des écrans de connexion. S'il n'est pas " +
-                                "défini, les valeurs par défaut de {{ productName }} seront utilisées.",
-                            label: "Texte du droit d'auteur",
-                            placeholder: "Saisissez un texte de copyright"
-                        },
-                        siteTitle: {
-                            hint:
-                                "Le titre du site peut apparaître dans les onglets du navigateur, " +
-                                "les résultats des moteurs de recherche, les partages sociaux, etc. " +
-                                "S'il n'est pas défini, les valeurs par défaut {{ productName }} seront utilisées.",
-                            label: "Titre du site",
-                            placeholder: "Entrez un titre de site"
+                                "Nom de l'organisation qui apparaît aux utilisateurs. S'il n'est pas défini, " +
+                                "les valeurs par défaut de {{ productName }} seront utilisées.",
+                            label: "Nom d’affichage de l’organisation",
+                            placeholder: "Entrer un nom d'affichage"
                         },
                         supportEmail: {
                             hint:
@@ -1839,6 +1857,16 @@ export const extensions: Extensions = {
                     success: {
                         description: "Les préférences de marque ont été rétablies avec succès pour {{ tenant }}.",
                         message: "Rétablissement réussi"
+                    },
+                    successWaiting: {
+                        description: "Retour des préférences de marque pour {{ tenant }}."+
+                            "Il peut prendre un certain temps que les changements soient reflétés.",
+                        message: "Retour des préférences de marque"
+                    },
+                    successWaitingAlert: {
+                        description: "Retour des préférences de marque pour {{ tenant }}."+
+                            "Notez que cela peut prendre jusqu'à 10 minutes pour que les modifications soient reflétées.",
+                        message: "Retour des préférences de marque"
                     }
                 },
                 fetch: {
@@ -1881,6 +1909,16 @@ export const extensions: Extensions = {
                     success: {
                         description: "Préférence de marque mise à jour avec succès pour {{ tenant }}.",
                         message: "Mise à jour réussie"
+                    },
+                    successWaiting: {
+                        description: "Mise à jour des préférences de marque pour {{ tenant }}."+
+                            "Il peut prendre un certain temps que les changements soient reflétés.",
+                        message: "Mise à jour des préférences de marque"
+                    },
+                    successWaitingAlert: {
+                        description: "Mise à jour des préférences de marque pour {{ teant }}."+
+                            "Notez que cela peut prendre jusqu'à 10 minutes pour que les modifications soient reflétées.",
+                        message: "Mise à jour des préférences de marque"
                     },
                     tenantMismatch: {
                         description:
@@ -1955,9 +1993,21 @@ export const extensions: Extensions = {
                                 title: "Ressource introuvable"
                             },
                             notFoundWithSupport: {
-                                subTitle: "Besoin d'une mise en page entièrement personnalisée pour "
+                                description: "Besoin d'une mise en page entièrement personnalisée pour "
                                     + "votre organisation? Contactez-nous à <1>{{ supportEmail }}</1>.",
+                                subTitle: "Vous n'avez pas encore déployé de mise en page personnalisée.",
                                 title: "Mise en page personnalisée introuvable"
+                            }
+                        }
+                    },
+                    info: {
+                        layout: {
+                            activatedMessage: {
+                                description: "Vous pouvez désormais intégrer une mise en page personnalisée pour "
+                                    + "les pages de connexion, d'enregistrement et de récupération. Reportezvous "
+                                    + "à notre documentation pour des instructions détaillées.",
+                                subTitle: "La mise en page personnalisée a été activée avec succès.",
+                                title: "Mise en page personnalisée"
                             }
                         }
                     },
@@ -1966,12 +2016,14 @@ export const extensions: Extensions = {
             }
         },
         emailProviders: {
+            configureEmailProvider: "Configurer le fournisseur de messagerie",
             heading: "Fournisseur de messagerie",
             subHeading: "Configurez des serveurs SMTP personnalisés pour envoyer des e-mails avec votre propre adresse e-mail.",
             description: "Configurez les paramètres suivants en fonction de votre serveur SMTP.",
             info: "Vous pouvez personnaliser le contenu des e-mails à l'aide de <1>Modèles d'e-mails</1>.",
             updateButton: "Mise à jour",
             sendTestMailButton: "Envoyer un e-mail test",
+            goBack: "Revenir aux canaux de notification",
             confirmationModal: {
                 assertionHint: "Veuillez confirmer votre action.",
                 content: "Si vous supprimez cette configuration, les e-mails seront envoyés à partir de l'adresse e-mail Asgardeo. " +
@@ -2061,6 +2113,160 @@ export const extensions: Extensions = {
                     success: {
                         message: "Configurations mises à jour avec succès",
                         description: "Mise à jour réussie des configurations du fournisseur de messagerie."
+                    }
+                }
+            }
+        },
+        notificationChannel: {
+            heading: "Canal de notification",
+            title: "Canal de notification",
+            description: "Configurez les canaux de notification pour envoyer des notifications à vos utilisateurs."
+        },
+        smsProviders: {
+            heading: "Fournisseur SMS",
+            subHeading: "Configurez un fournisseur SMS personnalisé pour envoyer des SMS à vos utilisateurs.",
+            description: "Configurez les paramètres suivants en fonction de votre fournisseur SMS.",
+            info: "Vous pouvez personnaliser le contenu du SMS à l'aide des <1>Modèles de SMS</1>.",
+            updateButton: "Mise à jour",
+            sendTestSMSButton: "Envoyer un SMS test",
+            goBack: "Revenir aux canaux de notification",
+            confirmationModal: {
+                assertionHint: "Veuillez confirmer votre action.",
+                content: "Si vous supprimez cette configuration, vous ne recevrez pas de SMS." +
+                    "Veuillez procéder avec prudence.",
+                header: "Es-tu sûr?",
+                message: "Cette action est irréversible et supprimera définitivement les configurations du fournisseur SMS."
+            },
+            dangerZoneGroup: {
+                header: "Zone dangereuse",
+                revertConfig: {
+                    heading: "Supprimer les configurations",
+                    subHeading: "Cette action supprimera les configurations du fournisseur de SMS. Une fois supprimé, vous ne recevrez plus de SMS.",
+                    actionTitle: "Supprimer"
+                }
+            },
+            form: {
+                twilio: {
+                    subHeading: "Paramètres Twilio",
+                    accountSID: {
+                        label: "SID du compte Twilio",
+                        placeholder: "Entrez le SID du compte Twilio",
+                        hint: "Identifiant de chaîne de compte Twilio qui fait office de nom d'utilisateur pour le compte"
+                    },
+                    authToken: {
+                        label: "Jeton d'authentification Twilio",
+                        placeholder: "Entrez le jeton d'authentification Twilio",
+                        hint: "Le jeton d'accès généré par le serveur d'authentification Twilio."
+                    },
+                    sender: {
+                        label: "Expéditrice",
+                        placeholder: "Entrez le numéro de téléphone de l'expéditeur",
+                        hint: "Numéro de téléphone de l'expéditeur."
+                    },
+                    validations: {
+                        required: "Ce champ ne peut pas être vide"
+                    }
+                },
+                vonage: {
+                    subHeading: "Paramètres Vonage",
+                    accountSID: {
+                        label: "SID du compte Vonage",
+                        placeholder: "Entrez le SID du compte Vonage",
+                        hint: "Identifiant de chaîne de compte Vonage qui fait office de nom d'utilisateur pour le compte"
+                    },
+                    authToken: {
+                        label: "Jeton d'authentification Vonage",
+                        placeholder: "Entrez le jeton d'authentification Vonage",
+                        hint: "Le jeton d'accès généré par le serveur d'authentification Vonage"
+                    },
+                    sender: {
+                        label: "Expéditrice",
+                        placeholder: "Entrez le numéro de téléphone de l'expéditeur",
+                        hint: "Numéro de téléphone de l'expéditeur."
+                    },
+                    validations: {
+                        required: "Ce champ ne peut pas être vide"
+                    }
+                },
+                custom: {
+                    subHeading: "Paramètres personnalisés",
+                    providerName: {
+                        label: "Nom du fournisseur SMS",
+                        placeholder: "Entrez le nom du fournisseur SMS",
+                        hint: "Le nom du fournisseur SMS."
+                    },
+                    providerUrl: {
+                        label: "URL du fournisseur SMS",
+                        placeholder: "Entrez l'URL du fournisseur de SMS",
+                        hint: "L'URL du fournisseur SMS."
+                    },
+                    httpMethod: {
+                        label: "Méthode HTTP",
+                        placeholder: "POST",
+                        hint: "La méthode HTTP de la requête API utilisée pour l'envoi du SMS."
+                    },
+                    contentType: {
+                        label: "Type de contenu",
+                        placeholder: "JSON",
+                        hint: "Le type de contenu de la requête API utilisée pour l'envoi du SMS."
+                    },
+                    headers: {
+                        label: "En-têtes",
+                        placeholder: "Saisir les en-têtes",
+                        hint: "En-têtes à inclure dans la requête API d'envoi de SMS."
+                    },
+                    payload: {
+                        label: "Charge utile",
+                        placeholder: "Entrez la charge utile",
+                        hint: "Charge utile de la requête API SMS."
+                    },
+                    key: {
+                        label: "Clé d'authentification du fournisseur SMS",
+                        placeholder: "Entrez la clé d'authentification du fournisseur SMS",
+                        hint: "La clé d'authentification du fournisseur SMS."
+                    },
+                    secret: {
+                        label: "Secret d'authentification du fournisseur SMS",
+                        placeholder: "Entrez le secret d'authentification du fournisseur SMS",
+                        hint: "Le secret d'authentification du fournisseur SMS."
+                    },
+                    sender: {
+                        label: "Expéditrice",
+                        placeholder: "Entrez le numéro de téléphone de l'expéditeur",
+                        hint: "Numéro de téléphone de l'expéditeur."
+                    },
+                    validations: {
+                        required: "Ce champ ne peut pas être vide",
+                        methodInvalid: "La méthode HTTP n'est pas valide",
+                        contentTypeInvalid: "Le type de contenu n'est pas valide"
+                    }
+                }
+            },
+            notifications: {
+                getConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error retrieving the sms provider configurations."
+                    }
+                },
+                deleteConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error deleting the sms provider configurations."
+                    },
+                    success: {
+                        message: "Revert Successful",
+                        description: "Successfully reverted the sms provider configurations."
+                    }
+                },
+                updateConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error updating the sms provider configurations."
+                    },
+                    success: {
+                        message: "Update Successful",
+                        description: "Successfully updated the sms provider configurations."
                     }
                 }
             }
@@ -2705,14 +2911,17 @@ export const extensions: Extensions = {
         sidePanel: {
             apiResources: "Ressources de l'API",
             branding: "l'image de marque",
+            stylesAndText: "Styles et texte",
             monitor: "Journaux",
             categories: {
                 apiResources: "Ressources de l'API",
                 branding: "l'image de marque",
                 emailProvider: "Fournisseur de messagerie",
+                smsProvider: "Fournisseur SMS",
                 monitor: "Journaux"
             },
             emailProvider: "Fournisseur de messagerie",
+            smsProvider: "Fournisseur SMS",
             eventPublishing : "Événements",
             emailTemplates : "Modèles d'e-mails",
             organizationInfo: "Informations sur l'organisation"
@@ -2880,6 +3089,38 @@ export const extensions: Extensions = {
                 usernameLength: "Définir la longueur du nom d'utilisateur",
                 usernameLengthMin: "Min",
                 usernameLengthMax: "Max"
+            },
+            alternativeLoginIdentifierPage: {
+                pageTitle: "Identifiants de connexion alternatifs",
+                description: "Configurez des identifiants de connexion alternatifs et autorisez les utilisateurs à" +
+                    " utiliser un nom d'utilisateur ou un identifiant de connexion configurédans les flux de" +
+                    " connexion et de récupération.",
+                loginIdentifierTypes: "Sélectionnez l'identifiant de connexion",
+                loginIdentifierTypesHint: "Autoriser les utilisateurs à utiliser un nom d'utilisateur ou un" +
+                    " identifiant de connexion configuré dans le flux de connexion.",
+                warning: "Les utilisateurs professionnels peuvent utiliser n'importe lequel des identifiants de" +
+                    " connexion sélectionnés comme alternative au nom d'utilisateur dans les flux de connexion," +
+                    " les flux de récupération, etc.",
+                info: "Vous avez sélectionné l'e-mail comme type de nom d'utilisateur, ce qui en fait l'identifiant de connexion principal.",
+                notification: {
+                    error: {
+                        description:"Erreur lors de la mise à jour de la configuration alternative de" +
+                            " l'identifiant de connexion.",
+                        message: "Erreur lors de la mise à jour de la configuration"
+                    },
+                    success: {
+                        description: "Mise à jour réussie de la configuration alternative de l'identifiant" +
+                            " de connexion.",
+                        message: "Mise à jour réussie"
+                    }
+                },
+                claimUpdateNotification: {
+                    error: {
+                        description: "Erreur lors de la mise à jour de l'attribut en tant qu'attribut unique." +
+                            " Veuillez réessayer.",
+                        message: "Erreur lors de la mise à jour de la revendication"
+                    }
+                }
             },
             pageTitle: "Connexion au compte",
             description: "Personnalisez les configurations de connexion du compte des utilisateurs de votre organisation.",
@@ -3674,6 +3915,63 @@ export const extensions: Extensions = {
                 subHeading: "Configurez les paramètres de sécurité pour protéger les comptes d'utilisateurs."
             },
             additionalSettings: "Paramètres additionnels",
+            analytics: {
+                heading: "Moteur d'analyse",
+                subHeading: "Configurez le moteur d'analyse pour votre organisation.",
+                form: {
+                    fields: {
+                        hostUrl: {
+                            label: "URL de l'hôte",
+                            placeholder: "Entrez l'URL de l'hôte",
+                            hint: "L'URL du moteur d'analyse."
+                        },
+                        hostBasicAuthEnable: {
+                            label: "Activer l'authentification de base",
+                            hint: "Activez l'authentification de base pour le moteur d'analyse."
+                        },
+                        hostUsername: {
+                            label: "Nom d'utilisateur",
+                            placeholder: "Entrez le nom d'utilisateur",
+                            hint: "Le nom d'utilisateur pour s'authentifier dans le moteur d'analyse."
+                        },
+                        hostPassword: {
+                            label: "Mot de passe",
+                            placeholder: "Entrer le mot de passe",
+                            hint: "Le mot de passe pour s'authentifier dans le moteur d'analyse."
+                        },
+                        hostConnectionTimeout: {
+                            label: "Délai d'expiration de la connexion HTTP",
+                            placeholder: "Entrez le délai d'expiration de la connexion",
+                            hint: "Entrez la valeur du délai d'expiration de la connexion en millisecondes."
+                        },
+                        hostReadTimeout: {
+                            label: "Délai d'expiration de lecture HTTP",
+                            placeholder: "Entrez le délai de lecture",
+                            hint: "Entrez la valeur du délai de lecture en millisecondes."
+                        },
+                        hostConnectionRequestTimeout: {
+                            label: "Expiration du délai de demande de connexion HTTP",
+                            placeholder: "Entrez le délai d'expiration de la demande de connexion",
+                            hint: "Entrez la valeur du délai d'expiration de la demande de connexion en millisecondes."
+                        },
+                        hostNameVerification: {
+                            label: "Vérification du nom d'hôte",
+                            placeholder: "Entrez la vérification du nom d'hôte",
+                            hint: "Activez la vérification du nom d'hôte pour le moteur d'analyse. (STRICT | ALLOW_ALL)"
+                        }
+                    },
+                    notification: {
+                        error: {
+                            description: "Une erreur s'est produite lors de la mise à jour des configurations du moteur d'analyse.",
+                            message: "Erreur est survenue"
+                        },
+                        success: {
+                            description: "Mis à jour avec succès les configurations du moteur d'analyse.",
+                            message: "Mise à jour réussie"
+                        }
+                    }
+                }
+            },
             generalBackButton: "Retourner",
             generalDisabledLabel: "désactivé",
             generalEnabledLabel: "activé",
@@ -3932,9 +4230,8 @@ export const extensions: Extensions = {
             deleteUser: {
                 confirmationModal: {
                     content:
-                        "Cependant, le compte de l'utilisateur n'est pas définitivement " +
-                        "supprimé d'Asgardeo et il pourra toujours accéder aux autres organisations auxquelles " +
-                        "il est associé.",
+                        "Cependant, le compte de l'utilisateur n'est pas définitivement supprimé du système et " +
+                        "ils pourront toujours accéder aux autres organisations auxquelles ils sont associés.",
                     message:
                         "Cette action est irréversible et supprimera l'association de l'utilisateur avec " +
                         "cette organisation."

@@ -31,26 +31,23 @@ import {
     ResourceTabPaneInterface,
     Text
 } from "@wso2is/react-components";
-import React, { ElementType, ReactElement } from "react";
+import React, { ReactElement } from "react";
 import { Trans } from "react-i18next";
 import { Dispatch } from "redux";
 import { Divider, Icon, Message } from "semantic-ui-react";
 import { ApplicationGeneralTabOverride } from "./components/application-general-tab-overide";
 import { MarketingConsentModalWrapper } from "./components/marketing-consent/components";
 import { ApplicationConfig, ExtendedFeatureConfigInterface } from "./models";
+import { APIAuthorization } from "../../features/applications/components/api-authorization/api-authorization";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
     SelectedDialectInterface
 } from "../../features/applications/components/settings";
 import { ApplicationManagementConstants } from "../../features/applications/constants";
-import CustomApplicationTemplate from 
-    "../../features/applications/data/application-templates/templates/custom-application/custom-application.json";
 import {
     ApplicationInterface,
     ApplicationTabTypes,
-    ApplicationTemplateIdTypes,
-    ApplicationTemplateListItemInterface,
     SupportedAuthProtocolTypes,
     additionalSpProperty
 } from "../../features/applications/models";
@@ -60,15 +57,12 @@ import { AppConstants } from "../../features/core/constants";
 import {
     IdentityProviderManagementConstants
 } from "../../features/identity-providers/constants/identity-provider-management-constants";
+import { ApplicationRoles } from "../../features/roles/components/application-roles";
 import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
 import SinglePageAppTemplate from 
     "../application-templates/templates/single-page-application/single-page-application.json";
-import { ApplicationRolesConstants } from "../components/application/constants/application-roles";
 import { getTryItClientId } from "../components/application/utils/try-it-utils";
-import APIAuthorizationTab from "../components/component-extensions/application/api-authorization-tab";
-import ApplicationRolesTab from "../components/component-extensions/application/application-roles-tab";
-import QuickStartTab from "../components/component-extensions/application/quick-start-tab";
 import { getGettingStartedCardIllustrations } from "../components/getting-started/configs";
 import { UsersConstants } from "../components/users/constants";
 
@@ -83,12 +77,13 @@ function isClaimInterface(
 }
 
 const IS_ENTERPRISELOGIN_MANAGEMENT_APP: string = "isEnterpriseLoginManagementApp";
-const WSO2_LOGIN_FOR_TEXT: string = "WSO2_LOGIN_FOR_";
 
 // Relative tab indexes.
-const QUICK_START_INDEX: number = 0;
 const API_AUTHORIZATION_INDEX: number = 4;
 const APPLICATION_ROLES_INDEX: number = 4;
+const M2M_API_AUTHORIZATION_INDEX: number = 2;
+
+const featureConfig: FeatureConfigInterface = window[ "AppUtils" ].getConfig().ui.features;
 
 /**
  * Check whether claims is  identity claims or not.
@@ -106,64 +101,56 @@ const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimIn
     return identityRegex.test(claim.mappedLocalClaimURI);
 };
 
-/**
- * Check whether the application is a Choreo application or not.
- *
- * @param application - application.
- * @returns true if the application is a Choreo application.
- */
-const isChoreoApplication = (application: ApplicationInterface): boolean => {
-    // Check whether `isChoreoApp` SP property is available.
-    const additionalSpProperties: additionalSpProperty[] = 
-        application?.advancedConfigurations?.additionalSpProperties;
-
-    const choreoSpProperty: additionalSpProperty = additionalSpProperties?.find(
-        (spProperty: additionalSpProperty) => 
-            spProperty.name === ApplicationRolesConstants.IS_CHOREO_APP_SP_PROPERTY 
-            && spProperty.value === "true"
-    );
-
-    // Check whether the application is a choreo app using choreo app template ID or `isChoreoApp` SP property.
-    return application?.templateId === ApplicationRolesConstants.CHOREO_APP_TEMPLATE_ID
-        || choreoSpProperty?.name === ApplicationRolesConstants.IS_CHOREO_APP_SP_PROPERTY;
-};
-
-/**
- * Check whether the application is a Management application or not.
- * 
- * @param application - application.
- * @returns true if the application is a Management application.
- */
-const isEnterpriseLoginManagemenetApplication = (application: ApplicationInterface): boolean => {
-    let isEnterpriseLoginMgt: string;
-
-    if (application?.advancedConfigurations?.additionalSpProperties?.length > 0) {
-        application?.advancedConfigurations?.additionalSpProperties?.
-            forEach((item: additionalSpProperty) => {
-                if (item.name === IS_ENTERPRISELOGIN_MANAGEMENT_APP && item.value === "true") {
-                    isEnterpriseLoginMgt = "true";
-                }
-            });
-    }
-
-    return application.name.startsWith(WSO2_LOGIN_FOR_TEXT) || isEnterpriseLoginMgt === "true";
-};
-
-/**
- * Check whether the application is the TryIt application or not.
- * 
- * @param application - application.
- * @returns true if the application is the TryIt application.
- */
-const isTryItApplication = (applicaiton: ApplicationInterface , tenantDomain: string): boolean => 
-    applicaiton?.clientId === getTryItClientId(tenantDomain);
-
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
-        showEnableAuthorization: false,
+        showEnableAuthorization: true,
         showMyAccount: true,
-        showReturnAuthenticatedIdPs: false,
-        showSaaS: false
+        showReturnAuthenticatedIdPs: true,
+        showSaaS: true
+    },
+    allowedGrantTypes: {
+        // single page app template
+        [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+        ],
+        // oidc traditional web app template
+        [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
+        ],
+        // oidc standard app template
+        [ "custom-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.PASSWORD,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
+            ApplicationManagementConstants.DEVICE_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
+            ApplicationManagementConstants.SAML2_BEARER,
+            ApplicationManagementConstants.JWT_BEARER
+        ],
+        [ "m2m-application" ]: [
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+        ],
+        [ "mobile-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.PASSWORD,
+            ApplicationManagementConstants.DEVICE_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
+        ]
     },
     attributeSettings: {
         advancedAttributeSettings: {
@@ -191,11 +178,15 @@ export const applicationConfig: ApplicationConfig = {
         roleMapping: true
     },
     customApplication: {
-        allowedProtocolTypes: [ SupportedAuthProtocolTypes.OAUTH2_OIDC, SupportedAuthProtocolTypes.SAML ],
+        allowedProtocolTypes: [
+            SupportedAuthProtocolTypes.OAUTH2_OIDC,
+            SupportedAuthProtocolTypes.SAML,
+            SupportedAuthProtocolTypes.WS_FEDERATION
+        ],
         defaultTabIndex: 1
     },
     editApplication: {
-        extendTabs: true,
+        extendTabs: false,
         getActions: (clientId: string, tenant: string, testId: string) => {
 
             const asgardeoLoginPlaygroundURL: string = window[ "AppUtils" ]?.getConfig()?.extensions?.asgardeoTryItURL;
@@ -385,54 +376,19 @@ export const applicationConfig: ApplicationConfig = {
         },
         getTabExtensions: (
             props: Record<string, unknown>, 
-            features: FeatureConfigInterface,
-            tenantDomain: string
+            features: FeatureConfigInterface
         ): ResourceTabPaneInterface[] => {
-            const { content, ...rest } = props;
             const extendedFeatureConfig: ExtendedFeatureConfigInterface = features as ExtendedFeatureConfigInterface;
-            const applicationRolesFeatureEnabled: boolean = extendedFeatureConfig?.applicationRoles?.enabled;
             const apiResourceFeatureEnabled: boolean = extendedFeatureConfig?.apiResources?.enabled;
+            const applicationRolesFeatureEnabled: boolean = extendedFeatureConfig?.applicationRoles?.enabled;
 
             const application: ApplicationInterface = props?.application as ApplicationInterface;
-            const applicationTemplate: ApplicationTemplateListItemInterface = 
-                props?.template as ApplicationTemplateListItemInterface;
+    
             const onApplicationUpdate: () => void = props?.onApplicationUpdate as () => void;
 
             const tabExtensions: ResourceTabPaneInterface[] = [];
 
-            /**
-             * Return empty list for tab extensions in enterprise login management and try it applications.
-             */
-            if (isEnterpriseLoginManagemenetApplication(application) || isTryItApplication(application, tenantDomain)) {
-                return tabExtensions;
-            }
-
-            // Enable the quick start tab for supported templates when the quick start content is available.
-            if (
-                content
-                && application?.templateId !== CustomApplicationTemplate.id
-                && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-                && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
-                && application?.templateId !== ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-            ) {
-                tabExtensions.push(
-                    {
-                        componentId: "quick-start",
-                        index: QUICK_START_INDEX + tabExtensions.length,
-                        menuItem: I18n.instance.t(
-                            (applicationTemplate?.templateId === ApplicationTemplateIdTypes.MOBILE_APPLICATION) ?
-                                "extensions:develop.applications.quickstart.mobileApp.tabHeading":
-                                "console:develop.componentExtensions.component.application.quickStart.title"
-                        ),
-                        render: () => <QuickStartTab content={ content as ElementType } { ...rest } />
-                    }
-                );
-            }
-
-            const isChoreoApp: boolean = isChoreoApplication(application);
-
             // Enable the API authorization tab for supported templates when the api resources config is enabled.
-            // And disable if the application is a Choreo application or a shared application.
             if (
                 apiResourceFeatureEnabled && !application?.advancedConfigurations?.fragment &&
                 (
@@ -440,36 +396,38 @@ export const applicationConfig: ApplicationConfig = {
                     || application?.templateId === MobileAppTemplate?.id
                     || application?.templateId === OIDCWebAppTemplate?.id
                     || application?.templateId === SinglePageAppTemplate?.id
+                    || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                 )
             ) {
                 tabExtensions.push(
                     {
                         componentId: "api-authorization",
-                        index: API_AUTHORIZATION_INDEX + tabExtensions.length,
+                        index: application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID 
+                            ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length 
+                            : API_AUTHORIZATION_INDEX + tabExtensions.length,
                         menuItem: I18n.instance.t(
                             "extensions:develop.applications.edit.sections.apiAuthorization.title"
                         ),
-                        render: () => <APIAuthorizationTab isChoreoApp={ isChoreoApp } />
+                        render: () => (
+                            <ResourceTab.Pane controlledSegmentation>
+                                <APIAuthorization templateId={ application?.templateId } />
+                            </ResourceTab.Pane>
+                        )
                     }
                 );
             }
 
             // Enable the roles tab for supported templates when the api resources config is enabled.
-            // Otherwise enable the roles tab for choreo applications when the application roles config is enabled.
-            if (
-                (
-                    apiResourceFeatureEnabled &&
-                    applicationRolesFeatureEnabled
-                    && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
-                        applicationRoles?.enabled) 
-                    && (
-                        application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-                        || application?.templateId === MobileAppTemplate?.id
-                        || application?.templateId === OIDCWebAppTemplate?.id
-                        || application?.templateId === SinglePageAppTemplate?.id
-                    )
+            if (apiResourceFeatureEnabled
+                && applicationRolesFeatureEnabled
+                && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
+                    applicationRoles?.enabled) 
+                && (
+                    application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                    || application?.templateId === MobileAppTemplate?.id
+                    || application?.templateId === OIDCWebAppTemplate?.id
+                    || application?.templateId === SinglePageAppTemplate?.id
                 )
-                || (applicationRolesFeatureEnabled && isChoreoApp)
             ) {
                 tabExtensions.push(
                     {
@@ -479,10 +437,12 @@ export const applicationConfig: ApplicationConfig = {
                             "extensions:develop.applications.edit.sections.roles.heading"
                         ),
                         render: () => (
-                            <ApplicationRolesTab 
-                                application={ application }
-                                onUpdate={ onApplicationUpdate }
-                            />
+                            <ResourceTab.Pane controlledSegmentation>
+                                <ApplicationRoles 
+                                    application={ application }
+                                    onUpdate={ onApplicationUpdate }
+                                />
+                            </ResourceTab.Pane>
                         )
                     }
                 );
@@ -516,6 +476,7 @@ export const applicationConfig: ApplicationConfig = {
             if(clientId === getTryItClientId(tenantDomain)) {
                 if(tabType === ApplicationTabTypes.PROVISIONING
                     || tabType === ApplicationTabTypes.INFO
+                    || tabType === ApplicationTabTypes.ROLES
                     || tabType === ApplicationTabTypes.PROTOCOL){
                     return false;
                 }
@@ -699,6 +660,7 @@ export const applicationConfig: ApplicationConfig = {
     },
     templates:{
         custom: true,
+        m2m: !featureConfig?.applications?.disabledFeatures?.includes("m2mTemplate"),
         mobile: true,
         oidc: true,
         saml: false,

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -33,7 +33,7 @@ import { PreLoader, ProtectedRoute } from "../components";
 import { getAppLayoutRoutes } from "../configs/routes";
 import { getEmptyPlaceholderIllustrations } from "../configs/ui";
 import { AppConstants } from "../constants";
-import { AppState } from "../store";
+import { AppState, store } from "../store";
 import { AppUtils } from "../utils";
 
 /**
@@ -124,7 +124,7 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                                         These cookies are used to maintain an uninterrupted continuous
                                         session whilst providing smooth and personalized services.
                                         To learn more about how we use cookies, refer our <a
-                                            href="https://wso2.com/cookie-policy"
+                                            href={ store.getState()?.config?.ui?.cookiePolicyUrl ?? "" }
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             data-testid="login-page-cookie-policy-link"

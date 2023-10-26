@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -33,6 +33,8 @@ export const getOrganizationsResourceEndpoints = (
         breadcrumb: `${serverHostWithOrgPath}/api/users/v1/me/organizations/root/descendants`,
         organizations: `${serverHostWithOrgPath}/api/server/v1`,
         rootOrganization: `${serverHost}/api/server/v1`,
+        rootUsersOrganization: `${serverHost}/api/users/v1`,
+        usersOrganization: `${serverHostWithOrgPath}/api/users/v1`,
         usersSuperOrganization: `${serverHostWithOrgPath}/api/users/v1/me/organizations/root`
     };
 };

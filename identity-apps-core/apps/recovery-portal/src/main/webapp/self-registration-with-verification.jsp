@@ -47,7 +47,6 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.TreeMap" %>
-<%@ page import="org.json.JSONObject" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -412,7 +411,7 @@
                                         value="<%=Encode.forHtmlAttribute(password)%>"
                                         class="form-control required usrName usrNameLength">
                                 </div>
-                                
+
 
                                 <% Claim emailNamePII =
                                         uniquePIIs.get(IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM);
@@ -664,7 +663,7 @@
                                     <button id="registrationSubmit"
                                             class="ui primary button large fluid"
                                             type="submit" disabled>
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Register")%>
+                                        <%=i18n(recoveryResourceBundle, customText, "sign.up.button")%>
                                     </button>
                                 </div>
                                 <div class="ui divider hidden"></div>
@@ -723,6 +722,9 @@
                 <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
+        <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+            <jsp:include page="${pathOfDynamicComponent}" />
+        </layout:dynamicComponent>
     </layout:main>
 
     <%-- footer --%>

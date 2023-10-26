@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -1454,7 +1454,7 @@ export const myAccount: MyAccountNS = {
                 "gravatar": {
                     "errors": {
                         "noAssociation": {
-                            "content": "Parece que el correo electrónico seleccionado no está registrado en Gravatar. Regístrese para obtener una cuenta de Gravatar visitando el sitio web oficial de Gravatar o use uno de los siguientes.",
+                            "content": "Parece que el correo electrónico seleccionado no está registrado en Gravatar. Regístrese para obtener una cuenta de Gravatar visitando el sitio <1>web oficial de Gravatar</1> o use uno de los siguientes.",
                             "header": "¡No se ha encontrado ninguna imagen de Gravatar coincidente!"
                         }
                     },
@@ -1586,7 +1586,7 @@ export const myAccount: MyAccountNS = {
     },
     "sections": {
         "accountRecovery": {
-            "description": "Administrar la información de recuperación que podemos usar para ayudarlo a recuperar su nombre de usuario o contraseña",
+            "description": "Administre la información de recuperación que podemos usar para ayudarlo a recuperar su contraseña",
             "heading": "Recuperación de Cuenta"
         },
         "changePassword": {

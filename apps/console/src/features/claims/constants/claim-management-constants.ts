@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -104,8 +104,12 @@ export class ClaimManagementConstants {
         SCIMConfigs.oidc
     ];
 
+    public static readonly AXSCHEMA_MAPPING: string = "http://axschema.org";
+
     public static readonly OIDC: string = "oidc";
     public static readonly SCIM: string = "scim";
+    public static readonly AXSCHEMA: string = "axschema";
+    public static readonly EIDAS: string = "eidas";
     public static readonly OTHERS: string = "others";
 
     public static readonly SCIM_TABS: {
@@ -116,6 +120,14 @@ export class ClaimManagementConstants {
         { name: "User Schema", uri: "urn:ietf:params:scim:schemas:core:2.0:User" },
         { name: "Enterprise Schema", uri: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User" },
         { name: "Core 1.0 Schema", uri: "urn:scim:schemas:core:1.0" }
+    ];
+
+    public static readonly EIDAS_TABS: {
+        name: string;
+        uri: string;
+    }[] = [
+        { name: "eIDAS/Legal Person", uri: "http://eidas.europa.eu/attributes/legalperson" },
+        { name: "eIDAS/Natural Person", uri: "http://eidas.europa.eu/attributes/naturalperson" }
     ];
 
     /**
@@ -129,6 +141,7 @@ export class ClaimManagementConstants {
     public static readonly APPLICATION_ROLES_CLAIM_URI: string = "http://wso2.org/claims/applicationRoles";
     public static readonly LOCATION_CLAIM_URI: string = "http://wso2.org/claims/location";
     public static readonly EMAIL_CLAIM_URI: string = "http://wso2.org/claims/emailaddress";
+    public static readonly MOBILE_CLAIM_URI: string = "http://wso2.org/claims/mobile";
 
     public static readonly GROUPS_CLAIM_NAME: string = "groups";
     public static readonly ROLES_CLAIM_NAME: string = "roles";

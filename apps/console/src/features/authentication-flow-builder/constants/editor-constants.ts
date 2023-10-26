@@ -16,6 +16,6 @@
  * under the License.
  */
 
-export const LEGACY_EDITOR_FEATURE_ID: string = "authenticationFlowLegacyEditor";
+export const LEGACY_EDITOR_FEATURE_ID: string = "applications.loginFlow.legacyEditor";
 
-export const VISUAL_EDITOR_FEATURE_ID: string = "authenticationFlowVisualEditor";
+export const VISUAL_EDITOR_FEATURE_ID: string = "applications.loginFlow.visualEditor";

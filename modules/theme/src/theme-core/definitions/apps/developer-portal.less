@@ -932,9 +932,35 @@
     }
 }
 
+.role-assigned-button {
+    margin-top: 14px;
+    margin-bottom: 14px;
+}
+
+.role-permission-form {
+    margin-bottom: 14px;
+}
+
+.role-permission-list {
+    margin-top: 14px;
+    padding-bottom: 14px;
+
+    .form-label {
+        font-size: 13px;
+    }
+
+    .ui.basic.segment.bordered.emphasized {
+        margin-top: 4px;
+    }
+}
+
 /*-------------------------------
       Connector Sections
 --------------------------------*/
+
+.connector-section-content {
+    padding : 2em 2em !important;
+}
 
 .connector-section-with-image-bg {
     height: @connectorSectionWithImageBgHeight;
@@ -1926,4 +1952,32 @@
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
+}
+
+/*-------------------------------
+    Alternative Login Identifier
+--------------------------------*/
+
+.alternative-login-identifier-checkbox {
+    padding: 0;
+}
+
+.alternative-login-identifier-item-text {
+    padding-left: 1rem;
+}
+
+.ui.info {
+    &.alternative-login-identifier-info {
+        margin-left: 2rem;
+    }
+}
+
+
+.oxygen-code {
+    &.alternative-login-identifier-code {
+        background-color: transparent;
+        border: none;
+        font-size: 0.9rem;
+        padding: 0;
+    }
 }

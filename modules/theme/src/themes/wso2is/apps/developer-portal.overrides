@@ -1126,6 +1126,7 @@ TODO : Move values to separate variables and cleanup styles.
                 .ui.attached.menu {
                     border-top-right-radius: 0;
                     border-right-color: transparent;
+                    min-height: 50px;
                 }
                 .resource-tab-pane {
                     border-bottom-right-radius: 0;
@@ -1163,6 +1164,7 @@ TODO : Move values to separate variables and cleanup styles.
 
                     .ui.attached.menu {
                         padding: 0.36em 1.14285714em;
+                        min-height: 50px;
 
                         .item.active {
                             border-bottom-color: transparent;
@@ -1178,25 +1180,13 @@ TODO : Move values to separate variables and cleanup styles.
                             align-items: center;
                             justify-content: space-between;
 
-                            .preview-screen-selection {
+                            .branding-preference-custom-text-screen-dropdown {
                                 display: flex;
                                 flex-direction: row;
                                 flex-wrap: nowrap;
                                 align-content: center;
                                 align-items: center;
                                 gap: 1em;
-
-                                .ui.dropdown {
-                                    min-width: 160px;
-                                    padding-top: 8px;
-                                    min-height: 10px;
-                                    padding-bottom: 8px;
-
-                                    >.dropdown.icon {
-                                        padding-top: 8px;
-                                        padding-bottom: 8px;
-                                    }
-                                }
                             }
                         }
                     }
@@ -1239,7 +1229,7 @@ TODO : Move values to separate variables and cleanup styles.
     }
 }
 
-.branding-preference-preview-error {
+.branding-preference-preview-message {
     width: 100%;
     height: 100%;
     display: flex;
@@ -1882,5 +1872,13 @@ TODO : Move values to separate variables and cleanup styles.
     border-radius: 22px !important;
     padding: 12px 20px 12px 20px !important;
     background: @primaryColorGradient !important;
+    text-transform: capitalize !important;
+}
+
+#onetrust-reject-all-handler {
+    border-radius: 22px !important;
+    padding: 12px 20px 12px 20px !important;
+    background: none !important;
+    color: @primaryColor !important;
     text-transform: capitalize !important;
 }

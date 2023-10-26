@@ -17,10 +17,8 @@
  */
 
 import {
-    BuildingGearIcon, 
-    DocumentPenIcon, 
+    BuildingGearIcon,
     PaletteIcon,
-    SquareMagnifyingGlassIcon,
     SquareUserIcon
 } from "@oxygen-ui/react-icons";
 import { FeatureStatus } from "@wso2is/access-control";
@@ -255,6 +253,7 @@ export class RouteUtils {
     }
 
     public static groupNavbarRoutes(routes: RouteInterface[], saasFeatureStatus?: FeatureStatus): NavRouteInterface[] {
+
         const userManagement: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: SquareUserIcon,
             id: "userManagement",
@@ -262,31 +261,22 @@ export class RouteUtils {
             order: 1
         };
 
-        const attributeManagement: Omit<RouteInterface, "showOnSidePanel"> = {
-            icon: DocumentPenIcon,
-            id: "attributeManagement",
-            name: "Attribute Management",
-            order: 2
-        };
-
-        const organizationalSettings: Omit<RouteInterface, "showOnSidePanel"> = {
+        const userAttributesAndStores: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: BuildingGearIcon,
-            id: "organizationalSettings",
-            name: "Organizational Settings",
-            order: 3
+            id: "userAttributesAndStores",
+            name: "User Attributes & Stores"
         };
 
-        const customization: Omit<RouteInterface, "showOnSidePanel"> = {
+        const organizationManagement: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: BuildingGearIcon,
+            id: "organizationManagement",
+            name: "Organization Management"
+        };
+
+        const branding: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: PaletteIcon,
             id: "customization",
-            name: "Customization",
-            order: 4
-        };
-
-        const monitoring: Omit<RouteInterface, "showOnSidePanel"> = {
-            icon: SquareMagnifyingGlassIcon,
-            id: "monitoring",
-            name: "Monitoring"
+            name: "Branding"
         };
 
         const overview: NavCategory= {
@@ -309,13 +299,32 @@ export class RouteUtils {
             order: 3
         };
 
+        const monitoring: NavCategory = {
+            id: "monitoring",
+            order: 4
+        };
+
+        const other: NavCategory = {
+            id: "other",
+            order: 5
+        };
+
+        const pathsToCheck: string[] = [
+            `${AppConstants.getAdminViewBasePath()}/governance-connectors/`,
+            `${AppConstants.getAdminViewBasePath()}/connector/`,
+            AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"),
+            AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"),
+            AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
+            AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT")
+        ];
+
         const CategoryMappedRoutes: Omit<RouteInterface, "showOnSidePanel">[] = [
             {
                 category: overview,
                 id: "gettingStarted"
             },
             {
-                category: overview,
+                category: monitoring,
                 id: "insights"
             },
             {
@@ -350,88 +359,91 @@ export class RouteUtils {
             },
             {
                 category: manage,
+                id: "userRoles",
+                parent: userManagement
+            },
+            {
+                category: manage,
                 id: "roles",
                 parent: userManagement
             },
             {
                 category: manage,
                 id: "userStores",
-                parent: userManagement
+                parent: userAttributesAndStores
             },
             {
                 category: manage,
                 id: "attributeDialects",
-                parent: attributeManagement
+                parent: userAttributesAndStores
             },
             {
                 category: manage,
                 id: "oidcScopes",
-                parent: attributeManagement
+                parent: userAttributesAndStores
             },
             {
-                category: manage,
+                category: build,
                 id: "branding",
-                parent: customization
+                parent: branding
             },
             {
-                category: manage,
+                category: build,
                 id: "communication-management",
-                parent: customization
+                parent: branding
             },
             {
-                category: manage,
-                id: "administrators",
-                parent: organizationalSettings
+                category: build,
+                id: "notification-channels",
+                parent: branding,
+                selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
+                    history.location.pathname === AppConstants.getPaths().get("SMS_PROVIDER") ||
+                    history.location.pathname === `${ AppConstants.getDeveloperViewBasePath() }/notification-channels`
             },
             {
-                category: manage,
-                id: "myAccount",
-                parent: organizationalSettings
+                category: settings,
+                id: "administrators"
             },
             {
-                category: manage,
-                id: "userOnboarding",
-                parent: organizationalSettings
-            },
-            {
-                category: manage,
-                id: "accountLogin",
-                parent: organizationalSettings
-            },
-            {
-                category: manage,
-                id: "accountRecovery",
-                parent: organizationalSettings
-            },
-            {
-                category: manage,
-                id: "accountSecurity",
-                parent: organizationalSettings
-            },
-            {
-                category: manage,
+                category: build,
                 id: "emailProviders",
-                parent: organizationalSettings
+                parent: branding
             },
             {
                 category: manage,
-                id: "adminAdvisoryBanner",
-                parent: organizationalSettings
-            },
-            {
-                category: settings,
                 id: "organizations",
-                order: 1
+                parent: organizationManagement
+            },
+            {
+                category: manage,
+                id: "organizationDiscovery",
+                parent: organizationManagement
+            },
+            {
+                category: monitoring,
+                id: "logs"
+            },
+            {
+                category: build,
+                id: "smsProviders",
+                parent: branding
+            },
+            {
+                category: other,
+                id: "remoteLogging"
             },
             {
                 category: settings,
-                id: "logs",
-                parent: monitoring
+                id: "eventPublishing"
             },
             {
                 category: settings,
-                id: "eventPublishing",
-                parent: monitoring
+                id: "loginAndRegistration",
+                selected: pathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
+            },
+            {
+                category: other,
+                id: "analytics"
             }
         ];
 
@@ -441,14 +453,15 @@ export class RouteUtils {
 
             return !saasFeatureIsEnabled;
         }).map((route: RouteInterface) => {
-            const categoryMappedRoute: Omit<RouteInterface, "showOnSidePanel"> 
+            const categoryMappedRoute: Omit<RouteInterface, "showOnSidePanel">
                 = CategoryMappedRoutes.find((item: RouteInterface) => item.id === route.id);
-            
+
             return {
                 ...route,
                 navCategory: categoryMappedRoute?.category,
                 order: categoryMappedRoute?.order,
-                parent: categoryMappedRoute?.parent
+                parent: categoryMappedRoute?.parent,
+                selected: categoryMappedRoute?.selected
             };
         });
 
@@ -468,9 +481,9 @@ export class RouteUtils {
             }));
 
         const ungroupedItems: NavRouteInterface[] = itemsWithCategory.filter((item: NavRouteInterface) => !item.parent);
-        
+
         return sortBy(
-            sortBy([ ...updatedGroupedItems, ...ungroupedItems ], (item: NavRouteInterface) => item.order), 
+            sortBy([ ...updatedGroupedItems, ...ungroupedItems ], (item: NavRouteInterface) => item.order),
             (item: NavRouteInterface) => item.navCategory?.order
         );
     }

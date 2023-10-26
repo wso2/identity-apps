@@ -33,7 +33,7 @@
 %>
 <div>
     <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
-        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login")%>
+        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login.heading")%>
     </h2>
 </div>
 

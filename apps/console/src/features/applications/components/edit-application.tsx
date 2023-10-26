@@ -26,7 +26,6 @@ import {
     ResourceTabPaneInterface
 } from "@wso2is/react-components";
 import Axios, { AxiosError, AxiosResponse } from "axios";
-import inRange from "lodash-es/inRange";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -62,6 +61,7 @@ import CustomApplicationTemplate
 import {
     ApplicationInterface,
     ApplicationTabTypes,
+    ApplicationTemplateIdTypes,
     ApplicationTemplateInterface,
     AuthProtocolMetaListItemInterface,
     InboundProtocolListItemInterface,
@@ -183,10 +183,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(undefined);
     const [ totalTabs, setTotalTabs ] = useState<number>(undefined);
+    const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const isFragmentApp: boolean = application.advancedConfigurations?.fragment || false;
+    const isFragmentApp: boolean = application?.advancedConfigurations?.fragment || false;
 
     /**
      * Called when an application updates.
@@ -237,6 +238,16 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     },[ template ]);
 
     /**
+     * Check whether the application is an M2M Application
+     */
+    useEffect(() => {
+
+        if (template?.id == ApplicationTemplateIdTypes.M2M_APPLICATION) {
+            setM2MApplication(true);
+        }
+    }, [ template ]);
+
+    /**
      * Called when the URL fragment updates.
      */
     useEffect( () => {
@@ -253,15 +264,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
             const tabIndex: number = parseInt(urlFragment[1], 10);
 
-            if(inRange(tabIndex,  0, totalTabs)) {
-                if(tabIndex === activeTabIndex) {
-                    return;
-                }
-                handleActiveTabIndexChange(tabIndex);
-            } else {
-                // Change the tab index to defaultActiveIndex for invalid URL fragments.
-                handleDefaultTabIndexChange(defaultActiveIndex);
+            if(tabIndex === activeTabIndex) {
+                return;
             }
+
+            handleActiveTabIndexChange(tabIndex);
         } else if (window.location.hash.includes(ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG)) {
             // Handle loading sign-in method tab when redirecting from the "Connected Apps" Tab of an IdP.
             const renderedTabPanes: ResourceTabPaneInterface[] = resolveTabPanes();
@@ -614,7 +621,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 description={ application.description }
                 discoverability={ application.advancedConfigurations?.discoverableByEndUsers }
-                isSaasApp={ application.advancedConfigurations?.saas }
                 imageUrl={ application.imageUrl }
                 name={ application.name }
                 application = { application }
@@ -821,7 +827,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))
-                && !isFragmentApp) {
+                && !isFragmentApp
+                && !isM2MApplication) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES, tenantDomain) &&
@@ -844,7 +851,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 });
             }
             if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))) {
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))
+                && !isM2MApplication) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
@@ -861,7 +869,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (applicationConfig.editApplication.showProvisioningSettings
                 && isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))
-                && !isFragmentApp) {
+                && !isFragmentApp
+                && !isM2MApplication) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING, tenantDomain) &&
@@ -873,7 +882,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))
-                && !isFragmentApp) {
+                && !isFragmentApp
+                && !isM2MApplication) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
@@ -911,8 +921,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
-                 && application?.templateId != ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
-                    && !isFragmentApp) {
+                 && !isFragmentApp) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
@@ -929,7 +938,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                      render: InfoTabPane
                  });
             }
-            
+
             extensionPanes.forEach(
                 (extensionPane: ResourceTabPaneInterface) => {
                     panes.splice(extensionPane.index, 0, extensionPane);

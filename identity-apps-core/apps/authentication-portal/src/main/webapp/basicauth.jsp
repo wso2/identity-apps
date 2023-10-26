@@ -212,7 +212,12 @@
             document.getElementById("loginForm").submit();
         } else {
             // Reset the recaptcha to allow another submission.
-            grecaptcha.reset();
+            var reCaptchaType = "<%= CaptchaUtil.getReCaptchaType()%>"
+            if ("recaptcha-enterprise" == reCaptchaType) {
+                grecaptcha.enterprise.reset();
+            } else {
+                grecaptcha.reset();
+            }
         }
     }
 </script>
@@ -234,7 +239,7 @@
     Boolean isAdminBannerAllowedInSP = CONSOLE.equals(Encode.forJava(request.getParameter("sp")));
     Boolean isAdminAdvisoryBannerEnabledInTenant = false;
     String adminAdvisoryBannerContentOfTenant = "";
-    
+
     try {
         if (isAdminBannerAllowedInSP) {
             AdminAdvisoryDataRetrievalClient adminBannerPreferenceRetrievalClient =
@@ -251,6 +256,10 @@
     String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
     Boolean isEmailUsernameEnabled = false;
     String usernameLabel = "username";
+    String usernamePlaceHolder = "enter.your.username";
+
+    Boolean isMultiAttributeLoginEnabledInTenant;
+    String allowedAttributes;
 
     if (StringUtils.isNotBlank(emailUsernameEnable)) {
         isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
@@ -258,8 +267,26 @@
         isEmailUsernameEnabled = isEmailUsernameEnabled();
     }
 
+    try {
+        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+        isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantForTheming);
+        allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantForTheming);
+    } catch (PreferenceRetrievalClientException e) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", AuthenticationEndpointUtil
+                .i18n(resourceBundle, "something.went.wrong.contact.admin"));
+        IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
+
     if (isEmailUsernameEnabled == true) {
         usernameLabel = "email.username";
+    } else if (isMultiAttributeLoginEnabledInTenant) {
+        if (allowedAttributes != null) {
+            usernameLabel = getUsernameLabel(resourceBundle, allowedAttributes);
+            usernamePlaceHolder = "enter.your.identifier";
+        }
     }
 
     String resendUsername = request.getParameter("resend_username");
@@ -443,14 +470,18 @@
    <% } %>
     <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType)) { %>
             <div class="field m-0">
-                <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "username")%></label>
+                <% if (isMultiAttributeLoginEnabledInTenant) { %>
+                    <label><%=usernameLabel %></label>
+                <% } else { %>
+                    <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%></label>
+                <% } %>
                 <div class="ui fluid left icon input">
                 <input
                     type="text"
                     id="usernameUserInput"
                     value=""
                     name="usernameUserInput"
-                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.your.username")%>"
+                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, usernamePlaceHolder)%>"
                     data-testid="login-page-username-input"
                     aria-required="true"
                 >
@@ -628,7 +659,7 @@
                 <%= reCaptchaEnabled ? "disabled" : "" %>
                 onclick="handleClickSignIn()"
             >
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login")%>
+                <%= i18n(resourceBundle, customText, "login.button") %>
             </button>
         </div>
     </div>
@@ -657,11 +688,11 @@
     <% if (isIdentifierFirstLogin(inputType) && !StringUtils.equals("true", promptAccountLinking)) { %>
         <div class="field external-link-container text-small mt-4">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "not.you")%>
-            <a 
-                id="backLink" 
-                class="clickable-link" 
-                tabindex="0" 
-                onclick="goBack()" 
+            <a
+                id="backLink"
+                class="clickable-link"
+                tabindex="0"
+                onclick="goBack()"
                 onkeypress="javascript: if (window.event.keyCode === 13) goBack()"
                 data-testid="login-page-back-button">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.different.account")%>

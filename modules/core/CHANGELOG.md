@@ -1,5 +1,29 @@
 # @wso2is/core
 
+## 2.0.7
+
+### Patch Changes
+
+- [#4182](https://github.com/wso2/identity-apps/pull/4182) [`a57e0d8773`](https://github.com/wso2/identity-apps/commit/a57e0d87739e4ebe8c358e54145688305159a665) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Addressed the problem where branding changes in the cookie policy were not being displayed.
+
+## 2.0.6
+
+### Patch Changes
+
+- [#4312](https://github.com/wso2/identity-apps/pull/4312) [`7c80b2f9ad`](https://github.com/wso2/identity-apps/commit/7c80b2f9ada521232a80e8fe6469cd59d463d0f1) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add permission assignment UI to roles
+
+## 2.0.5
+
+### Patch Changes
+
+- [#4297](https://github.com/wso2/identity-apps/pull/4297) [`990032d4d9`](https://github.com/wso2/identity-apps/commit/990032d4d9e4f2c0e711c6caacba19b5696ea30e) Thanks [@savindi7](https://github.com/savindi7)! - Revamp the UI of Login & Registration page
+
+## 2.0.4
+
+### Patch Changes
+
+- [#4175](https://github.com/wso2/identity-apps/pull/4175) [`459c9713fb`](https://github.com/wso2/identity-apps/commit/459c9713fb7943244682c632b7ac0b9245874b40) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add bulk user import feature
+
 ## 2.0.3
 
 ### Patch Changes

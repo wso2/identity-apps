@@ -47,7 +47,7 @@
         <button
             class="ui primary large button"
             type="submit">
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login")%>
+            <%= i18n(resourceBundle, customText, "login.button") %>
         </button>
     </div>
 </form>

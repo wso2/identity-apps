@@ -175,11 +175,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 feature?.organizations,
                 feature?.organizations?.scopes?.read,
                 scopes
-            ) &&
-            organizationConfigs.showOrganizationDropdown
+            )
         );
     }, [
-        organizationConfigs.showOrganizationDropdown,
         tenantDomain,
         feature.organizations
     ]);

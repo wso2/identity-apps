@@ -391,7 +391,7 @@
         if (reCaptchaEnabled) {
             String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-        <script src='<%=(reCaptchaAPI)%>'  async defer></script>
+        <script src='<%=(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -413,7 +413,7 @@
         <layout:component componentName="MainSection" >
             <div class="ui segment">
                 <h3 class="ui header" data-testid="self-registration-username-request-page-header">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Start.signing.up")%>
+                    <%=i18n(recoveryResourceBundle, customText, "sign.up.heading")%>
                 </h3>
 
                 <% if (error) { %>
@@ -477,8 +477,8 @@
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(name))%>',
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(type))%>')"
                             >
-                            <img 
-                                class="ui image" 
+                            <img
+                                class="ui image"
                                 src="libs/themes/wso2is/assets/images/identity-providers/google-idp-illustration.svg"
                                 alt="Google sign-up logo"
                                 role="presentation">
@@ -499,8 +499,8 @@
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(name))%>',
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(type))%>')"
                             >
-                            <img 
-                                class="ui image" 
+                            <img
+                                class="ui image"
                                 src="libs/themes/wso2is/assets/images/identity-providers/github-idp-illustration.svg"
                                 alt="Github sign-up logo"
                                 role="presentation">
@@ -531,8 +531,16 @@
                         </div>
                     </div>
                     <br>
-                    <%
-                        } else {
+                    <% } else { 
+
+                        String logoPath = imageURL;
+                                        
+                        if (!imageURL.isEmpty() && imageURL.contains("/")) {
+                            String[] imageURLSegements = imageURL.split("/");
+                            String logoFileName = imageURLSegements[imageURLSegements.length - 1];
+
+                            logoPath = "libs/themes/default/assets/images/identity-providers/" + logoFileName;
+                        }
                     %>
                     <div class="social-login blurring social-dimmer">
                         <div class="field">
@@ -548,7 +556,7 @@
                                         role="presentation"
                                         alt="sign-up-with-<%=Encode.forHtmlContent(name)%> logo"
                                         class="ui image"
-                                        src="<%=Encode.forHtmlAttribute(imageURL)%>">
+                                        src="<%=Encode.forHtmlAttribute(logoPath)%>">
                                     <span><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "continue.with")%> <%=Encode.forHtmlContent(displayName)%></span>
                             </button>
                         </div>
@@ -1060,6 +1068,8 @@
                                     <div class="g-recaptcha"
                                         data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
                                         data-theme="light"
+                                        data-bind="registrationSubmit"
+                                        data-callback="submitForm"
                                     >
                                     </div>
                                 </div>
@@ -1149,8 +1159,7 @@
                             </div>
                         <div class="buttons mt-4">
                             <button id="registrationSubmit" class="ui primary button large fluid" type="submit">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                        "Register")%>
+                                <%= i18n(recoveryResourceBundle, customText, "sign.up.button") %>
                             </button>
                         </div>
                         <div class="ui divider hidden"></div>
@@ -1184,6 +1193,9 @@
                 <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
+        <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+            <jsp:include page="${pathOfDynamicComponent}" />
+        </layout:dynamicComponent>
     </layout:main>
 
     <%-- footer --%>
@@ -1575,6 +1587,109 @@
             $("#previous_step").val(window.location.href);
         });
 
+        // Submit form method to submit when recaptcha is enabled.
+        function submitForm() {
+            $form = $("#register");
+            if ($form.data("submitted") === true) {
+                // Previously submitted - don't submit again.
+                console.warn("Prevented a possible double submit event");
+            } else {
+                var validInput = true;
+                var userName = document.getElementById("username");
+                var alphanumericUsernameUserInput = document.getElementById("alphanumericUsernameUserInput");
+                var usernameUserInput = document.getElementById("usernameUserInput");
+                var password = document.getElementById("password");
+                var passwordUserInput = document.getElementById("passwordUserInput");
+                var unsafeCharPattern = /[<>`\"]/;
+                var elements = document.getElementsByTagName("input");
+                var error_msg = $("#error-msg");
+                var server_error_msg = $("#server-error-msg");
+
+                // Username validation.
+                if (isAlphanumericUsernameEnabled()) {
+                    if (showAlphanumericUsernameValidationStatus()) {
+                        userName.value = alphanumericUsernameUserInput.value.trim();
+                    } else {
+                        validInput = false;
+                    }
+                } else {
+                    if (showUsernameValidationStatus()) {
+                        userName.value = usernameUserInput.value.trim();
+                    } else {
+                        validInput = false;
+                    }
+                }
+                // Password validation.
+                if (showPasswordValidationStatus()) {
+                    if (passwordUserInput) {
+                        password.value = passwordUserInput.value.trim();
+                    }
+                } else {
+                    validInput = false;
+                }
+                // Firstname validation.
+                if (!showFirstNameValidationStatus()) {
+                    validInput = false;
+                }
+                // Lastname validation.
+                if (!showLastNameValidationStatus()) {
+                    validInput = false;
+                }
+                // Date of birth validation.
+                if (!showDateOfBirthValidationStatus()) {
+                    validInput = false;
+                }
+                // Mobile number validation.
+                if (!showMobileNumberValidationStatus()) {
+                    validInput = false;
+                }
+                // Country validation
+                if (!showCountryValidationStatus()) {
+                    validInput = false;
+                }
+                // Validate the custom input fields.
+                // If at least one of the fields return false,
+                // the input will be invalid.
+                for (i = 0; i < elements.length; i++) {
+                    if (!showFieldValidationStatus(elements[i])) {
+                        validInput = false;
+                    }
+                }
+                // Hide the error message from server if exists.
+                if (server_error_msg.text() !== null && server_error_msg.text().trim() !== ""  ) {
+                    $("#error-msg").hide();
+                    error_msg = $("#server-error-msg");
+                }
+                <%
+                    if(reCaptchaEnabled) {
+                        %>
+                        var resp = $("[name='g-recaptcha-response']")[0].value;
+                        if (resp.trim() == '') {
+                            error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                "Please.select.reCaptcha")%>");
+                            error_msg.show();
+                            $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
+                            validInput = false;
+                        }
+                        <%
+                    }
+                %>
+                // Do the form submission if the inputs are valid.
+                if (validInput) {
+                    $form.data("submitted", true);
+                    document.getElementById("register").submit();
+                } else {
+                    // Reset the recaptcha to allow another submission.
+                    var reCaptchaType = "<%= CaptchaUtil.getReCaptchaType()%>"
+                    if ("recaptcha-enterprise" == reCaptchaType) {
+                        grecaptcha.enterprise.reset();
+                    } else {
+                        grecaptcha.reset();
+                    }
+                }
+            }
+        }
+
         // Handle selected authenticators.
         function handleNoDomain(elem, key, value) {
             var linkClicked = "link-clicked";
@@ -1704,7 +1819,7 @@
             } else {
                 if (alphanumericUsernameUserInput.value.trim().length < usernameConfig.minLength
                 || alphanumericUsernameUserInput.value.trim().length > usernameConfig.maxLength) {
-                    alphanumeric_username_error_msg_text.text( 
+                    alphanumeric_username_error_msg_text.text(
                         "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.length.should.be")%>"
                         + " " + usernameConfig.minLength + " "
                         + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "and")%>"

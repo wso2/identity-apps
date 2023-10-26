@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -63,6 +63,8 @@ import { getGeneralIcons } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
     from "../../data/application-templates/templates/custom-application/custom-application.json";
+import M2MApplicationTemplate
+    from "../../data/application-templates/templates/m2m-application/m2m-application.json";
 import MobileTemplate
     from "../../data/application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebApplicationTemplate
@@ -178,7 +180,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         state.config.ui.isClientSecretHashEnabled);
     const orgType: OrganizationType = useSelector((state: AppState) =>
         state?.organization?.organizationType);
-    const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) => 
+    const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) =>
         state.organization.organization);
 
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
@@ -249,13 +251,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
     const [ isMobileApplication, setMobileApplication ] = useState<boolean>(false);
+    const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
     const [ isFormStale, setIsFormStale ] = useState<boolean>(false);
 
     const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
     const [ isCertAvailableForEncrypt, setCertAvailableForEncrypt ] = useState(false);
 
-    const [ isAppShared, setIsAppShared ] = useState<boolean>(false); 
+    const [ isAppShared, setIsAppShared ] = useState<boolean>(false);
     const [ sharedOrganizationsList, setSharedOrganizationsList ] = useState<Array<OrganizationInterface>>(undefined);
 
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
@@ -350,10 +353,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 ".getSharedOrganizations.genericError.message")
                     })
                 );
-    
+
                 return;
             }
-    
+
             dispatch(
                 addAlert({
                     description: t("console:develop.features.applications.edit.sections.shareApplication" +
@@ -370,9 +373,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     useEffect(() => {
         const isSharedWithAll: additionalSpProperty[] = application?.advancedConfigurations
             ?.additionalSpProperties?.filter((property: additionalSpProperty) =>
-                property?.name === "shareWithAllChildren");    
+                property?.name === "shareWithAllChildren");
 
-        if ((sharedOrganizationsList?.length > 0) || (isSharedWithAll?.length > 0 && 
+        if ((sharedOrganizationsList?.length > 0) || (isSharedWithAll?.length > 0 &&
             JSON.parse(isSharedWithAll[ 0 ].value))) {
 
             setIsAppShared(true);
@@ -421,6 +424,22 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
         if (template?.id == MobileTemplate?.id) {
             setMobileApplication(true);
+        }
+        setIsLoading(false);
+    }, [ template ]);
+
+    /**
+     * Check whether the application is an M2M Application
+     */
+    useEffect(() => {
+        if (!template || !M2MApplicationTemplate) {
+            setIsLoading(true);
+
+            return;
+        }
+
+        if (template.id == M2MApplicationTemplate.id) {
+            setM2MApplication(true);
         }
         setIsLoading(false);
     }, [ template ]);
@@ -817,8 +836,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 // Remove un-allowed grant types.
                 if (template
                     && template.id
-                    && get(ApplicationManagementConstants.TEMPLATE_WISE_ALLOWED_GRANT_TYPES, template.id)
-                    && !ApplicationManagementConstants.TEMPLATE_WISE_ALLOWED_GRANT_TYPES[ template.id ]
+                    && get(applicationConfig.allowedGrantTypes, template.id)
+                    && !applicationConfig.allowedGrantTypes[ template.id ]
                         .includes(name)) {
 
                     return;
@@ -832,6 +851,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                  */
                 const grant: CheckboxChildWithIndex = {
                     label: modifyGrantTypeLabels(name, displayName),
+                    readOnly: (isM2MApplication && name === ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT)
+                        ? true : false,
                     value: name
                 };
 
@@ -1040,6 +1061,22 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     mandatory: false,
                     supportPlainTransformAlgorithm: false
                 }
+            };
+        }
+
+        // Remove fields not applicable for M2M applications.
+        if (isM2MApplication) {
+            inboundConfigFormValues = {
+                ...inboundConfigFormValues,
+                accessToken: {
+                    ...inboundConfigFormValues.accessToken,
+                    userAccessTokenExpiryInSeconds: 0
+                },
+                idToken: {
+                    audience: [ ...inboundConfigFormValues.idToken.audience ]
+                },
+                pkce: null,
+                refreshToken: null
             };
         }
 
@@ -2013,49 +2050,53 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     />
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Field
-                        ref={ bindingType }
-                        label={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".accessToken.fields.bindingType.label")
-                        }
-                        name="bindingType"
-                        default={
-                            initialValues?.accessToken?.bindingType
-                                ? initialValues.accessToken.bindingType
-                                : metadata?.accessTokenBindingType?.defaultValue
-                                ?? SupportedAccessTokenBindingTypes.NONE
-                        }
-                        type="radio"
-                        children={ getAllowedListForAccessToken(metadata.accessTokenBindingType, true) }
-                        readOnly={ readOnly }
-                        data-testid={ `${ testId }-access-token-type-radio-group` }
-                        listen={ (values: Map<string, FormValue>) => {
-                            setIsTokenBindingTypeSelected(
-                                values.get("bindingType") !== SupportedAccessTokenBindingTypes.NONE
-                            );
-                        } }
-                    />
-                    <Hint>
-                        <Trans
-                            values={ { productName: config.ui.productName } }
-                            i18nKey={
-                                "console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".accessToken.fields.bindingType.description"
-                            }
-                        >
-                            Select type <Code withBackground>SSO-session</Code> to allow productName to bind the
-                            <Code withBackground>access_token</Code>
-                            and the
-                            <Code withBackground>refresh_token</Code>
-                            to the login session and issue a new token per session. When the application
-                            session ends, the tokens will also be revoked.
-                        </Trans>
-                    </Hint>
-                </Grid.Column>
-            </Grid.Row>
+            {
+                !isM2MApplication && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Field
+                                ref={ bindingType }
+                                label={
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                        ".accessToken.fields.bindingType.label")
+                                }
+                                name="bindingType"
+                                default={
+                                    initialValues?.accessToken?.bindingType
+                                        ? initialValues.accessToken.bindingType
+                                        : metadata?.accessTokenBindingType?.defaultValue
+                                        ?? SupportedAccessTokenBindingTypes.NONE
+                                }
+                                type="radio"
+                                children={ getAllowedListForAccessToken(metadata.accessTokenBindingType, true) }
+                                readOnly={ readOnly }
+                                data-testid={ `${ testId }-access-token-type-radio-group` }
+                                listen={ (values: Map<string, FormValue>) => {
+                                    setIsTokenBindingTypeSelected(
+                                        values.get("bindingType") !== SupportedAccessTokenBindingTypes.NONE
+                                    );
+                                } }
+                            />
+                            <Hint>
+                                <Trans
+                                    values={ { productName: config.ui.productName } }
+                                    i18nKey={
+                                        "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                        ".accessToken.fields.bindingType.description"
+                                    }
+                                >
+                                    Select type <Code withBackground>SSO-session</Code> to allow productName to bind the
+                                    <Code withBackground>access_token</Code>
+                                    and the
+                                    <Code withBackground>refresh_token</Code>
+                                    to the login session and issue a new token per session. When the application
+                                    session ends, the tokens will also be revoked.
+                                </Trans>
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
             {
                 (!isSPAApplication)
                 && !isMobileApplication
@@ -2133,59 +2174,63 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </>
                 )
             }
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Field
-                        ref={ userAccessTokenExpiryInSeconds }
-                        name="userAccessTokenExpiryInSeconds"
-                        label={ !isSPAApplication
-                            ? t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".accessToken.fields.expiry.label") :
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".accessToken.fields.expiry.labelForSPA")
-                        }
-                        required={ true }
-                        requiredErrorMessage={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".accessToken.fields.expiry.validations.empty")
-                        }
-                        validation={ async (value: FormValue, validation: Validation) => {
-                            if (!isValidExpiryTime(value.toString())) {
-                                validation.isValid = false;
-                                validation.errorMessages.push(
+            {
+                !isM2MApplication && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Field
+                                ref={ userAccessTokenExpiryInSeconds }
+                                name="userAccessTokenExpiryInSeconds"
+                                label={ !isSPAApplication
+                                    ? t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                        ".accessToken.fields.expiry.label") :
                                     t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                        ".accessToken.fields.expiry.validations.invalid")
-                                );
-                            }
-                        } }
-                        value={
-                            initialValues?.accessToken
-                                ? initialValues.accessToken.userAccessTokenExpiryInSeconds.toString()
-                                : metadata.defaultUserAccessTokenExpiryTime
-                        }
-                        placeholder={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".accessToken.fields.expiry.placeholder")
-                        }
-                        type="number"
-                        readOnly={ readOnly }
-                        min={ 1 }
-                        data-testid={ `${ testId }-access-token-expiry-time-input` }
-                    />
-                    <Hint>
-                        <Trans
-                            i18nKey={
-                                "console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".accessToken.fields.expiry.hint"
-                            }
-                        >
-                            Specify the validity period of the
-                            <Code withBackground>access_token</Code>
-                            in seconds.
-                        </Trans>
-                    </Hint>
-                </Grid.Column>
-            </Grid.Row>
+                                        ".accessToken.fields.expiry.labelForSPA")
+                                }
+                                required={ true }
+                                requiredErrorMessage={
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                        ".accessToken.fields.expiry.validations.empty")
+                                }
+                                validation={ async (value: FormValue, validation: Validation) => {
+                                    if (!isValidExpiryTime(value.toString())) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(
+                                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                                ".accessToken.fields.expiry.validations.invalid")
+                                        );
+                                    }
+                                } }
+                                value={
+                                    initialValues?.accessToken
+                                        ? initialValues.accessToken.userAccessTokenExpiryInSeconds.toString()
+                                        : metadata.defaultUserAccessTokenExpiryTime
+                                }
+                                placeholder={
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                        ".accessToken.fields.expiry.placeholder")
+                                }
+                                type="number"
+                                readOnly={ readOnly }
+                                min={ 1 }
+                                data-testid={ `${ testId }-access-token-expiry-time-input` }
+                            />
+                            <Hint>
+                                <Trans
+                                    i18nKey={
+                                        "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                        ".accessToken.fields.expiry.hint"
+                                    }
+                                >
+                                    Specify the validity period of the
+                                    <Code withBackground>access_token</Code>
+                                    in seconds.
+                                </Trans>
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
 
             { /* Application AccessToken Expiry*/ }
             { selectedGrantTypes?.includes("client_credentials") &&
@@ -2232,6 +2277,91 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                     </>
+                )
+            }
+
+            {
+                isM2MApplication && (
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
+                            <URLInput
+                                isAllowEnabled={ false }
+                                tenantDomain={ tenantDomain }
+                                onlyOrigin={ false }
+                                labelEnabled={ false }
+                                urlState={ audienceUrls }
+                                setURLState={ (url: string) => {
+                                    setAudienceUrls(url);
+
+                                    const initialUrl: string = initialValues?.idToken?.audience.toString()
+                                        ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
+                                            initialValues?.idToken?.audience.toString())
+                                        : "";
+
+                                    if (initialUrl !== url) {
+                                        setIsFormStale(true);
+                                    }
+                                } }
+                                labelName={
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                        ".accessToken.fields.audience.label")
+                                }
+                                required={ false }
+                                value={
+                                    initialValues?.idToken?.audience.toString()
+                                        ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
+                                            initialValues?.idToken?.audience.toString())
+                                        : ""
+                                }
+                                validation={ (value: string) => !value?.includes(",") }
+                                placeholder={
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections.accessToken" +
+                                        ".fields.audience.placeholder")
+                                }
+                                validationErrorMsg={
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections.accessToken" +
+                                        ".fields.audience.validations.invalid")
+                                }
+                                showError={ showAudienceError }
+                                setShowError={ setShowAudienceError }
+                                hint={ (
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            ".accessToken.fields.audience.hint"
+                                        }
+                                    >
+                                        Specify the recipient(s) that this <Code withBackground>access_token</Code> is
+                                        intended for. By default, the client ID of this application is added as an
+                                        audience.
+                                    </Trans>
+                                ) }
+                                readOnly={ readOnly }
+                                addURLTooltip={ t("common:addURL") }
+                                duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                                getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
+                                    submitUrl = submitFunction;
+                                } }
+                                showPredictions={ false }
+                                popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                    + "positive.header") }
+                                popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                    + "negative.header") }
+                                popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                    + "positive.content", { productName: config.ui.productName }) }
+                                popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                    + "negative.content", { productName: config.ui.productName }) }
+                                popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                    + "withLabel.positive.detailedContent.0") }
+                                popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                    + "withLabel.negative.detailedContent.0") }
+                                insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
+                                showLessContent={ t("common:showLess") }
+                                showMoreContent={ t("common:showMore") }
+                                skipInternalValidation
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
                 )
             }
 
@@ -2341,97 +2471,104 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             { /* ID Token */ }
-            <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Divider />
-                    <Divider hidden />
-                </Grid.Column>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
-                    <Heading as="h4">
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".idToken.heading") }
-                    </Heading>
-                    <URLInput
-                        isAllowEnabled={ false }
-                        tenantDomain={ tenantDomain }
-                        onlyOrigin={ false }
-                        labelEnabled={ false }
-                        urlState={ audienceUrls }
-                        setURLState={ (url: string) => {
-                            setAudienceUrls(url);
+            {
+                !isM2MApplication && (
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Divider />
+                            <Divider hidden />
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
+                            <Heading as="h4">
+                                { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".idToken.heading") }
+                            </Heading>
+                            <URLInput
+                                isAllowEnabled={ false }
+                                tenantDomain={ tenantDomain }
+                                onlyOrigin={ false }
+                                labelEnabled={ false }
+                                urlState={ audienceUrls }
+                                setURLState={ (url: string) => {
+                                    setAudienceUrls(url);
 
-                            const initialUrl: string = initialValues?.idToken?.audience.toString()
-                                ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
-                                    initialValues?.idToken?.audience.toString())
-                                : "";
+                                    const initialUrl: string = initialValues?.idToken?.audience.toString()
+                                        ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
+                                            initialValues?.idToken?.audience.toString())
+                                        : "";
 
-                            if (initialUrl !== url) {
-                                setIsFormStale(true);
-                            }
-                        } }
-                        labelName={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".idToken.fields.audience.label")
-                        }
-                        required={ false }
-                        value={
-                            initialValues?.idToken?.audience.toString()
-                                ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
-                                    initialValues?.idToken?.audience.toString())
-                                : ""
-                        }
-                        validation={ (value: string) => !value?.includes(",") }
-                        placeholder={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
-                                ".fields.audience.placeholder")
-                        }
-                        validationErrorMsg={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
-                                ".fields.audience.validations.invalid")
-                        }
-                        showError={ showAudienceError }
-                        setShowError={ setShowAudienceError }
-                        hint={ (
-                            <Trans
-                                i18nKey={
-                                    "console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
-                                    ".fields.audience.hint"
+                                    if (initialUrl !== url) {
+                                        setIsFormStale(true);
+                                    }
+                                } }
+                                labelName={
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                        ".idToken.fields.audience.label")
                                 }
-                            >
-                                Specify the recipient(s) that this <Code withBackground>id_token</Code> is intended
-                                for. By default, the client ID of this application is added as an audience.
-                            </Trans>
-                        ) }
-                        readOnly={ readOnly }
-                        addURLTooltip={ t("common:addURL") }
-                        duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                        getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
-                            submitUrl = submitFunction;
-                        } }
-                        showPredictions={ false }
-                        skipInternalValidation={ true }
-                        popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
-                            + "positive.header") }
-                        popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
-                            + "negative.header") }
-                        popupContentPositive={ t("console:develop.features.URLInput.withLabel."
-                            + "positive.content", { productName: config.ui.productName }) }
-                        popupContentNegative={ t("console:develop.features.URLInput.withLabel."
-                            + "negative.content", { productName: config.ui.productName }) }
-                        popupDetailedContentPositive={ t("console:develop.features.URLInput."
-                            + "withLabel.positive.detailedContent.0") }
-                        popupDetailedContentNegative={ t("console:develop.features.URLInput."
-                            + "withLabel.negative.detailedContent.0") }
-                        insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
-                        showLessContent={ t("common:showLess") }
-                        showMoreContent={ t("common:showMore") }
-                    />
-                </Grid.Column>
-            </Grid.Row>
+                                required={ false }
+                                value={
+                                    initialValues?.idToken?.audience.toString()
+                                        ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
+                                            initialValues?.idToken?.audience.toString())
+                                        : ""
+                                }
+                                validation={ (value: string) => !value?.includes(",") }
+                                placeholder={
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
+                                        ".fields.audience.placeholder")
+                                }
+                                validationErrorMsg={
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
+                                        ".fields.audience.validations.invalid")
+                                }
+                                showError={ showAudienceError }
+                                setShowError={ setShowAudienceError }
+                                hint={ (
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
+                                            ".fields.audience.hint"
+                                        }
+                                    >
+                                        Specify the recipient(s) that this <Code withBackground>id_token</Code> is
+                                        intended for. By default, the client ID of this application is added as an
+                                        audience.
+                                    </Trans>
+                                ) }
+                                readOnly={ readOnly }
+                                addURLTooltip={ t("common:addURL") }
+                                duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                                getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
+                                    submitUrl = submitFunction;
+                                } }
+                                showPredictions={ false }
+                                popupHeaderPositive={ t("console:develop.features.URLInput.withLabel."
+                                    + "positive.header") }
+                                popupHeaderNegative={ t("console:develop.features.URLInput.withLabel."
+                                    + "negative.header") }
+                                popupContentPositive={ t("console:develop.features.URLInput.withLabel."
+                                    + "positive.content", { productName: config.ui.productName }) }
+                                popupContentNegative={ t("console:develop.features.URLInput.withLabel."
+                                    + "negative.content", { productName: config.ui.productName }) }
+                                popupDetailedContentPositive={ t("console:develop.features.URLInput."
+                                    + "withLabel.positive.detailedContent.0") }
+                                popupDetailedContentNegative={ t("console:develop.features.URLInput."
+                                    + "withLabel.negative.detailedContent.0") }
+                                insecureURLDescription={ t("console:common.validations.inSecureURL.description") }
+                                showLessContent={ t("common:showLess") }
+                                showMoreContent={ t("common:showMore") }
+                                skipInternalValidation
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
+
             {
                 applicationConfig.inboundOIDCForm.showIdTokenEncryption
                 && ApplicationTemplateIdTypes.SPA !== template?.templateId
                 && !isMobileApplication
+                && !isM2MApplication
                 && (
                     <>
                         <Grid.Row columns={ 1 }>
@@ -2610,55 +2747,59 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Field
-                        ref={ idExpiryInSeconds }
-                        name="idExpiryInSeconds"
-                        label={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
-                                ".fields.expiry.label")
-                        }
-                        required={ true }
-                        requiredErrorMessage={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
-                                ".fields.expiry.validations.empty")
-                        }
-                        placeholder={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
-                                ".fields.expiry.placeholder")
-                        }
-                        validation={ async (value: FormValue, validation: Validation) => {
-                            if (!isValidExpiryTime(value.toString())) {
-                                validation.isValid = false;
-                                validation.errorMessages.push(
-                                    t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                        ".idToken.fields.expiry.validations.invalid")
-                                );
-                            }
-                        } }
-                        value={
-                            initialValues?.idToken
-                                ? initialValues.idToken.expiryInSeconds.toString()
-                                : metadata.defaultIdTokenExpiryTime
-                        }
-                        type="number"
-                        readOnly={ readOnly }
-                        min={ 1 }
-                        data-testid={ `${ testId }-id-token-expiry-time-input` }
-                    />
-                    <Hint>
-                        <Trans
-                            i18nKey={
-                                "console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
-                                ".fields.expiry.hint"
-                            }
-                        >
-                            Specify the validity period of the <Code withBackground>id_token</Code> in seconds.
-                        </Trans>
-                    </Hint>
-                </Grid.Column>
-            </Grid.Row>
+            {
+                !isM2MApplication && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Field
+                                ref={ idExpiryInSeconds }
+                                name="idExpiryInSeconds"
+                                label={
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
+                                        ".fields.expiry.label")
+                                }
+                                required={ true }
+                                requiredErrorMessage={
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
+                                        ".fields.expiry.validations.empty")
+                                }
+                                placeholder={
+                                    t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
+                                        ".fields.expiry.placeholder")
+                                }
+                                validation={ async (value: FormValue, validation: Validation) => {
+                                    if (!isValidExpiryTime(value.toString())) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(
+                                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                                ".idToken.fields.expiry.validations.invalid")
+                                        );
+                                    }
+                                } }
+                                value={
+                                    initialValues?.idToken
+                                        ? initialValues.idToken.expiryInSeconds.toString()
+                                        : metadata.defaultIdTokenExpiryTime
+                                }
+                                type="number"
+                                readOnly={ readOnly }
+                                min={ 1 }
+                                data-testid={ `${ testId }-id-token-expiry-time-input` }
+                            />
+                            <Hint>
+                                <Trans
+                                    i18nKey={
+                                        "console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
+                                        ".fields.expiry.hint"
+                                    }
+                                >
+                                    Specify the validity period of the <Code withBackground>id_token</Code> in seconds.
+                                </Trans>
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
 
             { /* Logout */ }
             {

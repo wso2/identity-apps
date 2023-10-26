@@ -25,6 +25,7 @@ import {
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
+import { GearIcon } from "@oxygen-ui/react-icons";
 import { AccessControlUtils } from "@wso2is/access-control";
 import useDeploymentConfig from "@wso2is/common/src/hooks/use-deployment-configs";
 import useResourceEndpoints from "@wso2is/common/src/hooks/use-resource-endpoints";
@@ -34,7 +35,9 @@ import {
     CommonConstants as CommonConstantsCore,
     TokenConstants
 } from "@wso2is/core/constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
+    ChildRouteInterface,
     IdentifiableComponentInterface,
     RouteInterface,
     TenantListInterface
@@ -59,6 +62,7 @@ import {
     LanguageChangeException,
     isLanguageSupported
 } from "@wso2is/i18n";
+import { GovernanceConnectorProvider } from "@wso2is/react-components";
 import axios, { AxiosResponse } from "axios";
 import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
@@ -74,7 +78,7 @@ import React, {
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { commonConfig, organizationConfigs } from "./extensions";
+import { commonConfig, serverConfigurationConfig } from "./extensions";
 import {
     AuthenticateUtils,
     getProfileInformation
@@ -90,6 +94,7 @@ import {
     UIConfigInterface,
     getAppViewRoutes,
     getServerConfigurations,
+    getSidePanelIcons,
     setCurrentOrganization,
     setDeveloperVisibility,
     setFilteredDevelopRoutes,
@@ -104,6 +109,11 @@ import { AppConstants, CommonConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 import { OrganizationManagementConstants, OrganizationType } from "./features/organizations/constants";
 import { OrganizationUtils } from "./features/organizations/utils";
+import {
+    GovernanceCategoryForOrgsInterface,
+    GovernanceConnectorForOrgsInterface,
+    useGovernanceConnectorCategories
+} from "./features/server-configurations";
 
 const AUTHORIZATION_ENDPOINT: string = "authorization_endpoint";
 const TOKEN_ENDPOINT: string = "token_endpoint";
@@ -134,6 +144,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const { setResourceEndpoints } = useResourceEndpoints();
     const { setDeploymentConfig } = useDeploymentConfig();
     const { setUIConfig } = useUIConfig();
+    const [ governanceConnectors, setGovernanceConnectors ] =
+        useState<GovernanceCategoryForOrgsInterface[]>([]);
 
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
@@ -156,6 +168,11 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const loggedUserName: string = store.getState().profile.profileInfo.userName;
 
     const [ tenant, setTenant ] = useState<string>("");
+    const {
+        data: originalConnectorCategories,
+        error: connectorCategoriesFetchRequestError
+    } = useGovernanceConnectorCategories(
+        featureConfig?.residentIdp?.enabled && isFirstLevelOrg);
 
     useEffect(() => {
         dispatch(
@@ -530,6 +547,16 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         });
     }, []);
 
+    useEffect(() => {
+        if (!originalConnectorCategories ||
+            originalConnectorCategories instanceof IdentityAppsApiException ||
+            connectorCategoriesFetchRequestError) {
+            return;
+        }
+
+        setGovernanceConnectors(originalConnectorCategories);        
+    }, [ originalConnectorCategories ]);
+
     const loginSuccessRedirect = (idToken: DecodedIDTokenPayload): void => {
         const AuthenticationCallbackUrl: string = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
             CommonAppConstants.CONSOLE_APP
@@ -602,43 +629,50 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         }
         
         const resolveHiddenRoutes = (): string[] => {
-            const commonHiddenRoutes: string[] = [ 
-                ...AppUtils.getHiddenRoutes(), 
-                ...AppConstants.ORGANIZATION_ONLY_ROUTES 
+            const commonHiddenRoutes: string[] = [
+                ...AppUtils.getHiddenRoutes(),
+                ...AppConstants.ORGANIZATION_ONLY_ROUTES
             ];
             
-            const additionalRoutes: string[] = isOrganizationManagementEnabled ? (
-                (OrganizationUtils.isCurrentOrganizationRoot() 
-                && AppConstants.getSuperTenant() === tenant) || isFirstLevelOrg
-                    ? isPrivilegedUser
-                        ? loggedUserName === isSuperAdmin
-                            ? [ 
-                                ...commonHiddenRoutes, 
-                                ...AppConstants.ORGANIZATION_ROUTES 
-                            ]
-                            : [ 
-                                ...commonHiddenRoutes, 
-                                ...AppConstants.ORGANIZATION_ROUTES, 
-                                ...AppConstants.SUPER_ADMIN_ONLY_ROUTES 
-                            ]
-                        : loggedUserName === isSuperAdmin
-                            ? commonHiddenRoutes
-                            : [
-                                ...commonHiddenRoutes, 
+            function getAdditionalRoutes() {
+                if (!isOrganizationManagementEnabled) {
+                    return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
+                }
+
+                const isCurrentOrgRootAndSuperTenant: boolean =
+                    OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.getSuperTenant() === tenant;
+
+                if (isCurrentOrgRootAndSuperTenant || isFirstLevelOrg) {
+                    if (isPrivilegedUser) {
+                        if (loggedUserName === isSuperAdmin) {
+                            return [ ...commonHiddenRoutes, ...AppConstants.ORGANIZATION_ROUTES ];
+                        } else {
+                            return [
+                                ...commonHiddenRoutes,
+                                ...AppConstants.ORGANIZATION_ROUTES,
                                 ...AppConstants.SUPER_ADMIN_ONLY_ROUTES
-                            ]
-                    : window["AppUtils"].getConfig().organizationName
-                        ? organizationConfigs.canCreateOrganization()
-                            ? AppUtils.getHiddenRoutes()
-                            : [
-                                ...AppUtils.getHiddenRoutes(), 
-                                ...OrganizationManagementConstants.ORGANIZATION_ROUTES
-                            ]
-                        : [ 
+                            ];
+                        }
+                    } else {
+                        if (loggedUserName === isSuperAdmin) {
+                            return commonHiddenRoutes;
+                        } else {
+                            return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
+                        }
+                    }
+                } else {
+                    if (window["AppUtils"].getConfig().organizationName) {
+                        return [ 
                             ...AppUtils.getHiddenRoutes(), 
-                            ...AppConstants.ORGANIZATION_ROUTES 
-                        ]
-            ) : [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
+                            ...OrganizationManagementConstants.ORGANIZATION_ROUTES 
+                        ];
+                    } else {
+                        return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
+                    }
+                }
+            }
+            
+            const additionalRoutes: string[] = getAdditionalRoutes();
 
             return [ ...additionalRoutes ];
         };
@@ -670,6 +704,68 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             appRoutes[ 0 ] = appRoutes[ 0 ].filter((route: RouteInterface) => route.id === "404");
         }
 
+        if (governanceConnectors?.length > 0) {
+            const customGovernanceConnectorRoutes: RouteInterface[] = [];
+
+            governanceConnectors.forEach((category: GovernanceCategoryForOrgsInterface) => {                
+                if (!serverConfigurationConfig.connectorCategoriesToShow.includes(category.id)) {
+                    const governanceConnectorChildren: ChildRouteInterface[] = [];
+
+                    category?.connectors?.forEach((connector: GovernanceConnectorForOrgsInterface) => {
+                        governanceConnectorChildren.push({
+                            component: lazy(() =>
+                                import(
+                                    "./features/server-configurations/pages/connector-edit-page"
+                                )
+                            ),
+                            exact: true,
+                            icon: {
+                                icon: getSidePanelIcons().childIcon
+                            },
+                            id: connector.id,
+                            name: connector.name,
+                            path: AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
+                                .replace(
+                                    ":categoryId",
+                                    category.id
+                                )
+                                .replace(
+                                    ":connectorId",
+                                    connector.id
+                                ),
+                            protected: true,
+                            showOnSidePanel: false
+                        });
+                    });
+
+                    customGovernanceConnectorRoutes.push(
+                        {
+                            category: category.id,
+                            children: governanceConnectorChildren,
+                            component: lazy(() =>
+                                import(
+                                    "./features/server-configurations/pages/connector-listing-page"
+                                )
+                            ),
+                            exact: true,
+                            icon: {
+                                icon: <GearIcon />
+                            },
+                            id: category.id,
+                            name: category.name,
+                            path: AppConstants.getPaths().get("GOVERNANCE_CONNECTOR")
+                                .replace(":id", category.id),
+                            protected: true,
+                            showOnSidePanel: true
+                        }
+                    );
+                }
+            });
+
+            appRoutes.push(...customGovernanceConnectorRoutes);
+            sanitizedAppRoutes.push(...customGovernanceConnectorRoutes);            
+        }
+        
         dispatch(setFilteredDevelopRoutes(appRoutes));        
         dispatch(setSanitizedDevelopRoutes(sanitizedAppRoutes));
 
@@ -686,7 +782,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
             });
         }
-    }, [ allowedScopes, dispatch, featureConfig, isFirstLevelOrg, isSuperAdmin ]);
+    }, [ allowedScopes, dispatch, featureConfig, governanceConnectors, isFirstLevelOrg, isSuperAdmin ]);
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -694,7 +790,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         }
 
         filterRoutes();
-    }, [ filterRoutes, isAuthenticated ]);
+    }, [ filterRoutes, governanceConnectors, isAuthenticated ]);
 
     useEffect(() => {
         const error: string = new URLSearchParams(location.search).get(
@@ -796,9 +892,11 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 }
             } }
         >
-            <I18nextProvider i18n={ I18n.instance }>
-                { renderApp && routesFiltered ? <App /> : <PreLoader /> }
-            </I18nextProvider>
+            <GovernanceConnectorProvider connectorCategories={ governanceConnectors }>
+                <I18nextProvider i18n={ I18n.instance }>
+                    { renderApp && routesFiltered ? <App /> : <PreLoader /> }
+                </I18nextProvider>
+            </GovernanceConnectorProvider>
         </SecureApp>
     );
 };

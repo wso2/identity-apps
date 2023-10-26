@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2023, WSO2 Inc. (http://www.wso2.org). All Rights Reserved.
+  ~ Copyright (c) 2023, WSO2 Inc. (http://www.wso2.org).
   ~
   ~  WSO2 Inc. licenses this file to you under the Apache License,
   ~  Version 2.0 (the "License"); you may not use this file except
@@ -183,6 +183,24 @@
         >
             <i class="de flag"></i>
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "lang.switcher.german")%>
+        </div>
+
+        <div class="item"
+            data-value="zh_CN"
+            style="background-color: var(--language-selector-background-color) !important;
+            color: var(--language-selector-text-color) !important;"
+        >
+            <i class="cn flag"></i>
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "lang.switcher.chinese")%>
+        </div>
+
+        <div class="item"
+            data-value="ja_JP"
+            style="background-color: var(--language-selector-background-color) !important;
+            color: var(--language-selector-text-color) !important;"
+        >
+            <i class="jp flag"></i>
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "lang.switcher.japanese")%>
         </div>
     </div>
 </div>

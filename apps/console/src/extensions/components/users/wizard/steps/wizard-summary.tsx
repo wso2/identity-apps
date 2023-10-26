@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,7 +18,7 @@
 
 import { EditAvatarModal, Heading, UserAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
 
 interface AddConsumerUserWizardSummaryProps {
@@ -177,8 +177,7 @@ export const AddConsumerUserWizardSummary: FunctionComponent<AddConsumerUserWiza
                             <div className="value url">
                                 {
                                     t("console:manage.features.user.modals.addUserWizard.wizardSummary.passwordOption" +
-                                        ".message.0",
-                                    { email: modifiedSummary.email })
+                                    ".message.0", { email: modifiedSummary.email })
                                 }
                             </div>
                         </Grid.Column>
@@ -221,8 +220,19 @@ export const AddConsumerUserWizardSummary: FunctionComponent<AddConsumerUserWiza
                             gravatar: {
                                 errors: {
                                     noAssociation: {
-                                        content: t("console:common.modals.editAvatarModal.content.gravatar.errors" +
-                                            ".noAssociation.content"),
+                                        content: (
+                                            <Trans
+                                                i18nKey={
+                                                    "console:common.modals.editAvatarModal.content.gravatar" +
+                                                    "errors.noAssociation.content"
+                                                }
+                                            >
+                                                It seems like the selected email is not registered on Gravatar.
+                                                Sign up for a Gravatar account by visiting 
+                                                <a href="https://www.gravatar.com"> Gravatar Official Website</a> 
+                                                or use one of the following.
+                                            </Trans>
+                                        ),
                                         header: t("console:common.modals.editAvatarModal.content.gravatar.errors" +
                                             ".noAssociation.header")
                                     }

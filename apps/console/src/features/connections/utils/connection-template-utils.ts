@@ -17,9 +17,7 @@
  */
 
 import { I18n } from "@wso2is/i18n";
-import { lazy } from "react";
 import groupBy from "lodash-es/groupBy";
-import isObject from "lodash-es/isObject";
 import { getConnectionCapabilityIcons } from "../configs/ui";
 import {
     ConnectionTemplateCategoryInterface,
@@ -222,7 +220,7 @@ export class ConnectionTemplateManagementUtils {
 
     /**
      * Once called it will return the available groups from the
-     * {@link getIdentityProviderTemplatesConfig}
+     * {@link getConnectionTemplatesConfig}
      * @private
      */
     private static async loadLocalFileBasedIdentityProviderTemplateGroups():

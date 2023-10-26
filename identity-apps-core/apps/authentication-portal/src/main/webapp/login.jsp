@@ -1,12 +1,19 @@
 <%--
- ~
- ~ Copyright (c) 2021, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
- ~
- ~ This software is the property of WSO2 LLC. and its suppliers, if any.
- ~ Dissemination of any information or reproduction of any material contained
- ~ herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- ~ You may not alter or remove any copyright or other notice from copies of this content.
- ~
+  ~ Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+  ~
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
 --%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -46,6 +53,8 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<jsp:directive.include file="includes/username-label-resolver.jsp"/>
+
 <%!
     private static final String FIDO_AUTHENTICATOR = "FIDOAuthenticator";
     private static final String MAGIC_LINK_AUTHENTICATOR = "MagicLinkAuthenticator";
@@ -81,7 +90,7 @@
     if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
         idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
     }
-    
+
     String appName = Encode.forUriComponent(request.getParameter("sp"));
     String userType = request.getParameter("utype");
     String consoleURL = application.getInitParameter("ConsoleURL");
@@ -94,14 +103,14 @@
 
     // Redirect to business user login page for tenanted access.
     if (StringUtils.equals("Console",  appName)
-            && !StringUtils.equals(IdentityManagementEndpointConstants.SUPER_TENANT, userTenantDomain) 
-            && !StringUtils.equals(null, userTenantDomain) 
+            && !StringUtils.equals(IdentityManagementEndpointConstants.SUPER_TENANT, userTenantDomain)
+            && !StringUtils.equals(null, userTenantDomain)
             && !StringUtils.equals(userType, USER_TYPE_ASGARDEO)) {
-        
+
         boolean enterpriseUserloginEnabled = false;
         try {
 
-            // TODO: need to use the "com.wso2.identity.asgardeo.enterprise.login.EnterpriseLoginRetrievalClient" client to retrieve value.        
+            // TODO: need to use the "com.wso2.identity.asgardeo.enterprise.login.EnterpriseLoginRetrievalClient" client to retrieve value.
             // EnterpriseLoginRetrievalClient enterpriseLoginRetrievalClient = new EnterpriseLoginRetrievalClient();
             // enterpriseUserloginEnabled = enterpriseLoginRetrievalClient.isEnterpriseLoginEnabled(userTenantDomain);
 
@@ -117,7 +126,7 @@
               <script type="text/javascript">
                 document.location = "<%=oauth2AuthorizeURL%>?idp=<%=ENTERPRISE_USER_LOGIN_IDP%>" +
                         "&authenticator=<%=ENTERPRISE_USER_LOGIN_AUTHENTICATOR%>" +
-                        "&fidp=EnterpriseIDP" + "&org=<%=userTenantDomain%>" + 
+                        "&fidp=EnterpriseIDP" + "&org=<%=userTenantDomain%>" +
                         "&code_challenge_method=<%=Encode.forUriComponent(request.getParameter("code_challenge_method"))%>" +
                         "&code_challenge=<%=Encode.forUriComponent(request.getParameter("code_challenge"))%>" +
                         "&response_type=<%=Encode.forUriComponent(request.getParameter("response_type"))%>" +
@@ -163,35 +172,46 @@
     String multiOptionURIParam = "";
     if (localAuthenticatorNames.size() > 1 || idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1) {
         String baseURL;
-        try {
-            baseURL = ServiceURLBuilder.create().addPath(request.getRequestURI()).build().getRelativePublicURL();
-        } catch (URLBuilderException e) {
-            request.setAttribute(STATUS, AuthenticationEndpointUtil.i18n(resourceBundle, "internal.error.occurred"));
-            request.setAttribute(STATUS_MSG, AuthenticationEndpointUtil.i18n(resourceBundle, "error.when.processing.authentication.request"));
-            request.getRequestDispatcher("error.do").forward(request, response);
-            return;
+        // Check whether authentication endpoint is hosted externally.
+        String isHostedExternally = application.getInitParameter("IsHostedExternally");
+        if (Boolean.parseBoolean(isHostedExternally)) {
+            String requestURI = request.getRequestURI();
+            if (StringUtils.isNotBlank(requestURI)) {
+                requestURI = requestURI.startsWith("/") ? requestURI : "/" + requestURI;
+                requestURI = requestURI.endsWith("/") ? requestURI.substring(0, requestURI.length() - 1) : requestURI;
+            }
+            baseURL = requestURI;
+        } else {
+            try {
+                baseURL = ServiceURLBuilder.create().addPath(request.getRequestURI()).build().getRelativePublicURL();
+            } catch (URLBuilderException e) {
+                request.setAttribute(STATUS, AuthenticationEndpointUtil.i18n(resourceBundle, "internal.error.occurred"));
+                request.setAttribute(STATUS_MSG, AuthenticationEndpointUtil.i18n(resourceBundle, "error.when.processing.authentication.request"));
+                request.getRequestDispatcher("error.do").forward(request, response);
+                return;
+            }
         }
-    
+
         // Build the query string using the parameter map since the query string can contain fewer parameters
         // due to parameter filtering.
         String queryParamString = AuthenticationEndpointUtil.resolveQueryString(request.getParameterMap());
         multiOptionURIParam = "&multiOptionURI=" + Encode.forUriComponent(baseURL + queryParamString);
     }
 
-    // Since the BACKUP_CODE_AUTHENTICATOR acts as a recovery option, redirects to relevent authenticator 
-    if (localAuthenticatorNames.size() == 2 
+    // Since the BACKUP_CODE_AUTHENTICATOR acts as a recovery option, redirects to relevent authenticator
+    if (localAuthenticatorNames.size() == 2
         && localAuthenticatorNames.contains(BACKUP_CODE_AUTHENTICATOR)) {
             if (localAuthenticatorNames.contains(TOTP_AUTHENTICATOR)) {
-                String directTo = commonauthURL + "?idp=LOCAL&authenticator=" + TOTP_AUTHENTICATOR + "&sessionDataKey=" 
+                String directTo = commonauthURL + "?idp=LOCAL&authenticator=" + TOTP_AUTHENTICATOR + "&sessionDataKey="
                     + Encode.forUriComponent(request.getParameter("sessionDataKey")) + multiOptionURIParam;
                 response.sendRedirect(directTo);
 
                 return;
             } else if (localAuthenticatorNames.contains(SMS_OTP_AUTHENTICATOR)) {
-                String directTo = commonauthURL + "?idp=LOCAL&authenticator=" + SMS_OTP_AUTHENTICATOR + "&sessionDataKey=" 
+                String directTo = commonauthURL + "?idp=LOCAL&authenticator=" + SMS_OTP_AUTHENTICATOR + "&sessionDataKey="
                     + Encode.forUriComponent(request.getParameter("sessionDataKey")) + multiOptionURIParam;
                 response.sendRedirect(directTo);
-                
+
                 return;
             }
     }
@@ -355,12 +375,6 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("isSuperTenant", StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT) && !StringUtils
-    .equals("true", promptAccountLinking));
-%>
-
 
 <!doctype html>
 <html lang="en-US">
@@ -387,8 +401,9 @@
 
     <%
         if (reCaptchaEnabled || reCaptchaResendEnabled) {
+            String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <script src='<%=(reCaptchaAPI)%>'></script>
     <%
         }
     %>
@@ -416,15 +431,7 @@
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                 if (productTitleFile.exists()) {
             %>
-                <%
-                    if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)) {
-                %>
-                    <div class="product-title">
-                        <jsp:include page="extensions/product-title.jsp"/>
-                    </div>
-                <% } else { %>
-                    <jsp:include page="extensions/product-title.jsp"/>
-                <% } %>
+                <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
                 <jsp:include page="includes/product-title.jsp"/>
             <% } %>
@@ -437,7 +444,7 @@
                     <% } else if (isIdentifierFirstLogin(inputType) || isLoginHintAvailable(inputType)) { %>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "welcome") %>
                     <% } else { %>
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login")%>
+                        <%= i18n(resourceBundle, customText, "login.heading") %>
                     <% } %>
                 </h3>
 
@@ -454,7 +461,7 @@
                     String sanitizeUserName = usernameSplitItems[usernameSplitItems.length - 1];
                 %>
                 <div class="identifier-container">
-                    <img 
+                    <img
                         class="ui image mr-1"
                         alt="Username Icon"
                         role="presentation"
@@ -658,8 +665,8 @@
                                                                 '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
                                                                 '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
                                             >
-                                                <img 
-                                                    class="ui image" 
+                                                <img
+                                                    class="ui image"
                                                     src="libs/themes/default/assets/images/identity-providers/google-idp-illustration.svg"
                                                     alt="Google Login icon"
                                                     role="presentation">
@@ -742,8 +749,8 @@
                                                             '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
                                                             '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
                                                 >
-                                                <img 
-                                                    class="ui image" 
+                                                <img
+                                                    class="ui image"
                                                     src="libs/themes/default/assets/images/identity-providers/github-idp-illustration.svg"
                                                     alt="Github login icon"
                                                     role="presentation">
@@ -763,8 +770,8 @@
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
                                                 >
-                                                <img 
-                                                    class="ui image" 
+                                                <img
+                                                    class="ui image"
                                                     src="libs/themes/default/assets/images/identity-providers/facebook-idp-illustration.svg"
                                                     alt="Facebook login icon"
                                                     role="presentation">
@@ -784,8 +791,8 @@
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
                                         >
-                                                <img 
-                                                    class="ui image" 
+                                                <img
+                                                    class="ui image"
                                                     src="libs/themes/default/assets/images/identity-providers/microsoft-idp-illustration.svg"
                                                     alt="Microsoft login icon"
                                                     role="presentation">
@@ -794,7 +801,17 @@
                                         </div>
                                     </div>
                                     <br>
-                                    <% } else { %>
+                                    <% } else {
+
+                                        String logoPath = imageURL;
+                                        
+                                        if (!imageURL.isEmpty() && imageURL.contains("/")) {
+                                            String[] imageURLSegements = imageURL.split("/");
+                                            String logoFileName = imageURLSegements[imageURLSegements.length - 1];
+
+                                            logoPath = "libs/themes/default/assets/images/identity-providers/" + logoFileName;
+                                        }
+                                    %>
                                     <div class="social-login blurring social-dimmer">
                                         <div class="field">
                                             <button
@@ -806,11 +823,11 @@
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
                                                 >
-                                                    <img 
-                                                        role="presentation" 
-                                                        alt="sign-in-with-<%=Encode.forHtmlContent(idpName)%> icon" 
-                                                        class="ui image" 
-                                                        src="<%=Encode.forHtmlAttribute(imageURL)%>">
+                                                    <img
+                                                        role="presentation"
+                                                        alt="sign-in-with-<%=Encode.forHtmlContent(idpName)%> icon"
+                                                        class="ui image"
+                                                        src="<%=Encode.forHtmlAttribute(logoPath)%>">
                                                     <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <%=Encode.forHtmlContent(idpDisplayName)%></span>
                                             </button>
                                         </div>
@@ -858,10 +875,10 @@
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.authenticator" )%>"
                                         data-componentid="login-page-sign-in-with-fido"
                                     >
-                                        <img 
-                                            class="ui image" 
-                                            src="libs/themes/default/assets/images/icons/fingerprint.svg" 
-                                            alt="Fido Logo" 
+                                        <img
+                                            class="ui image"
+                                            src="libs/themes/default/assets/images/icons/fingerprint.svg"
+                                            alt="Fido Logo"
                                             role="presentation" />
                                         <span>
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
@@ -884,10 +901,10 @@
                                         title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "magic.link" )%>"
                                         data-componentid="login-page-sign-in-with-magic-link">
-                                        <img 
-                                            class="ui image" 
-                                            src="libs/themes/default/assets/images/icons/magic-link-icon.svg" 
-                                            alt="Magic Link Logo" 
+                                        <img
+                                            class="ui image"
+                                            src="libs/themes/default/assets/images/icons/magic-link-icon.svg"
+                                            alt="Magic Link Logo"
                                             role="presentation" />
                                         <span>
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with" )%>
@@ -913,8 +930,8 @@
                                                 '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
                                                 'totp')"
                                         >
-                                        <img 
-                                            class="ui image" 
+                                        <img
+                                            class="ui image"
                                             src="libs/themes/default/assets/images/icons/outline-icons/clock-outline.svg"
                                             alt="TOTP Logo"
                                             role="presentation">
@@ -959,8 +976,8 @@
                                                     '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
                                                     'email-otp-authenticator')"
                                         >
-                                        <img 
-                                            class="ui image" 
+                                        <img
+                                            class="ui image"
                                             src="libs/themes/default/assets/images/icons/solid-icons/email-solid.svg"
                                             alt="Email OTP Logo"
                                             role="presentation">

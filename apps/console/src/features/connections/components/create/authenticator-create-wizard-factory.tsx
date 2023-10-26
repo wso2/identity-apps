@@ -35,9 +35,13 @@ import {
     handleGetConnectionsError 
 } from "../../utils/connection-utils";
 import { 
+    ExpertModeAuthenticationProviderCreateWizard 
+} from "../wizards/expert-mode/expert-mode-authentication-provider-create-wizard";
+import { 
     OrganizationEnterpriseConnectionCreateWizard 
 } from "../wizards/organization-enterprise/organization-enterprise-connection-create-wizard";
 import { TrustedTokenIssuerCreateWizard } from "../wizards/trusted-token-issuer-create-wizard";
+import { ConnectionManagementConstants } from "../../constants/connection-constants";
 
 /**
  * Proptypes for the Authenticator Create Wizard factory.
@@ -97,7 +101,6 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
          * keeps failing to set the correct grouped template to this state.
          */
         selectedTemplate: parentSelectedTemplate,
-        [ "data-componentid" ]: componentId,
         ...rest
     } = props;
 
@@ -112,16 +115,16 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
     const {
         data: connectionsResponse,
         isLoading: isConnectionsFetchRequestLoading,
-        error: connectionsFetchRequestError,
-        mutate: mutateConnectionsFetchRequest
-    } = useGetConnections(null, null, "name sw " + selectedTemplate?.idp?.name || selectedTemplate?.name);
+        error: connectionsFetchRequestError
+    } = useGetConnections(null, null, !selectedTemplate?.idp?.name 
+        ? "name sw " + selectedTemplate?.name : "name sw " + selectedTemplate?.idp?.name, null, true
+    );
 
     const {
         data: connectionTemplate,
         isLoading: isConnectionTemplateFetchRequestLoading,
-        error: connectionTemplateFetchRequestError,
-        mutate: mutateConnectionTemplateFetchRequest
-    } = useGetConnectionTemplate(type === "enterprise-protocols" ? "enterprise-idp" : type);
+        error: connectionTemplateFetchRequestError
+    } = useGetConnectionTemplate(type === "enterprise-protocols" ? "enterprise-idp" : type, type !== null);
 
 
     useEffect(() => {
@@ -311,6 +314,23 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                             "addWizard.title") }
                         subTitle= { t("console:develop.features.authenticationProvider.templates.enterprise." +
                             "addWizard.subtitle") }
+                        onWizardClose={ () => {
+                            setSelectedTemplateWithUniqueName(undefined);
+                            setSelectedTemplate(undefined);
+                            handleModalVisibility(false);
+                            onWizardClose();
+                        } }
+                        template={ selectedTemplateWithUniqueName }
+                        data-componentid={ selectedTemplate?.templateId }
+                        { ...rest }
+                    />
+                );
+
+            case ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID:
+                return (
+                    <ExpertModeAuthenticationProviderCreateWizard
+                        title={ selectedTemplateWithUniqueName?.name }
+                        subTitle={ selectedTemplateWithUniqueName?.description }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);

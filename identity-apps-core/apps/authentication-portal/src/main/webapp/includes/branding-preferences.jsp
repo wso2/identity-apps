@@ -26,9 +26,144 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.BrandingPreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.BrandingPreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="javax.servlet.http.HttpServletRequest" %>
+<%@ page import="java.util.*" %>
+
+<%-- TODO: UNIFICATION TASK: This block should be moved to a `locale-code-resolver.jsp` file. And used in `localize` as well. --%>
+<%!
+    /**
+    * Get the user's preferred locale based on the request, cookies, and URL parameters.
+    *
+    * This method determines the user's locale based on the following priority order:
+    * 1. Locale set in a cookie (if available).
+    * 2. Locales specified in the "ui_locales" URL parameter.
+    * 3. Browser's default locale.
+    *
+    * If a valid locale cannot be determined from the cookie or URL parameters, the browser's
+    * default locale is used as the fallback.
+    *
+    * @param request The HTTP servlet request.
+    * @return The user's preferred locale.
+    */
+    public Locale getUserLocale(HttpServletRequest request) {
+        String lang = "en_US"; // Default lang is en_US
+        String COOKIE_NAME = "ui_lang";
+        String BUNDLE = "org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources";
+        Locale browserLocale = request.getLocale();
+        Locale userLocale = browserLocale;
+        String uiLocaleFromURL = request.getParameter("ui_locales");
+        String localeFromCookie = null;
+        // Check cookie for the user selected language first
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(COOKIE_NAME)) {
+                    localeFromCookie = cookie.getValue();
+                }
+            }
+        }
+        // Set lang from the priority order
+        if (localeFromCookie != null) {
+            lang = localeFromCookie;
+            try {
+                String langStr = "en";
+                String langLocale = "US";
+
+                if (lang.contains("_")) {
+                    langStr = lang.split("_")[0];
+                    langLocale = lang.split("_")[1];
+                } else if (lang.contains("-")) {
+                    langStr = lang.split("-")[0];
+                    langLocale = lang.split("-")[1];
+                }
+
+                userLocale = new Locale(langStr, langLocale);
+            } catch (Exception e) {
+                // In case the language is defined but not in the correct format
+                userLocale = browserLocale;
+            }
+        } else if (uiLocaleFromURL != null) {
+            for (String localeStr : uiLocaleFromURL.split(" ")) {
+                String langStr = "en";
+                String langLocale = "US";
+
+                if (lang.contains("_")) {
+                    langStr = lang.split("_")[0];
+                    langLocale = lang.split("_")[1];
+                } else if (lang.contains("-")) {
+                    langStr = lang.split("-")[0];
+                    langLocale = lang.split("-")[1];
+                }
+                
+                Locale tempLocale = new Locale(langStr, langLocale);
+                // Trying to find out whether we have a resource bundle for the given locale
+                try {
+                    ResourceBundle foundBundle = ResourceBundle.getBundle(BUNDLE, tempLocale);
+                    // If so, setting the userLocale to that locale. If not, set the browser locale as user locale
+                    // Currently, we only care about the language - we do not compare about country locales since our
+                    // supported locale set is limited.
+                    if (tempLocale.getLanguage().equals(foundBundle.getLocale().getLanguage())) {
+                        userLocale = tempLocale;
+                        break;
+                    } else if (tempLocale.getLanguage().equals("en") && foundBundle.getLocale().getLanguage().equals("")) {
+                        // When the given locale is "en," which is our fallback one, we have to handle it separately
+                        // because it returns an empty string as locale language
+                        userLocale = tempLocale;
+                        break;
+                    } else {
+                        userLocale = browserLocale;
+                    }
+                } catch (Exception e) {
+                    userLocale = browserLocale;
+                }
+            }
+        }
+        return userLocale;
+    }
+    /**
+    * Get the user's locale code in the "language-country" format based on the request, cookies, and URL parameters.
+    *
+    * This method determines the user's locale based on the getUserLocale method and returns the locale code
+    * in the "language-country" format (e.g., "en-US").
+    *
+    * @param request The HTTP servlet request.
+    * @return The user's locale code in the "language-country" format.
+    */
+    public String getUserLocaleCode(HttpServletRequest request) {
+        Locale locale = getUserLocale(request);
+        return locale.getLanguage() + "-" + locale.getCountry();
+    }
+    /**
+    * Get the user's language code based on the request, cookies, and URL parameters.
+    *
+    * This method determines the user's language code based on the getUserLocale method and returns
+    * the language code (e.g., "en").
+    *
+    * @param request The HTTP servlet request.
+    * @return The user's language code.
+    */
+    public String getUserLanguageCode(HttpServletRequest request) {
+        Locale locale = getUserLocale(request);
+        return locale.getLanguage();
+    }
+    /**
+    * Get the user's country code based on the request, cookies, and URL parameters.
+    *
+    * This method determines the user's country code based on the getUserLocale method and returns
+    * the country code (e.g., "US").
+    *
+    * @param request The HTTP servlet request.
+    * @return The user's country code.
+    */
+    public String getUserCountryCode(HttpServletRequest request) {
+        Locale locale = getUserLocale(request);
+        return locale.getCountry();
+    }
+%>
 
 <%
     JSONObject brandingPreference = null;
+    JSONObject customText = new JSONObject();
 
     boolean isBrandingEnabledInTenantPreferences = true;
     boolean isSelfSignUpEnabledInTenantPreferences = true;
@@ -39,8 +174,10 @@
     JSONObject theme = null;
     String activeThemeName = "";
     String overrideStylesheet = "";
-    String copyrightText = "";
-    String siteTitle = "";
+    @Deprecated
+    String __DEPRECATED__copyrightText = "";
+    @Deprecated
+    String __DEPRECATED__siteTitle = "";
     String supportEmail = "contact@wso2.com";
     String logoURL = "";
     String logoAlt = "";
@@ -52,7 +189,6 @@
     String passwordRecoveryOverrideURL = "";
     String layout = "centered";
     String layoutFileRelativePath = "includes/layouts/" + layout + "/body.ser";
-    String styleFilePath = "includes/layouts/" + layout + "/styles.css";
     String layoutStoreURL = "extensions/layouts/custom/${tenantDomain}";
     Map<String, Object> layoutData = new HashMap<String, Object>();
     String productName = "WSO2 Identity Server";
@@ -61,6 +197,12 @@
     String productLogoAlt = "WSO2 Identity Server Logo";
     String productWhiteLogoURL = "libs/themes/wso2is/assets/images/branding/logo-white.svg";
     String productWhiteLogoAlt = "WSO2 Identity Server Logo White Variation";
+    boolean enableDefaultPreLoader = true;
+    String[] screenNames = {"common", "login", "email-otp", "sms-otp", "email-otp", "totp"};
+
+    // Constants used to create full custom layout name
+    String PREFIX_FOR_CUSTOM_LAYOUT_NAME = "custom";
+    String CUSTOM_LAYOUT_NAME_SEPERATOR = "-";
 
     // Preferences response object pointer keys.
     String PREFERENCE_KEY = "preference";
@@ -88,7 +230,9 @@
     String IS_BRANDING_ENABLED_KEY= "isBrandingEnabled";
     String IS_SELF_SIGN_UP_ENABLED_KEY = "isSelfSignUpEnabled";
     String IS_PASSWORD_RECOVERY_ENABLED_KEY = "isPasswordRecoveryEnabled";
+    String SHOULD_REMOVE_ASGARDEO_BRANDING_KEY = "removeAsgardeoBranding";
     String SHOULD_REMOVE_DEFAULT_BRANDING_KEY = "removeDefaultBranding";
+    String TEXT_KEY = "text";
 
     // Additional keys to override the fallback values.
     String PRODUCT_NAME_KEY = "productName";
@@ -97,6 +241,7 @@
     String PRODUCT_LOGO_ALT_KEY = "productLogoAlt";
     String PRODUCT_WHITE_LOGO_URL_KEY = "productWhiteLogoURL";
     String PRODUCT_WHITE_LOGO_ALT_KEY = "productWhiteLogoAlt";
+    String IS_DEFAULT_PRE_LOADER_ENABLED_KEY = "enableDefaultPreLoader";
 
     // Load the branding fallback override values file if it exists.
     if (config.getServletContext().getResource("extensions/branding-fallbacks.jsp") != null) {
@@ -104,7 +249,7 @@
 
     <jsp:include page="/extensions/branding-fallbacks.jsp"/>
 
-<%      
+<%
     }
 
     /*
@@ -134,6 +279,11 @@
             shouldRemoveDefaultBranding = (boolean) overrideFallbackValues.get(SHOULD_REMOVE_DEFAULT_BRANDING_KEY);
         }
 
+        // Pre loader
+        if (overrideFallbackValues.containsKey(IS_DEFAULT_PRE_LOADER_ENABLED_KEY)) {
+            enableDefaultPreLoader = (boolean) overrideFallbackValues.get(IS_DEFAULT_PRE_LOADER_ENABLED_KEY);
+        }
+
         // Colors.
         // @deprecated Moved in to `theme` object. Kept here for backward compatibility.
         if (overrideFallbackValues.containsKey(COLORS_KEY)) {
@@ -148,7 +298,7 @@
         if (overrideFallbackValues.containsKey(ACTIVE_THEME_KEY)) {
             activeThemeName = (String) overrideFallbackValues.get(ACTIVE_THEME_KEY);
         }
-        
+
         // Product details
         if (overrideFallbackValues.containsKey(PRODUCT_NAME_KEY)) {
             productName = (String) overrideFallbackValues.get(PRODUCT_NAME_KEY);
@@ -181,11 +331,11 @@
 
         // Organization Details
         if (overrideFallbackValues.containsKey(COPYRIGHT_TEXT_KEY)) {
-            copyrightText = (String) overrideFallbackValues.get(COPYRIGHT_TEXT_KEY);
+            __DEPRECATED__copyrightText = (String) overrideFallbackValues.get(COPYRIGHT_TEXT_KEY);
         }
 
         if (overrideFallbackValues.containsKey(SITE_TITLE_KEY)) {
-            siteTitle = (String) overrideFallbackValues.get(SITE_TITLE_KEY);
+            __DEPRECATED__siteTitle = (String) overrideFallbackValues.get(SITE_TITLE_KEY);
         }
 
         if (overrideFallbackValues.containsKey(SUPPORT_EMAIL_KEY)) {
@@ -216,7 +366,7 @@
 
         if (overrideFallbackValues.containsKey(PASSWORD_RECOVERY_URL_KEY)) {
             passwordRecoveryOverrideURL = (String) overrideFallbackValues.get(PASSWORD_RECOVERY_URL_KEY);
-        }        
+        }
     }
 
     String DEFAULT_RESOURCE_LOCALE = "en-US";
@@ -225,6 +375,7 @@
     String preferenceResourceType = ORG_PREFERENCE_RESOURCE_TYPE;
     String tenantRequestingPreferences = tenantForTheming;
     String applicationRequestingPreferences = spAppName;
+    String locale = StringUtils.isNotBlank(getUserLocaleCode(request)) ? getUserLocaleCode(request) : DEFAULT_RESOURCE_LOCALE;
 
     try {
 
@@ -258,6 +409,28 @@
 
             // Proceed only if the branding is enabled.
             if (isBrandingEnabledInTenantPreferences) {
+                // Custom Text
+                for (String screenName : screenNames) {
+                    JSONObject customTextPreferenceResponse = brandingPreferenceRetrievalClient.getCustomTextPreference(
+                        tenantRequestingPreferences,
+                        preferenceResourceType,
+                        applicationRequestingPreferences,
+                        screenName,
+                        locale
+                    );
+
+                    // Merge the preferences for the current screen into the customText object
+                    if (customTextPreferenceResponse.has(PREFERENCE_KEY)) {
+                        if (customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY) != null && customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY).has(TEXT_KEY)) {
+                            if (customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY).getJSONObject(TEXT_KEY) != null) {
+                                for (String key : customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY).getJSONObject(TEXT_KEY).keySet()) {
+                                    customText.put(key, customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY).getJSONObject(TEXT_KEY).getString(key));
+                                }
+                            }
+                        }
+                    }
+                }
+
                 // Configs
                 if (brandingPreference.has(CONFIGS_KEY)) {
                     if (brandingPreference.getJSONObject(CONFIGS_KEY).has(IS_SELF_SIGN_UP_ENABLED_KEY)) {
@@ -266,6 +439,11 @@
 
                     if (brandingPreference.getJSONObject(CONFIGS_KEY).has(IS_PASSWORD_RECOVERY_ENABLED_KEY)) {
                         isPasswordRecoveryEnabledInTenantPreferences = brandingPreference.getJSONObject(CONFIGS_KEY).getBoolean(IS_PASSWORD_RECOVERY_ENABLED_KEY);
+                    }
+
+                    // @deprecated Renamed to `removeDefaultBranding` key. Kept here for backward compatibility.
+                    if (brandingPreference.getJSONObject(CONFIGS_KEY).has(SHOULD_REMOVE_ASGARDEO_BRANDING_KEY)) {
+                        shouldRemoveDefaultBranding = brandingPreference.getJSONObject(CONFIGS_KEY).getBoolean(SHOULD_REMOVE_ASGARDEO_BRANDING_KEY);
                     }
 
                     if (brandingPreference.getJSONObject(CONFIGS_KEY).has(SHOULD_REMOVE_DEFAULT_BRANDING_KEY)) {
@@ -331,14 +509,14 @@
                     if (brandingPreference.getJSONObject(ORG_DETAILS_KEY).has(COPYRIGHT_TEXT_KEY)) {
                         // Only assign the `copyright` from response if not empty. Else use the default value.
                         if (!StringUtils.isBlank(brandingPreference.getJSONObject(ORG_DETAILS_KEY).getString(COPYRIGHT_TEXT_KEY))) {
-                            copyrightText = brandingPreference.getJSONObject(ORG_DETAILS_KEY).getString(COPYRIGHT_TEXT_KEY);
+                            __DEPRECATED__copyrightText = brandingPreference.getJSONObject(ORG_DETAILS_KEY).getString(COPYRIGHT_TEXT_KEY);
                         }
                     }
 
                     if (brandingPreference.getJSONObject(ORG_DETAILS_KEY).has(SITE_TITLE_KEY)) {
                         // Only assign the `siteTitle` from response if not empty. Else use the default value.
                         if (!StringUtils.isBlank(brandingPreference.getJSONObject(ORG_DETAILS_KEY).getString(SITE_TITLE_KEY))) {
-                            siteTitle = brandingPreference.getJSONObject(ORG_DETAILS_KEY).getString(SITE_TITLE_KEY);
+                            __DEPRECATED__siteTitle = brandingPreference.getJSONObject(ORG_DETAILS_KEY).getString(SITE_TITLE_KEY);
                         }
                     }
 
@@ -412,7 +590,7 @@
 
             }
         }
-        
+
     } catch (BrandingPreferenceRetrievalClientException e) {
         // Exception is ignored and the variable will use the fallbacks.
         // TODO: Move the duplicated logic to a common place.

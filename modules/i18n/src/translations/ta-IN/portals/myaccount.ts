@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -1624,7 +1624,7 @@ export const myAccount: MyAccountNS = {
                     errors: {
                         noAssociation: {
                             content: "தேர்ந்தெடுக்கப்பட்ட மின்னஞ்சல் Gravatar இல் பதிவு செய்யப்படவில்லை போல் " +
-                                "தெரிகிறது. Gravatar அதிகாரப்பூர்வ வலைத்தளத்தைப் பார்வையிடுவதன் மூலம் Gravatar " +
+                                "தெரிகிறது. Gravatar அதிகாரப்பூர்வ வலைத்தளத்தைப் பார்வையிடுவதன் <1>மூலம் Gravatar</1> " +
                                 "கணக்கில் பதிவுபெறுக அல்லது பின்வருவனவற்றில் ஒன்றைப் பயன்படுத்தவும்.",
                             header: "பொருந்தக்கூடிய Gravatar படம் எதுவும் கிடைக்கவில்லை!"
                         }
@@ -1765,8 +1765,7 @@ export const myAccount: MyAccountNS = {
     },
     sections: {
         accountRecovery: {
-            description: "உங்கள் பயனர்பெயர் அல்லது கடவுச்சொல்லை மீட்டெடுக்க உங்களுக்கு உதவ நாங்கள் " +
-                "பயன்படுத்தக்கூடிய மீட்பு தகவலை நிர்வகிக்கவும்",
+            description: "உங்கள் கடவுச்சொல்லை மீட்டெடுக்க உதவ நாங்கள் பயன்படுத்தக்கூடிய மீட்பு தகவல்களை நிர்வகிக்கவும்",
             heading: "கணக்கு மீட்பு"
         },
         changePassword: {

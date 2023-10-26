@@ -223,9 +223,22 @@ export const identityProviderConfig: IdentityProviderConfig = {
 
             return undefined;
         },
-        showAdvancedSettings: false,
+        showAdvancedSettings: true,
         showJitProvisioning: true,
-        showOutboundProvisioning: false
+        showOutboundProvisioning: true
+    },
+    extendedSamlConfig: {
+        attributeConsumingServiceIndexEnabled: true,
+        authContextComparisonLevelEnabled: true,
+        enableAssertionSigningEnabled: true,
+        forceAuthenticationEnabled: true,
+        includeAuthenticationContextEnabled: true,
+        includeNameIDPolicyEnabled: true,
+        includePublicCertEnabled: true,
+        isArtifactBindingEnabled: true,
+        isAssertionEncryptionEnabled: true,
+        responseAuthenticationContextClassEnabled: true,
+        saml2WebSSOUserIdLocationEnabled: true
     },
     fidoTags: [
         AuthenticatorLabels.PASSWORDLESS,
@@ -257,12 +270,12 @@ export const identityProviderConfig: IdentityProviderConfig = {
         enableJitProvisioningField: {
             show: true
         },
-        menuItemName: "Advanced",
+        menuItemName: "Just-in-Time Provisioning",
         provisioningSchemeField: {
-            show: false
+            show: true
         },
         userstoreDomainField: {
-            show: false
+            show: true
         }
     },
     templates: {

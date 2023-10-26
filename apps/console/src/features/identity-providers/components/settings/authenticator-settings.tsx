@@ -64,6 +64,7 @@ import {
     handleGetFederatedAuthenticatorMetadataAPICallError
 } from "../utils";
 import { AuthenticatorCreateWizard } from "../wizards/authenticator-create-wizard";
+import { ConnectionManagementConstants } from "../../../connections";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -215,7 +216,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         // to disable a Google authenticator in expert mode.
         if (!isActiveTemplateExpertMode) {
             // Special checks on Google IDP
-            if (values.authenticatorId === IdentityProviderManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
+            if (values.authenticatorId === ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
                 // Enable/disable the Google authenticator based on client id and secret
                 const props: CommonPluggableComponentPropertyInterface[] = values.properties;
                 let isEnabled = true;

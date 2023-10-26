@@ -27,6 +27,8 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class will be used to compile the layouts.
@@ -43,29 +45,51 @@ public class LayoutCompiler {
         Parser parser = new DefaultParser();
         File dir = new File(homeDir);
         try {
-            String[] directories = dir.list(new FilenameFilter() {
-                @Override
-                public boolean accept(File current, String name) {
+            List<String> bodyHTMLFilePaths = findBodyHtmlFiles(dir);
 
-                    return new File(current, name).isDirectory();
-                }
-            });
-            if (directories == null) {
-                return;
-            }
-            for (String directoryName : directories) {
-                String layoutDirPath = homeDir + "/" + directoryName + "/";
+            for (String path : bodyHTMLFilePaths) {
                 ExecutableIdentifier compiledLayout =
-                        parser.compile(new File(layoutDirPath + "body.html").toURI().toURL());
-                try (FileOutputStream compiledLayoutFile = new FileOutputStream(layoutDirPath + "body.ser");
+                        parser.compile(new File(path).toURI().toURL());
+                try (FileOutputStream compiledLayoutFile =
+                         new FileOutputStream((new File(path)).getParent() + "/body.ser");
                     ObjectOutputStream out = new ObjectOutputStream(compiledLayoutFile)) {
                     out.writeObject(compiledLayout);
                 } catch (IOException e) {
-                    throw new RuntimeException("Can't serialized the compiled layout: " + directoryName, e);
+                    throw new RuntimeException("Can't serialized the compiled layout: " + path, e);
                 }
             }
         } catch (IOException e) {
             throw new RuntimeException("Can't compile the layouts", e);
         }
+    }
+
+    /**
+     * This method will recursively find the `body.html` files inside a given directory
+     *
+     * @param directory Path to a directory required to find the body.html files
+     * @return array of claim mappings.
+     */
+    private static List<String> findBodyHtmlFiles(File directory) {
+        List<String> bodyHtmlFiles = new ArrayList<>();
+
+        File[] files = directory.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.equals("body.html") || new File(dir, name).isDirectory();
+            }
+        });
+
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    // Recursively search in subdirectories
+                    bodyHtmlFiles.addAll(findBodyHtmlFiles(file));
+                } else {
+                    bodyHtmlFiles.add(file.getAbsolutePath());
+                }
+            }
+        }
+
+        return bodyHtmlFiles;
     }
 }

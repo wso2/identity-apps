@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { AlertLevels, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { applicationConfig } from "apps/console/src/extensions";
@@ -38,6 +39,9 @@ import {
 } from "../../applications/models/application";
 import { AdaptiveScriptUtils } from "../../applications/utils/adaptive-script-utils";
 import { SignInMethodUtils } from "../../applications/utils/sign-in-method-utils";
+import { AuthenticatorManagementConstants } from "../../connections/constants/autheticator-constants";
+import { AuthenticatorCategories } from "../../connections/models/authenticators";
+import { ConnectionsManagementUtils } from "../../connections/utils/connection-utils";
 import { AppState } from "../../core/store";
 import {
     IdentityProviderManagementConstants
@@ -98,6 +102,9 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const { data: adaptiveAuthTemplates } = useGetAdaptiveAuthTemplates();
+    const { UIConfig } = useUIConfig();
+
+    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     const { t } = useTranslation();
 
@@ -138,6 +145,13 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
     }, []);
 
     /**
+     * When `application` state changes, update the `authenticationSequence`.
+     */
+    useEffect(() => {
+        setAuthenticationSequence(application?.authenticationSequence);
+    }, [ application ]);
+
+    /**
      * Separates out the different authenticators to their relevant categories.
      */
     useEffect(() => {
@@ -161,6 +175,14 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                     authenticator.displayName
                 );
             }
+
+            authenticator.image = authenticator.idp === AuthenticatorCategories.LOCAL ||
+            authenticator.defaultAuthenticator?.authenticatorId ===
+            AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
+                ? authenticator.image
+                : ConnectionsManagementUtils
+                    .resolveConnectionResourcePath(
+                        connectionResourcesUrl, authenticator.image);
 
             if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
                 recoveryAuthenticators.push(authenticator);

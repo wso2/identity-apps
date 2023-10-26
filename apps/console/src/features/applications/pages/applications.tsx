@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -123,6 +123,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const dispatch: Dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
@@ -361,7 +362,14 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     className="my-account-title mb-1"
                                 >
                                     { t("console:develop.features.applications.myaccount.title") }
-                                    <Chip label={ t("common:preview") } className="oxygen-chip-beta ml-2" />
+                                    {
+                                        isSAASDeployment && (
+                                            <Chip
+                                                label={ t("common:preview") }
+                                                className="oxygen-chip-beta ml-2"
+                                            />
+                                        )
+                                    }
                                     <Icon
                                         color={ isMyAccountEnabled ? "green":"grey" }
                                         name={ isMyAccountEnabled ? "check circle" : "minus circle" }
@@ -409,6 +417,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     <Popup
                                         trigger={ (
                                             <Button
+                                                data-componentid="navigate-to-my-account-settings-button"
                                                 icon="setting"
                                                 onClick={ (): void => navigateToMyAccountSettings() }
                                             />

@@ -85,13 +85,13 @@
 
 <%-- Data for the layout from the page --%>
 <%
-    layoutData.put("isSuperTenant", StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT));
     layoutData.put("isResponsePage", true);
     if(acceptApiResponse.equalsIgnoreCase("SUCCESS")) {
         layoutData.put("isSuccessResponse", true);
     } else {
         layoutData.put("isErrorResponse", true);
     }
+    layoutData.put("isAcceptInvitationPage", true);
 %>
 
 <!doctype html>
@@ -121,55 +121,25 @@
         </layout:component>
         <layout:component componentName="MainSection" >
             <% if(acceptApiResponse.equalsIgnoreCase("SUCCESS")) { %>
-                <%
-                if (!(StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
-                %>
-                    <div class="ui green segment mt-3 attached">
-                        <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="password-reset-complete-page-header">
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"invitation.accepted")%>
-                        </h3>
-                        <p class="portal-tagline-description">
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invitation.accepted.message")%>.
-                            <br/><br/>
-                        </p>
-                    </div>
-                <% } else { %>
-                    <div class="ui green segment mt-3 attached">
-                        <h2 class="ui header portal-logo-tagline" data-testid="password-reset-complete-page-header">
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"invitation.accepted")%>
-                        </h2>
-                        <p class="portal-tagline-description">
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invitation.accepted.message")%>.
-                            <br/>
-                            <br/>
-                        </p>
-                    </div>
-                <% } %>
+                <div class="ui green segment mt-3 attached">
+                    <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="password-reset-complete-page-header">
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"invitation.accepted")%>
+                    </h3>
+                    <p class="portal-tagline-description">
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invitation.accepted.message")%>.
+                        <br/><br/>
+                    </p>
+                </div>
             <% } else { %>
-                <%
-                if (!(StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
-                %>
-                    <div class="ui orange segment mt-3 attached">
-                        <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="password-reset-complete-page-header">
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"invitation.not.active")%>
-                        </h3>
-                        <p class="portal-tagline-description">
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invitation.not.active.message")%>.
-                            <br/><br/>
-                        </p>
-                    </div>
-                <% } else { %>
-                    <div class="ui orange segment mt-3 attached">
-                        <h2 class="ui header portal-logo-tagline" data-testid="password-reset-complete-page-header">
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"invitation.not.active")%>
-                        </h2>
-                        <p class="portal-tagline-description">
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invitation.not.active.message")%>.
-                            <br/>
-                            <br/>
-                        </p>
-                    </div>
-                <% } %>
+                <div class="ui orange segment mt-3 attached">
+                    <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="password-reset-complete-page-header">
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"invitation.not.active")%>
+                    </h3>
+                    <p class="portal-tagline-description">
+                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invitation.not.active.message")%>.
+                        <br/><br/>
+                    </p>
+                </div>
             <% } %>
         </layout:component>
         <layout:component componentName="ProductFooter" >
@@ -183,6 +153,9 @@
                 <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
+        <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+            <jsp:include page="${pathOfDynamicComponent}" />
+        </layout:dynamicComponent>
     </layout:main>
 
     <%-- footer --%>

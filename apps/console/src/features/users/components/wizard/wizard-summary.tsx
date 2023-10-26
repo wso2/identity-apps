@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,20 +22,23 @@ import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
 
 interface AddUserWizardSummaryProps {
-    summary: any;
-    triggerSubmit: boolean;
-    onSubmit: (application: any) => void;
+    summary?: any;
+    triggerSubmit?: boolean;
+    onSubmit?: (application: any) => void;
+    selectedUserStore?: string
+    username?: string;
+    password?: string;
+    isPasswordBased?: boolean;
     /**
      * Callback fired when profile image is changed.
-     * @param {string} url - New URL.
+     * @param url - New URL.
      */
-    onProfileImageChange: (url: string) => void;
+    onProfileImageChange?: (url: string) => void;
 }
 
 /**
  * Add user wizard summary page.
- *
- * @param props
+ * @param  props - Props injected to the component
  */
 export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> = (
     props: AddUserWizardSummaryProps
@@ -67,8 +70,8 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
     /**
      * Handles edit avatar modal submit action.
      *
-     * @param {<HTMLButtonElement>} e - Event.
-     * @param {string} url - Selected image URL.
+     * @param e - Event.
+     * @param url - Selected image URL.
      */
     const handleAvatarEditModalSubmit = (e: MouseEvent<HTMLButtonElement>, url: string): void => {
         setModifiedSummary({
@@ -129,7 +132,7 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                                 <Label.Group>
                                     {
                                         modifiedSummary.groups
-                                            .map((group, index) => (
+                                            .map((group:any, index:number) => (
                                                 <Label key={ index } basic circular>{ group.displayName }</Label>
                                             ))
                                     }
@@ -154,7 +157,7 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                                 <Label.Group>
                                     {
                                         modifiedSummary.roles
-                                            .map((role, index) => (
+                                            .map((role:any, index:number) => (
                                                 <Label key={ index } basic circular>{ role.displayName }</Label>
                                             ))
                                     }
@@ -188,7 +191,8 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                     </Grid.Column>
                 </Grid.Row>
             ) }
-            { modifiedSummary?.email && modifiedSummary?.passwordOption && modifiedSummary?.passwordOption === "ask-password"
+            { modifiedSummary?.email && modifiedSummary?.passwordOption && 
+            modifiedSummary?.passwordOption === "ask-password"
                 ? (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
@@ -204,7 +208,7 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                                 {
                                     t("console:manage.features.user.modals.addUserWizard.wizardSummary.passwordOption" +
                                         ".message.0",
-                                        { email: modifiedSummary.email })
+                                    { email: modifiedSummary.email })
                                 }
                             </div>
                         </Grid.Column>

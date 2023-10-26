@@ -47,6 +47,9 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<%-- Username Label Resolver --%>
+<jsp:directive.include file="includes/username-label-resolver.jsp"/>
+
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
@@ -119,12 +122,14 @@
 
     Boolean isQuestionBasedPasswordRecoveryEnabledByTenant = false;
     Boolean isNotificationBasedPasswordRecoveryEnabledByTenant = false;
-    Boolean isMultiAttributeLoginEnabledInTenant;
+    Boolean isMultiAttributeLoginEnabledInTenant = false;
+    String allowedAttributes = null;
     try {
         PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
         isQuestionBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkQuestionBasedPasswordRecovery(tenantDomain);
         isNotificationBasedPasswordRecoveryEnabledByTenant = preferenceRetrievalClient.checkNotificationBasedPasswordRecovery(tenantDomain);
         isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
+        allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantDomain);
     } catch (PreferenceRetrievalClientException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil
@@ -137,9 +142,11 @@
         return;
     }
 
-    String enterUsernameHereText = "password.reset.with.username";
+    String usernameLabel = "Username";
     if (isMultiAttributeLoginEnabledInTenant) {
-        enterUsernameHereText = "password.reset.with.identifier";
+        if (allowedAttributes != null) {
+            usernameLabel = getUsernameLabel(recoveryResourceBundle, allowedAttributes);
+        }
     }
 %>
 
@@ -159,7 +166,7 @@
         if (reCaptchaEnabled) {
             String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
     %>
-    <script src='<%=(reCaptchaAPI)%>' async defer></script>
+        <script src='<%=(reCaptchaAPI)%>'></script>
     <style type="text/css">
         .grecaptcha-badge {
             bottom: 55px !important;
@@ -215,7 +222,7 @@
                         %>
                         <div class="field">
                             <label class="mb-5" for="username">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, enterUsernameHereText)%>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, usernameLabel)%>
                             </label>
                             <div class="ui fluid left icon input">
                                 <input
@@ -245,17 +252,28 @@
 
                         <div class="field">
                             <label class="mb-5" for="username">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, enterUsernameHereText)%>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, usernameLabel)%>
                             </label>
                             <div class="ui fluid left icon input">
-                                <input
-                                    placeholder="<%=AuthenticationEndpointUtil.i18n(recoveryResourceBundle, "Username")%>"
-                                    id="usernameUserInput"
-                                    name="usernameUserInput"
-                                    type="text"
-                                    tabindex="0"
-                                    required
-                                >
+                                <% if (isMultiAttributeLoginEnabledInTenant) { %>
+                                    <input
+                                        placeholder="<%=usernameLabel%>"
+                                        id="usernameUserInput"
+                                        name="usernameUserInput"
+                                        type="text"
+                                        tabindex="0"
+                                        required
+                                    >
+                                <% } else { %>
+                                    <input
+                                        placeholder="<%=AuthenticationEndpointUtil.i18n(recoveryResourceBundle, usernameLabel)%>"
+                                        id="usernameUserInput"
+                                        name="usernameUserInput"
+                                        type="text"
+                                        tabindex="0"
+                                        required
+                                    >
+                                <% } %>
                                 <i aria-hidden="true" class="user outline icon"></i>
                             </div>
                             <input id="username" name="username" type="hidden">
@@ -386,6 +404,9 @@
                 <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
+        <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+            <jsp:include page="${pathOfDynamicComponent}" />
+        </layout:dynamicComponent>
     </layout:main>
 
     <%-- footer --%>

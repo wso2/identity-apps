@@ -184,7 +184,7 @@ export const extensions: Extensions = {
             },
             authenticatorGroups: {
                 goToConnections: "Go to Connections",
-                groupsList:{
+                groupsList: {
                     assignGroups: "Assign Groups",
                     notifications: {
                         fetchAssignedGroups: {
@@ -220,7 +220,7 @@ export const extensions: Extensions = {
                     subTitle: {
                         0: "There are no external groups available at the moment.",
                         1: "You can add a new external group by visiting the " +
-                        "Groups tab in a connection."
+                            "Groups tab in a connection."
                     }
                 }
             },
@@ -267,10 +267,10 @@ export const extensions: Extensions = {
                 confirmation: {
                     deleteRole: {
                         message: "This action is irreversible and will remove " +
-                        "the group from the application role.",
+                            "the group from the application role.",
                         content: "If you remove this group from the application role, the permissions " +
-                        "associated with this role will be removed from the group. Please proceed " +
-                        "with caution."
+                            "associated with this role will be removed from the group. Please proceed " +
+                            "with caution."
                     }
                 }
             },
@@ -372,7 +372,7 @@ export const extensions: Extensions = {
                 confirmation: {
                     deleteGroup: {
                         message: "This action is irreversible.",
-                        content: "This action will permanently delete the {{groupName}} identity provider group. " +  
+                        content: "This action will permanently delete the {{groupName}} identity provider group. " +
                             "Please proceed with caution"
                     }
                 },
@@ -728,7 +728,7 @@ export const extensions: Extensions = {
                                 fields: {
                                     authorize: {
                                         label: "Requires authorization",
-                                        hint: "If checked, it is mandatory to enforce an authorization policy when consuming this API in an application, else you have the option to proceed without a policy. <1>This field cannot be edited once created.</1>"                                    
+                                        hint: "If checked, it is mandatory to enforce an authorization policy when consuming this API in an application, else you have the option to proceed without a policy. <1>This field cannot be edited once created.</1>"
                                     }
                                 }
                             }
@@ -884,9 +884,9 @@ export const extensions: Extensions = {
                                             "Please proceed with caution."
                                     },
                                     unsubscribeChoreoAPIResource: {
-                                        content: "Unsubscribing this API resource will not be reflected on the " + 
-                                            "Choreo end, but will impact/affect the user authorization as the " + 
-                                            "authorized scopes will no longer be accessible. " + 
+                                        content: "Unsubscribing this API resource will not be reflected on the " +
+                                            "Choreo end, but will impact/affect the user authorization as the " +
+                                            "authorized scopes will no longer be accessible. " +
                                             "<1>Proceed with caution.</1>"
                                     }
                                 },
@@ -1148,6 +1148,32 @@ export const extensions: Extensions = {
                                 }
                             }
                         }
+                    },
+                    rolesV2: {
+                        heading: "Roles",
+                        subHeading: "Manage assigned roles in the application.",
+                        roleAudience: "Role Audience",
+                        organization: "Organization",
+                        application: "Application",
+                        assignedRoles: "Assigned Roles",
+                        removedRoles: "Removed Roles",
+                        searchPlaceholder: "Search by Role name",
+                        switchRoleAudience: {
+                            applicationConfirmationModal: {
+                                assertionHint: "Please confirm your action.",
+                                content: "If you change the Role Audience to Application, the association with " +
+                                    "organization roles will be deleted from the application. Please proceed with caution.",
+                                header: "Switch role audience to Application?",
+                                message: "This action is irreversible and will remove the existing role associations."
+                            },
+                            organizationConfirmationModal: {
+                                assertionHint: "Please confirm your action.",
+                                content: "If you change the Role Audience to Organization, the application roles currently " +
+                                    "associated with the application will be permanently deleted. Please proceed with caution.",
+                                header: "Switch role audience to Organization?",
+                                message: "This action is irreversible and will permanently delete the existing roles."
+                            }
+                        }
                     }
                 }
             },
@@ -1296,21 +1322,21 @@ export const extensions: Extensions = {
                                     "Link to a document or a webpage with detailed information on all cookies " +
                                     "used by your applications and the purpose of each of them.",
                                 label: "Cookie Policy",
-                                placeholder: "https://asgardeo.io/cookie-policy"
+                                placeholder: "https://myapp.com/cookie-policy"
                             },
                             privacyPolicyURL: {
                                 hint:
                                     "Link to a statement or a legal document that states how your organization " +
                                     "collects, handles, and processes the data of your customers and visitors.",
                                 label: "Privacy Policy",
-                                placeholder: "https://asgardeo.io/privacy-policy"
+                                placeholder: "https://myapp.com/privacy-policy"
                             },
                             termsOfUseURL: {
                                 hint:
                                     "Link to an agreement that your customers must agree to and abide by in " +
                                     "order to use your organization's applications or other services.",
                                 label: "Terms of Service",
-                                placeholder: "https://asgardeo.io/terms-of-service"
+                                placeholder: "https://myapp.com/terms-of-service"
                             }
                         },
                         heading: "Links"
@@ -1567,7 +1593,7 @@ export const extensions: Extensions = {
                         font: {
                             fields: {
                                 fontFamilyDropdown: {
-                                    hint: "Pick a web safe font (fonts that are pre-installed by many "+
+                                    hint: "Pick a web safe font (fonts that are pre-installed by many " +
                                         "operating systems) as the font family for the pages.",
                                     label: "Font Family",
                                     placeholder: "Select a font family."
@@ -1777,19 +1803,11 @@ export const extensions: Extensions = {
                 },
                 general: {
                     fields: {
-                        copyrightText: {
-                            hint:
-                                "Text that appears at the footer of the login screens. If not set, " +
-                                "{{ productName }} defaults are used.",
-                            label: "Copyright Text",
-                            placeholder: "Enter a copyright text"
-                        },
-                        siteTitle: {
-                            hint:
-                                "The site title may appear in browser tabs, search engine results, social shares, " +
-                                "etc. If not set, {{ productName }} defaults are used.",
-                            label: "Site Title",
-                            placeholder: "Enter a site title"
+                        displayName: {
+                            hint: "Organization name that appears to users. If not set, {{ productName }} defaults " +
+                                "are used.",
+                            label: "Organization Display Name",
+                            placeholder: "Enter a display name"
                         },
                         supportEmail: {
                             hint: "The email address that appears on error pages and other pages where " +
@@ -1817,6 +1835,16 @@ export const extensions: Extensions = {
                     success: {
                         description: "Successfully reverted Branding preferences for {{ tenant }}.",
                         message: "Revert successful"
+                    },
+                    successWaiting: {
+                        description: "Reverting Branding preferences for {{ tenant }}. " +
+                            "It may take a while for the changes to be reflected.",
+                        message: "Reverting branding preferences"
+                    },
+                    successWaitingAlert: {
+                        description: "Reverting Branding preferences for {{ tenant }}. " +
+                            "Note that it can take up to 10 minutes for the changes to be reflected.",
+                        message: "Reverting branding preferences"
                     }
                 },
                 fetch: {
@@ -1849,6 +1877,16 @@ export const extensions: Extensions = {
                     success: {
                         description: "Branding preference updated successfully for {{ tenant }}.",
                         message: "Update Successful"
+                    },
+                    successWaiting: {
+                        description: "Updating Branding preferences for {{ tenant }}. " +
+                            "It may take a while for the changes to be reflected.",
+                        message: "Updating branding preferences"
+                    },
+                    successWaitingAlert: {
+                        description: "Updating Branding preferences for {{ tenant }}. " +
+                            "Note that it can take up to 10 minutes for the changes to be reflected.",
+                        message: "Updating branding preferences"
                     },
                     tenantMismatch: {
                         description: "Something went wrong while updating branding preferences for {{ tenant }}.",
@@ -1916,9 +1954,21 @@ export const extensions: Extensions = {
                                 title: "Resource Not Found"
                             },
                             notFoundWithSupport: {
-                                subTitle: "Need a fully customized layout for your organization? "
+                                description: "Need a fully customized layout for your organization? "
                                     + "Reach us out at <1>{{ supportEmail }}</1>",
+                                subTitle: "You have not yet deployed a custom layout.",
                                 title: "Custom Layout Not Found"
+                            }
+                        }
+                    },
+                    info: {
+                        layout: {
+                            activatedMessage: {
+                                description: "You can now incorporate a custom layout for login, "
+                                    + "registration, and recovery pages. Refer to our "
+                                    + "documentation for detailed instructions.",
+                                subTitle: "The custom layout has been successfully enabled.",
+                                title: "Custom Layout"
                             }
                         }
                     },
@@ -1927,12 +1977,14 @@ export const extensions: Extensions = {
             }
         },
         emailProviders: {
+            configureEmailProvider: "Configure Email Provider",
             heading: "Email Provider",
             subHeading: "Configure a custom SMTP server to send emails to your users with your own email address.",
             description: "Configure the following settings according to your SMTP server.",
             info: "You can customize the email content using <1>Email Templates</1>.",
             updateButton: "Update",
             sendTestMailButton: "Send Test Email",
+            goBack: "Go back to Notification Channels",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
                 content: "If you delete this configuration, the emails will be sent from the Asgardeo Email Address. " +
@@ -2021,6 +2073,161 @@ export const extensions: Extensions = {
                     success: {
                         message: "Update Successful",
                         description: "Successfully updated the email provider configurations."
+                    }
+                }
+            }
+        },
+        notificationChannel: {
+            heading: "Notification Channels",
+            title: "Notification Channels",
+            description: "Configure the notification channels for your organization."
+        },
+        smsProviders: {
+            heading: "SMS Provider",
+            subHeading: "Configure a custom SMS provider to send SMS to your users.",
+            description: "Configure the following settings according to your SMS provider.",
+            info: "You can customize the SMS content using <1>SMS Templates</1>.",
+            updateButton: "Update",
+            sendTestSMSButton: "Send Test SMS",
+            goBack: "Go back to Notification Channels",
+            confirmationModal: {
+                assertionHint: "Please confirm your action.",
+                content: "If you delete this configuration, you will not receive SMS." +
+                    "Please proceed with caution.",
+                header: "Are you sure?",
+                message: "This action is irreversible and will permanently delete the SMS provider configurations."
+            },
+            dangerZoneGroup: {
+                header: "Danger Zone",
+                revertConfig: {
+                    heading: "Delete Configurations",
+                    subHeading: "This action will delete sms provider configurations. " +
+                        "Once deleted, you will not receive SMS.",
+                    actionTitle: "Delete"
+                }
+            },
+            form: {
+                twilio: {
+                    subHeading: "Twilio Settings",
+                    accountSID: {
+                        label: "Twilio Account SID",
+                        placeholder: "Enter the Twilio account SID",
+                        hint: "Twilio account string identifier which act as username for the account"
+                    },
+                    authToken: {
+                        label: "Twilio Auth Token",
+                        placeholder: "Enter the Twilio auth token",
+                        hint: "The access token generated by the Twilio auth server "
+                    },
+                    sender: {
+                        label: "Sender",
+                        placeholder: "Enter the sender phone number",
+                        hint: "Phone number of the sender."
+                    },
+                    validations: {
+                        required: "This field cannot be empty"
+                    }
+                },
+                vonage: {
+                    subHeading: "Vonage Settings",
+                    accountSID: {
+                        label: "Vonage Account SID",
+                        placeholder: "Enter the Vonage account SID",
+                        hint: "Vonage account string identifier which act as username for the account"
+                    },
+                    authToken: {
+                        label: "Vonage Auth Token",
+                        placeholder: "Enter the Vonage auth token",
+                        hint: "The access token generated by the Vonage auth server "
+                    },
+                    sender: {
+                        label: "Sender",
+                        placeholder: "Enter the sender phone number",
+                        hint: "Phone number of the sender."
+                    },
+                    validations: {
+                        required: "This field cannot be empty"
+                    }
+                },
+                custom: {
+                    subHeading: "Custom Settings",
+                    providerName: {
+                        label: "SMS Provider Name",
+                        placeholder: "Enter the SMS provider name",
+                        hint: "The name of the SMS provider."
+                    },
+                    providerUrl: {
+                        label: "SMS Provider URL",
+                        placeholder: "Enter the sms provider URL",
+                        hint: "The URL of the SMS provider."
+                    },
+                    httpMethod: {
+                        label: "HTTP Method",
+                        placeholder: "POST",
+                        hint: "The HTTP method of the API request used for sending the SMS."
+                    },
+                    contentType: {
+                        label: "Content Type",
+                        placeholder: "JSON",
+                        hint: "The content type of the API request used for sending the SMS."
+                    },
+                    headers: {
+                        label: "Headers",
+                        placeholder: "Enter headers",
+                        hint: "Headers to be included in the send SMS API request."
+                    },
+                    payload: {
+                        label: "Payload",
+                        placeholder: "Enter the payload",
+                        hint: "Payload of the SMS API request."
+                    },
+                    key: {
+                        label: "SMS Provider Auth Key",
+                        placeholder: "Enter the SMS provider auth key",
+                        hint: "The auth key of the SMS provider."
+                    },
+                    secret: {
+                        label: "SMS Provider Auth Secret",
+                        placeholder: "Enter the SMS provider auth secret",
+                        hint: "The auth secret of the SMS provider."
+                    },
+                    sender: {
+                        label: "Sender",
+                        placeholder: "Enter the sender",
+                        hint: "The sender of the SMS."
+                    },
+                    validations: {
+                        required: "This field cannot be empty",
+                        methodInvalid: "The HTTP method is invalid",
+                        contentTypeInvalid: "The content type is invalid"
+                    }
+                }
+            },
+            notifications: {
+                getConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error retrieving the sms provider configurations."
+                    }
+                },
+                deleteConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error deleting the sms provider configurations."
+                    },
+                    success: {
+                        message: "Revert Successful",
+                        description: "Successfully reverted the sms provider configurations."
+                    }
+                },
+                updateConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error updating the sms provider configurations."
+                    },
+                    success: {
+                        message: "Update Successful",
+                        description: "Successfully updated the sms provider configurations."
                     }
                 }
             }
@@ -2626,24 +2833,27 @@ export const extensions: Extensions = {
         sidePanel: {
             apiResources: "API Resources",
             branding: "Branding",
+            stylesAndText: "Styles & Text",
             monitor: "Logs",
             categories: {
                 apiResources: "API Resources",
                 branding: "Branding",
                 emailProvider: "Email Provider",
+                smsProvider: "SMS Provider",
                 monitor: "Logs"
             },
             emailProvider: "Email Provider",
-            eventPublishing : "Events",
-            emailTemplates : "Email Templates",
+            smsProvider: "SMS Provider",
+            eventPublishing: "Events",
+            emailTemplates: "Email Templates",
             organizationInfo: "Organization Info"
         },
         eventPublishing: {
             eventsConfiguration: {
                 heading: "Configure Events",
-                subHeading:  "Asgardeo can publish events to Choreo based on various user interactions. You can use the published events to trigger custom use cases.",
+                subHeading: "Asgardeo can publish events to Choreo based on various user interactions. You can use the published events to trigger custom use cases.",
                 formHeading: "Select the events that you want to publish to Choreo.",
-                form : {
+                form: {
                     updateButton: "Update"
                 },
                 navigateToChoreo: {
@@ -2651,9 +2861,9 @@ export const extensions: Extensions = {
                     navigateButton: "Go to Choreo"
                 }
             },
-            notifications : {
-                updateConfiguration : {
-                    error : {
+            notifications: {
+                updateConfiguration: {
+                    error: {
                         generic: {
                             description: "An error occurred while updating the event configurations.",
                             message: "Something went wrong"
@@ -2664,19 +2874,19 @@ export const extensions: Extensions = {
                             message: "Something went wrong"
                         }
                     },
-                    success : {
-                        description : "Event configurations updated successfully.",
-                        message : "Update Successful"
+                    success: {
+                        description: "Event configurations updated successfully.",
+                        message: "Update Successful"
                     }
                 },
-                getConfiguration : {
-                    error : {
-                        description : "An error occurred while retrieving the event configurations.",
-                        message :  "Retrieval Error"
+                getConfiguration: {
+                    error: {
+                        description: "An error occurred while retrieving the event configurations.",
+                        message: "Retrieval Error"
                     },
-                    success : {
-                        description : "",
-                        message : ""
+                    success: {
+                        description: "",
+                        message: ""
                     }
                 }
             }
@@ -2773,7 +2983,7 @@ export const extensions: Extensions = {
         accountLogin: {
             notifications: {
                 success: {
-                    description:  "Successfully updated username validation configuration.",
+                    description: "Successfully updated username validation configuration.",
                     message: "Update successful"
                 },
                 error: {
@@ -2801,6 +3011,33 @@ export const extensions: Extensions = {
                 usernameLength: "Set username length",
                 usernameLengthMin: "Min",
                 usernameLengthMax: "Max"
+            },
+            alternativeLoginIdentifierPage: {
+                pageTitle: "Alternative Login Identifiers",
+                description: "Configure alternative login identifiers and allow users to use username or configured" +
+                    " login identifier in login and recovery flows.",
+                loginIdentifierTypes: "Select login identifier",
+                loginIdentifierTypesHint: "Allow users to use username or configured login identifier in" +
+                    " the login flow.",
+                warning: "Ensure that each user in your organization has a unique value assigned for the selected" +
+                    " login identifiers.",
+                info: "You have selected email as the username type which makes it the primary login identifier.",
+                notification: {
+                    error: {
+                        description: "Error updating the alternative login identifier configuration.",
+                        message: "Error updating configuration"
+                    },
+                    success: {
+                        description: "Successfully updated the alternative login identifier configuration.",
+                        message: "Update successful"
+                    }
+                },
+                claimUpdateNotification: {
+                    error: {
+                        description: "Error updating the attribute as an unique attribute. Please try again.",
+                        message: "Error updating claim"
+                    }
+                }
             },
             pageTitle: "Account Login",
             description: "Customize account login configurations of the users in your organization.",
@@ -3056,8 +3293,8 @@ export const extensions: Extensions = {
                                                 "that you connect.",
                                             label: "Name",
                                             placeholder: "Enter the name of the user store",
-                                            requiredErrorMessage: "This field cannot be empty as this is the unique "+
-                                            "identifier of the user store."
+                                            requiredErrorMessage: "This field cannot be empty as this is the unique " +
+                                                "identifier of the user store."
                                         },
                                         description: {
                                             label: "Description",
@@ -3080,15 +3317,15 @@ export const extensions: Extensions = {
                                             types: {
                                                 readOnly: {
                                                     label: "Read Only",
-                                                    hint: "You will be granted READ-ONLY access to the user store. You will"+
-                                                    "not be able to add new users or update any attributes of the user" +
-                                                    "accounts you onboard."
+                                                    hint: "You will be granted READ-ONLY access to the user store. You will" +
+                                                        "not be able to add new users or update any attributes of the user" +
+                                                        "accounts you onboard."
                                                 },
                                                 readWrite: {
                                                     label: "Read/Write",
-                                                    hint: "You will be granted READ/WRITE access to the user store. You will "+
-                                                    "be able to add new users and update the attributes of the user accounts " +
-                                                    "you onboard."
+                                                    hint: "You will be granted READ/WRITE access to the user store. You will " +
+                                                        "be able to add new users and update the attributes of the user accounts " +
+                                                        "you onboard."
                                                 }
                                             }
                                         }
@@ -3533,6 +3770,63 @@ export const extensions: Extensions = {
                 subHeading: "Configure security settings to protect user accounts."
             },
             additionalSettings: "Additional Settings",
+            analytics: {
+                heading: "Analytics Engine",
+                subHeading: "Configure the analytics engine for your organization.",
+                form: {
+                    fields: {
+                        hostUrl: {
+                            label: "Host URL",
+                            placeholder: "Enter the host URL",
+                            hint: "The URL of the analytics engine."
+                        },
+                        hostBasicAuthEnable: {
+                            label: "Enable Basic Authentication",
+                            hint: "Enable basic authentication for the analytics engine."
+                        },
+                        hostUsername: {
+                            label: "Username",
+                            placeholder: "Enter the username",
+                            hint: "The username to authenticate into the analytics engine."
+                        },
+                        hostPassword: {
+                            label: "Password",
+                            placeholder: "Enter the password",
+                            hint: "The password to authenticate into the analytics engine."
+                        },
+                        hostConnectionTimeout: {
+                            label: "HTTP Connection Timeout",
+                            placeholder: "Enter the connection timeout",
+                            hint: "Enter the connection timeout value in milliseconds."
+                        },
+                        hostReadTimeout: {
+                            label: "HTTP Read Timeout",
+                            placeholder: "Enter the read timeout",
+                            hint: "Enter the read timeout value in milliseconds."
+                        },
+                        hostConnectionRequestTimeout: {
+                            label: "HTTP Connection Request Timeout",
+                            placeholder: "Enter the connection request timeout",
+                            hint: "Enter the connection request timeout value in milliseconds."
+                        },
+                        hostNameVerification: {
+                            label: "Hostname Verification",
+                            placeholder: "Enter the hostname verification",
+                            hint: "Enable hostname verification for the analytics engine. (STRICT | ALLOW_ALL)"
+                        }
+                    },
+                    notification: {
+                        error: {
+                            description: "Error occurred while updating the analytics engine configurations.",
+                            message: "Error Occurred"
+                        },
+                        success: {
+                            description: "Successfully updated the analytics engine configurations.",
+                            message: "Update Successful"
+                        }
+                    }
+                }
+            },
             generalBackButton: "Go back",
             generalDisabledLabel: "Disabled",
             generalEnabledLabel: "Enabled",
@@ -3666,7 +3960,7 @@ export const extensions: Extensions = {
                     changePasswordModal: {
                         emailUnavailableWarning: "WARNING: Cannot find an email address for the user account." +
                             "Please provide an email address to proceed with inviting the user to reset the password.",
-                        emailResetWarning: "An email with a link to reset the password will be sent to the provided" +
+                        emailResetWarning: "An email with a link to reset the password will be sent to the provided " +
                             "email address for the user to set their own password."
                     }
                 }
@@ -3701,11 +3995,11 @@ export const extensions: Extensions = {
                 consumerUser:
                     "Users who can access applications within the organization are listed here." +
                     " Admins can onboard users to the organization or the users can sign up if" +
-                " Admins can onboard users to the organization or the users can sign up if" +
                     " Admins can onboard users to the organization or the users can sign up if" +
-                " Admins can onboard users to the organization or the users can sign up if" +
                     " Admins can onboard users to the organization or the users can sign up if" +
-                " Admins can onboard users to the organization or the users can sign up if" +
+                    " Admins can onboard users to the organization or the users can sign up if" +
+                    " Admins can onboard users to the organization or the users can sign up if" +
+                    " Admins can onboard users to the organization or the users can sign up if" +
                     " Admins can onboard users to the organization or the users can sign up if" +
                     " self-registration is enabled.",
                 guestUser:
@@ -3782,7 +4076,7 @@ export const extensions: Extensions = {
             deleteUser: {
                 confirmationModal: {
                     content:
-                        "However, the user's account is not permanently deleted from Asgardeo and " +
+                        "However, the user's account is not permanently deleted from the system and " +
                         "they will still be able to access other organizations they are associated with.",
                     message:
                         "This action is irreversible and will remove the user's association with " +

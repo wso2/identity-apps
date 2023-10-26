@@ -19,7 +19,6 @@
 import { HelpPanelModal } from "@wso2is/common/src/components/modals/help-panel-modal";
 import { ModalWithSidePanel } from "@wso2is/common/src/components/modals/modal-with-side-panel";
 import { TierLimitReachErrorModal } from "@wso2is/common/src/components/modals/tier-limit-error-modal";
-import { AppConstants } from "@wso2is/common/src/constants/app-constants";
 import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { IdentityAppsError } from "@wso2is/core/errors";
@@ -37,11 +36,13 @@ import {
     useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FC, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import CreateConnectionWizardHelp from "./create-wizard-help";
 import { EventPublisher } from "../../../core";
@@ -76,7 +77,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
         [ "data-componentid" ]: componentId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
@@ -97,8 +98,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     const {
         data: connectionMetaData,
         isLoading: isConnectionMetaDataFetchRequestLoading,
-        error: connectionMetaDataFetchRequestError,
-        mutate: mutateConnectionMetaDataFetchRequest
+        error: connectionMetaDataFetchRequestError
     } = useGetConnectionMetaData(template?.id);
 
     let submitAdvanceForm: () => void;
@@ -151,15 +151,13 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
 
     /**
      * The following function handle the connection create API call.
-     * 
-     * @param connection 
      */
     const createNewConnection = (connection: ConnectionInterface): void => {
 
         setIsSubmitting(true);
 
         createConnection(connection)
-            .then((response) => {
+            .then((response: AxiosResponse) => {
                 eventPublisher.publish("connections-finish-adding-connection", {
                     type: componentId
                 });
@@ -175,8 +173,8 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                 // The created resource's id is sent as a location header.
                 // If that's available, navigate to the edit page.
                 if (!isEmpty(response.headers.location)) {
-                    const location = response.headers.location;
-                    const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
+                    const location: string = response.headers.location;
+                    const createdIdpID: string = location.substring(location.lastIndexOf("/") + 1);
 
                     onIDPCreate(createdIdpID);
 
@@ -186,7 +184,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                 // Since the location header is not present, trigger callback without the id.
                 onIDPCreate();
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
 
                 const identityAppsError: IdentityAppsError = ConnectionManagementConstants.ERROR_CREATE_LIMIT_REACHED;
 
@@ -248,10 +246,10 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
      */
     const connectionNameValidation = (value: string): string => {
 
-        let nameExist = false;
+        let nameExist: boolean = false;
 
         if (connectionNamesList?.length > 0) {
-            connectionNamesList?.map((name) => {
+            connectionNamesList?.map((name: string) => {
                 if (name === value) {
                     nameExist = true;
                 }
@@ -291,22 +289,27 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
         createNewConnection(identityProvider);
     };
 
-    const onSubmitWizard = (values): void => {
+    const onSubmitWizard = (values: any): void => {
 
         // Update the template properties with the values from the wizard.
-        const updatedProperties = connectionMetaDetails?.create?.properties?.map((property: { key: string; value: string }) => {
-            const convertedKey = property?.key?.charAt(0).toLowerCase() + property?.key?.slice(1);
+        const updatedProperties: { key: string; value: string }[] = connectionMetaDetails?.create?.properties?.map(
+            (property: { key: string; value: string }) => {
+
+                const CALLBACK_URL_KEY: string = "callbackUrl";
+
+                const convertedKey: string = property?.key?.charAt(0)
+                    .toLowerCase() + property?.key?.slice(1);
           
-            if (!isEmpty(values[convertedKey])) {
-                return { ...property, value: values[convertedKey] };
-            }
+                if (!isEmpty(values[convertedKey])) {
+                    return { ...property, value: values[convertedKey] };
+                }
           
-            if (convertedKey === "callbackUrl") {
-                return { ...property, value: deploymentConfig.clientHost + property.value };
-            }
+                if (convertedKey.toString().toLowerCase() === CALLBACK_URL_KEY.toString().toLowerCase()) {
+                    return { ...property, value: deploymentConfig.customServerHost + property.value };
+                }
           
-            return property;
-        });
+                return property;
+            });
 
         const connection: ConnectionInterface = template.idp;
 
@@ -316,14 +319,17 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
 
         // Allow to set empty client ID and client secret but make the authenticator disabled.
         if (values?.clientId) {
-            connection.federatedAuthenticators.authenticators[ 0 ].isEnabled = !(isEmpty(values?.clientId?.toString()));
+            connection.federatedAuthenticators.authenticators[ 0 ]
+                .isEnabled = !(isEmpty(values?.clientId?.toString()));
         }
 
         if (values?.clientSecret) {
-            connection.federatedAuthenticators.authenticators[ 0 ].isEnabled = !(isEmpty(values?.clientSecret?.toString()));
+            connection.federatedAuthenticators.authenticators[ 0 ]
+                .isEnabled = !(isEmpty(values?.clientSecret?.toString()));
         }
 
-        if (URLUtils.isHttpsUrl(connectionMetaData?.create?.image) || URLUtils.isHttpUrl(connectionMetaData?.create?.image)) {
+        if (URLUtils.isHttpsUrl(connectionMetaData?.create?.image) || 
+            URLUtils.isHttpUrl(connectionMetaData?.create?.image)) {
             connection.image = connectionMetaData?.create?.image;
         } else {
             if (!isEmpty(connectionResourcesUrl)) {
@@ -352,6 +358,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                         <LinkButton
                             floated="left"
                             onClick={ handleWizardClose }
+                            data-testid="add-connection-modal-cancel-button"
                             data-componentid="add-connection-modal-cancel-button"
                         >
                             { t("common:cancel") }
@@ -366,6 +373,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                                         onClick={ () => {
                                             submitAdvanceForm();
                                         } }
+                                        data-testid="add-connection-modal-next-button"
                                         data-componentid="add-connection-modal-next-button"
                                         loading={ isSubmitting }
                                         disabled={ isSubmitting }
@@ -380,6 +388,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                                         onClick={ () => {
                                             submitAdvanceForm();
                                         } }
+                                        data-testid="add-connection-modal-finish-button"
                                         data-componentid="add-connection-modal-finish-button"
                                         loading={ isSubmitting }
                                         disabled={ isSubmitting }
@@ -396,7 +405,8 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                                     onClick={ () => {
                                         triggerPreviousForm();
                                     } }
-                                    data-componentid={ `${ componentId }-modal-previous-button` }
+                                    data-testid="add-connection-modal-previous-button"
+                                    data-componentid="add-connection-modal-previous-button"
                                 >
                                     { t("console:develop.features.authenticationProvider." +
                                         "wizards.buttons.previous") }
@@ -412,7 +422,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     /**
     * Renders the help panel containing wizard help.
     *
-    * @return { React.ReactElement }
+    * @returns Help panel component.
     */
     const renderHelpPanel = (): ReactElement => {
 
@@ -431,7 +441,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                 <ModalWithSidePanel.Content>
                     <Suspense fallback={ <ContentLoader/> }>
                         {
-                            isLoading || isConnectionMetaDataFetchRequestLoading
+                            isConnectionMetaDataFetchRequestLoading
                                 ? <ContentLoader/>
                                 : (
                                     <CreateConnectionWizardHelp
@@ -446,8 +456,8 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
         );
     };
 
-    const modifyFormFields = (fields) => {
-        return fields?.map((field) => {
+    const modifyFormFields = (fields: any) => {
+        return fields?.map((field: any) => {
             if (field?.name === "name") {
                 field.validation = connectionNameValidation;
             }
@@ -499,7 +509,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                     <HelpPanelModal.Header
                         className="wizard-header"
                         data-componentid={ `${ componentId }-modal-header` }
-                        isLoading={ isLoading || isConnectionMetaDataFetchRequestLoading }
+                        isLoading={ isConnectionMetaDataFetchRequestLoading }
                     >
                         <div className="display-flex">
                             <GenericIcon

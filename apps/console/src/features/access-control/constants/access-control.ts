@@ -125,6 +125,10 @@ export class AccessControlConstants {
      * Identity provider edit permission
      */
     public static readonly IDP_EDIT: string = "identity_provider:edit";
+    /**
+     * Identity provider edit permission
+     */
+    public static readonly PROVIDER_EDIT: string = "internal_config_mgt_add";
 
     /**
      * Identity provider delete permission

@@ -27,7 +27,10 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "../../core/hooks/use-request";
-import { ConnectionManagementConstants } from "../constants/connection-constants";
+import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
+import { 
+    ConnectionManagementConstants 
+} from "../constants/connection-constants";
 import { 
     AuthenticatorInterface, 
     MultiFactorAuthenticatorInterface 
@@ -302,12 +305,25 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to get federated authenticator meta details for: " + id));
+                throw new IdentityAppsApiException(
+                    AuthenticatorManagementConstants.ERROR_IN_FETCHING_FEDERATED_AUTHENTICATOR_META_DATA,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
             }
 
             return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
         }).catch((error: AxiosError) => {
-            return Promise.reject(error);
+            throw new IdentityAppsApiException(
+                error.response?.data?.message ?? AuthenticatorManagementConstants
+                    .ERROR_IN_FETCHING_FEDERATED_AUTHENTICATOR_META_DATA,
+                error.stack,
+                error.response?.data?.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 
@@ -379,6 +395,35 @@ export const updateFederatedAuthenticator = (
             }
 
             return Promise.resolve(response.data as ConnectionInterface);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Get federated authenticator details.
+ *
+ * @returns A promise containing the response.
+ */
+export const getFederatedAuthenticatorsList = (): Promise<FederatedAuthenticatorMetaInterface[]> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.identityProviders + "/meta/federated-authenticators"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to get federated authenticators list"));
+            }
+
+            return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface[]);
         }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });

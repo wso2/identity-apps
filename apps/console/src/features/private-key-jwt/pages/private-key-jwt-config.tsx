@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,7 +20,6 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Section } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
 import { getSettingsSectionIcons } from "../../server-configurations";
 import { useTokenReuseConfigData } from "../api";
@@ -60,19 +59,19 @@ export const PrivateKeyJWTConfig: FunctionComponent<PrivateKeyJWTConfigPageInter
         history.push(AppConstants.getPaths().get("PRIVATE_KEY_JWT_CONFIG_EDIT"));
     };
 
-    return ( tokenReuseData ?
-        (<Section
-            data-componentid={ `${componentId}-settings-section` }
-            description={ t("console:manage.features.jwtPrivateKeyConfiguration.description") }
-            icon={ getSettingsSectionIcons().jwtPrivateKeyValidation }
-            header={ t(
-                "console:manage.features.jwtPrivateKeyConfiguration.pageTitle" 
-            ) }
-            onPrimaryActionClick={ handleSelection }
-            primaryAction={ "Configure" }
-        >
-            <Divider hidden/>
-        </Section>)
+    return ( tokenReuseData
+        ? (
+            <Section
+                data-componentid={ `${componentId}-settings-section` }
+                description={ t("console:manage.features.jwtPrivateKeyConfiguration.description") }
+                icon={ getSettingsSectionIcons().jwtPrivateKeyValidation }
+                header={ t(
+                    "console:manage.features.jwtPrivateKeyConfiguration.pageTitle" 
+                ) }
+                onPrimaryActionClick={ handleSelection }
+                primaryAction={ t("common:configure") }
+            />
+        )
         : null
     );
 };

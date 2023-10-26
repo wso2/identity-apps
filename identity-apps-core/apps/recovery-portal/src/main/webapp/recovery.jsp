@@ -25,7 +25,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.PasswordRecoveryApiV1" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.RecoveryApiV2" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.UserClaim" %>
 <%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
@@ -35,7 +35,7 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="java.net.URLEncoder" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.passwordrecovery.v1.*" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.*" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 
@@ -165,14 +165,14 @@
         String recoveryCode = request.getParameter("recoveryCode");
         String notificationChannel = "";
 
-        PasswordRecoveryApiV1 passwordRecoveryApiV1 = new PasswordRecoveryApiV1();
+        RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
         if (recoveryOption.equals("SECURITY_QUESTIONS")) {
             username = IdentityManagementEndpointUtil.getFullQualifiedUsername(username, tenantDomain, null);
             request.setAttribute("callback", callback);
             request.setAttribute("sessionDataKey", sessionDataKey);
             request.setAttribute("username", username);
             session.setAttribute("username", username);
-            IdentityManagementEndpointUtil.addReCaptchaHeaders(request, passwordRecoveryApiV1.
+            IdentityManagementEndpointUtil.addReCaptchaHeaders(request, recoveryApiV2.
                     getApiClient().getResponseHeaders());
             request.getRequestDispatcher("challenge-question-request.jsp?username=" + username).forward(request,
                     response);
@@ -195,7 +195,7 @@
             recoveryRequest.setRecoveryCode(recoveryCode);
             try {
                 Map<String, String> requestHeaders = new HashedMap();
-                RecoveryResponse recoveryResponse = passwordRecoveryApiV1.recoverPassword(recoveryRequest,
+                RecoveryResponse recoveryResponse = recoveryApiV2.recoverPassword(recoveryRequest,
                         tenantDomain, requestHeaders);
                 notificationChannel = recoveryResponse.getNotificationChannel();
                 request.setAttribute("callback", callback);

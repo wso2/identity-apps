@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,32 +19,32 @@
 import { SCIMConfigInterface } from "./models/scim";
 
 /**
- * This configuration is used to overwrite (in asgardeo-app-extension) and pass the,
- * wso2 custom dialect to the Asgardeo.
+ * SCIM dialect configurations.
  */
 export const SCIMConfigs: SCIMConfigInterface = {
-    custom: "urn:scim:wso2:schema",
-    hideCore1Schema: false,
+    custom: "",
+    hideCore1Schema: true,
     oidc: "http://wso2.org/oidc/claim",
     scim: {
         core1Schema: "urn:scim:schemas:core:1.0",
         coreSchema: "urn:ietf:params:scim:schemas:core:2.0",
-        enterpriseSchema: "urn:scim:wso2:schema",
+        enterpriseSchema: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
         userSchema: "urn:ietf:params:scim:schemas:core:2.0:User"
     },
-    scimDialectID: {},
+    scimDialectID: {
+        customEnterpriseSchema: "dXJuOmlldGY6cGFyYW1zOnNjaW06c2NoZW1hczpleHRlbnNpb246ZW50ZXJwcmlzZToyLjA6VXNlcg"
+    },
     scimEnterpriseUserClaimUri: {
-        accountDisabled: "urn:scim:wso2:schema.accountDisabled",
-        accountLocked: "urn:scim:wso2:schema.accountLocked",
-        askPassword: "urn:scim:wso2:schema.askPassword",
-        isReadOnlyUser: "urn:scim:wso2:schema.isReadOnlyUser",
-        oneTimePassword: "urn:scim:wso2:schema.oneTimePassword",
-        profileUrl: "urn:scim:wso2:schema.profileUrl"
+        accountDisabled: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountDisabled",
+        accountLocked: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountLocked",
+        askPassword: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.askPassword",
+        isReadOnlyUser: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.isReadOnlyUser",
+        oneTimePassword: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.oneTimePassword",
+        profileUrl: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.profileUrl"
     },
     serverSupportedClaimsAvailable: [
         "urn:scim:schemas:core:1.0",
         "urn:ietf:params:scim:schemas:core:2.0",
-        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
         "urn:ietf:params:scim:schemas:core:2.0:User"
     ]
 };

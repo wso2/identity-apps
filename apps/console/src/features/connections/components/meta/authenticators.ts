@@ -18,6 +18,7 @@
 
 import { getConnectionIcons } from "../../configs/ui";
 import { AuthenticatorManagementConstants } from "../../constants/autheticator-constants";
+import { ConnectionManagementConstants } from "../../constants/connection-constants";
 import { AuthenticatorMeta } from "../../meta/authenticator-meta";
 import { FederatedAuthenticatorMetaDataInterface } from "../../models/authenticators";
 
@@ -29,11 +30,53 @@ import { FederatedAuthenticatorMetaDataInterface } from "../../models/authentica
 const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] => {
     return [
         {
+            authenticatorId: ConnectionManagementConstants.OFFICE_365_AUTHENTICATOR_ID,
+            description: "Seamless integration with Office 365.",
+            displayName: "Office 365",
+            icon: getConnectionIcons().office365,
+            name: ConnectionManagementConstants.OFFICE_365_AUTHENTICATOR_NAME
+        },
+        {
+            authenticatorId: ConnectionManagementConstants.TWITTER_AUTHENTICATOR_ID,
+            description: "Login users with existing Twitter accounts.",
+            displayName: "Twitter",
+            icon: getConnectionIcons().twitter,
+            name: ConnectionManagementConstants.TWITTER_AUTHENTICATOR_NAME
+        },
+        {
+            authenticatorId: ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID,
+            description: "Login users with existing Facebook accounts.",
+            displayName: "Facebook",
+            icon: getConnectionIcons().facebook,
+            name: ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_NAME
+        },
+        {
+            authenticatorId: ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID,
+            description: "Login users with existing Google accounts.",
+            displayName: "Google",
+            icon: getConnectionIcons().google,
+            name: ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_NAME
+        },
+        {
+            authenticatorId: ConnectionManagementConstants.MS_LIVE_AUTHENTICATOR_ID,
+            description: "Login users with their Microsoft Live accounts.",
+            displayName: "Microsoft Windows Live",
+            icon: getConnectionIcons().microsoft,
+            name: ConnectionManagementConstants.MS_LIVE_AUTHENTICATOR_NAME
+        },
+        {
             authenticatorId: AuthenticatorManagementConstants.PASSIVE_STS_AUTHENTICATOR_ID,
             description: "Login users with WS Federation.",
             displayName: "Passive STS",
             icon: getConnectionIcons().wsFed,
             name: AuthenticatorManagementConstants.PASSIVE_STS_AUTHENTICATOR_NAME
+        },
+        {
+            authenticatorId: ConnectionManagementConstants.IWA_KERBEROS_AUTHENTICATOR_ID,
+            description: "Login users to Microsoft Windows servers.",
+            displayName: "IWA Kerberos",
+            icon: getConnectionIcons().iwaKerberos,
+            name: ConnectionManagementConstants.IWA_KERBEROS_AUTHENTICATOR_NAME
         },
         {
             authenticatorId: AuthenticatorManagementConstants.SAML_AUTHENTICATOR_ID,
@@ -58,11 +101,43 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
             name: AuthenticatorManagementConstants.LEGACY_EMAIL_OTP_AUTHENTICATOR_NAME
         },
         {
-            authenticatorId: AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID,
-            description: AuthenticatorMeta.getAuthenticatorDescription("U01TT1RQ"),
+            authenticatorId: AuthenticatorManagementConstants.LEGACY_SMS_OTP_AUTHENTICATOR_ID,
+            description: AuthenticatorMeta
+                .getAuthenticatorDescription(AuthenticatorManagementConstants.LEGACY_SMS_OTP_AUTHENTICATOR_ID),
             displayName: "SMS OTP",
             icon: getConnectionIcons().smsOTP,
             name: AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_NAME
+        },
+        {
+            authenticatorId: ConnectionManagementConstants.APPLE_AUTHENTICATOR_ID,
+            description: "Login users with their Apple IDs.",
+            displayName: "Apple",
+            icon: getConnectionIcons().apple,
+            name: ConnectionManagementConstants.APPLE_AUTHENTICATOR_NAME
+        }
+    ];
+};
+
+/**
+ * The metadata set of connectors that we know are supported by Identity Server.
+ * TODO: Remove this mapping once there's an API to get the connector icons, etc.
+ * @returns List of FederatedAuthenticatorMetaDataInterface.
+ */
+const getKnownExternalConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] => {
+    return [
+        {
+            authenticatorId: ConnectionManagementConstants.YAHOO_AUTHENTICATOR_ID,
+            description: "Login users with their Yahoo accounts.",
+            displayName: "Yahoo",
+            icon: getConnectionIcons().yahoo,
+            name: ConnectionManagementConstants.YAHOO_AUTHENTICATOR_NAME
+        },
+        {
+            authenticatorId: ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID,
+            description: "Login users with existing GitHub accounts",
+            displayName: "GitHub",
+            icon: "github",
+            name: ConnectionManagementConstants.GITHUB_AUTHENTICATOR_NAME
         }
     ];
 };
@@ -85,6 +160,7 @@ export const getConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[
 
     return [
         ...getKnownConnectorMetadata(),
-        ...getExternalConnectorMetadataExtensions()
+        ...getExternalConnectorMetadataExtensions(),
+        ...getKnownExternalConnectorMetadata()
     ];
 };

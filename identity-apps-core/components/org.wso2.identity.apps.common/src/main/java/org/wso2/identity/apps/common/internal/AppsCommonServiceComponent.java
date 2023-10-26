@@ -25,6 +25,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
+import org.wso2.carbon.CarbonConstants;
 import org.wso2.carbon.core.ServerStartupObserver;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
@@ -35,8 +36,10 @@ import org.wso2.carbon.identity.core.util.IdentityCoreInitializedEvent;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 import org.wso2.carbon.identity.oauth.listener.OAuthApplicationMgtListener;
 import org.wso2.carbon.identity.organization.management.service.OrganizationManagementInitialize;
+import org.wso2.carbon.stratos.common.listeners.TenantMgtListener;
 import org.wso2.identity.apps.common.listner.AppPortalApplicationMgtListener;
 import org.wso2.identity.apps.common.listner.AppPortalOAuthAppMgtListener;
+import org.wso2.identity.apps.common.listner.AppPortalTenantMgtListener;
 import org.wso2.identity.apps.common.util.AppPortalUtils;
 
 import java.util.HashSet;
@@ -85,16 +88,16 @@ public class AppsCommonServiceComponent {
                 OAuthApplicationMgtListener oAuthApplicationMgtListener = new AppPortalOAuthAppMgtListener(true);
                 bundleContext.registerService(OAuthApplicationMgtListener.class.getName(), oAuthApplicationMgtListener,
                         null);
-
-                if (log.isDebugEnabled()) {
-                    log.debug("AppPortalOAuthAppMgtListener registered successfully.");
-                }
+                log.debug("AppPortalOAuthAppMgtListener registered successfully.");
 
                 ApplicationMgtListener applicationMgtListener = new AppPortalApplicationMgtListener(true);
                 bundleContext.registerService(ApplicationMgtListener.class.getName(), applicationMgtListener, null);
+                log.debug("AppPortalApplicationMgtListener registered successfully.");
 
-                if (log.isDebugEnabled()) {
-                    log.debug("AppPortalApplicationMgtListener registered successfully.");
+                if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+                    TenantMgtListener tenantManagementListener = new AppPortalTenantMgtListener();
+                    bundleContext.registerService(TenantMgtListener.class.getName(), tenantManagementListener, null);
+                    log.debug("AppPortalTenantMgtListener registered successfully.");
                 }
             }
 

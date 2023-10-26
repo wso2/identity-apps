@@ -16,11 +16,18 @@
  * under the License.
  */
 
-export * from "./adapters";
+export * from "./adapters/__DEPRECATED__adapters";
+export * from "./adapters/text-field-adapter";
+export { default as TextFieldAdapter } from "./adapters/text-field-adapter";
+export { default as SelectFieldAdapter } from "./adapters/select-field-adapter";
+export * from "./adapters/url-field-adapter";
+export { default as URLFieldAdapter } from "./adapters/url-field-adapter";
+export * from "./adapters/checkbox-field-adapter";
+export { default as CheckboxFieldAdapter } from "./adapters/checkbox-field-adapter";
 export * from "./field";
 export * from "./field-button";
 export * from "./field-color-picker";
-export * from "./deprecated-field-checkbox";
+export * from "./__DEPRECATED__field-checkbox";
 export * from "./field-checkbox";
 export * from "./field-checkbox-legacy";
 export * from "./field-input";
@@ -32,3 +39,11 @@ export * from "./form";
 export * from "./wizard";
 export * from "./wizard2";
 export * from "./wizardPage";
+
+// Export react-final-form components with a different name.
+export { Form as FinalForm } from "react-final-form";
+export { Field as FinalFormField } from "react-final-form";
+export { FormRenderProps } from "react-final-form";
+export * from "final-form";
+export * as ReactFinalForm from "react-final-form";
+export { FormSpy } from "react-final-form";

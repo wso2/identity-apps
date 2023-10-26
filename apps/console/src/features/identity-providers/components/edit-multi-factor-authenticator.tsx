@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,10 +23,10 @@ import { ContentLoader, EmphasizedSegment, ResourceTab, ResourceTabPaneInterface
 import { authenticatorConfig } from "apps/console/src/extensions/configs/authenticator";
 import get from "lodash-es/get";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Grid, Menu, SemanticShorthandItem, TabPaneProps } from "semantic-ui-react";
+import { Grid, SemanticShorthandItem, TabPaneProps } from "semantic-ui-react";
 import { AuthenticatorFormFactory } from "./forms/factories";
 import {
     AuthenticatorExtensionsConfigInterface,  
@@ -58,10 +58,6 @@ interface EditMultiFactorAuthenticatorPropsInterface extends TestableComponentIn
      */
     defaultActiveIndex?: number;
     /**
-     * Callback to see if tab extensions are available
-     */
-    isTabExtensionsAvailable: (isAvailable: boolean) => void;
-    /**
      * Type of the authenticator.
      * @see {@link IdentityProviderManagementConstants } Use one of `IDP_TEMPLATE_IDS`.
      */
@@ -86,7 +82,6 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
         authenticator,
         isLoading,
         defaultActiveIndex,
-        isTabExtensionsAvailable,
         onUpdate,
         type,
         isReadOnly,
@@ -120,10 +115,6 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             .editIdentityProvider.getTabExtensions({
                 content: authenticatorConfig.content.quickStart
             });
-
-        if (Array.isArray(extensions) && extensions.length > 0) {
-            isTabExtensionsAvailable(true);
-        }
 
         setTabPaneExtensions(extensions);
     }, [ authenticator, tabPaneExtensions ]);
@@ -266,24 +257,6 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             panes.push({
                 menuItem: t("console:develop.features.authenticationProvider.edit.common.settings.tabName"),
                 render: AuthenticatorSettingsTabPane
-            });
-        }
-
-        // If the MFA is Email OTP, add the Email Template tab.
-        if (authenticator.id === IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID) {
-            panes.push({
-                menuItem: (
-                    <Menu.Item disabled key="messages" className="upcoming-item">
-                        <Trans
-                            i18nKey={
-                                "console:develop.features.authenticationProvider.edit.emailOTP.emailTemplate.tabName"
-                            }
-                        >
-                            Email Template <span className="coming-soon-label">(Coming Soon)</span>
-                        </Trans>
-                    </Menu.Item>
-                ),
-                render: null
             });
         }
 

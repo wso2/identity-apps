@@ -19,6 +19,7 @@
 package org.wso2.identity.apps.common.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.wso2.carbon.CarbonConstants;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
@@ -29,6 +30,7 @@ import org.wso2.carbon.identity.application.common.model.InboundAuthenticationCo
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
 import org.wso2.carbon.identity.application.common.model.LocalAndOutboundAuthenticationConfig;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
+import org.wso2.carbon.identity.application.common.model.ServiceProviderProperty;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
@@ -46,6 +48,7 @@ import java.util.stream.Collectors;
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.AUTHORIZATION_CODE;
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.GrantTypes.REFRESH_TOKEN;
 import static org.wso2.carbon.identity.oauth.common.OAuthConstants.OAuthVersions.VERSION_2;
+import static org.wso2.carbon.identity.organization.management.application.constant.OrgApplicationMgtConstants.SHARE_WITH_ALL_CHILDREN;
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.CONSOLE_APP;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME_CLAIM_URI;
@@ -80,8 +83,9 @@ public class AppPortalUtils {
      * @throws IdentityOAuthAdminException in case of failure.
      */
     public static void createOAuth2Application(String applicationName, String portalPath, String consumerKey,
-            String consumerSecret, String appOwner, int tenantId, String tenantDomain, String bindingType,
-            List<String> grantTypes) throws IdentityOAuthAdminException {
+                                               String consumerSecret, String appOwner, int tenantId,
+                                               String tenantDomain, String bindingType, List<String> grantTypes)
+        throws IdentityOAuthAdminException {
 
         OAuthConsumerAppDTO oAuthConsumerAppDTO = new OAuthConsumerAppDTO();
         oAuthConsumerAppDTO.setApplicationName(applicationName);
@@ -91,14 +95,14 @@ public class AppPortalUtils {
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
         if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
             callbackUrl = callbackUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
-        } else {
+        } else if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
             if (StringUtils.equals(CONSOLE_APP, applicationName) &&
-                    AppsCommonDataHolder.getInstance().isOrganizationManagementEnabled()) {
+                AppsCommonDataHolder.getInstance().isOrganizationManagementEnabled()) {
                 callbackUrl = "regexp=(" + callbackUrl + "|" + callbackUrl.replace(portalPath, "/t/(.*)" +
-                        portalPath) + "|" + callbackUrl.replace(portalPath, "/o/(.*)" + portalPath) + ")";
+                    portalPath) + "|" + callbackUrl.replace(portalPath, "/o/(.*)" + portalPath) + ")";
             } else {
                 callbackUrl = "regexp=(" + callbackUrl + "|" +
-                        callbackUrl.replace(portalPath, "/t/(.*)" + portalPath) + ")";
+                    callbackUrl.replace(portalPath, "/t/(.*)" + portalPath) + ")";
             }
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
@@ -136,10 +140,11 @@ public class AppPortalUtils {
      */
     @Deprecated
     public static void createApplication(String appName, String appOwner, String appDescription, String consumerKey,
-            String consumerSecret, String tenantDomain) throws IdentityApplicationManagementException {
+                                         String consumerSecret, String tenantDomain)
+        throws IdentityApplicationManagementException {
 
         createApplication(appName, appOwner, appDescription,
-                consumerKey, consumerSecret, tenantDomain, StringUtils.EMPTY);
+            consumerKey, consumerSecret, tenantDomain, StringUtils.EMPTY);
     }
 
     /**
@@ -155,31 +160,50 @@ public class AppPortalUtils {
      */
     public static void createApplication(String appName, String appOwner, String appDescription, String consumerKey,
                                          String consumerSecret, String tenantDomain, String portalPath)
-            throws IdentityApplicationManagementException {
+        throws IdentityApplicationManagementException {
 
         ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setApplicationName(appName);
         serviceProvider.setDescription(appDescription);
-        serviceProvider.setSaasApp(true);
         serviceProvider.setManagementApp(true);
+        if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+            serviceProvider.setSaasApp(true);
+        }
         if (StringUtils.isNotEmpty(portalPath)) {
-            serviceProvider.setAccessUrl(IdentityUtil.getServerURL(portalPath, true, true));
+            if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+                serviceProvider.setAccessUrl(IdentityUtil.getServerURL(portalPath, true, true));
+            } else {
+                String accessUrl = IdentityUtil.getServerURL(portalPath, true, true);
+                if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
+                    accessUrl = accessUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
+                }
+                serviceProvider.setAccessUrl(accessUrl);
+            }
+        }
+
+        if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+            // Make system applications shareable.
+            ServiceProviderProperty spProperty = new ServiceProviderProperty();
+            spProperty.setName(SHARE_WITH_ALL_CHILDREN);
+            spProperty.setValue("true");
+            ServiceProviderProperty[] serviceProviderProperties = {spProperty};
+            serviceProvider.setSpProperties(serviceProviderProperties);
         }
 
         InboundAuthenticationRequestConfig inboundAuthenticationRequestConfig
-                = new InboundAuthenticationRequestConfig();
+            = new InboundAuthenticationRequestConfig();
         inboundAuthenticationRequestConfig.setInboundAuthKey(consumerKey);
         inboundAuthenticationRequestConfig.setInboundAuthType(INBOUND_AUTH2_TYPE);
         inboundAuthenticationRequestConfig.setInboundConfigType(INBOUND_CONFIG_TYPE);
         List<InboundAuthenticationRequestConfig> inboundAuthenticationRequestConfigs = Arrays
-                .asList(inboundAuthenticationRequestConfig);
+            .asList(inboundAuthenticationRequestConfig);
         InboundAuthenticationConfig inboundAuthenticationConfig = new InboundAuthenticationConfig();
         inboundAuthenticationConfig.setInboundAuthenticationRequestConfigs(
-                inboundAuthenticationRequestConfigs.toArray(new InboundAuthenticationRequestConfig[0]));
+            inboundAuthenticationRequestConfigs.toArray(new InboundAuthenticationRequestConfig[0]));
         serviceProvider.setInboundAuthenticationConfig(inboundAuthenticationConfig);
 
         LocalAndOutboundAuthenticationConfig localAndOutboundAuthenticationConfig
-                = new LocalAndOutboundAuthenticationConfig();
+            = new LocalAndOutboundAuthenticationConfig();
         localAndOutboundAuthenticationConfig.setUseUserstoreDomainInLocalSubjectIdentifier(true);
         localAndOutboundAuthenticationConfig.setUseTenantDomainInLocalSubjectIdentifier(true);
         localAndOutboundAuthenticationConfig.setSkipConsent(true);
@@ -193,7 +217,7 @@ public class AppPortalUtils {
         serviceProvider.setClaimConfig(claimConfig);
 
         AppsCommonDataHolder.getInstance().getApplicationManagementService()
-                .createApplication(serviceProvider, tenantDomain, appOwner);
+            .createApplication(serviceProvider, tenantDomain, appOwner);
     }
 
     /**
@@ -231,25 +255,25 @@ public class AppPortalUtils {
         profileUrlClaimMapping.setLocalClaim(profileUrlClaim);
         profileUrlClaimMapping.setRemoteClaim(profileUrlClaim);
 
-        return new ClaimMapping[] { emailClaimMapping, displayNameClaimMapping, usernameClaimMapping,
-            profileUrlClaimMapping };
+        return new ClaimMapping[]{emailClaimMapping, displayNameClaimMapping, usernameClaimMapping,
+            profileUrlClaimMapping};
     }
 
     /**
-     * Initiate portal applications.
+     * Initiate portals.
      *
      * @param tenantDomain tenant domain.
      * @param tenantId     tenant id.
-     * @throws IdentityApplicationManagementException in case of failure during application creation.
-     * @throws IdentityOAuthAdminException            in case of failure during OAuth2 application creation.
-     * @throws UserStoreException
+     * @throws IdentityApplicationManagementException      IdentityApplicationManagementException.
+     * @throws IdentityOAuthAdminException                 IdentityOAuthAdminException.
+     * @throws org.wso2.carbon.user.api.UserStoreException UserStoreException.
      */
     public static void initiatePortals(String tenantDomain, int tenantId)
-            throws IdentityApplicationManagementException, IdentityOAuthAdminException,
-            UserStoreException {
+        throws IdentityApplicationManagementException, IdentityOAuthAdminException,
+        UserStoreException {
 
         ApplicationManagementService applicationMgtService = AppsCommonDataHolder.getInstance()
-                .getApplicationManagementService();
+            .getApplicationManagementService();
 
         UserRealm userRealm = (UserRealm) PrivilegedCarbonContext.getThreadLocalCarbonContext().getUserRealm();
         String adminUsername = userRealm.getRealmConfiguration().getAdminUserName();
@@ -261,29 +285,26 @@ public class AppPortalUtils {
                 List<String> grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH);
                 if (CONSOLE_APP.equals(appPortal.getName())) {
                     grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH,
-                            GRANT_TYPE_ORGANIZATION_SWITCH);
+                        GRANT_TYPE_ORGANIZATION_SWITCH);
                 }
                 List<String> allowedGrantTypes = Arrays.asList(AppsCommonDataHolder.getInstance()
-                        .getOAuthAdminService().getAllowedGrantTypes());
+                    .getOAuthAdminService().getAllowedGrantTypes());
                 grantTypes = grantTypes.stream().filter(allowedGrantTypes::contains).collect(Collectors.toList());
                 String consumerKey = appPortal.getConsumerKey();
-                if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
-                    consumerKey = consumerKey + "_" + tenantDomain;
-                }
                 try {
                     AppPortalUtils.createOAuth2Application(appPortal.getName(), appPortal.getPath(), consumerKey,
-                            consumerSecret, adminUsername, tenantId, tenantDomain,
-                            OAuth2Constants.TokenBinderType.COOKIE_BASED_TOKEN_BINDER, grantTypes);
+                        consumerSecret, adminUsername, tenantId, tenantDomain,
+                        OAuth2Constants.TokenBinderType.COOKIE_BASED_TOKEN_BINDER, grantTypes);
                 } catch (IdentityOAuthAdminException e) {
                     if ("Error when adding the application. An application with the same name already exists."
-                            .equals(e.getMessage())) {
+                        .equals(e.getMessage())) {
                         // Application is already created.
                         continue;
                     }
                     throw e;
                 }
                 AppPortalUtils.createApplication(appPortal.getName(), adminUsername, appPortal.getDescription(),
-                        consumerKey, consumerSecret, tenantDomain, appPortal.getPath());
+                    consumerKey, consumerSecret, tenantDomain, appPortal.getPath());
             }
         }
     }
@@ -295,17 +316,17 @@ public class AppPortalUtils {
      * @return OAuth InboundAuthenticationRequestConfig if exists.
      */
     public static InboundAuthenticationRequestConfig getOAuthInboundAuthenticationRequestConfig(
-            ServiceProvider application) {
+        ServiceProvider application) {
 
         if (application == null || application.getInboundAuthenticationConfig() == null
-                || application.getInboundAuthenticationConfig().getInboundAuthenticationRequestConfigs() == null
-                || application.getInboundAuthenticationConfig().getInboundAuthenticationRequestConfigs().length == 0) {
+            || application.getInboundAuthenticationConfig().getInboundAuthenticationRequestConfigs() == null
+            || application.getInboundAuthenticationConfig().getInboundAuthenticationRequestConfigs().length == 0) {
 
             return null;
         }
 
         for (InboundAuthenticationRequestConfig inboundAuthenticationRequestConfig : application
-                .getInboundAuthenticationConfig().getInboundAuthenticationRequestConfigs()) {
+            .getInboundAuthenticationConfig().getInboundAuthenticationRequestConfigs()) {
             if (FrameworkConstants.OAUTH2.equals(inboundAuthenticationRequestConfig.getInboundAuthType())) {
 
                 return inboundAuthenticationRequestConfig;

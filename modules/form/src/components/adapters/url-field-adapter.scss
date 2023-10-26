@@ -1,0 +1,27 @@
+.url-field-adapter {
+    .oxygen-input-label {
+        color: var(--oxygen-palette-text-secondary);
+        font-weight: 400;
+        font-size: 1rem;
+        line-height: 1.4375em;
+        letter-spacing: normal;
+        padding: 0;
+        position: relative;
+        display: block;
+        transform-origin: top left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+    
+    .oxygen-url-field {
+        margin-top: 8px;
+        margin-bottom: 3px;
+    }
+
+    .url-chip {
+        margin-top: 3px;
+        margin-bottom: 3px;
+    }
+}

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,10 +20,6 @@
  * Interface for the resource endpoints of extended features.
  */
 export interface ExtendedFeatureResourceEndpointsInterface {
-    /**
-     * Tenant Branding Preference API endpoint.
-     */
-    brandingPreference: string;
     /**
      * Remote user store agent connection API endpoint.
      */
@@ -52,7 +48,12 @@ export interface ExtendedFeatureResourceEndpointsInterface {
      * Event Publishing API endpoint.
      */
     emailProviderEndpoint : string;
-    
+
+    /**
+     * SMS Publishing API endpoint.
+     */
+    smsProviderEndpoint : string;
+
     /**
      * Event Publishing API endpoint.
      */
@@ -67,7 +68,7 @@ export interface ExtendedFeatureResourceEndpointsInterface {
      * Notification senders API endpoint.
      */
     notificationSendersEndPoint: string;
-    
+
     /**
      * Authorization Service API endpoint.
      */

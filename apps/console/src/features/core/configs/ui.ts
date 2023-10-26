@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -90,9 +90,13 @@ import {
 import {
     ReactComponent as ApprovalsIcon
 } from "../../../themes/default/assets/images/icons/outline-icons/pending-approval-outline.svg";
+import {
+    ReactComponent as RemoteLoggingIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/remote-logging.svg";
 import { ReactComponent as PinIcon } from "../../../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../../../themes/default/assets/images/icons/plug-icon.svg";
 import { ReactComponent as ScopeIcon } from "../../../themes/default/assets/images/icons/scope.svg";
+import { ReactComponent as SMSIcon } from "../../../themes/default/assets/images/icons/sms-icon.svg";
 import {
     ReactComponent as LockIconFilled
 } from "../../../themes/default/assets/images/icons/secret-grey.svg";
@@ -136,6 +140,9 @@ import {
 import {
     ReactComponent as PageNotFoundIllustration
 } from "../../../themes/default/assets/images/placeholder-illustrations/page-not-found-illustration.svg";
+import AxschemaLogo from "../../../themes/default/assets/images/protocols/axschema.png";
+import EidasLogo from "../../../themes/default/assets/images/protocols/eidas.png";
+import OAuth2Logo from "../../../themes/default/assets/images/protocols/oauth2.png";
 import OIDCFullLogo from "../../../themes/default/assets/images/protocols/oidc.png";
 import OIDCLogo from "../../../themes/default/assets/images/protocols/openid-connect.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
@@ -167,15 +174,18 @@ interface GetTechnologyLogosInterface {
     android: FunctionComponent | ReactNode,
     angular: FunctionComponent | ReactNode,
     apple: FunctionComponent | ReactNode,
+    axschema: string,
     cSharp: FunctionComponent | ReactNode,
     cordova: FunctionComponent | ReactNode,
     dotNet: FunctionComponent | ReactNode,
+    eidas: string,
     html: FunctionComponent | ReactNode,
     ios: FunctionComponent | ReactNode,
     java: FunctionComponent | ReactNode,
     javascript: FunctionComponent | ReactNode,
     macos: string,
     nodejs: FunctionComponent | ReactNode,
+    oauth2: string,
     oidc: string,
     openidconnect: string,
     python: FunctionComponent | ReactNode,
@@ -197,15 +207,18 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
         android: AndroidLogo,
         angular: AngularLogo,
         apple: AppleLogo,
+        axschema: AxschemaLogo,
         cSharp: CSharpLogo,
         cordova: CordovaLogo,
         dotNet: DotNetLogo,
+        eidas: EidasLogo,
         html: HTMLLogo,
         ios: IOSLogo,
         java: JavaLogo,
         javascript: JavaScriptLogo,
         macos: MacOSLogo,
         nodejs: NodeJSLogo,
+        oauth2: OAuth2Logo,
         oidc: OIDCLogo,
         openidconnect: OIDCFullLogo,
         python: PythonLogo,
@@ -232,6 +245,7 @@ export type GetSidePanelIconsInterface = {
     connections: FunctionComponent | ReactNode,
     connectors: Record<string, FunctionComponent | ReactNode>,
     emailTemplates: FunctionComponent | ReactNode,
+    gears: FunctionComponent | ReactNode,
     groups: FunctionComponent | ReactNode,
     home: FunctionComponent | ReactNode,
     identityProviders: FunctionComponent | ReactNode,
@@ -241,11 +255,13 @@ export type GetSidePanelIconsInterface = {
     organizationLegacy: FunctionComponent | ReactNode,
     overview: FunctionComponent | ReactNode,
     remoteFetch: FunctionComponent | ReactNode,
+    remoteLogging: FunctionComponent | ReactNode,
     roles: FunctionComponent | ReactNode,
     organizationRoles: FunctionComponent | ReactNode,
     scopes: FunctionComponent | ReactNode,
     secrets: FunctionComponent | ReactNode,
     serverConfigurations: FunctionComponent | ReactNode,
+    sms: FunctionComponent | ReactNode,
     userStore: FunctionComponent | ReactNode,
     users: FunctionComponent | ReactNode,
     insights: FunctionComponent | ReactNode
@@ -279,6 +295,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
             default: PlugIcon
         },
         emailTemplates: EmailIcon,
+        gears: GearsIcon,
         groups: UserGroupIcon,
         home: HomeIcon,
         identityProviders: IDPOutlineIcon,
@@ -290,10 +307,12 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         organizationRoles: OrganizationRolesIcon,
         overview: DashboardIcon,
         remoteFetch: CodeForkIcon,
+        remoteLogging: RemoteLoggingIcon,
         roles: BriefcaseIcon,
         scopes: ScopeIcon,
         secrets: KeyOutlineIcon,
         serverConfigurations: GearsIcon,
+        sms: SMSIcon,
         userStore: DatabaseIcon,
         users: UserIcon
     };

@@ -16,9 +16,14 @@
   ~ under the License.
 --%>
 
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EncodedControl" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
 <%@ page import="java.util.*" %>
+<%@ page import="org.json.JSONObject" %>
+<%@ page import="java.util.Calendar" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%
     String lang = "en_US"; // Default lang is en_US
@@ -86,7 +91,8 @@
                     userLocale = tempLocale;
                     break;
                 } else if (tempLocale.getLanguage().equals("en") && foundBundle.getLocale().getLanguage().equals("")) {
-                    // When the given locale is en - which is our fallback one
+                    // When the given locale is en - which is our fallback one, we have to handle it separately because
+                    // returns and empty string as locale language
                     userLocale = tempLocale;
                     break;
                 } else {
@@ -102,4 +108,74 @@
 
     ResourceBundle recoveryResourceBundle = ResourceBundle.getBundle(BUNDLE, userLocale, new
         EncodedControl(StandardCharsets.UTF_8.toString()));
+%>
+
+<%!
+    /**
+     * Get the localized string for the given key.
+     * Interacts with both the `resourceBundle` & the custom text from the Branding API.
+     *
+     * @param resourceBundle Resource bundle.
+     * @param customText Custom text.
+     * @param key Key of the localized string.
+     * @return Localized string.
+     */
+    public String i18n(ResourceBundle resourceBundle, JSONObject customText, String key) {
+        return i18n(resourceBundle, customText, key, null, true);
+    }
+
+    /**
+     * Get the localized string for the given key.
+     * Interacts with both the `resourceBundle` & the custom text from the Branding API.
+     * Overloaded method with default value.
+     *
+     * @param resourceBundle Resource bundle.
+     * @param customText Custom text.
+     * @param key Key of the localized string.
+     * @param defaultValue Default value.
+     * @return Localized string.
+     */
+    public String i18n(ResourceBundle resourceBundle, JSONObject customText, String key, String defaultValue) {
+        return i18n(resourceBundle, customText, key, defaultValue, true);
+    }
+
+    /**
+     * Get the localized string for the given key.
+     * Interacts with both the `resourceBundle` & the custom text from the Branding API.
+     * Overloaded method with default value with the ability to not fallback to resource bundle and return "" as default.
+     *
+     * @param resourceBundle Resource bundle.
+     * @param customText Custom text.
+     * @param key Key of the localized string.
+     * @param defaultValue Default value.
+     * @param shouldFallbackToResourceBundle Should fallback to resource bundle.
+     * @return Localized string.
+     */
+    public String i18n(ResourceBundle resourceBundle, JSONObject customText, String key, String defaultValue, boolean shouldFallbackToResourceBundle) {
+        String localizedString = null;
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+
+        try {
+            if (customText != null && customText.has(key)) {
+                localizedString = Encode.forHtmlContent(customText.getString(key));
+            } else {
+                if (StringUtils.isNotBlank(defaultValue)) {
+                    localizedString = Encode.forHtmlContent(defaultValue);
+                } else if (shouldFallbackToResourceBundle) {
+                    localizedString = IdentityManagementEndpointUtil.i18n(resourceBundle, key);
+                } else {
+                    localizedString = "";
+                }
+            }
+        } catch (Exception e) {
+            // Return the key itself as a fallback
+            localizedString = Encode.forHtmlContent(key);
+        }
+
+        // Replace newline characters with actual line breaks
+        localizedString = localizedString.replace("\\n", "\n");
+
+        return localizedString.replace("{{currentYear}}", String.valueOf(currentYear));
+    }
 %>

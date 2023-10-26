@@ -16,9 +16,7 @@
  * under the License.
  */
 
-import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { I18n } from "@wso2is/i18n";
 import {
     ContentLoader,
     EmphasizedSegment,
@@ -26,10 +24,8 @@ import {
     ResourceTabPaneInterface
 } from "@wso2is/react-components";
 import React, {
-    ElementType,
     FunctionComponent,
     ReactElement,
-    ReactNode,
     lazy,
     useEffect,
     useState
@@ -48,6 +44,7 @@ import {
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
 import { identityProviderConfig } from "../../../../extensions";
 import { AppState, FeatureConfigInterface } from "../../../core";
+import { AuthenticatorManagementConstants } from "../../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
 import {
     ConnectionAdvanceInterface,
@@ -55,7 +52,6 @@ import {
     ConnectionTabTypes,
     ConnectionTemplateInterface
 } from "../../models/connection";
-import { ConnectionsManagementUtils } from "../../utils/connection-utils";
 
 /**
  * Proptypes for the connection edit component.
@@ -99,10 +95,6 @@ interface EditConnectionPropsInterface extends TestableComponentInterface {
      */
     template: ConnectionTemplateInterface;
     /**
-     * Callback to see if tab extensions are available
-     */
-    isTabExtensionsAvailable: (isAvailable: boolean) => void;
-    /**
      * Type of IDP.
      * @see {@link IdentityProviderManagementConstants } Use one of `IDP_TEMPLATE_IDS`.
      */
@@ -144,7 +136,6 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         onDelete,
         onUpdate,
         template,
-        isTabExtensionsAvailable,
         type,
         isReadOnly,
         isAutomaticTabRedirectionEnabled,
@@ -153,9 +144,6 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     } = props;
     
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const { UIConfig } = useUIConfig();
-
-    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
@@ -165,9 +153,14 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
      * (https://github.com/wso2-enterprise/iam-engineering/issues/575)
      */
     const [ isTrustedTokenIssuer, setIsTrustedTokenIssuer ] = useState<boolean>(false);
+    const [ isExpertMode, setIsExpertMode ] = useState<boolean>(false);
 
     const isOrganizationEnterpriseAuthenticator: boolean = identityProvider.federatedAuthenticators
         .defaultAuthenticatorId === ConnectionManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
+    const isEnterpriseConnection: boolean = identityProvider?.federatedAuthenticators
+        .defaultAuthenticatorId === AuthenticatorManagementConstants.SAML_AUTHENTICATOR_ID || 
+        identityProvider?.federatedAuthenticators
+            .defaultAuthenticatorId === AuthenticatorManagementConstants.OIDC_AUTHENTICATOR_ID;
 
     const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
@@ -322,6 +315,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     
     useEffect(() => {
         setIsTrustedTokenIssuer(type === "trusted-token-issuer");
+        setIsExpertMode(type === "expert-mode-idp");
     }, [ type ]);
 
     useEffect(() => {
@@ -354,13 +348,12 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 .editIdentityProvider.getTabExtensions({
                     content: lazy(() => import("./connection-quick-start")),
                     identityProvider: identityProvider,
-                    template: template,
-                    quickStartContent: connectionSettingsMetaData?.edit?.tabs?.quickStart
+                    quickStartContent: connectionSettingsMetaData?.edit?.tabs?.quickStart,
+                    template: template
                 });
         }
 
         if (Array.isArray(extensions) && extensions.length > 0) {
-            isTabExtensionsAvailable(true);
             if (!urlSearchParams.get(ConnectionManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY)) {
                 setDefaultActiveIndex(1);
             }
@@ -490,7 +483,10 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             : true;
     };
 
-    if (!identityProvider || isLoading) {
+    if (!identityProvider || isLoading || 
+        ((!isOrganizationEnterpriseAuthenticator && !isTrustedTokenIssuer 
+        && !isEnterpriseConnection && !isExpertMode) && !tabPaneExtensions)) {
+
         return <Loader />;
     }
 

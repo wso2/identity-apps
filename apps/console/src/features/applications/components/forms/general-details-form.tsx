@@ -29,7 +29,8 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
-import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface } from "../../../core";
+import { AppConstants, AppState, UIConfigInterface } from "../../../core";
+import { OrganizationType } from "../../../organizations/constants";
 import { useMyAccountStatus } from "../../api";
 import { ApplicationManagementConstants } from "../../constants";
 import { ApplicationInterface } from "../../models";
@@ -54,10 +55,6 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      * Is the application discoverable.
      */
     discoverability?: boolean;
-    /**
-     * Is SaaS application.
-     */
-    isSaasApp?: boolean;
     /**
      * Set of hidden fields.
      */
@@ -113,10 +110,6 @@ export interface GeneralDetailsFormValuesInterface {
      */
     discoverableByEndUsers?: boolean;
     /**
-     * Is SaaS application.
-     */
-    saas?: boolean;
-    /**
      * Application logo URL.
      */
     imageUrl?: string;
@@ -153,7 +146,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         name,
         description,
         discoverability,
-        isSaasApp,
         hiddenFields,
         imageUrl,
         accessUrl,
@@ -171,13 +163,14 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const { getLink } = useDocumentation();
 
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
-    const [ isSaasApplication, setSaasApplication ] = useState<boolean>(isSaasApp);
+
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
+    const [ isM2MApplication, setM2MApplication ] = useState<boolean>(false);
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+    const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     /**
      * Prepare form values for submitting.
@@ -189,8 +182,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         onSubmit({
             accessUrl: values.accessUrl?.toString(),
             advancedConfigurations: {
-                discoverableByEndUsers: values.discoverableByEndUsers,
-                saas: values.saas
+                discoverableByEndUsers: values.discoverableByEndUsers
             },
             description: values.description?.toString().trim(),
             id: appId,
@@ -258,6 +250,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         data: myAccountStatus,
         isLoading: isMyAccountStatusLoading
     } = useMyAccountStatus(!isSubOrg);
+
+    /**
+     * Checks whether this is an M2M application.
+     */
+    useEffect(() => {
+        setM2MApplication(application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID);
+    }, [ application ]);
 
     /**
      * Sets the initial spinner.
@@ -335,7 +334,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             ".placeholder")
                     }
                     value={ name }
-                    readOnly={ readOnly }
+                    readOnly={ readOnly || orgType === OrganizationType.SUBORGANIZATION }
                     validation ={ (value: string) => validateName(value.toString().trim()) }
                     maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
                     minLength={ 3 }
@@ -390,100 +389,92 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     hidden={ hiddenFields?.includes("imageUrl") }
                 />
             }
-            { (isMyAccountEnabled || isSubOrg) ? (
-                <Field.Checkbox
-                    ariaLabel="Make application discoverable by end users"
-                    name="discoverableByEndUsers"
-                    required={ false }
-                    label={ t("console:develop.features.applications.forms.generalDetails.fields" +
+            { (
+                !isM2MApplication
+                && (
+                    isMyAccountEnabled
+                    || isSubOrg
+                )
+            ) ? (
+                    <Field.Checkbox
+                        ariaLabel="Make application discoverable by end users"
+                        name="discoverableByEndUsers"
+                        required={ false }
+                        label={ t("console:develop.features.applications.forms.generalDetails.fields" +
                             ".discoverable.label") }
-                    initialValue={ isDiscoverable }
-                    readOnly={ readOnly }
-                    data-testid={ `${ testId }-application-discoverable-checkbox` }
-                    listen={ (value: boolean) => setDiscoverability(value) }
-                    hint={ (
-                        <Trans
-                            i18nKey={
-                                application.templateId === ApplicationManagementConstants.MOBILE
-                                    ? "console:develop.features.applications.forms.inboundOIDC.mobileApp" +
-                                        ".discoverableHint"
-                                    : "console:develop.features.applications.forms.generalDetails.fields." +
-                                        "discoverable.hint"
-                            }
-                            tOptions={ { myAccount: "My Account" } }
-                        >
-                            { " " }
-                            { getLink("develop.applications.managementApplication.selfServicePortal") === undefined
-                                ? (
-                                    <strong data-testid="application-name-assertion">
-                                        My Account
-                                    </strong>
+                        initialValue={ isDiscoverable }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-application-discoverable-checkbox` }
+                        listen={ (value: boolean) => setDiscoverability(value) }
+                        hint={ (
+                            <Trans
+                                i18nKey={
+                                    application.templateId === ApplicationManagementConstants.MOBILE
+                                        ? "console:develop.features.applications.forms.inboundOIDC.mobileApp" +
+                                            ".discoverableHint"
+                                        : "console:develop.features.applications.forms.generalDetails.fields." +
+                                            "discoverable.hint"
+                                }
+                                tOptions={ { myAccount: "My Account" } }
+                            >
+                                { " " }
+                                { getLink("develop.applications.managementApplication.selfServicePortal") === undefined
+                                    ? (
+                                        <strong data-testid="application-name-assertion">
+                                            My Account
+                                        </strong>
+                                    )
+                                    : (
+                                        <strong
+                                            className="link pointing"
+                                            data-testid="application-name-assertion"
+                                            onClick={
+                                                () => window.open(getLink("develop.applications.managementApplication"+
+                                                            ".selfServicePortal"), "_blank")
+                                            }
+                                        >
+                                            My Account
+                                        </strong>
+                                    )
+                                }
+                            </Trans>
+                        ) }
+                        width={ 16 }
+                    /> ) : null
+            }
+            {
+                !isM2MApplication && (
+                    <Field.Input
+                        ariaLabel={
+                            t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.ariaLabel")
+                        }
+                        inputType="url"
+                        name="accessUrl"
+                        label={
+                            t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.label")
+                        }
+                        required={ isDiscoverable }
+                        placeholder={
+                            t("console:develop.features.applications.forms.generalDetails.fields.accessUrl" +
+                                ".placeholder")
+                        }
+                        value={ accessUrl }
+                        readOnly={
+                            !hasRequiredScope || (
+                                readOnly
+                                && applicationConfig.generalSettings.getFieldReadOnlyStatus(
+                                    application, "ACCESS_URL"
                                 )
-                                : (
-                                    <strong
-                                        className="link pointing"
-                                        data-testid="application-name-assertion"
-                                        onClick={
-                                            () => window.open(getLink("develop.applications.managementApplication"+
-                                                        ".selfServicePortal"), "_blank")
-                                        }
-                                    >
-                                        My Account
-                                    </strong>
-                                )
-                            }
-                        </Trans>
-                    ) }
-                    width={ 16 }
-                /> ) : null
+                            )
+                        }
+                        maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.ACCESS_URL_MAX_LENGTH }
+                        minLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.ACCESS_URL_MIN_LENGTH }
+                        data-testid={ `${ testId }-application-access-url-input` }
+                        hint={ t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.hint") }
+                        width={ 16 }
+                    />)
             }
 
-            { !featureConfig?.applications?.disabledFeatures?.includes("saasAppConfig") && (
-                <Field.Checkbox
-                    ariaLabel="Make application accessible by other organizations"
-                    name="saas"
-                    required={ false }
-                    label={ t("console:develop.features.applications.forms.generalDetails.fields" +
-                ".saas.label") }
-                    initialValue={ isSaasApplication }
-                    readOnly={ readOnly }
-                    data-testid={ `${ testId }-application-saas-app-checkbox` }
-                    listen={ (value: boolean) => setSaasApplication(value) }
-                    hint={ (
-                        t("console:develop.features.applications.forms.generalDetails.fields" +
-                    ".saas.hint")
-                    ) }
-                    width={ 16 }
-                />
-            ) }
-
-            <Field.Input
-                ariaLabel="Application access URL"
-                inputType="url"
-                name="accessUrl"
-                label={
-                    t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.label")
-                }
-                required={ isDiscoverable }
-                placeholder={
-                    t("console:develop.features.applications.forms.generalDetails.fields.accessUrl" +
-                        ".placeholder")
-                }
-                value={ accessUrl }
-                readOnly={
-                    !hasRequiredScope || (
-                        readOnly
-                        && applicationConfig.generalSettings.getFieldReadOnlyStatus(
-                            application, "ACCESS_URL"
-                        )
-                    )
-                }
-                maxLength={ 200 }
-                minLength={ 3 }
-                data-testid={ `${ testId }-application-access-url-input` }
-                hint={ t("console:develop.features.applications.forms.generalDetails.fields.accessUrl.hint") }
-                width={ 16 }
-            />
             <Field.Button
                 form={ FORM_ID }
                 size="small"

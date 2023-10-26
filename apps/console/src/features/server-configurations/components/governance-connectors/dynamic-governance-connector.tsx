@@ -27,14 +27,12 @@ import {
     Text 
 } from "@wso2is/react-components";
 import camelCase from "lodash-es/camelCase";
-import get from "lodash-es/get";
 import kebabCase from "lodash-es/kebabCase";
 import React, { 
     Dispatch, 
     FunctionComponent, 
     ReactElement, 
     ReactNode, 
-    useEffect, 
     useState 
 } from "react";
 import { 
@@ -50,7 +48,6 @@ import {
 import { AddAlertAction } from "../../../../../../../modules/core/dist/types/store/actions/types/global";
 import { serverConfigurationConfig } from "../../../../extensions";
 import { updateGovernanceConnector } from "../../api";
-import { getGovernanceConnectorIllustrations } from "../../configs";
 import { ServerConfigurationsConstants } from "../../constants";
 import { 
     ConnectorPropertyInterface, 
@@ -93,22 +90,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
 
     const { t, i18n } = useTranslation();
 
-    const [ connectorIllustration, setConnectorIllustration ] = useState<string>(undefined);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-
-    /**
-     * Set the connector illustration.
-     */
-    useEffect(() => {
-        if (!connector || !connector.id) {
-            return;
-        }
-
-        const illustration: string = get(getGovernanceConnectorIllustrations(), connector.id,
-            getGovernanceConnectorIllustrations()?.default);
-
-        setConnectorIllustration(illustration);
-    }, [ connector, getGovernanceConnectorIllustrations ]);
 
     const handleUpdateError = (error: IdentityAppsApiException) => {
         if (error.response && error.response.data && error.response.data.detail) {
@@ -323,10 +305,10 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
     return serverConfigurationConfig.renderConnector(
         connector,
         connectorForm,
-        connectorIllustration,
-        resolveConnectorTitle(connector),
+        String(resolveConnectorTitle(connector)),
         resolveConnectorDescription(connector),
-        resolveConnectorMessage(connector)
+        resolveConnectorMessage(connector),
+        ""
     );
 };
 

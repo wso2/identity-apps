@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,10 +27,12 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import Axios from "axios";
+import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteChildrenProps } from "react-router";
+import { Dispatch } from "redux";
 import { Image, StrictTabProps } from "semantic-ui-react";
 import ExternalDialectEditPage from "./external-dialect-edit";
 import { SCIMConfigs, attributeConfig } from "../../../extensions";
@@ -63,7 +65,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
             }
         } = props;
 
-        const dispatch = useDispatch();
+        const dispatch: Dispatch = useDispatch();
         const listAllAttributeDialects: boolean = useSelector(
             (state: AppState) => state.config.ui.listAllAttributeDialects
         );
@@ -81,7 +83,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
 
         useEffect(() => {
             if ( dialects && dialects.length > 0 && triggerFetchMappedClaims ) {
-                generateMappedLocalClaimList(dialects.map(dialect => dialect.id));
+                generateMappedLocalClaimList(dialects.map((dialect: ClaimDialect) => dialect.id));
                 setTriggerFetchMappedClaims(false);
             }
         }, [ dialects, triggerFetchMappedClaims ]);
@@ -101,9 +103,9 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
             sort?: string, 
             filter?: string) => {
 
-            const mappedLocalClaimPromises = [];
+            const mappedLocalClaimPromises: Promise<ExternalClaim[]>[] = [];
 
-            dialectIdList.forEach(id => {
+            dialectIdList.forEach((id: string) => {
                 mappedLocalClaimPromises.push(
                     getAllExternalClaims(id, {
                         filter,
@@ -114,20 +116,20 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                 );
             });
 
-            Axios.all(mappedLocalClaimPromises).then(response => {
-                const mappedClaims = [];
+            Axios.all(mappedLocalClaimPromises).then((response: ExternalClaim[][]) => {
+                const mappedClaims: string[] = [];
 
-                response.forEach(claim => {
+                response.forEach((claim: ExternalClaim[]) => {
                     // Hide identity claims in SCIM
                     const claims: ExternalClaim[] = attributeConfig.attributeMappings.getExternalAttributes(
                         type,
                         claim
                     );
 
-                    mappedClaims.push(...claims.map(claim => claim.mappedLocalClaimURI));
+                    mappedClaims.push(...claims.map((claim: ExternalClaim) => claim.mappedLocalClaimURI));
                 });
                 setMappedLocalClaims(mappedClaims);
-            }).catch(error => {
+            }).catch((error: IdentityAppsApiException) => {
                 dispatch(
                     addAlert({
                         description:
@@ -152,7 +154,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
         /**
          * Resolves page heading based on the `type`.
          *
-         * @return {string} - The page heading.
+         * @returns The page heading.
          */
         const resolvePageHeading = (): string => {
             switch (type) {
@@ -164,6 +166,14 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     return t(
                         "console:manage.features.claims.attributeMappings.scim.heading"
                     );
+                case ClaimManagementConstants.AXSCHEMA:
+                    return t(
+                        "console:manage.features.claims.attributeMappings.axschema.heading"
+                    );
+                case ClaimManagementConstants.EIDAS:
+                    return t(
+                        "console:manage.features.claims.attributeMappings.eidas.heading"
+                    );
                 default:
                     return t(
                         "console:manage.features.claims.attributeMappings.custom.heading"
@@ -174,7 +184,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
         /**
          * Resolves page description based on the `type`.
          *
-         * @return {ReactElement} - The page description.
+         * @returns The page description.
          */
         const resolvePageDescription = (): ReactElement => {
             switch (type) {
@@ -200,6 +210,10 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             </DocumentationLink>
                         </>
                     );
+                case ClaimManagementConstants.AXSCHEMA:
+                    return t("console:manage.features.claims.attributeMappings.axschema.description");
+                case ClaimManagementConstants.EIDAS:
+                    return t("console:manage.features.claims.attributeMappings.eidas.description");
                 default:
                     return t(
                         "console:manage.features.claims.attributeMappings.custom.description"
@@ -210,7 +224,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
         /**
          * Resolves page header image based on `type`.
          *
-         * @return {ReactElement} - Image.
+         * @returns Image element.
          */
         const resolvePageHeaderImage = (): ReactElement => {
             switch (type) {
@@ -237,6 +251,28 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             floated="left"
                         />
                     );
+                case ClaimManagementConstants.AXSCHEMA:
+                    return (
+                        <GenericIcon
+                            verticalAlign="middle"
+                            rounded
+                            icon={ getTechnologyLogos().axschema }
+                            spaced="right"
+                            size="tiny"
+                            floated="left"
+                        />
+                    );
+                case ClaimManagementConstants.EIDAS:
+                    return (
+                        <GenericIcon
+                            verticalAlign="middle"
+                            rounded
+                            icon={ getTechnologyLogos().eidas }
+                            spaced="right"
+                            size="tiny"
+                            floated="left"
+                        />
+                    );
                 default:
                     return (
                         <Image floated="left" verticalAlign="middle" rounded centered size="tiny">
@@ -250,10 +286,10 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
         /**
          * Fetches all the dialects.
          *
-         * @param {number} limit.
-         * @param {number} offset.
-         * @param {string} sort.
-         * @param {string} filter.
+         * @param limit - Item count.
+         * @param offset - Starting point to get the items.
+         * @param sort - Sort order.
+         * @param filter - Filtering keyword.
          */
         const getDialect = (limit?: number, offset?: number, sort?: string, filter?: string): void => {
             setIsLoading(true);
@@ -278,7 +314,9 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             );
                         }
 
-                        return claim.id !== "local";
+                        return claim.id !== "local" && 
+                            claim.id !== ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP") &&
+                            claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OPENID_NET");
                     });
 
                     const attributeMappings: ClaimDialect[] = [];
@@ -289,6 +327,11 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                         } else if (Object.values(ClaimManagementConstants.SCIM_TABS).map(
                             (tab: { name: string; uri: string }) => tab.uri).includes(attributeMapping.dialectURI)) {
                             type === ClaimManagementConstants.SCIM && attributeMappings.push(attributeMapping);
+                        } else if (ClaimManagementConstants.AXSCHEMA_MAPPING === attributeMapping.dialectURI) {
+                            type === ClaimManagementConstants.AXSCHEMA && attributeMappings.push(attributeMapping);
+                        } else if (Object.values(ClaimManagementConstants.EIDAS_TABS).map(
+                            (tab: { name: string; uri: string }) => tab.uri).includes(attributeMapping.dialectURI)) {
+                            type === ClaimManagementConstants.EIDAS && attributeMappings.push(attributeMapping);
                         } else if (type === ClaimManagementConstants.OTHERS) {
                             attributeMappings.push(attributeMapping);
                         }
@@ -296,16 +339,16 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
 
                     if (type === ClaimManagementConstants.SCIM) {
                         if (attributeConfig.showCustomDialectInSCIM 
-                            && filteredDialect.filter(e => e.dialectURI 
+                            && filteredDialect.filter((e: ClaimDialect) => e.dialectURI 
                                 === attributeConfig.localAttributes.customDialectURI).length > 0  ) {
-                            attributeMappings.push(filteredDialect.filter(e => e.dialectURI 
+                            attributeMappings.push(filteredDialect.filter((e: ClaimDialect) => e.dialectURI 
                                 === attributeConfig.localAttributes.customDialectURI)[0]);
                         }
                     }
 
                     setDialects(attributeMappings);
                 })
-                .catch((error) => {
+                .catch((error: IdentityAppsApiException) => {
                     dispatch(
                         addAlert({
                             description:
@@ -335,7 +378,9 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
 
                 ClaimManagementConstants.SCIM_TABS.forEach((tab: { name: string; uri: string }) => {
                     if (!SCIMConfigs.hideCore1Schema || SCIMConfigs.scim.core1Schema !== tab.uri) {
-                        const dialect = dialects?.find((dialect: ClaimDialect) => dialect.dialectURI === tab.uri);
+                        const dialect: ClaimDialect = dialects?.find(
+                            (dialect: ClaimDialect) => dialect.dialectURI === tab.uri
+                        );
 
                         dialect &&
                             panes.push({
@@ -356,7 +401,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                 });
 
                 if (attributeConfig.showCustomDialectInSCIM) {
-                    const dialect = dialects?.find((dialect: ClaimDialect) => 
+                    const dialect: ClaimDialect = dialects?.find((dialect: ClaimDialect) => 
                         dialect.dialectURI === attributeConfig.localAttributes.customDialectURI
                     );
 
@@ -377,6 +422,35 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                         });
                     }
                 }
+
+                return panes;
+            }
+
+            if (type === ClaimManagementConstants.EIDAS) {
+                const panes: StrictTabProps[ "panes" ] = [];
+
+                ClaimManagementConstants.EIDAS_TABS.forEach((tab: { name: string; uri: string }) => {
+                    const dialect: ClaimDialect = dialects?.find(
+                        (dialect: ClaimDialect) => dialect.dialectURI === tab.uri
+                    );
+
+                    if (dialect) {
+                        panes.push({
+                            menuItem: tab.name,
+                            render: () => (
+                                <ResourceTab.Pane controlledSegmentation attached={ false }>
+                                    <ExternalDialectEditPage 
+                                        id={ dialect.id } 
+                                        attributeUri={ tab.uri } 
+                                        attributeType={ type }
+                                        mappedLocalClaims={ mappedLocalclaims }
+                                        updateMappedClaims={ setTriggerFetchMappedClaims } 
+                                    />
+                                </ResourceTab.Pane>
+                            )
+                        });
+                    }
+                });
 
                 return panes;
             }

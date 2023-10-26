@@ -40,6 +40,7 @@ import {
     SAMLApplicationConfigurationInterface
 } from "../../models";
 import { OIDCConfigurations, SAMLConfigurations } from "../help-panel";
+import { WSFederationConfigurations } from "../help-panel/ws-fed-configurations";
 
 /**
  * Proptypes for the server endpoints details component.
@@ -90,6 +91,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     const { getLink } = useDocumentation();
     const [ isOIDC, setIsOIDC ] = useState<boolean>(false);
     const [ isSAML, setIsSAML ] = useState<boolean>(false);
+    const [ isWSFed, setIsWSFed ] = useState<boolean>(false);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
 
     useEffect(() => {
@@ -109,6 +111,12 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
             });
         }
     }, [ inboundProtocols ]);
+
+    useEffect(() => {
+        if (templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
+            setIsWSFed(true);
+        } 
+    }, [ templateId ]);
 
     return (
         !isLoading
@@ -167,6 +175,28 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                         <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
                                     </>
                                 ) }
+                                {
+                                    isWSFed && (
+                                        <>
+                                            <Heading ellipsis as="h4">
+                                                { t("console:develop.features.applications.edit.sections.info." +
+                                                "wsFedHeading") }
+                                            </Heading>
+                                            <Heading as="h6" color="grey" compact>
+                                                { t("console:develop.features.applications.edit.sections.info." +
+                                                "wsFedSubHeading") }
+                                                <DocumentationLink
+                                                    link={ getLink("develop.applications.editApplication." +
+                                                    "wsFedApplication.info.learnMore") }
+                                                >
+                                                    { t("common:learnMore") }
+                                                </DocumentationLink>
+                                            </Heading>
+                                            <Divider hidden/>
+                                            <WSFederationConfigurations/>
+                                        </>
+                                    )
+                                }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

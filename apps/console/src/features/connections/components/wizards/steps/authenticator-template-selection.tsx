@@ -18,16 +18,18 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
-import { Heading, Hint, ResourceGrid } from "@wso2is/react-components";
+import { GenericIcon, Heading, Hint, ResourceGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, Grid } from "semantic-ui-react";
+import { Card, Divider, Grid } from "semantic-ui-react";
 import { getConnectionIcons } from "../../../configs/ui";
+import {
+    FederatedAuthenticatorMetaDataInterface
+} from "../../../models/authenticators";
 import {
     ConnectionInterface,
     ConnectionTemplateInterface
 } from "../../../models/connection";
-import { FederatedAuthenticatorMetaDataInterface } from "../../../models/authenticators";
 import { ConnectionsManagementUtils } from "../../../utils/connection-utils";
 
 /**
@@ -47,8 +49,8 @@ interface AuthenticatorTemplateSelectionWizardFormPropsInterface extends Identif
 /**
  * Authenticator Selection Component.
  *
- * @param {AuthenticatorTemplateSelectionWizardFormPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Authenticator Selection Component.
  */
 export const AuthenticatorTemplateSelection: FunctionComponent<
     AuthenticatorTemplateSelectionWizardFormPropsInterface
@@ -73,7 +75,7 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
     /**
      * Handles template selection.
      *
-     * @param {ConnectionInterface} template - Selected protocol.
+     * @param template - Selected protocol.
      */
     const handleTemplateSelection = (template: ConnectionInterface): void => {
         setSelectedTemplate(template);
@@ -86,7 +88,7 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
      *
      * @param option - Selected manual mode option.
      */
-    const handleManualModeOptionSelection = (option): void => {
+    const handleManualModeOptionSelection = (option: FederatedAuthenticatorMetaDataInterface): void => {
         setSelectedManualModeOption(option);
         onTemplateSelect(option);
         setSelectedTemplate(undefined);
@@ -176,60 +178,81 @@ export const AuthenticatorTemplateSelection: FunctionComponent<
                         && manualModeOptions.length > 0
                     )
                         && (
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <>
+                                {
+                                    authenticatorTemplates
+                                    && authenticatorTemplates instanceof Array
+                                    && authenticatorTemplates.length > 0 && (
+                                        <>
+                                            <Heading as="h4">
+                                                {
+                                                    t("console:develop.features.authenticationProvider." +
+                                                        "wizards.addAuthenticator.steps.authenticatorSelection." +
+                                                        "manualSetup.title")
+                                                }
+                                            </Heading>
+                                            <Hint>
+                                                {
+                                                    t("console:develop.features.authenticationProvider.wizards." +
+                                                        "addAuthenticator.steps.authenticatorSelection." +
+                                                        "manualSetup.subTitle")
+                                                }
+                                            </Hint>
+                                        </>
+                                    )
+                                }
+                                <Divider hidden />
+                                <Card.Group className="authenticators-grid">
                                     {
-                                        authenticatorTemplates
-                                        && authenticatorTemplates instanceof Array
-                                        && authenticatorTemplates.length > 0 && (
-                                            <>
-                                                <Heading as="h4">
-                                                    {
-                                                        t("console:develop.features.authenticationProvider." +
-                                                            "wizards.addAuthenticator.steps.authenticatorSelection." +
-                                                            "manualSetup.title")
-                                                    }
-                                                </Heading>
-                                                <Hint>
-                                                    {
-                                                        t("console:develop.features.authenticationProvider.wizards." +
-                                                            "addAuthenticator.steps.authenticatorSelection." +
-                                                            "manualSetup.subTitle")
-                                                    }
-                                                </Hint>
-                                            </>
-                                        )
+                                        manualModeOptions.map((
+                                            template: FederatedAuthenticatorMetaDataInterface,
+                                            templateIndex: number
+                                        ) => (
+                                            <Card
+                                                key={ templateIndex }
+                                                onClick={ () => {
+                                                    handleManualModeOptionSelection(template);
+                                                } }
+                                                data-testid={ `${ componentId }-${ template.name }` }
+                                                selected={
+                                                    selectedManualModeOption?.authenticatorId === template
+                                                        .authenticatorId
+                                                }
+                                                className={ 
+                                                    selectedManualModeOption?.authenticatorId === template
+                                                        .authenticatorId 
+                                                        ? "selection-info-card selected" 
+                                                        : "selection-info-card"  
+                                                }
+                                                size="small"
+                                            >
+                                                <Card.Content className="p-4">
+                                                    <GenericIcon
+                                                        icon={ template.icon }
+                                                        size="micro"
+                                                        floated="left"
+                                                        shape="square"
+                                                        className="theme-icon hover-rounded card-image"
+                                                        inline
+                                                        transparent
+                                                    />
+                                                    <Card.Header 
+                                                        textAlign="left" 
+                                                        className="card-header ellipsis pt-1"
+                                                    >
+                                                        { template.displayName || template.name }
+                                                    </Card.Header>
+                                                    <Card.Description 
+                                                        className="card-description"
+                                                    >
+                                                        { template.description }
+                                                    </Card.Description>
+                                                </Card.Content>
+                                            </Card>
+                                        ))
                                     }
-                                    <Divider hidden />
-                                    <ResourceGrid>
-                                        {
-                                            manualModeOptions.map((
-                                                template: FederatedAuthenticatorMetaDataInterface,
-                                                templateIndex: number
-                                            ) => (
-                                                <ResourceGrid.Card
-                                                    key={ templateIndex }
-                                                    resourceName={ template.displayName || template.name }
-                                                    resourceDescription={ template.description }
-                                                    resourceImage={ template.icon || getConnectionIcons().default }
-                                                    onClick={ () => {
-                                                        handleManualModeOptionSelection(template);
-                                                    } }
-                                                    showTooltips={ {
-                                                        description: true,
-                                                        header: false
-                                                    } }
-                                                    data-testid={ `${ componentId }-${ template.name }` }
-                                                    selected={
-                                                        selectedManualModeOption?.authenticatorId === template
-                                                            .authenticatorId
-                                                    }
-                                                />
-                                            ))
-                                        }
-                                    </ResourceGrid>
-                                </Grid.Column>
-                            </Grid.Row>
+                                </Card.Group>
+                            </>
                         )
                 }
             </Grid>

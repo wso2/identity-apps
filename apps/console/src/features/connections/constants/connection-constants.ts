@@ -40,7 +40,7 @@ export class ConnectionManagementConstants {
      */
     public static readonly INTERNAL_DOMAIN: string  = "Internal/";
 
-    public static readonly CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE = "IDP-65004";
+    public static readonly CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE: string = "IDP-65004";
 
     public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME: string = "displayName";
     public static readonly PROVISIONING_CONNECTOR_GOOGLE: string = "googleapps";
@@ -60,10 +60,21 @@ export class ConnectionManagementConstants {
     public static readonly HYPR_AUTHENTICATOR_ID: string = "SFlQUkF1dGhlbnRpY2F0b3I";
     public static readonly SIWE_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I"
 
+    // Known Social/Enterprise authenticator names;
+    public static readonly GOOGLE_OIDC_AUTHENTICATOR_NAME: string = "GoogleOIDCAuthenticator";
+    public static readonly FACEBOOK_AUTHENTICATOR_NAME: string = "FacebookAuthenticator";
+    public static readonly GITHUB_AUTHENTICATOR_NAME: string = "GithubAuthenticator";
+    public static readonly YAHOO_AUTHENTICATOR_NAME: string = "YahooOAuth2Authenticator";
+    public static readonly TWITTER_AUTHENTICATOR_NAME: string = "TwitterAuthenticator";
+    public static readonly OFFICE_365_AUTHENTICATOR_NAME: string = "Office365Authenticator";
+    public static readonly MS_LIVE_AUTHENTICATOR_NAME: string = "MicrosoftWindowsLiveAuthenticator";
+    public static readonly IWA_KERBEROS_AUTHENTICATOR_NAME: string = "IWAKerberosAuthenticator";
+    public static readonly MICROSOFT_AUTHENTICATOR_NAME: string = "MicrosoftAuthenticator";
+    public static readonly APPLE_AUTHENTICATOR_NAME: string = "AppleOIDCAuthenticator";
+
     public static readonly ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID: string = "T3JnYW5pemF0aW9uQXV0aGVudGljYXRvcg";
     public static readonly OIDC_AUTHENTICATOR_ID: string = "T3BlbklEQ29ubmVjdEF1dGhlbnRpY2F0b3I";
-    public static readonly ORGANIZATION_SSO_AUTHENTICATOR_ID: string = "e8e40c0e-2238-4438-a9e4-69c063d9b9dd";
-    public static readonly ORG_SSO_AUTHENTICATOR_ID: string = "44c2a88a-d8c1-4668-9717-44bc135fb015";
+    public static readonly SAML_AUTHENTICATOR_ID: string = "U0FNTFNTT0F1dGhlbnRpY2F0b3I";
 
     public static readonly IDP_NAME_LENGTH: MinMax = { max: 120, min: 3 };
     public static readonly JWKS_URL_LENGTH: MinMax = { max: 2048, min: 0 };
@@ -72,6 +83,9 @@ export class ConnectionManagementConstants {
     public static readonly CLAIM_APP_ROLE: string  = "http://wso2.org/claims/groups";
     public static readonly CLAIM_USERNAME: string  = "http://wso2.org/claims/username";
     public static readonly CLAIM_ROLE: string  = "http://wso2.org/claims/role";
+
+    public static readonly TRUSTED_TOKEN_TEMPLATE_ID: string = "trusted-token-issuer";
+    public static readonly EXPERT_MODE_TEMPLATE_ID: string = "expert-mode-idp";
 
     /**
      * General Form element constraints.
@@ -195,5 +209,49 @@ export class ConnectionManagementConstants {
         ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",
         SAML: "enterprise-saml-idp",
         SWE: "swe-idp"
+    };
+
+    /**
+     * Set of Connection setup guide links.
+     */
+    public static readonly DOC_LINK_DICTIONARY: Map<string, string> = new Map<string, string>([
+        [ "apple-idp", "develop.connections.newConnection.apple.learnMore" ],
+        [ "enterprise-protocols", "develop.connections.newConnection.learnMore" ],
+        [ "facebook-idp", "develop.connections.newConnection.facebook.learnMore" ],
+        [ "github-idp", "develop.connections.newConnection.github.learnMore" ],
+        [ "google-idp", "develop.connections.newConnection.google.learnMore" ],
+        [ "hypr-idp", "develop.connections.newConnection.hypr.learnMore" ],
+        [ "microsoft-idp", "develop.connections.newConnection.microsoft.learnMore" ],
+        [ "enterprise-oidc-idp", "develop.connections.newConnection.enterprise.oidcLearnMore.learnMore" ],
+        [ "enterprise-saml-idp", "develop.connections.newConnection.enterprise.samlLearnMore.learnMore" ],
+        [ "swe-idp", "develop.connections.newConnection.siwe.learnMore" ],
+        [ "trusted-token-issuer", "develop.connections.newConnection.trustedTokenIssuer.learnMore" ]
+    ]);
+}
+
+export class SIWEConstants {
+
+    public static readonly SIWE_REGISTRATION_INVALID_STATUS_CODE_ERROR_CODE: string = "ASG-CON-SIWE-00001";
+    public static readonly SIWE_REGISTRATION_ERROR_CODE: string = "ASG-CON-SIWE-00002";
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+]     */
+    private constructor() { }
+
+    public static readonly SIWE_CLIENT_REGISTRATION_DOCS_URL: string = "https://docs.login.xyz/servers/" +
+        "oidc-provider/hosted-oidc-provider#openid-connect-client-registration";
+
+    // eslint-disable-next-line max-len
+    public static readonly SIWE_CLIENT_REGISTRATION_CURL_COMMAND: string = "curl -X POST https://oidc.signinwithethereum.org/register -H 'Content-Type: application/json' -d '{\"redirect_uris\": [ \"${commonauth}\" ]}'";
+
+    /**
+     * SIWE Scope mappings.
+]     */
+    public static readonly SIWE_SCOPE_DICTIONARY: Record<string, string> = {
+        OPENID: "openid",
+        PROFILE: "profile"
     };
 }

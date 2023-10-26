@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,7 @@ import {
     HttpRequestConfig,
     HttpResponse
 } from "@asgardeo/auth-react";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
@@ -117,7 +118,7 @@ export function useAuthorizedOrganizationsList<Data = OrganizationListInterface,
     recursive: boolean,
     isRoot: boolean = false
 ): RequestResultInterface<Data, Error> {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
@@ -131,8 +132,8 @@ export function useAuthorizedOrganizationsList<Data = OrganizationListInterface,
             recursive
         },
         url: `${ isRoot
-            ? store.getState().config.endpoints.rootOrganization
-            : store.getState().config.endpoints.organizations }/organizations/me`
+            ? store.getState().config.endpoints.rootUsersOrganization
+            : store.getState().config.endpoints.usersOrganization }/me/organizations`
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
@@ -206,7 +207,7 @@ export const getOrganization = (id: string, showChildren?: boolean): Promise<Org
 
             return Promise.resolve(response?.data);
         })
-        .catch((error: HttpError) => {
+        .catch((error: IdentityAppsApiException) => {
             return Promise.reject(error?.response?.data);
         });
 };

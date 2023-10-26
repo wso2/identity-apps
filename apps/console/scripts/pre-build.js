@@ -45,6 +45,9 @@ execSync("pnpm clean:build");
 // Run theme content copying to source script.
 execSync("pnpm copy:themes:src");
 
+// Copy i18n defaults used for text branding from login app.
+execSync("pnpm copy:branding:i18n:defaults");
+
 // Path of the build directory.
 const distDirectory = path.join(__dirname, "..", "src", "extensions", "i18n", "dist", "src");
 const i18nNodeModulesDir = path.join(__dirname,"..", "node_modules", "@wso2is", "i18n", "dist", "bundle");

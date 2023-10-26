@@ -16,7 +16,6 @@
   ~ under the License.
 --%>
 
-<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
@@ -59,6 +58,10 @@
 %>
         <jsp:include page="/extensions/cookie-consent-banner.jsp"/>
 <%
+    } else {
+%>
+        <jsp:include page="/includes/cookie-consent-banner.jsp"/>
+<%
     }
 %>
 
@@ -69,16 +72,16 @@
             <div class="left menu">
                 <a class="item no-hover" id="copyright">
                     <%
-                        if (!StringUtils.isBlank(copyrightText)) {
+                        String copyright = i18n(recoveryResourceBundle, customText, "copyright", __DEPRECATED__copyrightText);
+                        if (StringUtils.isNotBlank(copyright)) {
                     %>
-                        <span><%= StringEscapeUtils.escapeHtml4(copyrightText) %></span>
+                        <span class="copyright-text"><%= copyright %></span>
+                    <% } %>
                     <%
-                        } else {
-                    %>    
-                        &copy; <script>document.write(new Date().getFullYear());</script> WSO2 LLC.
-                    <%
-                        }
+                        if (StringUtils.isNotBlank(copyright) && !shouldRemoveDefaultBranding) {
                     %>
+                        <div class="powered-by-logo-divider">|</div>
+                    <% } %>
                     <%
                         if (!shouldRemoveDefaultBranding) {
                     %>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,27 +16,10 @@
  * under the License.
  */
 
-import React, { ReactElement } from "react";
 import { OrganizationConfigs } from "./models";
-import { BreadcrumbItem } from "../../features/organizations/models";
-import { OrganizationSuperTrigger } from "../components/tenants/components/dropdown/organization-super-trigger";
-import TenantDropdown from "../components/tenants/components/dropdown/tenant-dropdown";
 
 export const organizationConfigs: OrganizationConfigs = {
     allowNavigationInDropdown: false,
-    canCreateOrganization: (): boolean => {
-        // Should be improve the logic to determine based on the subscription tier.
-        return true;
-    },
-    showOrganizationDropdown: true,
-    showSwitcherInTenants: false,
-    superOrganizationBreadcrumb: (_breadcrumbItem: BreadcrumbItem, _onClick: (_breadcrumbItem: BreadcrumbItem
-    ) => void) => {
-        return <TenantDropdown trigger={ OrganizationSuperTrigger } contained />;
-    },
-    tenantSwitcher: (dropdownTrigger?: ReactElement, disable?: boolean) => {
-        return (
-            <TenantDropdown dropdownTrigger={ dropdownTrigger } disable={ disable } />
-        );
-    }
+    showOrganizationDropdown: false,
+    showSwitcherInTenants: false
 };

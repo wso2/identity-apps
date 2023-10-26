@@ -1570,5 +1570,32 @@
     .ui.items>.item.application-list-item {
         border-color: var(--asg-colors-outlined-default);
     }
+
+    /*-----------------------------
+              Policy Pages
+    ------------------------------*/
+
+    .login-portal.layout .ui.segment.toc ul.ui.list.nav>li>a {
+        color: var(--asg-colors-text-primary);
+    }
+
+    .login-portal.layout .ui.segment.toc ul.ui.list.nav>li:before {
+        color: var(--asg-colors-text-primary);
+    }
+
+    .login-portal.layout.policy-page-layout .ui.table thead th {
+        background: var(--asg-colors-background-surface-light);
+        color: var(--asg-colors-text-primary);
+    }
+
+    .login-portal.layout.policy-page-layout .ui.table {
+        color: var(--asg-colors-text-primary);
+        background: var(--asg-colors-background-surface-main);
+    }
+
+    .login-portal.layout.policy-page-layout .app-header {
+        background: var(--asg-colors-background-body-main);
+        border-bottom: 1px solid var(--asg-footer-border-color);
+    }
 </style>
 <% } %>

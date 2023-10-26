@@ -23,9 +23,6 @@ import {
     getEmptyPlaceholderIllustrations
 } from "@wso2is/common/src/configs/ui";
 import { AppConstants } from "@wso2is/common/src/constants/app-constants";
-import {
-    FeatureConfigInterface
-} from "@wso2is/common/src/models/config";
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -48,7 +45,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { getAuthenticatorList } from "./common";
 import { getApplicationDetails } from "../../applications/api";
@@ -58,9 +55,11 @@ import {
     getConnectedApps 
 } from "../api/connections";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
-import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
-import { AuthenticatorExtensionsConfigInterface, AuthenticatorInterface } from "../models/authenticators";
+import { 
+    AuthenticatorExtensionsConfigInterface, 
+    AuthenticatorInterface 
+} from "../models/authenticators";
 import { 
     ApplicationBasicInterface, 
     ConnectedAppInterface, 
@@ -357,9 +356,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                             .isConnectorIdentityProvider(authenticator) ||
                             authenticator.type === "FEDERATED";
 
-                        const isOrganizationSSOIDP: boolean = authenticator.id === ConnectionManagementConstants
-                            .ORGANIZATION_SSO_AUTHENTICATOR_ID || 
-                            authenticator.id === ConnectionManagementConstants.ORG_SSO_AUTHENTICATOR_ID;
+                        const isOrganizationSSOIDP: boolean = ConnectionsManagementUtils
+                            .isOrganizationSSOConnection((authenticator as ConnectionInterface)
+                                .federatedAuthenticators?.defaultAuthenticatorId);
 
                         return (
                             <Fragment key={ index }>
@@ -419,7 +418,11 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                         (authenticator?.type === "FEDERATED" || isIdP) && !isOrganizationSSOIDP
                                             ? ConnectionsManagementUtils.resolveConnectionResourcePath(
                                                 "", authenticator?.image)    
-                                            : AuthenticatorMeta.getAuthenticatorIcon(authenticator?.id)
+                                            : isOrganizationSSOIDP 
+                                                ? AuthenticatorMeta.getAuthenticatorIcon(
+                                                    (authenticator as ConnectionInterface)
+                                                        .federatedAuthenticators?.defaultAuthenticatorId)
+                                                : AuthenticatorMeta.getAuthenticatorIcon(authenticator?.id)
                                     }
                                     tags={
                                         isIdP

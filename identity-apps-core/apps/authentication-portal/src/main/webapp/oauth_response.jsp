@@ -10,6 +10,13 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
+
+<%
+    request.setAttribute("ut", request.getAttribute("userTenantDomain"));
+    request.setAttribute("sp", request.getAttribute("serviceProvider"));
+    // The `request` object contains the tenantDomain, which can be directly provided to the init-url.jsp code.
+%>
 
 <%-- Include tenant context --%>
 <jsp:directive.include file="includes/init-url.jsp"/>
@@ -20,10 +27,112 @@
 <%-- Localization --%>
 <jsp:directive.include file="includes/localize.jsp" />
 
-<%-- If an override stylesheet is defined in branding-preferences, applying it... --%>
-<% if (overrideStylesheet != null) { %>
-<link rel="stylesheet" href="<%= StringEscapeUtils.escapeHtml4(overrideStylesheet) %>">
-<% } %>
+<%! 
+    private static final String AUTHENTICATION_ENDPOINT = "/authenticationendpoint";
+    private static final String CONSOLE_APP_NAME = "Console";
+%>
+
+<%
+    String primaryColorMain = "#ff7300";
+    String primaryTextColor = "#999ea2";
+    String bodyBackgroundColorMain = "#f5f6f6";
+    String typographyFontFamily = "Montserrat, -apple-system, BlinkMacSystemFont, Segoe UI, HelveticaNeue-Light, Ubuntu, Droid Sans, sans-serif";
+    String typographyFontFamilyImportURL = "https://fonts.googleapis.com/css2?family=Montserrat&display=swap";
+
+    String COLORS_PRIMARY_KEY = "primary";
+    String COLORS_MAIN_VARIANT_KEY = "main";
+    String COLORS_TEXT_KEY = "text";
+    String COLORS_PRIMARY_VARIANT_KEY = "primary";
+    String COLORS_BACKGROUND_KEY = "background";
+    String COLORS_BACKGROUND_BODY_KEY = "body";
+    String FONT_KEY = "font";
+    String FONT_FAMILY_KEY = "fontFamily";
+    String FONT_FAMILY_IMPORT_URL = "importURL";
+    String TYPOGRAPHY_KEY = "typography";
+
+    if (!StringUtils.equals(spAppName, CONSOLE_APP_NAME)) {
+        if (theme != null) {
+            if (theme.has(COLORS_KEY)) {
+
+                JSONObject colorPalette = theme.optJSONObject(COLORS_KEY);
+
+                if (colorPalette != null) {
+                    if (colorPalette.has(COLORS_PRIMARY_KEY)) {
+                        JSONObject primary = colorPalette.optJSONObject(COLORS_PRIMARY_KEY);
+
+                        if (primary != null) {
+                            if (primary.has(COLORS_MAIN_VARIANT_KEY)
+                                && !StringUtils.isBlank(primary.getString(COLORS_MAIN_VARIANT_KEY))) {
+
+                                primaryColorMain = primary.getString(COLORS_MAIN_VARIANT_KEY);
+                            }
+                        } else if (!StringUtils.isBlank(colorPalette.getString(COLORS_PRIMARY_KEY))) {
+                            primaryColorMain = colorPalette.getString(COLORS_PRIMARY_KEY);
+                        }
+                    }
+
+                    if (colorPalette.has(COLORS_TEXT_KEY)) {
+                        JSONObject text = colorPalette.optJSONObject(COLORS_TEXT_KEY);
+
+                        if (text != null) {
+                            if (text.has(COLORS_PRIMARY_VARIANT_KEY)
+                                && !StringUtils.isBlank(text.getString(COLORS_PRIMARY_VARIANT_KEY))) {
+
+                                primaryTextColor = text.getString(COLORS_PRIMARY_VARIANT_KEY);
+                            }
+                        }
+                    }
+
+                    if (colorPalette.has(COLORS_BACKGROUND_KEY)) {
+                        JSONObject background = colorPalette.optJSONObject(COLORS_BACKGROUND_KEY);
+
+                        if (background != null) {
+                            if (background.has(COLORS_BACKGROUND_BODY_KEY)) {
+                                JSONObject body = background.optJSONObject(COLORS_BACKGROUND_BODY_KEY);
+
+                                if (body != null) {
+                                    if (body.has(COLORS_MAIN_VARIANT_KEY)
+                                        && !StringUtils.isBlank(body.getString(COLORS_MAIN_VARIANT_KEY))) {
+
+                                        bodyBackgroundColorMain = body.getString(COLORS_MAIN_VARIANT_KEY);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (theme.has(TYPOGRAPHY_KEY)) {
+
+                JSONObject typography = theme.optJSONObject(TYPOGRAPHY_KEY);
+
+                if (typography != null) {
+                    if (typography.has(FONT_KEY)) {
+                        if (typography.getJSONObject(FONT_KEY).has(FONT_FAMILY_KEY)
+                            && !StringUtils.isBlank(typography.getJSONObject(FONT_KEY).getString(FONT_FAMILY_KEY))) {
+
+                            typographyFontFamily = typography.getJSONObject(FONT_KEY).getString(FONT_FAMILY_KEY);
+                        }
+                        if (typography.getJSONObject(FONT_KEY).has(FONT_FAMILY_IMPORT_URL)
+                            && !StringUtils.isBlank(typography.getJSONObject(FONT_KEY).getString(FONT_FAMILY_IMPORT_URL))) {
+
+                            typographyFontFamilyImportURL = typography.getJSONObject(FONT_KEY).getString(FONT_FAMILY_IMPORT_URL);
+                        }
+                    }
+                }
+            }
+        } else if (colors != null) {
+            if (colors.has("primary") && !StringUtils.isBlank(colors.getString("primary"))) {
+                primaryColorMain = colors.getString("primary");
+            }
+        }
+    } else {
+        logoURL = productLogoURL;
+        logoAlt = productLogoAlt;
+    }
+
+%>
 
 <html>
 
@@ -33,7 +142,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style type="text/css">
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+        @import url("<%= StringEscapeUtils.escapeHtml4(typographyFontFamilyImportURL) %>");
 
         @font-face {
             font-family: 'Montserrat', sans-serif;
@@ -43,6 +152,60 @@
                 local('Montserrat'),
                 url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap') format('Roboto');
         }
+
+        .pre-loader-logo {
+            margin-top: 41px;
+            border-style: none;
+        }
+
+        .content-loader {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+        }
+
+        .content-loader .ui.loader {
+            display: block;
+            position: relative;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+
+        @keyframes loader {
+            0% {
+                transform: rotate(0)
+            }
+
+            to {
+                transform: rotate(1turn)
+            }
+        }
+
+        .content-loader .ui.loader:before {
+            content: "";
+            display: block;
+            height: 26px;
+            width: 26px;
+            border: .2em solid rgba(0,0,0,.1);
+            border-radius: 500rem;
+        }
+
+        .content-loader .ui.loader:after {
+            content: "";
+            position: absolute;
+            height: 26px;
+            width: 26px;
+            border-color: <%= !StringUtils.isBlank(primaryTextColor) ? StringEscapeUtils.escapeHtml4(primaryTextColor) : "#767676" %> transparent transparent !important;
+            border: .2em solid transparent;
+            animation: loader .6s linear;
+            animation-iteration-count: infinite;
+            border-radius: 500rem;
+            box-shadow: 0 0 0 1px transparent;
+            top: 0;
+            left: 0;
+        } 
 
         .trifacta-pre-loader {
             margin-top: 41px;
@@ -86,7 +249,7 @@
         }
 
         .login-portal.layout {
-            background: #f5f6f6;
+            background: <%= StringEscapeUtils.escapeHtml4(bodyBackgroundColorMain) %>;
             height: 100%;
             flex-direction: column;
             display: flex;
@@ -94,7 +257,7 @@
         }
 
         .login-portal {
-            font-family: Montserrat, -apple-system, BlinkMacSystemFont, Segoe UI, HelveticaNeue-Light, Ubuntu, Droid Sans, sans-serif;
+            font-family: <%= StringEscapeUtils.escapeHtml4(typographyFontFamily) %>;
         }
 
         .login-portal.layout .page-wrapper {
@@ -121,7 +284,7 @@
         }
 
         .message-description {
-            color: #999ea2;
+            color: <%= StringEscapeUtils.escapeHtml4(primaryTextColor) %>;
             font-size: 17px;
         }
 
@@ -294,7 +457,7 @@
         }
 
         a {
-            color: #ff7300;
+            color: <%= StringEscapeUtils.escapeHtml4(primaryColorMain) %>;
             text-decoration: none;
         }
 
@@ -332,29 +495,48 @@
             -webkit-tap-highlight-color: transparent;
         }
     </style>
+
+    <%-- If an override stylesheet is defined in branding-preferences, applying it... --%>
+    <% if (overrideStylesheet != null) { %>
+    <link rel="stylesheet" href="<%= StringEscapeUtils.escapeHtml4(overrideStylesheet) %>">
+    <% } %>
 </head>
 
 <body class="login-portal layout recovery-layout" onload="javascript:document.getElementById('oauth-response').submit()">
     <div class="page-wrapper">
         <main class="center-segment registration-loader">
             <div class="ui container aligned middle aligned text-center">
-                <div class="pre-loader-wrapper" data-testid="{" `${ testId }-wrapper` }>
-                    <div class="trifacta-pre-loader" data-testid="{" testId }>
-                        <svg data-testid="{" `${ testId }-svg` } xmlns="http://www.w3.org/2000/svg" width="67.56"
-                            height="58.476" viewBox="0 0 67.56 58.476">
-                            <g id="logo-only" transform="translate(-424.967 -306)">
-                                <path id="_3" data-name="3"
-                                    d="M734.291,388.98l6.194,10.752-6.868,11.907h13.737l6.226,10.751H714.97Z"
-                                    transform="translate(-261.054 -82.98)" fill="#ff7300" />
-                                <path id="_2" data-name="2"
-                                    d="M705.95,422.391l6.227-10.751h13.736l-6.867-11.907,6.193-10.752,19.321,33.411Z"
-                                    transform="translate(-280.983 -82.98)" fill="#ff7300" />
-                                <path id="_1" data-name="1"
-                                    d="M736.65,430.2l-6.868-11.907-6.9,11.907H710.46l19.322-33.411L749.071,430.2Z"
-                                    transform="translate(-271.019 -65.725)" fill="#000" />
-                            </g>
-                        </svg>
-                    </div>
+                <div class="pre-loader-wrapper" data-testid="pre-loader-wrapper">
+                    <% if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT) && !enableDefaultPreLoader) { %>
+                        <div class="trifacta-pre-loader" data-testid="trifacta-pre-loader">
+                            <svg data-testid="trifacta-pre-loader-svg" xmlns="http://www.w3.org/2000/svg" width="67.56"
+                                height="58.476" viewBox="0 0 67.56 58.476">
+                                <g id="logo-only" transform="translate(-424.967 -306)">
+                                    <path id="_3" data-name="3"
+                                        d="M734.291,388.98l6.194,10.752-6.868,11.907h13.737l6.226,10.751H714.97Z"
+                                        transform="translate(-261.054 -82.98)" fill="#ff7300" />
+                                    <path id="_2" data-name="2"
+                                        d="M705.95,422.391l6.227-10.751h13.736l-6.867-11.907,6.193-10.752,19.321,33.411Z"
+                                        transform="translate(-280.983 -82.98)" fill="#ff7300" />
+                                    <path id="_1" data-name="1"
+                                        d="M736.65,430.2l-6.868-11.907-6.9,11.907H710.46l19.322-33.411L749.071,430.2Z"
+                                        transform="translate(-271.019 -65.725)" fill="#000" />
+                                </g>
+                            </svg>
+                        </div>
+                    <% 
+                        } else { 
+                            if (!StringUtils.startsWith(logoURL, "http")) {
+                                logoURL = ServiceURLBuilder.create().addPath(AUTHENTICATION_ENDPOINT + "/" + logoURL).build().getAbsolutePublicURL();
+                            }
+                    %>
+                        <img class="pre-loader-logo" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" src="<%= StringEscapeUtils.escapeHtml4(logoURL) %>">
+                        <div class="content-loader">
+                            <div class="ui dimmer">
+                                <div class="ui loader"></div>
+                            </div>
+                        </div>
+                    <% } %> 
                 </div>
                 <p class="message-description">
                     <a class="primary-color-btn button"

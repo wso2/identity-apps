@@ -28,6 +28,7 @@ import {
     Popup,
     TabPageLayout
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import orderBy from "lodash-es/orderBy";
 import React, {
@@ -83,7 +84,7 @@ import {
     SupportedQuickStartTemplateTypes 
 } from "../models/connection";
 import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
-import { ConnectionsManagementUtils } from "../utils/connection-utils";
+import { ConnectionsManagementUtils, handleGetConnectionsMetaDataError } from "../utils/connection-utils";
 
 /**
  * Proptypes for the IDP edit page component.
@@ -110,7 +111,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
 
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
-    const setConnectionTemplates = useSetConnectionTemplates();
+    const setConnectionTemplates: ((templates: Record<string, any>[]) => void) = useSetConnectionTemplates();
 
     const idpDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
@@ -127,10 +128,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         groupedTemplates,
         setGroupedTemplates
     ] = useState<ConnectionTemplateInterface[]>([]);
-    const [
-        isConnectionTemplateRequestLoading,
-        setIsConnectionTemplateRequestLoading
-    ] = useState<boolean>(undefined);
     const [
         connector,
         setConnector
@@ -150,10 +147,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         setConnectorMetaDataFetchRequestLoading
     ] = useState<boolean>(undefined);
 
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
-
     const isReadOnly: boolean = useMemo(() => (
         !hasRequiredScopes(
             featureConfig?.identityProviders, featureConfig?.identityProviders?.scopes?.update, allowedScopes)
@@ -166,26 +159,23 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
 
         if (!unfilteredConnectionTemplate || !Array.isArray(unfilteredConnectionTemplate)
             || !(unfilteredConnectionTemplate.length > 0)) {
+
             return;
         }
 
-        const connectionTemplatesClone: ConnectionTemplateInterface[] = unfilteredConnectionTemplate.map((template) => {
-            if (template.id === "enterprise-oidc-idp" || template.id === "enterprise-saml-idp") {
-                return {
-                    ...template,
-                    templateGroup: "enterprise-protocols"
-                };
-            }
+        const connectionTemplatesClone: ConnectionTemplateInterface[] = unfilteredConnectionTemplate.map(
+            (template: ConnectionTemplateInterface) => {
 
-            if (template.id === "linkedin-idp") {
-                return {
-                    ...template,
-                    comingSoon: true
-                };
-            }
+                if (template.id === "enterprise-oidc-idp" || template.id === "enterprise-saml-idp") {
+                    return {
+                        ...template,
+                        templateGroup: "enterprise-protocols"
+                    };
+                }
 
-            return template;
-        });
+                return template;
+            }
+        );
 
         ConnectionTemplateManagementUtils
             .reorderConnectionTemplates(connectionTemplatesClone)
@@ -295,10 +285,45 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return;
         }
 
-        const template: ConnectionTemplateInterface = UIConfig?.connectionTemplates
-            .find((template: ConnectionTemplateInterface) => {
-                return template.id === connector.templateId;
+        let template: ConnectionTemplateInterface = {};
+        let templateId: string = connector.templateId;
+
+        if (!templateId) {
+            const authenticatorId: string = (connector as ConnectionInterface) 
+                ?.federatedAuthenticators?.defaultAuthenticatorId;
+
+            if (authenticatorId === ConnectionManagementConstants.FACEBOOK_AUTHENTICATOR_ID) {
+                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.FACEBOOK;
+            } else if (authenticatorId === ConnectionManagementConstants.GOOGLE_OIDC_AUTHENTICATOR_ID) {
+                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.GOOGLE;
+            } else if (authenticatorId === ConnectionManagementConstants.OIDC_AUTHENTICATOR_ID) {
+                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC;
+            } else if (authenticatorId === ConnectionManagementConstants.SAML_AUTHENTICATOR_ID) {
+                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML;
+            } else if (authenticatorId === ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID) {
+                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.GITHUB;
+            } else if (authenticatorId === ConnectionManagementConstants.APPLE_AUTHENTICATOR_ID) {
+                templateId = ConnectionManagementConstants.IDP_TEMPLATE_IDS.APPLE;
+            }
+        }
+
+        if (templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC || 
+            templateId === ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML) {
+
+            const groupedTemplates: ConnectionTemplateInterface = UIConfig?.connectionTemplates
+                .find((template: ConnectionTemplateInterface) => {
+                    return template.id === "enterprise-protocols";
+                });
+
+            template = groupedTemplates?.subTemplates?.find((template: ConnectionTemplateInterface) => {
+                return template.id === templateId;
             });
+        } else {
+            template = UIConfig?.connectionTemplates
+                .find((template: ConnectionTemplateInterface) => {
+                    return template.id === templateId;
+                });
+        }
 
         setIdentityProviderTemplate(template);
     }, [ UIConfig?.connectionTemplates, connector ]);
@@ -309,17 +334,21 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return;
         }
 
+        if (identityProviderTemplate?.id === ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID || 
+            identityProviderTemplate?.id === ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID ||
+            identityProviderTemplate?.id === ConnectionManagementConstants.IDP_TEMPLATE_IDS.OIDC ||
+            identityProviderTemplate?.id === ConnectionManagementConstants.IDP_TEMPLATE_IDS.SAML) {
+
+            return;
+        }
+
         getConnectionMetaDetails(identityProviderTemplate.id);
     }, [ identityProviderTemplate ]);
 
     const resolveConnectionTemplates = (): void => {
-        setIsConnectionTemplateRequestLoading(true);
-
         getConnectionTemplates()
             .then((response: ConnectionTemplateInterface[]) => {
                 setUnfilteredConnectionTemplate(response);
-            }).finally(() => {
-                setIsConnectionTemplateRequestLoading(false);
             });
     };
 
@@ -332,8 +361,10 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         setConnectorMetaDataFetchRequestLoading(true);
         
         getConnectionMetaData(id)
-            .then((response) => { 
+            .then((response: any) => { 
                 setConnectionSettings(response);
+            }).catch ((error: AxiosError) => {
+                handleGetConnectionsMetaDataError(error);
             })
             .finally(() => {
                 setConnectorMetaDataFetchRequestLoading(false);
@@ -532,6 +563,10 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
     const resolveConnectorImage = (connector: ConnectionInterface
         | MultiFactorAuthenticatorInterface): ReactElement => {
 
+        const isOrganizationSSOIDP: boolean = ConnectionsManagementUtils
+            .isOrganizationSSOConnection(
+                (connector as ConnectionInterface)?.federatedAuthenticators?.defaultAuthenticatorId);
+
         if (!connector) {
             return (
                 <AppAvatar
@@ -542,9 +577,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             );
         }
 
-        if (ConnectionsManagementUtils.isConnectorIdentityProvider(connector) && 
-            (connector.id !== ConnectionManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_ID &&
-            connector.id !== ConnectionManagementConstants.ORG_SSO_AUTHENTICATOR_ID)) {
+        if (ConnectionsManagementUtils.isConnectorIdentityProvider(connector) && !isOrganizationSSOIDP) {
 
             if (connector.image) {
                 return (
@@ -574,7 +607,11 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             <AppAvatar
                 hoverable={ false }
                 name={ connector.name }
-                image={ AuthenticatorMeta.getAuthenticatorIcon(connector.id) }
+                image={ !isOrganizationSSOIDP
+                    ? AuthenticatorMeta.getAuthenticatorIcon(connector.id) 
+                    : AuthenticatorMeta.getAuthenticatorIcon((connector as ConnectionInterface)
+                        .federatedAuthenticators?.defaultAuthenticatorId)
+                }
                 size="tiny"
             />
         );
@@ -696,7 +733,10 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                         <EditConnection
                             connectionSettingsMetaData={ connectionSettings }
                             identityProvider={ connector }
-                            isLoading={ isConnectorDetailsFetchRequestLoading || isConnectorMetaDataFetchRequestLoading }
+                            isLoading={ 
+                                isConnectorDetailsFetchRequestLoading || 
+                                isConnectorMetaDataFetchRequestLoading 
+                            }
                             onDelete={ handleIdentityProviderDelete }
                             onUpdate={ handleIdentityProviderUpdate }
                             isGoogle={
@@ -707,7 +747,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                             isSaml={
                                 (connector?.federatedAuthenticators?.defaultAuthenticatorId === undefined)
                                     ? undefined
-                                    : (connector.federatedAuthenticators.defaultAuthenticatorId
+                                    : (connector?.federatedAuthenticators?.defaultAuthenticatorId
                                         === AuthenticatorManagementConstants.SAML_AUTHENTICATOR_ID)
                             }
                             isOidc={
@@ -718,7 +758,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                             }
                             data-testid={ testId }
                             template={ identityProviderTemplate }
-                            isTabExtensionsAvailable={ (isAvailable: boolean) => setIsExtensionsAvailable(isAvailable) }
                             type={ identityProviderTemplate?.id }
                             isReadOnly={ isReadOnly }
                             isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
@@ -731,7 +770,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                             isLoading={ isConnectorDetailsFetchRequestLoading }
                             onDelete={ handleIdentityProviderDelete }
                             onUpdate={ handleMultiFactorAuthenticatorUpdate }
-                            isTabExtensionsAvailable={ (isAvailable: boolean) => setIsExtensionsAvailable(isAvailable) }
                             type={ connector?.id }
                             isReadOnly={ isReadOnly }
                         />

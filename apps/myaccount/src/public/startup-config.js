@@ -5,5 +5,6 @@ var startupConfig = {
     superTenantProxy: "carbon.super",
     serverUrl: "https://localhost:9443",
     serverUrlGlobal: "https://localhost:9443",
-    tenantPrefix: "t"
+    tenantPrefix: "t",
+    enableDefaultPreLoader: true
 };

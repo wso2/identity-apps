@@ -34,6 +34,7 @@ export interface ApplicationConfig {
         showSaaS: boolean;
         showReturnAuthenticatedIdPs: boolean;
     };
+    allowedGrantTypes: Record<string, string[]>,
     generalSettings: {
         getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string) => boolean;
     };
@@ -146,6 +147,7 @@ export interface ApplicationConfig {
         windows: boolean;
         custom: boolean;
         mobile: boolean;
+        m2m: boolean;
     };
     customApplication: {
         allowedProtocolTypes: string[];

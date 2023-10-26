@@ -100,7 +100,8 @@ export const useGetConnections = <Data = ConnectionListResponseInterface, Error 
     limit?: number,
     offset?: number,
     filter?: string,
-    requiredAttributes?: string
+    requiredAttributes?: string,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     
     const { resourceEndpoints } = useResourceEndpoints();
@@ -120,7 +121,7 @@ export const useGetConnections = <Data = ConnectionListResponseInterface, Error 
         url: resourceEndpoints.identityProviders
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,
@@ -234,7 +235,8 @@ export const deleteConnection = (id: string): Promise<any> => {
  * @returns Requested connection template.
  */
 export const useGetConnectionTemplate = <Data = ConnectionTemplateInterface, Error = RequestErrorInterface>(
-    templateId: string
+    templateId: string,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     
     const { resourceEndpoints } = useResourceEndpoints();
@@ -248,7 +250,7 @@ export const useGetConnectionTemplate = <Data = ConnectionTemplateInterface, Err
         url: resourceEndpoints.extensions + "/connections/" + templateId + "/template"
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,
@@ -350,7 +352,8 @@ export const getConnectionTemplates = (
  * @returns Meta data of the connection.
  */
 export const useGetConnectionMetaData = <Data = any, Error = RequestErrorInterface>(
-    extensionId?: string
+    extensionId?: string,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     
     const { resourceEndpoints } = useResourceEndpoints();
@@ -364,7 +367,7 @@ export const useGetConnectionMetaData = <Data = any, Error = RequestErrorInterfa
         url: resourceEndpoints.extensions + "/connections/" + extensionId + "/metadata"
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,
@@ -713,7 +716,7 @@ export const getConnectedApps = (idpId: string): Promise<any> => {
 export const updateIdentityProviderDetails = (connection: ConnectionInterface): Promise<any> => {
 
     const { id, ...rest } = connection;
-    const replaceOps: any[] = [];
+    const replaceOps: any = [];
 
     for (const key in rest) {
         if(rest[key] !== undefined) {

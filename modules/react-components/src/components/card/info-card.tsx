@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -410,6 +410,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                 { showCardAction ? (
                                     <LinkButton
                                         className="idp-create-button"
+                                        disabled={ disabled }
                                         onClick={ (e: MouseEvent<HTMLButtonElement>) => {
                                             onClick(e as unknown as MouseEvent<HTMLAnchorElement>,
                                                 null);
@@ -425,6 +426,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                 { showSetupGuideButton && (<Button
                                     className="setup-guide-button"
                                     onClick={ handleClick }
+                                    disabled={ disabled }
                                     data-componentid={ `${ componentId }-${ header }-setup-guide` }
                                 >
                                     <i className="book icon"></i>

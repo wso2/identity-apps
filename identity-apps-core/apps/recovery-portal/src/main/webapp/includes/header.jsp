@@ -59,34 +59,34 @@
 <jsp:include page="theme-skeleton.jsp"/>
 
 <%-- If an override stylesheet is defined in branding-preferences, applying it... --%>
-<% if (overrideStylesheet != null) { %>
+<% if (overrideStylesheet != null && !StringUtils.startsWith(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME)) { %>
 <link rel="stylesheet" href="<%= StringEscapeUtils.escapeHtml4(overrideStylesheet) %>">
 <% } %>
 
 <%-- Layout specific style sheet --%>
 <%
-    String tempStyleFilePath = "";
+    String styleFilePath = "";
     if (StringUtils.startsWith(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME)) {
-        if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR 
+        if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR
                 + tenantRequestingPreferences)) {
-            tempStyleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/styles.css";
-        } else if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR 
-                + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + applicationRequestingPreferences)) {
-            tempStyleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + applicationRequestingPreferences + "/styles.css";
+            styleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/styles.css";
+        } else if (StringUtils.equals(layout, PREFIX_FOR_CUSTOM_LAYOUT_NAME + CUSTOM_LAYOUT_NAME_SEPERATOR
+                + tenantRequestingPreferences + CUSTOM_LAYOUT_NAME_SEPERATOR + convertApplicationName(applicationRequestingPreferences))) {
+            styleFilePath = layoutStoreURL.replace("${tenantDomain}", tenantRequestingPreferences) + "/apps/" + convertApplicationName(applicationRequestingPreferences) + "/styles.css";
         }
     } else {
-        tempStyleFilePath = "includes/layouts/" + layout + "/styles.css";
+        styleFilePath = "includes/layouts/" + layout + "/styles.css";
     }
 
-    if (config.getServletContext().getResource(tempStyleFilePath) != null) {
-        styleFilePath = tempStyleFilePath;
+    if (config.getServletContext().getResource(styleFilePath) != null) {
+%>
+        <link rel="stylesheet" href="<%= styleFilePath %>">
+<%
     }
 %>
-    
-<link rel="stylesheet" href="<%= styleFilePath %>">
 
 <%-- Updates the site tile with the text resolved in branding-preferences --%>
-<title><%= StringEscapeUtils.escapeHtml4(siteTitle) %></title>
+<title><%= i18n(recoveryResourceBundle, customText, "site.title", __DEPRECATED__siteTitle) %></title>
 
 <%-- Downtime banner --%>
 <%

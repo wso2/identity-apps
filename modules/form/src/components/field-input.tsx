@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,7 +20,11 @@ import { Hint, Message } from "@wso2is/react-components";
 import { FieldState } from "final-form";
 import React, { ReactElement } from "react";
 import { Field as FinalFormField } from "react-final-form";
-import { CopyFieldAdapter, PasswordFieldAdapter, TextFieldAdapter } from "./adapters";
+import {
+    CopyFieldAdapter,
+    PasswordFieldAdapter,
+    __DEPRECATED__TextFieldAdapter
+} from "./adapters/__DEPRECATED__adapters";
 import { FormFieldPropsInterface } from "./field";
 import { FieldInputTypes, FormFieldMessage } from "../models";
 import { getValidation } from "../utils";
@@ -116,7 +120,7 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     type="number"
                     name={ props.name }
                     parse={ (value: any) => value }
-                    component={ TextFieldAdapter }
+                    component={ __DEPRECATED__TextFieldAdapter }
                     validate={ (value: any, allValues: Record<string, unknown>, meta: FieldState<any>) =>
                         getValidation(value, allValues, meta, "text", props.required, inputType, validation)
                     }
@@ -130,7 +134,7 @@ export const FieldInput = (props: FieldInputPropsInterface): ReactElement => {
                     type="text"
                     name={ props.name }
                     parse={ (value: any) => value }
-                    component={ TextFieldAdapter }
+                    component={ __DEPRECATED__TextFieldAdapter }
                     validate={ (value: any, allValues: Record<string, unknown>, meta: FieldState<any>) =>
                         getValidation(value, allValues, meta, "text", props.required, inputType, validation)
                     }

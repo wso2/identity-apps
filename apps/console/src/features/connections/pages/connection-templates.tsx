@@ -22,7 +22,6 @@ import {
 import {
     AppConstants
 } from "@wso2is/common/src/constants/app-constants";
-import useDeploymentConfig from "@wso2is/common/src/hooks/use-app-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
@@ -108,10 +107,8 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
     const [ filterTags, setFilterTags ] = useState<string[]>([]);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
 
-    const { deploymentConfig } = useDeploymentConfig();
     const setConnectionTemplates: (templates: Record<string, any>[]) => void = useSetConnectionTemplates();
     
-    const documentationBaseUrl: string = deploymentConfig?.docSiteURL;
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const {
@@ -164,26 +161,20 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                     };
                 }
 
-                if (template.id === "linkedin-idp") {
-                    return {
-                        ...template,
-                        comingSoon: true
-                    };
-                }
-
                 if (template.displayOrder < 0) {
                 
                     return;
                 }
 
                 // Removes hidden connections.
-                if (config?.ui?.hiddenConnectionTemplates?.includes(template.name)) {
+                if (config?.ui?.hiddenConnectionTemplates?.includes(template.id)) {
 
                     return;
                 }
 
                 return template;
-            });
+            }
+        );
 
         ConnectionTemplateManagementUtils
             .reorderConnectionTemplates(connectionTemplatesClone)
@@ -484,6 +475,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                 // then prevent rendering it.
                                                 if (template.id === ConnectionManagementConstants
                                                     .ORG_ENTERPRISE_CONNECTION_ID) {
+                                                        
                                                     return null;
                                                 }
 
@@ -499,8 +491,9 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                         comingSoonRibbonLabel={ t("common:comingSoon") }
                                                         resourceDescription={ template.description }
                                                         showSetupGuideButton={ getLink(template.docLink) !== undefined }
-                                                        resourceDocumentationLink={
-                                                            documentationBaseUrl + template.docLink
+                                                        resourceDocumentationLink={ 
+                                                            getLink(ConnectionsManagementUtils
+                                                                .resolveConnectionDocLink(template.id))
                                                         }
                                                         resourceImage={
                                                             ConnectionsManagementUtils
@@ -520,7 +513,8 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                         data-testid={ `${ componentId }-${ template.name }` }
                                                     />
                                                 );
-                                            })
+                                            }
+                                            )
                                         }
                                     </ResourceGrid>
                                 ))

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Code, ConfirmationModal, ContentLoader, LabeledCard, Text } from "@wso2is/react-components";
@@ -40,6 +41,7 @@ import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-seq
 import UsernamelessSequenceTemplate from "./templates/usernameless-login-sequence.json";
 import AuthenticationFlowBuilder from "../../../../authentication-flow-builder/components/authentication-flow-builder";
 import AuthenticationFlowProvider from "../../../../authentication-flow-builder/providers/authentication-flow-provider";
+import { ConnectionsManagementUtils } from "../../../../connections/utils/connection-utils";
 import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "../../../../core";
 import {
     AuthenticatorCreateWizardFactory
@@ -129,6 +131,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const { UIConfig } = useUIConfig();
+
+    const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
     const [ loginFlow, setLoginFlow ] = useState<LoginFlowTypes>(undefined);
     const [ socialDisclaimerModalType, setSocialDisclaimerModalType ] = useState<LoginFlowTypes>(undefined);
@@ -759,7 +764,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                         className="authenticator-card"
                                         size="tiny"
                                         selected={ selectedSocialAuthenticator?.id === authenticator.id }
-                                        image={ authenticator.image }
+                                        image={ ConnectionsManagementUtils.resolveConnectionResourcePath(
+                                            connectionResourcesUrl, authenticator.image)
+                                        }
                                         label={ authenticator.displayName }
                                         labelEllipsis={ true }
                                         data-componentid={ `${componentId}-authenticator-${authenticator.name}` }

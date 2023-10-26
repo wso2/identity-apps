@@ -43,6 +43,10 @@
   width: 100%;
 }
 
+.login-portal.layout.policy-page-layout .footer .ui.menu:not(.vertical) .right.item, .ui.menu:not(.vertical) .right.menu {
+  justify-content: right;
+}
+
 .login-portal.layout .page-wrapper.layout-file .center-segment>.ui.container {
   margin-bottom: 10px;
 }

@@ -57,6 +57,12 @@ export interface PatchGroupDataInterface {
     Operations: GroupSCIMOperationsInterface[];
 }
 
+export interface PatchBulkGroupDataInterface {
+    schemas: string[];
+    Operations: PatchGroupOpInterface[];
+    failOnErrors?: number;
+}
+
 export interface PatchGroupOpInterface {
     data: {
         Operations: (PatchGroupRemoveOpInterface | PatchGroupAddOpInterface)[];
@@ -103,9 +109,9 @@ export interface GroupListInterface {
  * Interface to contain Group meta information
  */
 export interface GroupsMetaInterface {
-    created: string;
+    created?: string;
     location: string;
-    lastModified: string;
+    lastModified?: string;
 }
 
 /**

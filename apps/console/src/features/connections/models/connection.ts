@@ -695,3 +695,30 @@ export interface GeneralDetailsFormValuesInterface {
      */
     name: string;
 }
+
+export interface OutboundProvisioningConnectorMetaDataInterface {
+    /**
+     * Provisioning connector ID.
+     */
+    connectorId: string;
+    /**
+     * Displayname of the connector.
+     */
+    displayName: string;
+    /**
+     * Name of the connector.
+     */
+    name: string;
+    /**
+     * Description for the connector.
+     */
+    description: string;
+    /**
+     * Self link for the connector.
+     */
+    self: string;
+    /**
+     * Icon for the connector.
+     */
+    icon: any;
+}

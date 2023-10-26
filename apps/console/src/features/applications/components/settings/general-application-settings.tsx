@@ -67,10 +67,6 @@ interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfi
      */
     discoverability?: boolean;
     /**
-     * Is SaaS application.
-     */
-    isSaasApp?: boolean;
-    /**
      * Set of hidden fields.
      */
     hiddenFields?: string[];
@@ -128,7 +124,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         name,
         description,
         discoverability,
-        isSaasApp,
         featureConfig,
         hiddenFields,
         imageUrl,
@@ -299,7 +294,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             application={ application }
                             description={ description }
                             discoverability={ discoverability }
-                            isSaasApp={ isSaasApp }
                             onSubmit={ handleFormSubmit }
                             imageUrl={ imageUrl }
                             accessUrl={ accessUrl }

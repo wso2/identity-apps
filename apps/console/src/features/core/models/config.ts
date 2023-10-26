@@ -28,6 +28,7 @@ import {
     ApplicationTemplateLoadingStrategies,
     ApplicationsResourceEndpointsInterface
 } from "../../applications/models";
+import { BrandingPreferenceResourceEndpointsInterface } from "../../branding/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "../../certificates";
 import { ClaimResourceEndpointsInterface } from "../../claims/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "../../groups";
@@ -39,6 +40,7 @@ import { JWTAuthenticationServiceEndpointsInterface } from "../../private-key-jw
 import { RolesResourceEndpointsInterface } from "../../roles/models/endpoints";
 import { SecretsManagementEndpoints } from "../../secrets/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
+import { TenantResourceEndpointsInterface } from "../../tenants/models/endpoints";
 import { UsersResourceEndpointsInterface } from "../../users/models/endpoints";
 import { UserstoreResourceEndpointsInterface } from "../../userstores/models/endpoints";
 import { ValidationServiceEndpointsInterface } from "../../validation/models";
@@ -59,6 +61,10 @@ export interface FeatureConfigInterface {
      */
     administrators?: FeatureAccessConfigInterface;
     /**
+     * Analytics feature.
+     */
+    analytics?: FeatureAccessConfigInterface;
+    /**
      * API resources feature.
      */
     apiResources?: FeatureAccessConfigInterface;
@@ -66,6 +72,10 @@ export interface FeatureConfigInterface {
      * Application management feature.
      */
     applications?: FeatureAccessConfigInterface;
+    /**
+     * Application roles feature.
+     */
+    applicationRoles?: FeatureAccessConfigInterface;
     /**
      * Workflow approvals feature.
      */
@@ -86,6 +96,10 @@ export interface FeatureConfigInterface {
      * Email providers feature.
      */
     emailProviders?: FeatureAccessConfigInterface;
+    /**
+     * SMS providers feature.
+     */
+    smsProviders?: FeatureAccessConfigInterface;
     /**
      * Email templates feature.
      */
@@ -123,6 +137,10 @@ export interface FeatureConfigInterface {
      */
     organizations?: FeatureAccessConfigInterface;
     /**
+     * Organization discovery feature.
+     */
+    organizationDiscovery?: FeatureAccessConfigInterface;
+    /**
      * Organization role management feature.
      */
     organizationsRoles?: FeatureAccessConfigInterface;
@@ -131,9 +149,21 @@ export interface FeatureConfigInterface {
      */
     remoteFetchConfig?: FeatureAccessConfigInterface;
     /**
+     * Resident IDP Config management feature.
+     */
+    residentIdp?: FeatureAccessConfigInterface;
+    /**
      * Role management feature.
      */
     roles?: FeatureAccessConfigInterface;
+    /**
+     * Saml2 Configurations feature.
+     */
+    saml2Configuration?: FeatureAccessConfigInterface;
+    /**
+     * Session management Configurations feature
+     */
+    sessionManagement?: FeatureAccessConfigInterface;
     /**
      * User store configurations feature.
      */
@@ -162,6 +192,14 @@ export interface FeatureConfigInterface {
      * Event Configurations feature
      */
     eventConfiguration?: FeatureAccessConfigInterface;
+    /**
+     * Bulk Import Feature
+     */
+    bulkUserImport?: FeatureAccessConfigInterface;
+    /**
+     * WS Federation Configurations feature
+     */
+    wsFedConfiguration?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -289,6 +327,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isMarketingConsentBannerEnabled: boolean;
     /**
+     * Whether a SAAS deployment or not.
+     */
+    isSAASDeployment: boolean;
+    /**
      * Enable signature validation certificate alias.
      */
     isSignatureValidationCertificateAliasEnabled?: boolean;
@@ -308,6 +350,13 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Hidden userstores
      */
     hiddenUserStores: string[];
+    /**
+     * Email templates
+     */
+    emailTemplates: {
+        defaultLogoUrl: string;
+        defaultWhiteLogoUrl: string;
+    };
 }
 
 /**
@@ -369,8 +418,10 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     ScopesResourceEndpointsInterface,
     SecretsManagementEndpoints,
     OrganizationResourceEndpointsInterface,
+    TenantResourceEndpointsInterface,
     ValidationServiceEndpointsInterface,
-    JWTAuthenticationServiceEndpointsInterface {
+    JWTAuthenticationServiceEndpointsInterface,
+    BrandingPreferenceResourceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details

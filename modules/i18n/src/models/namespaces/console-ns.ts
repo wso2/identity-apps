@@ -293,6 +293,122 @@ export interface ConsoleNS {
         };
         sidePanel: {
             privacy: string;
+            loginAndRegistration: {
+                label: string,
+                description: string,
+            },
+            userAttributesAndStores: string,
+            userManagement: string,
+            branding: string
+        };
+    };
+    branding: {
+        form: {
+            actions: {
+                save: string;
+                resetAll: string;
+            }
+        };
+        tabs: {
+            text: {
+                label: string;
+            };
+            preview: {
+                label: string;
+            }
+        };
+        screens: {
+            common: string;
+            login: string;
+            "sms-otp": string;
+            "email-otp": string;
+            "email-template": string;
+            "sign-up": string;
+            "totp": string;
+            myaccount: string;
+        }
+    };
+    brandingCustomText: {
+        revertScreenConfirmationModal: {
+            content: string;
+            heading: string;
+            message: string;
+        };
+        revertUnsavedConfirmationModal: {
+            content: string;
+            heading: string;
+            message: string;
+        };
+        form: {
+            genericFieldResetTooltip: string;
+            genericFieldPlaceholder: string;
+            fields: {
+                copyright: {
+                    hint: string;
+                };
+                "site.title": {
+                    hint: string;
+                };
+                "login.button": {
+                    hint: string;
+                };
+                "login.heading": {
+                    hint: string;
+                };
+                "sms.otp.heading": {
+                    hint: string;
+                };
+                "email.otp.heading": {
+                    hint: string;
+                };
+                "totp.heading": {
+                    hint: string;
+                };
+                "sign.up.button": {
+                    hint: string;
+                };
+                "sign.up.heading": {
+                    hint: string;
+                };
+            }
+        };
+        localeSelectDropdown: {
+            label: string;
+            placeholder: string;
+        };
+        modes: {
+            text: {
+                label: string;
+            };
+            json: {
+                label: string;
+            }
+        };
+        notifications: {
+            getPreferenceError: {
+                description: string;
+                message: string;
+            };
+            revertError: {
+                description: string;
+                message: string;
+            };
+            resetSuccess: {
+                description: string;
+                message: string;
+            };
+            updateError: {
+                description: string;
+                message: string;
+            };
+            updateSuccess: {
+                description: string;
+                message: string;
+            };
+        };
+        screenSelectDropdown: {
+            label: string;
+            placeholder: string;
         };
     };
     featureGate: {
@@ -556,6 +672,8 @@ export interface ConsoleNS {
                             oidcSubHeading: string;
                             samlHeading: string;
                             samlSubHeading: string;
+                            wsFedHeading: string;
+                            wsFedSubHeading: string;
                             tabName: string;
                         };
                         general: {
@@ -796,6 +914,9 @@ export interface ConsoleNS {
                             stopSharingNotification: Notification
                             getSharedOrganizations: Notification;
                         };
+                        apiAuthorization: {
+                            m2mPolicyMessage: string;
+                        }
                     };
                 };
                 forms: {
@@ -854,7 +975,6 @@ export interface ConsoleNS {
                             description: FormAttributes;
                             imageUrl: FormAttributes;
                             discoverable: FormAttributes;
-                            saas: FormAttributes;
                             accessUrl: FormAttributes;
                             isSharingEnabled: FormAttributes;
                             isManagementApp: FormAttributes;
@@ -896,6 +1016,7 @@ export interface ConsoleNS {
                                     type: FormAttributes;
                                     revokeToken: FormAttributes;
                                     validateBinding: FormAttributes;
+                                    audience: FormAttributes;
                                 };
                             };
                             idToken: {
@@ -1601,6 +1722,20 @@ export interface ConsoleNS {
                             IncludeProtocolBinding: FormAttributes;
                             IsUserIdInClaims: FormAttributes;
                             commonAuthQueryParams: FormAttributes;
+
+                            isEnableAssertionSigning: FormAttributes;
+                            includeCert: FormAttributes;
+                            includeNameIDPolicy: FormAttributes;
+                            isEnableAssertionEncryption: FormAttributes;
+
+                            authenticationContextClass: FormAttributes;
+                            attributeConsumingServiceIndex: FormAttributes;
+
+                            isArtifactBindingEnabled: FormAttributes;
+                            artifactResolveEndpointUrl: FormAttributes;
+                            isArtifactResolveReqSigned: FormAttributes;
+                            isArtifactResponseSigned: FormAttributes;
+                            authContextComparisonLevel: FormAttributes;
                         }
                     },
                     outboundConnectorAccordion: {
@@ -3136,6 +3271,135 @@ export interface ConsoleNS {
                     groupName: FormAttributes;
                 };
             };
+            organizationDiscovery: {
+                advancedSearch: {
+                    form: {
+                        dropdown: {
+                            filterAttributeOptions: {
+                                organizationName: string;
+                            };
+                        };
+                        inputs: {
+                            filterAttribute: {
+                                placeholder: string;
+                            };
+                            filterCondition: {
+                                placeholder: string;
+                            };
+                            filterValue: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                    placeholder: string;
+                };
+                assign: {
+                    title: string;
+                    description: string;
+                    form: {
+                        fields: {
+                            emailDomains: {
+                                label : string;
+                                placeholder: string;
+                                hint: string;
+                            },
+                            organizationName: {
+                                label: string;
+                                placeholder: string;
+                                emptyPlaceholder: string;
+                                hint: string;
+                            }
+                        }
+                    }
+                },
+                emailDomains: {
+                    actions: {
+                        assign: string;
+                        enable: string;
+                    }
+                };
+                edit: {
+                    back: string;
+                    description: string;
+                    form: {
+                        fields: {
+                            emailDomains: {
+                                label : string;
+                                placeholder: string;
+                                hint: string;
+                            };
+                            organizationName: {
+                                label: string;
+                                hint: string;
+                            };
+                        };
+                    };
+                };
+                notifications: {
+                    addEmailDomains: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    disableEmailDomainDiscovery: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    enableEmailDomainDiscovery: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    fetchOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    getEmailDomainDiscovery: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    getOrganizationListWithDiscovery: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    updateOrganizationDiscoveryAttributes: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                },
+                placeholders: {
+                    emptyList: Placeholder;
+                };
+                title: string;
+            };
             organizations: {
                 advancedSearch: {
                     form: {
@@ -3367,6 +3631,10 @@ export interface ConsoleNS {
                     assignUserRoleBtn: string;
                     metaColumnBtn: string;
                 };
+                addUserDropDown: {
+                    addNewUser: string;
+                    bulkImport: string;
+                }
                 forms: {
                     validation: {
                         formatError: string;
@@ -3383,6 +3651,22 @@ export interface ConsoleNS {
                 };
                 notifications: {
                     addUser: Notification;
+                    addUserPendingApproval: Notification;
+                    bulkImportUser: {
+                        validation: {
+                            emptyRowError: NotificationItem;
+                            columnMismatchError: NotificationItem;
+                            emptyHeaderError: NotificationItem;
+                            missingRequiredHeaderError: NotificationItem;
+                            blockedHeaderError: NotificationItem;
+                            duplicateHeaderError: NotificationItem;
+                            invalidHeaderError: NotificationItem;
+                            emptyDataField: NotificationItem;
+                            invalidRole: NotificationItem;
+                            invalidGroup: NotificationItem;
+                        },
+                        submit: Notification;
+                    }
                     deleteUser: Notification;
                     fetchUsers: Notification;
                     getAdminRole: Notification;
@@ -3581,6 +3865,14 @@ export interface ConsoleNS {
             };
             claims: {
                 attributeMappings: {
+                    axschema: {
+                        heading: string;
+                        description: string;
+                    },
+                    eidas: {
+                        heading: string;
+                        description: string;
+                    },
                     oidc: {
                         heading: string;
                         description: string;
@@ -3622,6 +3914,7 @@ export interface ConsoleNS {
                         deleteDialect: Notification;
                         addDialect: Notification;
                         updateDialect: Notification;
+                        fetchSCIMResource: Notification;
                     };
                     pageLayout: {
                         list: {
@@ -4102,6 +4395,7 @@ export interface ConsoleNS {
                         format: string;
                     };
                 };
+                goBackLoginAndRegistration: string;
                 enabled: string;
                 disabled: string;
                 categories: string;
@@ -4110,6 +4404,7 @@ export interface ConsoleNS {
                 connectorCategories: {
                     passwordPolicies : {
                         name: string;
+                        description: string;
                         connectors: {
                             passwordHistory: {
                                 friendlyName: string;
@@ -4153,6 +4448,7 @@ export interface ConsoleNS {
                     };
                     userOnboarding : {
                         name: string;
+                        description: string;
                         connectors: {
                             selfSignUp: {
                                 friendlyName: string;
@@ -4293,6 +4589,7 @@ export interface ConsoleNS {
                     };
                     loginAttemptsSecurity : {
                         name: string;
+                        description: string;
                         connectors: {
                             accountLockHandler: {
                                 friendlyName: string;
@@ -4344,6 +4641,7 @@ export interface ConsoleNS {
                     };
                     accountManagement : {
                         name: string;
+                        description: string;
                         connectors: {
                             suspensionNotification: {
                                 friendlyName: string;
@@ -4488,6 +4786,7 @@ export interface ConsoleNS {
                     };
                     otherSettings : {
                         name: string;
+                        description: string;
                         connectors: {
                             piiController: {
                                 friendlyName: string;
@@ -4655,6 +4954,7 @@ export interface ConsoleNS {
                     };
                     multiFactorAuthenticators : {
                         name: string;
+                        description: string;
                         connectors: {
                             backupCodeAuthenticator: {
                                 friendlyName: string;
@@ -4670,6 +4970,15 @@ export interface ConsoleNS {
                                 };
                             };
                         };
+                    };
+                    sessionManagement: {
+                        description: string;
+                    };
+                    saml2WebSsoConfiguration: {
+                        description: string;
+                    };
+                    wsFederationConfiguration: {
+                        description: string;
                     };
                 };
             };
@@ -4924,6 +5233,27 @@ export interface ConsoleNS {
                                 cannotCreateRole: string
                             }
                         };
+                        rolePermission: {
+                            apiResource: {
+                                label: string;
+                                placeholder: string;
+                            };
+                            permissions: {
+                                label: string;
+                                placeholder: string;
+                                tooltips: {
+                                    noScopes: string;
+                                    selectAllScopes: string;
+                                    removeAPIResource: string;
+                                }
+                            };
+                            notes: {
+                                applicationRoles: string;
+                            };
+                            notifications: {
+                                fetchAPIResourceError: Notification;
+                            };
+                        };
                     };
                     heading: string;
                     permissions: {
@@ -4934,6 +5264,7 @@ export interface ConsoleNS {
                         };
                     };
                     subHeading: string;
+                    back: string;
                     summary: {
                         labels: {
                             domain: {
@@ -4984,6 +5315,9 @@ export interface ConsoleNS {
                     placeholder: string;
                 };
                 edit: {
+                    placeholders: {
+                        errorPlaceHolder: Placeholder;
+                    };
                     basics: {
                         buttons: {
                             update: string;
@@ -5003,23 +5337,74 @@ export interface ConsoleNS {
                             heading: string;
                             subHeading: string;
                         };
-                        emptyPlaceholder: Placeholder;
+                        placeholders: {
+                            emptyPlaceholder: Placeholder;
+                            errorPlaceholder: Placeholder;
+                        };
+                        notifications: {
+                            error: NotificationItem;
+                            success: NotificationItem;
+                            genericError: NotificationItem;
+                            fetchError: NotificationItem;
+                        };
                         heading: string;
                         subHeading: string;
+                        actions: {
+                            search: {
+                                placeholder: string;
+                            },
+                            assign: {
+                                placeholder: string;
+                            },
+                            remove: {
+                                label: string;
+                                placeholder: string;
+                            }
+                        };
                     };
                     menuItems: {
                         basic: string;
+                        connectedApps: string;
                         permissions: string;
                         groups: string;
                         users: string;
                         roles: string;
                     };
                     users: {
+                        heading: string;
+                        subHeading: string;
+                        placeholders: {
+                            emptyPlaceholder: Placeholder;
+                            errorPlaceholder: Placeholder;
+                        };
+                        notifications: {
+                            error: NotificationItem;
+                            success: NotificationItem;
+                            genericError: NotificationItem;
+                            fetchError: NotificationItem;
+                        };
                         list: {
                             emptyPlaceholder: Placeholder;
                             user: string;
                             organization: string;
                         };
+                        actions: {
+                            search: {
+                                placeholder: string;
+                            },
+                            assign: {
+                                placeholder: string;
+                            },
+                            remove: {
+                                label: string;
+                                placeholder: string;
+                            }
+                        };
+                    };
+                    permissions: {
+                        heading: string;
+                        subHeading: string;
+                        removedPermissions: string;
                     };
                 };
                 list: {
@@ -5031,6 +5416,11 @@ export interface ConsoleNS {
                         actions: string;
                         lastModified: string;
                         name: string;
+                        managedBy: {
+                            label: string;
+                            header: string;
+                        };
+                        audience: string;
                     };
                     confirmations: {
                         deleteItem: Confirmation;
@@ -5043,10 +5433,20 @@ export interface ConsoleNS {
                         delete: string;
                         edit: string;
                     };
+                    filterOptions: {
+                        all: string;
+                        applicationRoles: string;
+                        organizationRoles: string;
+                    };
+                    filterAttirbutes: {
+                        name: string;
+                        audience: string;
+                    };
                 };
                 notifications: {
                     deleteRole: Notification;
                     fetchRoles: Notification;
+                    fetchRole: Notification;
                     updateRole: Notification;
                     createRole: Notification;
                     createPermission: Notification;
@@ -5080,6 +5480,80 @@ export interface ConsoleNS {
                     };
                     pageHeading: string;
                     pageSubheading: string;
+                };
+                remoteLogPublishing: {
+                    title: string;
+                    pageTitle: string;
+                    description: string;
+                    fields: {
+                        logTypes: {
+                            label: string;
+                            values: {
+                                carbonLogs: string;
+                                auditLogs: string;
+                                allLogs: string;
+                            }
+                        },
+                        remoteURL: {
+                            label: string;
+                        },
+                        advanced: {
+                            title: string,
+                            connectionTimeout: {
+                                label: string;
+                            },
+                            verifyHostname: {
+                                label: string;
+                            },
+                            basicAuthConfig: {
+                                title: string;
+                                serverUsername: {
+                                    label: string;
+                                },
+                                serverPassword: {
+                                    label: string;
+                                }
+                            },
+                            sslConfig: {
+                                title: string;
+                                keystorePath: {
+                                    label: string;
+                                },
+                                keystorePassword: {
+                                    label: string;
+                                },
+                                truststorePath: {
+                                    label: string;
+                                },
+                                truststorePassword: {
+                                    label: string;
+                                },
+                            }
+                        }
+                    };
+                    dangerZone: {
+                        title: string;
+                        header: string;
+                        subheader: string;
+                        confirmation: {
+                            hint: string;
+                            header: string;
+                            message: string;
+                            content: string;
+                        }
+                    };
+                    notification: {
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                        error: {
+                            genericError: {
+                                description: string;
+                                message: string;
+                            };
+                        }
+                    }
                 };
                 realmConfiguration: {
                     actionTitles: {
@@ -5127,6 +5601,7 @@ export interface ConsoleNS {
                 editRoles: string;
                 editUsers: string;
                 editUserstore: string;
+                emailDomainDiscovery: string;
                 emailTemplateTypes: string;
                 emailTemplates: string;
                 generalConfigurations: string;
@@ -5326,6 +5801,68 @@ export interface ConsoleNS {
                                 };
                             };
                         };
+                    };
+                    bulkImportUserWizard: {
+                        title: string;
+                        subTitle: string;
+                        wizardSummary: {
+                            successCount: string;
+                            failedCount: string;
+                            totalUserCreationCount: string;
+                            totalUserAssignmentCount: string;
+                            tableHeaders: {
+                                username: string;
+                                status: string;
+                                message: string;
+                            }
+                            tableMessages: {
+                                userCreatedMessage: string;
+                                invalidDataMessage: string;
+                                userAlreadyExistsMessage: string;
+                                userCreationAcceptedMessage: string;
+                                internalErrorMessage: string;
+                                userAssignmentSuccessMessage: string;
+                                userAssignmentFailedMessage: string;
+                                userAssignmentInternalErrorMessage: string;
+                            };
+                            tableStatus: {
+                                success: string;
+                                warning: string;
+                                failed: string;
+                            };
+                            alerts: {
+                                importSuccess: NotificationItem;
+                                importFailed: NotificationItem;
+                            };
+                            advanceSearch: {
+                                searchByUsername: string;
+                                searchByRoleOrGroup: string;
+                                roleGroupFilterAttributePlaceHolder: string;
+                            };
+                            disabledSecondaryStoreInfo: string;
+                            manualCreation: {
+                                hint: string;
+                                emailsLabel: string;
+                                emailsPlaceholder: string;
+                                disabledHint: string;
+                                upload: {
+                                    buttonText: string;
+                                    description: string;
+                                };
+                                primaryButton: string;
+                                warningMessage: string;
+                            };
+                            fileBased: {
+                                hint: string;
+                            };
+                            responseOperationType: {
+                                userCreation: string;
+                                roleAssignment: string;
+                            }
+                        };
+                        buttons: {
+                            import: string;
+                        }
                     };
                     changePasswordModal: {
                         header: string;
@@ -5590,6 +6127,7 @@ export interface ConsoleNS {
                         description: FormField;
                     };
                     connection: {
+                        updatePassword: string;
                         testButton: string;
                         connectionErrorMessage: string;
                     };
@@ -5689,6 +6227,34 @@ export interface ConsoleNS {
                     header: string;
                     subHeader: string;
                     searchPlaceholder: string;
+                };
+            };
+            parentOrgInvitations: {
+                addUserWizard: {
+                    heading: string;
+                    description: string;
+                    hint: string;
+                    usernameHint: string;
+                };
+                tab: {
+                    usersTab: string
+                    invitationsTab: string;
+                };
+                searchPlaceholder: string;
+                searchdropdown: {
+                    pendingLabel: string;
+                    expiredLabel: string;
+                };
+                createDropdown: {
+                    createLabel: string;
+                    inviteLabel: string;
+                };
+                filterLabel: string;
+                emptyPlaceholder: {
+                    noPendingInvitations: string;
+                    noExpiredInvitations: string;
+                    noInvitations: string;
+                    noCollaboratorUserInvitations: string;
                 };
             };
             onboarded?: {
@@ -5868,6 +6434,7 @@ export interface ConsoleNS {
             addEmailTemplate: EditPage;
             approvalsPage: Page;
             editTemplate: EditPage;
+            emailDomainDiscovery: Page;
             emailLocaleAdd: EditPage;
             emailLocaleAddWithDisplayName: EditPage;
             emailTemplateTypes: Page;
@@ -5888,6 +6455,68 @@ export interface ConsoleNS {
         placeholders: {
             emptySearchResult: Placeholder;
             underConstruction: Placeholder;
+        };
+    };
+    saml2Config: {
+        title: string;
+        description: string;
+        form: {
+            metadataValidityPeriod: {
+                hint: string;
+                label: string;
+            };
+            destinationUrl: {
+                hint: string;
+                label: string;
+            };
+            enableMetadataSigning: {
+                label: string;
+            };
+            validation: {
+                metadataValidityPeriod: string;
+                destinationURLs: string;
+            };
+        };
+        notifications: {
+            updateConfiguration: Notification;
+            getConfiguration: Notification;
+        };
+    };
+    sessionManagement: {
+        title: string;
+        description: string;
+        form: {
+            idleSessionTimeout: {
+                hint: string;
+                label: string;
+                placeholder: string;
+            };
+            rememberMePeriod: {
+                hint: string;
+                label: string;
+                placeholder: string;
+            };
+            validation: {
+                rememberMePeriod: string;
+                idleSessionTimeout: string;
+            };
+        };
+        notifications: {
+            updateConfiguration: Notification;
+            getConfiguration: Notification;
+        };
+    };
+    wsFederationConfig: {
+        title: string;
+        description: string;
+        form: {
+            enableRequestSigning: {
+                label: string;
+            };
+        };
+        notifications: {
+            updateConfiguration: Notification;
+            getConfiguration: Notification;
         };
     };
 }

@@ -48,7 +48,7 @@ import { FormValidation } from "@wso2is/validation";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { MouseEvent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
@@ -589,8 +589,19 @@ const ConsumerUserEditPage = (): ReactElement => {
                                 gravatar: {
                                     errors: {
                                         noAssociation: {
-                                            content: t("console:common.modals.editAvatarModal.content.gravatar.errors" +
-                                                ".noAssociation.content"),
+                                            content: (
+                                                <Trans
+                                                    i18nKey={
+                                                        "console:common.modals.editAvatarModal.content.gravatar" +
+                                                        "errors.noAssociation.content"
+                                                    }
+                                                >
+                                                    It seems like the selected email is not registered on Gravatar.
+                                                    Sign up for a Gravatar account by visiting 
+                                                    <a href="https://www.gravatar.com"> Gravatar Official Website</a> 
+                                                    or use one of the following.
+                                                </Trans>
+                                            ),
                                             header: t("console:common.modals.editAvatarModal.content.gravatar.errors" +
                                                 ".noAssociation.header")
                                         }
