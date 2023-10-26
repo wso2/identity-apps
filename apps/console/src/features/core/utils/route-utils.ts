@@ -18,6 +18,7 @@
 
 import {
     BuildingGearIcon,
+    DatabaseDocumentIcon,
     PaletteIcon,
     SquareUserIcon
 } from "@oxygen-ui/react-icons";
@@ -262,7 +263,7 @@ export class RouteUtils {
         };
 
         const userAttributesAndStores: Omit<RouteInterface, "showOnSidePanel"> = {
-            icon: BuildingGearIcon,
+            icon: DatabaseDocumentIcon,
             id: "userAttributesAndStores",
             name: "User Attributes & Stores"
         };
@@ -315,7 +316,8 @@ export class RouteUtils {
             AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"),
             AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"),
             AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
-            AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT")
+            AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT"),
+            AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN")
         ];
 
         const CategoryMappedRoutes: Omit<RouteInterface, "showOnSidePanel">[] = [
@@ -370,16 +372,19 @@ export class RouteUtils {
             {
                 category: manage,
                 id: "userStores",
+                order: 2,
                 parent: userAttributesAndStores
             },
             {
                 category: manage,
                 id: "attributeDialects",
+                order: 1,
                 parent: userAttributesAndStores
             },
             {
                 category: manage,
                 id: "oidcScopes",
+                order: 3,
                 parent: userAttributesAndStores
             },
             {

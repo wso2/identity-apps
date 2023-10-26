@@ -64,9 +64,11 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     ],
     connectorToggleName: {},
     connectorsToHide: [
-        "analytics-engine",
-        "elastic-analytics-engine",
-        "pii-controller"
+        ServerConfigurationsConstants.WSO2_ANALYTICS_ENGINE_CONNECTOR_CATEGORY_ID,
+        ServerConfigurationsConstants.ELK_ANALYTICS_CONNECTOR_ID,
+        ServerConfigurationsConstants.LITE_USER_REGISTRATION_CONNECTOR_ID,
+        ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID,
+        ServerConfigurationsConstants.CONSENT_INFO_CONNECTOR_ID
     ],
     connectorsToShow: [ "all" ],
     customConnectors: [
