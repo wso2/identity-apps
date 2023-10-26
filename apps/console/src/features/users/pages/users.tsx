@@ -19,6 +19,7 @@
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { CommonHelpers } from "@wso2is/core/helpers";
 import {
+    AlertInterface,
     AlertLevels,
     IdentifiableComponentInterface,
     MultiValueAttributeInterface,
@@ -67,8 +68,13 @@ import {
 import { RootOnlyComponent } from "../../organizations/components";
 import { OrganizationUtils } from "../../organizations/utils";
 import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorCategoryInterface,
+    GovernanceConnectorInterface,
     RealmConfigInterface,
+    ServerConfigurationsConstants,
     ServerConfigurationsInterface,
+    getConnectorCategory,
     getServerConfigs
 } from "../../server-configurations";
 import { getUserStoreList } from "../../userstores/api";
@@ -565,6 +571,15 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     /**
+     * Dispatches the alert object to the redux store.
+     *
+     * @param alert - Alert object.
+     */
+    const handleAlerts = (alert: AlertInterface) => {
+        dispatch(addAlert(alert));
+    };
+
+    /**
      * The following method set the list of columns selected by the user to
      * the state.
      *
@@ -609,7 +624,38 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         setListUpdated(true);
     };
 
+    /**
+     * Handles the click event of the create new user button.
+     */
+    const handleAddNewUserWizardClick = (): void => {
 
+        getConnectorCategory(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+            .then((response: GovernanceConnectorCategoryInterface) => {
+                const connectors: GovernanceConnectorInterface[]  = response?.connectors;
+                const userOnboardingConnector: GovernanceConnectorInterface = connectors.find(
+                    (connector: GovernanceConnectorInterface) => connector.id
+                        === ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID
+                );
+
+                const emailVerification: ConnectorPropertyInterface = userOnboardingConnector.properties.find(
+                    (property: ConnectorPropertyInterface) => 
+                        property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED);
+
+                setEmailVerificationEnabled(emailVerification.value === "true");
+            }).catch((error: AxiosError) => {
+                handleAlerts({
+                    description: error?.response?.data?.description ?? t(
+                        "console:manage.features.governanceConnectors.notifications." +
+                        "getConnector.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: error?.response?.data?.message ?? t(
+                        "console:manage.features.governanceConnectors.notifications." +
+                        "getConnector.genericError.message"
+                    )
+                });
+            });
+    };
 
     const addUserDropdownTrigger: ReactElement = (
         <PrimaryButton
@@ -789,6 +835,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             });
             setShowWizard(true);
             setUserType(UserAccountTypesMain.INTERNAL);
+            handleAddNewUserWizardClick();
         } else if (value === UserAccountTypesMain.EXTERNAL) {
             eventPublisher.publish("manage-users-click-create-invite", {
                 type: "user"
