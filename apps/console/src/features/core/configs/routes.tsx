@@ -21,6 +21,7 @@ import {
     BoltIcon,
     EnvelopeGearIcon,
     EnvelopeIcon,
+    EnvelopeMagnifyingGlassIcon,
     HierarchyIcon,
     LightbulbOnIcon,
     LinearNodesIcon,
@@ -422,7 +423,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         }),
                         exact: true,
                         icon: {
-                            icon: <HierarchyIcon fill="black" />
+                            icon: <EnvelopeMagnifyingGlassIcon fill="black" />
                         },
                         id: "organizationDiscovery",
                         name: "console:manage.features.sidePanel.emailDomainDiscovery",
