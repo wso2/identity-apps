@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.0.28
+
+### Patch Changes
+
+- [#4338](https://github.com/wso2/identity-apps/pull/4338) [`238ac3e676`](https://github.com/wso2/identity-apps/commit/238ac3e67651b8a792639835db57ff336017cd7f) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Remove redundant callback URL validation.
+
+* [#4331](https://github.com/wso2/identity-apps/pull/4331) [`77f6e16f1f`](https://github.com/wso2/identity-apps/commit/77f6e16f1fc8d100455c0e38b484237e32d4c085) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Update the ui_locales resolving logic
+
 ## 2.0.27
 
 ### Patch Changes
