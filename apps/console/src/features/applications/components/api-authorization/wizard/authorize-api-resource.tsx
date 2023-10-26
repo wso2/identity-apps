@@ -116,7 +116,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
         isLoading: isCurrentAPIResourceScopeListDataLoading,
         error: currentAPIResourceScopeListFetchError,
         mutate: mutatecurrentAPIResourceScopeList
-    } = useScopesOfAPIResources(selectedAPIResource?.id);
+    } = useScopesOfAPIResources(selectedAPIResource?.id, selectedAPIResource?.id != null);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching API resources.
