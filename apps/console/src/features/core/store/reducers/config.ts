@@ -168,6 +168,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             appTitle: "",
             applicationTemplateLoadingStrategy: undefined,
             connectionResourcesUrl: "",
+            cookiePolicyUrl: "",
             features: {
                 applications: null,
                 approvals: null,
