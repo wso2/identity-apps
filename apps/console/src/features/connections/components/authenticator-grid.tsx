@@ -68,6 +68,7 @@ import {
     StrictConnectionInterface 
 } from "../models/connection";
 import { ConnectionsManagementUtils, handleConnectionDeleteError } from "../utils/connection-utils";
+import { getConnectionIcons } from "../configs/ui";
 
 /**
  * Proptypes for the Authenticators Grid component.
@@ -416,8 +417,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     resourceDocumentationLink = { null }
                                     resourceImage={
                                         (authenticator?.type === "FEDERATED" || isIdP) && !isOrganizationSSOIDP
-                                            ? ConnectionsManagementUtils.resolveConnectionResourcePath(
-                                                "", authenticator?.image)    
+                                            ? authenticator?.image
+                                                ? ConnectionsManagementUtils.resolveConnectionResourcePath(
+                                                    "", authenticator?.image)
+                                                : getConnectionIcons().default            
                                             : isOrganizationSSOIDP 
                                                 ? AuthenticatorMeta.getAuthenticatorIcon(
                                                     (authenticator as ConnectionInterface)
