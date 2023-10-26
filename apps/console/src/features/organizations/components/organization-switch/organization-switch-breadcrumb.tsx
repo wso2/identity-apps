@@ -78,7 +78,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
     const isShowSwitcher: boolean = 
-    organizationConfigs?.showOrganizationDropdown || isSubOrg;
+        organizationConfigs?.showOrganizationDropdown || isSubOrg;
 
     useEffect(() => {
         if (!error) {

@@ -25,9 +25,7 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert, setTenants } from "@wso2is/core/store";
-import {
-    Button,
-    GenericIcon } from "@wso2is/react-components";
+import { Button, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,7 +37,8 @@ import {
     Icon,
     Item,
     Menu,
-    Placeholder } from "semantic-ui-react";
+    Placeholder 
+} from "semantic-ui-react";
 import { organizationConfigs } from "../../../../extensions";
 import { 
     FeatureGateConstants 
