@@ -2016,6 +2016,7 @@ export const extensions: Extensions = {
             info: "Vous pouvez personnaliser le contenu des e-mails à l'aide de <1>Modèles d'e-mails</1>.",
             updateButton: "Mise à jour",
             sendTestMailButton: "Envoyer un e-mail test",
+            goBack: "Revenir aux canaux de notification",
             confirmationModal: {
                 assertionHint: "Veuillez confirmer votre action.",
                 content: "Si vous supprimez cette configuration, les e-mails seront envoyés à partir de l'adresse e-mail Asgardeo. " +
@@ -2121,6 +2122,7 @@ export const extensions: Extensions = {
             info: "Vous pouvez personnaliser le contenu du SMS à l'aide des <1>Modèles de SMS</1>.",
             updateButton: "Mise à jour",
             sendTestSMSButton: "Envoyer un SMS test",
+            goBack: "Revenir aux canaux de notification",
             confirmationModal: {
                 assertionHint: "Veuillez confirmer votre action.",
                 content: "Si vous supprimez cette configuration, vous ne recevrez pas de SMS." +

@@ -45,7 +45,7 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
     const { t } = useTranslation();
 
     return (
-        <div>
+        <>
             <EmphasizedSegment className="form-wrapper" padded={ "very" }>
                 <Grid>
                     <Grid.Row columns={ 1 }>
@@ -69,9 +69,11 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.vonage.accountSID.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.vonage.accountSID.placeholder") }
-                                helperText={ (<Hint>
-                                    { t("extensions:develop.smsProviders.form.vonage.accountSID.hint") }
-                                </Hint>) }
+                                helperText={ (
+                                    <Hint>
+                                        { t("extensions:develop.smsProviders.form.vonage.accountSID.hint") }
+                                    </Hint>
+                                ) }
                                 component={ TextFieldAdapter }
                                 maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                 minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
@@ -94,9 +96,11 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                                 type="password"
                                 label={ t("extensions:develop.smsProviders.form.vonage.authToken.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.vonage.authToken.placeholder") }
-                                helperText={ (<Hint>
-                                    { t("extensions:develop.smsProviders.form.vonage.authToken.hint") } 
-                                </Hint>) }
+                                helperText={ (
+                                    <Hint>
+                                        { t("extensions:develop.smsProviders.form.vonage.authToken.hint") } 
+                                    </Hint>
+                                ) }
                                 component={ TextFieldAdapter }
                                 maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                 minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
@@ -120,9 +124,11 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.vonage.sender.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.vonage.sender.placeholder") }
-                                helperText={ (<Hint>
-                                    { t("extensions:develop.smsProviders.form.vonage.sender.hint") } 
-                                </Hint>) }
+                                helperText={ (
+                                    <Hint>
+                                        { t("extensions:develop.smsProviders.form.vonage.sender.hint") } 
+                                    </Hint>
+                                ) }
                                 component={ TextFieldAdapter }
                                 maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                 minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
@@ -147,7 +153,7 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                     </Grid.Row>
                 </Grid>
             </EmphasizedSegment>
-        </div>
+        </>
     );
 };
 

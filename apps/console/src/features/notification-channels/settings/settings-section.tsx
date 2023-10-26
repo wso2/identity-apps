@@ -16,34 +16,34 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, useMediaContext } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { FunctionComponent, MouseEvent, PropsWithChildren } from "react";
+import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactNode } from "react";
 import { Card, Grid, Header, Icon, List, Menu, Message, SemanticICONS } from "semantic-ui-react";
 
 /**
  * Prop-types for the settings section component. See also
  * {@link SettingsSection.defaultProps}
  */
-interface SettingsSectionProps extends TestableComponentInterface {
+interface SettingsSectionProps extends IdentifiableComponentInterface {
     className?: string;
     contentPadding?: boolean;
     description?: string;
     connectorEnabled?: boolean;
     header: string;
-    icon?: any;
+    icon?: FunctionComponent | ReactNode;
     onPrimaryActionClick?: (e: MouseEvent<HTMLElement> | KeyboardEvent) => void;
     onSecondaryActionClick?: (e: MouseEvent<HTMLElement> | KeyboardEvent) => void;
     placeholder?: string;
-    primaryAction?: any;
+    primaryAction?: FunctionComponent | ReactNode;
     primaryActionDisabled?: boolean;
     primaryActionIcon?: SemanticICONS;
-    secondaryAction?: any;
+    secondaryAction?: FunctionComponent | ReactNode;
     secondaryActionDisabled?: boolean;
     secondaryActionIcon?: SemanticICONS;
     showActionBar?: boolean;
-    topActionBar?: React.ReactNode;
+    topActionBar?: ReactNode;
 }
 
 /**
@@ -74,7 +74,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
         secondaryActionDisabled,
         secondaryActionIcon,
         showActionBar,
-        ["data-testid"]: testId,
+        ["data-componentid"]: componentid,
         topActionBar
     } = props;
 
@@ -95,10 +95,10 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
      * @returns Constructed element.
      */
     const constructAction = (
-        action: any,
+        action: FunctionComponent | ReactNode,
         actionIcon: SemanticICONS,
         actionDisabled: boolean,
-        actionOnClick: any,
+        actionOnClick: (e: MouseEvent<HTMLElement> | KeyboardEvent) => void,
         actionType: "primary" | "secondary"
     ) => {
         // if passed in action is a react component
@@ -108,7 +108,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                     className={ actionDisabled ? "disabled" : "" }
                     floated={ actionType === "secondary" ? "right" : "left" }
                 >
-                    { action }
+                    { action as ReactNode }
                 </List.Content>
             );
         }
@@ -123,7 +123,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                     <List.Header className="action-button-text" onClick={ actionOnClick }>
                         {
                             actionIcon
-                                ? (<><Icon name={ actionIcon }/>{ " " }</>)
+                                ? (<Icon name={ actionIcon }/>)
                                 : null
                         }
                         { action }
@@ -136,8 +136,8 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
     };
 
     return (
-        <Card className={ `settings-card ${ classes }` } fluid padded="very" data-testid={ `${testId}-card` }>
-            <Card.Content data-testid={ `${testId}-card-content` }>
+        <Card className={ `settings-card ${ classes }` } fluid padded="very" data-componentid={ `${componentid}-card` }>
+            <Card.Content data-componentid={ `${componentid}-card-content` }>
                 <Grid>
                     {
                         isGreaterThanOrEqualComputerViewport
@@ -145,7 +145,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                 <Grid.Row
                                     className="header-section"
                                     columns={ 2 }
-                                    data-testid={ `${testId}-card-content-header` }
+                                    data-componentid={ `${componentid}-card-content-header` }
                                 >
                                     <Grid.Column
                                         width={ (connectorEnabled != undefined) ? 13 : 16 }
@@ -181,7 +181,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                                     className="no-padding"
                                                     textAlign="right"
                                                     as="h5"
-                                                    data-testid={ `${testId}-connector-enable-status` }
+                                                    data-componentid={ `${componentid}-connector-enable-status` }
                                                 >
                                                     <Icon
                                                         color={ connectorEnabled ? "green":"grey" }
@@ -198,7 +198,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                 <Grid.Row
                                     className="header-section"
                                     columns={ 2 }
-                                    data-testid={ `${testId}-card-content-header` }
+                                    data-componentid={ `${componentid}-card-content-header` }
                                 >
                                     <Grid.Column
                                         width={ (connectorEnabled != undefined) ? 12 : 16 }
@@ -215,7 +215,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                                     className="no-padding"
                                                     textAlign="right"
                                                     as="h5"
-                                                    data-testid={ `${testId}-connector-enable-status` }
+                                                    data-componentid={ `${componentid}-connector-enable-status` }
                                                 >
                                                     <Icon
                                                         color={ connectorEnabled ? "green":"grey" }
@@ -232,7 +232,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                     <Grid.Row
                         className={ `main-content ${ contentPadding ? "" : "no-padding" }` }
                         columns={ 1 }
-                        data-testid={ `${testId}-card-content-items` }
+                        data-componentid={ `${componentid}-card-content-items` }
                     >
                         <Grid.Column className="no-padding" width={ 16 }>
                             {
@@ -267,11 +267,11 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                         ? onSecondaryActionClick || onPrimaryActionClick
                                         : null
                                     }
-                                    data-testid={ primaryAction
-                                        ? `${testId}-card-primary-button`
+                                    data-componentid={ primaryAction
+                                        ? `${componentid}-card-primary-button`
                                         : secondaryAction
-                                            ? `${testId}-card-secondary-button`
-                                            : `${testId}-card-placeholder` }
+                                            ? `${componentid}-card-secondary-button`
+                                            : `${componentid}-card-placeholder` }
                                     onKeyPress={ (e: KeyboardEvent) => {
                                         if (e.key !== "Enter") {
                                             return;
@@ -290,13 +290,13 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                         }
                                     } }
                                 >
-
                                     {
                                         placeholder
                                             ? (
                                                 <List.Header className="action-button-text">
                                                     <Message info>
-                                                        <Icon name="info circle" />{ placeholder }
+                                                        <Icon name="info circle" />
+                                                        { placeholder }
                                                     </Message>
                                                 </List.Header>
                                             )
@@ -354,7 +354,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
 SettingsSection.defaultProps = {
     className: "",
     contentPadding: false,
-    "data-testid": "settings-section",
+    "data-componentid": "settings-section",
     description: "",
     header: "",
     primaryAction: "",

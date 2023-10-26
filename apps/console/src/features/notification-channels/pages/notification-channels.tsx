@@ -17,21 +17,22 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import emailIcon from "../../../themes/default/assets/images/icons/email-icon.svg";
-import smsIcon from "../../../themes/default/assets/images/icons/sms-icon.svg";
+import { ReactComponent as EmailIcon } from "../../../themes/default/assets/images/icons/email-icon.svg";
+import { ReactComponent as SMSIcon } from "../../../themes/default/assets/images/icons/sms-icon.svg";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { SettingsSection } from "../settings/settings-section";
 
 /**
  * Props for the Server Configurations page.
  */
-type NotificationChannelPageInterface = TestableComponentInterface;
+type NotificationChannelPageInterface = IdentifiableComponentInterface;
 
 /**
  * Governance connector listing page.
@@ -42,7 +43,7 @@ type NotificationChannelPageInterface = TestableComponentInterface;
 export const NotificationChannelPage: FunctionComponent<NotificationChannelPageInterface> = (
     props: NotificationChannelPageInterface
 ): ReactElement => {
-    const { ["data-testid"]: testId } = props;
+    const { ["data-componentid"]: componentid } = props;
 
     const { t } = useTranslation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -63,7 +64,7 @@ export const NotificationChannelPage: FunctionComponent<NotificationChannelPageI
             pageTitle={ t("extensions:develop.notificationChannel.heading") }
             title={ t("extensions:develop.notificationChannel.title") }
             description={ t("extensions:develop.notificationChannel.description") }
-            data-testid={ `${testId}-page-layout` }
+            data-testid={ `${componentid}-page-layout` }
         >
             <>
                 { featureConfig.emailProviders?.enabled ? (
@@ -72,23 +73,21 @@ export const NotificationChannelPage: FunctionComponent<NotificationChannelPageI
                             data-componentid={ "account-login-page-section" }
                             data-testid={ "account-login-page-section" }
                             description={ t("extensions:develop.emailProviders.description") }
-                            icon={ emailIcon }
+                            icon={ EmailIcon }
                             header={ t("extensions:develop.emailProviders.heading") }
                             onPrimaryActionClick={ handleEmailSelection }
                             primaryAction={ t("common:configure") }
                         />
                     </Grid>
                 ) : null }
-
                 <Divider hidden/>
-
                 { featureConfig.smsProviders?.enabled ? (
                     <Grid xs={ 12 } lg={ 6 }>
                         <SettingsSection
                             data-componentid={ "account-login-page-section" }
                             data-testid={ "account-login-page-section" }
                             description={ t("extensions:develop.smsProviders.description") }
-                            icon={ smsIcon }
+                            icon={ SMSIcon }
                             header={
                                 t("extensions:develop.smsProviders.heading")
                             }
@@ -106,7 +105,7 @@ export const NotificationChannelPage: FunctionComponent<NotificationChannelPageI
  * Default props for the component.
  */
 NotificationChannelPage.defaultProps = {
-    "data-testid": "notification-channel-page"
+    "data-componentid": "notification-channel-page"
 };
 
 /**

@@ -40,7 +40,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .bind(AsgardeoSPAClient.getInstance());
 
 
-export const ListSMSProviders = <Data = SMSProviderAPIResponseInterface[], Error = RequestErrorInterface> 
+export const useSMSProviders = <Data = SMSProviderAPIResponseInterface[], Error = RequestErrorInterface> 
     (): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -102,9 +102,7 @@ export const updateSMSProvider = (
         });
 };
 
-export const deleteSMSProviders = (
-
-): Promise<null | IdentityAppsApiException> => {
+export const deleteSMSProviders = (): Promise<null | IdentityAppsApiException> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",

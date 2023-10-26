@@ -1747,6 +1747,7 @@ export interface Extensions {
             info: string;
             updateButton: string;
             sendTestMailButton: string;
+            goBack: string,
             confirmationModal: {
                 header: string;
                 message: string;
@@ -1844,6 +1845,7 @@ export interface Extensions {
             info: string;
             updateButton: string;
             sendTestSMSButton: string;
+            goBack: string
             confirmationModal: {
                 header: string;
                 message: string;

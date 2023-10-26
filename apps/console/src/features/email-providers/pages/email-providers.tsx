@@ -440,7 +440,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             pageHeaderMaxWidth={ true }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: "Go back to notification channels"
+                text: t("extensions:develop.emailProviders.goBack")
             } }
             data-componentid={ `${ componentId }-form-layout` }
         >

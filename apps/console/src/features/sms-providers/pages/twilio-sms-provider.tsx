@@ -44,7 +44,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
     const { t } = useTranslation();
 
     return (
-        <div>
+        <>
             <EmphasizedSegment className="form-wrapper" padded={ "very" }>
                 <Grid>
                     <Grid.Row columns={ 1 }>
@@ -68,9 +68,11 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.twilio.accountSID.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.twilio.accountSID.placeholder") }
-                                helperText={ (<Hint>
-                                    { t("extensions:develop.smsProviders.form.twilio.accountSID.hint") } 
-                                </Hint>) }
+                                helperText={ (
+                                    <Hint>
+                                        { t("extensions:develop.smsProviders.form.twilio.accountSID.hint") } 
+                                    </Hint>
+                                ) }
                                 component={ TextFieldAdapter }
                                 maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                 minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
@@ -92,9 +94,11 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                                 type="password"
                                 label={ t("extensions:develop.smsProviders.form.twilio.authToken.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.twilio.authToken.placeholder") }
-                                helperText={ (<Hint>
-                                    { t("extensions:develop.smsProviders.form.twilio.authToken.hint") }
-                                </Hint>) }
+                                helperText={ (
+                                    <Hint>
+                                        { t("extensions:develop.smsProviders.form.twilio.authToken.hint") }
+                                    </Hint>
+                                ) }
                                 component={ TextFieldAdapter }
                                 maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                 minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH } 
@@ -118,9 +122,11 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.twilio.sender.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.twilio.sender.placeholder") }
-                                helperText={ (<Hint>
-                                    { t("extensions:develop.smsProviders.form.twilio.sender.hint") }
-                                </Hint>) }
+                                helperText={ (
+                                    <Hint>
+                                        { t("extensions:develop.smsProviders.form.twilio.sender.hint") }
+                                    </Hint>
+                                ) }
                                 component={ TextFieldAdapter }
                                 maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
                                 minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
@@ -144,7 +150,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                     </Grid.Row>
                 </Grid>
             </EmphasizedSegment>
-        </div>
+        </>
     );
 };
 

@@ -47,7 +47,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
     const { t } = useTranslation();
 
     return (
-        <div>
+        <>
             <EmphasizedSegment className="form-wrapper" padded={ "very" }>
                 <Grid>
                     <Grid.Row columns={ 1 }>
@@ -100,9 +100,12 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.custom.providerUrl.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.custom.providerUrl.placeholder") }
-                                helperText={ (<Hint>
-                                    { t("extensions:develop.smsProviders.form.custom.providerUrl.hint") }
-                                </Hint>) }
+                                helperText={ (
+                                    <Hint>
+                                        { t("extensions:develop.smsProviders.form.custom.providerUrl.hint") }
+                                    </Hint>
+                                ) }
+                                
                                 component={ TextFieldAdapter }
                                 maxLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -130,9 +133,11 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.custom.key.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.custom.key.placeholder") }
-                                helperText={ (<Hint>
-                                    { t("extensions:develop.smsProviders.form.custom.key.hint") }
-                                </Hint>) }
+                                helperText={ (
+                                    <Hint>
+                                        { t("extensions:develop.smsProviders.form.custom.key.hint") }
+                                    </Hint>
+                                ) }
                                 component={ TextFieldAdapter }
                                 maxLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -158,9 +163,11 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 type="password"
                                 label={ t("extensions:develop.smsProviders.form.custom.secret.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.custom.secret.placeholder") }
-                                helperText={ (<Hint>
-                                    { t("extensions:develop.smsProviders.form.custom.secret.hint") }
-                                </Hint>) }
+                                helperText={ (
+                                    <Hint>
+                                        { t("extensions:develop.smsProviders.form.custom.secret.hint") }
+                                    </Hint>
+                                ) }
                                 component={ TextFieldAdapter }
                                 maxLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -188,9 +195,11 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.custom.sender.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.custom.sender.placeholder") }
-                                helperText={ (<Hint>
-                                    { t("extensions:develop.smsProviders.form.custom.sender.hint") }
-                                </Hint>) }
+                                helperText={ (
+                                    <Hint>
+                                        { t("extensions:develop.smsProviders.form.custom.sender.hint") }
+                                    </Hint>
+                                ) }
                                 component={ TextFieldAdapter }
                                 maxLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -216,9 +225,11 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.custom.contentType.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.custom.contentType.placeholder") }
-                                helperText={ (<Hint>
-                                    { t("extensions:develop.smsProviders.form.custom.contentType.hint") }
-                                </Hint>) }
+                                helperText={ (
+                                    <Hint>
+                                        { t("extensions:develop.smsProviders.form.custom.contentType.hint") }
+                                    </Hint>
+                                ) }
                                 component={ TextFieldAdapter }
                                 maxLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -246,9 +257,11 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.custom.headers.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.custom.headers.placeholder") }
-                                helperText={ (<Hint>
-                                    { t("extensions:develop.smsProviders.form.custom.headers.hint") }
-                                </Hint>) }
+                                helperText={ (
+                                    <Hint>
+                                        { t("extensions:develop.smsProviders.form.custom.headers.hint") }
+                                    </Hint>
+                                ) }
                                 component={ TextFieldAdapter }
                                 maxLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -274,9 +287,11 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.custom.httpMethod.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.custom.httpMethod.placeholder") }
-                                helperText={ (<Hint>
-                                    { t("extensions:develop.smsProviders.form.custom.httpMethod.hint") }
-                                </Hint>) }
+                                helperText={ (
+                                    <Hint>
+                                        { t("extensions:develop.smsProviders.form.custom.httpMethod.hint") }
+                                    </Hint>
+                                ) }
                                 component={ TextFieldAdapter }
                                 maxLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -304,9 +319,11 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 type="text"
                                 label={ t("extensions:develop.smsProviders.form.custom.payload.label") }
                                 placeholder={ t("extensions:develop.smsProviders.form.custom.payload.placeholder") }
-                                helperText={ (<Hint>
-                                    { t("extensions:develop.smsProviders.form.custom.payload.hint") }
-                                </Hint>) }
+                                helperText={ (
+                                    <Hint>
+                                        { t("extensions:develop.smsProviders.form.custom.payload.hint") }
+                                    </Hint>
+                                ) }
                                 component={ TextFieldAdapter }
                                 maxLength={
                                     SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -334,7 +351,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                     </Grid.Row>
                 </Grid>
             </EmphasizedSegment>
-        </div>
+        </>
     );
 };
 

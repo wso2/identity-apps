@@ -1977,6 +1977,7 @@ export const extensions: Extensions = {
             info: "You can customize the email content using <1>Email Templates</1>.",
             updateButton: "Update",
             sendTestMailButton: "Send Test Email",
+            goBack: "Go back to Notification Channels",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
                 content: "If you delete this configuration, the emails will be sent from the Asgardeo Email Address. " +
@@ -2081,6 +2082,7 @@ export const extensions: Extensions = {
             info: "You can customize the SMS content using <1>SMS Templates</1>.",
             updateButton: "Update",
             sendTestSMSButton: "Send Test SMS",
+            goBack: "Go back to Notification Channels",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
                 content: "If you delete this configuration, you will not receive SMS." +

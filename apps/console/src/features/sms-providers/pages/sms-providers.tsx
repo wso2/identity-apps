@@ -46,8 +46,8 @@ import {
     FeatureConfigInterface
 } from "../../core";
 import { history } from "../../core/helpers";
-import { ListSMSProviders, deleteSMSProviders, updateSMSProvider } from "../api";
-import { getSMSProviderIcons } from "../configs/ui";
+import { deleteSMSProviders, updateSMSProvider, useSMSProviders } from "../api";
+import { providerCards } from "../configs/provider-cards";
 import { SMSProviderConstants } from "../constants";
 import {
     ContentType,
@@ -119,7 +119,71 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         isLoading: isSMSProviderConfigFetchRequestLoading,
         mutate: mutateSMSProviderConfig,
         error: smsProviderConfigFetchRequestError
-    } = ListSMSProviders();
+    } = useSMSProviders();
+    const [ isLoading, setIsLoading ] = useState(true);
+
+    useEffect(() => {
+        if (!originalSMSProviderConfig) {
+            return;
+        }
+        if (originalSMSProviderConfig instanceof IdentityAppsApiException || smsProviderConfigFetchRequestError) {
+            handleRetrieveError();
+
+            return;
+        }
+        let configuredProvider: string = SMSProviderConstants.TWILIO_SMS_PROVIDER;
+        const providersObject: { [key: string]: SMSProviderInterface } =
+            originalSMSProviderConfig.reduce(
+                (acc: { [key: string]: SMSProviderInterface }, provider: SMSProviderAPIInterface) => {
+                    if (provider.provider === SMSProviderConstants.TWILIO) {
+                        configuredProvider = SMSProviderConstants.TWILIO_SMS_PROVIDER;
+                    } else if (provider.provider === SMSProviderConstants.VONAGE) {
+                        configuredProvider = SMSProviderConstants.VONAGE_SMS_PROVIDER;
+                    } else {
+                        configuredProvider = SMSProviderConstants.CUSTOM_SMS_PROVIDER;
+                    }
+                    const configuredSMSProvider: SMSProviderInterface = {
+                        contentType: provider.contentType as ContentType,
+                        headers: provider.properties.find(
+                            (property: SMSProviderPropertiesInterface) => property.key === "http.headers")?.value,
+                        httpMethod: provider.properties.find(
+                            (property: SMSProviderPropertiesInterface) => property.key === "http.method")?.value,
+    
+                        name: provider.name,
+                        payload: provider.properties.find(
+                            (property: SMSProviderPropertiesInterface) => property.key === "body")?.value,
+                        provider: provider.provider,
+                        providerURL: provider.providerURL 
+                    };
+
+                    if (configuredProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER) {
+                        configuredSMSProvider.twilioKey = provider.key;
+                        configuredSMSProvider.twilioSecret = provider.secret;
+                        configuredSMSProvider.twilioSender = provider.sender;
+                    } else if (configuredProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER) {
+                        configuredSMSProvider.vonageKey = provider.key;
+                        configuredSMSProvider.vonageSecret = provider.secret;
+                        configuredSMSProvider.vonageSender = provider.sender;
+                    } else {
+                        configuredSMSProvider.key = provider.key;
+                        configuredSMSProvider.secret = provider.secret;
+                        configuredSMSProvider.sender = provider.sender;
+                    }
+                    acc[configuredProvider] = configuredSMSProvider;
+
+                    return acc;
+                }, {});
+
+        setSmsProviderSettings({
+            providerParams: {
+                ...smsProviderSettings.providerParams,
+                ...providersObject
+            },
+            selectedProvider: configuredProvider
+        });
+        setIsLoading(false);
+
+    }, [ originalSMSProviderConfig ]);
 
     /**
      * Displays the error banner when unable to fetch sms provider configuration.
@@ -180,74 +244,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             })
         );
     };
-
-    const [ isLoading, setIsLoading ] = useState(true);
-
-    useEffect(() => {
-
-        if (!originalSMSProviderConfig) {
-            return;
-        }
-        
-        if (originalSMSProviderConfig instanceof IdentityAppsApiException || smsProviderConfigFetchRequestError) {
-            handleRetrieveError();
-
-            return;
-        }
-
-        let configuredProvider: string = SMSProviderConstants.TWILIO_SMS_PROVIDER;
-        const providersObject: { [key: string]: SMSProviderInterface } =
-            originalSMSProviderConfig.reduce(
-                (acc: { [key: string]: SMSProviderInterface }, provider: SMSProviderAPIInterface) => {
-                    if (provider.provider === SMSProviderConstants.TWILIO) {
-                        configuredProvider = SMSProviderConstants.TWILIO_SMS_PROVIDER;
-                    } else if (provider.provider === SMSProviderConstants.VONAGE) {
-                        configuredProvider = SMSProviderConstants.VONAGE_SMS_PROVIDER;
-                    } else {
-                        configuredProvider = SMSProviderConstants.CUSTOM_SMS_PROVIDER;
-                    }
-                    const configuredSMSProvider: SMSProviderInterface = {
-                        contentType: provider.contentType as ContentType,
-                        headers: provider.properties.find(
-                            (property: SMSProviderPropertiesInterface) => property.key === "http.headers")?.value,
-                        httpMethod: provider.properties.find(
-                            (property: SMSProviderPropertiesInterface) => property.key === "http.method")?.value,
-    
-                        name: provider.name,
-                        payload: provider.properties.find(
-                            (property: SMSProviderPropertiesInterface) => property.key === "body")?.value,
-                        provider: provider.provider,
-                        providerURL: provider.providerURL 
-                    };
-
-                    if (configuredProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER) {
-                        configuredSMSProvider.twilioKey = provider.key;
-                        configuredSMSProvider.twilioSecret = provider.secret;
-                        configuredSMSProvider.twilioSender = provider.sender;
-                    } else if (configuredProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER) {
-                        configuredSMSProvider.vonageKey = provider.key;
-                        configuredSMSProvider.vonageSecret = provider.secret;
-                        configuredSMSProvider.vonageSender = provider.sender;
-                    } else {
-                        configuredSMSProvider.key = provider.key;
-                        configuredSMSProvider.secret = provider.secret;
-                        configuredSMSProvider.sender = provider.sender;
-                    }
-                    acc[configuredProvider] = configuredSMSProvider;
-
-                    return acc;
-                }, {});
-
-        setSmsProviderSettings({
-            providerParams: {
-                ...smsProviderSettings.providerParams,
-                ...providersObject
-            },
-            selectedProvider: configuredProvider
-        });
-        setIsLoading(false);
-
-    }, [ originalSMSProviderConfig ]);
 
     const handleProviderChange = (selectedProvider: string) => {
         setSmsProviderSettings({ ...smsProviderSettings, selectedProvider });
@@ -497,11 +493,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         );
     };
 
-    const providerCards: SMSProviderCardInterface[] = [
-        { icon: getSMSProviderIcons().twilio, id: 1, key: "TwilioSMSProvider", name: "Twilio" },
-        { icon: getSMSProviderIcons().vonage, id: 2, key: "VonageSMSProvider", name: "Vonage" },
-        { icon: getSMSProviderIcons().custom, id: 3, key: "CustomSMSProvider", name: "Custom" }
-    ];
+
     /**
      * Resolves the page description.
      */
@@ -536,99 +528,97 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             pageHeaderMaxWidth={ true }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: "Go back to notification channels"
+                text: t("extensions:develop.smsProviders.goBack")
             } }
             data-componentid={ `${componentId}-form-layout` }
         >
             { isSMSProviderConfigFetchRequestLoading || isDeleting || isLoading ? (
                 renderLoadingPlaceholder()
             ) : (
-                <>
-                    <EmphasizedSegment className="form-wrapper" padded={ "very" }>
-                        <Grid className={ "mt-2" } >
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column >
-                                    <FinalForm
-                                        onSubmit={ handleSubmit }
-                                        validate={ validateForm }
-                                        initialValues={ 
-                                            smsProviderSettings.selectedProvider 
-                                                ? smsProviderSettings
-                                                    .providerParams[smsProviderSettings.selectedProvider] 
-                                                :  {} 
-                                        }
-                                        render={ ({ handleSubmit }: FormRenderProps) => (
-                                            <form onSubmit={ handleSubmit } noValidate>
-                                                <div className="card-list">
-                                                    <Grid>
-                                                        <Grid.Row columns={ 3 }>
-                                                            { providerCards.map(
-                                                                (provider: SMSProviderCardInterface) => (
-                                                                    <Grid.Column width={ 5 } key={ provider.id }>
-                                                                        <InfoCard
-                                                                            fluid
-                                                                            data-componentid=
-                                                                                { `${componentId}
+                <EmphasizedSegment className="form-wrapper" padded={ "very" }>
+                    <Grid className={ "mt-2" } >
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column >
+                                <FinalForm
+                                    onSubmit={ handleSubmit }
+                                    validate={ validateForm }
+                                    initialValues={ 
+                                        smsProviderSettings.selectedProvider 
+                                            ? smsProviderSettings
+                                                .providerParams[smsProviderSettings.selectedProvider] 
+                                            :  {} 
+                                    }
+                                    render={ ({ handleSubmit }: FormRenderProps) => (
+                                        <form onSubmit={ handleSubmit } noValidate>
+                                            <div className="card-list">
+                                                <Grid>
+                                                    <Grid.Row columns={ 3 }>
+                                                        { providerCards.map(
+                                                            (provider: SMSProviderCardInterface) => (
+                                                                <Grid.Column width={ 5 } key={ provider.id }>
+                                                                    <InfoCard
+                                                                        fluid
+                                                                        data-componentid=
+                                                                            { `${componentId}
                                                                                 -sms-provider-info-card` }
-                                                                            image={ provider.icon }
-                                                                            imageSize="mini"
-                                                                            header={
-                                                                                provider.name
-                                                                            }
-                                                                            className=
-                                                                                { smsProviderSettings.selectedProvider 
+                                                                        image={ provider.icon }
+                                                                        imageSize="mini"
+                                                                        header={
+                                                                            provider.name
+                                                                        }
+                                                                        className=
+                                                                            { smsProviderSettings.selectedProvider 
                                                                                     === provider.key ? "selected" : "" 
-                                                                                }
-                                                                            key={ provider.id }
-                                                                            onClick={ () => 
-                                                                                handleProviderChange(provider.key) 
-                                                                            } 
-                                                                            showSetupGuideButton={ false }
-                                                                            showCardAction={ false }
-                                                                        />
-                                                                    </Grid.Column>
-                                                                )) }
-                                                        </Grid.Row>
-                                                    </Grid>
-                                                </div>
-                                                { smsProviderSettings.selectedProvider && (
-                                                    <div>
-                                                        <Divider hidden />
-                                                    </div>
-                                                ) }
-                                                { smsProviderSettings.selectedProvider && (
-                                                    <div>
-                                                        { smsProviderSettings.selectedProvider === 
+                                                                            }
+                                                                        key={ provider.id }
+                                                                        onClick={ () => 
+                                                                            handleProviderChange(provider.key) 
+                                                                        } 
+                                                                        showSetupGuideButton={ false }
+                                                                        showCardAction={ false }
+                                                                    />
+                                                                </Grid.Column>
+                                                            )) }
+                                                    </Grid.Row>
+                                                </Grid>
+                                            </div>
+                                            { smsProviderSettings.selectedProvider && (
+                                                <Divider hidden />
+
+                                            ) }
+                                            { smsProviderSettings.selectedProvider && (
+                                                <>
+                                                    { smsProviderSettings.selectedProvider === 
                                                         SMSProviderConstants.CUSTOM_SMS_PROVIDER && (
-                                                            <CustomSMSProvider
-                                                                isReadOnly={ isReadOnly }
-                                                                onSubmit={ handleSubmit }
-                                                            />
-                                                        ) }
-                                                        { smsProviderSettings.selectedProvider === 
+                                                        <CustomSMSProvider
+                                                            isReadOnly={ isReadOnly }
+                                                            onSubmit={ handleSubmit }
+                                                        />
+                                                    ) }
+                                                    { smsProviderSettings.selectedProvider === 
                                                         SMSProviderConstants.TWILIO_SMS_PROVIDER && (
-                                                            <TwilioSMSProvider
-                                                                isReadOnly={ isReadOnly }
-                                                                onSubmit={ handleSubmit }
-                                                            />
-                                                        ) }
-                                                        { smsProviderSettings.selectedProvider === 
+                                                        <TwilioSMSProvider
+                                                            isReadOnly={ isReadOnly }
+                                                            onSubmit={ handleSubmit }
+                                                        />
+                                                    ) }
+                                                    { smsProviderSettings.selectedProvider === 
                                                         SMSProviderConstants.VONAGE_SMS_PROVIDER && (
-                                                            <VonageSMSProvider
-                                                                isReadOnly={ isReadOnly }
-                                                                onSubmit={ handleSubmit }
-                                                            />
-                                                        ) }
-                                                    </div>
-                                                ) }
-                                            </form>
-                                        ) }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </EmphasizedSegment>
-                </>
+                                                        <VonageSMSProvider
+                                                            isReadOnly={ isReadOnly }
+                                                            onSubmit={ handleSubmit }
+                                                        />
+                                                    ) }
+                                                </>
+                                            ) }
+                                        </form>
+                                    ) }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </EmphasizedSegment>
+
             ) }
             {
                 !isLoading && !isSMSProviderConfigFetchRequestLoading && (

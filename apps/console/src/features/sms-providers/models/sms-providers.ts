@@ -31,66 +31,45 @@ export interface SMSProviderPropertiesInterface {
     key: string;
     value: string;
 }
+
 export interface SMSProviderPropertiesObjectInterface {
     [key: string]: string;
 }
+
 export interface SMSProviderInterface {
 
     name: string;
-
     provider?: string;
-    
     providerURL?: string;
-    
     key?: string;
-
     twilioKey?: string;
-
     vonageKey?: string;
-    
     secret?: string;
-
     twilioSecret?: string;
-
     vonageSecret?: string;
-    
     sender?: string;
-
     twilioSender?: string;
-
     vonageSender?: string;
-    
     contentType?: ContentType;
-   
     headers?: string;
-
     payload?: string;
-
     httpMethod?: string;
 }
 
 export interface SMSProviderAPIInterface {
 
     name?: string;
-    
     provider: string;
-    
     providerURL?: string;
-    
     key: string;
-    
     secret: string;
-    
     sender: string;
-    
     contentType: string;
-    
     properties: SMSProviderPropertiesInterface[];
 }
 
 export interface SMSProviderSettingsState {
     selectedProvider: string | null;
-
     providerParams: {
         [key: string]: SMSProviderInterface;
     };
@@ -103,38 +82,23 @@ export enum ContentType {
 
 export interface SMSProviderConfigFormErrorValidationsInterface {
     provider?: string;
-
     providerURL?: string;
-
     payload?: string;
-
     key?: string;
-
     secret?: string;
-
     sender?: string;
-
     contentType?: string;
-    
     twilioKey?: string;
-    
     twilioSecret?: string;
-    
     twilioSender?: string;
-    
     vonageKey?: string;
-    
     vonageSecret?: string;
-    
     vonageSender?: string;
 }
 
 export interface SMSProviderCardInterface {
     id: number,
-
     key: string,
-
     name: string,
-    
     icon: any
 }
