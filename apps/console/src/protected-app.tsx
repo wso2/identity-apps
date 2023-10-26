@@ -58,7 +58,14 @@ import React, {
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { commonConfig } from "./extensions";
+import { commonConfig, serverConfigurationConfig } from "./extensions";
+import { useTenantTier } from "./extensions/components/subscription/api/subscription";
+import { TenantTier } from "./extensions/components/subscription/models/subscription";
+import { SubscriptionProvider } from "./extensions/components/subscription/providers/subscription-provider";
+import {
+    AuthenticateUtils,
+    getProfileInformation
+} from "./features/authentication";
 import useSignIn from "./features/authentication/hooks/use-sign-in";
 import {
     AppState,
@@ -108,6 +115,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const { filterRoutes } = useRoutes();
 
     const { setUIConfig } = useUIConfig();
+    const [ tierName, setTierName ] = useState<TenantTier>(TenantTier.FREE);
 
     const featureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features
@@ -125,6 +133,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
     const [ governanceConnectors, setGovernanceConnectors ] = useState<GovernanceCategoryForOrgsInterface[]>([]);
+    const {
+        data: tenantTier,
+        error: tenantTierRequestError
+    } = useTenantTier();
 
     useEffect(() => {
         dispatch(
@@ -191,6 +203,16 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
         setGovernanceConnectors(originalConnectorCategories);
     }, [ originalConnectorCategories ]);
+
+    useEffect(() => {
+        if (!tenantTier ||
+            tenantTier instanceof IdentityAppsApiException ||
+            tenantTierRequestError) {
+            return;
+        }
+
+        setTierName(tenantTier.tierName);        
+    }, [ tierName ]);
 
     const loginSuccessRedirect = (idToken: DecodedIDTokenPayload): void => {
         const AuthenticationCallbackUrl: string = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
@@ -364,7 +386,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         >
             <GovernanceConnectorProvider connectorCategories={ governanceConnectors }>
                 <I18nextProvider i18n={ I18n.instance }>
-                    { renderApp && routesFiltered ? <App /> : <PreLoader /> }
+                    <SubscriptionProvider tierName={ tierName }>
+                        { renderApp && routesFiltered ? <App /> : <PreLoader /> }
+                    </SubscriptionProvider>
                 </I18nextProvider>
             </GovernanceConnectorProvider>
         </SecureApp>
