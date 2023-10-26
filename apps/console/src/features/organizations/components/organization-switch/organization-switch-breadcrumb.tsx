@@ -75,6 +75,11 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         shouldSendRequest
     );
 
+    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+
+    const isShowSwitcher: boolean = 
+        organizationConfigs?.showOrganizationDropdown || isSubOrg;
+
     useEffect(() => {
         if (!error) {
             return;
@@ -173,22 +178,15 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         ) : (
             <>
                 {
-                    !organizationConfigs.showSwitcherInTenants
-                        ? (
+                    organizationConfigs?.showSwitcherInTenants ? (
+                        breadcrumbList.length <= 4 && (
                             <Icon
                                 key={ index }
                                 name={ isDropDownOpen ? "angle up" : "angle down" }
                                 className="separator-icon organization-breadcrumb-icon"
                             />
-                        ) : (
-                            breadcrumbList.length <= 4 && (
-                                <Icon
-                                    key={ index }
-                                    name={ isDropDownOpen ? "angle up" : "angle down" }
-                                    className="separator-icon organization-breadcrumb-icon"
-                                />
-                            )
                         )
+                    ) : null
                 }
             </>
         );
@@ -204,7 +202,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                 <>
                     { breadcrumbList?.map(
                         (breadcrumb: BreadcrumbItem, index: number) => {
-                            if (index === 0 && !organizationConfigs.showSwitcherInTenants) {
+                            if (index === 0) {
                                 return (
                                     <>
                                         { generateSuperBreadcrumbItem(breadcrumb) }
@@ -289,7 +287,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         className="breadcrumb-dropdown breadcrumb"
                         data-componentid={ `${ componentId }-breadcrumb-ellipsis` }
                     >
-                        <Dropdown.Menu>
+                        <Dropdown.Menu open={ false }>
                             { (breadcrumbList && breadcrumbList?.length > 0) && breadcrumbList?.map(
                                 (breadcrumb: BreadcrumbItem, index: number) => {
                                     if (
@@ -368,16 +366,18 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         );
     };
 
-    return (
-        <TenantDropdown 
-            dropdownTrigger={ triggerOrganizationDropdown() } 
-            disable={ 
-                organizationConfigs.showSwitcherInTenants
-                    ? breadcrumbList?.length > 4
-                    : false
-            } 
-        />
-    );
+    if (isShowSwitcher) {
+        return (
+            <TenantDropdown 
+                dropdownTrigger={ triggerOrganizationDropdown() } 
+                disable={ 
+                    organizationConfigs.showSwitcherInTenants
+                        ? breadcrumbList?.length > 4
+                        : isShowSwitcher ?? false
+                } 
+            />
+        );
+    }
 };
 
 OrganizationSwitchBreadcrumb.defaultProps = {
