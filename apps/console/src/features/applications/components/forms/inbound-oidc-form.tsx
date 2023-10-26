@@ -598,6 +598,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         setSelectedAuthMethod(authMethod);
     };
 
+    useEffect(() => {
+
+        if (!selectedAuthMethod) {
+            setSelectedAuthMethod(initialValues?.clientAuthentication?.tokenEndpointAuthMethod);
+        }
+    });
+
     /**
      * Moderates the metadata labels.
      *
@@ -1721,6 +1728,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".clientAuthentication.fields.authenticationMethod.placeholder")
                         }
+                        listen={ (values: Map<string, FormValue>) => handleAuthMethodChange(values) }
                         children={ getAllowedList(metadata.tokenEndpointAuthMethod) }
                         readOnly={ readOnly }
                     />
@@ -1900,8 +1908,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         readOnly={ readOnly }
                     />
                     <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".requestObject.fields.requestObjectEncryptionAlgorithm.hint") }
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".requestObject.fields.requestObjectEncryptionAlgorithm.hint"
+                            }
+                        >
+                            The dropdown contains the supported <Code withBackground>request object</Code> encryption
+                            algorithms.
+                        </Trans>
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
@@ -1929,8 +1944,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         readOnly={ readOnly }
                     />
                     <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".requestObject.fields.requestObjectEncryptionMethod.hint") }
+                        <Trans
+                            i18nKey={
+                                "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".requestObject.fields.requestObjectEncryptionMethod.hint"
+                            }
+                        >
+                            The dropdown contains the supported <Code withBackground>request object</Code> encryption
+                            methods.
+                        </Trans>
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
