@@ -380,7 +380,7 @@
             var reg = document.getElementById('challengeResponse');
             reg.value = JSON.stringify({ errorCode: 400, message: fidoError });
             var scenario = document.getElementById('scenario');
-            scenario.value = "CANCEL_FIDO_ENROL" ;
+            scenario.value = "CANCEL_FIDO_ENROLL" ;
             form.submit();
         }
 
@@ -405,7 +405,7 @@
 
             // Set the displayName and scenario values
             displayName.value = keyname;
-            scenario.value = "FINISH_FIDO_ENROL";
+            scenario.value = "FINISH_FIDO_ENROLL";
 
             var form = document.getElementById('form');
             form.submit();

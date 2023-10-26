@@ -382,7 +382,7 @@
         function passkeyEnrollmentFlow(){
             var form = document.getElementById('form');
             var scenario = document.getElementById('scenario');
-            scenario.value = "INIT_FIDO_ENROL";
+            scenario.value = "INIT_FIDO_ENROLL";
             form.submit();
         }
 
