@@ -10327,6 +10327,7 @@ export const console: ConsoleNS = {
                     },
                     columns: {
                         actions: "Actions",
+                        audience: "Audience",
                         lastModified: "Modified Time",
                         managedBy: {
                             label: "Managed by",

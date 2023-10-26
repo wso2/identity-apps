@@ -8571,6 +8571,7 @@ export const console: ConsoleNS = {
                     },
                     columns: {
                         actions: "Actions",
+                        audience: "Public",
                         lastModified: "Dernière modification",
                         managedBy: {
                             label: "Dirigé par",

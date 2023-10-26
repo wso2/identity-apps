@@ -8394,6 +8394,7 @@ export const console: ConsoleNS = {
                     },
                     columns: {
                         actions: "ක්‍රියා",
+                        audience: "ප්‍රවේශමෙන්නිය",
                         lastModified: "අවසන් වරට වෙනස් කරන ලදි",
                         managedBy: {
                             label: "කළමනාකරණය",

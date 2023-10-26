@@ -5394,6 +5394,7 @@ export interface ConsoleNS {
                             label: string;
                             header: string;
                         };
+                        audience: string;
                     };
                     confirmations: {
                         deleteItem: Confirmation;
