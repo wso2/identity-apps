@@ -32,11 +32,14 @@ import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/co
 import { LocalStorageUtils, StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import { GenericIcon, useDocumentation } from "@wso2is/react-components";
+import { SubscriptionContext } from "apps/console/src/extensions/components/subscription/contexts/subscription";
+import { TenantTier, TenantTierRequestResponse } from "apps/console/src/extensions/components/subscription/models/subscription";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
     ReactElement,
     ReactNode,
+    useContext,
     useEffect,
     useMemo,
     useState
@@ -117,6 +120,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     );
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+    const { tierName }: TenantTierRequestResponse = useContext(SubscriptionContext);
 
     const [ anchorHelpMenu, setAnchorHelpMenu ] = useState<null | HTMLElement>(null);
 
@@ -326,7 +330,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     </Menu>
                 </>
             ),
-            billingPortalURL && !isPrivilegedUser &&
+            tierName === TenantTier.FREE && billingPortalURL && !isPrivilegedUser &&
             window[ "AppUtils" ].getConfig().extensions
                 .upgradeButtonEnabled && (
                 <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
