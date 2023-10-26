@@ -830,12 +830,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     
     const handleDropdownItemChange = (value: string): void => {
         if (value === UserAccountTypesMain.INTERNAL) {
+            handleAddNewUserWizardClick();
             eventPublisher.publish("manage-users-click-create-new", {
                 type: "user"
             });
             setShowWizard(true);
             setUserType(UserAccountTypesMain.INTERNAL);
-            handleAddNewUserWizardClick();
         } else if (value === UserAccountTypesMain.EXTERNAL) {
             eventPublisher.publish("manage-users-click-create-invite", {
                 type: "user"
