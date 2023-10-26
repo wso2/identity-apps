@@ -670,8 +670,8 @@
         <commons-logging.imp.pkg.version.range>[1.2, 2.0)</commons-logging.imp.pkg.version.range>
 
         <carbon.identity.version>5.0.7</carbon.identity.version>
-        <carbon.kernel.version>4.9.11</carbon.kernel.version>
-        <carbon.kernel.imp.pkg.version.range>[4.9.1, 5.0.0)</carbon.kernel.imp.pkg.version.range>
+        <carbon.kernel.version>4.9.16</carbon.kernel.version>
+        <carbon.kernel.imp.pkg.version.range>[4.9.16, 5.0.0)</carbon.kernel.imp.pkg.version.range>
         <carbon.user.api.imp.pkg.version.range>[1.0.1, 2.0.0)</carbon.user.api.imp.pkg.version.range>
         <carbon.commons.version>4.7.22</carbon.commons.version>
         <carbon.commons.imp.pkg.version.range>[4.7.0, 5.0.0)</carbon.commons.imp.pkg.version.range>

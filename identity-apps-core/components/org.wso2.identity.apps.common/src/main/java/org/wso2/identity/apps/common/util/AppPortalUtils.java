@@ -19,6 +19,7 @@
 package org.wso2.identity.apps.common.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.wso2.carbon.CarbonConstants;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
@@ -36,8 +37,8 @@ import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
 import org.wso2.carbon.identity.oauth.OAuthUtil;
 import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
 import org.wso2.carbon.identity.oauth2.OAuth2Constants;
-import org.wso2.carbon.identity.role.v2.mgt.core.exception.IdentityRoleManagementException;
 import org.wso2.carbon.user.core.UserRealm;
+import org.wso2.carbon.user.core.UserStoreException;
 import org.wso2.identity.apps.common.internal.AppsCommonDataHolder;
 
 import java.util.Arrays;
@@ -94,6 +95,15 @@ public class AppPortalUtils {
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
         if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
             callbackUrl = callbackUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
+        } else if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+            if (StringUtils.equals(CONSOLE_APP, applicationName) &&
+                AppsCommonDataHolder.getInstance().isOrganizationManagementEnabled()) {
+                callbackUrl = "regexp=(" + callbackUrl + "|" + callbackUrl.replace(portalPath, "/t/(.*)" +
+                    portalPath) + "|" + callbackUrl.replace(portalPath, "/o/(.*)" + portalPath) + ")";
+            } else {
+                callbackUrl = "regexp=(" + callbackUrl + "|" +
+                    callbackUrl.replace(portalPath, "/t/(.*)" + portalPath) + ")";
+            }
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
         oAuthConsumerAppDTO.setBypassClientCredentials(true);
@@ -131,8 +141,7 @@ public class AppPortalUtils {
     @Deprecated
     public static void createApplication(String appName, String appOwner, String appDescription, String consumerKey,
                                          String consumerSecret, String tenantDomain)
-        throws IdentityApplicationManagementException,
-        org.wso2.carbon.user.api.UserStoreException, IdentityRoleManagementException {
+        throws IdentityApplicationManagementException {
 
         createApplication(appName, appOwner, appDescription,
             consumerKey, consumerSecret, tenantDomain, StringUtils.EMPTY);
@@ -151,27 +160,35 @@ public class AppPortalUtils {
      */
     public static void createApplication(String appName, String appOwner, String appDescription, String consumerKey,
                                          String consumerSecret, String tenantDomain, String portalPath)
-        throws IdentityApplicationManagementException, org.wso2.carbon.user.api.UserStoreException,
-        IdentityRoleManagementException {
+        throws IdentityApplicationManagementException {
 
         ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setApplicationName(appName);
         serviceProvider.setDescription(appDescription);
         serviceProvider.setManagementApp(true);
+        if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+            serviceProvider.setSaasApp(true);
+        }
         if (StringUtils.isNotEmpty(portalPath)) {
-            String accessUrl = IdentityUtil.getServerURL(portalPath, true, true);
-            if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
-                accessUrl = accessUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
+            if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+                serviceProvider.setAccessUrl(IdentityUtil.getServerURL(portalPath, true, true));
+            } else {
+                String accessUrl = IdentityUtil.getServerURL(portalPath, true, true);
+                if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
+                    accessUrl = accessUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
+                }
+                serviceProvider.setAccessUrl(accessUrl);
             }
-            serviceProvider.setAccessUrl(accessUrl);
         }
 
-        // Make system applications shareable.
-        ServiceProviderProperty spProperty = new ServiceProviderProperty();
-        spProperty.setName(SHARE_WITH_ALL_CHILDREN);
-        spProperty.setValue("true");
-        ServiceProviderProperty[] serviceProviderProperties = {spProperty};
-        serviceProvider.setSpProperties(serviceProviderProperties);
+        if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+            // Make system applications shareable.
+            ServiceProviderProperty spProperty = new ServiceProviderProperty();
+            spProperty.setName(SHARE_WITH_ALL_CHILDREN);
+            spProperty.setValue("true");
+            ServiceProviderProperty[] serviceProviderProperties = {spProperty};
+            serviceProvider.setSpProperties(serviceProviderProperties);
+        }
 
         InboundAuthenticationRequestConfig inboundAuthenticationRequestConfig
             = new InboundAuthenticationRequestConfig();
@@ -250,11 +267,10 @@ public class AppPortalUtils {
      * @throws IdentityApplicationManagementException      IdentityApplicationManagementException.
      * @throws IdentityOAuthAdminException                 IdentityOAuthAdminException.
      * @throws org.wso2.carbon.user.api.UserStoreException UserStoreException.
-     * @throws IdentityRoleManagementException             IdentityRoleManagementException.
      */
     public static void initiatePortals(String tenantDomain, int tenantId)
         throws IdentityApplicationManagementException, IdentityOAuthAdminException,
-        org.wso2.carbon.user.api.UserStoreException, IdentityRoleManagementException {
+        UserStoreException {
 
         ApplicationManagementService applicationMgtService = AppsCommonDataHolder.getInstance()
             .getApplicationManagementService();

@@ -25,6 +25,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
+import org.wso2.carbon.CarbonConstants;
 import org.wso2.carbon.core.ServerStartupObserver;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
@@ -93,9 +94,11 @@ public class AppsCommonServiceComponent {
                 bundleContext.registerService(ApplicationMgtListener.class.getName(), applicationMgtListener, null);
                 log.debug("AppPortalApplicationMgtListener registered successfully.");
 
-                TenantMgtListener tenantManagementListener = new AppPortalTenantMgtListener();
-                bundleContext.registerService(TenantMgtListener.class.getName(), tenantManagementListener, null);
-                log.debug("AppPortalTenantMgtListener registered successfully.");
+                if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+                    TenantMgtListener tenantManagementListener = new AppPortalTenantMgtListener();
+                    bundleContext.registerService(TenantMgtListener.class.getName(), tenantManagementListener, null);
+                    log.debug("AppPortalTenantMgtListener registered successfully.");
+                }
             }
 
             // AppsCommonServiceStartupObserver will wait until server startup is completed
