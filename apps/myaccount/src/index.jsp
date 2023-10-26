@@ -61,7 +61,7 @@
             .pre-loader-logo {
                 margin-top: -0.1rem;
             }
-    
+
             .content-loader {
                 display: flex;
                 flex-direction: column;
@@ -69,24 +69,24 @@
                 align-items: center;
                 user-select: none;
             }
-    
+
             .content-loader .ui.loader {
                 display: block;
                 position: relative;
                 margin-top: 10px;
                 margin-bottom: 25px;
             }
-    
+
             @keyframes loader {
                 0% {
                     transform: rotate(0)
                 }
-    
+
                 to {
                     transform: rotate(1turn)
                 }
             }
-    
+
             .content-loader .ui.loader:before {
                 content: "";
                 display: block;
@@ -95,7 +95,7 @@
                 border: .2em solid rgba(0,0,0,.1);
                 border-radius: 500rem;
             }
-    
+
             .content-loader .ui.loader:after {
                 content: "";
                 position: absolute;
@@ -149,7 +149,7 @@
                 var trifactaPreLoader = document.getElementById("trifacta-pre-loader");
                 var defaultPreLoader = document.getElementById("default-pre-loader");
                 var loader = document.getElementById("loader");
-        
+
                 if (userTenant && userTenant == startupConfig.superTenantProxy) {
                     if (startupConfig.enableDefaultPreLoader) {
                         defaultPreLoader.style.display = 'block';
@@ -166,7 +166,7 @@
             // Handles myaccount tenanted signout before auth sdk get loaded
             var applicationDomain = window.location.origin;
             var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
-            
+
             if(isSignOutSuccess && userTenant) {
                 if (startupConfig.subdomainApplication) {
                     window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant;
@@ -200,9 +200,10 @@
                 }
 
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
+                var superTenantRequiredinUrl = false;
 
                 var authConfig = {
-                    signInRedirectURL: applicationDomain.replace(/\/+$/, '')  
+                    signInRedirectURL: applicationDomain.replace(/\/+$/, '')
                         + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>",
                     signOutRedirectURL: applicationDomain.replace(/\/+$/, ''),
                     clientID: "<%= htmlWebpackPlugin.options.clientID %>",
@@ -211,17 +212,17 @@
                     scope: ["openid SYSTEM"],
                     storage: "webWorker",
                     endpoints: {
-                        authorizationEndpoint: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oauth2/authorize") : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize"),
+                        authorizationEndpoint: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oauth2/authorize") : superTenantRequiredinUrl == "true" ? getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize") : getApiPath("/oauth2/authorize"),
                         clockTolerance: 300,
                         jwksEndpointURL: undefined,
-                        logoutEndpointURL: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/logout") : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout"),
-                        oidcSessionIFrameEndpointURL: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/checksession") : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession"),
+                        logoutEndpointURL: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/logout") : superTenantRequiredinUrl == "true" ? getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout") : getApiPath("/oidc/logout"),
+                        oidcSessionIFrameEndpointURL: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/checksession") : superTenantRequiredinUrl == "true" ? getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession") : "/oidc/checksession",
                         tokenEndpointURL: undefined,
                         tokenRevocationEndpointURL: undefined,
                     },
                     enablePKCE: true
                 }
-                
+
                 auth.initialize(authConfig);
                 auth.signIn();
             }
