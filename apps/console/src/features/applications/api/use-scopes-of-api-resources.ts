@@ -45,7 +45,7 @@ const useScopesOfAPIResources = <Data = AuthorizedPermissionListItemInterface[],
         url: `${ store.getState().config.endpoints.apiResources }/${ apiResourceId }/scopes`
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(apiResourceId ? requestConfig: null);
 
     return {
         data,
