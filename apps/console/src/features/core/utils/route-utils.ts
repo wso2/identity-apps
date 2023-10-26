@@ -390,9 +390,15 @@ export class RouteUtils {
             {
                 category: build,
                 id: "communication-management",
+                parent: branding
+            },
+            {
+                category: build,
+                id: "notification-channels",
                 parent: branding,
                 selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
-                    history.location.pathname === `${ AppConstants.getDeveloperViewBasePath() }/email-management`
+                    history.location.pathname === AppConstants.getPaths().get("SMS_PROVIDER") ||
+                    history.location.pathname === `${ AppConstants.getDeveloperViewBasePath() }/notification-channels`
             },
             {
                 category: settings,
@@ -416,6 +422,11 @@ export class RouteUtils {
             {
                 category: monitoring,
                 id: "logs"
+            },
+            {
+                category: build,
+                id: "smsProviders",
+                parent: branding
             },
             {
                 category: other,

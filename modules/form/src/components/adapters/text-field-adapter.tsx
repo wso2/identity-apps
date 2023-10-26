@@ -17,6 +17,7 @@
  */
 
 import { FormControlProps } from "@oxygen-ui/react/FormControl";
+import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import TextField from "@oxygen-ui/react/TextField";
 import React, { FunctionComponent, ReactElement } from "react";
 import { FieldRenderProps } from "react-final-form";
@@ -54,22 +55,26 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
         meta,
         fullWidth = true,
         FormControlProps = {},
+        helperText,
         ...rest
     } = props;
 
     const isError: boolean = (meta.error || meta.submitError) && meta.touched;
 
     return (
-        <TextField
-            fullWidth={ fullWidth }
-            variant="outlined"
-            error={ isError }
-            helperText={ isError ? meta.error || meta.submitError : undefined }
-            margin="dense"
-            { ...FormControlProps }
-            { ...input }
-            { ...rest }
-        />
+        <>
+            <TextField
+                fullWidth={ fullWidth }
+                variant="outlined"
+                error={ isError }
+                margin="dense"
+                { ...FormControlProps }
+                { ...input }
+                { ...rest }
+            />
+            { isError && <FormHelperText error>{ meta.error || meta.submitError }</FormHelperText> }
+            { helperText && <FormHelperText>{ helperText }</FormHelperText> }
+        </>
     );
 };
 

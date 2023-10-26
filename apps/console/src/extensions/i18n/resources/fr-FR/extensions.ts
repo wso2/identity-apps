@@ -2023,6 +2023,7 @@ export const extensions: Extensions = {
             info: "Vous pouvez personnaliser le contenu des e-mails à l'aide de <1>Modèles d'e-mails</1>.",
             updateButton: "Mise à jour",
             sendTestMailButton: "Envoyer un e-mail test",
+            goBack: "Revenir aux canaux de notification",
             confirmationModal: {
                 assertionHint: "Veuillez confirmer votre action.",
                 content: "Si vous supprimez cette configuration, les e-mails seront envoyés à partir de l'adresse e-mail Asgardeo. " +
@@ -2112,6 +2113,160 @@ export const extensions: Extensions = {
                     success: {
                         message: "Configurations mises à jour avec succès",
                         description: "Mise à jour réussie des configurations du fournisseur de messagerie."
+                    }
+                }
+            }
+        },
+        notificationChannel: {
+            heading: "Canal de notification",
+            title: "Canal de notification",
+            description: "Configurez les canaux de notification pour envoyer des notifications à vos utilisateurs."
+        },
+        smsProviders: {
+            heading: "Fournisseur SMS",
+            subHeading: "Configurez un fournisseur SMS personnalisé pour envoyer des SMS à vos utilisateurs.",
+            description: "Configurez les paramètres suivants en fonction de votre fournisseur SMS.",
+            info: "Vous pouvez personnaliser le contenu du SMS à l'aide des <1>Modèles de SMS</1>.",
+            updateButton: "Mise à jour",
+            sendTestSMSButton: "Envoyer un SMS test",
+            goBack: "Revenir aux canaux de notification",
+            confirmationModal: {
+                assertionHint: "Veuillez confirmer votre action.",
+                content: "Si vous supprimez cette configuration, vous ne recevrez pas de SMS." +
+                    "Veuillez procéder avec prudence.",
+                header: "Es-tu sûr?",
+                message: "Cette action est irréversible et supprimera définitivement les configurations du fournisseur SMS."
+            },
+            dangerZoneGroup: {
+                header: "Zone dangereuse",
+                revertConfig: {
+                    heading: "Supprimer les configurations",
+                    subHeading: "Cette action supprimera les configurations du fournisseur de SMS. Une fois supprimé, vous ne recevrez plus de SMS.",
+                    actionTitle: "Supprimer"
+                }
+            },
+            form: {
+                twilio: {
+                    subHeading: "Paramètres Twilio",
+                    accountSID: {
+                        label: "SID du compte Twilio",
+                        placeholder: "Entrez le SID du compte Twilio",
+                        hint: "Identifiant de chaîne de compte Twilio qui fait office de nom d'utilisateur pour le compte"
+                    },
+                    authToken: {
+                        label: "Jeton d'authentification Twilio",
+                        placeholder: "Entrez le jeton d'authentification Twilio",
+                        hint: "Le jeton d'accès généré par le serveur d'authentification Twilio."
+                    },
+                    sender: {
+                        label: "Expéditrice",
+                        placeholder: "Entrez le numéro de téléphone de l'expéditeur",
+                        hint: "Numéro de téléphone de l'expéditeur."
+                    },
+                    validations: {
+                        required: "Ce champ ne peut pas être vide"
+                    }
+                },
+                vonage: {
+                    subHeading: "Paramètres Vonage",
+                    accountSID: {
+                        label: "SID du compte Vonage",
+                        placeholder: "Entrez le SID du compte Vonage",
+                        hint: "Identifiant de chaîne de compte Vonage qui fait office de nom d'utilisateur pour le compte"
+                    },
+                    authToken: {
+                        label: "Jeton d'authentification Vonage",
+                        placeholder: "Entrez le jeton d'authentification Vonage",
+                        hint: "Le jeton d'accès généré par le serveur d'authentification Vonage"
+                    },
+                    sender: {
+                        label: "Expéditrice",
+                        placeholder: "Entrez le numéro de téléphone de l'expéditeur",
+                        hint: "Numéro de téléphone de l'expéditeur."
+                    },
+                    validations: {
+                        required: "Ce champ ne peut pas être vide"
+                    }
+                },
+                custom: {
+                    subHeading: "Paramètres personnalisés",
+                    providerName: {
+                        label: "Nom du fournisseur SMS",
+                        placeholder: "Entrez le nom du fournisseur SMS",
+                        hint: "Le nom du fournisseur SMS."
+                    },
+                    providerUrl: {
+                        label: "URL du fournisseur SMS",
+                        placeholder: "Entrez l'URL du fournisseur de SMS",
+                        hint: "L'URL du fournisseur SMS."
+                    },
+                    httpMethod: {
+                        label: "Méthode HTTP",
+                        placeholder: "POST",
+                        hint: "La méthode HTTP de la requête API utilisée pour l'envoi du SMS."
+                    },
+                    contentType: {
+                        label: "Type de contenu",
+                        placeholder: "JSON",
+                        hint: "Le type de contenu de la requête API utilisée pour l'envoi du SMS."
+                    },
+                    headers: {
+                        label: "En-têtes",
+                        placeholder: "Saisir les en-têtes",
+                        hint: "En-têtes à inclure dans la requête API d'envoi de SMS."
+                    },
+                    payload: {
+                        label: "Charge utile",
+                        placeholder: "Entrez la charge utile",
+                        hint: "Charge utile de la requête API SMS."
+                    },
+                    key: {
+                        label: "Clé d'authentification du fournisseur SMS",
+                        placeholder: "Entrez la clé d'authentification du fournisseur SMS",
+                        hint: "La clé d'authentification du fournisseur SMS."
+                    },
+                    secret: {
+                        label: "Secret d'authentification du fournisseur SMS",
+                        placeholder: "Entrez le secret d'authentification du fournisseur SMS",
+                        hint: "Le secret d'authentification du fournisseur SMS."
+                    },
+                    sender: {
+                        label: "Expéditrice",
+                        placeholder: "Entrez le numéro de téléphone de l'expéditeur",
+                        hint: "Numéro de téléphone de l'expéditeur."
+                    },
+                    validations: {
+                        required: "Ce champ ne peut pas être vide",
+                        methodInvalid: "La méthode HTTP n'est pas valide",
+                        contentTypeInvalid: "Le type de contenu n'est pas valide"
+                    }
+                }
+            },
+            notifications: {
+                getConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error retrieving the sms provider configurations."
+                    }
+                },
+                deleteConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error deleting the sms provider configurations."
+                    },
+                    success: {
+                        message: "Revert Successful",
+                        description: "Successfully reverted the sms provider configurations."
+                    }
+                },
+                updateConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error updating the sms provider configurations."
+                    },
+                    success: {
+                        message: "Update Successful",
+                        description: "Successfully updated the sms provider configurations."
                     }
                 }
             }
@@ -2762,9 +2917,11 @@ export const extensions: Extensions = {
                 apiResources: "Ressources de l'API",
                 branding: "l'image de marque",
                 emailProvider: "Fournisseur de messagerie",
+                smsProvider: "Fournisseur SMS",
                 monitor: "Journaux"
             },
             emailProvider: "Fournisseur de messagerie",
+            smsProvider: "Fournisseur SMS",
             eventPublishing : "Événements",
             emailTemplates : "Modèles d'e-mails",
             organizationInfo: "Informations sur l'organisation"

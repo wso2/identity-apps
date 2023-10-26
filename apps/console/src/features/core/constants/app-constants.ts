@@ -258,14 +258,14 @@ export class AppConstants {
             [ "APPLICATION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/applications/templates` ],
             [ "APPLICATION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/applications/:id` ],
             [ "APPLICATION_ROLES", `${ AppConstants.getAdminViewBasePath() }/application-roles` ],
-            [ "APPLICATION_ROLES_EDIT", 
+            [ "APPLICATION_ROLES_EDIT",
                 `${ AppConstants.getAdminViewBasePath() }/application-roles/:applicationId/:roleId` ],
             [ "APPLICATION_ROLES_SUB", `${ AppConstants.getAdminViewBasePath() }/roles/application-roles` ],
-            [ "APPLICATION_ROLES_EDIT_SUB", 
+            [ "APPLICATION_ROLES_EDIT_SUB",
                 `${ AppConstants.getAdminViewBasePath() }/roles/application-roles/:applicationId/:roleId` ],
-            [ 
-                "APPLICATION_SIGN_IN_METHOD_EDIT", 
-                `${ AppConstants.getDeveloperViewBasePath() }/applications/:id:tabName` 
+            [
+                "APPLICATION_SIGN_IN_METHOD_EDIT",
+                `${ AppConstants.getDeveloperViewBasePath() }/applications/:id:tabName`
             ],
             [ "APPROVALS", `${ AppConstants.getAdminViewBasePath() }/approvals` ],
             [ "CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates` ],
@@ -282,6 +282,7 @@ export class AppConstants {
             [ "ORGANIZATION_DISCOVERY_DOMAINS", `${AppConstants.getAdminViewBasePath()}/email-domain-discovery` ],
             [ "UPDATE_ORGANIZATION_DISCOVERY_DOMAINS", `${AppConstants.getAdminViewBasePath()}/email-domain-edit/:id` ],
             [ "EMAIL_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/email-provider` ],
+            [ "SMS_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/sms-provider` ],
             [ "EMAIL_TEMPLATE_TYPES", `${ AppConstants.getAdminViewBasePath() }/email-templates` ],
             [ "EMAIL_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId` ],
             [
@@ -361,11 +362,11 @@ export class AppConstants {
             [ "VALIDATION_CONFIG_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-validation-configuration` ],
             [ "ACCOUNT_LOGIN", `${AppConstants.getAdminViewBasePath()}/account-login` ],
             [ "USERNAME_VALIDATION_EDIT", `${AppConstants.getAdminViewBasePath()}/edit-username-validation` ],
-            [ "ALTERNATIVE_LOGIN_IDENTIFIER_EDIT", 
+            [ "ALTERNATIVE_LOGIN_IDENTIFIER_EDIT",
                 `${AppConstants.getAdminViewBasePath()}/edit-alternative-login-identifier` ],
-            [ 
-                "PRIVATE_KEY_JWT_CONFIG_EDIT", 
-                `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration` 
+            [
+                "PRIVATE_KEY_JWT_CONFIG_EDIT",
+                `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration`
             ],
             [ "INSIGHTS", `${AppConstants.getAdminViewBasePath()}/insights` ],
             [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/logs` ],
@@ -467,7 +468,7 @@ export class AppConstants {
     public static readonly SUPER_ADMIN_ONLY_ROUTES: string[] = [
         "adminAdvisoryBanner",
         "remoteLogging"
-    ] 
+    ]
 
     /**
      * Name of the root node

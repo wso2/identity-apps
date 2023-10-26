@@ -184,7 +184,7 @@ export const extensions: Extensions = {
             },
             authenticatorGroups: {
                 goToConnections: "Go to Connections",
-                groupsList:{
+                groupsList: {
                     assignGroups: "Assign Groups",
                     notifications: {
                         fetchAssignedGroups: {
@@ -220,7 +220,7 @@ export const extensions: Extensions = {
                     subTitle: {
                         0: "There are no external groups available at the moment.",
                         1: "You can add a new external group by visiting the " +
-                        "Groups tab in a connection."
+                            "Groups tab in a connection."
                     }
                 }
             },
@@ -267,10 +267,10 @@ export const extensions: Extensions = {
                 confirmation: {
                     deleteRole: {
                         message: "This action is irreversible and will remove " +
-                        "the group from the application role.",
+                            "the group from the application role.",
                         content: "If you remove this group from the application role, the permissions " +
-                        "associated with this role will be removed from the group. Please proceed " +
-                        "with caution."
+                            "associated with this role will be removed from the group. Please proceed " +
+                            "with caution."
                     }
                 }
             },
@@ -1593,7 +1593,7 @@ export const extensions: Extensions = {
                         font: {
                             fields: {
                                 fontFamilyDropdown: {
-                                    hint: "Pick a web safe font (fonts that are pre-installed by many "+
+                                    hint: "Pick a web safe font (fonts that are pre-installed by many " +
                                         "operating systems) as the font family for the pages.",
                                     label: "Font Family",
                                     placeholder: "Select a font family."
@@ -1984,6 +1984,7 @@ export const extensions: Extensions = {
             info: "You can customize the email content using <1>Email Templates</1>.",
             updateButton: "Update",
             sendTestMailButton: "Send Test Email",
+            goBack: "Go back to Notification Channels",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
                 content: "If you delete this configuration, the emails will be sent from the Asgardeo Email Address. " +
@@ -2072,6 +2073,161 @@ export const extensions: Extensions = {
                     success: {
                         message: "Update Successful",
                         description: "Successfully updated the email provider configurations."
+                    }
+                }
+            }
+        },
+        notificationChannel: {
+            heading: "Notification Channels",
+            title: "Notification Channels",
+            description: "Configure the notification channels for your organization."
+        },
+        smsProviders: {
+            heading: "SMS Provider",
+            subHeading: "Configure a custom SMS provider to send SMS to your users.",
+            description: "Configure the following settings according to your SMS provider.",
+            info: "You can customize the SMS content using <1>SMS Templates</1>.",
+            updateButton: "Update",
+            sendTestSMSButton: "Send Test SMS",
+            goBack: "Go back to Notification Channels",
+            confirmationModal: {
+                assertionHint: "Please confirm your action.",
+                content: "If you delete this configuration, you will not receive SMS." +
+                    "Please proceed with caution.",
+                header: "Are you sure?",
+                message: "This action is irreversible and will permanently delete the SMS provider configurations."
+            },
+            dangerZoneGroup: {
+                header: "Danger Zone",
+                revertConfig: {
+                    heading: "Delete Configurations",
+                    subHeading: "This action will delete sms provider configurations. " +
+                        "Once deleted, you will not receive SMS.",
+                    actionTitle: "Delete"
+                }
+            },
+            form: {
+                twilio: {
+                    subHeading: "Twilio Settings",
+                    accountSID: {
+                        label: "Twilio Account SID",
+                        placeholder: "Enter the Twilio account SID",
+                        hint: "Twilio account string identifier which act as username for the account"
+                    },
+                    authToken: {
+                        label: "Twilio Auth Token",
+                        placeholder: "Enter the Twilio auth token",
+                        hint: "The access token generated by the Twilio auth server "
+                    },
+                    sender: {
+                        label: "Sender",
+                        placeholder: "Enter the sender phone number",
+                        hint: "Phone number of the sender."
+                    },
+                    validations: {
+                        required: "This field cannot be empty"
+                    }
+                },
+                vonage: {
+                    subHeading: "Vonage Settings",
+                    accountSID: {
+                        label: "Vonage Account SID",
+                        placeholder: "Enter the Vonage account SID",
+                        hint: "Vonage account string identifier which act as username for the account"
+                    },
+                    authToken: {
+                        label: "Vonage Auth Token",
+                        placeholder: "Enter the Vonage auth token",
+                        hint: "The access token generated by the Vonage auth server "
+                    },
+                    sender: {
+                        label: "Sender",
+                        placeholder: "Enter the sender phone number",
+                        hint: "Phone number of the sender."
+                    },
+                    validations: {
+                        required: "This field cannot be empty"
+                    }
+                },
+                custom: {
+                    subHeading: "Custom Settings",
+                    providerName: {
+                        label: "SMS Provider Name",
+                        placeholder: "Enter the SMS provider name",
+                        hint: "The name of the SMS provider."
+                    },
+                    providerUrl: {
+                        label: "SMS Provider URL",
+                        placeholder: "Enter the sms provider URL",
+                        hint: "The URL of the SMS provider."
+                    },
+                    httpMethod: {
+                        label: "HTTP Method",
+                        placeholder: "POST",
+                        hint: "The HTTP method of the API request used for sending the SMS."
+                    },
+                    contentType: {
+                        label: "Content Type",
+                        placeholder: "JSON",
+                        hint: "The content type of the API request used for sending the SMS."
+                    },
+                    headers: {
+                        label: "Headers",
+                        placeholder: "Enter headers",
+                        hint: "Headers to be included in the send SMS API request."
+                    },
+                    payload: {
+                        label: "Payload",
+                        placeholder: "Enter the payload",
+                        hint: "Payload of the SMS API request."
+                    },
+                    key: {
+                        label: "SMS Provider Auth Key",
+                        placeholder: "Enter the SMS provider auth key",
+                        hint: "The auth key of the SMS provider."
+                    },
+                    secret: {
+                        label: "SMS Provider Auth Secret",
+                        placeholder: "Enter the SMS provider auth secret",
+                        hint: "The auth secret of the SMS provider."
+                    },
+                    sender: {
+                        label: "Sender",
+                        placeholder: "Enter the sender",
+                        hint: "The sender of the SMS."
+                    },
+                    validations: {
+                        required: "This field cannot be empty",
+                        methodInvalid: "The HTTP method is invalid",
+                        contentTypeInvalid: "The content type is invalid"
+                    }
+                }
+            },
+            notifications: {
+                getConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error retrieving the sms provider configurations."
+                    }
+                },
+                deleteConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error deleting the sms provider configurations."
+                    },
+                    success: {
+                        message: "Revert Successful",
+                        description: "Successfully reverted the sms provider configurations."
+                    }
+                },
+                updateConfiguration: {
+                    error: {
+                        message: "Error Occurred",
+                        description: "Error updating the sms provider configurations."
+                    },
+                    success: {
+                        message: "Update Successful",
+                        description: "Successfully updated the sms provider configurations."
                     }
                 }
             }
@@ -2683,19 +2839,21 @@ export const extensions: Extensions = {
                 apiResources: "API Resources",
                 branding: "Branding",
                 emailProvider: "Email Provider",
+                smsProvider: "SMS Provider",
                 monitor: "Logs"
             },
             emailProvider: "Email Provider",
-            eventPublishing : "Events",
-            emailTemplates : "Email Templates",
+            smsProvider: "SMS Provider",
+            eventPublishing: "Events",
+            emailTemplates: "Email Templates",
             organizationInfo: "Organization Info"
         },
         eventPublishing: {
             eventsConfiguration: {
                 heading: "Configure Events",
-                subHeading:  "Asgardeo can publish events to Choreo based on various user interactions. You can use the published events to trigger custom use cases.",
+                subHeading: "Asgardeo can publish events to Choreo based on various user interactions. You can use the published events to trigger custom use cases.",
                 formHeading: "Select the events that you want to publish to Choreo.",
-                form : {
+                form: {
                     updateButton: "Update"
                 },
                 navigateToChoreo: {
@@ -2703,9 +2861,9 @@ export const extensions: Extensions = {
                     navigateButton: "Go to Choreo"
                 }
             },
-            notifications : {
-                updateConfiguration : {
-                    error : {
+            notifications: {
+                updateConfiguration: {
+                    error: {
                         generic: {
                             description: "An error occurred while updating the event configurations.",
                             message: "Something went wrong"
@@ -2716,19 +2874,19 @@ export const extensions: Extensions = {
                             message: "Something went wrong"
                         }
                     },
-                    success : {
-                        description : "Event configurations updated successfully.",
-                        message : "Update Successful"
+                    success: {
+                        description: "Event configurations updated successfully.",
+                        message: "Update Successful"
                     }
                 },
-                getConfiguration : {
-                    error : {
-                        description : "An error occurred while retrieving the event configurations.",
-                        message :  "Retrieval Error"
+                getConfiguration: {
+                    error: {
+                        description: "An error occurred while retrieving the event configurations.",
+                        message: "Retrieval Error"
                     },
-                    success : {
-                        description : "",
-                        message : ""
+                    success: {
+                        description: "",
+                        message: ""
                     }
                 }
             }
@@ -2825,7 +2983,7 @@ export const extensions: Extensions = {
         accountLogin: {
             notifications: {
                 success: {
-                    description:  "Successfully updated username validation configuration.",
+                    description: "Successfully updated username validation configuration.",
                     message: "Update successful"
                 },
                 error: {
@@ -3135,8 +3293,8 @@ export const extensions: Extensions = {
                                                 "that you connect.",
                                             label: "Name",
                                             placeholder: "Enter the name of the user store",
-                                            requiredErrorMessage: "This field cannot be empty as this is the unique "+
-                                            "identifier of the user store."
+                                            requiredErrorMessage: "This field cannot be empty as this is the unique " +
+                                                "identifier of the user store."
                                         },
                                         description: {
                                             label: "Description",
@@ -3159,15 +3317,15 @@ export const extensions: Extensions = {
                                             types: {
                                                 readOnly: {
                                                     label: "Read Only",
-                                                    hint: "You will be granted READ-ONLY access to the user store. You will"+
-                                                    "not be able to add new users or update any attributes of the user" +
-                                                    "accounts you onboard."
+                                                    hint: "You will be granted READ-ONLY access to the user store. You will" +
+                                                        "not be able to add new users or update any attributes of the user" +
+                                                        "accounts you onboard."
                                                 },
                                                 readWrite: {
                                                     label: "Read/Write",
-                                                    hint: "You will be granted READ/WRITE access to the user store. You will "+
-                                                    "be able to add new users and update the attributes of the user accounts " +
-                                                    "you onboard."
+                                                    hint: "You will be granted READ/WRITE access to the user store. You will " +
+                                                        "be able to add new users and update the attributes of the user accounts " +
+                                                        "you onboard."
                                                 }
                                             }
                                         }
@@ -3837,11 +3995,11 @@ export const extensions: Extensions = {
                 consumerUser:
                     "Users who can access applications within the organization are listed here." +
                     " Admins can onboard users to the organization or the users can sign up if" +
-                " Admins can onboard users to the organization or the users can sign up if" +
                     " Admins can onboard users to the organization or the users can sign up if" +
-                " Admins can onboard users to the organization or the users can sign up if" +
                     " Admins can onboard users to the organization or the users can sign up if" +
-                " Admins can onboard users to the organization or the users can sign up if" +
+                    " Admins can onboard users to the organization or the users can sign up if" +
+                    " Admins can onboard users to the organization or the users can sign up if" +
+                    " Admins can onboard users to the organization or the users can sign up if" +
                     " Admins can onboard users to the organization or the users can sign up if" +
                     " self-registration is enabled.",
                 guestUser:

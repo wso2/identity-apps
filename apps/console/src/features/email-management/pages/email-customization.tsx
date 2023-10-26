@@ -24,7 +24,6 @@ import {
     DocumentationLink,
     PageLayout,
     ResourceTab,
-    SecondaryButton,
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
@@ -34,8 +33,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
 import BrandingPreferenceProvider from "../../branding/providers/branding-preference-provider";
-import { AppConstants, AppState, FeatureConfigInterface, I18nConstants } from "../../core";
-import { history } from "../../core/helpers";
+import { AppState, I18nConstants } from "../../core";
 import {
     createNewEmailTemplate,
     deleteEmailTemplate,
@@ -70,8 +68,6 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     const [ currentEmailTemplate, setCurrentEmailTemplate ] = useState<EmailTemplate>();
     const [ showReplicatePreviousTemplateModal, setShowReplicatePreviousTemplateModal ] = useState(false);
     const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
-
-    const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const emailTemplates: Record<string, string>[] = useSelector(
         (state: AppState) => state.config.deployment.extensions.emailTemplates) as Record<string, string>[];
@@ -343,10 +339,6 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         return panes;
     };
 
-    const goToEmailProvider = () => {
-        history.push(AppConstants.getPaths().get("EMAIL_PROVIDER"));
-    };
-
     return (
         <BrandingPreferenceProvider>
             <PageLayout
@@ -365,17 +357,6 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                 titleTextAlign="left"
                 bottomMargin={ false }
                 data-componentid={ componentId }
-                action={
-                    featureConfig.emailProviders?.enabled &&
-                    (
-                        <SecondaryButton
-                            onClick={ goToEmailProvider }
-                            data-componentId="email-provider-configure-button"
-                        >
-                            { t("extensions:develop.emailProviders.configureEmailProvider") }
-                        </SecondaryButton>
-                    )
-                }
             >
                 <EmailCustomizationHeader
                     selectedEmailTemplateId={ selectedEmailTemplateId }

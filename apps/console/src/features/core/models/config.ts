@@ -97,6 +97,10 @@ export interface FeatureConfigInterface {
      */
     emailProviders?: FeatureAccessConfigInterface;
     /**
+     * SMS providers feature.
+     */
+    smsProviders?: FeatureAccessConfigInterface;
+    /**
      * Email templates feature.
      */
     emailTemplates?: FeatureAccessConfigInterface;

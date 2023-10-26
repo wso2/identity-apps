@@ -427,7 +427,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
     };
 
     const handleBackButtonClick = () => {
-        history.push(`${ AppConstants.getDeveloperViewBasePath() }/email-management`);
+        history.push(`${ AppConstants.getDeveloperViewBasePath() }/notification-channels`);
     };
 
     return (
@@ -440,7 +440,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             pageHeaderMaxWidth={ true }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: "Go back to Email Templates"
+                text: t("extensions:develop.emailProviders.goBack")
             } }
             data-componentid={ `${ componentId }-form-layout` }
         >
