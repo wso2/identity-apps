@@ -5339,6 +5339,7 @@ export interface ConsoleNS {
                     };
                     menuItems: {
                         basic: string;
+                        connectedApps: string;
                         permissions: string;
                         groups: string;
                         users: string;

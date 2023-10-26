@@ -8321,6 +8321,7 @@ export const console: ConsoleNS = {
                     },
                     menuItems: {
                         basic: "මූලික කරුණු",
+                        connectedApps: "සම්බන්ධිත යෙදුම්",
                         groups: "කණ්ඩායම්",
                         permissions: "අවසර",
                         roles: "භූමිකාවන්",

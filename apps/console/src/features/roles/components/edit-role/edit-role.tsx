@@ -24,6 +24,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { BasicRoleDetails } from "./edit-role-basic";
+import { RoleConnectedApps } from "./edit-role-connected-apps";
 import { RoleGroupsList } from "./edit-role-groups";
 import { UpdatedRolePermissionDetails } from "./edit-role-permission";
 import { RoleUsersList } from "./edit-role-users";
@@ -138,6 +139,20 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 3 }
+                        />
+                    </ResourceTab.Pane>
+                )
+            },
+            {
+                menuItem: t("console:manage.features.roles.edit.menuItems.connectedApps"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <RoleConnectedApps
+                            isReadOnly={ !hasRequiredScopes(
+                                featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes) }
+                            role={ roleObject }
+                            onRoleUpdate={ onRoleUpdate }
+                            tabIndex={ 4 }
                         />
                     </ResourceTab.Pane>
                 )

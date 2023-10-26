@@ -112,6 +112,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ isConnectedAppsRedirect, setisConnectedAppsRedirect ] = useState(false);
     const [ callBackIdpID, setcallBackIdpID ] = useState<string>();
     const [ callBackIdpName, setcallBackIdpName ] = useState<string>();
+    const [ callBackRedirect, setcallBackRedirect ] = useState<string>();
 
     const {
         data: application,
@@ -259,6 +260,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
         setcallBackIdpID(idpInfo.id);
         setcallBackIdpName(idpInfo.name);
+        idpInfo?.redirectTo && setcallBackRedirect(idpInfo.redirectTo);
     });
 
     /**
@@ -394,10 +396,17 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         if (!isConnectedAppsRedirect) {
             history.push(AppConstants.getPaths().get("APPLICATIONS"));
         } else {
-            history.push({
-                pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", callBackIdpID),
-                state: IdentityProviderConstants.CONNECTED_APPS_TAB_ID
-            });
+            if (callBackRedirect === ApplicationManagementConstants.ROLE_CALLBACK_REDIRECT) {
+                history.push({
+                    pathname: AppConstants.getPaths().get("ROLE_EDIT").replace(":id", callBackIdpID),
+                    state: IdentityProviderConstants.CONNECTED_APPS_TAB_ID
+                });
+            } else {
+                history.push({
+                    pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", callBackIdpID),
+                    state: IdentityProviderConstants.CONNECTED_APPS_TAB_ID
+                });
+            }
         }
     };
 

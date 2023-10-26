@@ -10249,6 +10249,7 @@ export const console: ConsoleNS = {
                     },
                     menuItems: {
                         basic: "Basics",
+                        connectedApps: "Connected Apps",
                         groups: "Groups",
                         permissions: "Permissions",
                         roles: "Roles",

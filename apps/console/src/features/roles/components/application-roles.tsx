@@ -476,7 +476,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 type="negative"
                 open={ showSwitchAudienceWarning }
                 assertionHint={ t("extensions:develop.applications.edit.sections." +
-                    "rolesV2.switchRoleAudience.confirmationModal.assertionHint") }
+                    "rolesV2.switchRoleAudience.applicationConfirmationModal.assertionHint") }
                 assertionType="checkbox"
                 primaryAction={ t("common:confirm") }
                 secondaryAction={ t("common:cancel") }

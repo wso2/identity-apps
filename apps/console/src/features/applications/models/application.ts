@@ -797,4 +797,5 @@ export enum ApplicationTabTypes {
 export interface idpInfoTypeInterface {
     id: string;
     name: string;
+    redirectTo?: string;
 }

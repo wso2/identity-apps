@@ -123,6 +123,16 @@ export class ApplicationManagementConstants {
     public static readonly SIGN_IN_METHOD_TAB_URL_FRAG: string = "sign-in-method";
 
     /**
+     * Value for application roles tab url.
+     */
+    public static readonly ROLES_TAB_URL_FRAG: string = "5";
+
+    /**
+     * Role callback redirect type
+     */
+    public static readonly ROLE_CALLBACK_REDIRECT: string = "roles";
+
+    /**
      * Default application template loading strategy.
      */
     public static readonly DEFAULT_APP_TEMPLATE_LOADING_STRATEGY: ApplicationTemplateLoadingStrategies =
