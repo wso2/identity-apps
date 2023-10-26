@@ -35,9 +35,7 @@ import org.wso2.carbon.identity.core.util.IdentityCoreInitializedEvent;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 import org.wso2.carbon.identity.oauth.listener.OAuthApplicationMgtListener;
 import org.wso2.carbon.identity.organization.management.service.OrganizationManagementInitialize;
-import org.wso2.carbon.identity.role.v2.mgt.core.RoleManagementService;
 import org.wso2.carbon.stratos.common.listeners.TenantMgtListener;
-import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.identity.apps.common.listner.AppPortalApplicationMgtListener;
 import org.wso2.identity.apps.common.listner.AppPortalOAuthAppMgtListener;
 import org.wso2.identity.apps.common.listner.AppPortalTenantMgtListener;
@@ -183,49 +181,6 @@ public class AppsCommonServiceComponent {
             OrganizationManagementInitialize organizationManagementInitializeInstance) {
 
         AppsCommonDataHolder.getInstance().setOrganizationManagementEnabled(null);
-    }
-
-    @Reference(
-        name = "user.realm.service",
-        service = RealmService.class,
-        cardinality = ReferenceCardinality.MANDATORY,
-        policy = ReferencePolicy.DYNAMIC,
-        unbind = "unsetRealmService"
-    )
-    protected void setRealmService(RealmService realmService) {
-
-        AppsCommonDataHolder.getInstance().setRealmService(realmService);
-    }
-
-    protected void unsetRealmService(RealmService realmService) {
-
-        AppsCommonDataHolder.getInstance().setRealmService(null);
-    }
-
-    /**
-     * Set role management service V2 implementation.
-     *
-     * @param roleManagementService RoleManagementServiceV2.
-     */
-    @Reference(
-        name = "org.wso2.carbon.identity.role.v2.mgt.core.RoleManagementService",
-        service = org.wso2.carbon.identity.role.v2.mgt.core.RoleManagementService.class,
-        cardinality = ReferenceCardinality.MANDATORY,
-        policy = ReferencePolicy.DYNAMIC,
-        unbind = "unsetRoleManagementServiceV2")
-    protected void setRoleManagementServiceV2(RoleManagementService roleManagementService) {
-
-        AppsCommonDataHolder.getInstance().setRoleManagementServiceV2(roleManagementService);
-    }
-
-    /**
-     * Unset role management service V2 implementation.
-     *
-     * @param roleManagementService RoleManagementServiceV2
-     */
-    protected void unsetRoleManagementServiceV2(org.wso2.carbon.identity.role.v2.mgt.core.RoleManagementService roleManagementService) {
-
-        AppsCommonDataHolder.getInstance().setRoleManagementServiceV2(null);
     }
 
     private boolean skipPortalInitialization() {

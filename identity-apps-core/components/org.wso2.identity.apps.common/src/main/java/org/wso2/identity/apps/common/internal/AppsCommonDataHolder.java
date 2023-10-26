@@ -19,8 +19,6 @@ package org.wso2.identity.apps.common.internal;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 import org.wso2.carbon.identity.organization.management.service.OrganizationManagementInitialize;
-import org.wso2.carbon.identity.role.v2.mgt.core.RoleManagementService;
-import org.wso2.carbon.user.core.service.RealmService;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,10 +33,6 @@ public class AppsCommonDataHolder {
     private ApplicationManagementService applicationManagementService;
 
     private OAuthAdminServiceImpl oAuthAdminService;
-
-    private RealmService realmService;
-
-    private RoleManagementService roleManagementService;
 
     private Set<String> systemAppConsumerKeys = new HashSet<>();
 
@@ -130,35 +124,5 @@ public class AppsCommonDataHolder {
         if (organizationManagementInitializeService != null) {
             isOrganizationManagementEnabled = organizationManagementInitializeService.isOrganizationManagementEnabled();
         }
-    }
-
-    /**
-     * Set realm service.
-     *
-     * @param realmService
-     */
-    public void setRealmService(RealmService realmService) {
-
-        this.realmService = realmService;
-    }
-
-    /**
-     * Get realm service.
-     *
-     * @return RealmService
-     */
-    public RealmService getRealmService() {
-
-        return realmService;
-    }
-
-    public void setRoleManagementServiceV2(RoleManagementService roleManagementService) {
-
-        this.roleManagementService = roleManagementService;
-    }
-
-    public RoleManagementService getRoleManagementServiceV2() {
-
-        return roleManagementService;
     }
 }

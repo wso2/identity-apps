@@ -22,14 +22,12 @@ import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.context.PrivilegedCarbonContext;
 import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
-import org.wso2.carbon.identity.application.common.model.AssociatedRolesConfig;
 import org.wso2.carbon.identity.application.common.model.Claim;
 import org.wso2.carbon.identity.application.common.model.ClaimConfig;
 import org.wso2.carbon.identity.application.common.model.ClaimMapping;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationConfig;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
 import org.wso2.carbon.identity.application.common.model.LocalAndOutboundAuthenticationConfig;
-import org.wso2.carbon.identity.application.common.model.RoleV2;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
 import org.wso2.carbon.identity.application.common.model.ServiceProviderProperty;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
@@ -38,13 +36,8 @@ import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
 import org.wso2.carbon.identity.oauth.OAuthUtil;
 import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
 import org.wso2.carbon.identity.oauth2.OAuth2Constants;
-import org.wso2.carbon.identity.role.v2.mgt.core.RoleConstants;
-import org.wso2.carbon.identity.role.v2.mgt.core.RoleManagementService;
 import org.wso2.carbon.identity.role.v2.mgt.core.exception.IdentityRoleManagementException;
-import org.wso2.carbon.identity.role.v2.mgt.core.model.Role;
 import org.wso2.carbon.user.core.UserRealm;
-import org.wso2.carbon.user.core.UserStoreException;
-import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.identity.apps.common.internal.AppsCommonDataHolder;
 
 import java.util.Arrays;
@@ -89,8 +82,9 @@ public class AppPortalUtils {
      * @throws IdentityOAuthAdminException in case of failure.
      */
     public static void createOAuth2Application(String applicationName, String portalPath, String consumerKey,
-            String consumerSecret, String appOwner, int tenantId, String tenantDomain, String bindingType,
-            List<String> grantTypes) throws IdentityOAuthAdminException {
+                                               String consumerSecret, String appOwner, int tenantId,
+                                               String tenantDomain, String bindingType, List<String> grantTypes)
+        throws IdentityOAuthAdminException {
 
         OAuthConsumerAppDTO oAuthConsumerAppDTO = new OAuthConsumerAppDTO();
         oAuthConsumerAppDTO.setApplicationName(applicationName);
@@ -136,11 +130,12 @@ public class AppPortalUtils {
      */
     @Deprecated
     public static void createApplication(String appName, String appOwner, String appDescription, String consumerKey,
-            String consumerSecret, String tenantDomain) throws IdentityApplicationManagementException,
+                                         String consumerSecret, String tenantDomain)
+        throws IdentityApplicationManagementException,
         org.wso2.carbon.user.api.UserStoreException, IdentityRoleManagementException {
 
         createApplication(appName, appOwner, appDescription,
-                consumerKey, consumerSecret, tenantDomain, StringUtils.EMPTY);
+            consumerKey, consumerSecret, tenantDomain, StringUtils.EMPTY);
     }
 
     /**
@@ -156,7 +151,8 @@ public class AppPortalUtils {
      */
     public static void createApplication(String appName, String appOwner, String appDescription, String consumerKey,
                                          String consumerSecret, String tenantDomain, String portalPath)
-        throws IdentityApplicationManagementException, org.wso2.carbon.user.api.UserStoreException, IdentityRoleManagementException {
+        throws IdentityApplicationManagementException, org.wso2.carbon.user.api.UserStoreException,
+        IdentityRoleManagementException {
 
         ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setApplicationName(appName);
@@ -177,29 +173,20 @@ public class AppPortalUtils {
         ServiceProviderProperty[] serviceProviderProperties = {spProperty};
         serviceProvider.setSpProperties(serviceProviderProperties);
 
-        // Set organization as the allowed audience for the console application.
-        if (CONSOLE_APP.equals(appName)) {
-            AssociatedRolesConfig associatedRolesConfig = new AssociatedRolesConfig();
-            associatedRolesConfig.setAllowedAudience(RoleConstants.ORGANIZATION);
-            RoleV2 adminRole = getAdministratorRole(tenantDomain);
-            associatedRolesConfig.setRoles(new RoleV2[] {adminRole});
-            serviceProvider.setAssociatedRolesConfig(associatedRolesConfig);
-        }
-
         InboundAuthenticationRequestConfig inboundAuthenticationRequestConfig
-                = new InboundAuthenticationRequestConfig();
+            = new InboundAuthenticationRequestConfig();
         inboundAuthenticationRequestConfig.setInboundAuthKey(consumerKey);
         inboundAuthenticationRequestConfig.setInboundAuthType(INBOUND_AUTH2_TYPE);
         inboundAuthenticationRequestConfig.setInboundConfigType(INBOUND_CONFIG_TYPE);
         List<InboundAuthenticationRequestConfig> inboundAuthenticationRequestConfigs = Arrays
-                .asList(inboundAuthenticationRequestConfig);
+            .asList(inboundAuthenticationRequestConfig);
         InboundAuthenticationConfig inboundAuthenticationConfig = new InboundAuthenticationConfig();
         inboundAuthenticationConfig.setInboundAuthenticationRequestConfigs(
-                inboundAuthenticationRequestConfigs.toArray(new InboundAuthenticationRequestConfig[0]));
+            inboundAuthenticationRequestConfigs.toArray(new InboundAuthenticationRequestConfig[0]));
         serviceProvider.setInboundAuthenticationConfig(inboundAuthenticationConfig);
 
         LocalAndOutboundAuthenticationConfig localAndOutboundAuthenticationConfig
-                = new LocalAndOutboundAuthenticationConfig();
+            = new LocalAndOutboundAuthenticationConfig();
         localAndOutboundAuthenticationConfig.setUseUserstoreDomainInLocalSubjectIdentifier(true);
         localAndOutboundAuthenticationConfig.setUseTenantDomainInLocalSubjectIdentifier(true);
         localAndOutboundAuthenticationConfig.setSkipConsent(true);
@@ -213,7 +200,7 @@ public class AppPortalUtils {
         serviceProvider.setClaimConfig(claimConfig);
 
         AppsCommonDataHolder.getInstance().getApplicationManagementService()
-                .createApplication(serviceProvider, tenantDomain, appOwner);
+            .createApplication(serviceProvider, tenantDomain, appOwner);
     }
 
     /**
@@ -251,25 +238,26 @@ public class AppPortalUtils {
         profileUrlClaimMapping.setLocalClaim(profileUrlClaim);
         profileUrlClaimMapping.setRemoteClaim(profileUrlClaim);
 
-        return new ClaimMapping[] { emailClaimMapping, displayNameClaimMapping, usernameClaimMapping,
-            profileUrlClaimMapping };
+        return new ClaimMapping[]{emailClaimMapping, displayNameClaimMapping, usernameClaimMapping,
+            profileUrlClaimMapping};
     }
 
     /**
-     * Initiate portal applications.
+     * Initiate portals.
      *
      * @param tenantDomain tenant domain.
      * @param tenantId     tenant id.
-     * @throws IdentityApplicationManagementException in case of failure during application creation.
-     * @throws IdentityOAuthAdminException            in case of failure during OAuth2 application creation.
-     * @throws UserStoreException
+     * @throws IdentityApplicationManagementException      IdentityApplicationManagementException.
+     * @throws IdentityOAuthAdminException                 IdentityOAuthAdminException.
+     * @throws org.wso2.carbon.user.api.UserStoreException UserStoreException.
+     * @throws IdentityRoleManagementException             IdentityRoleManagementException.
      */
     public static void initiatePortals(String tenantDomain, int tenantId)
         throws IdentityApplicationManagementException, IdentityOAuthAdminException,
         org.wso2.carbon.user.api.UserStoreException, IdentityRoleManagementException {
 
         ApplicationManagementService applicationMgtService = AppsCommonDataHolder.getInstance()
-                .getApplicationManagementService();
+            .getApplicationManagementService();
 
         UserRealm userRealm = (UserRealm) PrivilegedCarbonContext.getThreadLocalCarbonContext().getUserRealm();
         String adminUsername = userRealm.getRealmConfiguration().getAdminUserName();
@@ -281,26 +269,26 @@ public class AppPortalUtils {
                 List<String> grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH);
                 if (CONSOLE_APP.equals(appPortal.getName())) {
                     grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH,
-                            GRANT_TYPE_ORGANIZATION_SWITCH);
+                        GRANT_TYPE_ORGANIZATION_SWITCH);
                 }
                 List<String> allowedGrantTypes = Arrays.asList(AppsCommonDataHolder.getInstance()
-                        .getOAuthAdminService().getAllowedGrantTypes());
+                    .getOAuthAdminService().getAllowedGrantTypes());
                 grantTypes = grantTypes.stream().filter(allowedGrantTypes::contains).collect(Collectors.toList());
                 String consumerKey = appPortal.getConsumerKey();
                 try {
                     AppPortalUtils.createOAuth2Application(appPortal.getName(), appPortal.getPath(), consumerKey,
-                            consumerSecret, adminUsername, tenantId, tenantDomain,
-                            OAuth2Constants.TokenBinderType.COOKIE_BASED_TOKEN_BINDER, grantTypes);
+                        consumerSecret, adminUsername, tenantId, tenantDomain,
+                        OAuth2Constants.TokenBinderType.COOKIE_BASED_TOKEN_BINDER, grantTypes);
                 } catch (IdentityOAuthAdminException e) {
                     if ("Error when adding the application. An application with the same name already exists."
-                            .equals(e.getMessage())) {
+                        .equals(e.getMessage())) {
                         // Application is already created.
                         continue;
                     }
                     throw e;
                 }
                 AppPortalUtils.createApplication(appPortal.getName(), adminUsername, appPortal.getDescription(),
-                        consumerKey, consumerSecret, tenantDomain, appPortal.getPath());
+                    consumerKey, consumerSecret, tenantDomain, appPortal.getPath());
             }
         }
     }
@@ -312,17 +300,17 @@ public class AppPortalUtils {
      * @return OAuth InboundAuthenticationRequestConfig if exists.
      */
     public static InboundAuthenticationRequestConfig getOAuthInboundAuthenticationRequestConfig(
-            ServiceProvider application) {
+        ServiceProvider application) {
 
         if (application == null || application.getInboundAuthenticationConfig() == null
-                || application.getInboundAuthenticationConfig().getInboundAuthenticationRequestConfigs() == null
-                || application.getInboundAuthenticationConfig().getInboundAuthenticationRequestConfigs().length == 0) {
+            || application.getInboundAuthenticationConfig().getInboundAuthenticationRequestConfigs() == null
+            || application.getInboundAuthenticationConfig().getInboundAuthenticationRequestConfigs().length == 0) {
 
             return null;
         }
 
         for (InboundAuthenticationRequestConfig inboundAuthenticationRequestConfig : application
-                .getInboundAuthenticationConfig().getInboundAuthenticationRequestConfigs()) {
+            .getInboundAuthenticationConfig().getInboundAuthenticationRequestConfigs()) {
             if (FrameworkConstants.OAUTH2.equals(inboundAuthenticationRequestConfig.getInboundAuthType())) {
 
                 return inboundAuthenticationRequestConfig;
@@ -330,20 +318,5 @@ public class AppPortalUtils {
         }
 
         return null;
-    }
-
-    private static RoleV2 getAdministratorRole(String tenantDomain) throws org.wso2.carbon.user.api.UserStoreException,
-        IdentityRoleManagementException {
-
-        RealmService realmService = AppsCommonDataHolder.getInstance().getRealmService();
-        int tenantId = realmService.getTenantManager().getTenantId(tenantDomain);
-        UserRealm userRealm = (UserRealm) realmService.getTenantUserRealm(tenantId);
-        String roleName = userRealm.getRealmConfiguration().getAdminRoleName();
-        RoleManagementService roleManagementService = AppsCommonDataHolder.getInstance().getRoleManagementServiceV2();
-        Role role = roleManagementService.getRole(roleName, tenantDomain);
-        RoleV2 adminRole = new RoleV2();
-        adminRole.setId(role.getId());
-        adminRole.setName(role.getName());
-        return adminRole;
     }
 }
