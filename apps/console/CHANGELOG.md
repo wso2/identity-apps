@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.3.1
+
+### Patch Changes
+
+- [#4330](https://github.com/wso2/identity-apps/pull/4330) [`c991a8b398`](https://github.com/wso2/identity-apps/commit/c991a8b398198169ebd84d7923e3ea3850c79ce4) Thanks [@savindi7](https://github.com/savindi7)! - fix admin delete issue
+
+* [#4341](https://github.com/wso2/identity-apps/pull/4341) [`29c9e682ab`](https://github.com/wso2/identity-apps/commit/29c9e682ab800fdd65436032a69b4baa6663f75e) Thanks [@Rashmini](https://github.com/Rashmini)! - Add feature Organization Discovery
+
+* Updated dependencies [[`29c9e682ab`](https://github.com/wso2/identity-apps/commit/29c9e682ab800fdd65436032a69b4baa6663f75e)]:
+  - @wso2is/common@2.0.3
+  - @wso2is/form@2.0.4
+  - @wso2is/i18n@2.0.20
+
 ## 2.3.0
 
 ### Minor Changes
