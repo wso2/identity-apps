@@ -93,7 +93,8 @@ export interface RolePermissionInterface {
  * Interface to contain role connected applications information
  */
 export interface RoleConnectedApplicationInterface {
-    displayName: string;
-    value: string;
+    displayName?: string;
+    display?: string;
+    value?: string;
     $ref?: string;
 }

@@ -8493,6 +8493,7 @@ export const console: ConsoleNS = {
                     },
                     menuItems: {
                         basic: "Fondamentaux",
+                        connectedApps: "Applications connectées",
                         groups: "Groupes",
                         permissions: "Permissions",
                         roles: "Rôles",
