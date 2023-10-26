@@ -68,6 +68,10 @@ interface RoleListProps extends LoadableComponentInterface, IdentifiableComponen
      * Search query for the list.
      */
     searchQuery?: string;
+    /**
+     * Is the current org a sub org.
+     */
+    isSubOrg?: boolean;
 }
 
 /**
@@ -79,6 +83,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
 
     const {
         handleRoleDelete,
+        isSubOrg,
         onEmptyListPlaceholderActionClick,
         onSearchQueryClear,
         roleList,
@@ -131,7 +136,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             return (
                 <EmptyPlaceholder
                     data-componentid={ `${ componentId }-empty-list-empty-placeholder` }
-                    action={ (
+                    action={ !isSubOrg && (
                         <Show when={ AccessControlConstants.ROLE_WRITE }>
                             <PrimaryButton
                                 data-componentid={ `${ componentId }-empty-list-empty-placeholder-add-button` }
@@ -145,16 +150,22 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.title",
+                    title={ !isSubOrg && t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.title",
                         { type: "role" }) }
-                    subtitle={ [
-                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
-                            { type: "roles" }),
-                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.1",
-                            { type: "role" }),
-                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.2",
-                            { type: "role" })
-                    ] }
+                    subtitle={ isSubOrg
+                        ? [
+                            t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                                { type: "roles" })
+                        ]
+                        : [
+                            t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                                { type: "roles" }),
+                            t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.1",
+                                { type: "role" }),
+                            t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.2",
+                                { type: "role" })
+                        ]
+                    }
                 />
             );
         }
@@ -260,7 +271,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 renderer: "semantic-icon"
             },
             {
-                hidden: (role: RolesInterface) => (role?.displayName === RoleConstants.ADMIN_ROLE ||
+                hidden: (role: RolesInterface) => isSubOrg || (role?.displayName === RoleConstants.ADMIN_ROLE ||
                     role?.displayName === RoleConstants.ADMIN_GROUP)
                     || !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.delete, allowedScopes),
                 icon: (): SemanticICONS => "trash alternate",

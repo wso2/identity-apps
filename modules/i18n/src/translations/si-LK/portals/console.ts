@@ -8383,6 +8383,7 @@ export const console: ConsoleNS = {
                     },
                     permissions: {
                         heading: "පවරා ඇති අවසර",
+                        readOnlySubHeading: "භූමිකාවේ පවරා ඇති අවසරයන් බලන්න.",
                         removedPermissions: "අවසර ඉවත් කරන ලද අවසර",
                         subHeading: "මෙම භූමිකාව තුළ පවරා ඇති අවසරයන් කළමනාකරණය කරන්න."
                     }
@@ -8396,8 +8397,12 @@ export const console: ConsoleNS = {
                         actions: "ක්‍රියා",
                         audience: "ප්‍රවේශමෙන්නිය",
                         lastModified: "අවසන් වරට වෙනස් කරන ලදි",
-                        managedBy: {
-                            label: "කළමනාකරණය",
+                        managedByApp: {
+                            label: "යෙදුමේ පමණක් භාවිතා කළ හැකිය: ",
+                            header: "කළමනාකරණය"
+                        },
+                        managedByOrg: {
+                            label: "සංවිධානය තුළ භාවිතා කළ හැකිය: ",
                             header: "කළමනාකරණය"
                         },
                         name: "නම"

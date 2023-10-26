@@ -17,6 +17,7 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { OrganizationType } from "@wso2is/common";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
@@ -28,6 +29,7 @@ import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, AppConstants, UIConstants } from "../../core";
 import { history } from "../../core/helpers";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { deleteRoleById, useRolesList } from "../api";
 import { RoleList } from "../components/role-list";
 import { RoleConstants } from "../constants";
@@ -50,11 +52,15 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
+    const orgType: OrganizationType = useGetOrganizationType();
+
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ filterBy, setFilterBy ] = useState<string>(undefined);
     const [ isEmptyResults ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+
+    const isSubOrg: boolean = orgType === OrganizationType.SUBORGANIZATION;
 
     const {
         data: rolesList,
@@ -174,7 +180,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     return (
         <PageLayout
             action={
-                !isRolesListLoading
+                !isSubOrg && !isRolesListLoading && isEmptyResults
                     ? (
                         <Show when={ AccessControlConstants.ROLE_WRITE }>
                             <PrimaryButton
@@ -192,7 +198,9 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
             }
             title={ t("console:manage.pages.roles.title") }
             pageTitle={ t("console:manage.pages.roles.title") }
-            description={ t("console:manage.pages.roles.subTitle") }
+            description={ isSubOrg
+                ? t("console:manage.pages.roles.subOrg.subTitle")
+                : t("console:manage.pages.roles.subTitle") }
         >
             {
                 !isEmptyResults && (
@@ -235,6 +243,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                         listItemLimit={ listItemLimit }
                         onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                         onPageChange={ handlePaginationChange }
+                        showTopActionPanel={ !isRolesListLoading && isEmptyResults }
                         rightActionPanel={
                             (
                                 <Dropdown
@@ -257,6 +266,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                             onSearchQueryClear={ handleSearchQueryClear }
                             roleList={ rolesList }
                             searchQuery={ filterBy }
+                            isSubOrg={ isSubOrg }
                         />
                     </ListLayout>
                 )

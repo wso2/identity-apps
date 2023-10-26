@@ -478,7 +478,8 @@ export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInter
  * @deprecated This is a temporary hook until the API resource feature moved to the features folder.
  */
 export const useAPIResourcesList = <Data = APIResourceListInterface, Error = RequestErrorInterface>(
-    filter?: string
+    filter?: string,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -499,7 +500,7 @@ export const useAPIResourcesList = <Data = APIResourceListInterface, Error = Req
         isValidating,
         mutate,
         response
-    } = useRequest<Data, Error>(requestConfig);
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,
@@ -519,7 +520,8 @@ export const useAPIResourcesList = <Data = APIResourceListInterface, Error = Req
  * @deprecated This is a temporary hook until the API resource feature moved to the features folder.
  */
 export const useAPIResourceDetails = <Data = APIResourceInterface, Error = RequestErrorInterface>(
-    apiResourceId: string
+    apiResourceId: string,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -534,7 +536,8 @@ export const useAPIResourceDetails = <Data = APIResourceInterface, Error = Reque
     /**
      * Pass `null` if the `apiResourceId` is not available. This will prevent the request from being called.
      */
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(apiResourceId ? requestConfig : null);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>((apiResourceId && shouldFetch)
+        ? requestConfig : null);
 
     return {
         data,

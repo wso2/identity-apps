@@ -8560,6 +8560,7 @@ export const console: ConsoleNS = {
                     },
                     permissions: {
                         heading: "Autorisations attribuées",
+                        readOnlySubHeading: "Voir les autorisations attribuées du rôle.",
                         removedPermissions: "Autorisations supprimées",
                         subHeading: "Gérer les autorisations attribuées dans le rôle."
                     }
@@ -8573,8 +8574,12 @@ export const console: ConsoleNS = {
                         actions: "Actions",
                         audience: "Public",
                         lastModified: "Dernière modification",
-                        managedBy: {
-                            label: "Dirigé par",
+                        managedByApp: {
+                            label: "Ne peut être utilisé que dans l'application: ",
+                            header: "Dirigé par"
+                        },
+                        managedByOrg: {
+                            label: "Peut être utilisé au sein de l'organisation: ",
                             header: "Dirigé par"
                         },
                         name: "Nom"
