@@ -1424,15 +1424,20 @@ export const console: ConsoleNS = {
                                         label: "Type de sujet",
                                         public: {
                                             label: "public",
-                                            hint: "Cette option utilisera l'identifiant public du sujet comme sujet."
+                                            hint: "Cette option utilisera l'identifiant public du sujet comme sujet. " +
+                                                "L'URI de l'identifiant du sujet est utilisé dans le calcul de la " +
+                                                "valeur du sujet."
                                         },
                                         pairwise: {
                                             label: "par paire",
-                                            hint: "Cette option utilisera l'identifiant de sujet par paire comme sujet."
+                                            hint: "Cette option utilisera l'identifiant de sujet par paire comme " +
+                                                "sujet. L'URI de l'identifiant de sujet et l'URI de rappel ou l'URI " +
+                                                "de l'identifiant de secteur sont utilisés dans le calcul de la " +
+                                                "valeur du sujet."
                                         }
                                     },
                                     sectorIdentifierURI: {
-                                        label: "URI de l'identifiant du sujet",
+                                        label: "URI de l'identifiant du secteur",
                                         hint: "Doit configurer cette valeur si plusieurs URI de rappel avec des noms" +
                                             " d'hôte différents sont configurés.",
                                         placeholder: "Entrez l'URI de l'identifiant du sujet",
@@ -1945,7 +1950,7 @@ export const console: ConsoleNS = {
                                         placeholder: "Sélectionnez l'algorithme"
                                     },
                                     subjectDN: {
-                                        label: "DN du sujet d'authentification du client TLS"
+                                        label: "Nom de domaine du sujet d'authentification du client TLS"
                                     }
                                 },
                                 heading: "Authentification client"

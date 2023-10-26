@@ -1398,16 +1398,18 @@ export const console: ConsoleNS = {
                                         public: {
                                             label: "public",
                                             hint: "This option will use the public subject identifier as the" +
-                                                " subject."
+                                                " subject. Subject identifier URI is used in subject value" +
+                                                " calculation."
                                         },
                                         pairwise: {
                                             label: "pairwise",
                                             hint: "This option will use the pairwise subject identifier as the" +
-                                                " subject."
+                                                " subject. Subject identifier URI and callback URI or sector" +
+                                                " identifier URI is used in subject value calculation."
                                         }
                                     },
                                     sectorIdentifierURI: {
-                                        label: "Subject Identifier URI",
+                                        label: "Sector Identifier URI",
                                         hint: "Must configure this value if multiple callback URIs with" +
                                             " different hostnames are configured.",
                                         placeholder: "Enter the subject identifier URI",
@@ -1905,8 +1907,9 @@ export const console: ConsoleNS = {
                                         placeholder: "Select algorithm"
                                     },
                                     subjectDN: {
-                                        label: "TLS client auth subject DN",
-                                        placeholder: "Enter the tls client auth subject DN"
+                                        label: "TLS client authentication subject domain name",
+                                        placeholder: "Enter the tls client authentication subject domain name",
+                                        hint: "Enter the DN of the transport certificate."
                                     }
                                 },
                                 heading: "Client Authentication"
@@ -1916,7 +1919,7 @@ export const console: ConsoleNS = {
                                     requirePushAuthorizationRequest: {
                                         hint: "Select to make it mandatory for the application to send authorization " +
                                             "requests as pushed authorization requests.",
-                                        label: "Require Pushed Authorization Requests"
+                                        label: "Mandatory"
                                     }
                                 },
                                 heading: "Pushed Authorization Requests"
