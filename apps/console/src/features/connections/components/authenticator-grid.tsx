@@ -54,6 +54,7 @@ import {
     deleteConnection, 
     getConnectedApps 
 } from "../api/connections";
+import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import { 
@@ -68,7 +69,6 @@ import {
     StrictConnectionInterface 
 } from "../models/connection";
 import { ConnectionsManagementUtils, handleConnectionDeleteError } from "../utils/connection-utils";
-import { getConnectionIcons } from "../configs/ui";
 
 /**
  * Proptypes for the Authenticators Grid component.
