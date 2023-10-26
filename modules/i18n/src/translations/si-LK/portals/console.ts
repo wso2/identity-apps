@@ -10418,6 +10418,7 @@ export const console: ConsoleNS = {
                 title: "සාදරයෙන් පිළිගනිමු, {{firstName}}"
             },
             roles: {
+                alternateSubTitle: "භූමිකාවන් බලන්න සහ කළමනාකරණය කරන්න.",
                 subTitle: "භූමිකාවන් සාදන්න සහ කළමනාකරණය කරන්න, භූමිකාවන් සඳහා අවසර ලබා දෙන්න.",
                 title: "භූමිකාවන්"
             },

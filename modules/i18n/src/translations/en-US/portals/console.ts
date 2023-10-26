@@ -12353,6 +12353,7 @@ export const console: ConsoleNS = {
                 title: "Welcome, {{firstName}}"
             },
             roles: {
+                alternateSubTitle: "View and manage roles.",
                 subTitle: "Create and manage roles, assign permissions for roles.",
                 title: "Roles"
             },

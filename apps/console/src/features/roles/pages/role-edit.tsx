@@ -142,7 +142,6 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
                                         ? t("console:manage.features.roles.list.columns.managedByOrg.label")
                                         : t("console:manage.features.roles.list.columns.managedByApp.label")
                                 }
-                                { roleObject?.audience?.type }
                             </Grid>
                             <Grid>
                                 <Label

@@ -10657,6 +10657,7 @@ export const console: ConsoleNS = {
                 title: "Bienvenue, {{firstName}}"
             },
             roles: {
+                alternateSubTitle: "Afficher et gérer les rôles.",
                 subTitle: "Créer et gérer les rôles, attribuer des permissions.",
                 title: "Rôles"
             },
