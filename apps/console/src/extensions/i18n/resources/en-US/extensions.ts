@@ -1898,8 +1898,12 @@ export const extensions: Extensions = {
                 description: "Customize consumer-facing user interfaces of applications in your organization.",
                 title: "Branding"
             },
+            pageResolution: {
+                hint: "Pages in the Preview section may look different than the actual page. " +
+                    "To solve this issue please set your screen to a higher resolution."
+            },
             publishToggle: {
-                hint: "Branding preference is in the unpublished state. Your changes will not be reflected until you save & publish your prefrences again.",
+                hint: "Branding preference is in the unpublished state. Your changes will not be reflected until you save & publish your preferences again.",
                 label: "Publish",
                 enabled: "Enabled",
                 disabled: "Disabled"

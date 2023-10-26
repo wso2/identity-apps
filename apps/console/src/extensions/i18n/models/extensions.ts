@@ -1678,6 +1678,9 @@ export interface Extensions {
                 description: string;
                 title: string;
             };
+            pageResolution: {
+                hint: string;
+            };
             publishToggle: {
                 hint: string;
                 label: string;

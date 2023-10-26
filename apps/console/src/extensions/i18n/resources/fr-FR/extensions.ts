@@ -1934,6 +1934,10 @@ export const extensions: Extensions = {
                     "les applications de votre organisation.",
                 title: "l'image de marque"
             },
+            pageResolution: {
+                hint: "Les pages de la section Aperçu peuvent différer de la page réelle. " +
+                    "Pour résoudre ce problème, veuillez régler votre écran sur une résolution supérieure."
+            },
             publishToggle: {
                 hint: "Activer/Désactiver les modifications",
                 label: "Passez en direct",
