@@ -21,7 +21,7 @@
 <script type="text/javascript">
     // Automatically shows on init if the user hasn't already acknowledged cookie usage.
     $(document).ready(function () {
-        // downtime-banner
+        // downtime-banner.
         var SHOW_DOWNTIME_BANNER = false;
         
         if(SHOW_DOWNTIME_BANNER) {

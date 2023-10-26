@@ -31,22 +31,22 @@
 function scrollToTargetElementWithOffset(event, offset, offsetCalElementID) {
     event.preventDefault();
 
-    // Find the required offset
+    // Find the required offset.
     if (offset == null) {
         if (offsetCalElementID != null) {
             var offsetElement = document.getElementById(offsetCalElementID);
-            offset = offsetElement.getBoundingClientRect().top; // Distance from top to the offsetElement is the offset
+            offset = offsetElement.getBoundingClientRect().top; // Distance from top to the offsetElement is the offset.
         } else {
             offset = 0;
         }
     }
 
-    // Find the target element position
+    // Find the target element position.
     var targetElement = document.getElementById(event.target.getAttribute('href').slice(1));
     var targetElementPosition = targetElement.getBoundingClientRect().top;
     var offsetPosition = targetElementPosition - offset;
 
-    // Scroll to a target element with the offset
+    // Scroll to a target element with the offset.
     window.scrollBy({
         top: offsetPosition,
         behavior: 'smooth'
