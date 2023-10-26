@@ -17,7 +17,7 @@
  */
 
 import {
-    BuildingGearIcon,
+    BuildingPenIcon,
     DatabaseDocumentIcon,
     PaletteIcon,
     SquareUserIcon
@@ -269,7 +269,7 @@ export class RouteUtils {
         };
 
         const organizationManagement: Omit<RouteInterface, "showOnSidePanel"> = {
-            icon: BuildingGearIcon,
+            icon: BuildingPenIcon,
             id: "organizationManagement",
             name: "Organization Management"
         };
