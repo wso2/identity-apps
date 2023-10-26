@@ -18,6 +18,7 @@
 
 import {
     BuildingGearIcon,
+    BuildingPenIcon,
     PaletteIcon,
     SquareUserIcon
 } from "@oxygen-ui/react-icons";
@@ -268,7 +269,7 @@ export class RouteUtils {
         };
 
         const organizationManagement: Omit<RouteInterface, "showOnSidePanel"> = {
-            icon: BuildingGearIcon,
+            icon: BuildingPenIcon,
             id: "organizationManagement",
             name: "Organization Management"
         };

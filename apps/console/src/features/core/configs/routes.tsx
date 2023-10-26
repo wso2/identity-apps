@@ -20,6 +20,7 @@ import {
     ArrowRightToBracketPencilIcon,
     BoltIcon,
     EnvelopeGearIcon,
+    EnvelopeMagnifyingGlassIcon,
     HierarchyIcon,
     UserGroupIcon
 } from "@oxygen-ui/react-icons";
@@ -429,7 +430,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         }),
                         exact: true,
                         icon: {
-                            icon: <HierarchyIcon fill="black" />
+                            icon: <EnvelopeMagnifyingGlassIcon fill="black" />
                         },
                         id: "organizationDiscovery",
                         name: "console:manage.features.sidePanel.emailDomainDiscovery",
