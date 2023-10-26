@@ -1,5 +1,16 @@
 # @wso2is/myaccount
 
+## 2.1.10
+
+### Patch Changes
+
+- [#4182](https://github.com/wso2/identity-apps/pull/4182) [`a57e0d8773`](https://github.com/wso2/identity-apps/commit/a57e0d87739e4ebe8c358e54145688305159a665) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Addressed the problem where branding changes in the cookie policy were not being displayed.
+
+- Updated dependencies [[`9d7867c224`](https://github.com/wso2/identity-apps/commit/9d7867c22480f92e07614d1b874efa1102dc71bb), [`a57e0d8773`](https://github.com/wso2/identity-apps/commit/a57e0d87739e4ebe8c358e54145688305159a665)]:
+  - @wso2is/i18n@2.0.21
+  - @wso2is/theme@2.0.24
+  - @wso2is/core@2.0.7
+
 ## 2.1.9
 
 ### Patch Changes
