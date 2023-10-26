@@ -99,7 +99,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
         data: currentAPIResourceScopeListData,
         isLoading: isCurrentAPIResourceScopeListDataLoading,
         error: currentAPIResourceScopeListFetchError
-    } = useScopesOfAPIResources(subscribedAPIResource?.id, subscribedAPIResource?.id != null);
+    } = useScopesOfAPIResources(subscribedAPIResource?.id);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching API resource scopes.
