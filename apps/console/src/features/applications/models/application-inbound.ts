@@ -55,6 +55,7 @@ export interface OIDCMetadataInterface {
     defaultIdTokenExpiryTime?: string;
     idTokenEncryptionAlgorithm?: MetadataPropertyInterface;
     idTokenEncryptionMethod?: MetadataPropertyInterface;
+    idTokenSignatureAlgorithm?: MetadataPropertyInterface;
     scopeValidators?: MetadataPropertyInterface;
     accessTokenType?: MetadataPropertyInterface;
     accessTokenBindingType?: MetadataPropertyInterface;
@@ -62,6 +63,10 @@ export interface OIDCMetadataInterface {
     revokeTokensWhenIDPSessionTerminated?: boolean;
     tokenEndpointAuthMethod?: MetadataPropertyInterface;
     tokenEndpointSignatureAlgorithm?: MetadataPropertyInterface;
+    requestObjectSignatureAlgorithm?: MetadataPropertyInterface;
+    requestObjectEncryptionMethod?: MetadataPropertyInterface;
+    requestObjectEncryptionAlgorithm?: MetadataPropertyInterface;
+    subjectType?: MetadataPropertyInterface;
     tlsClientAuthSubjectDn?: string;
 }
 

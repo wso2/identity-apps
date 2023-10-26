@@ -29,6 +29,7 @@ import {
     Heading,
     Hint,
     Message,
+    Popup,
     StickyBar,
     Text,
     URLInput
@@ -52,7 +53,7 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, Container, Divider, DropdownProps, Form, Grid, Label, List } from "semantic-ui-react";
+import { Button, Container, Divider, DropdownProps, Form, Grid, Label, List, Table } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { getSharedOrganizations } from "../../../organizations/api";
@@ -644,8 +645,30 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     });
                 });
             } else {
-                metadataProp.options.map((ele: string) => {
-                    allowedList.push({ text: ele, value: ele });
+                metadataProp.options.map((ele: any) => {
+                    if ( !ele.displayName ) {
+                        allowedList.push({ text: ele, value: ele });
+                    } else {
+                        allowedList.push({ content: (
+                            <Table.Row data-testid={ testId }>
+                                <Table.Cell>
+                                    <div>{ ele.displayName }</div>
+                                    {
+                                        <Popup
+                                            content={ ele.name }
+                                            inverted
+                                            trigger={ (
+                                                <Code compact withBackground={ false }>{ ele.name }</Code>
+                                            ) }
+                                            position="bottom left">
+                                        </Popup>
+                                    }
+                                </Table.Cell>
+                            </Table.Row>
+                        ),
+                        text: ele.displayName,
+                        value: ele.name });
+                    }
                 });
             }
         }
@@ -955,7 +978,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         values.get("method") : metadata.idTokenEncryptionMethod.defaultValue
                 },
                 expiryInSeconds: Number(values.get("idExpiryInSeconds")),
-                idTokenSignedResponseAlg: values.get("idTokenSignedResponseAlg")
+                idTokenSignedResponseAlg: values.get("idTokenSignedResponseAlg") !== "None" ?
+                    values.get("idTokenSignedResponseAlg") : null
             },
             logout: {
                 backChannelLogoutUrl: values.get("backChannelLogoutUrl"),
@@ -1031,12 +1055,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             },
             requestObject: {
                 encryption: {
-                    algorithm: values.get("requestObjectEncryptionAlgorithm"),
-                    method: values.get("requestObjectEncryptionMethod"),
-                    enabled: true
+                    algorithm: values.get("requestObjectEncryptionAlgorithm") !== "None" ?
+                        values.get("requestObjectEncryptionAlgorithm") : null,
+                    method: values.get("requestObjectEncryptionMethod") !== "None" ?
+                        values.get("requestObjectEncryptionMethod") : null
                 },
-                requestObjectSigningAlg: values.get("requestObjectSigningAlg"),
-                requireSignedRequestObject : false
+                requestObjectSigningAlg: values.get("requestObjectSigningAlg") !== "None" ?
+                    values.get("requestObjectSigningAlg") : null
             },
             subject: {
                 sectorIdentifierUri: initialValues?.subject?.sectorIdentifierUri,
@@ -1799,6 +1824,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 minLength={ 3 }
                                 width={ 16 }
                             />
+                            <Hint>
+                                { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".clientAuthentication.fields.subjectDN.hint") }
+                            </Hint>
                         </Grid.Column>
                     </Grid.Row>
                 )
@@ -1861,14 +1890,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         type="dropdown"
                         disabled={ false }
                         default={
-                            initialValues?.requestObject ? initialValues.requestObject.requestObjectSigningAlg
-                                : metadata.tokenEndpointSignatureAlgorithm.defaultValue
+                            initialValues?.requestObject ? initialValues.requestObject.requestObjectSigningAlg : null
                         }
                         placeholder={
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".requestObject.fields.requestObjectSigningAlg.placeholder")
                         }
-                        children={ getAllowedList(metadata.tokenEndpointSignatureAlgorithm) }
+                        children={ getAllowedList(metadata.requestObjectSignatureAlgorithm) }
                         readOnly={ readOnly }
                     />
                     <Hint>
@@ -1897,14 +1925,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         type="dropdown"
                         disabled={ false }
                         default={
-                            initialValues?.requestObject ? initialValues.requestObject.encryption.algorithm
-                                : metadata.idTokenEncryptionAlgorithm.defaultValue
+                            initialValues?.requestObject ? initialValues.requestObject.encryption.algorithm : null
                         }
                         placeholder={
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".requestObject.fields.requestObjectEncryptionAlgorithm.placeholder")
                         }
-                        children={ getAllowedList(metadata.idTokenEncryptionAlgorithm) }
+                        children={ getAllowedList(metadata.requestObjectEncryptionAlgorithm) }
                         readOnly={ readOnly }
                     />
                     <Hint>
@@ -1933,14 +1960,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         type="dropdown"
                         disabled={ false }
                         default={
-                            initialValues?.requestObject ? initialValues.requestObject.encryption.method
-                                : metadata.idTokenEncryptionMethod.defaultValue
+                            initialValues?.requestObject ? initialValues.requestObject.encryption.method : null
                         }
                         placeholder={
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".requestObject.fields.requestObjectEncryptionMethod.placeholder")
                         }
-                        children={ getAllowedList(metadata.idTokenEncryptionMethod) }
+                        children={ getAllowedList(metadata.requestObjectEncryptionMethod) }
                         readOnly={ readOnly }
                     />
                     <Hint>
@@ -2562,14 +2588,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         type="dropdown"
                         disabled={ false }
                         default={
-                            initialValues?.idToken ? initialValues.idToken.idTokenSignedResponseAlg
-                                : metadata.tokenEndpointSignatureAlgorithm.defaultValue
+                            initialValues?.idToken ? initialValues.idToken.idTokenSignedResponseAlg : null
                         }
                         placeholder={
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".idToken.fields.signing.placeholder")
                         }
-                        children={ getAllowedList(metadata.tokenEndpointSignatureAlgorithm) }
+                        children={ getAllowedList(metadata.idTokenSignatureAlgorithm) }
                         readOnly={ readOnly }
                     />
                     <Hint disabled={ !isEncryptionEnabled || !isCertAvailableForEncrypt }>
@@ -3201,14 +3226,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             submitUrl((url: string) => {
                 if (isEmpty(callBackUrls) && isEmpty(url)) {
                     setShowURLError(true);
-                    scrollToInValidField("url");
-                } else if (callBackUrls.split(",").length > 1 &&
-                    initialValues?.subject?.subjectType === "pairwise" &&
-                    !initialValues?.subject?.sectorIdentifierUri) {
-                    setCallbackURLsErrorLabel(<Label className="red pointing basic prompt">
-                        { t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                            ".sections.subject.fields.sectorIdentifierURI.label") }
-                    </Label>);
                     scrollToInValidField("url");
                 } else {
                     submitOrigin((origin: string) => {
