@@ -1563,6 +1563,9 @@
         {% if console.ui.is_left_navigation_categorized is defined %}
         "isLeftNavigationCategorized": {{ console.ui.is_left_navigation_categorized }},
         {% endif %}
+        {% if console.ui.is_saas_deployment is defined %}
+        "isSAASDeployment": {{ console.ui.saas_deployment }},
+        {% endif %}
         "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
         "listAllAttributeDialects": {{ console.list_all_attribute_dialects }},
         "privacyPolicyConfigs": {
