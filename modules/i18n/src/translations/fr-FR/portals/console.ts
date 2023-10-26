@@ -7087,6 +7087,15 @@ export const console: ConsoleNS = {
                                 }
                             }
                         }
+                    },
+                    sessionManagement: {
+                        description: "Gérer les paramètres liés à la session de vos utilisateurs."
+                    },
+                    saml2WebSsoConfiguration: {
+                        description: "Configurer SAML2 Web SSO pour vos applications."
+                    },
+                    wsFederationConfiguration: {
+                        description: "Configurer le protocole WS-Federation pour vos applications."
                     }
                 },
                 disabled: "Désactivé",

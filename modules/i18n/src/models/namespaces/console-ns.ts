@@ -4863,6 +4863,15 @@ export interface ConsoleNS {
                             };
                         };
                     };
+                    sessionManagement: {
+                        description: string;
+                    };
+                    saml2WebSsoConfiguration: {
+                        description: string;
+                    };
+                    wsFederationConfiguration: {
+                        description: string;
+                    };
                 };
             };
             helpPanel: {

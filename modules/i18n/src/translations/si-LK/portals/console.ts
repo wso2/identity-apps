@@ -6933,6 +6933,15 @@ export const console: ConsoleNS = {
                                 }
                             }
                         }
+                    },
+                    sessionManagement: {
+                        description: "ඔබගේ පරිශීලකයින්ගේ සැසිවාරයට අදාළ සැකසුම් කළමනාකරණය කරන්න."
+                    },
+                    saml2WebSsoConfiguration: {
+                        description: "ඔබගේ යෙදුම් සඳහා SamL2 වෙබ් SSO වින්යාස කරන්න."
+                    },
+                    wsFederationConfiguration: {
+                        description: "ඔබගේ අයදුම්පත් සඳහා WS- සම්මේලනයේ ප්රොටෝකෝලය වින්යාස කරන්න."
                     }
                 },
                 disabled: "අක්‍රීය කර ඇත",

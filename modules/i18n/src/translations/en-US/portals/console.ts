@@ -8702,6 +8702,15 @@ export const console: ConsoleNS = {
                                 }
                             }
                         }
+                    },
+                    sessionManagement: {
+                        description: "Manage settings related to the session of your users."
+                    },
+                    saml2WebSsoConfiguration: {
+                        description: "Configure SAML2 Web SSO for your applications."
+                    },
+                    wsFederationConfiguration: {
+                        description: "Configure WS-Federation protocol for your applications."
                     }
                 },
                 disabled: "Disabled",
