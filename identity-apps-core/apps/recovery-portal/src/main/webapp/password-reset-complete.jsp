@@ -63,8 +63,6 @@
     String AUTO_LOGIN_COOKIE_NAME = "ALOR";
     String AUTO_LOGIN_FLOW_TYPE = "RECOVERY";
     String AUTO_LOGIN_COOKIE_DOMAIN = "AutoLoginCookieDomain";
-    String ASGARDEO_USERSTORE = "ASGARDEO-USER";
-    String CUSTOMER_USERSTORE = "DEFAULT";
     String USERSTORE_DOMAIN = "userstoredomain";
     String RECOVERY_TYPE_INVITE = "invite";
     String CONSOLE_APP_NAME = "Console";
@@ -181,8 +179,7 @@
     }
 
     if (StringUtils.isNotBlank(callback) &&
-        StringUtils.isNotBlank(userStoreDomain) &&
-        userStoreDomain.equals(ASGARDEO_USERSTORE)) {
+        StringUtils.isNotBlank(userStoreDomain)) {
         if (callback.contains(CONSOLE_APP_NAME.toLowerCase())) {
             applicationName = CONSOLE_APP_NAME;
         } else if (callback.contains(MY_ACCOUNT_APP_NAME.toLowerCase().replaceAll("\\s+", ""))) {
@@ -217,8 +214,7 @@
         }
     }
 
-    if ((StringUtils.isNotBlank(userStoreDomain) && userStoreDomain.equals(CUSTOMER_USERSTORE)
-        && StringUtils.isNotBlank(callback)
+    if ((StringUtils.isNotBlank(userStoreDomain) && StringUtils.isNotBlank(callback)
         && callback.contains(MY_ACCOUNT_APP_NAME.toLowerCase().replaceAll("\\s+", "")))) {
 
 	    applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.getUserPortalUrl(
@@ -285,7 +281,7 @@
                     <% if (StringUtils.isNotBlank(applicationAccessURLWithoutEncoding) &&
                             !RECOVERY_TYPE_INVITE.equalsIgnoreCase(type)) { %>
                         <i class="caret left icon primary"></i>
-                        <% if (StringUtils.isNotBlank(userStoreDomain) && userStoreDomain.equals(CUSTOMER_USERSTORE)) {
+                        <% if (StringUtils.isNotBlank(userStoreDomain)) {
                             if (StringUtils.isNotBlank(applicationName) && applicationName.equals(MY_ACCOUNT_APP_NAME)) {
                         %>
                             <a href="<%=IdentityManagementEndpointUtil.getURLEncodedCallback(
