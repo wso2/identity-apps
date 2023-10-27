@@ -3285,6 +3285,9 @@ export interface ConsoleNS {
                                 hint: string;
                             }
                         }
+                    },
+                    buttons: {
+                        assign: string;
                     }
                 },
                 emailDomains: {

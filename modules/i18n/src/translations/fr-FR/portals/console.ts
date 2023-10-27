@@ -7619,6 +7619,9 @@ export const console: ConsoleNS = {
                                 hint: "Entrez le nom de l'organisation que vous souhaitez ajouter le mappage de domaine."
                             }
                         }
+                    },
+                    buttons: {
+                        assign: "Attribuer"
                     }
                 },
                 emailDomains: {
@@ -7648,59 +7651,59 @@ export const console: ConsoleNS = {
                     addEmailDomains: {
                         error: {
                             description: "L'ajout des domaines de messagerie à l'organisation a échoué.",
-                            message: "Impossible d'ajouter des domaines de messagerie"
+                            message: "Ajout échoué"
                         },
                         success: {
-                            description: "Les domaines de messagerie ajoutés avec succès",
-                            message: "Ajout avec succès les domaines de messagerie à l'organisation."
+                            description: "Domaines de messagerie ajoutés avec succès.",
+                            message: "Ajouté avec succès"
                         }
                     },
                     disableEmailDomainDiscovery: {
                         error: {
-                            description: "Erreur lors de la désactivation de la découverte de domaine de messagerie",
-                            message: "Quelque chose s'est mal passé"
+                            description: "Une erreur s'est produite lors de la désactivation de la découverte de domaines de messagerie.",
+                            message: "Désactivation échouée"
                         },
                         success: {
-                            description: "La découverte du domaine de messagerie a été désactivée avec succès",
-                            message: "La découverte du domaine de messagerie a été désactivée avec succès"
+                            description: "La découverte du domaine de messagerie a été désactivée avec succès.",
+                            message: "Désactivé avec succès"
                         }
                     },
                     enableEmailDomainDiscovery: {
                         error: {
-                            description: "Une erreur s'est produite lors de l'activation de la découverte de domaines de messagerie",
-                            message: "Quelque chose s'est mal passé"
+                            description: "Une erreur s'est produite lors de l'activation de la découverte de domaines de messagerie.",
+                            message: "Activation échouée"
                         },
                         success: {
-                            description: "La découverte du domaine de messagerie a été activée avec succès",
-                            message: "La découverte du domaine de messagerie a été activée avec succès"
+                            description: "La découverte du domaine de messagerie a été activée avec succès.",
+                            message: "Activé avec succès"
                         }
                     },
                     fetchOrganizationDiscoveryAttributes: {
                         error: {
-                            description: "Une erreur s'est produite lors de la récupération des attributs de découverte de l'organisation",
-                            message: "Quelque chose s'est mal passé"
+                            description: "Une erreur s'est produite lors de la récupération des attributs de découverte de l'organisation.",
+                            message: "Récupération échouée"
                         }
                     },
                     getEmailDomainDiscovery: {
                         error: {
-                            description: "Une erreur s'est produite lors de la récupération de la configuration de la découverte du domaine de messagerie",
-                            message: "Quelque chose s'est mal passé"
+                            description: "Une erreur s'est produite lors de la récupération de la configuration de la découverte du domaine de messagerie.",
+                            message: "Récupération échouée"
                         }
                     },
                     getOrganizationListWithDiscovery: {
                         error: {
-                            description: "Une erreur s'est produite lors de l'obtention de la liste des organisations avec les attributs de découverte",
-                            message: "Quelque chose s'est mal passé"
+                            description: "Une erreur s'est produite lors de l'obtention de la liste des organisations avec les attributs de découverte.",
+                            message: "Récupération échouée"
                         }
                     },
                     updateOrganizationDiscoveryAttributes: {
                         error: {
-                            description: "Une erreur s'est produite lors de la mise à jour des attributs de découverte de l'organisation",
-                            message: "Quelque chose s'est mal passé"
+                            description: "Une erreur s'est produite lors de la mise à jour des attributs de découverte de l'organisation.",
+                            message: "Échec de la mise à jour"
                         },
                         success: {
-                            description: "Mise à jour réussie des attributs de découverte de l'organisation",
-                            message: "Attributs de découverte d'organisation mis à jour avec succès"
+                            description: "Mise à jour réussie des attributs de découverte de l'organisation.",
+                            message: "Mise à jour réussie"
                         }
                     }
                 },
