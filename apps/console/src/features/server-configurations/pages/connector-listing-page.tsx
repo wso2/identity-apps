@@ -329,23 +329,43 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
      * Get connector categories which generate the connector forms dynamically.
      */
     const getDynamicCategoryConnectors = (): ReactElement[] => {
+
+        // This sorting is done to move Other Settings to the end of the list. This implementation can be removed
+        // once the response if sorted from the backend.
+        let sortedConnectorCategories: GovernanceConnectorCategoryInterface[] = [];
+
         if (connectorCategories && Array.isArray(connectorCategories) && connectorCategories.length > 0) {
-            return connectorCategories.map((connectorCategory: GovernanceConnectorCategoryInterface, index: number) => (
-                <Grid xs={ 12 } lg={ 6 } key={ index }>
-                    <SettingsSection
-                        data-testid={ `${testId}-${connectorCategory?.id}` }
-                        description={ t(
-                            `console:manage.features.governanceConnectors.connectorCategories.${camelCase(
-                                connectorCategory.name
-                            )}.description`
-                        ) }
-                        icon={ () => resolveConnectorCategoryIcon(connectorCategory?.id) }
-                        header={ connectorCategory.name }
-                        onPrimaryActionClick={ () => handleConnectorCategoryAction(connectorCategory) }
-                        primaryAction={ t("common:configure") }
-                    />
-                </Grid>
-            ));
+
+            sortedConnectorCategories = [ ...connectorCategories ];
+
+            sortedConnectorCategories.push(sortedConnectorCategories.splice(sortedConnectorCategories.indexOf(
+                sortedConnectorCategories.find(
+                    (category: GovernanceConnectorCategoryInterface) =>
+                        category.id === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
+                )), 1)[0]);
+
+        } else {
+            sortedConnectorCategories = null;
+        }
+
+        if (sortedConnectorCategories) {
+            return sortedConnectorCategories?.map(
+                (connectorCategory: GovernanceConnectorCategoryInterface, index: number) => (
+                    <Grid xs={ 12 } lg={ 6 } key={ index }>
+                        <SettingsSection
+                            data-testid={ `${testId}-${connectorCategory?.id}` }
+                            description={ t(
+                                `console:manage.features.governanceConnectors.connectorCategories.${camelCase(
+                                    connectorCategory.name
+                                )}.description`
+                            ) }
+                            icon={ () => resolveConnectorCategoryIcon(connectorCategory?.id) }
+                            header={ connectorCategory.name }
+                            onPrimaryActionClick={ () => handleConnectorCategoryAction(connectorCategory) }
+                            primaryAction={ t("common:configure") }
+                        />
+                    </Grid>
+                ));
         }
 
         return null;
@@ -411,15 +431,9 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         : (
                             <Grid container rowSpacing={ 2 } columnSpacing={ 3 }>
                                 {
-                                    renderConnectors()
-                                }
-                                {
                                     serverConfigurationConfig.dynamicConnectors
                                         ? (
                                             <>
-                                                <Grid xs={ 12 } lg={ 6 }>
-                                                    <AdminAdvisoryBannerSection />
-                                                </Grid>
                                                 <Grid xs={ 12 } lg={ 6 }>
                                                     <SettingsSection
                                                         data-componentid={ "multi-attribute-login-section" }
@@ -434,6 +448,9 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                                                         onPrimaryActionClick={ handleMultiAttributeLoginAction }
                                                         primaryAction={ t("common:configure") }
                                                     />
+                                                </Grid>
+                                                <Grid xs={ 12 } lg={ 6 }>
+                                                    <AdminAdvisoryBannerSection />
                                                 </Grid>
                                             </>
                                         ) : (
@@ -485,7 +502,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                                                     <PrivateKeyJWTConfig/>
                                                 </Grid>
                                             </>
-                                        ) }
+                                        )
+                                }
+                                {
+                                    renderConnectors()
+                                }
                             </Grid>
                         )
                 }

@@ -137,8 +137,11 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
                     description={ (
                         <Grid container alignItems="center">
                             <Grid>
-                                { `${t("console:manage.features.roles.list.columns.managedBy.label")}
-                                    ${roleObject?.audience?.type}` }
+                                {
+                                    RoleAudienceTypes.ORGANIZATION === roleObject?.audience?.type.toUpperCase()
+                                        ? t("console:manage.features.roles.list.columns.managedByOrg.label")
+                                        : t("console:manage.features.roles.list.columns.managedByApp.label")
+                                }
                             </Grid>
                             <Grid>
                                 <Label

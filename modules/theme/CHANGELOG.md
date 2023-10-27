@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.25
+
+### Patch Changes
+
+- [#4367](https://github.com/wso2/identity-apps/pull/4367) [`905d37424a`](https://github.com/wso2/identity-apps/commit/905d37424a5ad496340332d2acd38cc2afbc2762) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix my account setting section component issue
+
 ## 2.0.24
 
 ### Patch Changes

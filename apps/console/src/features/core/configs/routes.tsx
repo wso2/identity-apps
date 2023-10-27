@@ -19,12 +19,13 @@
 import {
     ArrowRightToBracketPencilIcon,
     BoltIcon,
+    BuildingIcon,
     EnvelopeGearIcon,
     EnvelopeIcon,
     EnvelopeMagnifyingGlassIcon,
-    HierarchyIcon,
     LightbulbOnIcon,
     LinearNodesIcon,
+    NodesIcon,
     UserCircleDotIcon,
     UserGroupIcon
 } from "@oxygen-ui/react-icons";
@@ -204,9 +205,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         component: lazy(() => import("../../connections/pages/connections")),
                         exact: true,
                         icon: {
-                            icon: identityProviderConfig?.useNewConnectionsView
-                                ? getSidePanelIcons().connections
-                                : getSidePanelIcons().identityProviders
+                            icon: <NodesIcon />
                         },
                         id: "identityProviders",
                         name: identityProviderConfig?.useNewConnectionsView
@@ -375,7 +374,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         component: lazy(() => import("../../../features/organizations/pages/organizations")),
                         exact: true,
                         icon: {
-                            icon: <HierarchyIcon fill="black" />
+                            icon: <BuildingIcon />
                         },
                         id: "organizations",
                         name: "console:manage.features.sidePanel.organizations",
@@ -423,7 +422,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         }),
                         exact: true,
                         icon: {
-                            icon: <EnvelopeMagnifyingGlassIcon fill="black" />
+                            icon: <EnvelopeMagnifyingGlassIcon />
                         },
                         id: "organizationDiscovery",
                         name: "console:manage.features.sidePanel.emailDomainDiscovery",

@@ -5379,6 +5379,7 @@ export interface ConsoleNS {
                     permissions: {
                         heading: string;
                         subHeading: string;
+                        readOnlySubHeading: string;
                         removedPermissions: string;
                     };
                 };
@@ -5391,7 +5392,11 @@ export interface ConsoleNS {
                         actions: string;
                         lastModified: string;
                         name: string;
-                        managedBy: {
+                        managedByOrg: {
+                            label: string;
+                            header: string;
+                        };
+                        managedByApp: {
                             label: string;
                             header: string;
                         };
