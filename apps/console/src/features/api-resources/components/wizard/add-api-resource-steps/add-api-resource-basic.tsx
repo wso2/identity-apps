@@ -21,8 +21,9 @@ import { Field, FormField, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../../../core";
+import { AppState, FeatureConfigInterface } from "../../../../core";
 import { getAPIResourcesForIdenitifierValidation } from "../../../api";
 import { APIResourcesConstants } from "../../../constants";
 import { APIResourcesListInterface, BasicAPIResourceInterface } from "../../../models";
@@ -80,6 +81,7 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
 
     const { t } = useTranslation();
     const identifierRef: MutableRefObject<FormField> = useRef<FormField>();
+    const productName: string = useSelector((state: AppState) => state.config.ui.productName);
 
     /**
      * Prepare form values for submitting.
@@ -146,7 +148,8 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                         <Hint className="mb-0">
                             <Trans 
                                 i18nKey= { "extensions:develop.apiResource.wizard.addApiResource.steps.basic." +
-                                    "form.fields.identifier.hint" }>
+                                    "form.fields.identifier.hint" }
+                                tOptions={ { productName } }>
                                 We recommend using a URI as the identifier, but you do not need to make the URI 
                                 publicly available since WSO2 Identity Server will not access your API. 
                                 WSO2 Identity Server will use this identifier value as the audience(aud) claim in the 
@@ -173,7 +176,7 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                         />
                         <Hint className="mb-0">
                             { t("extensions:develop.apiResource.wizard.addApiResource.steps.basic.form.fields." +
-                                "name.hint") }
+                                "name.hint", { productName }) }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

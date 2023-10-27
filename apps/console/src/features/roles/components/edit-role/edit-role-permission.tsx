@@ -16,8 +16,13 @@
  * under the License.
  */
 
+import Autocomplete, {
+    AutocompleteRenderGetTagProps,
+    AutocompleteRenderInputParams
+} from "@oxygen-ui/react/Autocomplete";
 import Button from "@oxygen-ui/react/Button";
 import Grid from "@oxygen-ui/react/Grid";
+import TextField from "@oxygen-ui/react/TextField";
 import {
     AlertInterface,
     AlertLevels,
@@ -29,11 +34,21 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment, Heading } from "@wso2is/react-components";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useState } from "react";
+import isEmpty from "lodash-es/isEmpty";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    ReactNode,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps } from "semantic-ui-react";
+import { RenderChip } from "./edit-role-common/render-chip";
 import { RoleAPIResourcesListItem } from "./edit-role-common/role-api-resources-list-item";
 import { getAPIResourceDetailsBulk, updateRoleDetails, useAPIResourceDetails, useAPIResourcesList } from "../../api";
 import { RoleConstants } from "../../constants/role-constants";
@@ -94,7 +109,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         isLoading: isAPIResourcesListFetchRequestLoading,
         error: apiResourcsListFetchRequestError,
         mutate: mutateAPIResourcesListFetchRequest
-    } = useAPIResourcesList(apiResourceSearchQuery);
+    } = useAPIResourcesList(apiResourceSearchQuery, !isReadOnly);
 
     const {
         data: selectedAPIResource,
@@ -104,7 +119,9 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     } = useAPIResourceDetails(selectedAPIResourceId);
 
     useEffect(() => {
-        getExistingAPIResources();
+        !isReadOnly 
+            ? getExistingAPIResources()
+            : null;
     }, [ role ]);
 
     /**
@@ -287,10 +304,13 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
      */
     const searchAPIResources: DebouncedFunc<(query: string) => void> = 
         useCallback(debounce((query: string) => {
-            setAPIResourceSearchQuery(`name co ${query}`);
+            setAPIResourceSearchQuery(
+                !isEmpty(query) 
+                    ? `name co ${query}` 
+                    : null
+            );
             mutateAPIResourcesListFetchRequest().finally(() => {
                 setAPIResourcesSearching(false);
-                setAPIResourceSearchQuery(undefined);
             });
         }, RoleConstants.DEBOUNCE_TIMEOUT), []);
 
@@ -298,7 +318,9 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
      * Handles the selection of an API resource.
      */
     const onAPIResourceSelected = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
+        event.preventDefault();
         setSelectedAPIResourceId(data.value.toString());
+        setAPIResourceSearchQuery(undefined);
     };
 
     /**
@@ -341,105 +363,157 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         }));
     };
 
+    const editablePermissionList = (): ReactNode => (
+        <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={ 2 }>
+            <Grid xs={ 8 }>
+                <Form
+                    id={ componentId } 
+                    uncontrolledForm={ false } 
+                    onSubmit={ undefined }
+                >
+                    <Field.Dropdown
+                        search
+                        selection
+                        selectOnNavigation={ false }
+                        ariaLabel="assignedApplication"
+                        name="assignedApplication"
+                        label={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
+                            "apiResource.label") }
+                        options={ apiResourcesListOptions }
+                        data-componentid={ `${componentId}-typography-font-family-dropdown` }
+                        placeholder={ t("console:manage.features.roles.addRoleWizard." +
+                            "forms.rolePermission.apiResource.placeholder") }
+                        noResultsMessage={
+                            isAPIResourcesListFetchRequestLoading
+                                ? t("common:searching")
+                                : t("common:noResultsFound")
+                        }
+                        loading={ isAPIResourcesSearching }
+                        onSearchChange={ onSearchChangeAPIResources }
+                        onChange={ onAPIResourceSelected }
+                    />
+                </Form>
+            </Grid>
+            <Grid xs={ 12 }>
+                {
+                    selectedAPIResources?.length > 0 
+                        ? (
+                            <div className="role-permission-list field">
+                                <label className="form-label">
+                                    { t("console:manage.features.roles.addRoleWizard." +
+                                        "forms.rolePermission.permissions.label") }
+                                </label>
+                                <EmphasizedSegment
+                                    className="mt-2"
+                                    data-componentid={ componentId }
+                                    basic
+                                    loading={ 
+                                        selectedAPIResourceId &&
+                                        (isSelectedAPIResourceFetchRequestLoading 
+                                            || isSelectedAPIResourceFetchRequestValidating) 
+                                    }
+                                >
+                                    {
+                                        selectedAPIResources?.map((apiResource: APIResourceInterface) => {
+                                            return (
+                                                <RoleAPIResourcesListItem 
+                                                    key={ apiResource?.id }
+                                                    apiResource={ apiResource }
+                                                    onChangeScopes={ onChangeScopes }
+                                                    onRemoveAPIResource={ onRemoveAPIResource }
+                                                    initialSelectedPermissions={ initialSelectedPermissions?.find(
+                                                        (selectedPermission: SelectedPermissionsInterface) =>
+                                                            selectedPermission.apiResourceId === apiResource?.id)
+                                                        ?.scopes
+                                                    }
+                                                    selectedPermissions={ selectedPermissions?.find(
+                                                        (selectedPermission: SelectedPermissionsInterface) =>
+                                                            selectedPermission.apiResourceId === apiResource?.id)
+                                                        ?.scopes
+                                                    }
+                                                /> 
+                                            );
+                                        })
+                                    }
+                                </EmphasizedSegment>
+                            </div>
+                        ) : null
+                }
+            </Grid>
+        </Grid>
+    );
+
+    const readOnlyPermissionList = (): ReactNode => (
+        <Autocomplete
+            readOnly
+            multiple
+            options={ role?.permissions ?? [] }
+            defaultValue={ role?.permissions ?? [] }
+            getOptionLabel={ (scope: RolePermissionInterface) => scope.display }
+            renderInput={ (params: AutocompleteRenderInputParams) => (
+                <TextField
+                    { ...params }
+                    data-componentid={ `${componentId}-textfield` }
+                />
+            ) }
+            renderTags={ (
+                value: RolePermissionInterface[], 
+                getTagProps: AutocompleteRenderGetTagProps
+            ) => value.map((option: RolePermissionInterface, index: number) => (
+                <RenderChip 
+                    { ...getTagProps({ index }) }
+                    key={ index }
+                    className="pt-5 m-1"
+                    primaryText={ option.display }
+                    secondaryText={ option.value }
+                    option={ option }
+                    activeOption={ null }
+                    setActiveOption={ () => null }
+                    variant="solid"
+                />
+            )) }
+        />
+    );
+
     return (
         <EmphasizedSegment padded="very">
             <Grid xs={ 8 }>
                 <Heading as="h4">
                     { t("console:manage.features.roles.edit.permissions.heading") }
                 </Heading>
-                <Heading as="h6" color="grey" subHeading className="mb-5">
-                    { t("console:manage.features.roles.edit.permissions.subHeading") }
-                </Heading>
+                {
+                    isReadOnly ? (
+                        <Heading as="h6" color="grey" subHeading className="mb-5">
+                            { t("console:manage.features.roles.edit.permissions.readOnlySubHeading") }
+                        </Heading>
+                    ) : (
+                        <Heading as="h6" color="grey" subHeading className="mb-5">
+                            { t("console:manage.features.roles.edit.permissions.subHeading") }
+                        </Heading>
+                    )
+                }
             </Grid>
-            <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={ 2 }>
-                <Grid xs={ 8 }>
-                    <Form
-                        id={ componentId } 
-                        uncontrolledForm={ false } 
-                        onSubmit={ undefined }
+            {
+                isReadOnly ? readOnlyPermissionList() : editablePermissionList()
+            }
+            {
+                !isReadOnly && (
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        size="small"
+                        className="mt-5"
+                        loading={ isSubmitting }
+                        disabled={ isReadOnly }
+                        onClick={ () => {
+                            updateRolePermissions();
+                        } }
+                        data-componentid={ `${ componentId }-update-button` }
                     >
-                        <Field.Dropdown
-                            ariaLabel="assignedApplication"
-                            name="assignedApplication"
-                            label={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
-                                "apiResource.label") }
-                            options={ apiResourcesListOptions }
-                            search
-                            data-componentid={ `${componentId}-typography-font-family-dropdown` }
-                            placeholder={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
-                                "apiResource.placeholder") }
-                            noResultsMessage={
-                                isAPIResourcesListFetchRequestLoading
-                                    ? t("common:searching")
-                                    : t("common:noResultsFound")
-                            }
-                            loading={ isAPIResourcesSearching }
-                            onSearchChange={ onSearchChangeAPIResources }
-                            onChange={ onAPIResourceSelected }
-                        />
-                    </Form>
-                </Grid>
-                <Grid xs={ 12 }>
-                    {
-                        selectedAPIResources?.length > 0 
-                            ? (
-                                <div className="role-permission-list field">
-                                    <label className="form-label">
-                                        { t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
-                                            "permissions.label") }
-                                    </label>
-                                    <EmphasizedSegment
-                                        className="mt-2"
-                                        data-componentid={ componentId }
-                                        basic
-                                        loading={ 
-                                            selectedAPIResourceId &&
-                                            (isSelectedAPIResourceFetchRequestLoading 
-                                                || isSelectedAPIResourceFetchRequestValidating) 
-                                        }
-                                    >
-                                        {
-                                            selectedAPIResources?.map((apiResource: APIResourceInterface) => {
-                                                return (
-                                                    <RoleAPIResourcesListItem 
-                                                        key={ apiResource?.id }
-                                                        apiResource={ apiResource }
-                                                        onChangeScopes={ onChangeScopes }
-                                                        onRemoveAPIResource={ onRemoveAPIResource }
-                                                        initialSelectedPermissions={ initialSelectedPermissions?.find(
-                                                            (selectedPermission: SelectedPermissionsInterface) =>
-                                                                selectedPermission.apiResourceId === apiResource?.id)
-                                                            ?.scopes
-                                                        }
-                                                        selectedPermissions={ selectedPermissions?.find(
-                                                            (selectedPermission: SelectedPermissionsInterface) =>
-                                                                selectedPermission.apiResourceId === apiResource?.id)
-                                                            ?.scopes
-                                                        }
-                                                    /> 
-                                                );
-                                            })
-                                        }
-                                    </EmphasizedSegment>
-                                </div>
-                            ) : null
-                    }
-                </Grid>
-            </Grid>
-            <Button
-                color="primary"
-                variant="contained"
-                size="small"
-                className="mt-5"
-                loading={ isSubmitting }
-                disabled={ isReadOnly }
-                onClick={ () => {
-                    updateRolePermissions();
-                } }
-                data-componentid={ `${ componentId }-update-button` }
-            >
-                { t("common:update") }
-            </Button>
+                        { t("common:update") }
+                    </Button>
+                )
+            }
         </EmphasizedSegment>
     );
 };

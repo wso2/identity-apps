@@ -877,7 +877,7 @@
                                     >
                                         <img
                                             class="ui image"
-                                            src="libs/themes/default/assets/images/icons/fingerprint.svg"
+                                            src="libs/themes/default/assets/images/authenticators/fido-passkey-black.svg"
                                             alt="Fido Logo"
                                             role="presentation" />
                                         <span>
@@ -1335,9 +1335,15 @@
                 });
 
                 $(elem).addClass(linkClicked);
-                document.location = "<%=commonauthURL%>?idp=" + key + "&authenticator=" + value +
-                    "&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>" +
-                    "<%=multiOptionURIParam%>";
+
+                var baseLocation = "<%=commonauthURL%>?idp=" + key + "&authenticator=" + value +
+                    "&sessionDataKey=<%=Encode.forUriComponent(request.getParameter("sessionDataKey"))%>";
+
+                if ("<%=username%>" !== "null" && "<%=username%>".length > 0) {
+                    document.location = baseLocation + "&username=" + "<%=Encode.forUriComponent(username)%>" + "<%=multiOptionURIParam%>";
+                } else {
+                    document.location = baseLocation + "<%=multiOptionURIParam%>";
+                }
             }
         }
 

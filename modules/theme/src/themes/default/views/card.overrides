@@ -155,7 +155,7 @@
                 white-space: normal;
             }
         }
-        .description {
+        .settings-description {
             height: 62px;
             display: -webkit-box;
             -webkit-line-clamp: 2;

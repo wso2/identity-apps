@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -482,7 +482,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                         <Grid.Column width={ 1 } className="first-column">
                             <List.Content floated="left">
                                 <GenericIcon
-                                    icon={ getMFAIcons().fingerprint }
+                                    icon={ getMFAIcons().passkey }
                                     size="mini"
                                     twoTone={ true }
                                     transparent={ true }
@@ -668,7 +668,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                     <>
                         <p style={ { fontSize: "12px" } }>
                             <Icon color="grey" floated="left" name="info circle" />
-                            You don&apos;t have any security key/biometrics registered yet.
+                            You don&apos;t have any passkey enrolled yet.
                         </p>
                     </>
                 ) }

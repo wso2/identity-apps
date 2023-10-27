@@ -1,5 +1,20 @@
 # @wso2is/identity-apps-core
 
+## 2.0.33
+
+### Patch Changes
+
+- [#4156](https://github.com/wso2/identity-apps/pull/4156) [`3d726abaa2`](https://github.com/wso2/identity-apps/commit/3d726abaa2fe38081c647bec22d8333af8b48bb8) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Integrate FIDO passkey enrollment during the authentication process, enabling its configuration as a primary, secondary factor along with giving prominence to "Passkey" while reducing the emphasis on "Security Key/Biometrics"
+
+- Updated dependencies [[`3d726abaa2`](https://github.com/wso2/identity-apps/commit/3d726abaa2fe38081c647bec22d8333af8b48bb8)]:
+  - @wso2is/theme@2.0.26
+
+## 2.0.32
+
+### Patch Changes
+
+- [#4370](https://github.com/wso2/identity-apps/pull/4370) [`22b495e58b`](https://github.com/wso2/identity-apps/commit/22b495e58bfb4ad2566cc01eff989b571d6067a5) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in SMS OTP page
+
 ## 2.0.31
 
 ### Patch Changes

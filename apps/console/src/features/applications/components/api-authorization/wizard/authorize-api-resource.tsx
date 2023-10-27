@@ -36,12 +36,13 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Grid, Header, Modal } from "semantic-ui-react";
 import { useAPIResources } from "../../../../api-resources/api";
 import { APIResourcesConstants } from "../../../../api-resources/constants";
 import { APIResourceInterface, APIResourcePermissionInterface } from "../../../../api-resources/models";
+import { AppState } from "../../../../core/store";
 import useScopesOfAPIResources from "../../../api/use-scopes-of-api-resources";
 import { Policy, PolicyInfo, policyDetails } from "../../../constants/api-authorization";
 import { ApplicationTemplateIdTypes } from "../../../models";
@@ -85,6 +86,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
     const [ submitForm, setSubmitForm ] = useTrigger();
+    const productName: string = useSelector((state: AppState) => state.config.ui.productName);
 
     const [ allAPIResourcesListData, setAllAPIResourcesListData ] = useState<APIResourceInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -497,7 +499,8 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                         t(
                                                             "extensions:develop.applications.edit.sections." +
                                                             "apiAuthorization.sections.apiSubscriptions.wizards." +
-                                                            "authorizeAPIResource.rbacPolicyMessage"
+                                                            "authorizeAPIResource.rbacPolicyMessage",
+                                                            { productName }
                                                         ) 
                                                     }
                                                     disabled={ 

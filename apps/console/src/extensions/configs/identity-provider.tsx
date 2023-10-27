@@ -42,7 +42,7 @@ import { SIWEAuthenticationProviderCreateWizard } from "../identity-provider-tem
  */
 export class IdentityProviderExtensionConstants {
 
-    public static readonly FIDO_AUTHENTICATOR_DISPLAY_NAME: string = "FIDO2";
+    public static readonly FIDO_AUTHENTICATOR_DISPLAY_NAME: string = "Passkey";
 }
 
 export const identityProviderConfig: IdentityProviderConfig = {
@@ -79,7 +79,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
             },
             isComingSoon: false,
             isEnabled: true,
-            useAuthenticatorsAPI: true
+            useAuthenticatorsAPI: false
         },
         [ IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: {
             content: {

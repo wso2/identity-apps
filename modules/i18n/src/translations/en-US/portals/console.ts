@@ -1391,10 +1391,10 @@ export const console: ConsoleNS = {
                                             usernameless: {
                                                 description: "Enable users to log in using a passkey, security key or "
                                                     + "biometrics.",
-                                                heading: "Add Security Key/Biometrics login",
-                                                info: "To sign in with passwordless login, your users "
-                                                    + "should have their FIDO2 security keys or biometrics "
-                                                    + "registered via My Account."
+                                                heading: "Add Passkey Login",
+                                                info: "On-the-fly passkey enrollment is available exclusively " +
+                                                "for FIDO2 supported passkeys and further users wishing to enroll " +
+                                                "multiple passkeys, they must do so via MyAccount."
                                             },
                                             emailOTP: {
                                                 description: "Enable additional authentication layer with Email based OTP.",
@@ -3647,6 +3647,16 @@ export const console: ConsoleNS = {
                                     invalid: "Allowed OTP resend attempt count should be an integer.",
                                     range: "Allowed OTP resend attempt count should be between 0 & 100."
                                 }
+                            }
+                        },
+                        fido2: {
+                            allowProgressiveEnrollment: {
+                                label: "Allow passkey progressive enrollment",
+                                hint: "Please clear this checkbox to disable passkey progressive enrollment."
+                            },
+                            allowUsernamelessAuthentication: {
+                                label: "Allow passkey usernameless authentication",
+                                hint: "Please clear this checkbox to disable usernameless authentication."
                             }
                         },
                         facebook: {
@@ -9380,7 +9390,7 @@ export const console: ConsoleNS = {
                         title: "Add a new OIDC Scope"
                     },
                     emptySearch: {
-                        action: "View all",
+                        action: "Clear search query",
                         subtitles: {
                             0: "We couldn't find the scope you searched for.",
                             1: "Please try a different name."
@@ -9469,7 +9479,7 @@ export const console: ConsoleNS = {
                         fields: {
                             emailDomains: {
                                 label : "Email Domains",
-                                placeholder: "Enter emial domains",
+                                placeholder: "Enter email domains",
                                 hint: "Enter the email domains you wish to map to the organization. Separate multiple domains by hitting enter and typing the next domain."
                             },
                             organizationName: {
@@ -9479,6 +9489,9 @@ export const console: ConsoleNS = {
                                 hint: "Enter the name of the organization you wish to add the domain mapping."
                             }
                         }
+                    },
+                    buttons: {
+                        assign: "Assign"
                     }
                 },
                 emailDomains: {
@@ -9494,7 +9507,7 @@ export const console: ConsoleNS = {
                         fields: {
                             emailDomains: {
                                 label : "Email Domains",
-                                placeholder: "Enter emial domains",
+                                placeholder: "Enter email domains",
                                 hint: "Enter the email domains you wish to map to the organization. Separate multiple domains by hitting enter and typing the next domain."
                             },
                             organizationName: {
@@ -9511,56 +9524,56 @@ export const console: ConsoleNS = {
                             message: "Adding unsuccessful"
                         },
                         success: {
-                            description: "Email domains added successfully",
+                            description: "Email domains added successfully.",
                             message: "Added successfully"
                         }
                     },
                     disableEmailDomainDiscovery: {
                         error: {
-                            description: "An error occurred while disabling email domain discovery",
+                            description: "An error occurred while disabling email domain discovery.",
                             message: "Disabling unsuccessful"
                         },
                         success: {
-                            description: "Successfully disabled email domain discovery",
+                            description: "Successfully disabled email domain discovery.",
                             message: "Disabled successfully"
                         }
                     },
                     enableEmailDomainDiscovery: {
                         error: {
-                            description: "An error occurred while enabling email domain discovery",
+                            description: "An error occurred while enabling email domain discovery.",
                             message: "Enabling unsuccessful"
                         },
                         success: {
-                            description: "Successfully enabled email domain discovery",
+                            description: "Successfully enabled email domain discovery.",
                             message: "Enabled successfully"
                         }
                     },
                     fetchOrganizationDiscoveryAttributes: {
                         error: {
-                            description: "An error occurred while fetching the organization discovery attributes",
+                            description: "An error occurred while fetching the organization discovery attributes.",
                             message: "Retrieval unsuccessful"
                         }
                     },
                     getEmailDomainDiscovery: {
                         error: {
-                            description: "An error occurred while retrieving email domain discovery configuration",
+                            description: "An error occurred while retrieving email domain discovery configuration.",
                             message: "Retrieval unsuccessful"
                         }
                     },
                     getOrganizationListWithDiscovery: {
                         error: {
-                            description: "An error occurred while getting the organization list with discovery attributes",
+                            description: "An error occurred while getting the organization list with discovery attributes.",
                             message: "Retrieval unsuccessful"
                         }
                     },
                     updateOrganizationDiscoveryAttributes: {
                         error: {
-                            description: "An error occurred while updating the organization discovery attributes",
-                            message: "Updated unsuccessful"
+                            description: "An error occurred while updating the organization discovery attributes.",
+                            message: "Update unsuccessful"
                         },
                         success: {
-                            description: "Successfully updated the organization discovery attributes",
-                            message: "Updated successful"
+                            description: "Successfully updated the organization discovery attributes.",
+                            message: "Update successful"
                         }
                     }
                 },
@@ -10406,6 +10419,7 @@ export const console: ConsoleNS = {
                     },
                     permissions: {
                         heading: "Assigned Permissions",
+                        readOnlySubHeading: "View the assigned permissions of the role.",
                         removedPermissions: "Removed Permissions",
                         subHeading: "Manage assigned permissions in the role."
                     }
@@ -10419,8 +10433,12 @@ export const console: ConsoleNS = {
                         actions: "Actions",
                         audience: "Audience",
                         lastModified: "Modified Time",
-                        managedBy: {
-                            label: "Managed by",
+                        managedByApp: {
+                            label: "Can be used only in the application: ",
+                            header: "Managed By"
+                        },
+                        managedByOrg: {
+                            label: "Can be used within the organization: ",
                             header: "Managed By"
                         },
                         name: "Role"
@@ -12438,6 +12456,7 @@ export const console: ConsoleNS = {
                 title: "Welcome, {{firstName}}"
             },
             roles: {
+                alternateSubTitle: "View and manage roles.",
                 subTitle: "Create and manage roles, assign permissions for roles.",
                 title: "Roles"
             },

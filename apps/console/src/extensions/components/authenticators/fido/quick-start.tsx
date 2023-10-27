@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,8 +30,10 @@ import {
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import BuildLoginFlowIllustration from "./assets/build-login-flow.png";
-import CustomizeStepsIllustration from "./assets/customize-steps.png";
+import BuildLoginFlowIllustration from 
+    "../../../../features/connections/components/authenticators/fido/assets/build-login-flow.png";
+import CustomizeStepsIllustration from 
+    "../../../../features/connections/components/authenticators/fido/assets/customize-steps.png";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../component-extensions";
 import ApplicationSelectionModal from "../../shared/application-selection-modal";
 
@@ -77,7 +79,7 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                         >
                             Choose the <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
                                 application </Link>
-                            for which you want to set up FIDO2 login.
+                            for which you want to set up passkey login.
                         </Trans>
                     </Text>
                 </>
@@ -91,8 +93,8 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                         <Trans
                             i18nKey={ "extensions:develop.identityProviders.fido.quickStart.steps.selectFIDO.content" }
                         >
-                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add FIDO2
-                            login</strong> to configure a basic FIDO flow.
+                            Go to <strong>Sign-in Method</strong> tab and click on <strong>Add Passkey
+                            Login</strong> to configure a basic passkey flow.
                         </Trans>
                     </Text>
                     <GenericIcon inline transparent icon={ BuildLoginFlowIllustration } size="huge"/>
@@ -100,7 +102,7 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
             ),
             stepTitle: (
                 <Trans i18nKey="extensions:develop.identityProviders.fido.quickStart.steps.selectFIDO.heading">
-                    Select <strong>Add FIDO2 login</strong>
+                    Select <strong>Add Passkey Login</strong>
                 </Trans>
             )
         },

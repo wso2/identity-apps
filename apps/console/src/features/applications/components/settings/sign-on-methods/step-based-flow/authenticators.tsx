@@ -224,7 +224,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                             The second-factor authenticators can only be used if{ " " }
                                         <Code withBackground>Username & Password</Code>,{ " " }
                                         <Code withBackground>Social Login</Code>,
-                                        <Code withBackground>Security Key/Biometrics</Code>
+                                        <Code withBackground>Passkey</Code>
                                             or any other handlers that can handle these factors are
                                             present in a previous step.
                                     </Trans>

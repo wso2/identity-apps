@@ -1,5 +1,25 @@
 # @wso2is/i18n
 
+## 2.0.23
+
+### Patch Changes
+
+- [#4381](https://github.com/wso2/identity-apps/pull/4381) [`9566504a92`](https://github.com/wso2/identity-apps/commit/9566504a9270c7805af809ea1087a95d53d338fb) Thanks [@Rashmini](https://github.com/Rashmini)! - Improve organization discovery feature
+
+- Updated dependencies [[`3d726abaa2`](https://github.com/wso2/identity-apps/commit/3d726abaa2fe38081c647bec22d8333af8b48bb8)]:
+  - @wso2is/core@2.0.9
+
+## 2.0.22
+
+### Patch Changes
+
+- [#4349](https://github.com/wso2/identity-apps/pull/4349) [`825f22c6cb`](https://github.com/wso2/identity-apps/commit/825f22c6cbc2d68e5d574e120806ab557fb12e13) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with OIDC scope list search
+
+* [#4365](https://github.com/wso2/identity-apps/pull/4365) [`a06dc54272`](https://github.com/wso2/identity-apps/commit/a06dc54272bce7720ee51e49be63f9c175cec4c2) Thanks [@Rashmini](https://github.com/Rashmini)! - Add minor improvement to org-discovery feature
+
+* Updated dependencies [[`72b6c71250`](https://github.com/wso2/identity-apps/commit/72b6c71250161090c90ad46858a068316018e05c), [`15f2bb0341`](https://github.com/wso2/identity-apps/commit/15f2bb0341d9f1b52f65a13e2074d220799c825e)]:
+  - @wso2is/core@2.0.8
+
 ## 2.0.21
 
 ### Patch Changes

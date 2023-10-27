@@ -1587,7 +1587,17 @@ export interface ConsoleNS {
                                     range: string;
                                 };
                             };
-                        }
+                        };
+                        fido2: {
+                            allowProgressiveEnrollment: {
+                                hint: string;
+                                label: string;
+                            };
+                            allowUsernamelessAuthentication: {
+                                hint: string;
+                                label: string;
+                            };
+                        };
                         facebook: {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;
@@ -3310,6 +3320,9 @@ export interface ConsoleNS {
                                 hint: string;
                             }
                         }
+                    },
+                    buttons: {
+                        assign: string;
                     }
                 },
                 emailDomains: {
@@ -5404,6 +5417,7 @@ export interface ConsoleNS {
                     permissions: {
                         heading: string;
                         subHeading: string;
+                        readOnlySubHeading: string;
                         removedPermissions: string;
                     };
                 };
@@ -5416,7 +5430,11 @@ export interface ConsoleNS {
                         actions: string;
                         lastModified: string;
                         name: string;
-                        managedBy: {
+                        managedByOrg: {
+                            label: string;
+                            header: string;
+                        };
+                        managedByApp: {
                             label: string;
                             header: string;
                         };

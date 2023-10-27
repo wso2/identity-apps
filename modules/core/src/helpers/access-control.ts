@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,18 +18,19 @@
 
 import isEmpty from "lodash-es/isEmpty";
 import { FeatureAccessConfigInterface } from "../models";
+import { OrganizationType } from "../models/organization";
 import { AuthenticateUtils } from "../utils";
 
 /**
  * Checks if the feature is enabled.
  *
- * @param {FeatureAccessConfigInterface} feature - Evaluating feature.
- * @param {string | string[]} key - Feature key/keys to check.
+ * @param feature -`FeatureAccessConfigInterface` Evaluating feature.
+ * @param  key -`string | string[]` Feature key/keys to check.
  *
- * @return {boolean} True is feature is enabled and false if not.
+ * @returns `boolean` True is feature is enabled and false if not.
  */
 export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: string | string[]): boolean => {
-    const isDefined = feature?.disabledFeatures
+    const isDefined: boolean = feature?.disabledFeatures
         && Array.isArray(feature.disabledFeatures)
         && feature.disabledFeatures.length > 0;
 
@@ -42,7 +43,7 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
     }
 
     if (key instanceof Array) {
-        return !key.some((item) => feature.disabledFeatures.includes(item));
+        return !key.some((item: string) => feature.disabledFeatures.includes(item));
     }
 
     return true;
@@ -51,23 +52,55 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
 /**
  * Checks if the required scopes are available to perform the desired CRUD operation.
  *
- * @param {FeatureAccessConfigInterface} feature - Evaluating feature.
- * @param {string[]} scopes - Set of scopes to check.
- * @param {string} allowedScopes - Set of allowed scopes.
+ * @param feature - `FeatureAccessConfigInterface` Evaluating feature.
+ * @param scopes - `string[]` Set of scopes to check.
+ * @param allowedScopes - `string` Set of allowed scopes.
+ * @param organzationType - `string` Organization type. This should be equals to the `OrganizationType` enum in
+ * `modules/common/src/constants/organization-constants.ts`.
+ * @param isLegacyRuntimeDisabled - `boolean` Is legacy runtime disabled. This is used to ensure backward compatibility.
  *
- * @return {boolean} True is scopes are enough and false if not.
+ * @returns `boolean` True is scopes are enough and false if not.
  */
 export const hasRequiredScopes = (
-    feature: FeatureAccessConfigInterface, scopes: string[], allowedScopes: string
+    feature: FeatureAccessConfigInterface, 
+    scopes: string[], 
+    allowedScopes: string, 
+    organzationType?: string, 
+    isLegacyRuntimeEnabled?: boolean
 ): boolean => {
-    const isDefined = feature?.scopes && !isEmpty(feature.scopes) && scopes && !isEmpty(scopes);
+    const isDefined: boolean = feature?.scopes && !isEmpty(feature.scopes) && scopes && !isEmpty(scopes);
 
     if (!isDefined) {
         return true;
     }
 
     if (scopes instanceof Array) {
-        return scopes.every((scope) => AuthenticateUtils.hasScope(scope, allowedScopes));
+        if (isLegacyRuntimeEnabled ||
+            !organzationType ||
+            organzationType === OrganizationType.SUPER_ORGANIZATION || 
+            organzationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+            organzationType === OrganizationType.TENANT) {
+    
+            return scopes.every((scope: string) => AuthenticateUtils.hasScope(scope, allowedScopes));
+    
+        } else {
+            /**
+             * If the organization type is `SUBORGANIZATION`, the `internal_` scopes should be replaced with
+             * `internal_org_` scopes.
+             */
+            const interal: string = "internal_";
+            const internalOrg: string = "internal_org_";
+            const internalLogin: string = "internal_login";
+
+            return scopes.every((scope: string) => {
+                // If the scope begins with `internal_`, replace it with `internal_org_`.
+                if (scope.startsWith(interal) && scope !== internalLogin) {
+                    scope = scope.replace(interal, internalOrg);
+                }
+
+                return AuthenticateUtils.hasScope(scope, allowedScopes); 
+            });
+        }
     }
 
     return true;
@@ -79,23 +112,35 @@ export const hasRequiredScopes = (
  * @remarks
  * Currently the check passes if at least one feature has the required read permissions.
  *
- * @param {FeatureAccessConfigInterface} featureConfig - Feature configuration.
+ * @param featureConfig - `FeatureAccessConfigInterface` Feature configuration.
+ * @param organzationType - `string` Organization type. This should be equals to the `OrganizationType` enum in
+ * `modules/common/src/constants/organization-constants.ts`.
+ * @param isLegacyRuntimeDisabled - `boolean` Is legacy runtime disabled. This is used to ensure backward compatibility.
  *
- * @return {boolean} True is access is granted, false if not.
+ * @returns `boolean` True is access is granted, false if not.
  */
-export const isPortalAccessGranted = <T = {}>(featureConfig: T, allowedScopes: string): boolean => {
-    const isDefined = featureConfig && !isEmpty(featureConfig);
+export const isPortalAccessGranted = <T = unknown>(
+    featureConfig: T, 
+    allowedScopes: string, 
+    organzationType?: string, 
+    isLegacyRuntimeDisabled?: boolean
+): boolean => {
+    const isDefined: boolean = featureConfig && !isEmpty(featureConfig);
 
     if (!isDefined) {
         return true;
     }
 
-    let isAllowed = false;
+    let isAllowed: boolean = false;
 
     for (const value of Object.values(featureConfig)) {
         const feature: FeatureAccessConfigInterface = value;
 
-        if (hasRequiredScopes(feature, feature?.scopes?.read, allowedScopes)) {
+        if (hasRequiredScopes(feature, 
+            feature?.scopes?.read, 
+            allowedScopes, 
+            organzationType, 
+            isLegacyRuntimeDisabled)) {
             isAllowed = true;
 
             break;
@@ -105,61 +150,3 @@ export const isPortalAccessGranted = <T = {}>(featureConfig: T, allowedScopes: s
     return isAllowed;
 };
 
-/**
- * This is a temporary util method added to conditionally render the manage tab depending on the
- * scopes of the user.
- *
- * Git issue to track - https://github.com/wso2/product-is/issues/11319
- *
- * @param featureConfig
- * @param allowedScopes
- */
-export const hasRequiredScopesForAdminView = (featureConfig: any, allowedScopes: string): boolean => {
-
-    let feature = null;
-    let isAllowed = null;
-
-    for (const [ key, value ] of Object.entries(featureConfig)) {
-        feature = value;
-
-        if (value) {
-
-            if (key === "attributeDialects" || key === "userStores" || key === "roles") {
-
-                const hasReadAccess = hasRequiredManageScopes(feature, feature.scopes?.read, allowedScopes);
-                const hasUpdateAccess = hasRequiredManageScopes(feature, feature.scopes?.update, allowedScopes);
-
-                if (!(hasReadAccess && hasUpdateAccess)) {
-                    isAllowed = false;
-                }
-            }
-
-            isAllowed = hasRequiredManageScopes(feature, feature.scopes?.read, allowedScopes);
-        }
-    }
-
-    return isAllowed;
-};
-
-/**
- * This is a temporary util method added to specially handle the scopes of
- * "Application Developer" role.
- *
- * Git issue to track - https://github.com/wso2/product-is/issues/11319
- *
- * @param feature
- * @param scopes
- * @param allowedScopes
- */
-export const hasRequiredManageScopes = (
-    feature: FeatureAccessConfigInterface, scopes: string[], allowedScopes: string
-): boolean => {
-
-    let hasScope = true;
-
-    if (scopes instanceof Array) {
-        hasScope = scopes.every((scope) => AuthenticateUtils.hasScope(scope, allowedScopes));
-    }
-
-    return hasScope;
-};

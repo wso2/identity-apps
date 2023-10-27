@@ -371,7 +371,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             return;
         }
 
-        if(!applicationConfig.signInMethod.authenticatorSelection
+        if(applicationConfig.signInMethod.authenticatorSelection
+            .customAuthenticatorAdditionValidation && !applicationConfig.signInMethod.authenticatorSelection
             .customAuthenticatorAdditionValidation(authenticatorId, stepIndex, dispatch)) {
             return;
         }

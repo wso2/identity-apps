@@ -16,10 +16,14 @@
   ~ under the License.
 --%>
 
-<%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="com.google.gson.Gson" %>
 <%@ page import="java.io.File" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -30,6 +34,28 @@
 
 <%
     String authRequest = request.getParameter("data");
+
+    String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
+
+    if (StringUtils.isBlank(authAPIURL)) {
+        authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
+    } else {
+        // Resolve tenant domain for the authentication API URL.
+        authAPIURL = AuthenticationEndpointUtil.resolveTenantDomain(authAPIURL);
+    }
+    if (!authAPIURL.endsWith("/")) {
+        authAPIURL += "/";
+    }
+    authAPIURL += "context/" + Encode.forUriComponent(request.getParameter("sessionDataKey"));
+    String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
+    Gson gson = new Gson();
+    Map data = gson.fromJson(contextProperties, Map.class);
+    
+    boolean enablePasskeyProgressiveEnrollment = (boolean) data.get("FIDO.EnablePasskeyProgressiveEnrollment");
+%>
+
+<%!
+    private static final String MY_ACCOUNT = "/myaccount";
 %>
 
 <%-- Branding Preferences --%>
@@ -78,10 +104,10 @@
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection">
-            <div class="ui segment left aligned">
+            <div class="ui segment">
                 <div id="loader-bar" class="loader-bar"></div>
 
-                <h3 class="ui header">
+                <h3 class="ui header center aligned">
                     <span id="fido-header" data-testid="login-page-fido-heading">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification" )%>
                     </span>
@@ -103,7 +129,7 @@
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.failed.instruction" )%>
                                 </p>
                                 <div class="ui divider hidden"></div>
-                                <button class="ui button primary" id="initiateFlow" type="button" onclick="talkToDevice()"
+                                <button class="ui primary fluid large button" id="initiateFlow" type="button" onclick="talkToDevice()"
                                 data-testid="login-page-fido-proceed-button">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.proceed" )%>
                                 </button>
@@ -114,7 +140,14 @@
                         <div class="sixteen wide column">
                             <p>
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.registration.info" )%>
-                                <a target="_blank" id="my-account-link">My Account.</a>
+                                <% if(enablePasskeyProgressiveEnrollment){ %>
+                                    <a href="#" onClick="passkeyEnrollmentFlow()">
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.register" )%>
+                                    </a>
+                                <% } else { %>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.registration.option.info" )%>
+                                    <a target="_blank" id="my-account-link">My Account.</a>
+                                <% } %>
                             </p>
                             <p>
                                 <% if (supportEmail != null && !supportEmail.isEmpty()) { %>
@@ -124,27 +157,30 @@
                                     <a href="mailto:<%=supportEmail%>"><%=StringEscapeUtils.escapeHtml4(supportEmail)%></a>
                                 <% } %>
                             </p>
-                            <div class="ui divider hidden"></div>
-                            <div class="align-right buttons">
-                                <button class="ui button secondary" type="button" onclick="cancelFlow()"
+                            <div class="mt-4">
+                                <div class="buttons">
+                                    <button class="ui primary fluid large button" type="button" onclick="retry()" 
+                                    data-testid="login-page-fido-retry-button">
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.retry" )%>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <div class="buttons">
+                                    <button class="ui secondary fluid large button" type="button" onclick="cancelFlow()"
                                     data-testid="login-page-fido-cancel-button">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
-                                </button>
-                                <button class="ui button primary" type="button" onclick="retry()"
-                                data-testid="login-page-fido-retry-button">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.retry" )%>
-                                </button>
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div>
-
                     </div>
                 </div>
 
                 <form method="POST" action="<%=commonauthURL%>" id="form" onsubmit="return false;">
                     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
                     <input type="hidden" name="tokenResponse" id="tokenResponse" value="tmp val"/>
+                    <input type="hidden" name="scenario" id="scenario" value="tmp val"/>
                 </form>
             </div>
         </layout:component>
@@ -196,16 +232,17 @@
         });
     </script>
 
+    <%
+        String myaccountUrl = application.getInitParameter("MyAccountURL");
+        if (StringUtils.isEmpty(myaccountUrl)) {
+            myaccountUrl = ServiceURLBuilder.create().addPath(MY_ACCOUNT).build().getAbsolutePublicURL();
+        }
+    %>
+
     <script type="text/javascript">
         $(document).ready(function () {
-            var myaccountUrl = '<%=application.getInitParameter("MyAccountURL")%>';
 
-            if ("<%=tenantDomain%>" !== "" || "<%=tenantDomain%>" !== "null") {
-                myaccountUrl = myaccountUrl + "/t/" + "<%=tenantDomain%>";
-            }
-
-            $("#my-account-link").attr("href", myaccountUrl);
-
+            $("#my-account-link").attr("href", '<%=myaccountUrl%>');
             if(navigator ){
                 let userAgent = navigator.userAgent;
                 let browserName;
@@ -344,6 +381,13 @@
             var form = document.getElementById('form');
             var reg = document.getElementById('tokenResponse');
             reg.value = JSON.stringify({ errorCode: 400, message: fidoError });
+            form.submit();
+        }
+
+        function passkeyEnrollmentFlow(){
+            var form = document.getElementById('form');
+            var scenario = document.getElementById('scenario');
+            scenario.value = "INIT_FIDO_ENROLL";
             form.submit();
         }
 

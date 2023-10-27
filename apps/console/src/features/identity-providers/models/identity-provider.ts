@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { FunctionComponent, SVGProps } from "react";
 import { ApplicationBasicInterface } from "../../applications/models";
 import { GovernanceConnectorInterface } from "../../server-configurations/models";
@@ -935,4 +935,78 @@ export interface CertificatePatchRequestInterface {
      * Value of the certificate.
      */
     value: string;
+}
+
+/**
+ * Interface for FIDO Authenticator Form props.
+ */
+export interface FIDOAuthenticatorFormPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * The intended mode of the authenticator form.
+     * If the mode is "EDIT", the form will be used in the edit view and will rely on metadata for readonly states, etc.
+     * If the mode is "CREATE", the form will be used in the add wizards and will all the fields will be editable.
+     */
+    mode: AuthenticatorSettingsFormModes;
+    /**
+     * FIDO Authenticator metadata.
+     */
+    metadata: CommonAuthenticatorFormMetaInterface;
+    /**
+     * FIDO Authenticator configured initial values.
+     */
+    initialValues: CommonAuthenticatorFormInitialValuesInterface;
+    /**
+     * Callback for form submit.
+     * @param values - Resolved Form Values.
+     */
+    onSubmit: (values: CommonAuthenticatorFormInitialValuesInterface) => void;
+    /**
+     * Is readonly.
+     */
+    readOnly?: boolean;
+    /**
+     * Flag to trigger form submit externally.
+     */
+    triggerSubmit: boolean;
+    /**
+     * Flag to enable/disable form submit button.
+     */
+    enableSubmitButton: boolean;
+    /**
+     * Flag to show/hide custom properties.
+     * @remarks Not implemented ATM. Do this when needed.
+     */
+    showCustomProperties: boolean;
+    /**
+     * Specifies if the form is submitting.
+     */
+    isSubmitting?: boolean;
+}
+
+/**
+ * Form initial values interface.
+ */
+export interface FIDOAuthenticatorFormInitialValuesInterface {
+    /**
+     * Allow passkey progressive enrollment.
+     */
+    FIDO_EnablePasskeyProgressiveEnrollment: boolean;
+    /**
+     * Allow FIDO usernameless authentication
+     */
+    FIDO_EnableUsernamelessAuthentication: boolean;
+}
+
+/**
+ * Form fields interface.
+ */
+export interface FIDOAuthenticatorFormFieldsInterface {
+    /**
+     * Allow passkey progressive enrollment field.
+     */
+    FIDO_EnablePasskeyProgressiveEnrollment: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Allow FIDO usernameless authentication field.
+     */
+    FIDO_EnableUsernamelessAuthentication: CommonAuthenticatorFormFieldInterface;
 }

@@ -129,11 +129,11 @@ export interface ApplicationConfig {
     };
     signInMethod: {
         authenticatorSelection: {
-            customAuthenticatorAdditionValidation(
+            customAuthenticatorAdditionValidation ?: ( 
                 authenticatorID: string,
                 stepIndex: number,
                 dispatch: Dispatch
-            ): boolean;
+            ) => boolean;
             messages: {
                 secondFactorDisabled: ReactNode;
                 secondFactorDisabledInFirstStep: ReactNode;

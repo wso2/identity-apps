@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, TabPageLayout } from "@wso2is/react-components";
@@ -28,6 +27,7 @@ import { AppState, FeatureConfigInterface,getEmptyPlaceholderIllustrations, hist
 import { useAPIResourceDetails } from "../api";
 import { EditAPIResource } from "../components";
 import { APIResourcesConstants } from "../constants";
+import { APIResourceUtils } from "../utils/api-resource-utils";
 
 /**
  * Prop-types for the API resources page component.
@@ -75,8 +75,10 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
      * The following useEffect is used to handle if the user has the required scopes to update the API resource
      */
     useEffect(() => {
-        if (!hasRequiredScopes(
-            featureConfig?.apiResources, featureConfig?.apiResources?.scopes?.update, allowedScopes)) {
+        const updateForbidden: boolean = !APIResourceUtils.isAPIResourceUpdateAllowed(featureConfig, allowedScopes);
+        const isSytemAPIResource: boolean = APIResourceUtils.isSystemAPI(apiResourceData?.type);
+
+        if (updateForbidden || isSytemAPIResource) {
             setReadOnly(true);
         }
     }, [ apiResourceData ]);

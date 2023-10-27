@@ -19,8 +19,14 @@
 import {
     ArrowRightToBracketPencilIcon,
     BoltIcon,
+    BuildingIcon,
     EnvelopeGearIcon,
-    HierarchyIcon,
+    EnvelopeIcon,
+    EnvelopeMagnifyingGlassIcon,
+    LightbulbOnIcon,
+    LinearNodesIcon,
+    NodesIcon,
+    UserCircleDotIcon,
     UserGroupIcon
 } from "@oxygen-ui/react-icons";
 import { RouteInterface } from "@wso2is/core/models";
@@ -125,17 +131,6 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
-                        component: lazy(() => import("../../server-configurations/pages/governance-connectors")),
-                        exact: true,
-                        icon: null,
-                        id: "governanceConnectors",
-                        name: "console:manage.features.sidePanel.governanceConnectors",
-                        order: 11,
-                        path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS"),
-                        protected: true,
-                        showOnSidePanel: false
-                    },
-                    {
                         category: "console:develop.features.sidePanel.categories.application",
                         children: [
                             {
@@ -210,9 +205,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         component: lazy(() => import("../../connections/pages/connections")),
                         exact: true,
                         icon: {
-                            icon: identityProviderConfig?.useNewConnectionsView
-                                ? getSidePanelIcons().connections
-                                : getSidePanelIcons().identityProviders
+                            icon: <NodesIcon />
                         },
                         id: "identityProviders",
                         name: identityProviderConfig?.useNewConnectionsView
@@ -351,7 +344,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         component: lazy(() => import("../../oidc-scopes/pages/oidc-scopes")),
                         exact: true,
                         icon: {
-                            icon: getSidePanelIcons().scopes
+                            icon: <UserCircleDotIcon fill="black" className="icon" />
                         },
                         id: "oidcScopes",
                         name: "console:develop.features.sidePanel.oidcScopes",
@@ -381,7 +374,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         component: lazy(() => import("../../../features/organizations/pages/organizations")),
                         exact: true,
                         icon: {
-                            icon: <HierarchyIcon fill="black" />
+                            icon: <BuildingIcon />
                         },
                         id: "organizations",
                         name: "console:manage.features.sidePanel.organizations",
@@ -429,7 +422,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         }),
                         exact: true,
                         icon: {
-                            icon: <HierarchyIcon fill="black" />
+                            icon: <EnvelopeMagnifyingGlassIcon />
                         },
                         id: "organizationDiscovery",
                         name: "console:manage.features.sidePanel.emailDomainDiscovery",
@@ -458,7 +451,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                             import("../../../features/email-management/" + "pages/email-customization")
                         ),
                         exact: true,
-                        icon: { icon: getSidePanelIcons().emailTemplates },
+                        icon: { icon: <EnvelopeIcon fill="black" className="icon" /> },
                         id: "communication-management",
                         name: "Email Templates",
                         order: 14,
@@ -906,7 +899,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         featureStatus: "BETA",
                         featureStatusLabel: "common:beta",
                         icon: {
-                            icon: getSidePanelIcons().insights
+                            icon: <LightbulbOnIcon fill="black" className="icon" />
                         },
                         id: "insights",
                         name: "Insights",
@@ -924,7 +917,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ),
                         exact: true,
                         icon: {
-                            icon: getSidePanelIcons().insights
+                            icon: <LinearNodesIcon fill="black" className="icon" />
                         },
                         id: "analytics",
                         name: "Analytics",
@@ -1018,6 +1011,18 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         name: "console:manage.features.sidePanel.governanceConnectors",
                         order: 999,
                         path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() => import("../../server-configurations/pages/multi-attribute-login-edit")),
+                        exact: true,
+                        icon: null,
+                        id: "multiAttributeLogin",
+                        name: "console:manage.features.governanceConnectors.connectorCategories.accountManagement." +
+                        "connectors.multiattributeLoginHandler.friendlyName",
+                        order: 999,
+                        path: AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN"),
                         protected: true,
                         showOnSidePanel: false
                     }

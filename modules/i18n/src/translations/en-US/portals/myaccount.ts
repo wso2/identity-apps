@@ -828,74 +828,74 @@ export const myAccount: MyAccountNS = {
                 description: "You can use a <1>Passkey</1>, <1>FIDO2 Security Key</1> or <1>Biometrics</1> in " +
                     "your device to sign in to your account.",
                 form: {
-                    label: "Security Key/Biometric",
-                    placeholder: "Enter a name for the security key/biometrics",
-                    remove: "Remove the security key/biometrics",
-                    required: "Please enter a name for your security key/biometrics"
+                    label: "Passkey",
+                    placeholder: "Enter a name for the passkey",
+                    remove: "Remove the passkey",
+                    required: "Please enter a name for your passkey"
                 },
-                heading: "Security Key/Biometrics",
+                heading: "Passkey",
                 modals: {
                     deleteConfirmation: {
                         assertionHint: "Please confirm your action.",
-                        content: "This action is irreversible and will permanently delete the security key/biometrics.",
-                        description: "If you delete this security key/biometrics, you may not be " +
+                        content: "This action is irreversible and will permanently delete the passkey.",
+                        description: "If you delete this passkey, you may not be " +
                             "able to sign in to your account again. Please proceed with caution.",
                         heading: "Are you sure?"
                     },
                     deviceRegistrationErrorModal: {
-                        description: "The security key/biometrics registration was interrupted. "
+                        description: "The passkey enrollment was interrupted. "
                             + "If this was not intentional you "
                             + "may retry the flow.",
-                        heading: "Security Key/Biometric Registration Failed",
-                        tryWithOlderDevice: "You may also try again with an older security key/biometrics."
+                        heading: "Passkey enrollment Failed",
+                        tryWithOlderDevice: "You may also try again with an older passkey."
                     }
                 },
                 notifications: {
                     removeDevice: {
                         error: {
                             description: "{{description}}",
-                            message: "Error occurred while removing the security key/biometrics"
+                            message: "Error occurred while removing the passkey"
                         },
                         genericError: {
-                            description: "Error occurred while removing the security key/biometrics",
+                            description: "Error occurred while removing the passkey",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "The security key/biometrics was successfully removed from the list",
-                            message: "Your Security Key/Biometric Removed Successfully"
+                            description: "The passkey was successfully removed from the list",
+                            message: "Your Passkey Removed Successfully"
                         }
                     },
                     startFidoFlow: {
                         error: {
                             description: "{{description}}",
-                            message: "Error occurred while retrieving the security key/biometrics"
+                            message: "Error occurred while retrieving the passkey"
                         },
                         genericError: {
-                            description: "Error occurred while retrieving the security key/biometrics",
+                            description: "Error occurred while retrieving the passkey",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "The security key/biometrics was successfully registered and now you " +
+                            description: "The passkey was successfully enrolled and now you " +
                                 "can use it for authentication.",
-                            message: "Your Security Key/Biometric Registered Successfully"
+                            message: "Your Passkey Enrolled Successfully"
                         }
                     },
                     updateDeviceName: {
                         error: {
                             description: "{{description}}",
-                            message: "Error occurred while updating the security key/biometrics name"
+                            message: "Error occurred while updating the passkey name"
                         },
                         genericError: {
-                            description: "Error occurred while updating the security key/biometrics name",
+                            description: "Error occurred while updating the passkey name",
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "The name of your security key/biometrics was successfully updated",
-                            message: "Security Key/Biometric name updated successfully"
+                            description: "The name of your passkey was successfully updated",
+                            message: "Passkey name updated successfully"
                         }
                     }
                 },
-                tryButton: "Try with an older Security Key/Biometric"
+                tryButton: "Try with an older passkey"
             },
             smsOtp: {
                 descriptions: {

@@ -58,6 +58,10 @@ export interface APIResourceInterface {
      */
     requiresAuthorization?: boolean;
     /**
+     * Type of the API resource.
+     */
+    type?: string;
+    /**
      * List of scopes associate with the API resource.
      */
     scopes?: APIResourcePermissionInterface[],

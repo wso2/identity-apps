@@ -703,14 +703,14 @@ export const extensions: Extensions = {
                                     name: {
                                         emptyValidate: "Le nom de l'affichage ne peut pas être vide",
                                         label: "Afficher un nom",
-                                        hint: "Nom significatif pour identifier votre ressource API dans Asgardeo.",
+                                        hint: "Nom significatif pour identifier votre ressource API dans {{ productName }}.",
                                         placeholder: "API des réservations"
                                     },
                                     identifier: {
                                         emptyValidate: "L'identifiant ne peut pas être vide",
                                         alreadyExistsError: "L'identifiant existe déjà dans l'organisation.Veuillez en choisir un autre",
                                         invalid: "L'identifiant ne peut pas contenir d'espaces",
-                                        hint: "Nous vous recommandons d'utiliser une URI comme identifiant, mais vous n'avez pas besoin de rendre l'URI accessible au public car Asgardeo n'accèdera pas à votre API. Asgardeo utilisera cette valeur d'identifiant comme la réclamation d'audience(aud) dans les jetons JWT émis. <1>Ce champ devrait être unique;Une fois créé, il n'est pas modifiable.</1>",
+                                        hint: "Nous vous recommandons d'utiliser une URI comme identifiant, mais vous n'avez pas besoin de rendre l'URI accessible au public car {{ productName }} n'accèdera pas à votre API. {{ productName }} utilisera cette valeur d'identifiant comme la réclamation d'audience(aud) dans les jetons JWT émis. <1>Ce champ devrait être unique;Une fois créé, il n'est pas modifiable.</1>",
                                         label: "Identifiant",
                                         placeholder: "https://api.bookmyhotel.com"
                                     },
@@ -724,7 +724,7 @@ export const extensions: Extensions = {
                         authorization: {
                             stepTitle: "Autorisation",
                             form: {
-                                rbacMessage: "À l'heure actuelle, Asgardeo prend en charge exclusivement le contrôle d'accès basé sur les rôles (RBAC) pour l'autorisation.",
+                                rbacMessage: "À l'heure actuelle, {{ productName }} prend en charge exclusivement le contrôle d'accès basé sur les rôles (RBAC) pour l'autorisation.",
                                 fields: {
                                     authorize: {
                                         label: "Nécessite une autorisation",
@@ -920,7 +920,7 @@ export const extensions: Extensions = {
                                                 hint: "Sélectionnez la politique pour autoriser l'API pour l'application."
                                             }
                                         },
-                                        rbacPolicyMessage: "Cette ressource API nécessite l'autorisation et Asgardeo prend en charge exclusivement le contrôle d'accès basé sur les rôles (RBAC) pour l'autorisation.",
+                                        rbacPolicyMessage: "Cette ressource API nécessite l'autorisation et {{ productName }} prend en charge exclusivement le contrôle d'accès basé sur les rôles (RBAC) pour l'autorisation.",
                                         buttons: {
                                             finish: "Finir",
                                             cancel: "Annuler"
@@ -2726,12 +2726,12 @@ export const extensions: Extensions = {
             fido: {
                 quickStart: {
                     addLoginModal: {
-                        heading: "Ajouter FIDO2",
-                        subHeading: "Sélectionnez une application pour configurer la connexion FIDO2."
+                        heading: "Ajouter une connexion par mot de passe",
+                        subHeading: "Sélectionnez une application pour configurer la connexion par mot de passe."
                     },
-                    heading: "Guide de configuration FIDO2",
+                    heading: "Guide de configuration du mot de passe",
                     passkeys: {
-                        docLinkText: "FIDO2 Clé de sécurité/biométrie",
+                        docLinkText: "Clé d'accès FIDO2",
                         content:
                             "Les clés de passe fournissent une connexion sans mot de passe simple et sécurisée " +
                             "pour vos applications qui survit à la perte de l'appareil et fonctionne sur toutes " +
@@ -2747,19 +2747,20 @@ export const extensions: Extensions = {
                         selectApplication: {
                             content:
                                 "Choisissez l'<1>application</1> pour laquelle vous souhaitez configurer " +
-                                "la connexion FIDO2.",
+                                "la connexion par mot de passe.",
                             heading: "Sélectionner l'application"
                         },
                         selectFIDO: {
                             content:
-                                "Accédez à l'onglet <1>Méthode de connexion</1> et cliquez sur <3>Ajouter une " +
-                                "connexion FIDO2</3> pour configurer un flux FIDO de base.",
-                            heading: "Sélectionnez <1>Ajouter une connexion FIDO2</1>"
+                                "Accédez à l'onglet <1>Méthode de connexion</1> et cliquez sur " +
+                                "<3>Ajouter une connexion par clé d'accès</3> pour configurer " +
+                                " un flux de clé d'accès de base.",
+                            heading: "Sélectionnez <1>Ajouter une connexion par mot de passe</1>."
                         }
                     },
                     subHeading:
-                        "Suivez les instructions ci-dessous pour configurer la connexion FIDO2 dans votre flux " +
-                        "de connexion."
+                        "Suivez les instructions ci-dessous pour configurer la connexion par mot de " +
+                        "passe dans votre flux de connexion."
                 }
             },
             magicLink: {

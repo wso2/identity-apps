@@ -36,10 +36,12 @@ import { RoleAudienceTypes } from "../constants";
 import {
     CreateRoleFormData,
     CreateRoleInterface,
+    CreateRolePermissionInterface,
     CreateRoleStateInterface,
     CreateRoleStepsFormTypes,
     SelectedPermissionsInterface
 } from "../models";
+import { ScopeInterface } from "../models/apiResources";
 
 /**
  * Interface which captures create role props.
@@ -88,6 +90,10 @@ const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: CreateRoleP
 
             const roleAudience: string = stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ].roleAudience;
             const organizationId: string = store.getState().organization.organization.id;
+            const selectedPermissionsList: CreateRolePermissionInterface[] = selectedPermissions?.flatMap(
+                (permission: SelectedPermissionsInterface) => (
+                    permission?.scopes?.map((scope: ScopeInterface) => ({ value: scope?.name })) || []
+                )) || [];
     
             const roleData: CreateRoleInterface = {
                 audience: roleAudience === RoleAudienceTypes.ORGANIZATION
@@ -100,7 +106,7 @@ const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: CreateRoleP
                         value: stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ].assignedApplicationId
                     },
                 displayName: stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ].roleName,
-                permissions: [],
+                permissions: selectedPermissionsList,
                 schemas: []
             };
     

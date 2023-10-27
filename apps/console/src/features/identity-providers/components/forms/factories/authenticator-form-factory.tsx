@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,6 +32,7 @@ import {
     AppleAuthenticatorForm,
     CommonAuthenticatorForm,
     EmailOTPAuthenticatorForm,
+    FIDOAuthenticatorForm,
     FacebookAuthenticatorForm,
     GithubAuthenticatorForm,
     GoogleAuthenticatorForm,
@@ -186,6 +187,21 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         case IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID:
             return (
                 <SMSOTPAuthenticatorForm
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    triggerSubmit={ triggerSubmit }
+                    enableSubmitButton={ enableSubmitButton }
+                    data-testid={ testId }
+                    showCustomProperties={ showCustomProperties }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID:
+            return (
+                <FIDOAuthenticatorForm
+                    mode={ mode }
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }

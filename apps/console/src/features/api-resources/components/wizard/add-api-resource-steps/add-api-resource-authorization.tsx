@@ -21,7 +21,8 @@ import { Field, Form } from "@wso2is/form";
 import { DocumentationLink, Message, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { FeatureConfigInterface } from "../../../../core";
+import { useSelector } from "react-redux";
+import { AppState, FeatureConfigInterface } from "../../../../core";
 import { AuthorizationAPIResourceInterface } from "../../../models";
 
 /**
@@ -69,6 +70,7 @@ export const AddAPIResourceAuthorization: FunctionComponent<AddAPIResourceAuthor
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+    const productName: string = useSelector((state: AppState) => state.config.ui.productName);
 
     /**
      * Prepare form values for submitting.
@@ -94,7 +96,7 @@ export const AddAPIResourceAuthorization: FunctionComponent<AddAPIResourceAuthor
                 content={ 
                     (<>
                         { t("extensions:develop.apiResource.wizard.addApiResource.steps.authorization.form." + 
-                            "rbacMessage") }
+                            "rbacMessage", { productName }) }
                         <DocumentationLink
                             link={ getLink("develop.apiResources.addAPIResource.rbacInfoBox.learnMore") }
                         >

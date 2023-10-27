@@ -36,6 +36,7 @@ import { I18n } from "@wso2is/i18n";
 import { PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import camelCase from "lodash-es/camelCase";
+import lowerCase from "lodash-es/lowerCase";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -320,27 +321,51 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         }
     };
 
+    const handleMultiAttributeLoginAction = () => {        
+        history.push(AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN"));
+    };
+
     /**
      * Get connector categories which generate the connector forms dynamically.
      */
     const getDynamicCategoryConnectors = (): ReactElement[] => {
+
+        // This sorting is done to move Other Settings to the end of the list. This implementation can be removed
+        // once the response if sorted from the backend.
+        let sortedConnectorCategories: GovernanceConnectorCategoryInterface[] = [];
+
         if (connectorCategories && Array.isArray(connectorCategories) && connectorCategories.length > 0) {
-            return connectorCategories.map((connectorCategory: GovernanceConnectorCategoryInterface, index: number) => (
-                <Grid xs={ 12 } lg={ 6 } key={ index }>
-                    <SettingsSection
-                        data-testid={ `${testId}-${connectorCategory?.id}` }
-                        description={ t(
-                            `console:manage.features.governanceConnectors.connectorCategories.${camelCase(
-                                connectorCategory.name
-                            )}.description`
-                        ) }
-                        icon={ () => resolveConnectorCategoryIcon(connectorCategory?.id) }
-                        header={ connectorCategory.name }
-                        onPrimaryActionClick={ () => handleConnectorCategoryAction(connectorCategory) }
-                        primaryAction={ t("common:configure") }
-                    />
-                </Grid>
-            ));
+
+            sortedConnectorCategories = [ ...connectorCategories ];
+
+            sortedConnectorCategories.push(sortedConnectorCategories.splice(sortedConnectorCategories.indexOf(
+                sortedConnectorCategories.find(
+                    (category: GovernanceConnectorCategoryInterface) =>
+                        category.id === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID
+                )), 1)[0]);
+
+        } else {
+            sortedConnectorCategories = null;
+        }
+
+        if (sortedConnectorCategories) {
+            return sortedConnectorCategories?.map(
+                (connectorCategory: GovernanceConnectorCategoryInterface, index: number) => (
+                    <Grid xs={ 12 } lg={ 6 } key={ index }>
+                        <SettingsSection
+                            data-testid={ `${testId}-${connectorCategory?.id}` }
+                            description={ t(
+                                `console:manage.features.governanceConnectors.connectorCategories.${camelCase(
+                                    connectorCategory.name
+                                )}.description`
+                            ) }
+                            icon={ () => resolveConnectorCategoryIcon(connectorCategory?.id) }
+                            header={ connectorCategory.name }
+                            onPrimaryActionClick={ () => handleConnectorCategoryAction(connectorCategory) }
+                            primaryAction={ t("common:configure") }
+                        />
+                    </Grid>
+                ));
         }
 
         return null;
@@ -387,6 +412,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         return getStaticConnectors();
     };
 
+    const multiAttributeLoginDescription: string = t("console:manage.features.governanceConnectors." +
+        "connectorSubHeading", { name: lowerCase(t("console:manage.features.governanceConnectors.connectorCategories." +
+        "accountManagement.connectors.multiattributeLoginHandler.friendlyName"))
+    });
+
     return (
         <PageLayout
             pageTitle= { t("console:common.sidePanel.loginAndRegistration.label") }
@@ -401,14 +431,28 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         : (
                             <Grid container rowSpacing={ 2 } columnSpacing={ 3 }>
                                 {
-                                    renderConnectors()
-                                }
-                                {
                                     serverConfigurationConfig.dynamicConnectors
                                         ? (
-                                            <Grid xs={ 12 } lg={ 6 }>
-                                                <AdminAdvisoryBannerSection />
-                                            </Grid>
+                                            <>
+                                                <Grid xs={ 12 } lg={ 6 }>
+                                                    <SettingsSection
+                                                        data-componentid={ "multi-attribute-login-section" }
+                                                        data-testid={ "multi-attribute-login-section" }
+                                                        description={ multiAttributeLoginDescription }
+                                                        icon={ <GearIcon className="icon" /> }
+                                                        header={
+                                                            t("console:manage.features.governanceConnectors." +
+                                                            "connectorCategories.accountManagement.connectors." +
+                                                            "multiattributeLoginHandler.friendlyName")
+                                                        }
+                                                        onPrimaryActionClick={ handleMultiAttributeLoginAction }
+                                                        primaryAction={ t("common:configure") }
+                                                    />
+                                                </Grid>
+                                                <Grid xs={ 12 } lg={ 6 }>
+                                                    <AdminAdvisoryBannerSection />
+                                                </Grid>
+                                            </>
                                         ) : (
                                             <>
                                                 <Grid xs={ 12 } lg={ 6 }>
@@ -458,7 +502,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                                                     <PrivateKeyJWTConfig/>
                                                 </Grid>
                                             </>
-                                        ) }
+                                        )
+                                }
+                                {
+                                    renderConnectors()
+                                }
                             </Grid>
                         )
                 }

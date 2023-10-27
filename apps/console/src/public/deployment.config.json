@@ -208,6 +208,7 @@
     },
     "getProfileInfoFromIDToken": true,
     "superTenantProxy": "",
+    "legacyAuthzRuntime": true,
     "ui": {
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
@@ -707,13 +708,16 @@
                         "console:organizationDiscovery"
                     ],
                     "create": [
-                        "internal_organization_create"
+                        "internal_organization_create",
+                        "internal_config_mgt_add"
                     ],
                     "delete": [
-                        "internal_organization_delete"
+                        "internal_organization_delete",
+                        "internal_config_mgt_delete"
                     ],
                     "read": [
-                        "internal_organization_view"
+                        "internal_organization_view",
+                        "internal_config_mgt_view"
                     ],
                     "update": [
                         "internal_organization_update"

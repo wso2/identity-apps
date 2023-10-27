@@ -31,7 +31,7 @@ import { Grid, Menu, Rail, Ref, Sticky } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
 import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history } from "../../core";
 import { OrganizationUtils } from "../../organizations/utils";
-import { getConnectorCategory } from "../api";
+import { getConnectorCategory } from "../api/governance-connectors";
 import { DynamicGovernanceConnector } from "../components";
 import { ServerConfigurationsConstants } from "../constants";
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models";
@@ -206,7 +206,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                                 || serverConfigurationConfig.connectorsToShow.includes(
                                                     ServerConfigurationsConstants.ALL) && 
                                                     !serverConfigurationConfig.connectorsToHide.includes(
-                                                        connector.name
+                                                        connector.id
                                                     ) ) {
                                                 const connectorElement: ReactElement = (
                                                     <Grid.Row ref={ connector.ref }>

@@ -199,6 +199,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             let response: BasicUserInfo = { ...signInResponse };
             let logoutUrl: string;
             let logoutRedirectUrl: string;
+            let subOrgIdToken: string;
 
             const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
             const isPrivilegedUser: boolean =
@@ -300,7 +301,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                             response = { ...grantResponse };
                         }
                     );
-
+                    
+                    setTenant(response.orgId);
+                    subOrgIdToken = response.orgId;
                     dispatch(setCurrentOrganization(response.orgName));
                 }
             }
@@ -436,7 +439,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             dispatch(
                 setSignIn<AuthenticatedUserInfo & TenantListInterface>(
                     Object.assign(
-                        CommonAuthenticateUtils.getSignInState(response),
+                        CommonAuthenticateUtils.getSignInState(response, subOrgIdToken),
                         {
                             associatedTenants: isPrivilegedUser
                                 ? tenantDomain

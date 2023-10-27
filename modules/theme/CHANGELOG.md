@@ -1,5 +1,17 @@
 # @wso2is/theme
 
+## 2.0.26
+
+### Patch Changes
+
+- [#4156](https://github.com/wso2/identity-apps/pull/4156) [`3d726abaa2`](https://github.com/wso2/identity-apps/commit/3d726abaa2fe38081c647bec22d8333af8b48bb8) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Integrate FIDO passkey enrollment during the authentication process, enabling its configuration as a primary, secondary factor along with giving prominence to "Passkey" while reducing the emphasis on "Security Key/Biometrics"
+
+## 2.0.25
+
+### Patch Changes
+
+- [#4367](https://github.com/wso2/identity-apps/pull/4367) [`905d37424a`](https://github.com/wso2/identity-apps/commit/905d37424a5ad496340332d2acd38cc2afbc2762) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix my account setting section component issue
+
 ## 2.0.24
 
 ### Patch Changes

@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import {
     Code,
@@ -33,7 +31,6 @@ import {
 } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { Trans } from "react-i18next";
-import { Dispatch } from "redux";
 import { Divider, Icon, Message } from "semantic-ui-react";
 import { ApplicationGeneralTabOverride } from "./components/application-general-tab-overide";
 import { MarketingConsentModalWrapper } from "./components/marketing-consent/components";
@@ -54,9 +51,6 @@ import {
 import { ClaimManagementConstants } from "../../features/claims/constants/claim-management-constants";
 import { EventPublisher, FeatureConfigInterface } from "../../features/core";
 import { AppConstants } from "../../features/core/constants";
-import {
-    IdentityProviderManagementConstants
-} from "../../features/identity-providers/constants/identity-provider-management-constants";
 import { ApplicationRoles } from "../../features/roles/components/application-roles";
 import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
@@ -609,38 +603,6 @@ export const applicationConfig: ApplicationConfig = {
     },
     signInMethod: {
         authenticatorSelection: {
-            customAuthenticatorAdditionValidation: (
-                authenticatorID: string,
-                stepIndex: number,
-                dispatch: Dispatch
-            ): boolean => {
-                // Prevent FIDO2 from being added as a second factor
-                if (
-                    [
-                        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
-                        IdentityProviderManagementConstants.FIDO_AUTHENTICATOR_ID
-                    ].includes(authenticatorID)
-                    && stepIndex > 0
-                ) {
-                    dispatch(
-                        addAlert({
-                            description: I18n.instance.t(
-                                "console:develop.features.applications.notifications." +
-                                "firstFactorAuthenticatorToSecondStep.genericError.description"
-                            ),
-                            level: AlertLevels.WARNING,
-                            message: I18n.instance.t(
-                                "console:develop.features.applications.notifications." +
-                                "firstFactorAuthenticatorToSecondStep.genericError.message"
-                            )
-                        })
-                    );
-
-                    return false;
-                }
-
-                return true;
-            },
             messages: {
                 secondFactorDisabled: (
                     <Trans
@@ -650,7 +612,7 @@ export const applicationConfig: ApplicationConfig = {
                         }
                     >
                         Second factor authenticators can only be used if <Code>Username & Password
-                        </Code>, <Code>Social Login</Code> or <Code>Security Key/Biometrics</Code>
+                        </Code>, <Code>Social Login</Code> or <Code>Passkey</Code>
                         is present in a previous step.
                     </Trans>
                 ),

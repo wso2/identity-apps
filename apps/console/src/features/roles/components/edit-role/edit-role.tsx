@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { OrganizationType } from "@wso2is/common";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { RolesInterface, SBACInterface } from "@wso2is/core/models";
@@ -29,6 +30,7 @@ import { RoleGroupsList } from "./edit-role-groups";
 import { UpdatedRolePermissionDetails } from "./edit-role-permission";
 import { RoleUsersList } from "./edit-role-users";
 import { AppState, FeatureConfigInterface } from "../../../core";
+import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 
 /**
  * Captures props needed for edit role component
@@ -67,11 +69,14 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     } = props;
 
     const { t } = useTranslation();
+    const orgType: OrganizationType = useGetOrganizationType();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
+
+    const isSubOrg: boolean = orgType === OrganizationType.SUBORGANIZATION;
 
     /**
      * Set the if the role is `Internal/admin`.
@@ -90,7 +95,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <BasicRoleDetails
-                            isReadOnly={ isAdminRole
+                            isReadOnly={ isSubOrg || isAdminRole
                                 || !hasRequiredScopes(
                                     featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes) }
                             role={ roleObject }
@@ -105,7 +110,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <UpdatedRolePermissionDetails 
-                            isReadOnly={ isAdminRole
+                            isReadOnly={ isSubOrg || isAdminRole
                                 || !hasRequiredScopes(
                                     featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes) }
                             role={ roleObject }
