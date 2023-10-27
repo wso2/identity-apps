@@ -33,6 +33,7 @@ import { useGetOrganizationType } from "../../organizations/hooks/use-get-organi
 import { deleteRoleById, useRolesList } from "../api";
 import { RoleList } from "../components/role-list";
 import { RoleConstants } from "../constants";
+import { AxiosError } from "axios";
 
 type RolesPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps;
 
@@ -145,6 +146,22 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                     message: t("console:manage.features.roles.notifications.deleteRole.success.message")
                 });
                 mutateRolesList();
+            }).catch((error: AxiosError) => {
+                if (error.response && error.response.data && error.response.data.detail) {
+                    handleAlerts({
+                        description: error.response.data.detail,
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.roles.notifications.deleteRole.error.message")
+                    });
+
+                    return;
+                }
+                
+                handleAlerts({
+                    description: t("console:manage.features.roles.notifications.deleteRole.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.roles.notifications.deleteRole.genericError.message")
+                });
             });
     };
 
@@ -201,75 +218,71 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                 ? t("console:manage.pages.roles.alternateSubTitle")
                 : t("console:manage.pages.roles.subTitle") }
         >
-            {
-                (rolesList?.totalResults > 0) && (
-                    <ListLayout
-                        advancedSearch={ (
-                            <AdvancedSearchWithBasicFilters
-                                data-componentid={ `${componentId}-list-advanced-search` }    
-                                onFilter={ handleRolesFilter  }
-                                filterAttributeOptions={ [
-                                    {
-                                        key: 0,
-                                        text: t("console:manage.features.roles.list.filterAttirbutes.name"),
-                                        value: "displayName"
-                                    },
-                                    {
-                                        key: 1,
-                                        text: t("console:manage.features.roles.list.filterAttirbutes.audience"),
-                                        value: "audience.type"
-                                    }
-                                ] }
-                                filterAttributePlaceholder={
-                                    t("console:manage.features.roles.advancedSearch.form.inputs.filterAttribute." +
-                                        "placeholder")
-                                }
-                                filterConditionsPlaceholder={
-                                    t("console:manage.features.roles.advancedSearch.form.inputs.filterCondition" +
-                                        ".placeholder")
-                                }
-                                filterValuePlaceholder={
-                                    t("console:manage.features.roles.advancedSearch.form.inputs.filterValue" +
-                                        ".placeholder")
-                                }
-                                placeholder={ t("console:manage.features.roles.advancedSearch.placeholder") }
-                                defaultSearchAttribute="displayName"
-                                defaultSearchOperator="co"
-                                triggerClearQuery={ triggerClearQuery }
-                            />
-                        ) }
-                        currentListSize={ rolesList?.itemsPerPage }
-                        listItemLimit={ listItemLimit }
-                        onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                        onPageChange={ handlePaginationChange }
-                        showTopActionPanel={ !isRolesListLoading && (rolesList?.totalResults > 0) }
-                        rightActionPanel={
-                            (
-                                <Dropdown
-                                    data-componentid={ `${componentId}-list-filters-dropdown` }    
-                                    selection
-                                    options={ filterOptions }
-                                    placeholder= { t("console:manage.features.roles.list.buttons.filterDropdown") }
-                                    onChange={ handleFilterChange }
-                                />
-                            )
+            <ListLayout
+                advancedSearch={ (
+                    <AdvancedSearchWithBasicFilters
+                        data-componentid={ `${componentId}-list-advanced-search` }    
+                        onFilter={ handleRolesFilter  }
+                        filterAttributeOptions={ [
+                            {
+                                key: 0,
+                                text: t("console:manage.features.roles.list.filterAttirbutes.name"),
+                                value: "displayName"
+                            },
+                            {
+                                key: 1,
+                                text: t("console:manage.features.roles.list.filterAttirbutes.audience"),
+                                value: "audience.type"
+                            }
+                        ] }
+                        filterAttributePlaceholder={
+                            t("console:manage.features.roles.advancedSearch.form.inputs.filterAttribute." +
+                                "placeholder")
                         }
-                        showPagination={ rolesList?.totalResults > 0 }
-                        totalPages={ Math.ceil(rolesList?.totalResults / listItemLimit) }
-                        totalListSize={ rolesList?.totalResults }
-                        isLoading={ isRolesListLoading }
-                    >
-                        <RoleList
-                            handleRoleDelete={ handleOnDelete }
-                            onEmptyListPlaceholderActionClick={ () => handleCreateRole() }
-                            onSearchQueryClear={ handleSearchQueryClear }
-                            roleList={ rolesList }
-                            searchQuery={ filterBy }
-                            isSubOrg={ isSubOrg }
+                        filterConditionsPlaceholder={
+                            t("console:manage.features.roles.advancedSearch.form.inputs.filterCondition" +
+                                ".placeholder")
+                        }
+                        filterValuePlaceholder={
+                            t("console:manage.features.roles.advancedSearch.form.inputs.filterValue" +
+                                ".placeholder")
+                        }
+                        placeholder={ t("console:manage.features.roles.advancedSearch.placeholder") }
+                        defaultSearchAttribute="displayName"
+                        defaultSearchOperator="co"
+                        triggerClearQuery={ triggerClearQuery }
+                    />
+                ) }
+                currentListSize={ rolesList?.itemsPerPage }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                onPageChange={ handlePaginationChange }
+                showTopActionPanel={ (rolesList?.totalResults > 0 || filterBy.length !== 0) }
+                rightActionPanel={
+                    (
+                        <Dropdown
+                            data-componentid={ `${componentId}-list-filters-dropdown` }    
+                            selection
+                            options={ filterOptions }
+                            placeholder= { t("console:manage.features.roles.list.buttons.filterDropdown") }
+                            onChange={ handleFilterChange }
                         />
-                    </ListLayout>
-                )
-            }
+                    )
+                }
+                showPagination={ rolesList?.totalResults > 0 }
+                totalPages={ Math.ceil(rolesList?.totalResults / listItemLimit) }
+                totalListSize={ rolesList?.totalResults }
+                isLoading={ isRolesListLoading }
+            >
+                <RoleList
+                    handleRoleDelete={ handleOnDelete }
+                    onEmptyListPlaceholderActionClick={ () => handleCreateRole() }
+                    onSearchQueryClear={ handleSearchQueryClear }
+                    roleList={ rolesList }
+                    searchQuery={ filterBy }
+                    isSubOrg={ isSubOrg }
+                />
+            </ListLayout>
         </PageLayout>
     );
 };

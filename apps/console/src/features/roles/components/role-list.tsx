@@ -108,7 +108,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
-        if (searchQuery) {
+        if (searchQuery && roleList?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
                     data-componentid={ `${ componentId }-search-empty-placeholder` }
