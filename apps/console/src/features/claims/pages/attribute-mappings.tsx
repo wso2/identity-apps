@@ -52,7 +52,7 @@ type EditAttributeMappingsPropsInterface = TestableComponentInterface;
  */
 interface AttributeMappingsPathParams {
     type: string;
-    customAttributeMappingID: string;
+    customAttributeMappingID?: string;
 }
 
 export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMappingsPathParams> &
@@ -275,6 +275,20 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             size="tiny"
                             floated="left"
                         />
+                    );
+                case ClaimManagementConstants.OTHERS:
+                    return (
+                        <Image floated="left" verticalAlign="middle" rounded centered size="tiny">
+                            <AnimatedAvatar />
+                            <span className="claims-letter">
+                                {
+                                    dialects &&
+                                    dialects[0]?.dialectURI
+                                        .charAt(0)
+                                        .toUpperCase()
+                                }
+                            </span>
+                        </Image>
                     );
                 default:
                     return (

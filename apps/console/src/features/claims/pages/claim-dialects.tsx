@@ -380,6 +380,10 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                         AppConstants.getPaths()
                                                             .get("ATTRIBUTE_MAPPINGS")
                                                             .replace(":type", ClaimManagementConstants.OIDC)
+                                                            .replace(
+                                                                ":customAttributeMappingID",
+                                                                ""
+                                                            )
                                                     );
                                                 } }
                                             >
@@ -461,6 +465,10 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                 AppConstants.getPaths()
                                                     .get("ATTRIBUTE_MAPPINGS")
                                                     .replace(":type", ClaimManagementConstants.SCIM)
+                                                    .replace(
+                                                        ":customAttributeMappingID",
+                                                        ""
+                                                    )
                                             );
                                         } }
                                         className="clickable"
@@ -541,6 +549,10 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                         AppConstants.getPaths()
                                                             .get("ATTRIBUTE_MAPPINGS")
                                                             .replace(":type", ClaimManagementConstants.AXSCHEMA)
+                                                            .replace(
+                                                                ":customAttributeMappingID",
+                                                                ""
+                                                            )
                                                     );
                                                 } }
                                             >
@@ -626,6 +638,10 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                         AppConstants.getPaths()
                                                             .get("ATTRIBUTE_MAPPINGS")
                                                             .replace(":type", ClaimManagementConstants.EIDAS)
+                                                            .replace(
+                                                                ":customAttributeMappingID",
+                                                                ""
+                                                            )
                                                     );
                                                 } }
                                             >
@@ -732,7 +748,13 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                         size="mini"
                                                                     >
                                                                         <AnimatedAvatar />
-                                                                        <span className="claims-letter">C</span>
+                                                                        <span className="claims-letter">
+                                                                            {
+                                                                                customAttributeMapping.dialectURI
+                                                                                    .charAt(0)
+                                                                                    .toUpperCase()
+                                                                            }
+                                                                        </span>
                                                                     </Image>
                                                                     <List.Header>
                                                                         { customAttributeMapping.dialectURI }
