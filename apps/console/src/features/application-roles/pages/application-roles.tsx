@@ -119,7 +119,7 @@ const ApplicationRolesPage = (props: ApplicationRolesPageInterface): ReactElemen
             return;
         }
 
-        getApplicationList(null, null, null)
+        getApplicationList(100, null, null)
             .then((response: ApplicationListInterface) => {
                 mapApplicationListWithApplicationRoles(response.applications, roles);
                 setError(false);
