@@ -156,7 +156,7 @@
                                             hidden
                                             type="text"
                                             id="OTPCode"
-                                            name="OTPCode"
+                                            name="OTPcode"
                                             class="form-control"
                                             placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>"
                                         >
@@ -188,7 +188,7 @@
                                     </div>
                                 <% } else { %>
                                     <div class="ui fluid icon input addon-wrapper">
-                                        <input type="password" id='OTPCode' name="OTPCode" size='30'/>
+                                        <input type="password" id='OTPCode' name="OTPcode" size='30'/>
                                         <i id="password-eye" class="eye icon right-align password-toggle" onclick="showOTPCode()"></i>
                                     </div>
                                 <% } %>
