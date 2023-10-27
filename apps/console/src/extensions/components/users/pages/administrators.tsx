@@ -578,7 +578,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
          * Checks whether administrator role is present in the user.
          */
         const isAdminUser = (user: UserBasicInterface): boolean => {
-            return user.roles.some((role: UserRoleInterface) => 
+            return user.roles?.some((role: UserRoleInterface) => 
                 role.display === administratorConfig.adminRoleName
             );
         };
