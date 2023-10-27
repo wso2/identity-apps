@@ -1,5 +1,14 @@
 # @wso2is/dynamic-forms
 
+## 2.0.7
+
+### Patch Changes
+
+- [#4390](https://github.com/wso2/identity-apps/pull/4390) [`3216c6bc96`](https://github.com/wso2/identity-apps/commit/3216c6bc96a930a3ce016ac846808bafed017456) Thanks [@Rashmini](https://github.com/Rashmini)! - Bump oxygen-ui version to 1.6.2
+
+- Updated dependencies [[`3216c6bc96`](https://github.com/wso2/identity-apps/commit/3216c6bc96a930a3ce016ac846808bafed017456)]:
+  - @wso2is/react-components@2.0.12
+
 ## 2.0.6
 
 ### Patch Changes

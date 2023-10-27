@@ -1,5 +1,11 @@
 # @wso2is/react-components
 
+## 2.0.12
+
+### Patch Changes
+
+- [#4390](https://github.com/wso2/identity-apps/pull/4390) [`3216c6bc96`](https://github.com/wso2/identity-apps/commit/3216c6bc96a930a3ce016ac846808bafed017456) Thanks [@Rashmini](https://github.com/Rashmini)! - Bump oxygen-ui version to 1.6.2
+
 ## 2.0.11
 
 ### Patch Changes
