@@ -16,10 +16,7 @@
  * under the License.
  */
 
-import Autocomplete, {  
-    AutocompleteRenderGetTagProps, 
-    AutocompleteRenderInputParams 
-} from "@oxygen-ui/react/Autocomplete";
+import { Autocomplete, AutocompleteRenderGetTagProps, AutocompleteRenderInputParams } from "@mui/material";
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, SyntheticEvent } from "react";
