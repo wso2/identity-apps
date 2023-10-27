@@ -977,5 +977,6 @@
         "theme": {
             "name": "wso2is"
         }
-    }
+    },
+    "leagacyRunTimeDisabled": true
 }
