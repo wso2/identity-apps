@@ -696,91 +696,96 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                             )
                     }
                     {
-                        !attributeConfig.showCustomDialectInSCIM && (
+                        attributeConfig.showCustomAttributeMapping && (
                             isLoading 
                                 ? (
                                     renderSegmentPlaceholder()
                                 ) : (
-                                    otherAttributeMappings?.length > 0 && (
-                                        <EmphasizedSegment
-                                            onClick={ () => {
-                                                history.push(
-                                                    AppConstants.getPaths()
-                                                        .get("ATTRIBUTE_MAPPINGS")
-                                                        .replace(":type", ClaimManagementConstants.OTHERS)
-                                                );
-                                            } }
-                                            className="clickable"
-                                            data-testid={ `${ testId }-other-dialect-container` }
-                                        >
-                                            <List>
-                                                <List.Item>
-                                                    <Grid>
-                                                        <Grid.Row columns={ 2 }>
-                                                            <Grid.Column width={ 12 }>
-                                                                <Image
-                                                                    floated="left"
-                                                                    verticalAlign="middle"
-                                                                    rounded
-                                                                    centered
-                                                                    size="mini"
+                                    otherAttributeMappings?.length > 0 && otherAttributeMappings.map(
+                                        (customAttributeMapping: ClaimDialect) => (
+                                            <EmphasizedSegment
+                                                key={ customAttributeMapping.dialectURI }
+                                                onClick={ () => {
+                                                    history.push(
+                                                        AppConstants.getPaths()
+                                                            .get("ATTRIBUTE_MAPPINGS")
+                                                            .replace(":type", ClaimManagementConstants.OTHERS)
+                                                            .replace(
+                                                                ":customAttributeMappingID",
+                                                                customAttributeMapping.id
+                                                            )
+                                                    );
+                                                } }
+                                                className="clickable"
+                                                data-testid={ `${ testId }-other-dialect-container` }
+                                            >
+                                                <List>
+                                                    <List.Item>
+                                                        <Grid>
+                                                            <Grid.Row columns={ 2 }>
+                                                                <Grid.Column width={ 12 }>
+                                                                    <Image
+                                                                        floated="left"
+                                                                        verticalAlign="middle"
+                                                                        rounded
+                                                                        centered
+                                                                        size="mini"
+                                                                    >
+                                                                        <AnimatedAvatar />
+                                                                        <span className="claims-letter">C</span>
+                                                                    </Image>
+                                                                    <List.Header>
+                                                                        { customAttributeMapping.dialectURI }
+                                                                    </List.Header>
+                                                                    <List.Description 
+                                                                        data-testid={ `${ testId }-local-dialect` }
+                                                                    >
+                                                                        { t(
+                                                                            "console:manage.features.claims." + 
+                                                                            "attributeMappings." +
+                                                                            "custom.description"
+                                                                        ) }
+                                                                    </List.Description>
+                                                                </Grid.Column>
+                                                                <Grid.Column 
+                                                                    width={ 4 } 
+                                                                    verticalAlign="middle" 
+                                                                    textAlign="right"
                                                                 >
-                                                                    <AnimatedAvatar />
-                                                                    <span className="claims-letter">C</span>
-                                                                </Image>
-                                                                <List.Header>
-                                                                    { t(
-                                                                        "console:manage.features.claims.dialects." + 
-                                                                        "sections.manageAttributeMappings." + 
-                                                                        "custom.heading"
-                                                                    ) }
-                                                                </List.Header>
-                                                                <List.Description 
-                                                                    data-testid={ `${ testId }-local-dialect` }
-                                                                >
-                                                                    { t(
-                                                                        "console:manage.features.claims." + 
-                                                                        "attributeMappings." +
-                                                                        "custom.description"
-                                                                    ) }
-                                                                </List.Description>
-                                                            </Grid.Column>
-                                                            <Grid.Column 
-                                                                width={ 4 } 
-                                                                verticalAlign="middle" 
-                                                                textAlign="right"
-                                                            >
-                                                                <Popup
-                                                                    content={ hasRequiredScopes(
-                                                                        featureConfig?.attributeDialects,
-                                                                        featureConfig?.
-                                                                            attributeDialects?.scopes?.create,
-                                                                        allowedScopes
-                                                                    )
-                                                                        ? t("common:edit")
-                                                                        : t("common:view") }
-                                                                    trigger={
-                                                                        (<Icon
-                                                                            color="grey"
-                                                                            name={
-                                                                                hasRequiredScopes(
-                                                                                    featureConfig?.attributeDialects,
-                                                                                    featureConfig?.attributeDialects?.
-                                                                                        scopes?.create,
-                                                                                    allowedScopes
-                                                                                )
-                                                                                    ? "pencil"
-                                                                                    : "eye"
-                                                                            } />)
-                                                                    }
-                                                                    inverted
-                                                                />
-                                                            </Grid.Column>
-                                                        </Grid.Row>
-                                                    </Grid>
-                                                </List.Item>
-                                            </List>
-                                        </EmphasizedSegment>
+                                                                    <Popup
+                                                                        content={ hasRequiredScopes(
+                                                                            featureConfig?.attributeDialects,
+                                                                            featureConfig?.
+                                                                                attributeDialects?.scopes?.create,
+                                                                            allowedScopes
+                                                                        )
+                                                                            ? t("common:edit")
+                                                                            : t("common:view") }
+                                                                        trigger={
+                                                                            (<Icon
+                                                                                color="grey"
+                                                                                name={
+                                                                                    hasRequiredScopes(
+                                                                                        featureConfig?.
+                                                                                            attributeDialects,
+                                                                                        featureConfig?.
+                                                                                            attributeDialects?.
+                                                                                            scopes?.create,
+                                                                                        allowedScopes
+                                                                                    )
+                                                                                        ? "pencil"
+                                                                                        : "eye"
+                                                                                } />)
+                                                                        }
+                                                                        inverted
+                                                                    />
+                                                                </Grid.Column>
+                                                            </Grid.Row>
+                                                        </Grid>
+                                                    </List.Item>
+                                                </List>
+                                            </EmphasizedSegment>
+                                        )
                                     )
                                 )
                         )

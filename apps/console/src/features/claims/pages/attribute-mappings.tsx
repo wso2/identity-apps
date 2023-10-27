@@ -52,6 +52,7 @@ type EditAttributeMappingsPropsInterface = TestableComponentInterface;
  */
 interface AttributeMappingsPathParams {
     type: string;
+    customAttributeMappingID: string;
 }
 
 export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMappingsPathParams> &
@@ -61,7 +62,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
         const {
             [ "data-testid" ]: testId,
             match: {
-                params: { type }
+                params: { type, customAttributeMappingID }
             }
         } = props;
 
@@ -174,6 +175,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     return t(
                         "console:manage.features.claims.attributeMappings.eidas.heading"
                     );
+                case ClaimManagementConstants.OTHERS:
+                    return dialects && dialects[0]?.dialectURI;
                 default:
                     return t(
                         "console:manage.features.claims.attributeMappings.custom.heading"
@@ -333,7 +336,9 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             (tab: { name: string; uri: string }) => tab.uri).includes(attributeMapping.dialectURI)) {
                             type === ClaimManagementConstants.EIDAS && attributeMappings.push(attributeMapping);
                         } else if (type === ClaimManagementConstants.OTHERS) {
-                            attributeMappings.push(attributeMapping);
+                            if (customAttributeMappingID === attributeMapping.id) {
+                                attributeMappings.push(attributeMapping);
+                            }
                         }
                     });
 

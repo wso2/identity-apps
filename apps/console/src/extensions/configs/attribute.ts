@@ -38,7 +38,7 @@ const isIdentityClaims = (claim: ExternalClaim): boolean => {
 };
 
 export const attributeConfig: AttributeConfig = {
-    addAttributeMapping: false,
+    addAttributeMapping: true,
     attributeMappings: {
         deleteAction: false,
         editAttributeMappingDetails: false,
@@ -327,6 +327,7 @@ export const attributeConfig: AttributeConfig = {
         mapClaimToCustomDialect: true,
         oidcDialectURI: "http://wso2.org/oidc/claim"
     },
+    showCustomAttributeMapping: true,
     showCustomDialectInSCIM: true,
     systemClaims: [
         "http://wso2.org/claims/externalid",

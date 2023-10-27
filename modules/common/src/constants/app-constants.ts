@@ -305,7 +305,10 @@ export class AppConstants {
             )
             .set("SECRETS", `${AppConstants.getDeveloperViewBasePath()}/secrets`)
             .set("SECRET_EDIT", `${AppConstants.getDeveloperViewBasePath()}/secrets/:type/:name`)
-            .set("ATTRIBUTE_MAPPINGS", `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type`)
+            .set(
+                "ATTRIBUTE_MAPPINGS",
+                `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type/:customAttributeMappingID`
+            )
             .set("CREATE_TENANT", `${AppConstants.getMainViewBasePath()}/create-tenant`)
             .set("ORGANIZATIONS", `${AppConstants.getAdminViewBasePath()}/organizations`)
             .set("ORGANIZATION_UPDATE", `${AppConstants.getAdminViewBasePath()}/organizations/:id`)
