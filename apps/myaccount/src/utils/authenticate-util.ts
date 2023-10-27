@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -114,9 +114,7 @@ export const getAuthInitializeConfig = (): AuthReactConfig => {
         process.env.NODE_ENV === "production" ? ResponseMode.formPost : ResponseMode.query;
 
     return {
-        baseUrl:
-            window["AppUtils"]?.getConfig().idpConfigs?.serverOrigin ??
-            window[ "AppUtils"]?.getConfig().idpConfigs.serverOrigin,
+        baseUrl: window["AppUtils"]?.getConfig()?.serverOriginWithTenant,
         checkSessionInterval: window["AppUtils"]?.getConfig()?.session?.checkSessionInterval,
         clientHost: window["AppUtils"]?.getConfig().clientOriginWithTenant,
         clientID: window["AppUtils"]?.getConfig().clientID,
@@ -139,6 +137,7 @@ export const getAuthInitializeConfig = (): AuthReactConfig => {
         sessionRefreshInterval: window["AppUtils"]?.getConfig()?.session?.sessionRefreshTimeOut,
         signInRedirectURL: window["AppUtils"]?.getConfig().loginCallbackURL,
         signOutRedirectURL: window["AppUtils"]?.getConfig().loginCallbackURL,
-        storage: resolveStorage() as Storage.WebWorker
+        storage: resolveStorage() as Storage.WebWorker,
+        ...window["AppUtils"]?.getConfig().idpConfigs
     };
 };

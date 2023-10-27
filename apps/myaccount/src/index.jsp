@@ -191,31 +191,53 @@
         function authenticateWithSDK() {
 
             if(!authorizationCode) {
+                function getTenantName() {
+                    const path = window.location.pathname;
+                    const pathChunks = path.split("/");
+                    const tenantPrefixIndex = pathChunks.indexOf(startupConfig.tenantPrefix);
+                    if (tenantPrefixIndex !== -1) {
+                        return pathChunks[ tenantPrefixIndex + 1 ];
+                    }
+                    return "";
+                }
+
                 function getApiPath(path) {
-                    if(path) {
-                        return serverOrigin + path;
+                    var basePath = serverOrigin;
+
+                    if (getTenantName()) {
+                        basePath = serverOrigin + getTenantPath();
                     }
 
-                    return serverOrigin;
+                    if(path) {
+                        return basePath + path;
+                    }
+
+                    return basePath;
                 }
+
+                function getTenantPath() {
+                    return getTenantName() !== ""
+                        ? "/" + startupConfig.tenantPrefix + "/" + getTenantName()
+                        : "";
+                };
 
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
                 var authConfig = {
-                    signInRedirectURL: applicationDomain.replace(/\/+$/, '')  
+                    signInRedirectURL: applicationDomain.replace(/\/+$/, '') + getTenantPath()
                         + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>",
-                    signOutRedirectURL: applicationDomain.replace(/\/+$/, ''),
+                    signOutRedirectURL: applicationDomain.replace(/\/+$/, '') + getTenantPath(),
                     clientID: "<%= htmlWebpackPlugin.options.clientID %>",
                     baseUrl: getApiPath(),
                     responseMode: "form_post",
                     scope: ["openid SYSTEM"],
                     storage: "webWorker",
                     endpoints: {
-                        authorizationEndpoint: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oauth2/authorize") : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize"),
+                        authorizationEndpoint: getApiPath("/oauth2/authorize"),
                         clockTolerance: 300,
                         jwksEndpointURL: undefined,
-                        logoutEndpointURL: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/logout") : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout"),
-                        oidcSessionIFrameEndpointURL: userTenant ? getApiPath("/" + startupConfig.tenantPrefix + "/" + userTenant + startupConfig.pathExtension + "/oidc/checksession") : getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession"),
+                        logoutEndpointURL: getApiPath("/oidc/logout"),
+                        oidcSessionIFrameEndpointURL: getApiPath("/oidc/checksession"),
                         tokenEndpointURL: undefined,
                         tokenRevocationEndpointURL: undefined,
                     },

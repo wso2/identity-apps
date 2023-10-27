@@ -3,6 +3,7 @@
         "path": "/getting-started",
         "origin": "https://localhost:9000"
     },
+    "isSaas": false,
     "appBaseName": "myaccount",
     "clientID": "MY_ACCOUNT",
     "loginCallbackPath": "",
@@ -22,12 +23,13 @@
     },
     "superTenantProxy": "",
     "idpConfigs": {
-        "logoutEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/oidc/logout",
+        "logoutEndpointURL": "${serverOrigin}/oidc/logout",
         "clockTolerance": 300,
-        "authorizeEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/oauth2/authorize",
-        "oidcSessionIFrameEndpointURL": "${serverOrigin}/${tenantPrefix}/${userTenantDomain}/oidc/checksession",
+        "authorizeEndpointURL": "${serverOrigin}/oauth2/authorize",
+        "oidcSessionIFrameEndpointURL": "${serverOrigin}/oidc/checksession",
         "serverOrigin": "https://localhost:9443",
-        "responseMode": "query"
+        "responseMode": "query",
+        "enableOIDCSessionManagement": false
     },
     "session": {
         "userIdleWarningTimeOut": 1740,
