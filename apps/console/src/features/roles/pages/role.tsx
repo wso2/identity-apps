@@ -21,6 +21,7 @@ import { OrganizationType } from "@wso2is/common";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -57,7 +58,6 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ filterBy, setFilterBy ] = useState<string>(undefined);
-    const [ isEmptyResults ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const isSubOrg: boolean = orgType === OrganizationType.SUBORGANIZATION;
@@ -146,6 +146,22 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                     message: t("console:manage.features.roles.notifications.deleteRole.success.message")
                 });
                 mutateRolesList();
+            }).catch((error: AxiosError) => {
+                if (error.response && error.response.data && error.response.data.detail) {
+                    handleAlerts({
+                        description: error.response.data.detail,
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.roles.notifications.deleteRole.error.message")
+                    });
+
+                    return;
+                }
+                
+                handleAlerts({
+                    description: t("console:manage.features.roles.notifications.deleteRole.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.roles.notifications.deleteRole.genericError.message")
+                });
             });
     };
 
@@ -180,7 +196,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     return (
         <PageLayout
             action={
-                !isSubOrg && !isRolesListLoading && isEmptyResults
+                !isSubOrg && !isRolesListLoading && (rolesList?.totalResults > 0)
                     ? (
                         <Show when={ AccessControlConstants.ROLE_WRITE }>
                             <PrimaryButton
@@ -202,75 +218,71 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                 ? t("console:manage.pages.roles.alternateSubTitle")
                 : t("console:manage.pages.roles.subTitle") }
         >
-            {
-                !isEmptyResults && (
-                    <ListLayout
-                        advancedSearch={ (
-                            <AdvancedSearchWithBasicFilters
-                                data-componentid={ `${componentId}-list-advanced-search` }    
-                                onFilter={ handleRolesFilter  }
-                                filterAttributeOptions={ [
-                                    {
-                                        key: 0,
-                                        text: t("console:manage.features.roles.list.filterAttirbutes.name"),
-                                        value: "displayName"
-                                    },
-                                    {
-                                        key: 1,
-                                        text: t("console:manage.features.roles.list.filterAttirbutes.audience"),
-                                        value: "audience.type"
-                                    }
-                                ] }
-                                filterAttributePlaceholder={
-                                    t("console:manage.features.roles.advancedSearch.form.inputs.filterAttribute." +
-                                        "placeholder")
-                                }
-                                filterConditionsPlaceholder={
-                                    t("console:manage.features.roles.advancedSearch.form.inputs.filterCondition" +
-                                        ".placeholder")
-                                }
-                                filterValuePlaceholder={
-                                    t("console:manage.features.roles.advancedSearch.form.inputs.filterValue" +
-                                        ".placeholder")
-                                }
-                                placeholder={ t("console:manage.features.roles.advancedSearch.placeholder") }
-                                defaultSearchAttribute="displayName"
-                                defaultSearchOperator="co"
-                                triggerClearQuery={ triggerClearQuery }
-                            />
-                        ) }
-                        currentListSize={ rolesList?.itemsPerPage }
-                        listItemLimit={ listItemLimit }
-                        onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                        onPageChange={ handlePaginationChange }
-                        showTopActionPanel={ !isRolesListLoading && isEmptyResults }
-                        rightActionPanel={
-                            (
-                                <Dropdown
-                                    data-componentid={ `${componentId}-list-filters-dropdown` }    
-                                    selection
-                                    options={ filterOptions }
-                                    placeholder= { t("console:manage.features.roles.list.buttons.filterDropdown") }
-                                    onChange={ handleFilterChange }
-                                />
-                            )
+            <ListLayout
+                advancedSearch={ (
+                    <AdvancedSearchWithBasicFilters
+                        data-componentid={ `${componentId}-list-advanced-search` }    
+                        onFilter={ handleRolesFilter  }
+                        filterAttributeOptions={ [
+                            {
+                                key: 0,
+                                text: t("console:manage.features.roles.list.filterAttirbutes.name"),
+                                value: "displayName"
+                            },
+                            {
+                                key: 1,
+                                text: t("console:manage.features.roles.list.filterAttirbutes.audience"),
+                                value: "audience.type"
+                            }
+                        ] }
+                        filterAttributePlaceholder={
+                            t("console:manage.features.roles.advancedSearch.form.inputs.filterAttribute." +
+                                "placeholder")
                         }
-                        showPagination={ rolesList?.totalResults > 0 }
-                        totalPages={ Math.ceil(rolesList?.totalResults / listItemLimit) }
-                        totalListSize={ rolesList?.totalResults }
-                        isLoading={ isRolesListLoading }
-                    >
-                        <RoleList
-                            handleRoleDelete={ handleOnDelete }
-                            onEmptyListPlaceholderActionClick={ () => handleCreateRole() }
-                            onSearchQueryClear={ handleSearchQueryClear }
-                            roleList={ rolesList }
-                            searchQuery={ filterBy }
-                            isSubOrg={ isSubOrg }
+                        filterConditionsPlaceholder={
+                            t("console:manage.features.roles.advancedSearch.form.inputs.filterCondition" +
+                                ".placeholder")
+                        }
+                        filterValuePlaceholder={
+                            t("console:manage.features.roles.advancedSearch.form.inputs.filterValue" +
+                                ".placeholder")
+                        }
+                        placeholder={ t("console:manage.features.roles.advancedSearch.placeholder") }
+                        defaultSearchAttribute="displayName"
+                        defaultSearchOperator="co"
+                        triggerClearQuery={ triggerClearQuery }
+                    />
+                ) }
+                currentListSize={ rolesList?.itemsPerPage }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                onPageChange={ handlePaginationChange }
+                showTopActionPanel={ (rolesList?.totalResults > 0 || filterBy?.length !== 0) }
+                rightActionPanel={
+                    (
+                        <Dropdown
+                            data-componentid={ `${componentId}-list-filters-dropdown` }    
+                            selection
+                            options={ filterOptions }
+                            placeholder= { t("console:manage.features.roles.list.buttons.filterDropdown") }
+                            onChange={ handleFilterChange }
                         />
-                    </ListLayout>
-                )
-            }
+                    )
+                }
+                showPagination={ rolesList?.totalResults > 0 }
+                totalPages={ Math.ceil(rolesList?.totalResults / listItemLimit) }
+                totalListSize={ rolesList?.totalResults }
+                isLoading={ isRolesListLoading }
+            >
+                <RoleList
+                    handleRoleDelete={ handleOnDelete }
+                    onEmptyListPlaceholderActionClick={ () => handleCreateRole() }
+                    onSearchQueryClear={ handleSearchQueryClear }
+                    roleList={ rolesList }
+                    searchQuery={ filterBy }
+                    isSubOrg={ isSubOrg }
+                />
+            </ListLayout>
         </PageLayout>
     );
 };
