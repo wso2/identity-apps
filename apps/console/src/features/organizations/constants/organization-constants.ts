@@ -45,7 +45,7 @@ export class OrganizationManagementConstants {
         status: "ACTIVE"
     };
 
-    public static readonly ORGANIZATION_ROUTES: string = "organizations";
+    public static readonly ORGANIZATION_ROUTES: string[] = [ "organizations" ];
 
     /**
      * Sub Organization creation limit reached error.
@@ -63,7 +63,7 @@ export class OrganizationManagementConstants {
         "console:develop.features.suborganizations.notifications.duplicateOrgError.message",
         "cdaefcee-ecdb-47af-8538-174ec13292db"
     );
-    
+
 }
 
 export enum ORGANIZATION_TYPE {
