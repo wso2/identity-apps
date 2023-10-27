@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.24
+
+### Patch Changes
+
+- [#4396](https://github.com/wso2/identity-apps/pull/4396) [`6d409ffcfd`](https://github.com/wso2/identity-apps/commit/6d409ffcfd58cc0c6cc79f090272da59a5f8e2a1) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix bugs in roles section
+
 ## 2.0.23
 
 ### Patch Changes

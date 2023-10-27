@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.4.1
+
+### Patch Changes
+
+- [#4396](https://github.com/wso2/identity-apps/pull/4396) [`6d409ffcfd`](https://github.com/wso2/identity-apps/commit/6d409ffcfd58cc0c6cc79f090272da59a5f8e2a1) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix bugs in roles section
+
+* [#4399](https://github.com/wso2/identity-apps/pull/4399) [`d39149d3ce`](https://github.com/wso2/identity-apps/commit/d39149d3ce1bb44d6d0f6aab2381bc6c3b2e2c48) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Fix API Resource delete issues and pagination issues
+
+- [#4397](https://github.com/wso2/identity-apps/pull/4397) [`ff4730d5e8`](https://github.com/wso2/identity-apps/commit/ff4730d5e8ce01ebeb9a0763a560f1d523092a48) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues with updating UserStore connection info
+
+- Updated dependencies [[`6d409ffcfd`](https://github.com/wso2/identity-apps/commit/6d409ffcfd58cc0c6cc79f090272da59a5f8e2a1)]:
+  - @wso2is/i18n@2.0.24
+
 ## 2.4.0
 
 ### Minor Changes
