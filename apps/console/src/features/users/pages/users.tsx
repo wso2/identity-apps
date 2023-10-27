@@ -617,7 +617,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
-        setUserStore(data.value as string);
+        if (data.value === "all") {
+            setUserStore(null);
+        } else {
+            setUserStore(data.value as string);
+        }
+        // setUserStore(data.value as string);
     };
 
     const onUserDelete = (): void => {
@@ -753,11 +758,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                             />
                             <RootOnlyComponent>
                                 <Dropdown
-                                    value={ userStore }
                                     data-testid="user-mgt-user-list-userstore-dropdown"
                                     selection
                                     options={ userStoreOptions && userStoreOptions }
                                     onChange={ handleDomainChange }
+                                    defaultValue="all"
                                 />
                             </RootOnlyComponent>
                         </>
