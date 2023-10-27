@@ -11151,6 +11151,8 @@ export const console: ConsoleNS = {
                                     description: "Drag and drop a CSV file here."
                                 },
                                 primaryButton: "Invite",
+                                rolesLabel: "Roles",
+                                rolesPlaceholder: "Enter roles",
                                 warningMessage: "The manual option to invite multiple users is available only when email as username is enabled."
                             },
                             fileBased: {

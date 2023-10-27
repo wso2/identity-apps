@@ -9414,6 +9414,8 @@ export const console: ConsoleNS = {
                                     description: "Faites glisser et déposez un fichier CSV ici."
                                 },
                                 primaryButton: "Inviter",
+                                rolesLabel: "Les rôles",
+                                rolesPlaceholder: "Entrez les rôles",
                                 warningMessage: "The manual option to invite multiple users is available only when email as username is enabled."
                             },
                             fileBased: {

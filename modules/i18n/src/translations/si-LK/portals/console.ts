@@ -9198,6 +9198,8 @@ export const console: ConsoleNS = {
                                     description: "CSV ගොනුවක් මෙතැනට ඇද දමන්න."
                                 },
                                 primaryButton: "ආරාධනා කරන්න",
+                                rolesLabel: "භූමිකාවන්",
+                                rolesPlaceholder: "භූමිකාවන් ඇතුළත් කරන්න",
                                 warningMessage: "පරිශීලක නාමයක් ලෙස විද්‍යුත් තැපෑල සක්‍රීය කර ඇති විට පමණක් බහු පරිශීලකයින්ට ආරාධනා කිරීමේ අත්පොත විකල්පය ලබා ගත හැක."
                             },
                             fileBased: {

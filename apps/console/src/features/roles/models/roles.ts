@@ -77,7 +77,7 @@ export interface SearchRoleInterface {
 }
 
 export interface PatchRoleDataInterface {
-    schemas: string[];
+    schemas?: string[];
     Operations: ScimOperationsInterface[];
 }
 
