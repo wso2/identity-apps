@@ -155,6 +155,9 @@
     {% if console.get_profile_info_from_id_token is defined %}
         "getProfileInfoFromIDToken": {{ console.get_profile_info_from_id_token }},
     {% endif %}
+    {% if legacy_authz_runtime %}
+        "legacyAuthzRuntime": {{ legacy_authz_runtime.enabled }},
+    {% endif %}
     "ui": {
         "announcements": [
             {% if console.ui.announcements is defined %}
@@ -1602,8 +1605,5 @@
         "theme": {
             "name": "{{ console.theme }}"
         }
-    },
-    {% if legacy_authz_runtime %}
-        "leagacyAuthzRuntime": {{ legacy_authz_runtime.enabled }}
-    {% endif %}
+    }
 }
