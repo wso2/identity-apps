@@ -693,14 +693,14 @@ export const extensions: Extensions = {
                                     name: {
                                         emptyValidate: "ප්රදර්ශන නම හිස් විය නොහැක",
                                         label: "ප්රදර්ශන නාමය",
-                                        hint: "Asgardeo හි ඔබගේ API සම්පත හඳුනා ගැනීම සඳහා අර්ථවත් නම.",
+                                        hint: "{{ productName }} හි ඔබගේ API සම්පත හඳුනා ගැනීම සඳහා අර්ථවත් නම.",
                                         placeholder: "වෙන්කරවා ගැනීම සදහා වූ API"
                                     },
                                     identifier: {
                                         emptyValidate: "හඳුනාගැනුම හිස් විය නොහැක",
                                         alreadyExistsError: "හඳුනාගැනුම දැනටමත් සංවිධානය තුළ පවතී.කරුණාකර වෙනත් එකක් තෝරන්න",
                                         invalid: "හඳුනාගැනුමක අවකාශයන් අඩංගු විය නොහැක",
-                                        hint: "අනන්යතාවය ලෙස URI එකක් භාවිතා කිරීම අපි නිර්දේශ කරමු, නමුත් Asgardeo ඔබගේ API වෙත ප්‍රවේශ නොවන බැවින් ඔබට URI ප්‍රසිද්ධ කිරීමට අවශ්‍ය නොවේ. Asgardeo විසින් නිකුත් කරන ලද JWT ටෝකනවල ප්රේක්ෂක(aud) ප්රකාශය ලෙස මෙම හඳුනාගැනීම් අගය භාවිතා කරනු ඇත. <1>මෙම ක්ෂේත්රය අද්විතීය විය යුතුය;මැවූ පසු, එය සංස්කරණය කළ නොහැක.</1>",
+                                        hint: "අනන්යතාවය ලෙස URI එකක් භාවිතා කිරීම අපි නිර්දේශ කරමු, නමුත් {{ productName }} ඔබගේ API වෙත ප්‍රවේශ නොවන බැවින් ඔබට URI ප්‍රසිද්ධ කිරීමට අවශ්‍ය නොවේ. {{ productName }} විසින් නිකුත් කරන ලද JWT ටෝකනවල ප්රේක්ෂක(aud) ප්රකාශය ලෙස මෙම හඳුනාගැනීම් අගය භාවිතා කරනු ඇත. <1>මෙම ක්ෂේත්රය අද්විතීය විය යුතුය;මැවූ පසු, එය සංස්කරණය කළ නොහැක.</1>",
                                         label: "හඳුනාගැනුම",
                                         placeholder: "https://api.bookmyhotel.com"
                                     },
@@ -714,7 +714,7 @@ export const extensions: Extensions = {
                         authorization: {
                             stepTitle: "බලය පැවරීම",
                             form: {
-                                rbacMessage: "මේ වන විට Asgardeo අවසරය සඳහා Role Based Access Control (RBAC) සදහා පමණක් සීමා වේ.",
+                                rbacMessage: "මේ වන විට {{ productName }} අවසරය සඳහා Role Based Access Control (RBAC) සදහා පමණක් සීමා වේ.",
                                 fields: {
                                     authorize: {
                                         label: "අවසරය අවශ්ය වේ",

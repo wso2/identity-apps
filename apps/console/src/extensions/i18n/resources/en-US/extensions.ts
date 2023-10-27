@@ -703,14 +703,14 @@ export const extensions: Extensions = {
                                     name: {
                                         emptyValidate: "Display name cannot be empty",
                                         label: "Display Name",
-                                        hint: "Meaningful name to identify your API resource in Asgardeo.",
+                                        hint: "Meaningful name to identify your API resource in {{ productName }}.",
                                         placeholder: "Bookings API"
                                     },
                                     identifier: {
                                         emptyValidate: "Identifier cannot be empty",
                                         alreadyExistsError: "Identifier already exists in the organization. Please choose a different one.",
                                         invalid: "Identifier cannot contain spaces",
-                                        hint: "We recommend using a URI as the identifier, but you do not need to make the URI publicly available since Asgardeo will not access your API. Asgardeo will use this identifier value as the audience(aud) claim in the issued JWT tokens. <1>This field should be unique; once created, it is not editable.</1>",
+                                        hint: "We recommend using a URI as the identifier, but you do not need to make the URI publicly available since {{ productName }} will not access your API. {{ productName }} will use this identifier value as the audience(aud) claim in the issued JWT tokens. <1>This field should be unique; once created, it is not editable.</1>",
                                         label: "Identifier",
                                         placeholder: "https://api.bookmyhotel.com"
                                     },
@@ -724,7 +724,7 @@ export const extensions: Extensions = {
                         authorization: {
                             stepTitle: "Authorization",
                             form: {
-                                rbacMessage: "At present, Asgardeo exclusively supports Role-Based Access Control (RBAC) for authorization.",
+                                rbacMessage: "At present, {{ productName }} exclusively supports Role-Based Access Control (RBAC) for authorization.",
                                 fields: {
                                     authorize: {
                                         label: "Requires authorization",
@@ -919,7 +919,7 @@ export const extensions: Extensions = {
                                                 hint: "Select the policy to authorize the API for the application."
                                             }
                                         },
-                                        rbacPolicyMessage: "This API resource requires authorization and Asgardeo exclusively supports Role-Based Access Control (RBAC) for authorization.",
+                                        rbacPolicyMessage: "This API resource requires authorization and {{ productName }} exclusively supports Role-Based Access Control (RBAC) for authorization.",
                                         buttons: {
                                             finish: "Finish",
                                             cancel: "Cancel"
