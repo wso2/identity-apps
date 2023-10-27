@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import getLegacyAuthzRuntime from "../utils/get-legacy-authz-runtime";
+import isLegacyAuthzRuntime from "../utils/get-legacy-authz-runtime";
 
 /**
  * Interface to store use authorization hook details.
@@ -27,12 +27,12 @@ export interface UseAuthorizationInterface {
 
 /**
  * Authorization hook.
- * 
+ *
  * @returns `AuthorizationInterface` Authorization details.
  */
 const useAuthorization = (): UseAuthorizationInterface => {
 
-    const legacyAuthzRuntime: boolean = getLegacyAuthzRuntime();
+    const legacyAuthzRuntime: boolean = isLegacyAuthzRuntime();
 
     return { legacyAuthzRuntime: legacyAuthzRuntime };
 };
