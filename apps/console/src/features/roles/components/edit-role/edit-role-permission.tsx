@@ -118,7 +118,9 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     } = useAPIResourceDetails(selectedAPIResourceId);
 
     useEffect(() => {
-        !isReadOnly && getExistingAPIResources();
+        !isReadOnly 
+            ? getExistingAPIResources()
+            : null;
     }, [ role ]);
 
     /**
