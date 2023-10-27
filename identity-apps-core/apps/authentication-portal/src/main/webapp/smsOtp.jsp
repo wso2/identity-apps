@@ -31,11 +31,11 @@
 
 <%
     request.getSession().invalidate();
-    if (StringUtils.isBlank(tenantDomain)) {
-        tenantDomain = (String) session.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
-    }
 
     // TODO: Use this once "org.wso2.identity.local.auth.smsotp.util.AuthenticatorUtils" is available to IS
+    // if (StringUtils.isBlank(tenantDomain)) {
+    //     tenantDomain = (String) session.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
+    // }
     // int otpLength = Integer.parseInt(AuthenticatorUtils.getSmsAuthenticatorConfig("SmsOTP.OTPLength", tenantDomain));
     int otpLength = 6;
 
