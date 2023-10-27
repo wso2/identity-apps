@@ -62,14 +62,12 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
 
-    const [ activePage, setActivePage ] = useState<number>(0);
+    const [ activePage, setActivePage ] = useState<number>(1);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ apiResourcesList, setAPIResourcesList ] = useState<APIResourceInterface[]>([]);
     const [ isListUpdated, setListUpdated ] = useState<boolean>(false);
     const [ after, setAfter ] = useState<string>(undefined);
     const [ before, setBefore ] = useState<string>(undefined);
-    const [ currentAfter, setCurrentAfter ] = useState<string>(undefined);
-    const [ currentBefore, setCurrentBefore ] = useState<string>(undefined);
     const [ nextAfter, setNextAfter ] = useState<string>(undefined);
     const [ nextBefore, setNextBefore ] = useState<string>(undefined);
 
@@ -102,10 +100,11 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
             const apiResourceList: APIResourceInterface[] = apiResourcesListData.apiResources.map(
                 (apiResource: APIResourceInterface) => apiResource);
 
-            if (apiResourcesListData.links && apiResourcesListData.links.length === 0) {
+            setNextAfter(undefined);
+            setNextBefore(undefined);
+            if (apiResourcesListData.links && apiResourcesListData.links.length !== 0) {
                 setNextAfter(undefined);
                 setNextBefore(undefined);
-            } else {
                 apiResourcesListData.links?.forEach((value: LinkInterface) => {
                     switch (value.rel) {
                         case APIResourcesConstants.NEXT_REL:
@@ -157,11 +156,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
      * edit the API resources list once a API resource is deleted
      */
     const onAPIResourceDelete = (): void => {
-        if (apiResourcesList?.length === 1) {
-            setMutateAPIResourcesList();
-        } else {
-            setMutateAPIResourcesList(currentAfter, currentBefore);
-        }
+        setMutateAPIResourcesList();
     };
 
     /**
@@ -175,9 +170,6 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
         setAfter(afterValue);
         setBefore(beforeValue);
 
-        // update the current after and before values
-        setCurrentAfter(nextAfter);
-        setCurrentBefore(nextBefore);
         setListUpdated(true);
     };
 
