@@ -322,7 +322,9 @@ export class ApplicationManagementConstants {
         IdentityProviderManagementConstants.FIDO_AUTHENTICATOR,
         IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR,
         IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID,
-        IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR
+        IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR,
+        IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR,
+        IdentityProviderManagementConstants.SMS_OTP_AUTHENTICATOR_ID
     ];
 
     // Second factor authenticators.
@@ -360,6 +362,11 @@ export class ApplicationManagementConstants {
     public static readonly EMAIL_OTP_HANDLERS: string[] = [
         ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
         ...ApplicationManagementConstants.SOCIAL_AUTHENTICATORS
+    ];
+
+    // Authenticators that can handle SMS OTP.
+    public static readonly SMS_OTP_HANDLERS: string[] = [
+        ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS
     ];
 
     // Enterprise EIDP Authenticators

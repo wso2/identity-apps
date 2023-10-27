@@ -348,13 +348,24 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         // If the adding option is a second factor, and if the adding step is the first or there are no
         // first factor authenticators in previous steps, show a warning and stop adding the option.
         if (
-            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId) &&
-            (stepIndex === 0 ||
-                !SignInMethodUtils.isSecondFactorAdditionValid(
+            (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId)
+            && !ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS.includes(authenticatorId)
+            && (stepIndex === 0 
+                || !SignInMethodUtils.isSecondFactorAdditionValid(
                     authenticator.defaultAuthenticator.authenticatorId,
                     stepIndex,
                     steps
-                ))
+                ))) 
+            || (
+                ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId)
+                && ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS.includes(authenticatorId)
+                && (stepIndex !== 0 
+                    && !SignInMethodUtils.isSecondFactorAdditionValid(
+                        authenticator.defaultAuthenticator.authenticatorId,
+                        stepIndex,
+                        steps
+                    ))
+            )
         ) {
             dispatch(
                 addAlert({
