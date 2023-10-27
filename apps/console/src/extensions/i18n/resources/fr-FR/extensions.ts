@@ -2017,13 +2017,13 @@ export const extensions: Extensions = {
         },
         emailProviders: {
             configureEmailProvider: "Configurer le fournisseur de messagerie",
-            heading: "Fournisseur de messagerie",
+            heading: "Fournisseur de messagerie personnalisé",
             subHeading: "Configurez des serveurs SMTP personnalisés pour envoyer des e-mails avec votre propre adresse e-mail.",
-            description: "Configurez les paramètres suivants en fonction de votre serveur SMTP.",
+            description: "Configurez les paramètres du fournisseur de messagerie en fonction de votre serveur SMTP.",
             info: "Vous pouvez personnaliser le contenu des e-mails à l'aide de <1>Modèles d'e-mails</1>.",
             updateButton: "Mise à jour",
             sendTestMailButton: "Envoyer un e-mail test",
-            goBack: "Revenir aux canaux de notification",
+            goBack: "Revenir aux chaînes",
             confirmationModal: {
                 assertionHint: "Veuillez confirmer votre action.",
                 content: "Si vous supprimez cette configuration, les e-mails seront envoyés à partir de l'adresse e-mail Asgardeo. " +
@@ -2118,18 +2118,18 @@ export const extensions: Extensions = {
             }
         },
         notificationChannel: {
-            heading: "Canal de notification",
-            title: "Canal de notification",
-            description: "Configurez les canaux de notification pour envoyer des notifications à vos utilisateurs."
+            heading: "Fournisseurs SMS/e-mail",
+            title: "Fournisseurs SMS/e-mail",
+            description: "Configurez les fournisseurs SMS et Email pour votre organisation."
         },
         smsProviders: {
-            heading: "Fournisseur SMS",
+            heading: "Fournisseur de SMS personnalisé",
             subHeading: "Configurez un fournisseur SMS personnalisé pour envoyer des SMS à vos utilisateurs.",
-            description: "Configurez les paramètres suivants en fonction de votre fournisseur SMS.",
+            description: "Configurez les paramètres du fournisseur SMS en fonction de votre fournisseur SMS.",
             info: "Vous pouvez personnaliser le contenu du SMS à l'aide des <1>Modèles de SMS</1>.",
             updateButton: "Mise à jour",
             sendTestSMSButton: "Envoyer un SMS test",
-            goBack: "Revenir aux canaux de notification",
+            goBack: "Revenir aux chaînes",
             confirmationModal: {
                 assertionHint: "Veuillez confirmer votre action.",
                 content: "Si vous supprimez cette configuration, vous ne recevrez pas de SMS." +

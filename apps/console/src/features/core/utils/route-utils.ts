@@ -398,7 +398,7 @@ export class RouteUtils {
                 parent: branding,
                 selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
                     history.location.pathname === AppConstants.getPaths().get("SMS_PROVIDER") ||
-                    history.location.pathname === `${ AppConstants.getDeveloperViewBasePath() }/notification-channels`
+                    history.location.pathname === `${ AppConstants.getDeveloperViewBasePath() }/channels`
             },
             {
                 category: settings,
