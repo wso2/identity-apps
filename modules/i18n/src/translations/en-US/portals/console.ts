@@ -10317,6 +10317,7 @@ export const console: ConsoleNS = {
                     },
                     permissions: {
                         heading: "Assigned Permissions",
+                        readOnlySubHeading: "View the assigned permissions of the role.",
                         removedPermissions: "Removed Permissions",
                         subHeading: "Manage assigned permissions in the role."
                     }
@@ -10330,8 +10331,12 @@ export const console: ConsoleNS = {
                         actions: "Actions",
                         audience: "Audience",
                         lastModified: "Modified Time",
-                        managedBy: {
-                            label: "Managed by",
+                        managedByApp: {
+                            label: "Can be used only in the application: ",
+                            header: "Managed By"
+                        },
+                        managedByOrg: {
+                            label: "Can be used within the organization: ",
                             header: "Managed By"
                         },
                         name: "Role"
@@ -12349,6 +12354,7 @@ export const console: ConsoleNS = {
                 title: "Welcome, {{firstName}}"
             },
             roles: {
+                alternateSubTitle: "View and manage roles.",
                 subTitle: "Create and manage roles, assign permissions for roles.",
                 title: "Roles"
             },
