@@ -9291,7 +9291,7 @@ export const console: ConsoleNS = {
                         title: "Add a new OIDC Scope"
                     },
                     emptySearch: {
-                        action: "View all",
+                        action: "Clear search query",
                         subtitles: {
                             0: "We couldn't find the scope you searched for.",
                             1: "Please try a different name."
@@ -9380,7 +9380,7 @@ export const console: ConsoleNS = {
                         fields: {
                             emailDomains: {
                                 label : "Email Domains",
-                                placeholder: "Enter emial domains",
+                                placeholder: "Enter email domains",
                                 hint: "Enter the email domains you wish to map to the organization. Separate multiple domains by hitting enter and typing the next domain."
                             },
                             organizationName: {
@@ -9405,7 +9405,7 @@ export const console: ConsoleNS = {
                         fields: {
                             emailDomains: {
                                 label : "Email Domains",
-                                placeholder: "Enter emial domains",
+                                placeholder: "Enter email domains",
                                 hint: "Enter the email domains you wish to map to the organization. Separate multiple domains by hitting enter and typing the next domain."
                             },
                             organizationName: {

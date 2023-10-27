@@ -40,7 +40,8 @@ import {
 import { AdaptiveScriptUtils } from "../../applications/utils/adaptive-script-utils";
 import { SignInMethodUtils } from "../../applications/utils/sign-in-method-utils";
 import { AuthenticatorManagementConstants } from "../../connections/constants/autheticator-constants";
-import { AuthenticatorCategories } from "../../connections/models/authenticators";
+import { AuthenticatorMeta } from "../../connections/meta/authenticator-meta";
+import { ConnectionInterface } from "../../connections/models/connection";
 import { ConnectionsManagementUtils } from "../../connections/utils/connection-utils";
 import { AppState } from "../../core/store";
 import {
@@ -174,15 +175,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                     authenticator.id,
                     authenticator.displayName
                 );
-            }
-
-            authenticator.image = authenticator.idp === AuthenticatorCategories.LOCAL ||
-            authenticator.defaultAuthenticator?.authenticatorId ===
-            AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
-                ? authenticator.image
-                : ConnectionsManagementUtils
-                    .resolveConnectionResourcePath(
-                        connectionResourcesUrl, authenticator.image);
+            } 
 
             if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
                 recoveryAuthenticators.push(authenticator);
@@ -194,6 +187,15 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         });
 
         federatedAuthenticators.forEach((authenticator: GenericAuthenticatorInterface) => {
+            authenticator.image = authenticator.defaultAuthenticator?.authenticatorId ===
+            AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
+                ? AuthenticatorMeta.getAuthenticatorIcon(
+                    (authenticator as ConnectionInterface)
+                        .federatedAuthenticators?.defaultAuthenticatorId 
+                            ?? authenticator.defaultAuthenticator?.authenticatorId)
+                : ConnectionsManagementUtils
+                    .resolveConnectionResourcePath(connectionResourcesUrl, authenticator.image);
+
             if (
                 ApplicationManagementConstants.SOCIAL_AUTHENTICATORS.includes(
                     authenticator.defaultAuthenticator.authenticatorId

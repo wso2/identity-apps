@@ -524,7 +524,7 @@ importers:
         specifier: ^2.0.3
         version: link:../../modules/common
       '@wso2is/core':
-        specifier: ^2.0.7
+        specifier: ^2.0.8
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.0.5
@@ -536,13 +536,13 @@ importers:
         specifier: ^2.0.0
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.0.21
+        specifier: ^2.0.22
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.0.10
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.24
+        specifier: ^2.0.25
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.0
@@ -855,19 +855,19 @@ importers:
         specifier: ^2.0.0
         version: link:../../modules/access-control
       '@wso2is/core':
-        specifier: ^2.0.7
+        specifier: ^2.0.8
         version: link:../../modules/core
       '@wso2is/forms':
         specifier: ^2.0.0
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.0.21
+        specifier: ^2.0.22
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.0.9
         version: link:../../modules/react-components
       '@wso2is/theme':
-        specifier: ^2.0.24
+        specifier: ^2.0.25
         version: link:../../modules/theme
       '@wso2is/validation':
         specifier: ^2.0.0
@@ -1621,7 +1621,7 @@ importers:
         specifier: ^26.0.14
         version: 26.0.24
       '@wso2is/core':
-        specifier: ^2.0.7
+        specifier: ^2.0.8
         version: link:../core
       babel-jest:
         specifier: ^26.3.0
@@ -5407,8 +5407,8 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.23.0
-      '@babel/helper-plugin-utils': 7.18.9
-      '@babel/helper-validator-option': 7.18.6
+      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-validator-option': 7.22.15
       '@babel/plugin-transform-react-display-name': 7.18.6(@babel/core@7.23.0)
       '@babel/plugin-transform-react-jsx': 7.18.10(@babel/core@7.23.0)
       '@babel/plugin-transform-react-jsx-development': 7.18.6(@babel/core@7.23.0)

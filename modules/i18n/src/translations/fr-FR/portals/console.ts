@@ -7547,7 +7547,7 @@ export const console: ConsoleNS = {
                         title: "Ajouter un nouveau scope OIDC"
                     },
                     emptySearch: {
-                        action: "Voir tout",
+                        action: "Effacer la requête de recherche",
                         subtitles: {
                             0: "Nous n'avons pas trouvé la portée que vous avez recherchée.",
                             1: "Veuillez essayer un autre nom."

@@ -703,14 +703,14 @@ export const extensions: Extensions = {
                                     name: {
                                         emptyValidate: "Le nom de l'affichage ne peut pas être vide",
                                         label: "Afficher un nom",
-                                        hint: "Nom significatif pour identifier votre ressource API dans Asgardeo.",
+                                        hint: "Nom significatif pour identifier votre ressource API dans {{ productName }}.",
                                         placeholder: "API des réservations"
                                     },
                                     identifier: {
                                         emptyValidate: "L'identifiant ne peut pas être vide",
                                         alreadyExistsError: "L'identifiant existe déjà dans l'organisation.Veuillez en choisir un autre",
                                         invalid: "L'identifiant ne peut pas contenir d'espaces",
-                                        hint: "Nous vous recommandons d'utiliser une URI comme identifiant, mais vous n'avez pas besoin de rendre l'URI accessible au public car Asgardeo n'accèdera pas à votre API. Asgardeo utilisera cette valeur d'identifiant comme la réclamation d'audience(aud) dans les jetons JWT émis. <1>Ce champ devrait être unique;Une fois créé, il n'est pas modifiable.</1>",
+                                        hint: "Nous vous recommandons d'utiliser une URI comme identifiant, mais vous n'avez pas besoin de rendre l'URI accessible au public car {{ productName }} n'accèdera pas à votre API. {{ productName }} utilisera cette valeur d'identifiant comme la réclamation d'audience(aud) dans les jetons JWT émis. <1>Ce champ devrait être unique;Une fois créé, il n'est pas modifiable.</1>",
                                         label: "Identifiant",
                                         placeholder: "https://api.bookmyhotel.com"
                                     },
@@ -724,7 +724,7 @@ export const extensions: Extensions = {
                         authorization: {
                             stepTitle: "Autorisation",
                             form: {
-                                rbacMessage: "À l'heure actuelle, Asgardeo prend en charge exclusivement le contrôle d'accès basé sur les rôles (RBAC) pour l'autorisation.",
+                                rbacMessage: "À l'heure actuelle, {{ productName }} prend en charge exclusivement le contrôle d'accès basé sur les rôles (RBAC) pour l'autorisation.",
                                 fields: {
                                     authorize: {
                                         label: "Nécessite une autorisation",
@@ -920,7 +920,7 @@ export const extensions: Extensions = {
                                                 hint: "Sélectionnez la politique pour autoriser l'API pour l'application."
                                             }
                                         },
-                                        rbacPolicyMessage: "Cette ressource API nécessite l'autorisation et Asgardeo prend en charge exclusivement le contrôle d'accès basé sur les rôles (RBAC) pour l'autorisation.",
+                                        rbacPolicyMessage: "Cette ressource API nécessite l'autorisation et {{ productName }} prend en charge exclusivement le contrôle d'accès basé sur les rôles (RBAC) pour l'autorisation.",
                                         buttons: {
                                             finish: "Finir",
                                             cancel: "Annuler"

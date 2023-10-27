@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -111,9 +111,9 @@ interface OIDCScopesListPropsInterface extends SBACInterface<FeatureConfigInterf
      */
     searchResult?: number;
     /**
-     * Fetch OIDC scopes list
+     * Callback to clear the search query string.
      */
-    getOIDCScopesList?: () => void;
+    clearSearchQuery?: () => void;
 }
 
 /**
@@ -134,7 +134,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
         isLoading,
         list,
         searchResult,
-        getOIDCScopesList,
+        clearSearchQuery,
         onScopeDelete,
         onListItemClick,
         onEmptyListPlaceholderActionClick,
@@ -316,7 +316,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
             return (
                 <EmptyPlaceholder
                     action={ (
-                        <LinkButton onClick={ getOIDCScopesList }>
+                        <LinkButton onClick={ () => clearSearchQuery() }>
                             { t("console:manage.features.oidcScopes.placeholders.emptySearch.action") }
                         </LinkButton>
                     ) }
@@ -433,7 +433,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
 OIDCScopeList.defaultProps = {
     "data-testid": "scope-list",
     defaultListItemLimit: 10,
-    isLoading: true,
+    isLoading: false,
     onListItemClick: () => null,
     selection: true,
     showListItemActions: true

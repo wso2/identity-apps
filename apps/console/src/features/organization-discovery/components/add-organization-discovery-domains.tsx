@@ -96,7 +96,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
 
     const dispatch: Dispatch = useDispatch();
 
-    const { data: organizations } = useGetOrganizations(true, null, null, null, null, false);
+    const { data: organizations } = useGetOrganizations(true, null, null, null, null, true);
 
     const { data: discoverableOrganizations } = useGetOrganizationDiscovery(true, null, null, null);
 

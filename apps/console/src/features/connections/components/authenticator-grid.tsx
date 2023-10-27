@@ -54,6 +54,7 @@ import {
     deleteConnection, 
     getConnectedApps 
 } from "../api/connections";
+import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import { 
@@ -416,8 +417,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                                     resourceDocumentationLink = { null }
                                     resourceImage={
                                         (authenticator?.type === "FEDERATED" || isIdP) && !isOrganizationSSOIDP
-                                            ? ConnectionsManagementUtils.resolveConnectionResourcePath(
-                                                "", authenticator?.image)    
+                                            ? authenticator?.image
+                                                ? ConnectionsManagementUtils.resolveConnectionResourcePath(
+                                                    "", authenticator?.image)
+                                                : getConnectionIcons().default            
                                             : isOrganizationSSOIDP 
                                                 ? AuthenticatorMeta.getAuthenticatorIcon(
                                                     (authenticator as ConnectionInterface)
