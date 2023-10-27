@@ -302,6 +302,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                         }
                     );
                     
+                    setTenant(response.orgId);
                     subOrgIdToken = response.orgId;
                     dispatch(setCurrentOrganization(response.orgName));
                 }
