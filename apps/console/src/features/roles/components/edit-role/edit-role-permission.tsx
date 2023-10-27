@@ -372,12 +372,14 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                     onSubmit={ undefined }
                 >
                     <Field.Dropdown
+                        search
+                        selection
+                        selectOnNavigation={ false }
                         ariaLabel="assignedApplication"
                         name="assignedApplication"
                         label={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
                             "apiResource.label") }
                         options={ apiResourcesListOptions }
-                        search
                         data-componentid={ `${componentId}-typography-font-family-dropdown` }
                         placeholder={ t("console:manage.features.roles.addRoleWizard." +
                             "forms.rolePermission.apiResource.placeholder") }
