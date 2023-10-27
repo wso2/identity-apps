@@ -345,16 +345,24 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             // TODO: setShowHandlerDisclaimerModal(true);
         }
 
+        const isFirstFactorAuth: boolean = 
+            ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS.includes(authenticatorId);
+        const isSecondFactorAuth: boolean = 
+            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId);
+        const isValidSecondFactorAddition: boolean = SignInMethodUtils.isSecondFactorAdditionValid(
+            authenticator.defaultAuthenticator.authenticatorId,
+            stepIndex,
+            steps
+        );
+        
         // If the adding option is a second factor, and if the adding step is the first or there are no
         // first factor authenticators in previous steps, show a warning and stop adding the option.
-        if (
-            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId) &&
-            (stepIndex === 0 ||
-                !SignInMethodUtils.isSecondFactorAdditionValid(
-                    authenticator.defaultAuthenticator.authenticatorId,
-                    stepIndex,
-                    steps
-                ))
+        if ( 
+            isSecondFactorAuth
+            && (
+                (!isFirstFactorAuth && (stepIndex === 0 || !isValidSecondFactorAddition))
+                || (isFirstFactorAuth && stepIndex !== 0 && !isValidSecondFactorAddition)
+            )
         ) {
             dispatch(
                 addAlert({
