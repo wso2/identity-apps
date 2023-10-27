@@ -325,7 +325,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                         type="password"
                                                         disabled={ !isPasswordEditing }
                                                         key={ index }
-                                                        required={ true }
+                                                        required={ isPasswordEditing }
                                                         label={ name }
                                                         requiredErrorMessage={
                                                             `${property.description.split("#")[ 0 ]} is  required`
