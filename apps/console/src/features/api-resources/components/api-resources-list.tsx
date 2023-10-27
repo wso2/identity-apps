@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -38,6 +37,7 @@ import { AppState, FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllus
 import { deleteAPIResource } from "../api";
 import { APIResourcesConstants } from "../constants";
 import { APIResourceInterface } from "../models";
+import { APIResourceUtils } from "../utils/api-resource-utils";
 
 /**
  * Prop types for the API resources list component.
@@ -206,38 +206,42 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
             {
                 "data-componentid": `${componentId}-item-edit-button`,
                 hidden: () => {
-                    const hasScopesRead: boolean = !hasRequiredScopes(featureConfig?.apiResources,
-                        featureConfig?.apiResources?.scopes?.read, allowedScopes);
+                    const readForbidden: boolean = !APIResourceUtils.isAPIResourceReadAllowed(
+                        featureConfig, allowedScopes);
+                    const updateForbidden: boolean = !APIResourceUtils.isAPIResourceUpdateAllowed(
+                        featureConfig, allowedScopes);
 
-                    const hasScopesUpdate: boolean = !hasRequiredScopes(featureConfig?.apiResources,
-                        featureConfig?.apiResources?.scopes?.update, allowedScopes);
-
-                    return hasScopesUpdate || hasScopesRead;
+                    return readForbidden && updateForbidden;
                 },
-                icon: (): SemanticICONS => {
-                    return !hasRequiredScopes(featureConfig?.applications,
-                        featureConfig?.applications?.scopes?.update, allowedScopes)
-                        ? "eye"
-                        : "pencil alternate";
+                icon: (apiResource: APIResourceInterface): SemanticICONS => {
+                    const updateAllowed: boolean = APIResourceUtils.isAPIResourceUpdateAllowed(
+                        featureConfig, allowedScopes);
+                    const isSystemAPIResource: boolean = APIResourceUtils.isSystemAPI(apiResource?.type);
+                    const canUpdate: boolean = !isSystemAPIResource && updateAllowed;
+
+                    return canUpdate ? "pencil alternate" : "eye";
                 },
                 onClick: (e: SyntheticEvent, apiResource: APIResourceInterface): void => {
                     handleAPIResourceEdit(apiResource, e);
                 },
-                popupText: (): string => {
-                    return !hasRequiredScopes(featureConfig?.applications,
-                        featureConfig?.applications?.scopes?.update, allowedScopes)
-                        ? t("common:view")
-                        : t("common:edit");
+                popupText: (apiResource: APIResourceInterface): string => {
+                    const updateAllowed: boolean = APIResourceUtils.isAPIResourceUpdateAllowed(
+                        featureConfig, allowedScopes);
+                    const isSystemAPIResource: boolean = APIResourceUtils.isSystemAPI(apiResource?.type);
+                    const canUpdate: boolean = !isSystemAPIResource && updateAllowed;
+
+                    return canUpdate ? t("common:edit") : t("common:view");
                 },
                 renderer: "semantic-icon"
             },
             {
                 "data-componentid": `${componentId}-item-delete-button`,
-                hidden: () => {
-                    const hasScopes: boolean = !hasRequiredScopes(featureConfig?.apiResources,
-                        featureConfig?.apiResources?.scopes?.delete, allowedScopes);
+                hidden: (apiResource: APIResourceInterface) => {
+                    const deleteForbidden: boolean = !APIResourceUtils.isAPIResourceDeleteAllowed(
+                        featureConfig, allowedScopes);
+                    const isSystemAPIResource: boolean = APIResourceUtils.isSystemAPI(apiResource?.type);
 
-                    return hasScopes;
+                    return deleteForbidden || isSystemAPIResource;
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, apiResource: APIResourceInterface): void => {

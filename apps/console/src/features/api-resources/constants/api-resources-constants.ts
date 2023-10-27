@@ -37,6 +37,11 @@ export class APIResourcesConstants {
     public static readonly DEFAULT_TOTAL_PAGES: number = 10;
     public static readonly API_RESOURCE_DIR: string = "api-resources";
 
+    // API Resource types.
+    public static readonly SYSTEM: string = "SYSTEM";
+    public static readonly SYSTEM_ORG: string = "SYSTEM_ORG";
+    public static readonly SYSTEM_FEATURE: string = "SYSTEM_FEATURE";
+
     /**
      * Get the API resource paths as a map.
      *

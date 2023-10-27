@@ -137,7 +137,7 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
                     </Grid>
                     <Grid xs={ 4 } alignItems="flex-end">
                         {
-                            permissionList?.length !== 0
+                            permissionList?.length !== 0 && !isReadOnly
                                 && (<PrimaryButton
                                     data-componentid={ `${componentId}-add-permission-button` }
                                     size="medium"
