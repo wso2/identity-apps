@@ -257,7 +257,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
-                showTopActionPanel={ (rolesList?.totalResults > 0 || filterBy.length !== 0) }
+                showTopActionPanel={ (rolesList?.totalResults > 0 || filterBy?.length !== 0) }
                 rightActionPanel={
                     (
                         <Dropdown
