@@ -16,15 +16,21 @@
  * under the License.
  */
 
-import { AuthorizationInterface } from "../models/authorization";
 import getLegacyAuthzRuntime from "../utils/get-legacy-authz-runtime";
+
+/**
+ * Interface to store use authorization hook details.
+ */
+export interface UseAuthorizationInterface {
+    legacyAuthzRuntime: boolean;
+}
 
 /**
  * Authorization hook.
  * 
  * @returns `AuthorizationInterface` Authorization details.
  */
-const useAuthorization = (): AuthorizationInterface => {
+const useAuthorization = (): UseAuthorizationInterface => {
 
     const legacyAuthzRuntime: boolean = getLegacyAuthzRuntime();
 
