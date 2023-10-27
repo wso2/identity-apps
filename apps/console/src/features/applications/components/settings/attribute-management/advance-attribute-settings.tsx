@@ -17,7 +17,6 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { AdvanceAttributeSettingsErrorValidationInterface } from "../../../models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { Code, Heading, Hint, Message, Text } from "@wso2is/react-components";
@@ -28,6 +27,7 @@ import { DropdownOptionsInterface } from "./attribute-settings";
 import { applicationConfig } from "../../../../../extensions";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
+    AdvanceAttributeSettingsErrorValidationInterface,
     InboundProtocolListItemInterface,
     OIDCDataInterface,
     RoleConfigInterface,
