@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.4.2
+
+### Patch Changes
+
+- [#4404](https://github.com/wso2/identity-apps/pull/4404) [`8f53e4fccb`](https://github.com/wso2/identity-apps/commit/8f53e4fccb76ded393a41d5ffbf40754c95b059b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update username validation message
+
+* [#4398](https://github.com/wso2/identity-apps/pull/4398) [`8eaf3093d0`](https://github.com/wso2/identity-apps/commit/8eaf3093d020e4d2be82fbd27443bf41258f4b91) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Enable SMS OTP as first factor
+
+- [#4392](https://github.com/wso2/identity-apps/pull/4392) [`f024908ba9`](https://github.com/wso2/identity-apps/commit/f024908ba9c166a24a62c12addc7419209dfdab0) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enable adding new custom attribute mappings
+
+- Updated dependencies [[`8f53e4fccb`](https://github.com/wso2/identity-apps/commit/8f53e4fccb76ded393a41d5ffbf40754c95b059b), [`f024908ba9`](https://github.com/wso2/identity-apps/commit/f024908ba9c166a24a62c12addc7419209dfdab0)]:
+  - @wso2is/i18n@2.0.25
+  - @wso2is/common@2.0.5
+
 ## 2.4.1
 
 ### Patch Changes
