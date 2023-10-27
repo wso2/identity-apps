@@ -866,9 +866,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             </Header>
                         );
                     },
-                    title: attributeType && attributeType === OIDC
-                        ? "Name"
-                        : t("console:manage.features.claims.list.columns.claimURI")
+                    title: attributeType && attributeType === ClaimManagementConstants.SCIM
+                        ? t("console:manage.features.claims.list.columns.claimURI")
+                        : t("console:manage.features.claims.list.columns.name")
                 },
                 {
                     allowToggleVisibility: false,
