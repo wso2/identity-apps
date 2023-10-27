@@ -17,8 +17,8 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { APIResourcesConstants } from "../constants/api-resources-constants";
 import { FeatureConfigInterface } from "../../core";
+import { APIResourcesConstants } from "../constants/api-resources-constants";
 
 export class APIResourceUtils {
 
@@ -96,4 +96,4 @@ export class APIResourceUtils {
             || type === APIResourcesConstants.SYSTEM_ORG
             || type === APIResourcesConstants.SYSTEM_FEATURE;
     }
- }
+}
