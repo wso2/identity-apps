@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.3.5
+
+### Patch Changes
+
+- [#4373](https://github.com/wso2/identity-apps/pull/4373) [`78e592f835`](https://github.com/wso2/identity-apps/commit/78e592f835ddbda698bf94d1235b16744a4d20f3) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Remove application sharing from M2M template
+
 ## 2.3.4
 
 ### Patch Changes
