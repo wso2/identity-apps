@@ -467,7 +467,6 @@ export const AppUtils = (function() {
             }
 
             _config.appBaseWithTenant = "/" + this.getTenantPrefix() + "/" + tenant + "/" + _config.appBaseName;
-
             
         }
     };

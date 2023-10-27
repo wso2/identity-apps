@@ -28,7 +28,7 @@ export const useEndUserSession = (): () => Promise<boolean> => {
     const { revokeAccessToken, on } = useAuthContext();
 
     on(Hooks.RevokeAccessToken, async () => {
-        const LOGOUT_URL = "sign_out_url";
+        const LOGOUT_URL: string = "sign_out_url";
 
         if (sessionStorage.getItem(LOGOUT_URL)) {
             location.href = sessionStorage.getItem(LOGOUT_URL);
@@ -46,7 +46,7 @@ export const useEndUserSession = (): () => Promise<boolean> => {
  * @returns boolean
  */
 export const hasLoginPermission = (): boolean => {
-    const scopes = store.getState().authenticate.scope.split(" ");
+    const scopes: string = store.getState().authenticate.scope.split(" ");
 
     return scopes.includes(TokenConstants.LOGIN_SCOPE);
 };
@@ -57,7 +57,7 @@ export const hasLoginPermission = (): boolean => {
  * @returns boolean
  */
 export const hasScope = (scope: string): boolean => {
-    const scopes = store.getState().authenticationInformation.scope;
+    const scopes: string = store.getState().authenticationInformation.scope;
 
     return scopes.includes(scope);
 };
@@ -70,8 +70,8 @@ export const hasScope = (scope: string): boolean => {
  * @returns string[]
  */
 const resolveBaseUrls = (): string[] => {
-    let baseUrls = window["AppUtils"]?.getConfig().idpConfigs?.baseUrls;
-    const serverOrigin = window["AppUtils"]?.getConfig().serverOrigin;
+    let baseUrls: string[] = window["AppUtils"]?.getConfig().idpConfigs?.baseUrls;
+    const serverOrigin: string = window["AppUtils"]?.getConfig().serverOrigin;
 
     if (baseUrls) {
         // If the server origin is not specified in the overridden config, append it.
