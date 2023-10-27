@@ -1896,7 +1896,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     floated="right"
                                                     onClick={ manualInviteMultipleUsers }
                                                     loading={ isSubmitting }
-                                                    disabled={ isLoading || isSubmitting || hasError }
+                                                    disabled={ 
+                                                        isLoading
+                                                        ||isSubmitting
+                                                        || hasError
+                                                        || isAllRolesListLoading
+                                                    }
                                                 >
                                                     { t("console:manage.features.user.modals." +
                                                     "bulkImportUserWizard.wizardSummary.manualCreation.primaryButton") }
