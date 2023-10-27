@@ -29,6 +29,7 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment, Heading } from "@wso2is/react-components";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -287,10 +288,13 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
      */
     const searchAPIResources: DebouncedFunc<(query: string) => void> = 
         useCallback(debounce((query: string) => {
-            setAPIResourceSearchQuery(`name co ${query}`);
+            setAPIResourceSearchQuery(
+                !isEmpty(query) 
+                    ? `name co ${query}` 
+                    : null
+            );
             mutateAPIResourcesListFetchRequest().finally(() => {
                 setAPIResourcesSearching(false);
-                setAPIResourceSearchQuery(undefined);
             });
         }, RoleConstants.DEBOUNCE_TIMEOUT), []);
 
@@ -298,7 +302,9 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
      * Handles the selection of an API resource.
      */
     const onAPIResourceSelected = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
+        event.preventDefault();
         setSelectedAPIResourceId(data.value.toString());
+        setAPIResourceSearchQuery(undefined);
     };
 
     /**
@@ -359,12 +365,14 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                         onSubmit={ undefined }
                     >
                         <Field.Dropdown
+                            search
+                            selection
+                            selectOnNavigation={ false }
                             ariaLabel="assignedApplication"
                             name="assignedApplication"
                             label={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
                                 "apiResource.label") }
                             options={ apiResourcesListOptions }
-                            search
                             data-componentid={ `${componentId}-typography-font-family-dropdown` }
                             placeholder={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
                                 "apiResource.placeholder") }

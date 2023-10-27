@@ -23,6 +23,7 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -173,7 +174,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                     }
                 });
             }
-        
+
             setAPIResourcesListOptions(options);
         }, [ authorizedAPIListForApplication, apiResourcesList, selectedAPIResources ]);
 
@@ -199,10 +200,13 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
          */
         const searchAPIResources: DebouncedFunc<(query: string) => void> = 
             useCallback(debounce((query: string) => {
-                setAPIResourceSearchQuery(`name co ${query}`);
+                setAPIResourceSearchQuery(
+                    !isEmpty(query) 
+                        ? `name co ${query}` 
+                        : null
+                );
                 mutateAPIResourcesListFetchRequest().finally(() => {
                     setAPIResourcesSearching(false);
-                    setAPIResourceSearchQuery(undefined);
                 });
             }, RoleConstants.DEBOUNCE_TIMEOUT), []);
 
@@ -224,6 +228,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
          * else add the API resource to the selected API resources list from the authorized API list.
          */
         const onAPIResourceSelected = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
+            event.preventDefault();
             if(roleAudience === RoleAudienceTypes.ORGANIZATION) {
                 setSelectedAPIResourceId(data.value.toString());
             } else {
@@ -240,6 +245,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                     ...selectedAPIResources 
                 ]);
             }
+            setAPIResourceSearchQuery(undefined);
         };
 
         /**
@@ -304,12 +310,14 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                         onSubmit={ undefined }
                     >
                         <Field.Dropdown
+                            search
+                            selection
+                            selectOnNavigation={ false }
                             ariaLabel="assignedApplication"
                             name="assignedApplication"
                             label={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
                                 "apiResource.label") }
                             options={ apiResourcesListOptions }
-                            search
                             data-componentid={ `${componentId}-typography-font-family-dropdown` }
                             placeholder={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
                                 "apiResource.placeholder") }
