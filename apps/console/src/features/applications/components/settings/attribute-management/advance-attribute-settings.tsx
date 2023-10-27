@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface, AdvanceAttributeSettingsErrorValidationInterface } from "@wso2is/core/models";
+import { AdvanceAttributeSettingsErrorValidationInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { Code, Heading, Hint, Message, Text } from "@wso2is/react-components";
@@ -182,7 +182,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         return claimURI;
     });
 
-    const validateForm = (values: Record<string, any>): AdvanceAttributeSettingsErrorValidationInterface => {
+    const validateForm = (values: Record<string, string>): AdvanceAttributeSettingsErrorValidationInterface => {
 
         const errors: AdvanceAttributeSettingsErrorValidationInterface = {
             sectorIdentifierURI: undefined

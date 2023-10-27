@@ -1064,7 +1064,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                 }
             }
         };
-        const oidcSubmitValue: any = advanceSettingValues?.oidc;
+        const oidcSubmitValue: OIDCDataInterface = advanceSettingValues?.oidc;
 
         if (isEmpty(submitValue.claimConfiguration.claimMappings)) {
             delete submitValue.claimConfiguration.claimMappings;

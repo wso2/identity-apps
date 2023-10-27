@@ -629,7 +629,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (!selectedAuthMethod) {
             setSelectedAuthMethod(initialValues?.clientAuthentication?.tokenEndpointAuthMethod);
         }
-    });
+    }, []);
 
     /**
      * Moderates the metadata labels.
@@ -670,13 +670,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     });
                 });
             } else {
-                metadataProp.options.map((ele: any) => {
+                metadataProp.options.map((ele: any, index: number) => {
                     if (!ele.displayName) {
                         allowedList.push({ text: ele, value: ele });
                     } else {
                         allowedList.push({
                             content: (
-                                <Table.Row data-testid={ testId }>
+                                <Table.Row data-componentId={ `${testId}-client-auth-method-table-row-${index}` }>
                                     <Table.Cell>
                                         <div>{ ele.displayName }</div>
                                         {
@@ -1809,7 +1809,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
 
-            { selectedAuthMethod == PRIVATE_KEY_JWT &&
+            { selectedAuthMethod === PRIVATE_KEY_JWT &&
                 (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -1845,7 +1845,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 )
             }
 
-            { selectedAuthMethod == TLS_CLIENT_AUTH &&
+            { selectedAuthMethod === TLS_CLIENT_AUTH &&
                 (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
