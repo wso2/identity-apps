@@ -103,8 +103,6 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
             setNextAfter(undefined);
             setNextBefore(undefined);
             if (apiResourcesListData.links && apiResourcesListData.links.length !== 0) {
-                setNextAfter(undefined);
-                setNextBefore(undefined);
                 apiResourcesListData.links?.forEach((value: LinkInterface) => {
                     switch (value.rel) {
                         case APIResourcesConstants.NEXT_REL:
