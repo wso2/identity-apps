@@ -170,14 +170,16 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
     const [ selectedCSVFile, setSelectedCSVFile ] = useState<File>(null);
     const [ userData, setUserData ] = useState<CSVResult>();
-    const [ alert, setAlert, alertComponent ] = useWizardAlert({ "data-componentid": `${componentId}-alert` });
     const [ hasError, setHasError ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ response, setResponse ] = useState<BulkUserImportOperationResponse[]>([]);
+    const [ manualInviteResponse, setManualInviteResponse ] = useState<BulkUserImportOperationResponse[]>([]);
     const [ showResponseView, setShowResponseView ] = useState<boolean>(false);
     const [ showManualInviteTable, setshowManualInviteTable ] = useState<boolean>(false);
     const [ bulkResponseSummary, setBulkResponseSummary ] = useState<BulkResponseSummary>(initialBulkResponseSummary);
+    const [ manualInviteResponseSummary, setManualInviteesponseSummary ]
+        = useState<BulkResponseSummary>(initialBulkResponseSummary);
     const [ readWriteUserStoresList, setReadWriteUserStoresList ] = useState<DropdownItemProps[]>([]);
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>("");
     const [ configureMode, setConfigureMode ] = useState<string>(undefined);
@@ -186,6 +188,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ emailDataError, setEmailDataError ] = useState<string>("");
     const [ roleUserAssociations, setRoleUserAssociations ] = useState<Record<string, RoleUserAssociation>>({});
     const [ rolesData, setRolesData ] = useState<RolesInterface[]>();
+    const [ alert, setAlert, alertComponent ] = useWizardAlert({ "data-componentid": `${componentId}-alert` });
+    const [ manualInviteAlert, setManualInviteAlert, manualInviteAlertComponent ]
+        = useWizardAlert({ "data-componentid": `${componentId}-manual-invite-alert` });
 
     const optionsArray: string[] = [];
     
@@ -1183,12 +1188,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 throw new Error("Failed to import users.");
             }
 
-            const response: BulkUserImportOperationResponse[] = scimResponse.data.Operations.map(generateBulkResponse);
+            const response: BulkUserImportOperationResponse[]
+                = scimResponse.data.Operations.map(generateManualInviteResponse);
 
-            setResponse(response);
+            setManualInviteResponse(response);
         } catch (error) {
             setHasError(true);
-            setAlert({
+            setManualInviteAlert({
                 description: t(
                     "console:manage.features.users.notifications.bulkImportUser.submit.genericError.description"),
                 level: AlertLevels.ERROR,
@@ -1332,6 +1338,88 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     };
 
     /**
+     * Generate bulk response. 
+     * @param operation - SCIM bulk operation.
+     * @returns - BulkUserImportOperationResponse
+     */
+    const generateManualInviteResponse = (operation: SCIMBulkResponseOperation): BulkUserImportOperationResponse => {
+        const resourceIdentifier: string = operation?.bulkId.split(":")[1];
+        const statusCode: number = operation?.status?.code;
+        let operationType: BulkImportResponseOperationTypes = BulkImportResponseOperationTypes.USER_CREATION;
+
+        const defaultMsg: string = t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
+        "tableMessages.internalErrorMessage");
+
+        let statusMessages: Record<number, string> = {};
+
+        if (operation?.method === HttpMethods.POST) {
+            statusMessages = {
+                201: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "userCreatedMessage"),
+                202: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "userCreationAcceptedMessage"),
+                400: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "invalidDataMessage"),
+                409: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "userAlreadyExistsMessage"),
+                500: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "internalErrorMessage")
+            };
+        } else if (operation?.method === HttpMethods.PATCH) {
+            operationType = BulkImportResponseOperationTypes.ROLE_ASSIGNMENT;
+            statusMessages = {
+                200: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                "userAssignmentSuccessMessage", { resource: resourceIdentifier }),
+                400: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                "userAssignmentFailedMessage", { resource: resourceIdentifier }),
+                500: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                "userAssignmentInternalErrorMessage", { resource: resourceIdentifier })
+            };
+        }
+        
+        // Functional update to update the bulk response summary.
+        setManualInviteesponseSummary((prevSummary: BulkResponseSummary) => {
+            const successUserAssignment: number = (operation?.method === HttpMethods.PATCH && statusCode === 200) ?
+                prevSummary.successUserAssignment + 1 : prevSummary.successUserAssignment;
+            
+            const failedUserAssignment: number = (operation?.method === HttpMethods.PATCH && statusCode !== 200) ?
+                prevSummary.failedUserAssignment + 1 : prevSummary.failedUserAssignment;
+            
+            const successUserCreation: number =
+                (operation?.method === HttpMethods.POST && (statusCode === 201 || statusCode === 202)) ?
+                    prevSummary.successUserCreation + 1 :
+                    prevSummary.successUserCreation;
+            
+            const failedUserCreation: number =
+                (operation?.method === HttpMethods.POST && (statusCode !== 201 && statusCode !== 202)) ?
+                    prevSummary.failedUserCreation + 1 :
+                    prevSummary.failedUserCreation;
+
+            return {
+                ...prevSummary,
+                failedUserAssignment,
+                failedUserCreation,
+                successUserAssignment,
+                successUserCreation
+            };
+        });
+
+        let _statusCode: BulkUserImportStatus = BulkUserImportStatus.FAILED;
+        
+        if (statusCode === 201 || statusCode === 202 || statusCode === 200) {
+            _statusCode = BulkUserImportStatus.SUCCESS;
+        }
+
+        return {
+            message: statusMessages[statusCode] || defaultMsg,
+            operationType,
+            resourceIdentifier,
+            status: getStatusFromCode(statusCode),
+            statusCode: _statusCode
+        };
+    };
+
+    /**
      * Get status message from the status code.
      *
      * @param statusCode - Status code from the bulk response.
@@ -1395,6 +1483,15 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         if (configureMode == MultipleInviteMode.MANUAL) {
             return (
                 <>
+                    { manualInviteAlert
+                            && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        { manualInviteAlertComponent }
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                    }
                     {
                         !showManualInviteTable
                             ? (
@@ -1602,10 +1699,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                             )
                             : (
                                 <>
-                                    { alert && (
+                                    { manualInviteAlert && (
                                         <Grid.Row columns={ 1 }>
                                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                                { alertComponent }
+                                                { manualInviteAlertComponent }
                                             </Grid.Column>
                                         </Grid.Row>
                                     ) }
@@ -1613,8 +1710,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         isLoading={ isSubmitting }
                                         data-componentid={ `${componentId}-manual-response-list` }
                                         hasError={ hasError }
-                                        responseList={ response }
-                                        bulkResponseSummary={ bulkResponseSummary }
+                                        responseList={ manualInviteResponse }
+                                        bulkResponseSummary={ manualInviteResponseSummary }
                                     />
                                 </>
                             )
@@ -1633,7 +1730,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             { alertComponent }
                                         </Grid.Column>
                                     </Grid.Row>
-                                ) }
+                                )
+                            }
                             { !isLoading && !hideUserStoreDropdown()
                                 && (
                                     <>
