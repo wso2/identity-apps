@@ -1,5 +1,20 @@
 # @wso2is/myaccount
 
+## 2.1.11
+
+### Patch Changes
+
+- [#4359](https://github.com/wso2/identity-apps/pull/4359) [`72b6c71250`](https://github.com/wso2/identity-apps/commit/72b6c71250161090c90ad46858a068316018e05c) Thanks [@Achintha444](https://github.com/Achintha444)! - fix `tenantDomain` not setting properly.
+
+* [#4368](https://github.com/wso2/identity-apps/pull/4368) [`15f2bb0341`](https://github.com/wso2/identity-apps/commit/15f2bb0341d9f1b52f65a13e2074d220799c825e) Thanks [@Achintha444](https://github.com/Achintha444)! - update hasRequiredScopes function
+
+- [#4367](https://github.com/wso2/identity-apps/pull/4367) [`905d37424a`](https://github.com/wso2/identity-apps/commit/905d37424a5ad496340332d2acd38cc2afbc2762) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix my account setting section component issue
+
+- Updated dependencies [[`825f22c6cb`](https://github.com/wso2/identity-apps/commit/825f22c6cbc2d68e5d574e120806ab557fb12e13), [`72b6c71250`](https://github.com/wso2/identity-apps/commit/72b6c71250161090c90ad46858a068316018e05c), [`15f2bb0341`](https://github.com/wso2/identity-apps/commit/15f2bb0341d9f1b52f65a13e2074d220799c825e), [`905d37424a`](https://github.com/wso2/identity-apps/commit/905d37424a5ad496340332d2acd38cc2afbc2762), [`a06dc54272`](https://github.com/wso2/identity-apps/commit/a06dc54272bce7720ee51e49be63f9c175cec4c2)]:
+  - @wso2is/i18n@2.0.22
+  - @wso2is/core@2.0.8
+  - @wso2is/theme@2.0.25
+
 ## 2.1.10
 
 ### Patch Changes
