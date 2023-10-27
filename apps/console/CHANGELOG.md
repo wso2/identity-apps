@@ -1,5 +1,26 @@
 # @wso2is/console
 
+## 2.4.0
+
+### Minor Changes
+
+- [#4284](https://github.com/wso2/identity-apps/pull/4284) [`6eabfdf64d`](https://github.com/wso2/identity-apps/commit/6eabfdf64d5b3bd2d9bc031bd59b24d90b75c0ff) Thanks [@RivinduM](https://github.com/RivinduM)! - Add OIDC protocol configs related to client authentication, request object, pushed authorization and subject types.
+
+### Patch Changes
+
+- [#4394](https://github.com/wso2/identity-apps/pull/4394) [`f47a9eb796`](https://github.com/wso2/identity-apps/commit/f47a9eb796536ad8e1eb151666dfb187065457dc) Thanks [@savindi7](https://github.com/savindi7)! - Fix user creation wizard's group step issue
+
+* [#4389](https://github.com/wso2/identity-apps/pull/4389) [`f58ff2fd65`](https://github.com/wso2/identity-apps/commit/f58ff2fd6502a13d8861ed1d26fad08097898c55) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Update user store filter functionality
+
+- [#4390](https://github.com/wso2/identity-apps/pull/4390) [`3216c6bc96`](https://github.com/wso2/identity-apps/commit/3216c6bc96a930a3ce016ac846808bafed017456) Thanks [@Rashmini](https://github.com/Rashmini)! - Bump oxygen-ui version to 1.6.2
+
+* [#4391](https://github.com/wso2/identity-apps/pull/4391) [`b19959a91f`](https://github.com/wso2/identity-apps/commit/b19959a91fa1b24ab4abd43e08b42fa94250fd73) Thanks [@Achintha444](https://github.com/Achintha444)! - Fix legacyAuthzRuntime not setting properly
+
+* Updated dependencies [[`3216c6bc96`](https://github.com/wso2/identity-apps/commit/3216c6bc96a930a3ce016ac846808bafed017456)]:
+  - @wso2is/react-components@2.0.12
+  - @wso2is/dynamic-forms@2.0.7
+  - @wso2is/form@2.0.5
+
 ## 2.3.7
 
 ### Patch Changes
