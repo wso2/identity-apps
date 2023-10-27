@@ -179,7 +179,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     return (
         <PageLayout
             action={
-                !isSubOrg && !isRolesListLoading && !(rolesList?.totalResults > 0)
+                !isSubOrg && !isRolesListLoading && (rolesList?.totalResults > 0)
                     ? (
                         <Show when={ AccessControlConstants.ROLE_WRITE }>
                             <PrimaryButton
@@ -202,7 +202,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                 : t("console:manage.pages.roles.subTitle") }
         >
             {
-                !(rolesList?.totalResults > 0) && (
+                (rolesList?.totalResults > 0) && (
                     <ListLayout
                         advancedSearch={ (
                             <AdvancedSearchWithBasicFilters
