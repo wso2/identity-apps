@@ -351,7 +351,7 @@ export class AppConstants {
             [ "SECRET_EDIT", `${AppConstants.getDeveloperViewBasePath()}/secrets/:type/:name` ],
             [ 
                 "ATTRIBUTE_MAPPINGS",
-                `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type/:customAttributeMappingID`
+                `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type/:customAttributeMappingID?`
             ],
             [ "CREATE_TENANT", `${AppConstants.getMainViewBasePath()}/create-tenant` ],
             [ "ORGANIZATIONS", `${AppConstants.getAdminViewBasePath()}/organizations` ],
