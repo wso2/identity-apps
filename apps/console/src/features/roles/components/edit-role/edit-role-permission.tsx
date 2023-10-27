@@ -508,90 +508,10 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                         } }
                         data-componentid={ `${ componentId }-update-button` }
                     >
-                        <Field.Dropdown
-                            search
-                            selection
-                            selectOnNavigation={ false }
-                            ariaLabel="assignedApplication"
-                            name="assignedApplication"
-                            label={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
-                                "apiResource.label") }
-                            options={ apiResourcesListOptions }
-                            data-componentid={ `${componentId}-typography-font-family-dropdown` }
-                            placeholder={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
-                                "apiResource.placeholder") }
-                            noResultsMessage={
-                                isAPIResourcesListFetchRequestLoading
-                                    ? t("common:searching")
-                                    : t("common:noResultsFound")
-                            }
-                            loading={ isAPIResourcesSearching }
-                            onSearchChange={ onSearchChangeAPIResources }
-                            onChange={ onAPIResourceSelected }
-                        />
-                    </Form>
-                </Grid>
-                <Grid xs={ 12 }>
-                    {
-                        selectedAPIResources?.length > 0 
-                            ? (
-                                <div className="role-permission-list field">
-                                    <label className="form-label">
-                                        { t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
-                                            "permissions.label") }
-                                    </label>
-                                    <EmphasizedSegment
-                                        className="mt-2"
-                                        data-componentid={ componentId }
-                                        basic
-                                        loading={ 
-                                            selectedAPIResourceId &&
-                                            (isSelectedAPIResourceFetchRequestLoading 
-                                                || isSelectedAPIResourceFetchRequestValidating) 
-                                        }
-                                    >
-                                        {
-                                            selectedAPIResources?.map((apiResource: APIResourceInterface) => {
-                                                return (
-                                                    <RoleAPIResourcesListItem 
-                                                        key={ apiResource?.id }
-                                                        apiResource={ apiResource }
-                                                        onChangeScopes={ onChangeScopes }
-                                                        onRemoveAPIResource={ onRemoveAPIResource }
-                                                        initialSelectedPermissions={ initialSelectedPermissions?.find(
-                                                            (selectedPermission: SelectedPermissionsInterface) =>
-                                                                selectedPermission.apiResourceId === apiResource?.id)
-                                                            ?.scopes
-                                                        }
-                                                        selectedPermissions={ selectedPermissions?.find(
-                                                            (selectedPermission: SelectedPermissionsInterface) =>
-                                                                selectedPermission.apiResourceId === apiResource?.id)
-                                                            ?.scopes
-                                                        }
-                                                    /> 
-                                                );
-                                            })
-                                        }
-                                    </EmphasizedSegment>
-                                </div>
-                            ) : null
-                    }
-                </Grid>
-            </Grid>
-            <Button
-                color="primary"
-                variant="contained"
-                size="small"
-                className="mt-5"
-                loading={ isSubmitting }
-                disabled={ isReadOnly }
-                onClick={ () => {
-                    updateRolePermissions();
-                } }
-                data-componentid={ `${ componentId }-update-button` }
-            >
-                { t("common:update") }
-            </Button>
+                        { t("common:update") }
+                    </Button>
+                )
+            }
         </EmphasizedSegment>
     );
 };
