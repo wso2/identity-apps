@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AdvanceAttributeSettingsErrorValidationInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { AdvanceAttributeSettingsErrorValidationInterface } from "../../../models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { Code, Heading, Hint, Message, Text } from "@wso2is/react-components";

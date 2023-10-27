@@ -661,6 +661,17 @@ export interface MyAccountPortalStatusInterface {
 }
 
 /**
+ * Advanced attribute settings page errors interface.
+ */
+export interface AdvanceAttributeSettingsErrorValidationInterface {
+
+    /**
+     * Sector identifier URI validation error message.
+     */
+    sectorIdentifierURI?: string;
+}
+
+/**
  * Interface for the parameters value of the `federatedConflictWithSMSOTP` function.
  */
 export interface FederatedConflictWithSMSOTPArgsInterface {
