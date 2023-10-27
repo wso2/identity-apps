@@ -1,5 +1,30 @@
 # @wso2is/console
 
+## 2.3.7
+
+### Patch Changes
+
+- [#4381](https://github.com/wso2/identity-apps/pull/4381) [`9566504a92`](https://github.com/wso2/identity-apps/commit/9566504a9270c7805af809ea1087a95d53d338fb) Thanks [@Rashmini](https://github.com/Rashmini)! - Improve organization discovery feature
+
+* [#4375](https://github.com/wso2/identity-apps/pull/4375) [`fb40025ade`](https://github.com/wso2/identity-apps/commit/fb40025ade3bf58169c0e7731cbfd978a53545f8) Thanks [@Achintha444](https://github.com/Achintha444)! - add `leagacyRunTime` variable to j2.
+
+- [#4388](https://github.com/wso2/identity-apps/pull/4388) [`94cbef42f0`](https://github.com/wso2/identity-apps/commit/94cbef42f04dcf5b47ed48fae67459bd38987a8d) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Fix API Resource UI access control to support system APIs
+
+* [#4387](https://github.com/wso2/identity-apps/pull/4387) [`15c7b187d8`](https://github.com/wso2/identity-apps/commit/15c7b187d8603c42990f182cf41341e6f2e0e394) Thanks [@Achintha444](https://github.com/Achintha444)! - role permission, api resource not displaying bug fixed
+
+- [#4156](https://github.com/wso2/identity-apps/pull/4156) [`3d726abaa2`](https://github.com/wso2/identity-apps/commit/3d726abaa2fe38081c647bec22d8333af8b48bb8) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Integrate FIDO passkey enrollment during the authentication process, enabling its configuration as a primary, secondary factor along with giving prominence to "Passkey" while reducing the emphasis on "Security Key/Biometrics"
+
+* [#4384](https://github.com/wso2/identity-apps/pull/4384) [`9f957e418d`](https://github.com/wso2/identity-apps/commit/9f957e418dd6231eb7b4935450e7b551286fb908) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix administrators page issue
+
+* Updated dependencies [[`9566504a92`](https://github.com/wso2/identity-apps/commit/9566504a9270c7805af809ea1087a95d53d338fb), [`3d726abaa2`](https://github.com/wso2/identity-apps/commit/3d726abaa2fe38081c647bec22d8333af8b48bb8)]:
+  - @wso2is/i18n@2.0.23
+  - @wso2is/react-components@2.0.11
+  - @wso2is/access-control@2.0.3
+  - @wso2is/dynamic-forms@2.0.6
+  - @wso2is/common@2.0.4
+  - @wso2is/theme@2.0.26
+  - @wso2is/core@2.0.9
+
 ## 2.3.6
 
 ### Patch Changes

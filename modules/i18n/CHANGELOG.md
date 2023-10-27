@@ -1,5 +1,14 @@
 # @wso2is/i18n
 
+## 2.0.23
+
+### Patch Changes
+
+- [#4381](https://github.com/wso2/identity-apps/pull/4381) [`9566504a92`](https://github.com/wso2/identity-apps/commit/9566504a9270c7805af809ea1087a95d53d338fb) Thanks [@Rashmini](https://github.com/Rashmini)! - Improve organization discovery feature
+
+- Updated dependencies [[`3d726abaa2`](https://github.com/wso2/identity-apps/commit/3d726abaa2fe38081c647bec22d8333af8b48bb8)]:
+  - @wso2is/core@2.0.9
+
 ## 2.0.22
 
 ### Patch Changes
