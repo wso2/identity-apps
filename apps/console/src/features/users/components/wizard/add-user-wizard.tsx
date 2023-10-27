@@ -1298,8 +1298,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 return getUserSelectionWizardStep()?.content;
             case WizardStepsFormTypes.BASIC_DETAILS:
                 return resolveBasicDetailsStep()?.content;
-            case WizardStepsFormTypes.GROUP_LIST:
-                return getUserGroupsWizardStep()?.content;
             case WizardStepsFormTypes.SUMMARY:
                 return getSummaryWizardStep()?.content;
             case WizardStepsFormTypes.USER_SUMMARY:
