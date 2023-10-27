@@ -99,7 +99,6 @@ interface RequestObjectEncryptionConfigurationInterface {
 }
 
 export interface RequestObjectConfigurationInterface {
-    requireSignedRequestObject? : boolean;
     requestObjectSigningAlg?: string;
     encryption?: RequestObjectEncryptionConfigurationInterface;
 }
