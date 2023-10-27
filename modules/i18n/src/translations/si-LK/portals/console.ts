@@ -7460,6 +7460,9 @@ export const console: ConsoleNS = {
                                 hint: "වසම් සිතියම්කරණය එකතු කිරීමට ඔබ කැමති සංවිධානයේ නම ඇතුළත් කරන්න."
                             }
                         }
+                    },
+                    buttons: {
+                        assign: "පැවරීම"
                     }
                 },
                 emailDomains: {
@@ -7488,60 +7491,60 @@ export const console: ConsoleNS = {
                 notifications: {
                     addEmailDomains: {
                         error: {
-                            description: "සංවිධානයට විද්යුත් තැපැල් වසම් එකතු කිරීම අසාර්ථක විය.",
-                            message: "ඊමේල් වසම් එකතු කිරීමට නොහැකි විය"
+                            description: "සංවිධානයට ඊමේල් වසම් එක් කිරීම අසාර්ථක විය.",
+                            message: "එකතු කිරීම අසාර්ථකයි"
                         },
                         success: {
-                            description: "ඊමේල් වසම් සාර්ථකව එකතු කරන ලදි",
-                            message: "සංවිධානයට විද්යුත් තැපැල් වසම් සාර්ථකව එක් කළේය."
+                            description: "විද්‍යුත් තැපැල් වසම් සාර්ථකව එකතු කරන ලදී.",
+                            message: "සාර්ථකව එකතු කරන ලදි"
                         }
                     },
                     disableEmailDomainDiscovery: {
                         error: {
-                            description: "විද්‍යුත් තැපැල් වසම් සොයාගැනීම අක්‍රිය කිරීමේදී දෝෂයක් ඇති විය",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                            description: "විද්‍යුත් තැපැල් වසම් සොයාගැනීම අක්‍රිය කිරීමේදී දෝෂයක් ඇති විය.",
+                            message: "අබල කිරීම අසාර්ථකයි"
                         },
                         success: {
-                            description: "විද්‍යුත් තැපැල් වසම් සොයා ගැනීම සාර්ථකව අක්‍රීය කරන ලදී",
-                            message: "විද්‍යුත් තැපෑල වසම් සොයා ගැනීම සාර්ථකව අක්‍රීය කර ඇත"
+                            description: "විද්‍යුත් තැපැල් වසම් සොයා ගැනීම සාර්ථකව අක්‍රීය කරන ලදී.",
+                            message: "සාර්ථකව අක්‍රියයි"
                         }
                     },
                     enableEmailDomainDiscovery: {
                         error: {
-                            description: "විද්‍යුත් තැපෑල වසම් සොයාගැනීම සබල කිරීමේදී දෝෂයක් ඇති විය",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                            description: "විද්‍යුත් තැපෑල වසම් සොයාගැනීම සබල කිරීමේදී දෝෂයක් ඇති විය.",
+                            message: "සබල කිරීම අසාර්ථකයි"
                         },
                         success: {
-                            description: "විද්‍යුත් තැපැල් වසම් සොයාගැනීම සාර්ථකව සක්‍රීය කර ඇත",
-                            message: "විද්‍යුත් තැපැල් වසම් සොයා ගැනීම සාර්ථකව සක්‍රීය කර ඇත"
+                            description: "විද්‍යුත් තැපැල් වසම් සොයාගැනීම සාර්ථකව සක්‍රීය කර ඇත.",
+                            message: "සාර්ථකව සබල කර ඇත"
                         }
                     },
                     fetchOrganizationDiscoveryAttributes: {
                         error: {
-                            description: "සංවිධානයේ සොයාගැනීම් ගුණාංග ලබා ගැනීමේදී දෝෂයක් ඇති විය",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                            description: "සංවිධානයේ සොයාගැනීම් ගුණාංග ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                            message: "ලබා ගැනීම අසාර්ථකයි"
                         }
                     },
                     getEmailDomainDiscovery: {
                         error: {
-                            description: "ඊමේල් වසම් සොයාගැනීමේ වින්‍යාසය ලබා ගැනීමේදී දෝෂයක් ඇති විය",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                            description: "ඊමේල් වසම් සොයාගැනීමේ වින්‍යාසය ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                            message: "Retrieval unsuccessful"
                         }
                     },
                     getOrganizationListWithDiscovery: {
                         error: {
-                            description: "සොයාගැනීම් ගුණාංග සහිත සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයක් ඇති විය",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                            description: "An error occurred while getting the organization list with discovery attributes.",
+                            message: "ලබා ගැනීම අසාර්ථකයි"
                         }
                     },
                     updateOrganizationDiscoveryAttributes: {
                         error: {
-                            description: "සංවිධානයේ සොයාගැනීම් ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය",
-                            message: "මොකක්හරි වැරැද්දක් වෙලා"
+                            description: "සංවිධානයේ සොයාගැනීම් ගුණාංග යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය.",
+                            message: "යාවත්කාලීන කිරීම අසාර්ථකයි"
                         },
                         success: {
-                            description: "සංවිධානයේ සොයාගැනීම් උපලක්ෂණ සාර්ථකව යාවත්කාලීන කරන ලදී",
-                            message: "සංවිධානයේ සොයාගැනීම් උපලක්ෂණ සාර්ථකව යාවත්කාලීන කරන ලදී"
+                            description: "සංවිධානයේ සොයාගැනීම් උපලක්ෂණ සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                            message: "යාවත්කාලීන කිරීම සාර්ථකයි"
                         }
                     }
                 },

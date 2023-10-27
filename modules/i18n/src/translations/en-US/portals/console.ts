@@ -9390,6 +9390,9 @@ export const console: ConsoleNS = {
                                 hint: "Enter the name of the organization you wish to add the domain mapping."
                             }
                         }
+                    },
+                    buttons: {
+                        assign: "Assign"
                     }
                 },
                 emailDomains: {
@@ -9422,56 +9425,56 @@ export const console: ConsoleNS = {
                             message: "Adding unsuccessful"
                         },
                         success: {
-                            description: "Email domains added successfully",
+                            description: "Email domains added successfully.",
                             message: "Added successfully"
                         }
                     },
                     disableEmailDomainDiscovery: {
                         error: {
-                            description: "An error occurred while disabling email domain discovery",
+                            description: "An error occurred while disabling email domain discovery.",
                             message: "Disabling unsuccessful"
                         },
                         success: {
-                            description: "Successfully disabled email domain discovery",
+                            description: "Successfully disabled email domain discovery.",
                             message: "Disabled successfully"
                         }
                     },
                     enableEmailDomainDiscovery: {
                         error: {
-                            description: "An error occurred while enabling email domain discovery",
+                            description: "An error occurred while enabling email domain discovery.",
                             message: "Enabling unsuccessful"
                         },
                         success: {
-                            description: "Successfully enabled email domain discovery",
+                            description: "Successfully enabled email domain discovery.",
                             message: "Enabled successfully"
                         }
                     },
                     fetchOrganizationDiscoveryAttributes: {
                         error: {
-                            description: "An error occurred while fetching the organization discovery attributes",
+                            description: "An error occurred while fetching the organization discovery attributes.",
                             message: "Retrieval unsuccessful"
                         }
                     },
                     getEmailDomainDiscovery: {
                         error: {
-                            description: "An error occurred while retrieving email domain discovery configuration",
+                            description: "An error occurred while retrieving email domain discovery configuration.",
                             message: "Retrieval unsuccessful"
                         }
                     },
                     getOrganizationListWithDiscovery: {
                         error: {
-                            description: "An error occurred while getting the organization list with discovery attributes",
+                            description: "An error occurred while getting the organization list with discovery attributes.",
                             message: "Retrieval unsuccessful"
                         }
                     },
                     updateOrganizationDiscoveryAttributes: {
                         error: {
-                            description: "An error occurred while updating the organization discovery attributes",
-                            message: "Updated unsuccessful"
+                            description: "An error occurred while updating the organization discovery attributes.",
+                            message: "Update unsuccessful"
                         },
                         success: {
-                            description: "Successfully updated the organization discovery attributes",
-                            message: "Updated successful"
+                            description: "Successfully updated the organization discovery attributes.",
+                            message: "Update successful"
                         }
                     }
                 },

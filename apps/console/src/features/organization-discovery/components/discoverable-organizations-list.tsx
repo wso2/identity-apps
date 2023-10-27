@@ -253,7 +253,7 @@ const DiscoverableOrganizationsList: FunctionComponent<DiscoverableOrganizations
                         t("console:manage.placeholders.emptySearchResult.subtitles.0", {
                             // searchQuery looks like "name co OrganizationName", so we only remove the filter string
                             // only to get the actual user entered query
-                            query: searchQuery.split("organizationName co ")[1]
+                            query: searchQuery.split(" ").pop()
                         }),
                         t("console:manage.placeholders.emptySearchResult.subtitles.1")
                     ] }
