@@ -32,6 +32,10 @@
     String authRequest = request.getParameter("data");
 %>
 
+<%!
+    private static final String MY_ACCOUNT = "/myaccount";
+%>
+
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp" />
 
@@ -196,16 +200,17 @@
         });
     </script>
 
+    <%
+        String myaccountUrl = application.getInitParameter("MyAccountURL");
+        if (StringUtils.isEmpty(myaccountUrl)) {
+            myaccountUrl = ServiceURLBuilder.create().addPath(MY_ACCOUNT).build().getAbsolutePublicURL();
+        }
+    %>
+
     <script type="text/javascript">
         $(document).ready(function () {
-            var myaccountUrl = '<%=application.getInitParameter("MyAccountURL")%>';
 
-            if ("<%=tenantDomain%>" !== "" || "<%=tenantDomain%>" !== "null") {
-                myaccountUrl = myaccountUrl + "/t/" + "<%=tenantDomain%>";
-            }
-
-            $("#my-account-link").attr("href", myaccountUrl);
-
+            $("#my-account-link").attr("href", '<%=myaccountUrl%>');
             if(navigator ){
                 let userAgent = navigator.userAgent;
                 let browserName;
