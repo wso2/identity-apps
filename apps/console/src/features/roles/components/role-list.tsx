@@ -17,6 +17,7 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { OrganizationType } from "@wso2is/common";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
@@ -45,6 +46,7 @@ import { AppConstants } from "../../core/constants/app-constants";
 import { history } from "../../core/helpers/history";
 import { FeatureConfigInterface } from "../../core/models/config";
 import { AppState } from "../../core/store/index";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { RoleAudienceTypes } from "../constants/role-constants";
 
 interface RoleListProps extends LoadableComponentInterface, IdentifiableComponentInterface {
@@ -90,6 +92,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const orgType: OrganizationType = useGetOrganizationType();
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
@@ -262,7 +265,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             {
                 hidden: (role: RolesInterface) => (role?.displayName === RoleConstants.ADMIN_ROLE ||
                     role?.displayName === RoleConstants.ADMIN_GROUP)
-                    || !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.delete, allowedScopes),
+                    || !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.delete, allowedScopes)
+                    || orgType === OrganizationType.SUBORGANIZATION,
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
                     setCurrentDeletedRole(role);
