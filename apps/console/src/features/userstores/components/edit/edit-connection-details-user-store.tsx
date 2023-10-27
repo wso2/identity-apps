@@ -171,16 +171,27 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
     }, [ properties ]);
 
     const onSubmitHandler = (values: Map<string, FormValue>): void => {
-        const requiredData: PatchData[] = properties?.required.filter(
-            (property: TypeProperty) => values.get(property.name))
-            .map((property: TypeProperty) => {
-                return {
-                    operation: "REPLACE",
-                    path: `/properties/${property.name}`,
-                    value: values.get(property.name).toString()
-                };
+        const requiredData: PatchData[] = properties?.required.reduce(
+            (result: PatchData[], property: TypeProperty) => {
+                const value: FormValue = values.get(property.name);
             
-            });
+                // Skip the property if 
+                // its name is "ConnectionPassword" and isPasswordEditing is false.
+                if (property.name === "ConnectionPassword" && !isPasswordEditing) {
+                    return result;
+                }
+            
+                if (value) {
+                    result.push({
+                        operation: "REPLACE",
+                        path: `/properties/${property.name}`,
+                        value: value.toString()
+                    });
+                }
+
+                return result;
+            }, [] as PatchData[]
+        );
 
         const optionalNonSqlData: PatchData[] = showMore
             ? properties?.optional.nonSql.map((property: TypeProperty) => {
@@ -317,7 +328,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                             } }
                                                         />
                                                         <p>{ t("console:manage.features.userstores.forms." + 
-                                                               "connection.updatePassword") }</p>
+                                                                "connection.updatePassword") }</p>
                                                     </Box>
                                                     <Field
                                                         name={ property.name }
@@ -325,7 +336,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                         type="password"
                                                         disabled={ !isPasswordEditing }
                                                         key={ index }
-                                                        required={ true }
+                                                        required={ isPasswordEditing }
                                                         label={ name }
                                                         requiredErrorMessage={
                                                             `${property.description.split("#")[ 0 ]} is  required`
