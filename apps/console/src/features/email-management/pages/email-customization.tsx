@@ -100,17 +100,17 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         // the deployment.toml file. The below code will map the email template
         // types with the config's displayName and description.
         const availableEmailTemplates: EmailTemplateType[] = emailTemplatesList
-          ? emailTemplatesList.map((template: EmailTemplateType) => {
-              const mappedTemplate: Record<string, string> | undefined = emailTemplates
-                ?.find((emailTemplate: Record<string, string>) => emailTemplate.id === template.id);
+            ? emailTemplatesList.map((template: EmailTemplateType) => {
+                const mappedTemplate: Record<string, string> | undefined = emailTemplates
+                    ?.find((emailTemplate: Record<string, string>) => emailTemplate.id === template.id);
 
-              return {
-                ...template,
-                description: mappedTemplate?.description || `${template.displayName} Template`,
-                displayName: mappedTemplate?.displayName || template.displayName,
-              };
+                return {
+                    ...template,
+                    description: mappedTemplate?.description || `${template.displayName} Template`,
+                    displayName: mappedTemplate?.displayName || template.displayName
+                };
             })
-          : [];
+            : [];
 
         setAvailableEmailTemplatesList(availableEmailTemplates);
 
