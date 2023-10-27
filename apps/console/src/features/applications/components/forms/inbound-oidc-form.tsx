@@ -335,6 +335,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     };
 
+    const PRIVATE_KEY_JWT: string = "private_key_jwt";
+    const TLS_CLIENT_AUTH: string = "tls_client_auth";
+
+
     useEffect(() => {
         if (sharedOrganizationsList) {
             return;
@@ -1805,7 +1809,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 </Grid.Column>
             </Grid.Row>
 
-            { selectedAuthMethod == "private_key_jwt" &&
+            { selectedAuthMethod == PRIVATE_KEY_JWT &&
                 (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -1841,7 +1845,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 )
             }
 
-            { selectedAuthMethod == "tls_client_auth" &&
+            { selectedAuthMethod == TLS_CLIENT_AUTH &&
                 (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>

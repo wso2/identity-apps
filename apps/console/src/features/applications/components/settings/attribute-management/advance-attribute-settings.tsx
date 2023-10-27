@@ -140,7 +140,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         }
     }, [ dropDownOptions ]);
 
-    useEffect( () => {
+    useEffect(() => {
         if (!selectedSubjectType) {
             setSelectedSubjectType(SubjectTypes.PUBLIC);
         }
@@ -182,7 +182,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         return claimURI;
     });
 
-    function validateForm(values: Record<string, any>): AdvanceAttributeSettingsErrorValidationInterface {
+    const validateForm = (values: Record<string, any>): AdvanceAttributeSettingsErrorValidationInterface => {
 
         const errors: AdvanceAttributeSettingsErrorValidationInterface = {
             sectorIdentifierURI: undefined
@@ -194,8 +194,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         }
 
         return errors;
-
-    }
+    };
 
     const submitValues = (values: Record<string, any>) => {
 
