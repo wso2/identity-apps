@@ -7528,12 +7528,12 @@ export const console: ConsoleNS = {
                     getEmailDomainDiscovery: {
                         error: {
                             description: "ඊමේල් වසම් සොයාගැනීමේ වින්‍යාසය ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
-                            message: "Retrieval unsuccessful"
+                            message: "ලබා ගැනීම අසාර්ථකයි"
                         }
                     },
                     getOrganizationListWithDiscovery: {
                         error: {
-                            description: "An error occurred while getting the organization list with discovery attributes.",
+                            description: "සොයාගැනීම් ගුණාංග සහිත සංවිධාන ලැයිස්තුව ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
                             message: "ලබා ගැනීම අසාර්ථකයි"
                         }
                     },
