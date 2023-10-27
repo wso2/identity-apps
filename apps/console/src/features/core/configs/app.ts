@@ -23,6 +23,7 @@ import { getFeatureGateResourceEndpoints } from "../../../extensions/components/
 import { getExtendedFeatureResourceEndpoints } from "../../../extensions/configs/endpoints";
 import { getAPIResourceEndpoints } from "../../api-resources/configs/endpoint";
 import { getApplicationsResourceEndpoints } from "../../applications/configs/endpoints";
+import isLegacyAuthzRuntime from "../../authorization/utils/get-legacy-authz-runtime";
 import { getBrandingResourceEndpoints } from "../../branding/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "../../certificates";
 import { getClaimResourceEndpoints } from "../../claims/configs/endpoints";
@@ -68,14 +69,18 @@ export class Config {
      * @returns Server host.
      */
     public static resolveServerHost(enforceOrgPath?: boolean): string {
-        if ((OrganizationUtils.isRootOrganization(store.getState().organization.organization)
-            || store.getState().organization.isFirstLevelOrganization) && !enforceOrgPath) {
-            return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
-        } else {
-            return `${
-                window[ "AppUtils" ]?.getConfig()?.serverOrigin }/o/${ store.getState().organization.organization.id
-            }`;
+        if (isLegacyAuthzRuntime()) {
+            if ((OrganizationUtils.isRootOrganization(store.getState().organization.organization)
+                || store.getState().organization.isFirstLevelOrganization) && !enforceOrgPath) {
+                return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
+            } else {
+                return `${
+                    window[ "AppUtils" ]?.getConfig()?.serverOrigin }/o/${ store.getState().organization.organization.id
+                }`;
+            }
         }
+
+        return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
     }
 
     /**

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { BasicUserInfo } from "@asgardeo/auth-react";
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -44,6 +45,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { organizationConfigs } from "../../../extensions";
+import useSignIn from "../../authentication/hooks/use-sign-in";
+import useAuthorization from "../../authorization/hooks/use-authorization";
 import {
     AppConstants,
     AppState,
@@ -53,9 +56,11 @@ import {
     history
 } from "../../core";
 import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
+import useRoutes from "../../core/hooks/use-routes";
 import { deleteOrganization, useGetOrganizationBreadCrumb } from "../api";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
+import useOrganizationSwitch from "../hooks/use-organization-switch";
 import { GenericOrganization, OrganizationInterface, OrganizationListInterface } from "../models";
 import { OrganizationUtils } from "../utils";
 
@@ -94,6 +99,10 @@ export interface OrganizationListPropsInterface
      * Callback to be fired when clicked on the empty list placeholder action.
      */
     onEmptyListPlaceholderActionClick?: () => void;
+    /**
+     * Callback to be fired when the list is mutated.
+     */
+    onListMutate: () => void;
     /**
      * Search query for the list.
      */
@@ -138,6 +147,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
         onOrganizationDelete,
         onListItemClick,
         onEmptyListPlaceholderActionClick,
+        onListMutate,
         onSearchQueryClear,
         searchQuery,
         selection,
@@ -151,6 +161,14 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
+
+    const { filterRoutes } = useRoutes();
+
+    const { onSignIn } = useSignIn();
+
+    const { switchOrganization } = useOrganizationSwitch();
+
+    const { legacyAuthzRuntime }  = useAuthorization();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -272,39 +290,56 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
      *
      * @param organization - Organization to be switch.
      */
-    const handleOrganizationSwitch = (
+    const handleOrganizationSwitch = async (
         organization: GenericOrganization
-    ): void => {
-        let newOrgPath: string = "";
+    ): Promise<void> => {
+        if (legacyAuthzRuntime) {
+            let newOrgPath: string = "";
 
-        if (
-            breadcrumbList && breadcrumbList.length > 0 &&
-            OrganizationUtils.isRootOrganization(breadcrumbList[ 0 ]) &&
-            breadcrumbList[ 1 ]?.id === organization.id &&
-            organizationConfigs.showSwitcherInTenants
-        ) {
-            newOrgPath =
-                "/t/" +
-                organization.name +
-                "/" +
-                window[ "AppUtils" ].getConfig().appBase;
-        } else if (OrganizationUtils.isRootOrganization(organization)) {
-            newOrgPath = `/${ window[ "AppUtils" ].getConfig().appBase }`;
-        } else {
-            newOrgPath =
-                "/o/" +
-                organization.id +
-                "/" +
-                window[ "AppUtils" ].getConfig().appBase;
+            if (
+                breadcrumbList && breadcrumbList.length > 0 &&
+                OrganizationUtils.isRootOrganization(breadcrumbList[ 0 ]) &&
+                breadcrumbList[ 1 ]?.id === organization.id &&
+                organizationConfigs.showSwitcherInTenants
+            ) {
+                newOrgPath =
+                    "/t/" +
+                    organization.name +
+                    "/" +
+                    window[ "AppUtils" ].getConfig().appBase;
+            } else if (OrganizationUtils.isRootOrganization(organization)) {
+                newOrgPath = `/${ window[ "AppUtils" ].getConfig().appBase }`;
+            } else {
+                newOrgPath =
+                    "/o/" +
+                    organization.id +
+                    "/" +
+                    window[ "AppUtils" ].getConfig().appBase;
+            }
+
+            // Clear the callback url of the previous organization.
+            SessionStorageUtils.clearItemFromSessionStorage(
+                "auth_callback_url_console"
+            );
+
+            // Redirect the user to the newly selected organization path.
+            window.location.replace(newOrgPath);
+
+            return;
         }
 
-        // Clear the callback url of the previous organization.
-        SessionStorageUtils.clearItemFromSessionStorage(
-            "auth_callback_url_console"
-        );
+        let response: BasicUserInfo = null;
 
-        // Redirect the user to the newly selected organization path.
-        window.location.replace(newOrgPath);
+        try {
+            response = await switchOrganization(organization.id);
+            await onSignIn(response, () => null, () => null, () => null, true, false);
+            await filterRoutes(false);
+
+            onListMutate();
+            history.push(AppConstants.getPaths().get("GETTING_STARTED"));
+        } catch(e) {
+            // TODO: Handle error
+        }
     };
 
     /**
