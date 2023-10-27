@@ -622,7 +622,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         } else {
             setUserStore(data.value as string);
         }
-        // setUserStore(data.value as string);
     };
 
     const onUserDelete = (): void => {
