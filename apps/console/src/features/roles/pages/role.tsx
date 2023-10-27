@@ -21,6 +21,7 @@ import { OrganizationType } from "@wso2is/common";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -33,7 +34,6 @@ import { useGetOrganizationType } from "../../organizations/hooks/use-get-organi
 import { deleteRoleById, useRolesList } from "../api";
 import { RoleList } from "../components/role-list";
 import { RoleConstants } from "../constants";
-import { AxiosError } from "axios";
 
 type RolesPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps;
 
