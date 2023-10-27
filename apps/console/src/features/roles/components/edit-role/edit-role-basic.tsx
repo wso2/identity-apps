@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { OrganizationType } from "@wso2is/common";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -25,6 +26,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { AppConstants, history } from "../../../core";
+import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { deleteRoleById, updateRoleDetails, useRolesList } from "../../api";
 import { RoleConstants, Schemas } from "../../constants";
 import { PatchRoleDataInterface, RoleBasicInterface, RoleEditSectionsInterface } from "../../models/roles";
@@ -56,6 +58,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
+    const orgType: OrganizationType = useGetOrganizationType();
     
     const {
         data: rolesList,
@@ -193,7 +196,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             </EmphasizedSegment>
             <Divider hidden />
             {
-                !isReadOnly && (
+                (!isReadOnly && orgType !== OrganizationType.SUBORGANIZATION) && (
                     <DangerZoneGroup sectionHeader="Danger Zone">
                         <DangerZone
                             actionTitle={ 
