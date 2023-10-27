@@ -1064,10 +1064,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         )
                     }
                     {
-                        (isOrganizationManagementEnabled
-                            && applicationConfig.editApplication.showApplicationShare
-                            && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
-                            && orgType !== OrganizationType.SUBORGANIZATION) && (
+                        isOrganizationManagementEnabled
+                        && applicationConfig.editApplication.showApplicationShare
+                        && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
+                        && orgType !== OrganizationType.SUBORGANIZATION
+                        && template?.id !== ApplicationTemplateIdTypes.M2M_APPLICATION
+                        && (
                             <Show
                                 when={ AccessControlConstants.APPLICATION_EDIT }
                             >
