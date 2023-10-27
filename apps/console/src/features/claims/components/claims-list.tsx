@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -77,6 +77,7 @@ import { UserStoreListItem } from "../../userstores/models/user-stores";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../api";
 import { ClaimManagementConstants } from "../constants";
 import { AddExternalClaim } from "../models";
+import { resolveType } from "../utils";
 
 /**
  * The model of the object containing info specific to the list type.
@@ -629,9 +630,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                                 "action.local")
                                             : isDialect(list)
                                                 ? t("console:manage.features.claims.list.placeholders.emptyList." +
-                                                    "action.dialect")
+                                                    "action.dialect", { type: resolveType(attributeType, true) })
                                                 : t("console:manage.features.claims.list.placeholders." +
-                                            "emptyList.action.external")
+                                            "emptyList.action.external", { type: resolveType(attributeType, true) })
                                     }
                                 </PrimaryButton>
                             </Show>
@@ -643,7 +644,10 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             ? t("console:manage.features.claims.list.placeholders.emptyList.title.local")
                             : isDialect(list)
                                 ? t("console:manage.features.claims.list.placeholders.emptyList.title.dialect")
-                                : t("console:manage.features.claims.list.placeholders.emptyList.title.external")
+                                : t(
+                                    "console:manage.features.claims.list.placeholders.emptyList.title.external",
+                                    { type: resolveType(attributeType, true) }
+                                )
                     }
                     subtitle={ [
 
@@ -862,9 +866,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             </Header>
                         );
                     },
-                    title: attributeType && attributeType === OIDC
-                        ? "Name"
-                        : t("console:manage.features.claims.list.columns.claimURI")
+                    title: attributeType && attributeType === ClaimManagementConstants.SCIM
+                        ? t("console:manage.features.claims.list.columns.claimURI")
+                        : t("console:manage.features.claims.list.columns.name")
                 },
                 {
                     allowToggleVisibility: false,
