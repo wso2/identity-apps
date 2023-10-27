@@ -1,5 +1,13 @@
 # @wso2is/core
 
+## 2.0.8
+
+### Patch Changes
+
+- [#4359](https://github.com/wso2/identity-apps/pull/4359) [`72b6c71250`](https://github.com/wso2/identity-apps/commit/72b6c71250161090c90ad46858a068316018e05c) Thanks [@Achintha444](https://github.com/Achintha444)! - fix `tenantDomain` not setting properly.
+
+* [#4368](https://github.com/wso2/identity-apps/pull/4368) [`15f2bb0341`](https://github.com/wso2/identity-apps/commit/15f2bb0341d9f1b52f65a13e2074d220799c825e) Thanks [@Achintha444](https://github.com/Achintha444)! - update hasRequiredScopes function
+
 ## 2.0.7
 
 ### Patch Changes
