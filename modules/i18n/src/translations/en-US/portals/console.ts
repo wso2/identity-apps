@@ -1514,6 +1514,35 @@ export const console: ConsoleNS = {
                                         validations: {
                                             empty: "This is a required field."
                                         }
+                                    },
+                                    subjectType: {
+                                        label: "Subject type",
+                                        public: {
+                                            label: "public",
+                                            hint: "This option will use the public subject identifier as the" +
+                                                " subject. Subject identifier URI is used in subject value" +
+                                                " calculation."
+                                        },
+                                        pairwise: {
+                                            label: "pairwise",
+                                            hint: "This option will use the pairwise subject identifier as the" +
+                                                " subject. Subject identifier URI and callback URI or sector" +
+                                                " identifier URI is used in subject value calculation."
+                                        }
+                                    },
+                                    sectorIdentifierURI: {
+                                        label: "Sector Identifier URI",
+                                        hint: "Must configure this value if multiple callback URIs with" +
+                                            " different hostnames are configured.",
+                                        placeholder: "Enter the subject identifier URI",
+                                        validations: {
+                                            invalid: "The entered URL is not HTTPS. Please add a valid URL.",
+                                            required: "This field is required if multiple callback URIs are" +
+                                                " configured."
+                                        },
+                                        multipleCallbackError: "Need to configure a sector identifier URI if " +
+                                            "multiple callback URLs are configured with subject type pairwise. Go to" +
+                                            " User attributes -> Subject to configure the sector identifier URI."
                                     }
                                 },
                                 heading: "Subject"
@@ -1937,6 +1966,12 @@ export const console: ConsoleNS = {
                                         validations: {
                                             empty:  "This is a required field."
                                         }
+                                    },
+                                    signing: {
+                                        hint: "The dropdown contains the supported <1>id_token</1> signing "+
+                                            "algorithms.",
+                                        label: "ID token response signing algorithm",
+                                        placeholder: "Select Algorithm"
                                     }
                                 },
                                 heading: "ID Token"
@@ -1987,6 +2022,60 @@ export const console: ConsoleNS = {
                                 heading: "PKCE",
                                 hint: "Select to make it mandatory for the application to " +
                                 "include a code_challenge in the authorization request."
+                            },
+                            clientAuthentication: {
+                                fields: {
+                                    authenticationMethod: {
+                                        hint: "The dropdown contains the supported client authentication methods.",
+                                        label: "Client authentication method",
+                                        placeholder: "Select method"
+                                    },
+                                    signingAlgorithm: {
+                                        hint: "The dropdown contains the supported client assertion signing" +
+                                            " algorithms.",
+                                        label: "Signing algorithm",
+                                        placeholder: "Select algorithm"
+                                    },
+                                    subjectDN: {
+                                        label: "TLS client authentication subject domain name",
+                                        placeholder: "Enter the tls client authentication subject domain name",
+                                        hint: "Enter the DN of the transport certificate."
+                                    }
+                                },
+                                heading: "Client Authentication"
+                            },
+                            pushedAuthorization: {
+                                fields: {
+                                    requirePushAuthorizationRequest: {
+                                        hint: "Select to make it mandatory for the application to send authorization " +
+                                            "requests as pushed authorization requests.",
+                                        label: "Mandatory"
+                                    }
+                                },
+                                heading: "Pushed Authorization Requests"
+                            },
+                            requestObject: {
+                                fields: {
+                                    requestObjectSigningAlg: {
+                                        hint: "The dropdown contains the supported <1>request object</1> signing" +
+                                            " algorithms.",
+                                        label: "Request object signing algorithm",
+                                        placeholder: "Select Algorithm"
+                                    },
+                                    requestObjectEncryptionAlgorithm: {
+                                        hint: "The dropdown contains the supported <1>request object</1> encryption" +
+                                            " algorithms.",
+                                        label: "Request object encryption algorithm",
+                                        placeholder: "Select Algorithm"
+                                    },
+                                    requestObjectEncryptionMethod: {
+                                        hint: "The dropdown contains the supported <1>request object</1> encryption" +
+                                            " methods.",
+                                        label: "Request object encryption method",
+                                        placeholder: "Select Method"
+                                    }
+                                },
+                                heading: "Request Object"
                             },
                             refreshToken: {
                                 fields: {

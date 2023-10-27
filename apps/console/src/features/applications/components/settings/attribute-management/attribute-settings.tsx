@@ -34,6 +34,7 @@ import {
     OIDCScopesClaimsListInterface,
     OIDCScopesListInterface 
 } from "apps/console/src/features/oidc-scopes/models/oidc-scopes";
+import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -50,16 +51,18 @@ import { AccessControlConstants } from "../../../../access-control/constants/acc
 import { getAllExternalClaims, getAllLocalClaims, getDialects } from "../../../../claims/api";
 import { AppState, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { SubjectAttributeListItem } from "../../../../identity-providers/components/settings";
-import { updateClaimConfiguration } from "../../../api/";
+import { updateAuthProtocolConfig, updateClaimConfiguration } from "../../../api/";
 import {
     AppClaimInterface,
     ClaimConfigurationInterface,
     ClaimMappingInterface,
     InboundProtocolListItemInterface,
+    OIDCDataInterface,
     RequestedClaimConfigurationInterface,
     RoleConfigInterface,
     RoleMappingInterface,
-    SubjectConfigInterface
+    SubjectConfigInterface,
+    SupportedAuthProtocolTypes
 } from "../../../models";
 
 export interface SelectedDialectInterface {
@@ -91,6 +94,7 @@ export interface ExtendedExternalClaimInterface extends ExternalClaim {
 export interface AdvanceSettingsSubmissionInterface {
     subject: SubjectConfigInterface;
     role: RoleConfigInterface;
+    oidc: OIDCDataInterface
 }
 
 interface AttributeSettingsPropsInterface extends SBACInterface<FeatureConfigInterface>,
@@ -123,6 +127,10 @@ interface AttributeSettingsPropsInterface extends SBACInterface<FeatureConfigInt
      * Template ID of the application.
      */
     applicationTemplateId?: string;
+    /**
+     * Protocol configurations.
+     */
+    inboundProtocolConfig: any;
 }
 
 export const getLocalDialectURI = (): string => {
@@ -182,6 +190,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         onlyOIDCConfigured,
         onUpdate,
         readOnly,
+        inboundProtocolConfig,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -1055,6 +1064,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                 }
             }
         };
+        const oidcSubmitValue: OIDCDataInterface = advanceSettingValues?.oidc;
 
         if (isEmpty(submitValue.claimConfiguration.claimMappings)) {
             delete submitValue.claimConfiguration.claimMappings;
@@ -1070,16 +1080,18 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             delete submitValue.claimConfiguration.subject;
         }
 
-        updateClaimConfiguration(appId, submitValue)
-            .then(() => {
-                onUpdate(appId);
-                dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateClaimConfig.success" +
-                        ".description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.updateClaimConfig.success.message")
-                }));
-            })
+        Promise.all([
+            updateClaimConfiguration(appId, submitValue),
+            updateAuthProtocolConfig<OIDCDataInterface>(appId, oidcSubmitValue, SupportedAuthProtocolTypes.OIDC)
+        ]).then(() => {
+            onUpdate(appId);
+            dispatch(addAlert({
+                description: t("console:develop.features.applications.notifications.updateClaimConfig.success" +
+                    ".description"),
+                level: AlertLevels.SUCCESS,
+                message: t("console:develop.features.applications.notifications.updateClaimConfig.success.message")
+            }));
+        })
             .catch(() => {
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.notifications.updateClaimConfig" +
@@ -1221,6 +1233,14 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                         technology={ technology }
                                         applicationTemplateId={ applicationTemplateId }
                                         onlyOIDCConfigured={ onlyOIDCConfigured }
+                                        oidcInitialValues={
+                                            get(
+                                                inboundProtocolConfig,
+                                                SupportedAuthProtocolTypes.OIDC
+                                            )
+                                                ? inboundProtocolConfig[SupportedAuthProtocolTypes.OIDC]
+                                                : undefined
+                                        }
                                         data-testid={ `${ componentId }-advanced-attribute-settings-form` }
                                     />
                                 </Grid.Column>

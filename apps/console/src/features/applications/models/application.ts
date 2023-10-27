@@ -661,6 +661,17 @@ export interface MyAccountPortalStatusInterface {
 }
 
 /**
+ * Advanced attribute settings page errors interface.
+ */
+export interface AdvanceAttributeSettingsErrorValidationInterface {
+
+    /**
+     * Sector identifier URI validation error message.
+     */
+    sectorIdentifierURI?: string;
+}
+
+/**
  * Interface for the parameters value of the `federatedConflictWithSMSOTP` function.
  */
 export interface FederatedConflictWithSMSOTPArgsInterface {
@@ -798,4 +809,12 @@ export interface idpInfoTypeInterface {
     id: string;
     name: string;
     redirectTo?: string;
+}
+
+/**
+ * Enum for OIDC supported subject types.
+ */
+export enum SubjectTypes {
+    PUBLIC = "public",
+    PAIRWISE = "pairwise"
 }

@@ -55,11 +55,19 @@ export interface OIDCMetadataInterface {
     defaultIdTokenExpiryTime?: string;
     idTokenEncryptionAlgorithm?: MetadataPropertyInterface;
     idTokenEncryptionMethod?: MetadataPropertyInterface;
+    idTokenSignatureAlgorithm?: MetadataPropertyInterface;
     scopeValidators?: MetadataPropertyInterface;
     accessTokenType?: MetadataPropertyInterface;
     accessTokenBindingType?: MetadataPropertyInterface;
     accessTokenBindingValidation?: boolean;
     revokeTokensWhenIDPSessionTerminated?: boolean;
+    tokenEndpointAuthMethod?: MetadataPropertyInterface;
+    tokenEndpointSignatureAlgorithm?: MetadataPropertyInterface;
+    requestObjectSignatureAlgorithm?: MetadataPropertyInterface;
+    requestObjectEncryptionMethod?: MetadataPropertyInterface;
+    requestObjectEncryptionAlgorithm?: MetadataPropertyInterface;
+    subjectType?: MetadataPropertyInterface;
+    tlsClientAuthSubjectDn?: string;
 }
 
 export enum State {
@@ -70,6 +78,29 @@ export enum State {
 export interface OAuth2PKCEConfigurationInterface {
     mandatory?: boolean;
     supportPlainTransformAlgorithm?: boolean;
+}
+
+/**
+ * OIDC client authentication related properties.
+ */
+export interface ClientAuthenticationConfigurationInterface {
+    tokenEndpointAuthMethod?: string;
+    tokenEndpointAuthSigningAlg?: string;
+    tlsClientAuthSubjectDn?: string;
+}
+
+export interface PushedAuthRequestConfigurationInterface {
+    requirePushAuthorizationRequest?: boolean;
+}
+
+interface RequestObjectEncryptionConfigurationInterface {
+    algorithm?: string;
+    method?: string;
+}
+
+export interface RequestObjectConfigurationInterface {
+    requestObjectSigningAlg?: string;
+    encryption?: RequestObjectEncryptionConfigurationInterface;
 }
 
 interface AccessTokenConfigurationInterface {
@@ -96,6 +127,15 @@ interface IdTokenConfigurationInterface {
     expiryInSeconds?: number;
     audience?: string[];
     encryption?: IdTokenEncryptionConfigurationInterface;
+    idTokenSignedResponseAlg?: string;
+}
+
+/**
+ * OIDC subject type related properties.
+ */
+interface SubjectConfigInterface {
+    subjectType?: string;
+    sectorIdentifierUri?: string;
 }
 
 interface OIDCLogoutConfigurationInterface {
@@ -115,12 +155,16 @@ export interface OIDCDataInterface {
     allowedOrigins?: string[];
     publicClient?: boolean;
     pkce?: OAuth2PKCEConfigurationInterface;
+    clientAuthentication?: ClientAuthenticationConfigurationInterface;
+    pushAuthorizationRequest?: PushedAuthRequestConfigurationInterface;
+    requestObject?: RequestObjectConfigurationInterface;
     accessToken?: AccessTokenConfigurationInterface;
     refreshToken?: RefreshTokenConfigurationInterface;
     idToken?: IdTokenConfigurationInterface;
     logout?: OIDCLogoutConfigurationInterface;
     validateRequestObjectSignature?: boolean;
     scopeValidators?: string[];
+    subject?: SubjectConfigInterface;
 }
 
 /**
