@@ -951,47 +951,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         });
     };
 
-    /**
-     * User group wizard step.
-     * @returns Group wizard step.
-     */
-    const getUserGroupsWizardStep = (): WizardStepInterface => {
-
-        return {
-            content: (
-                <AddConsumerUserGroups
-                    triggerSubmit={ submitGroupList }
-                    onSubmit={ (values: { groups : GroupsInterface[] }) =>
-                        handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
-                    initialValues={
-                        {
-                            groupList: groupList,
-                            initialGroupList: initialGroupList,
-                            initialTempGroupList: initialTempGroupList,
-                            tempGroupList: tempGroupList
-                        }
-                    }
-                    handleGroupListChange={
-                        (groups: GroupsInterface[]) => handleGroupListChange(groups)
-                    }
-                    handleTempListChange={
-                        (groups: GroupsInterface[]) => handleAddedGroupListChange(groups)
-                    }
-                    handleInitialTempListChange={
-                        (groups: GroupsInterface[]) => handleAddedGroupInitialListChange(groups)
-                    }
-                    handleInitialGroupListChange={
-                        (groups: GroupsInterface[]) => handleInitialGroupListChange(groups)
-                    }
-                    handleSetGroupId={ null }
-                />
-            ),
-            icon: getUserWizardStepIcons().groups,
-            name: WizardStepsFormTypes.GROUP_LIST,
-            title: t("console:manage.features.user.modals.addUserWizard.steps.groups")
-        };
-    };
-
     const ALL_STEPS: WizardStepInterface[] = [
         {
             content: (
@@ -1007,7 +966,27 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             title: t("console:manage.features.user.modals.addUserWizard.steps.basicDetails")
         },
         {
-            content: getUserGroupsWizardStep().content,
+            content: (
+                <AddUserGroup
+                    triggerSubmit={ submitGroupList }
+                    onSubmit={ (values: AddUserWizardStateInterface) =>
+                        handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
+                    initialValues={
+                        {
+                            groupList: groupList,
+                            initialGroupList: initialGroupList,
+                            initialTempGroupList: initialTempGroupList,
+                            tempGroupList: tempGroupList
+                        }
+                    }
+                    handleGroupListChange={ (groups: RolesInterface[]) => handleGroupListChange(groups) }
+                    handleTempListChange={ (groups: RolesInterface[]) => handleAddedGroupListChange(groups) }
+                    handleInitialTempListChange={ (groups: RolesInterface[]) =>
+                        handleAddedGroupInitialListChange(groups) }
+                    handleInitialGroupListChange={ (groups: RolesInterface[]) => handleInitialGroupListChange(groups) }
+                    handleSetGroupId={ null }
+                />
+            ),
             icon: getUserWizardStepIcons().groups,
             title: t("console:manage.features.user.modals.addUserWizard.steps.groups")
         },
@@ -1116,6 +1095,47 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 return getInviteParentOrgUserStep();
             } 
         } 
+    };
+
+    /**
+     * User group wizard step.
+     * @returns Group wizard step.
+     */
+    const getUserGroupsWizardStep = (): WizardStepInterface => {
+
+        return {
+            content: (
+                <AddConsumerUserGroups
+                    triggerSubmit={ submitGroupList }
+                    onSubmit={ (values: { groups : GroupsInterface[] }) => 
+                        handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
+                    initialValues={
+                        {
+                            groupList: groupList,
+                            initialGroupList: initialGroupList,
+                            initialTempGroupList: initialTempGroupList,
+                            tempGroupList: tempGroupList
+                        }
+                    }
+                    handleGroupListChange={ 
+                        (groups: GroupsInterface[]) => handleGroupListChange(groups)
+                    }
+                    handleTempListChange={ 
+                        (groups: GroupsInterface[]) => handleAddedGroupListChange(groups)
+                    }
+                    handleInitialTempListChange={ 
+                        (groups: GroupsInterface[]) => handleAddedGroupInitialListChange(groups)
+                    }
+                    handleInitialGroupListChange={ 
+                        (groups: GroupsInterface[]) => handleInitialGroupListChange(groups)
+                    }
+                    handleSetGroupId={ null }
+                />
+            ),
+            icon: getUserWizardStepIcons().groups,
+            name: WizardStepsFormTypes.GROUP_LIST,
+            title: t("console:manage.features.user.modals.addUserWizard.steps.groups")
+        };
     };
 
     /**
