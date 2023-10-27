@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import React from "react";
+import { Context, createContext } from "react";
 import { TenantTier } from "../models/subscription";
 
-export const SubscriptionContext: React.Context<{
+export const SubscriptionContext: Context<{
     tierName: TenantTier;
-}> = React.createContext({
+}> = createContext({
     tierName: TenantTier.ENTERPRISE
 });

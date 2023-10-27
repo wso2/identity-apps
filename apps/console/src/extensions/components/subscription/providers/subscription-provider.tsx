@@ -17,7 +17,7 @@
  */
 
 import React, { PropsWithChildren, ReactElement } from "react";
-import { SubscriptionContext } from "../contexts/subscription";
+import { SubscriptionContext } from "../contexts/subscription-context";
 import { TenantTier } from "../models/subscription";
 
 /**
