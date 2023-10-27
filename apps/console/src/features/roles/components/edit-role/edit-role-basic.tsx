@@ -62,7 +62,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         isLoading: isRolesListLoading,
         error: rolesListError,
         isValidating: isRolesListValidating
-    } = useRolesList( undefined, undefined, roleNameSearchQuery);
+    } = useRolesList(undefined, undefined, roleNameSearchQuery);
 
     /**
      * Dispatches the alert object to the redux store.
