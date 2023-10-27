@@ -171,8 +171,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         [ "data-testid" ]: testId
     } = props;
 
-    const [ subjectDN, setTLSClientAuthSubjectDN ] = useState(initialValues?.clientAuthentication ?
-        initialValues.clientAuthentication.tlsClientAuthSubjectDn : null);
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
@@ -209,6 +207,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ allowedOriginsErrorLabel, setAllowedOriginsErrorLabel ] = useState<ReactElement>(null);
     const [ , setPEMSelected ] = useState<boolean>(false);
     const [ , setPEMValue ] = useState<string>(undefined);
+    const [ subjectDN, setTLSClientAuthSubjectDN ] = useState(initialValues?.clientAuthentication ?
+        initialValues.clientAuthentication.tlsClientAuthSubjectDn : null);
+    const [ selectedAuthMethod, setSelectedAuthMethod ] = useState<string>(undefined);
     const [
         isRefreshTokenWithoutAllowedGrantType,
         setRefreshTokenWithoutAlllowdGrantType
@@ -612,7 +613,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     };
 
-    const [ selectedAuthMethod, setSelectedAuthMethod ] = useState<string>(undefined);
 
     const handleAuthMethodChange = (values: Map<string, FormValue>) => {
         const authMethod: string = values.get("tokenEndpointAuthMethod") as string;
@@ -667,28 +667,30 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 });
             } else {
                 metadataProp.options.map((ele: any) => {
-                    if ( !ele.displayName ) {
+                    if (!ele.displayName) {
                         allowedList.push({ text: ele, value: ele });
                     } else {
-                        allowedList.push({ content: (
-                            <Table.Row data-testid={ testId }>
-                                <Table.Cell>
-                                    <div>{ ele.displayName }</div>
-                                    {
-                                        <Popup
-                                            content={ ele.name }
-                                            inverted
-                                            trigger={ (
-                                                <Code compact withBackground={ false }>{ ele.name }</Code>
-                                            ) }
-                                            position="bottom left">
-                                        </Popup>
-                                    }
-                                </Table.Cell>
-                            </Table.Row>
-                        ),
-                        text: ele.displayName,
-                        value: ele.name });
+                        allowedList.push({
+                            content: (
+                                <Table.Row data-testid={ testId }>
+                                    <Table.Cell>
+                                        <div>{ ele.displayName }</div>
+                                        {
+                                            <Popup
+                                                content={ ele.name }
+                                                inverted
+                                                trigger={ (
+                                                    <Code compact withBackground={ false }>{ ele.name }</Code>
+                                                ) }
+                                                position="bottom left">
+                                            </Popup>
+                                        }
+                                    </Table.Cell>
+                                </Table.Row>
+                            ),
+                            text: ele.displayName,
+                            value: ele.name
+                        });
                     }
                 });
             }

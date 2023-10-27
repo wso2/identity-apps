@@ -80,6 +80,9 @@ export interface OAuth2PKCEConfigurationInterface {
     supportPlainTransformAlgorithm?: boolean;
 }
 
+/**
+ * OIDC client authentication related properties.
+ */
 export interface ClientAuthenticationConfigurationInterface {
     tokenEndpointAuthMethod?: string;
     tokenEndpointAuthSigningAlg?: string;
@@ -96,7 +99,6 @@ interface RequestObjectEncryptionConfigurationInterface {
 }
 
 export interface RequestObjectConfigurationInterface {
-
     requireSignedRequestObject? : boolean;
     requestObjectSigningAlg?: string;
     encryption?: RequestObjectEncryptionConfigurationInterface;
@@ -129,6 +131,9 @@ interface IdTokenConfigurationInterface {
     idTokenSignedResponseAlg?: string;
 }
 
+/**
+ * OIDC subject type related properties.
+ */
 interface SubjectConfigInterface {
     subjectType?: string;
     sectorIdentifierUri?: string;

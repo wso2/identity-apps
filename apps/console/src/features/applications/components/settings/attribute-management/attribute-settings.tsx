@@ -1080,17 +1080,18 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             delete submitValue.claimConfiguration.subject;
         }
 
-        updateClaimConfiguration(appId, submitValue) &&
-        updateAuthProtocolConfig<OIDCDataInterface>(appId, oidcSubmitValue, SupportedAuthProtocolTypes.OIDC)
-            .then(() => {
-                onUpdate(appId);
-                dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateClaimConfig.success" +
-                        ".description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("console:develop.features.applications.notifications.updateClaimConfig.success.message")
-                }));
-            })
+        Promise.all([
+            updateClaimConfiguration(appId, submitValue),
+            updateAuthProtocolConfig<OIDCDataInterface>(appId, oidcSubmitValue, SupportedAuthProtocolTypes.OIDC)
+        ]).then(() => {
+            onUpdate(appId);
+            dispatch(addAlert({
+                description: t("console:develop.features.applications.notifications.updateClaimConfig.success" +
+                    ".description"),
+                level: AlertLevels.SUCCESS,
+                message: t("console:develop.features.applications.notifications.updateClaimConfig.success.message")
+            }));
+        })
             .catch(() => {
                 dispatch(addAlert({
                     description: t("console:develop.features.applications.notifications.updateClaimConfig" +

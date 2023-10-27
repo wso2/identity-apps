@@ -800,7 +800,10 @@ export interface idpInfoTypeInterface {
     redirectTo?: string;
 }
 
+/**
+ * Enum for OIDC supported subject types.
+ */
 export enum SubjectTypes {
-    PUBLIC ="public",
+    PUBLIC = "public",
     PAIRWISE = "pairwise"
 }
