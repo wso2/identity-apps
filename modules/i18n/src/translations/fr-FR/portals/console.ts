@@ -9244,7 +9244,7 @@ export const console: ConsoleNS = {
                                     invalid: "Ce nom d'utilisateur n'est pas disponible.",
                                     invalidCharacters: "Le nom d'utilisateur semble contenir des caractères " +
                                         "non valides.",
-                                    regExViolation: "S'il vous plaît, mettez une adresse email valide."
+                                    regExViolation: "Merci d'entrer un nom d'utilisateur valide."
                                 }
                             }
                         },
