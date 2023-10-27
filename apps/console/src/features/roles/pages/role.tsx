@@ -57,7 +57,6 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ filterBy, setFilterBy ] = useState<string>(undefined);
-    const [ isEmptyResults ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const isSubOrg: boolean = orgType === OrganizationType.SUBORGANIZATION;
@@ -180,7 +179,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     return (
         <PageLayout
             action={
-                !isSubOrg && !isRolesListLoading && isEmptyResults
+                !isSubOrg && !isRolesListLoading && !(rolesList?.totalResults > 0)
                     ? (
                         <Show when={ AccessControlConstants.ROLE_WRITE }>
                             <PrimaryButton
@@ -203,7 +202,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                 : t("console:manage.pages.roles.subTitle") }
         >
             {
-                !isEmptyResults && (
+                !(rolesList?.totalResults > 0) && (
                     <ListLayout
                         advancedSearch={ (
                             <AdvancedSearchWithBasicFilters
@@ -243,7 +242,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                         listItemLimit={ listItemLimit }
                         onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                         onPageChange={ handlePaginationChange }
-                        showTopActionPanel={ !isRolesListLoading && isEmptyResults }
+                        showTopActionPanel={ !isRolesListLoading && (rolesList?.totalResults > 0) }
                         rightActionPanel={
                             (
                                 <Dropdown

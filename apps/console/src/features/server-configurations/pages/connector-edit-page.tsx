@@ -371,8 +371,6 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return t("extensions:manage.serverConfigurations.accountSecurity.botDetection.heading");
             case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
                 return t("extensions:manage.serverConfigurations.userOnboarding.selfRegistration.heading");
-            case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
-                return t("extensions:manage.serverConfigurations.analytics.heading");
             default:
                 return connector?.friendlyName;
         }
@@ -412,8 +410,6 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                         </DocumentationLink>
                     </>
                 );
-            case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
-                return t("extensions:manage.serverConfigurations.analytics.subHeading");
             default:
                 return connector?.description
                     ? connector.description

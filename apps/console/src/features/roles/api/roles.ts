@@ -85,6 +85,47 @@ export const getApplicationRolesByAudience = (
 };
 
 /**
+ * Get the roles by name.
+ *
+ * @param audienceId - Organization ID or Application ID.
+ * @param roleName - Role name.
+ * @param before - Before link.
+ * @param after - After link.
+ * @param limit - Limit.
+ * 
+ * @returns A promise containing the response.
+ */
+export const getRoleByName = (
+    audienceId: string,
+    roleName: string,
+    before: string,
+    after: string,
+    limit: number
+):Promise<RolesV2ResponseInterface> => {
+
+    const filter: string = `audience.value eq ${ audienceId } and displayName eq ${ roleName }`;
+
+    const requestConfig: RequestConfigInterface = {
+        method: HttpMethods.GET,
+        params: {
+            after,
+            before,
+            filter,
+            limit
+        },
+        url:  `${ store.getState().config.endpoints.rolesV2 }`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {            
+            return Promise.resolve(response.data as RolesV2ResponseInterface);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
  * Retrieve Role details for a give role id.
  *
  * @param roleId - role id to retrieve role details
@@ -577,3 +618,4 @@ export const useGetAuthorizedAPIList = <Data = AuthorizedAPIListItemInterface[],
         mutate
     };
 };
+
