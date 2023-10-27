@@ -664,27 +664,6 @@
         </div>
     </div>
 
-    <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) { %>
-        <div class="mt-0">
-            <div class="buttons">
-                <button
-                    type="button"
-                    <% if(StringUtils.isNotBlank(selfSignUpOverrideURL)) { %>
-                    onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(selfSignUpOverrideURL)%>';"
-                    <% } else { %>
-                    onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointURL, srURLEncodedURL, urlParameters))%>';"
-                    <% } %>
-                    class="ui large fluid button secondary"
-                    id="registerLink"
-                    role="button"
-                    data-testid="login-page-create-account-button"
-                >
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.an.account")%>
-                </button>
-            </div>
-        </div>
-    <% } %>
-
     <% if (isIdentifierFirstLogin(inputType) && !StringUtils.equals("true", promptAccountLinking)) { %>
         <div class="field external-link-container text-small mt-4">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "not.you")%>

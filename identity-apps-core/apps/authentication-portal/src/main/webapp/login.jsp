@@ -1033,10 +1033,7 @@
                     <% }
                     String clientId = request.getParameter("client_id");
                     String urlParameters = "";
-                    if ((StringUtils.equals("CONSOLE",clientId)
-                            || (StringUtils.equals("MY_ACCOUNT",clientId)
-                            && StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)))
-                            && !StringUtils.equals("true", promptAccountLinking)) {
+                    if (!StringUtils.equals("true", promptAccountLinking)) {
                             String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
                             String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
                             Boolean isRecoveryEPAvailable = false;
@@ -1070,6 +1067,8 @@
                                 }
                             }
                         %>
+
+                        <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) { %>
                             <div class="mt-4">
                                 <div class="mt-3 external-link-container text-small">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.an.account")%>
@@ -1086,6 +1085,8 @@
                                     </a>
                                 </div>
                             </div>
+                        <% } %>
+
                             <% }
                             if (!StringUtils.equals("CONSOLE",clientId)
                                     && !StringUtils.equals("MY_ACCOUNT",clientId) && !hasLocalLoginOptions && hasFederatedOptions &&
