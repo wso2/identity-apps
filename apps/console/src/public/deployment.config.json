@@ -208,6 +208,7 @@
     },
     "getProfileInfoFromIDToken": true,
     "superTenantProxy": "",
+    "legacyAuthzRuntime": true,
     "ui": {
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
