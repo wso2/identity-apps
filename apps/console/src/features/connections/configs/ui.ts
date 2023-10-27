@@ -17,6 +17,7 @@
  */
 
 import BasicAuthIcon from "../../../themes/default/assets/images/authenticators/basic-auth.png";
+import FIDOIcon from "../../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
 import SalesforceLogo from "../../../themes/default/assets/images/connectors/salesforce.png";
 import SCIMLogo from "../../../themes/default/assets/images/connectors/scim.png";
 import SPMLLogo from "../../../themes/default/assets/images/connectors/spml.png";
@@ -40,7 +41,6 @@ import { ReactComponent as DocumentIcon } from "../resources/assets/images/icons
 import EmailOTPIcon from "../resources/assets/images/icons/email-solid.svg";
 import { ReactComponent as EnterpriseConnectionIcon
 } from "../resources/assets/images/icons/enterprise-icon.svg";
-import FIDOIcon from "../resources/assets/images/icons/fido2.svg";
 import { ReactComponent as GearsIcon } from "../resources/assets/images/icons/gears-icon.svg";
 import MagicLinkIcon from "../resources/assets/images/icons/magic-link-icon.svg";
 import OIDCConnectionIcon from "../resources/assets/images/icons/oidc-connection-icon.png";

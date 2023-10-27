@@ -1562,7 +1562,17 @@ export interface ConsoleNS {
                                     range: string;
                                 };
                             };
-                        }
+                        };
+                        fido2: {
+                            allowProgressiveEnrollment: {
+                                hint: string;
+                                label: string;
+                            };
+                            allowUsernamelessAuthentication: {
+                                hint: string;
+                                label: string;
+                            };
+                        };
                         facebook: {
                             callbackUrl: FormAttributes;
                             clientId: FormAttributes;

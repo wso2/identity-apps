@@ -51,7 +51,7 @@ export const getAuthenticatorList = (): any => {
             },
             isComingSoon: false,
             isEnabled: true,
-            useAuthenticatorsAPI: true
+            useAuthenticatorsAPI: false
         },
         [ AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: {
             content: {

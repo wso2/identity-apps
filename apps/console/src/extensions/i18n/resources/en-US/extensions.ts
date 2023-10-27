@@ -783,7 +783,7 @@ export const extensions: Extensions = {
                                         secondFactorDisabled:
                                             "Second factor authenticators can only be used if " +
                                             "<1>Username & Password</1>, <3>Social Login</3> or " +
-                                            "<5>FIDO2</5> is present in a " +
+                                            "<5>Passkey</5> is present in a " +
                                             "previous step."
                                     }
                                 }
@@ -2656,17 +2656,17 @@ export const extensions: Extensions = {
             fido: {
                 quickStart: {
                     addLoginModal: {
-                        heading: "Add FIDO2 Login",
-                        subHeading: "Select an application to set up FIDO2 login."
+                        heading: "Add Passkey Login",
+                        subHeading: "Select an application to set up passkey login."
                     },
-                    heading: "FIDO2 Set Up Guide",
+                    heading: "Passkey Set Up Guide",
                     passkeys: {
-                        docLinkText: "FIDO2 Security key/biometrics",
+                        docLinkText: "FIDO2 passkey",
                         content:
-                            "Passkeys provide simple and secure passwordless login for your applications that " +
+                            "Passkey provide simple and secure passwordless login for your applications that " +
                             "survives device loss and works across platforms. You can try out passkey " +
-                            "authentication on Asgardeo with \"FIDO2\".",
-                        heading: "FIDO2 authentication with passkeys"
+                            "authentication on Asgardeo with \"Passkey\".",
+                        heading: "FIDO2 authentication with passkey"
                     },
                     steps: {
                         customizeFlow: {
@@ -2674,17 +2674,17 @@ export const extensions: Extensions = {
                             heading: "Customize the flow"
                         },
                         selectApplication: {
-                            content: "Choose the <1>application</1> for which you want to set up FIDO2 login.",
+                            content: "Choose the <1>application</1> for which you want to set up passkey login.",
                             heading: "Select Application"
                         },
                         selectFIDO: {
                             content:
-                                "Go to <1>Sign-in Method</1> tab and click on <3>Add FIDO2 login</3> to configure " +
-                                " a basic FIDO flow.",
-                            heading: "Select <1>Add FIDO2 login</1>"
+                                "Go to <1>Sign-in Method</1> tab and click on <3>Add Passkey Login</3> to configure " +
+                                " a basic passkey flow.",
+                            heading: "Select <1>Add Passkey Login</1>"
                         }
                     },
-                    subHeading: "Follow the instructions given below to set up FIDO2 login in your login flow."
+                    subHeading: "Follow the instructions given below to set up passkey login in your login flow."
                 }
             },
             magicLink: {

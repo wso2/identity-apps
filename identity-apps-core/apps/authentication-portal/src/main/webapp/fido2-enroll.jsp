@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -16,50 +16,42 @@
   ~ under the License.
 --%>
 
-<%@ page import="com.google.gson.Gson" %>
-<%@ page import="java.io.File" %>
-<%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
-<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
-<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
-<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
-<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
-
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="java.io.File" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
+<%@ page import="org.apache.commons.logging.Log" %>
+<%@ page import="org.apache.commons.logging.LogFactory" %>
 
-<%@include file="includes/localize.jsp" %>
+<%@ page import="org.wso2.carbon.identity.application.authenticator.fido2.core.WebAuthnService" %>
+<%@ page import="org.wso2.carbon.identity.application.authenticator.fido2.dto.FIDO2RegistrationRequest" %>
+<%@ page import="org.wso2.carbon.identity.application.authenticator.fido.util.FIDOUtil" %>
+<%@ page import="org.wso2.carbon.identity.application.authenticator.fido2.util.Either" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.framework.context.AuthenticationContext" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.framework.util.FrameworkUtils" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.framework.model.AuthenticatedUser" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.framework.config.model.StepConfig" %>
+<%@ page import="com.fasterxml.jackson.databind.ObjectMapper" %>
+<%@ page import="com.yubico.internal.util.JacksonCodecs" %>
+
+<%-- Localization --%>
+<%@ include file="includes/localize.jsp" %>
+
+<%-- Include tenant context --%>
 <%@include file="includes/init-url.jsp" %>
 
-<%
-    String authRequest = request.getParameter("data");
-
-    String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
-
-    if (StringUtils.isBlank(authAPIURL)) {
-        authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
-    } else {
-        // Resolve tenant domain for the authentication API URL.
-        authAPIURL = AuthenticationEndpointUtil.resolveTenantDomain(authAPIURL);
-    }
-    if (!authAPIURL.endsWith("/")) {
-        authAPIURL += "/";
-    }
-    authAPIURL += "context/" + Encode.forUriComponent(request.getParameter("sessionDataKey"));
-    String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
-    Gson gson = new Gson();
-    Map data = gson.fromJson(contextProperties, Map.class);
-    
-    boolean enablePasskeyProgressiveEnrollment = (boolean) data.get("FIDO.EnablePasskeyProgressiveEnrollment");
-%>
-
-<%!
-    private static final String MY_ACCOUNT = "/myaccount";
-%>
-
 <%-- Branding Preferences --%>
-<jsp:directive.include file="includes/branding-preferences.jsp" />
+<jsp:directive.include file="includes/branding-preferences.jsp"/>
+
+<%-- Data for the layout from the page --%>
+<%
+    layoutData.put("containerSize", "medium");
+%>
+
+<%
+    String regRequest = request.getParameter("data");
+%>
 
 <!doctype html>
 <html lang="en-US">
@@ -73,18 +65,9 @@
     <% } else { %>
     <jsp:include page="includes/header.jsp"/>
     <% } %>
-
-    <%-- analytics --%>
-    <%
-        File analyticsFile = new File(getServletContext().getRealPath("extensions/analytics.jsp"));
-        if (analyticsFile.exists()) {
-    %>
-        <jsp:include page="extensions/analytics.jsp"/>
-    <% } else { %>
-        <jsp:include page="includes/analytics.jsp"/>
-    <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout">
+
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
     <% } else { %>
@@ -107,12 +90,15 @@
             <div class="ui segment">
                 <div id="loader-bar" class="loader-bar"></div>
 
-                <h3 class="ui header center aligned">
-                    <span id="fido-header" data-testid="login-page-fido-heading">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification" )%>
+                <h3 class="ui header">
+                    <span id="fido-header">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.title.registration.instruction")%>
                     </span>
-                    <span id="fido-header-error" style="display: none;" data-testid="login-page-fido-heading-error">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.error" )%>
+                    <span id="fido-keyname-header" style="display: none;">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.title.name.passkey")%>
+                    </span>
+                    <span id="fido-header-error" style="display: none;">
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.title.error.registration")%>
                     </span>
                 </h3>
                 <div class="ui two column left aligned stackable grid">
@@ -122,82 +108,98 @@
                         </div>
                         <div class="ten wide column">
                             <p id="general-browser-instruction">
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "touch.your.u2f.device" )%>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.info.registration.instruction")%>
                             </p>
                             <div id="safari-instruction" style="display:none">
                                 <p>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.failed.instruction" )%>
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.failed.instruction")%>
                                 </p>
                                 <div class="ui divider hidden"></div>
-                                <button class="ui primary fluid large button" id="initiateFlow" type="button" onclick="talkToDevice()"
-                                data-testid="login-page-fido-proceed-button">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.proceed" )%>
+                                <button class="ui primary fluid large button" id="initiateFlow" type="button" onclick="talkToDevice()">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.proceed")%>
                                 </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="fido-keyname-content" style="display: none;" class="middle aligned row">
+                        <div class="sixteen wide column">
+                            <p>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.info.name.passkey")%>
+                            </p>
+                            <div class="ui form">
+                                <!-- Add an element to display the error message -->
+                                <div class="ui red message" id="keynameError" style="display: none;">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.error.name.passkey")%>
+                                </div>
+                                <div class="field">
+                                    <input type="text" id="keynameInput" 
+                                        placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.placeholder.name.passkey")%>">
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <div class="buttons">
+                                    <button class="ui primary fluid large button" type="button" onclick="finishFidoFlow()">
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.submit")%>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <div class="column buttons">
+                                    <button class="ui secondary fluid large button" type="button" onclick="cancelFlow()">
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel")%>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div id="fido-error-content" style="display: none;" class="middle aligned row">
                         <div class="sixteen wide column">
                             <p>
-                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.registration.info" )%>
-                                <% if(enablePasskeyProgressiveEnrollment){ %>
-                                    <a href="#" onClick="passkeyEnrollmentFlow()">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.register" )%>
-                                    </a>
-                                <% } else { %>
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.registration.option.info" )%>
-                                    <a target="_blank" id="my-account-link">My Account.</a>
-                                <% } %>
-                            </p>
-                            <p>
-                                <% if (supportEmail != null && !supportEmail.isEmpty()) { %>
-                                    <span>
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.learn.more.part.one" )%>
-                                    </span>
-                                    <a href="mailto:<%=supportEmail%>"><%=StringEscapeUtils.escapeHtml4(supportEmail)%></a>
-                                <% } %>
+                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.info.error.registration")%>
                             </p>
                             <div class="mt-4">
-                                <div class="buttons">
-                                    <button class="ui primary fluid large button" type="button" onclick="retry()" 
-                                    data-testid="login-page-fido-retry-button">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.retry" )%>
+                                <div class="column buttons">
+                                    <button class="ui primary fluid large button" type="button" onclick="retry()"
+                                        data-testid="registration-page-fido-retry-button">
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.retry")%>
                                     </button>
                                 </div>
                             </div>
                             <div class="mt-3">
-                                <div class="buttons">
+                                <div class="column buttons">
                                     <button class="ui secondary fluid large button" type="button" onclick="cancelFlow()"
-                                    data-testid="login-page-fido-cancel-button">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel" )%>
+                                        data-testid="registration-page-fido-cancel-button">
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.cancel")%>
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div>
+
+                    </div>
                 </div>
 
                 <form method="POST" action="<%=commonauthURL%>" id="form" onsubmit="return false;">
                     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
-                    <input type="hidden" name="tokenResponse" id="tokenResponse" value="tmp val"/>
+                    <input type="hidden" name="challengeResponse" id="challengeResponse" value="tmp val"/>
                     <input type="hidden" name="scenario" id="scenario" value="tmp val"/>
+                    <input type="hidden" name="displayName" id="displayName" value="tmp val"/>
                 </form>
             </div>
+
         </layout:component>
-        <layout:component componentName="ProductFooter">
+        <layout:component componentName="ProductFooter" >
             <%-- product-footer --%>
             <%
                 File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
                 if (productFooterFile.exists()) {
             %>
-                <jsp:include page="extensions/product-footer.jsp"/>
+            <jsp:include page="extensions/product-footer.jsp"/>
             <% } else { %>
-                <jsp:include page="includes/product-footer.jsp"/>
+            <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
         </layout:component>
-        <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
-            <jsp:include page="${pathOfDynamicComponent}" />
-        </layout:dynamicComponent>
     </layout:main>
 
     <%-- footer --%>
@@ -205,44 +207,17 @@
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
     %>
-        <jsp:include page="extensions/footer.jsp"/>
+    <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-        <jsp:include page="includes/footer.jsp"/>
+    <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <script type="text/javascript" src="js/u2f-api.js"></script>
     <script type="text/javascript" src="libs/base64js/base64js-1.3.0.min.js"></script>
     <script type="text/javascript" src="libs/base64url.js"></script>
 
-    <% String clientId=request.getParameter("client_id"); %>
-
-    <script type="text/javascript">
-        var insightsAppIdentifier = "<%=clientId%>";
-        var insightsTenantIdentifier = "<%=userTenant%>";
-        if (insightsAppIdentifier == "MY_ACCOUNT") {
-            insightsAppIdentifier = "my-account";
-        } else if (insightsAppIdentifier == "CONSOLE") {
-            insightsAppIdentifier = "console";
-        } else if (insightsTenantIdentifier !== "<%=org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME%>") {
-            insightsAppIdentifier = "business-app";
-        }
-        trackEvent("page-visit-authentication-portal-fido2", {
-            "app": insightsAppIdentifier,
-            "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
-        });
-    </script>
-
-    <%
-        String myaccountUrl = application.getInitParameter("MyAccountURL");
-        if (StringUtils.isEmpty(myaccountUrl)) {
-            myaccountUrl = ServiceURLBuilder.create().addPath(MY_ACCOUNT).build().getAbsolutePublicURL();
-        }
-    %>
-
     <script type="text/javascript">
         $(document).ready(function () {
-
-            $("#my-account-link").attr("href", '<%=myaccountUrl%>');
             if(navigator ){
                 let userAgent = navigator.userAgent;
                 let browserName;
@@ -313,38 +288,51 @@
             return Object.assign({}, obj, more);
         }
 
-        function decodePublicKeyCredentialRequestOptions(request) {
-            const allowCredentials = request.allowCredentials && request.allowCredentials.map(credential => extend(
-                credential, {
-                    id: base64url.toByteArray(credential.id),
-                }));
+        function decodePublicKeyCredentialCreationOptions (request) {
+            // Decode the excludeCredentials field if it exists.
+            const excludeCredentials = request.excludeCredentials.map((credential) => ({
+                ...credential,
+                id: base64url.toByteArray(credential.id),
+            }));
 
-            const publicKeyCredentialRequestOptions = extend(
-                request, {
-                    allowCredentials,
-                    challenge: base64url.toByteArray(request.challenge),
-                });
+            // Decode the challenge field.
+            const challenge = base64url.toByteArray(request.challenge);
 
-            return publicKeyCredentialRequestOptions;
-        }
+            // Decode the user.id field.
+            const userId = base64url.toByteArray(request.user.id);
+
+            // Create a new object with the decoded values and set attestation to "direct".
+            return {
+                ...request,
+                attestation: "direct",
+                user: {
+                    ...request.user,
+                    id: userId,
+                },
+                challenge,
+                excludeCredentials,
+            };
+        };
 
         let fidoError;
 
         function talkToDevice(){
-            var authRequest = '<%=Encode.forJavaScriptBlock(authRequest)%>';
-            var jsonAuthRequest = JSON.parse(authRequest);
+            var regRequest = '<%=Encode.forJavaScriptBlock(regRequest)%>';
+            var jsonRegRequest = JSON.parse(regRequest);
+            console.log(jsonRegRequest);
+            console.log(jsonRegRequest.publicKeyCredentialCreationOptions);
 
-            navigator.credentials.get({
-                publicKey: decodePublicKeyCredentialRequestOptions(jsonAuthRequest.publicKeyCredentialRequestOptions),
+            navigator.credentials.create({
+                publicKey: decodePublicKeyCredentialCreationOptions(jsonRegRequest.publicKeyCredentialCreationOptions),
             })
             .then(function(data) {
                 payload = {};
-                payload.requestId = jsonAuthRequest.requestId;
+                payload.requestId = jsonRegRequest.requestId;
                 payload.credential = responseToObject(data);
-                var form = document.getElementById('form');
-                var reg = document.getElementById('tokenResponse');
+                var reg = document.getElementById('challengeResponse');
                 reg.value = JSON.stringify(payload);
-                form.submit();
+
+                showKeynameFlow();
             })
             .catch(function(err) {
                 showError();
@@ -353,10 +341,6 @@
         }
 
         function retry() {
-            trackEvent("authentication-portal-fido2-click-retry", {
-                "app": insightsAppIdentifier,
-                "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
-            });
             showFidoFlow();
             talkToDevice();
         }
@@ -367,6 +351,8 @@
             $("#fido-header").hide();
             $("#fido-initialize").hide();
             $("#loader-bar").hide();
+            $("#fido-keyname-header").hide();
+            $("#fido-keyname-content").hide();
         }
 
         function showFidoFlow() {
@@ -375,19 +361,53 @@
             $("#fido-header").show();
             $("#fido-initialize").show();
             $("#loader-bar").show();
+            $("#fido-keyname-header").hide();
+            $("#fido-keyname-content").hide();
+        }
+
+        function showKeynameFlow() {
+            $("#fido-header-error").hide();
+            $("#fido-error-content").hide();
+            $("#fido-header").hide();
+            $("#fido-initialize").hide();
+            $("#loader-bar").hide();
+            $("#fido-keyname-header").show();
+            $("#fido-keyname-content").show();
         }
 
         function cancelFlow(){
             var form = document.getElementById('form');
-            var reg = document.getElementById('tokenResponse');
+            var reg = document.getElementById('challengeResponse');
             reg.value = JSON.stringify({ errorCode: 400, message: fidoError });
+            var scenario = document.getElementById('scenario');
+            scenario.value = "CANCEL_FIDO_ENROLL" ;
             form.submit();
         }
 
-        function passkeyEnrollmentFlow(){
-            var form = document.getElementById('form');
+        function finishFidoFlow() {
+
+            var keynameInput = document.getElementById('keynameInput');
+            var displayName = document.getElementById('displayName');
             var scenario = document.getElementById('scenario');
-            scenario.value = "INIT_FIDO_ENROLL";
+
+            // Get the keyname input value and trim whitespace
+            var keyname = keynameInput.value.trim();
+
+            // Check if the keyname is empty
+            if (keyname === '') {
+                // Show the error message
+                keynameError.style.display = 'block';
+                return;
+            } else {
+                // Hide the error message
+                keynameError.style.display = 'none';
+            }
+
+            // Set the displayName and scenario values
+            displayName.value = keyname;
+            scenario.value = "FINISH_FIDO_ENROLL";
+
+            var form = document.getElementById('form');
             form.submit();
         }
 

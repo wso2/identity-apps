@@ -1391,10 +1391,10 @@ export const console: ConsoleNS = {
                                             usernameless: {
                                                 description: "Enable users to log in using a passkey, security key or "
                                                     + "biometrics.",
-                                                heading: "Add Security Key/Biometrics login",
-                                                info: "To sign in with passwordless login, your users "
-                                                    + "should have their FIDO2 security keys or biometrics "
-                                                    + "registered via My Account."
+                                                heading: "Add Passkey Login",
+                                                info: "On-the-fly passkey enrollment is available exclusively " +
+                                                "for FIDO2 supported passkeys and further users wishing to enroll " +
+                                                "multiple passkeys, they must do so via MyAccount."
                                             },
                                             emailOTP: {
                                                 description: "Enable additional authentication layer with Email based OTP.",
@@ -3558,6 +3558,16 @@ export const console: ConsoleNS = {
                                     invalid: "Allowed OTP resend attempt count should be an integer.",
                                     range: "Allowed OTP resend attempt count should be between 0 & 100."
                                 }
+                            }
+                        },
+                        fido2: {
+                            allowProgressiveEnrollment: {
+                                label: "Allow passkey progressive enrollment",
+                                hint: "Please clear this checkbox to disable passkey progressive enrollment."
+                            },
+                            allowUsernamelessAuthentication: {
+                                label: "Allow passkey usernameless authentication",
+                                hint: "Please clear this checkbox to disable usernameless authentication."
                             }
                         },
                         facebook: {

@@ -19,6 +19,7 @@
 import { FunctionComponent, SVGProps } from "react";
 import BasicAuthIcon from "../../../themes/default/assets/images/authenticators/basic-auth.png";
 import { ReactComponent as EmailOTPIcon } from "../../../themes/default/assets/images/authenticators/email-otp.svg";
+import FIDOLogo from "../../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
 import { ReactComponent as SMSOTPIcon } from "../../../themes/default/assets/images/authenticators/sms-otp.svg";
 import TOTPIcon from "../../../themes/default/assets/images/authenticators/totp.png";
 import { ReactComponent as AuthorizeIcon } from "../../../themes/default/assets/images/icons/authorize.svg";
@@ -32,7 +33,6 @@ import { ReactComponent as CubeStack } from "../../../themes/default/assets/imag
 import { ReactComponent as DestinationIcon } from "../../../themes/default/assets/images/icons/destination-icon.svg";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
 import { ReactComponent as DoneButtonIcon } from "../../../themes/default/assets/images/icons/done-button.svg";
-import FIDOLogo from "../../../themes/default/assets/images/icons/fingerprint.svg";
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
 import {
     ReactComponent as IDPCertificateIcon

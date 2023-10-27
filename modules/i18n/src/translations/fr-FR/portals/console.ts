@@ -1413,14 +1413,12 @@ export const console: ConsoleNS = {
                                                 heading: "Ajouter TOTP comme deuxième facteur"
                                             },
                                             usernameless: {
-                                                description: "Autorisez les utilisateurs à se connecter à l'aide " +
-                                                    "d'un mot de passe, d'une clé de sécurité ou de données " +
-                                                    "biométriques.",
-                                                heading: "Ajouter une clé de sécurité/connexion biométrique",
-                                                info: "Pour vous connecter avec une authentification sans mot " +
-                                                    "de passe, vos utilisateurs doivent avoir leurs clés de " +
-                                                    "sécurité FIDO2 ou leurs données biométriques enregistrées " +
-                                                    "via Mon compte."
+                                                description: "Permettez aux utilisateurs de se connecter " +
+                                                    "à l'aide d'un mot de passe, d'une clé de sécurité ou de données biométriques.",
+                                                heading: "Ajouter une connexion par mot de passe",
+                                                info: "L'inscription des clés d'accès à la volée est disponible exclusivement " +
+                                                    "pour les clés d'accès prises en charge par FIDO2 et les autres utilisateurs " +
+                                                    "souhaitant enregistrer plusieurs clés d'accès doivent le faire via Mon compte."
                                             },
                                             emailOTP: {
                                                 description: "Activez une couche supplémentaire d'authentification avec OTP basé sur Email.",

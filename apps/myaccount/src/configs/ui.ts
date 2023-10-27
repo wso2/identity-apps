@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,6 +22,7 @@ import {
     ReactComponent as StatusShieldWarning
 } from "../themes/default/assets/images/accounts-status-icons/warning.svg";
 import OrangeAppIconBackground from "../themes/default/assets/images/app-icon-background.png";
+import PasskeyIcon from "../themes/default/assets/images/authenticators/fido-passkey-black.svg";
 import GravatarLogo from "../themes/default/assets/images/gravatar-logo.png";
 import { ReactComponent as AppIcon } from "../themes/default/assets/images/icons/app-icon.svg";
 import {
@@ -40,7 +41,6 @@ import { ReactComponent as CrossIcon } from "../themes/default/assets/images/ico
 import { ReactComponent as DashboardIcon } from "../themes/default/assets/images/icons/dashboard-icon.svg";
 import { ReactComponent as EmailIcon } from "../themes/default/assets/images/icons/email-icon.svg";
 import { ReactComponent as ErrorIcon } from "../themes/default/assets/images/icons/error-icon.svg";
-import { ReactComponent as FingerprintIcon } from "../themes/default/assets/images/icons/fingerprint.svg";
 import { ReactComponent as ForbiddenIcon } from "../themes/default/assets/images/icons/forbidden-icon.svg";
 import { ReactComponent as InfoIcon } from "../themes/default/assets/images/icons/info-icon.svg";
 import { ReactComponent as KeyboardIcon } from "../themes/default/assets/images/icons/keyboard.svg";
@@ -152,7 +152,7 @@ export const getSettingsSectionIcons = (): {
 export const getMFAIcons = (): {
     authenticatorApp: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     backupCodes: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
-    fingerprint: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+    passkey: string;
     sms: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     keyboard: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
  } => {
@@ -160,8 +160,8 @@ export const getMFAIcons = (): {
     return {
         authenticatorApp: AuthenticatorAppIcon,
         backupCodes: BackupCodesIcon,
-        fingerprint: FingerprintIcon,
         keyboard: KeyboardIcon,
+        passkey: PasskeyIcon,
         sms: SMSIcon
     };
 };

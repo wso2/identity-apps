@@ -2726,12 +2726,12 @@ export const extensions: Extensions = {
             fido: {
                 quickStart: {
                     addLoginModal: {
-                        heading: "Ajouter FIDO2",
-                        subHeading: "Sélectionnez une application pour configurer la connexion FIDO2."
+                        heading: "Ajouter une connexion par mot de passe",
+                        subHeading: "Sélectionnez une application pour configurer la connexion par mot de passe."
                     },
-                    heading: "Guide de configuration FIDO2",
+                    heading: "Guide de configuration du mot de passe",
                     passkeys: {
-                        docLinkText: "FIDO2 Clé de sécurité/biométrie",
+                        docLinkText: "Clé d'accès FIDO2",
                         content:
                             "Les clés de passe fournissent une connexion sans mot de passe simple et sécurisée " +
                             "pour vos applications qui survit à la perte de l'appareil et fonctionne sur toutes " +
@@ -2747,19 +2747,20 @@ export const extensions: Extensions = {
                         selectApplication: {
                             content:
                                 "Choisissez l'<1>application</1> pour laquelle vous souhaitez configurer " +
-                                "la connexion FIDO2.",
+                                "la connexion par mot de passe.",
                             heading: "Sélectionner l'application"
                         },
                         selectFIDO: {
                             content:
-                                "Accédez à l'onglet <1>Méthode de connexion</1> et cliquez sur <3>Ajouter une " +
-                                "connexion FIDO2</3> pour configurer un flux FIDO de base.",
-                            heading: "Sélectionnez <1>Ajouter une connexion FIDO2</1>"
+                                "Accédez à l'onglet <1>Méthode de connexion</1> et cliquez sur " +
+                                "<3>Ajouter une connexion par clé d'accès</3> pour configurer " +
+                                " un flux de clé d'accès de base.",
+                            heading: "Sélectionnez <1>Ajouter une connexion par mot de passe</1>."
                         }
                     },
                     subHeading:
-                        "Suivez les instructions ci-dessous pour configurer la connexion FIDO2 dans votre flux " +
-                        "de connexion."
+                        "Suivez les instructions ci-dessous pour configurer la connexion par mot de " +
+                        "passe dans votre flux de connexion."
                 }
             },
             magicLink: {
