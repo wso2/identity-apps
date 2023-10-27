@@ -476,7 +476,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                             content={ t("extensions:develop.applications.edit.sections." +
                                                 "apiAuthorization.sections.apiSubscriptions.wizards." +
                                                 "authorizeAPIResource.rbacPolicyMessage", 
-                                            { productName: productName }) }
+                                            { productName }) }
                                             disabled={ !selectedAPIResource
                                                 || !selectedAPIResourceRequiresAuthorization }
                                             inverted

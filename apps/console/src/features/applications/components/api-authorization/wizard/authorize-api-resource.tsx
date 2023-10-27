@@ -500,7 +500,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                             "extensions:develop.applications.edit.sections." +
                                                             "apiAuthorization.sections.apiSubscriptions.wizards." +
                                                             "authorizeAPIResource.rbacPolicyMessage",
-                                                            { productName: productName }
+                                                            { productName }
                                                         ) 
                                                     }
                                                     disabled={ 

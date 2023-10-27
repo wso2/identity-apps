@@ -150,7 +150,7 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                             <Trans 
                                 i18nKey= { "extensions:develop.apiResource.wizard.addApiResource.steps.basic." +
                                     "form.fields.identifier.hint" }
-                                tOptions={ { productName: productName } }>
+                                tOptions={ { productName } }>
                                 We recommend using a URI as the identifier, but you do not need to make the URI 
                                 publicly available since Asgardeo will not access your API. 
                                 Asgardeo will use this identifier value as the audience(aud) claim in the 
@@ -177,7 +177,7 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                         />
                         <Hint className="mb-0">
                             { t("extensions:develop.apiResource.wizard.addApiResource.steps.basic.form.fields." +
-                                "name.hint", { productName: productName }) }
+                                "name.hint", { productName }) }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

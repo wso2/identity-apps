@@ -96,7 +96,7 @@ export const AddAPIResourceAuthorization: FunctionComponent<AddAPIResourceAuthor
                 content={ 
                     (<>
                         { t("extensions:develop.apiResource.wizard.addApiResource.steps.authorization.form." + 
-                            "rbacMessage", { productName: productName }) }
+                            "rbacMessage", { productName }) }
                         <DocumentationLink
                             link={ getLink("develop.apiResources.addAPIResource.rbacInfoBox.learnMore") }
                         >
