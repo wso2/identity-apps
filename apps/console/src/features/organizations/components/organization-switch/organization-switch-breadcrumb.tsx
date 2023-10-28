@@ -174,8 +174,9 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                 true,
                 () => null,
                 () => {
+                    // If first level org, remove the `/o/` path from the location.
                     if (isFirstLevelOrganization) {
-                        window["AppUtils"].updateOrganizationName("")
+                        window["AppUtils"].updateOrganizationName("");
                     }
                 },
                 () => null, false
