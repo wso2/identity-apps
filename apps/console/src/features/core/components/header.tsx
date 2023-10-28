@@ -57,6 +57,7 @@ import { ReactComponent as DocsIcon } from "../../../themes/wso2is/assets/images
 import { ReactComponent as BillingPortalIcon } from "../../../themes/wso2is/assets/images/icons/dollar-icon.svg";
 import { getApplicationList } from "../../applications/api";
 import { ApplicationListInterface } from "../../applications/models";
+import useAuthorization from "../../authorization/hooks/use-authorization";
 import { OrganizationSwitchBreadcrumb } from "../../organizations/components/organization-switch";
 import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { AppConstants } from "../constants";
@@ -122,6 +123,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     const orgType: OrganizationType = useGetOrganizationType();
 
+    const { legacyAuthzRuntime }  = useAuthorization();
+
     const [ anchorHelpMenu, setAnchorHelpMenu ] = useState<null | HTMLElement>(null);
 
     const openHelpMenu: boolean = Boolean(anchorHelpMenu);
@@ -166,6 +169,24 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
      *  - the user is logged in to a non-super-tenant account
      */
     const isOrgSwitcherEnabled: boolean = useMemo(() => {
+        if (legacyAuthzRuntime) {
+            return (
+                isOrganizationManagementEnabled &&
+                // The `tenantDomain` takes the organization id when you log in to a sub-organization.
+                // So, we cannot use `tenantDomain` to check
+                // if the user is logged in to a non-super-tenant account reliably.
+                // So, we check if the organization id is there in the URL to see if the user is in a sub-organization.
+                (tenantDomain === AppConstants.getSuperTenant() ||
+                    window[ "AppUtils" ].getConfig().organizationName ||
+                    organizationConfigs.showSwitcherInTenants) &&
+                hasRequiredScopes(
+                    feature?.organizations,
+                    feature?.organizations?.scopes?.read,
+                    scopes
+                )
+            );
+        }
+
         return (
             isOrganizationManagementEnabled &&
             (orgType === OrganizationType.SUPER_ORGANIZATION ||

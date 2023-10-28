@@ -82,6 +82,14 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     const { t } = useTranslation();
 
     const shouldSendRequest: boolean = useMemo(() => {
+        if (legacyAuthzRuntime) {
+            return (
+                isFirstLevelOrg ||
+                window[ "AppUtils" ].getConfig().organizationName ||
+                tenantDomain === AppConstants.getSuperTenant()
+            );
+        }
+
         return (
             orgType === OrganizationType.SUPER_ORGANIZATION ||
             orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
@@ -94,11 +102,16 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         shouldSendRequest
     );
 
-    const isShowSwitcher: boolean =
-        organizationConfigs?.showOrganizationDropdown ||
-        orgType === OrganizationType.SUPER_ORGANIZATION ||
-        orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
-        orgType === OrganizationType.SUBORGANIZATION;
+    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+
+    const isShowSwitcher: boolean = legacyAuthzRuntime 
+        ? (organizationConfigs?.showOrganizationDropdown || isSubOrg)
+        : (
+            organizationConfigs?.showOrganizationDropdown ||
+            orgType === OrganizationType.SUPER_ORGANIZATION ||
+            orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+            orgType === OrganizationType.SUBORGANIZATION
+        );
 
     useEffect(() => {
         if (!error) {
