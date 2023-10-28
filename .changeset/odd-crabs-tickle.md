@@ -2,4 +2,4 @@
 "@wso2is/myaccount": minor
 ---
 
-Revamp MY Account portal to support non SaaS application behaviour
+Add support to the My Account to adopt the new Authz Runtime
