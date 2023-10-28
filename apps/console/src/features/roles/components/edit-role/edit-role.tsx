@@ -31,6 +31,7 @@ import { UpdatedRolePermissionDetails } from "./edit-role-permission";
 import { RoleUsersList } from "./edit-role-users";
 import { AppState, FeatureConfigInterface } from "../../../core";
 import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { RoleAudienceTypes } from "../../constants";
 
 /**
  * Captures props needed for edit role component
@@ -148,20 +149,23 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                     </ResourceTab.Pane>
                 )
             },
-            {
-                menuItem: t("console:manage.features.roles.edit.menuItems.connectedApps"),
-                render: () => (
-                    <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <RoleConnectedApps
-                            isReadOnly={ !hasRequiredScopes(
-                                featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes) }
-                            role={ roleObject }
-                            onRoleUpdate={ onRoleUpdate }
-                            tabIndex={ 4 }
-                        />
-                    </ResourceTab.Pane>
-                )
-            }
+            // Hide connected apps tab if the audience is application.
+            roleObject?.audience.type === RoleAudienceTypes.ORGANIZATION.toLocaleLowerCase()
+                ? {
+                    menuItem: t("console:manage.features.roles.edit.menuItems.connectedApps"),
+                    render: () => (
+                        <ResourceTab.Pane controlledSegmentation attached={ false }>
+                            <RoleConnectedApps
+                                isReadOnly={ !hasRequiredScopes(
+                                    featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes) }
+                                role={ roleObject }
+                                onRoleUpdate={ onRoleUpdate }
+                                tabIndex={ 4 }
+                            />
+                        </ResourceTab.Pane>
+                    )
+                }
+                : null
         ];
 
         return panes;
