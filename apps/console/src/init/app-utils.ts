@@ -291,7 +291,7 @@ export const AppUtils: any = (function() {
                 logoutCallbackURL: this.constructRedirectURLs(_config.logoutCallbackPath),
                 organizationName: this.getOrganizationName(),
                 organizationPrefix: this.getOrganizationPrefix(),
-                organizationType: _config.organizationType,
+                organizationType: this.getOrganizationType(),
                 productVersionConfig: _config.ui.productVersionConfig,
                 routes: {
                     home: this.constructAppPaths(_config.routePaths.home),
