@@ -185,6 +185,10 @@
         {% endif %}
         "appLogoPath": "{{ console.ui.app_logo_path }}",
         "appWhiteLogoPath": "{{ console.ui.app_white_logo_path }}",
+        "emailTemplates": {
+            "defaultLogoUrl": "{{ console.ui.email_templates.default_logo_url }}",
+            "defaultWhiteLogoUrl": "{{ console.ui.email_templates.default_white_logo_url }}",
+        },
         "appFaviconPath": "{{ console.ui.app_favicon_path }}",
         "googleOneTapEnabledTenants": [
             {% if console.ui.google_one_tap_enabled_tenants is defined %}
