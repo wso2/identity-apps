@@ -17,6 +17,7 @@
  */
 
 import { BasicUserInfo } from "@asgardeo/auth-react";
+import { OrganizationType } from "@wso2is/common";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { SessionStorageUtils } from "@wso2is/core/utils";
@@ -41,6 +42,7 @@ import { history } from "../../../core/helpers/history";
 import useRoutes from "../../../core/hooks/use-routes";
 import TenantDropdown from "../../../tenants/components/dropdown/tenant-dropdown";
 import { useGetOrganizationBreadCrumb } from "../../api";
+import { useGetOrganizationType } from "../../hooks/use-get-organization-type";
 import useOrganizationSwitch from "../../hooks/use-organization-switch";
 import {
     BreadcrumbItem,
@@ -66,6 +68,8 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
 
     const { legacyAuthzRuntime }  = useAuthorization();
 
+    const orgType: OrganizationType = useGetOrganizationType();
+
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const tenantDomain: string = useSelector(
         (state: AppState) => state?.auth?.tenantDomain
@@ -78,21 +82,36 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     const { t } = useTranslation();
 
     const shouldSendRequest: boolean = useMemo(() => {
+        if (legacyAuthzRuntime) {
+            return (
+                isFirstLevelOrg ||
+                window[ "AppUtils" ].getConfig().organizationName ||
+                tenantDomain === AppConstants.getSuperTenant()
+            );
+        }
+
         return (
-            isFirstLevelOrg ||
-            window[ "AppUtils" ].getConfig().organizationName ||
+            orgType === OrganizationType.SUPER_ORGANIZATION ||
+            orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+            orgType === OrganizationType.SUBORGANIZATION ||
             tenantDomain === AppConstants.getSuperTenant()
         );
-    }, [ isFirstLevelOrg, tenantDomain ]);
+    }, [ isFirstLevelOrg, orgType, tenantDomain ]);
 
-    const { data: breadcrumbList, error, isLoading } = useGetOrganizationBreadCrumb(
+    const { data: breadcrumbList, error, isLoading, mutate: mutateBreadcrumbList } = useGetOrganizationBreadCrumb(
         shouldSendRequest
     );
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
-    const isShowSwitcher: boolean =
-        organizationConfigs?.showOrganizationDropdown || isSubOrg;
+    const isShowSwitcher: boolean = legacyAuthzRuntime 
+        ? (organizationConfigs?.showOrganizationDropdown || isSubOrg)
+        : (
+            organizationConfigs?.showOrganizationDropdown ||
+            orgType === OrganizationType.SUPER_ORGANIZATION ||
+            orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+            orgType === OrganizationType.SUBORGANIZATION
+        );
 
     useEffect(() => {
         if (!error) {
@@ -152,6 +171,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
             await onSignIn(response, () => null, () => null, () => null, true, false);
             await filterRoutes(() => null, false);
 
+            mutateBreadcrumbList();
             history.push(AppConstants.getPaths().get("GETTING_STARTED"));
         } catch(e) {
             // TODO: Handle error
@@ -178,12 +198,6 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         { item?.name }
                     </span>
                 </Breadcrumb.Section>
-                { breadcrumbList.length === 1 && (
-                    <Icon
-                        name={ isDropDownOpen ? "angle up" : "angle down" }
-                        className="separator-icon organization-breadcrumb-icon"
-                    />
-                ) }
             </>
         ) : (
             <Breadcrumb.Section
