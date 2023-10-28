@@ -407,7 +407,7 @@ export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Pr
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: store.getState().config.endpoints.roles + "/" + roleId
+        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
     };
 
     return httpClient(requestConfig)
@@ -437,7 +437,7 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
         params: {
             domain
         },
-        url: store.getState().config.endpoints.roles
+        url: store.getState().config.endpoints.rolesV2
     };
 
     return httpClient(requestConfig)
