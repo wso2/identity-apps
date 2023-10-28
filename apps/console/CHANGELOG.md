@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.5.0
+
+### Minor Changes
+
+- [#4400](https://github.com/wso2/identity-apps/pull/4400) [`167b7f3a9d`](https://github.com/wso2/identity-apps/commit/167b7f3a9d580cd0e3ba0b1dad2bc64635c4a243) Thanks [@brionmario](https://github.com/brionmario)! - Add support to the My Account to adopt the new Authz Runtime
+
+### Patch Changes
+
+- [#4407](https://github.com/wso2/identity-apps/pull/4407) [`c56d32ff94`](https://github.com/wso2/identity-apps/commit/c56d32ff94d32a1a27b257a1c35cd36c47687f17) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with Add User wizard heading
+
 ## 2.4.2
 
 ### Patch Changes
