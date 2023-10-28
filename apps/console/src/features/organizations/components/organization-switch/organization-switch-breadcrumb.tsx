@@ -168,7 +168,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
 
         try {
             response = await switchOrganization(organization.id);
-            await onSignIn(response, () => null, () => null, () => null, true, false);
+            await onSignIn(response, true, () => null, () => null, () => null, false);
             await filterRoutes(() => null, false);
 
             mutateBreadcrumbList();

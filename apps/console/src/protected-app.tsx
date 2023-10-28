@@ -149,10 +149,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             await onSignIn(
                 response,
+                false,
                 () => null,
                 (idToken: DecodedIDTokenPayload) => loginSuccessRedirect(idToken),
-                () => setRenderApp(true),
-                false
+                () => setRenderApp(true)
             );
         });
     }, []);

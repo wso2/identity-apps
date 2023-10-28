@@ -69,10 +69,10 @@ const LOGOUT_URL: string = "sign_out_url";
 export type UseSignInInterface = {
     onSignIn: (
         response: BasicUserInfo,
+        updateOrgPaths: boolean,
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
         onAppReady: () => void,
-        updateOrgPaths: boolean,
         _isFirstLevelOrg?: boolean,
     ) => Promise<void>;
 };
@@ -97,10 +97,10 @@ const useSignIn = (): UseSignInInterface => {
 
     const onSignIn = async (
         response: BasicUserInfo,
+        updateOrgPaths: boolean,
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
         onAppReady: () => void,
-        updateOrgPaths: boolean,
         _isFirstLevelOrg?: boolean
     ): Promise<void> => {
         let logoutUrl: string;
