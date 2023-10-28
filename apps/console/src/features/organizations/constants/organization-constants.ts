@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -45,7 +45,7 @@ export class OrganizationManagementConstants {
         status: "ACTIVE"
     };
 
-    public static readonly ORGANIZATION_ROUTES: string = "organizations";
+    public static readonly ORGANIZATION_ROUTES: string[] = [ "organizations" ];
 
     /**
      * Sub Organization creation limit reached error.
@@ -63,7 +63,7 @@ export class OrganizationManagementConstants {
         "console:develop.features.suborganizations.notifications.duplicateOrgError.message",
         "cdaefcee-ecdb-47af-8538-174ec13292db"
     );
-    
+
 }
 
 export enum ORGANIZATION_TYPE {

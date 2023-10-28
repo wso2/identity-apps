@@ -7,5 +7,6 @@ var startupConfig = {
     serverUrlGlobal: "https://localhost:9443",
     tenantPrefix: "t",
     orgPrefix: "o",
-    enableDefaultPreLoader: true
+    enableDefaultPreLoader: true,
+    legacyAuthzRuntime: false
 };

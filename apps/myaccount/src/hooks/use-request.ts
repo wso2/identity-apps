@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -123,6 +123,9 @@ export const useRequest = <Data = unknown, Error = unknown>(
             // Sends unnecessary request so disabling globally.
             // If needed, can pass in as a special option for selected requests.
             revalidateOnFocus: false,
+            // SWR retries error requests by default, which casuses the UI alert to show multiple times.
+            // There's no real requirement to retry REST API calls, so disabling globally.
+            shouldRetryOnError: false,
             ..._config,
             fallbackData: fallbackData && {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

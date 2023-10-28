@@ -16,25 +16,18 @@
  * under the License.
  */
 
-import isLegacyAuthzRuntime from "../utils/get-legacy-authz-runtime";
-
 /**
- * Interface to store use authorization hook details.
+ * Class containing Multitenant related constants.
  */
-export interface UseAuthorizationInterface {
-    legacyAuthzRuntime: boolean;
+export class MultitenantConstants {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     */
+    private constructor() { }
+
+    public static readonly SUPER_TENANT_DOMAIN_NAME: string = "carbon.super";
+
+    public static readonly SUPER_TENANT_DISPLAY_NAME: string = "Super";
 }
-
-/**
- * Authorization hook.
- *
- * @returns `AuthorizationInterface` Authorization details.
- */
-const useAuthorization = (): UseAuthorizationInterface => {
-
-    const legacyAuthzRuntime: boolean = isLegacyAuthzRuntime();
-
-    return { legacyAuthzRuntime: legacyAuthzRuntime };
-};
-
-export default useAuthorization;

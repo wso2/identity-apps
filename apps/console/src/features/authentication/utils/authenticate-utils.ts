@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,7 @@
 import { AuthReactConfig, ResponseMode, Storage } from "@asgardeo/auth-react";
 import { TokenConstants } from "@wso2is/core/constants";
 import UAParser from "ua-parser-js";
+import isLegacyAuthzRuntime from "../../authorization/utils/get-legacy-authz-runtime";
 
 /**
  * Response mode fallback.
@@ -39,11 +40,14 @@ export class AuthenticateUtils {
     private constructor() {}
 
     public static getInitializeConfig = (): AuthReactConfig => {
+        let baseUrl: string = window["AppUtils"]?.getConfig()?.serverOriginWithTenant;
+
+        if (isLegacyAuthzRuntime()) {
+            baseUrl = window[ "AppUtils" ]?.getConfig()?.idpConfigs?.serverOrigin;
+        }
 
         return {
-            baseUrl:
-            window["AppUtils"]?.getConfig()?.idpConfigs?.serverOrigin ??
-            window[ "AppUtils" ]?.getConfig()?.idpConfigs.serverOrigin,
+            baseUrl,
             checkSessionInterval: window[ "AppUtils" ]?.getConfig()?.session?.checkSessionInterval,
             clientHost: window["AppUtils"]?.getConfig()?.clientOriginWithTenant,
             clientID: window["AppUtils"]?.getConfig()?.clientID,
@@ -68,7 +72,8 @@ export class AuthenticateUtils {
             sessionRefreshInterval: window[ "AppUtils" ]?.getConfig()?.session?.sessionRefreshTimeOut,
             signInRedirectURL: window["AppUtils"]?.getConfig()?.loginCallbackURL,
             signOutRedirectURL: window["AppUtils"]?.getConfig()?.loginCallbackURL,
-            storage: AuthenticateUtils.resolveStorage() as Storage.WebWorker
+            storage: AuthenticateUtils.resolveStorage() as Storage.WebWorker,
+            ...window["AppUtils"]?.getConfig().idpConfigs
         };
     };
 

@@ -224,6 +224,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         setOrganizationList(response);
                     })
                     .catch((error: any) => {
+                        setOrganizationList(null);
+
                         if (error?.description) {
                             dispatch(
                                 addAlert({
@@ -313,7 +315,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                 )
             })
         );
-        
+
         return;
     };
 
@@ -593,6 +595,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                         data-componentid="organization-list"
                         onListItemClick={ handleListItemClick }
                         parentOrganization={ parent }
+                        onListMutate={ handleOrganizationListUpdate }
                     />
                 </ListLayout>
                 { showWizard && (

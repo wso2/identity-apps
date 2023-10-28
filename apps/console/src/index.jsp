@@ -60,7 +60,7 @@
             .pre-loader-logo {
                 margin-top: -0.1rem;
             }
-    
+
             .content-loader {
                 display: flex;
                 flex-direction: column;
@@ -68,24 +68,24 @@
                 align-items: center;
                 user-select: none;
             }
-    
+
             .content-loader .ui.loader {
                 display: block;
                 position: relative;
                 margin-top: 10px;
                 margin-bottom: 25px;
             }
-    
+
             @keyframes loader {
                 0% {
                     transform: rotate(0)
                 }
-    
+
                 to {
                     transform: rotate(1turn)
                 }
             }
-    
+
             .content-loader .ui.loader:before {
                 content: "";
                 display: block;
@@ -94,7 +94,7 @@
                 border: .2em solid rgba(0,0,0,.1);
                 border-radius: 500rem;
             }
-    
+
             .content-loader .ui.loader:after {
                 content: "";
                 position: absolute;
@@ -146,7 +146,7 @@
                 var trifactaPreLoader = document.getElementById("trifacta-pre-loader");
                 var defaultPreLoader = document.getElementById("default-pre-loader");
                 var loader = document.getElementById("loader");
-        
+
                 if (startupConfig.enableDefaultPreLoader) {
                     defaultPreLoader.style.display = 'block';
                     trifactaPreLoader.style.display = 'none';
@@ -181,12 +181,34 @@
         function authenticateWithSDK() {
 
             if(!authorizationCode) {
+                function getTenantName() {
+                    const path = window.location.pathname;
+                    const pathChunks = path.split("/");
+                    const tenantPrefixIndex = pathChunks.indexOf(startupConfig.tenantPrefix);
+                    if (tenantPrefixIndex !== -1) {
+                        return pathChunks[ tenantPrefixIndex + 1 ];
+                    }
+                    return "";
+                }
+
+                function getTenantPath() {
+                    return getTenantName() !== ""
+                        ? "/" + startupConfig.tenantPrefix + "/" + getTenantName()
+                        : "";
+                };
+
                 function getApiPath(path) {
-                    if(path) {
-                        return serverOrigin + path;
+                    if (startupConfig.legacyAuthzRuntime) {
+                        if (path) {
+                            return serverOrigin + path;
+                        }
+
+                        return serverOrigin;
                     }
 
-                    return serverOrigin;
+                    if (getTenantName()) {
+                        return serverOrigin + getTenantPath();
+                    }
                 }
 
                 /**
@@ -221,26 +243,35 @@
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
                 var authConfig = {
-                    signInRedirectURL: applicationDomain.replace(/\/+$/, '') + getOrganizationPath() 
+                    signInRedirectURL: applicationDomain.replace(/\/+$/, '') + getTenantPath()
                         + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>",
-                    signOutRedirectURL: applicationDomain.replace(/\/+$/, '') + getOrganizationPath(),
+                    signOutRedirectURL: applicationDomain.replace(/\/+$/, '') + getTenantPath(),
                     clientID: "<%= htmlWebpackPlugin.options.clientID %>",
                     baseUrl: getApiPath(),
                     responseMode: "form_post",
                     scope: ["openid SYSTEM profile"],
                     storage: "webWorker",
                     endpoints: {
-                        authorizationEndpoint: getApiPath(userTenant 
-                            ? "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize" + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
-                            : "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize"),
+                        authorizationEndpoint: getApiPath("/oauth2/authorize"),
                         clockTolerance: 300,
                         jwksEndpointURL: undefined,
-                        logoutEndpointURL: getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout"),
-                        oidcSessionIFrameEndpointURL: getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession"),
+                        logoutEndpointURL: getApiPath("/oidc/logout"),
+                        oidcSessionIFrameEndpointURL: getApiPath("/oidc/checksession"),
                         tokenEndpointURL: undefined,
                         tokenRevocationEndpointURL: undefined
                     },
                     enablePKCE: true
+                }
+
+                if (startupConfig.legacyAuthzRuntime) {
+                    authConfig.signInRedirectURL = applicationDomain.replace(/\/+$/, '') + getOrganizationPath()
+                        + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
+                    authConfig.signOutRedirectURL = applicationDomain.replace(/\/+$/, '') + getOrganizationPath();
+                    authConfig.endpoints.authorizationEndpoint = getApiPath(userTenant
+                            ? "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize" + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
+                            : "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize");
+                    authConfig.logoutEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout");
+                    authConfig.oidcSessionIFrameEndpointURL = getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession");
                 }
 
                 var isSilentSignInDisabled = userAccessedPath.includes("disable_silent_sign_in");

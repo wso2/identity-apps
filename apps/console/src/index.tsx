@@ -29,13 +29,14 @@ import { BrowserRouter } from "react-router-dom";
 import { AsgardeoTheme } from "./branding/theme";
 import { AuthenticateUtils } from "./features/authentication";
 import { Config, PreLoader, store } from "./features/core";
+import OrganizationsProvider from "./features/organizations/providers/organizations-provider";
 import { ProtectedApp } from "./protected-app";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
 const getAuthParams = (): Promise<AuthParams> => {
-    if (!SPAUtils.hasAuthSearchParamsInURL() 
+    if (!SPAUtils.hasAuthSearchParamsInURL()
         && Config.getDeploymentConfig()?.idpConfigs?.responseMode === ResponseMode.formPost) {
 
         const contextPath: string = window[ "AppUtils" ].getConfig().appBase
@@ -87,7 +88,9 @@ const RootWithConfig = (): ReactElement => {
                         getAuthParams={ getAuthParams }
                     >
                         <AppConfigProvider>
-                            <ProtectedApp />
+                            <OrganizationsProvider>
+                                <ProtectedApp />
+                            </OrganizationsProvider>
                         </AppConfigProvider>
                     </AuthProvider>
                 </BrowserRouter>

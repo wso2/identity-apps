@@ -18,11 +18,11 @@
 
 /**
  * Gets the legacy authz runtime flag from the deployment config.
- * 
+ *
  * @returns `boolean` True if legacy authz runtime is enabled and false if not.
  */
-const getLegacyAuthzRuntime = (): boolean => {
+const isLegacyAuthzRuntime = (): boolean => {
     return window["AppUtils"]?.getConfig()?.legacyAuthzRuntime;
 };
 
-export default getLegacyAuthzRuntime;
+export default isLegacyAuthzRuntime;

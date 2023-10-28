@@ -7,6 +7,7 @@
             "dependencyTrackingEnabled": false
         }
     },
+    "isSaas": false,
     "appBaseName": "console",
     "clientID": "CONSOLE",
     "debug": false,
@@ -32,13 +33,13 @@
         "structureFileURL": "https://api.github.com/repos/wso2/docs-is/contents/en/mkdocs.yml"
     },
     "idpConfigs": {
-        "logoutEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oidc/logout",
-        "oidcSessionIFrameEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oidc/checksession",
+        "logoutEndpointURL": "${serverOrigin}/oidc/logout",
+        "oidcSessionIFrameEndpointURL": "${serverOrigin}/oidc/checksession",
         "baseUrls": [],
         "clockTolerance": 300,
         "storage": "webWorker",
         "periodicTokenRefresh": false,
-        "authorizeEndpointURL": "${serverOrigin}/${tenantPrefix}/${superTenantDomain}/oauth2/authorize?ut=${userTenantDomain}",
+        "authorizeEndpointURL": "${serverOrigin}/oauth2/authorize",
         "scope": [
             "SYSTEM",
             "openid",
@@ -208,7 +209,7 @@
     },
     "getProfileInfoFromIDToken": true,
     "superTenantProxy": "",
-    "legacyAuthzRuntime": true,
+    "legacyAuthzRuntime": false,
     "ui": {
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",

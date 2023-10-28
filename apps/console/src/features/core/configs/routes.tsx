@@ -80,7 +80,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         id: "gettingStarted",
                         name: "Home",
                         order: 0,
-                        path: `${ AppConstants.getMainViewBasePath() }/getting-started`,
+                        path: AppConstants.getPaths().get("GETTING_STARTED"),
                         protected: true,
                         showOnSidePanel: true
                     },
@@ -496,7 +496,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ),
                         exact: true,
                         icon: {
-                            icon: getSidePanelIcons().sms 
+                            icon: getSidePanelIcons().sms
                         },
                         id: "smsProviders",
                         name: "SMS",

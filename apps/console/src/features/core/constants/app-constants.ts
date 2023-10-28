@@ -247,6 +247,7 @@ export class AppConstants {
         const useNewConnectionsView: boolean = identityProviderConfig?.useNewConnectionsView;
 
         const paths: Map<string, string> = new Map<string, string>([
+            [ "GETTING_STARTED", `${ AppConstants.getDeveloperViewBasePath() }/getting-started` ],
             [ "ADMIN_OVERVIEW", `${ AppConstants.getAdminViewBasePath() }/overview` ],
             [ "ADMIN_ADVISORY_BANNER", `${ AppConstants.getAdminViewBasePath() }/admin-advisory` ],
             [ "ADMIN_ADVISORY_BANNER_EDIT", `${ AppConstants.getAdminViewBasePath() }/admin-advisory-banner-edit` ],
