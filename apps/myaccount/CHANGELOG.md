@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.2.1
+
+### Patch Changes
+
+- [#4413](https://github.com/wso2/identity-apps/pull/4413) [`33f3b751b9`](https://github.com/wso2/identity-apps/commit/33f3b751b9c071ff27de54648e816bff9b730316) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Trigger My Account release
+
 ## 2.2.0
 
 ### Minor Changes
