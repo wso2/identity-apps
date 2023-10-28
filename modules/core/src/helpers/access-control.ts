@@ -74,16 +74,11 @@ export const hasRequiredScopes = (
         return true;
     }
 
+    // TODO: Remove this variable once the hasRequiredScopes() function is moved as a hook.
+    const windowOrgType: string = window["AppUtils"].getOrganizationType();
+
     if (scopes instanceof Array) {
-        if (isLegacyRuntimeEnabled ||
-            !organzationType ||
-            organzationType === OrganizationType.SUPER_ORGANIZATION || 
-            organzationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
-            organzationType === OrganizationType.TENANT) {
-    
-            return scopes.every((scope: string) => AuthenticateUtils.hasScope(scope, allowedScopes));
-    
-        } else {
+        if (!isLegacyRuntimeEnabled && windowOrgType === OrganizationType.SUBORGANIZATION) {
             /**
              * If the organization type is `SUBORGANIZATION`, the `internal_` scopes should be replaced with
              * `internal_org_` scopes.
@@ -101,6 +96,15 @@ export const hasRequiredScopes = (
                 return AuthenticateUtils.hasScope(scope, allowedScopes); 
             });
         }
+
+        if (isLegacyRuntimeEnabled ||
+            !organzationType ||
+            organzationType === OrganizationType.SUPER_ORGANIZATION || 
+            organzationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+            organzationType === OrganizationType.TENANT) {
+    
+            return scopes.every((scope: string) => AuthenticateUtils.hasScope(scope, allowedScopes));
+        } 
     }
 
     return true;

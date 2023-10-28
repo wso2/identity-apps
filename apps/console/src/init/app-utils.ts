@@ -291,6 +291,7 @@ export const AppUtils: any = (function() {
                 logoutCallbackURL: this.constructRedirectURLs(_config.logoutCallbackPath),
                 organizationName: this.getOrganizationName(),
                 organizationPrefix: this.getOrganizationPrefix(),
+                organizationType: _config.organizationType,
                 productVersionConfig: _config.ui.productVersionConfig,
                 routes: {
                     home: this.constructAppPaths(_config.routePaths.home),
@@ -374,6 +375,16 @@ export const AppUtils: any = (function() {
          */
         getOrganizationPrefix: function () {
             return _args.organizationPrefix || orgPrefixFallback;
+        },
+
+        /**
+         * Get the organization type.
+         * 
+         * @returns Organization type.
+         * @deprecated This is deprecated.
+         */
+        getOrganizationType: function () {
+            return _config.organizationType;
         },
         
         getServerOriginWithTenant: function() {
@@ -676,6 +687,16 @@ export const AppUtils: any = (function() {
          */
         updateOrganizationName: function (organizationName: string) {
             _config.organizationName = organizationName;
+        },
+
+        /**
+         * Updates the organization type.
+         * 
+         * @param organizationType - new Organization type.
+         * @deprecated This is deprecated.
+         */
+        updateOrganizationType: function (organizationType: string) {
+            _config.organizationType = organizationType;
         },
 
         /**
