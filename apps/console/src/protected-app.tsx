@@ -77,11 +77,11 @@ import {
 import { AppConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
 import useRoutes from "./features/core/hooks/use-routes";
+import useOrganizationSwitch from "./features/organizations/hooks/use-organization-switch";
 import {
     GovernanceCategoryForOrgsInterface,
     useGovernanceConnectorCategories
 } from "./features/server-configurations";
-import useOrganizationSwitch from "./features/organizations/hooks/use-organization-switch";
 
 const App: LazyExoticComponent<FunctionComponent> = lazy(() => import("./app"));
 

@@ -42,7 +42,6 @@ import { ThunkDispatch } from "redux-thunk";
 import useAuthorization from "../../authorization/hooks/use-authorization";
 import { Config } from "../../core/configs/app";
 import { AppConstants, CommonConstants } from "../../core/constants";
-import { MultitenantConstants } from "../../core/constants/multitenant-constants";
 import { DeploymentConfigInterface } from "../../core/models/config";
 import { AppState } from "../../core/store";
 import {
