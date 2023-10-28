@@ -41,6 +41,7 @@ import { history } from "../helpers/history";
 import { FeatureConfigInterface } from "../models/config";
 import { AppState, setDeveloperVisibility, setFilteredDevelopRoutes, setSanitizedDevelopRoutes, store } from "../store";
 import { AppUtils } from "../utils/app-utils";
+import useAuthorization from "../../authorization/hooks/use-authorization";
 
 /**
  * Props interface of {@link useOrganizations}
@@ -62,6 +63,8 @@ const useRoutes = (): useRoutesInterface => {
 
     const { getDecodedIDToken } = useAuthContext();
 
+    const { legacyAuthzRuntime }  = useAuthorization();
+
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const loggedUserName: string = useSelector((state: AppState) => state.profile.profileInfo.userName);
     const isSuperAdmin: string = useSelector((state: AppState) => state.organization.superAdmin);
@@ -75,11 +78,7 @@ const useRoutes = (): useRoutesInterface => {
         error: governanceConnectorsFetchRequestError
     } = useGovernanceConnectorCategories(featureConfig?.residentIdp?.enabled && isFirstLevelOrg);
 
-    const onRoutesFilterComplete = (): void => {
-        return;
-    };
-
-    const filterRoutes = async (onRoutesFilterComplete, _isFirstLevelOrg?, _tenantDomain?, _isPrivilegedUser?): Promise<void> => {
+    const filterRoutes = async (onRoutesFilterComplete, isFirstLevelOrg, _tenantDomain?, _isPrivilegedUser?): Promise<void> => {
         if (
             isEmpty(allowedScopes) ||
             !featureConfig.applications ||
@@ -100,35 +99,57 @@ const useRoutes = (): useRoutesInterface => {
                 }
 
                 const isCurrentOrgRootAndSuperTenant: boolean =
-                    OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.getSuperTenant() === (_tenantDomain ?? tenantDomain);
+                    OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.getSuperTenant() === tenantDomain;
 
-                if (isCurrentOrgRootAndSuperTenant || isFirstLevelOrg) {
-                    if (isPrivilegedUser) {
-                        if (loggedUserName === isSuperAdmin) {
-                            return [ ...commonHiddenRoutes, ...AppConstants.ORGANIZATION_ROUTES ];
+                if (legacyAuthzRuntime) {
+                    if (isCurrentOrgRootAndSuperTenant || isFirstLevelOrg) {
+                        if (isPrivilegedUser) {
+                            if (loggedUserName === isSuperAdmin) {
+                                return [ ...commonHiddenRoutes, ...AppConstants.ORGANIZATION_ROUTES ];
+                            } else {
+                                return [
+                                    ...commonHiddenRoutes,
+                                    ...AppConstants.ORGANIZATION_ROUTES,
+                                    ...AppConstants.SUPER_ADMIN_ONLY_ROUTES
+                                ];
+                            }
                         } else {
+                            if (loggedUserName === isSuperAdmin) {
+                                return commonHiddenRoutes;
+                            } else {
+                                return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
+                            }
+                        }
+                    } else {
+                        if (window["AppUtils"].getConfig().organizationName) {
                             return [
-                                ...commonHiddenRoutes,
-                                ...AppConstants.ORGANIZATION_ROUTES,
-                                ...AppConstants.SUPER_ADMIN_ONLY_ROUTES
+                                ...AppUtils.getHiddenRoutes(),
+                                ...OrganizationManagementConstants.ORGANIZATION_ROUTES
                             ];
-                        }
-                    } else {
-                        if (loggedUserName === isSuperAdmin) {
-                            return commonHiddenRoutes;
                         } else {
-                            return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
+                            return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
                         }
                     }
-                } else {
-                    if (window["AppUtils"].getConfig().organizationName) {
-                        return [
-                            ...AppUtils.getHiddenRoutes(),
-                            ...OrganizationManagementConstants.ORGANIZATION_ROUTES
-                        ];
+                }
+
+                if (isCurrentOrgRootAndSuperTenant) {
+                    if (loggedUserName === isSuperAdmin) {
+                        return commonHiddenRoutes;
                     } else {
-                        return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
+                        return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
                     }
+                }
+
+                if (isFirstLevelOrg) {
+                    return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
+                }
+
+                if (window["AppUtils"].getConfig().organizationName) {
+                    return [
+                        ...AppUtils.getHiddenRoutes()
+                    ];
+                } else {
+                    return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
                 }
             }
 

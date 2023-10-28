@@ -234,7 +234,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             return;
         }
 
-        filterRoutes(() => setRoutesFiltered(true));
+        filterRoutes(() => setRoutesFiltered(true), isFirstLevelOrg);
     }, [ filterRoutes, governanceConnectors, isAuthenticated ]);
 
     useEffect(() => {

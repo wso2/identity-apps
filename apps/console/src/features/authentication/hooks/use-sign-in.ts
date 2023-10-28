@@ -55,7 +55,6 @@ import {
 } from "../../core/store/actions/organization";
 import { OrganizationType } from "../../organizations/constants";
 import useOrganizationSwitch from "../../organizations/hooks/use-organization-switch";
-import useOrganizations from "../../organizations/hooks/use-organizations";
 import { getProfileInformation } from "../store/actions";
 import { AuthenticateUtils } from "../utils/authenticate-utils";
 
@@ -91,8 +90,6 @@ const useSignIn = (): UseSignInInterface => {
     const { setResourceEndpoints } = useResourceEndpoints();
 
     const { switchOrganization } = useOrganizationSwitch();
-
-    const { currentOrganization } = useOrganizations();
 
     const { setDeploymentConfig } = useDeploymentConfig();
 
@@ -137,7 +134,7 @@ const useSignIn = (): UseSignInInterface => {
 
         let orgType: OrganizationType;
 
-        if (currentOrganization) {
+        if (window["AppUtils"].getConfig().organizationName) {
             orgType = OrganizationType.SUBORGANIZATION;
         } else if (tenantDomain === AppConstants.getSuperTenant()) {
             orgType = OrganizationType.SUPER_ORGANIZATION;
@@ -149,7 +146,7 @@ const useSignIn = (): UseSignInInterface => {
 
         dispatch(setOrganizationType(orgType));
 
-        let isFirstLevelOrg: boolean = !currentOrganization && !!orgIdIdToken;
+        let isFirstLevelOrg: boolean = !window["AppUtils"].getConfig().organizationName && !!orgIdIdToken;
 
         // TODO: Redux store async issue here. Fix this properly.
         if (_isFirstLevelOrg === false) {
@@ -158,9 +155,9 @@ const useSignIn = (): UseSignInInterface => {
 
         dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
 
-        if (currentOrganization || isFirstLevelOrg) {
+        if (window["AppUtils"].getConfig().organizationName || isFirstLevelOrg) {
             // We are actually getting the orgId here rather than orgName
-            const orgId: string = isFirstLevelOrg ? orgIdIdToken : currentOrganization;
+            const orgId: string = isFirstLevelOrg ? orgIdIdToken : window["AppUtils"].getConfig().organizationName;
 
             // Setting a dummy object until real data comes from the API
             dispatch(
@@ -298,7 +295,7 @@ const useSignIn = (): UseSignInInterface => {
                 if (orgType === OrganizationType.SUBORGANIZATION) {
                     serverHost = `${Config.getDeploymentConfig().serverOrigin}/${
                         window["AppUtils"].getConfig().organizationPrefix
-                    }/${currentOrganization}`;
+                    }/${window["AppUtils"].getConfig().organizationName}`;
                 }
 
                 window["AppUtils"].updateCustomServerHost(serverHost);

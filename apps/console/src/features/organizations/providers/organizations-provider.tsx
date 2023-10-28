@@ -47,7 +47,7 @@ const OrganizationsProvider: FunctionComponent<OrganizationsProviderProps> = (
      * @returns Current organization name.
      */
     const getCurrentOrganization = (): string => {
-        return window["AppUtils"].getConfig().organizationName
+        return window["AppUtils"].getConfig().organizationName;
     };
 
     return (
