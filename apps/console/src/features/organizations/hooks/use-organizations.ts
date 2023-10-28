@@ -17,12 +17,21 @@
  */
 
 import { useContext } from "react";
+import { MultitenantConstants } from "../../core/constants/multitenant-constants";
 import OrganizationsContext, { OrganizationsContextProps } from "../context/organizations-context";
 
 /**
  * Interface for the return type of the UseOrganizations hook.
  */
-export type UseOrganizationsInterface = OrganizationsContextProps;
+export interface UseOrganizationsInterface extends OrganizationsContextProps {
+    /**
+     * Transforms the tenant domain to the correct format.
+     *
+     * @param tenantDomain - Tenant domain.
+     * @returns Transformed tenant domain.
+     */
+    transformTenantDomain: (tenantDomain: string) => string;
+}
 
 /**
  * Hook that provides access to the Organizations context.
@@ -36,7 +45,25 @@ const useOrganizations = (): UseOrganizationsInterface => {
         throw new Error("useOrganizations must be used within a OrganizationsProvider");
     }
 
-    return context;
+    /**
+     * Transforms the tenant domain to the correct format.
+     *
+     * @param tenantDomain - Tenant domain.
+     * @returns Transformed tenant domain.
+     */
+    const transformTenantDomain = (tenantDomain: string): string => {
+        // With the latest Authz framework, `carbon.super` is resolved as `Super`.
+        if (tenantDomain === MultitenantConstants.SUPER_TENANT_DISPLAY_NAME) {
+            return MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
+        }
+
+        return tenantDomain;
+    };
+
+    return {
+        ...context,
+        transformTenantDomain
+    };
 };
 
 export default useOrganizations;

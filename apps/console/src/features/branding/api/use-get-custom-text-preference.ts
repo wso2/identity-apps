@@ -24,6 +24,8 @@ import useRequest, {
     RequestResultInterface
 } from "../../core/hooks/use-request";
 import { store } from "../../core/store";
+import { OrganizationType } from "../../organizations/constants/organization-constants";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import { BrandingPreferenceTypes } from "../models/branding-preferences";
 import {
@@ -49,6 +51,12 @@ const useGetCustomTextPreference = <
         locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE,
         type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG
     ): RequestResultInterface<Data, Error> => {
+    const organizationType: OrganizationType = useGetOrganizationType();
+
+    const tenantDomain: string = organizationType === OrganizationType.SUBORGANIZATION
+        ? store.getState()?.organization?.organization?.id
+        : name;
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
@@ -57,7 +65,7 @@ const useGetCustomTextPreference = <
         method: HttpMethods.GET,
         params: {
             locale,
-            name,
+            name: tenantDomain,
             screen,
             type
         },

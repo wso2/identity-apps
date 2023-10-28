@@ -146,7 +146,7 @@ const SecretSelectionDropdown = (props: SecretSelectionDropdownPropsInterface): 
                         >
                             <CircularProgress size={ 20 } />
                         </ListItem>
-                    ) : secretsList.length === 0 ? (
+                    ) : secretsList?.length === 0 ? (
                         <ListItem
                             className="create-new-secret-dropdown-empty-placeholder"
                             data-componentid={ `${ componentId }-list-empty-placeholder` }
@@ -172,7 +172,7 @@ const SecretSelectionDropdown = (props: SecretSelectionDropdownPropsInterface): 
                             </ListItemText>
                         </ListItem>
                     ) : (
-                        secretsList.map((secret: SecretModel, index: number) => (
+                        secretsList?.map((secret: SecretModel, index: number) => (
                             <>
                                 <ListItem
                                     key={ secret.secretId }
@@ -198,7 +198,7 @@ const SecretSelectionDropdown = (props: SecretSelectionDropdownPropsInterface): 
                                         <TrashIcon size={ 14 } />
                                     </IconButton>
                                 </ListItem>
-                                { index !== secretsList.length - 1 && <Divider /> }
+                                { index !== secretsList?.length - 1 && <Divider /> }
                             </>
                         ))
                     ) }

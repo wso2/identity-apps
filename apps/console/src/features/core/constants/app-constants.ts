@@ -18,6 +18,7 @@
 
 import { AppThemeConfigInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
+import { MultitenantConstants } from "./multitenant-constants";
 import { identityProviderConfig } from "../../../extensions/configs";
 import {
     GovernanceCategoryForOrgsInterface,
@@ -210,7 +211,7 @@ export class AppConstants {
      * @returns The super tenant domain.
      */
     public static getSuperTenant(): string {
-        return window["AppUtils"]?.getConfig()?.superTenant;
+        return window["AppUtils"]?.getConfig()?.superTenant || MultitenantConstants.SUPER_TENANT_DISPLAY_NAME;
     }
 
     /**
@@ -350,7 +351,7 @@ export class AppConstants {
             ],
             [ "SECRETS", `${AppConstants.getDeveloperViewBasePath()}/secrets` ],
             [ "SECRET_EDIT", `${AppConstants.getDeveloperViewBasePath()}/secrets/:type/:name` ],
-            [ 
+            [
                 "ATTRIBUTE_MAPPINGS",
                 `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type/:customAttributeMappingID?`
             ],

@@ -22,6 +22,7 @@ import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { I18nConstants } from "../../core/constants/i18n-constants";
 import { store } from "../../core/store";
+import { OrganizationType } from "../../organizations/constants/organization-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import { BrandingPreferenceTypes } from "../models/branding-preferences";
 import {
@@ -55,10 +56,14 @@ const updateCustomTextPreference = (
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE,
     type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG
 ): Promise<CustomTextPreferenceAPIResponseInterface> => {
+    const tenantDomain: string = store.getState().organization.organizationType === OrganizationType.SUBORGANIZATION
+        ? store.getState()?.organization?.organization?.id
+        : name;
+
     const requestConfig: AxiosRequestConfig = {
         data: {
             locale,
-            name,
+            name: tenantDomain,
             preference,
             screen,
             type

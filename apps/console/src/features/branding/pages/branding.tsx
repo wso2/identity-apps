@@ -443,7 +443,7 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
 
                         handleSubOrgAlerts();
                     }
-                    
+
                 }
             })
             .catch((error: IdentityAppsApiException) => {

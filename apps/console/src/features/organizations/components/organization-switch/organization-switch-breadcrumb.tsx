@@ -106,7 +106,14 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
-    const isShowSwitcher: boolean = organizationConfigs?.showOrganizationDropdown || isSubOrg;
+    const isShowSwitcher: boolean = legacyAuthzRuntime
+        ? (organizationConfigs?.showOrganizationDropdown || isSubOrg)
+        : (
+            organizationConfigs?.showOrganizationDropdown ||
+            orgType === OrganizationType.SUPER_ORGANIZATION ||
+            orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+            orgType === OrganizationType.SUBORGANIZATION
+        );
 
     useEffect(() => {
         if (!error) {
@@ -166,7 +173,6 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
             response = await switchOrganization(organization.id);
             await onSignIn(
                 response,
-                true,
                 () => null,
                 () => {
                     // If first level org, remove the `/o/` path from the location.
@@ -174,8 +180,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         window["AppUtils"].updateOrganizationName("");
                     }
                 },
-                () => null,
-                isFirstLevelOrganization
+                () => null
             );
 
             mutateOrganizationBreadCrumbFetchRequest();
