@@ -262,7 +262,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 "Operations": []
             },
             method: "PATCH",
-            path: "/Roles/" + role.id
+            path: "v2/Roles/" + role.id
         };
         
         removedGroupsOptions?.map((group: GroupsInterface) => {
