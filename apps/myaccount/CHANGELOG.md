@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.2.2
+
+### Patch Changes
+
+- [#4430](https://github.com/wso2/identity-apps/pull/4430) [`261ac530b3`](https://github.com/wso2/identity-apps/commit/261ac530b3b815f7f55267cd3e4209e66ae37f2a) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with accessing carbon.super tenanted path
+
 ## 2.2.1
 
 ### Patch Changes
