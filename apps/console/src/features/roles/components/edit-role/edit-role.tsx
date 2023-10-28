@@ -150,7 +150,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 )
             },
             // Hide connected apps tab if the audience is application.
-            roleObject?.audience.type === RoleAudienceTypes.ORGANIZATION.toLocaleLowerCase()
+            roleObject?.audience?.type === RoleAudienceTypes.ORGANIZATION.toLocaleLowerCase()
                 ? {
                     menuItem: t("console:manage.features.roles.edit.menuItems.connectedApps"),
                     render: () => (
