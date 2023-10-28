@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.5.2
+
+### Patch Changes
+
+- [#4415](https://github.com/wso2/identity-apps/pull/4415) [`18eb7a5c4f`](https://github.com/wso2/identity-apps/commit/18eb7a5c4f7f9dfa4cdd090d7ff046aefba2cffd) Thanks [@Achintha444](https://github.com/Achintha444)! - Fix Assigned users and groups in roles
+
 ## 2.5.1
 
 ### Patch Changes
