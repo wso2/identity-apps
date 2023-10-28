@@ -184,8 +184,6 @@ const useSignIn = (): UseSignInInterface => {
                 // This is to make sure the endpoints are generated with the organization path.
                 await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
 
-                console.log(Config.getServiceResourceEndpoints());
-
                 // Sets the resource endpoints in the context.
                 setResourceEndpoints(Config.getServiceResourceEndpoints() as any);
 
