@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.2.0
+
+### Minor Changes
+
+- [#4403](https://github.com/wso2/identity-apps/pull/4403) [`dca4d34ad6`](https://github.com/wso2/identity-apps/commit/dca4d34ad67ffbe4d4a952edfa256aa1dd186cf5) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add support to the My Account to adopt the new Authz Runtime
+
 ## 2.1.14
 
 ### Patch Changes
