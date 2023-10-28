@@ -165,10 +165,21 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         }
 
         let response: BasicUserInfo = null;
+        const isFirstLevelOrganization: boolean = breadcrumbList[0].id === organization.id;
 
         try {
             response = await switchOrganization(organization.id);
-            await onSignIn(response, true, () => null, () => null, () => null, false);
+            await onSignIn(
+                response,
+                true,
+                () => null,
+                () => {
+                    if (isFirstLevelOrganization) {
+                        window["AppUtils"].updateOrganizationName("")
+                    }
+                },
+                () => null, false
+            );
             await filterRoutes(() => null, false);
 
             mutateBreadcrumbList();
