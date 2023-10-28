@@ -56,6 +56,7 @@ import {
 } from "../../core/store/actions/organization";
 import { OrganizationType } from "../../organizations/constants";
 import useOrganizationSwitch from "../../organizations/hooks/use-organization-switch";
+import useOrganizations from "../../organizations/hooks/use-organizations";
 import { getProfileInformation } from "../store/actions";
 import { AuthenticateUtils } from "../utils/authenticate-utils";
 
@@ -94,6 +95,8 @@ const useSignIn = (): UseSignInInterface => {
 
     const { legacyAuthzRuntime }  = useAuthorization();
 
+    const { transformTenantDomain } = useOrganizations();
+
     const onSignIn = async (
         response: BasicUserInfo,
         onTenantResolve: (tenantDomain: string) => void,
@@ -117,11 +120,7 @@ const useSignIn = (): UseSignInInterface => {
         const userOrganizationId: string = idToken.user_org;
         const isFirstLevelOrg: boolean = !idToken.user_org || idToken.user_org === idToken.org_id;
 
-        let tenantDomain: string = orgName;
-
-        if (tenantDomain === MultitenantConstants.SUPER_TENANT_DISPLAY_NAME) {
-            tenantDomain = MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
-        }
+        let tenantDomain: string = transformTenantDomain(orgName);
 
         if (legacyAuthzRuntime) {
             tenantDomain = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
@@ -317,12 +316,16 @@ const useSignIn = (): UseSignInInterface => {
 
         dispatch(
             setSignIn<AuthenticatedUserInfo & TenantListInterface>(
-                Object.assign(CommonAuthenticateUtils.getSignInState(response, response.orgName), {
-                    associatedTenants: isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
-                    defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
-                    fullName: fullName,
-                    isPrivilegedUser: isPrivilegedUser
-                })
+                Object.assign(
+                    CommonAuthenticateUtils.getSignInState(
+                        response,
+                        transformTenantDomain(response.orgName)
+                    ), {
+                        associatedTenants: isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
+                        defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
+                        fullName: fullName,
+                        isPrivilegedUser: isPrivilegedUser
+                    })
             )
         );
 
