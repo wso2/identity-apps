@@ -154,6 +154,14 @@ const useSignIn = (): UseSignInInterface => {
         }
 
         dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
+        
+        // Update the organization name with the newly resolved org.
+        if (updateOrgPaths) {
+            window["AppUtils"].updateOrganizationName(orgIdIdToken);
+        } else {
+            // Update the app base name with the newly resolved tenant.
+            window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
+        }
 
         if (window["AppUtils"].getConfig().organizationName || isFirstLevelOrg) {
             // We are actually getting the orgId here rather than orgName
@@ -199,14 +207,6 @@ const useSignIn = (): UseSignInInterface => {
         }
 
         dispatch(setGetOrganizationLoading(false));
-
-        // Update the organization name with the newly resolved org.
-        if (updateOrgPaths) {
-            window["AppUtils"].updateOrganizationName(orgIdIdToken);
-        } else {
-            // Update the app base name with the newly resolved tenant.
-            window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
-        }
 
         // Update the endpoints with tenant path.
         await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
