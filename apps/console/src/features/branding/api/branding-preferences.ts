@@ -22,6 +22,7 @@ import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { I18nConstants } from "../../core/constants";
 import { store } from "../../core/store";
+import { OrganizationType } from "../../organizations/constants/organization-constants";
 import { BrandingPreferencesConstants } from "../constants";
 import {
     BrandingPreferenceAPIResponseInterface,
@@ -35,61 +36,6 @@ import {
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
-
-/**
- * Get the branding preference via Branding Preferences API.
- *
- * @param name - Resource Name.
- * @param type - Resource Type.
- * @param locale - Resource Locale.
- * @returns Branding Preference.
- * @throws IdentityAppsApiException.
- */
-export const getBrandingPreference = (
-    name: string,
-    type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG,
-    locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
-): Promise<BrandingPreferenceAPIResponseInterface> => {
-
-    const requestConfig: AxiosRequestConfig = {
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        params: {
-            locale,
-            name,
-            type
-        },
-        url: store.getState().config.endpoints.brandingPreference
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
-                throw new IdentityAppsApiException(
-                    BrandingPreferencesConstants.ErrorMessages.BRANDING_PREFERENCE_FETCH_INVALID_STATUS_CODE_ERROR
-                        .getErrorMessage(),
-                    null,
-                    response.status,
-                    response.request,
-                    response,
-                    response.config);
-            }
-
-            return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
-            throw new IdentityAppsApiException(
-                error.response?.data?.message ?? BrandingPreferencesConstants
-                    .ErrorMessages.BRANDING_PREFERENCE_FETCH_ERROR.getErrorMessage(),
-                error.stack,
-                error.response?.data?.code,
-                error.request,
-                error.response,
-                error.config);
-        });
-};
 
 /**
  * Update the branding preference via Branding Preferences API.
@@ -109,11 +55,14 @@ export const updateBrandingPreference = (
     type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG,
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
 ): Promise<BrandingPreferenceAPIResponseInterface> => {
+    const tenantDomain: string = store.getState().organization.organizationType === OrganizationType.SUBORGANIZATION
+        ? store.getState()?.organization?.organization?.id
+        : name;
 
     const requestConfig: AxiosRequestConfig = {
         data: {
             locale,
-            name,
+            name: tenantDomain,
             preference,
             type
         },
@@ -164,6 +113,9 @@ export const deleteBrandingPreference = (
     type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG,
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
 ): Promise<null | IdentityAppsApiException> => {
+    const tenantDomain: string = store.getState().organization.organizationType === OrganizationType.SUBORGANIZATION
+        ? store.getState()?.organization?.organization?.id
+        : name;
 
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -173,7 +125,7 @@ export const deleteBrandingPreference = (
         method: HttpMethods.DELETE,
         params: {
             locale,
-            name,
+            name: tenantDomain,
             type
         },
         url: store.getState().config.endpoints.brandingPreference
