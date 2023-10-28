@@ -206,9 +206,17 @@
                         return serverOrigin;
                     }
 
-                    if (getTenantName()) {
-                        return serverOrigin + getTenantPath();
+                    var tenantDomain = getTenantName();
+
+                    if (!tenantDomain) {
+                        tenantDomain = startupConfig.superTenant;
                     }
+
+                    if (path) {
+                        return serverOrigin + getTenantPath() + path;
+                    }
+
+                    return serverOrigin + getTenantPath();
                 }
 
                 /**
