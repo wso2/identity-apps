@@ -333,7 +333,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
         try {
             response = await switchOrganization(organization.id);
             await onSignIn(response, () => null, () => null, () => null, true, false);
-            await filterRoutes(false);
+            await filterRoutes(() => null, false);
 
             onListMutate();
             history.push(AppConstants.getPaths().get("GETTING_STARTED"));

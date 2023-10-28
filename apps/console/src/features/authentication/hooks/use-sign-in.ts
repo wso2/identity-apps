@@ -36,14 +36,13 @@ import {
     ContextUtils
 } from "@wso2is/core/utils";
 import axios, { AxiosResponse } from "axios";
-import has from "lodash-es/has";
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
-import { commonConfig } from "../../../extensions/configs/common";
+import useAuthorization from "../../authorization/hooks/use-authorization";
 import { Config } from "../../core/configs/app";
 import { AppConstants, CommonConstants } from "../../core/constants";
-import { history } from "../../core/helpers/history";
+import { MultitenantConstants } from "../../core/constants/multitenant-constants";
 import { DeploymentConfigInterface } from "../../core/models/config";
 import { AppState } from "../../core/store";
 import {
@@ -54,14 +53,11 @@ import {
     setOrganization,
     setOrganizationType
 } from "../../core/store/actions/organization";
-import { AppUtils } from "../../core/utils/app-utils";
 import { OrganizationType } from "../../organizations/constants";
 import useOrganizationSwitch from "../../organizations/hooks/use-organization-switch";
+import useOrganizations from "../../organizations/hooks/use-organizations";
 import { getProfileInformation } from "../store/actions";
 import { AuthenticateUtils } from "../utils/authenticate-utils";
-import { MultitenantConstants } from "../../core/constants/multitenant-constants";
-import useAuthorization from "../../authorization/hooks/use-authorization";
-import useOrganizations from "../../organizations/hooks/use-organizations";
 
 const AUTHORIZATION_ENDPOINT: string = "authorization_endpoint";
 const TOKEN_ENDPOINT: string = "token_endpoint";

@@ -150,7 +150,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         try {
             response = await switchOrganization(organization.id);
             await onSignIn(response, () => null, () => null, () => null, true, false);
-            await filterRoutes(false);
+            await filterRoutes(() => null, false);
 
             history.push(AppConstants.getPaths().get("GETTING_STARTED"));
         } catch(e) {

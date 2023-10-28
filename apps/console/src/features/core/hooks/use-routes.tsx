@@ -16,12 +16,15 @@
  * under the License.
  */
 
+import { DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { GearIcon } from "@oxygen-ui/react-icons";
 import { AccessControlUtils } from "@wso2is/access-control";
 import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
+import isEmpty from "lodash-es/isEmpty";
 import React, { lazy, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { commonConfig } from "../../../extensions/configs/common";
 import { serverConfigurationConfig } from "../../../extensions/configs/server-configuration";
 import { OrganizationManagementConstants } from "../../organizations/constants/organization-constants";
@@ -38,14 +41,15 @@ import { history } from "../helpers/history";
 import { FeatureConfigInterface } from "../models/config";
 import { AppState, setDeveloperVisibility, setFilteredDevelopRoutes, setSanitizedDevelopRoutes, store } from "../store";
 import { AppUtils } from "../utils/app-utils";
-import { DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 
 /**
  * Props interface of {@link useOrganizations}
  */
 export type useRoutesInterface = {
-    filterRoutes: (isFirstLevelOrg) => void;
-    onRoutesFilterComplete: () => void;
+    filterRoutes: (
+        onRoutesFilterComplete: () => void,
+        isFirstLevelOrg?: boolean
+    ) => void;
 };
 
 /**
@@ -54,6 +58,8 @@ export type useRoutesInterface = {
  * @returns An object containing the current Organizations context.
  */
 const useRoutes = (): useRoutesInterface => {
+    const dispatch: Dispatch = useDispatch();
+
     const { getDecodedIDToken } = useAuthContext();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -73,44 +79,76 @@ const useRoutes = (): useRoutesInterface => {
         return;
     };
 
-    const filterRoutes = async (_isFirstLevelOrg?, _tenantDomain?, _isPrivilegedUser?): Promise<void> => {
+    const filterRoutes = async (onRoutesFilterComplete, _isFirstLevelOrg?, _tenantDomain?, _isPrivilegedUser?): Promise<void> => {
+        if (
+            isEmpty(allowedScopes) ||
+            !featureConfig.applications ||
+            !featureConfig.users
+        ) {
+            return;
+        }
+
         const resolveHiddenRoutes = (): string[] => {
             const commonHiddenRoutes: string[] = [
                 ...AppUtils.getHiddenRoutes(),
                 ...AppConstants.ORGANIZATION_ONLY_ROUTES
             ];
 
-            const additionalRoutes: string[] = isOrganizationManagementEnabled
-                ? (OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.getSuperTenant() === (_tenantDomain ?? tenantDomain)) ||
-                  _isFirstLevelOrg
-                    ? isPrivilegedUser
-                        ? loggedUserName === isSuperAdmin
-                            ? [ ...commonHiddenRoutes, ...AppConstants.ORGANIZATION_ROUTES ]
-                            : [
+            function getAdditionalRoutes() {
+                if (!isOrganizationManagementEnabled) {
+                    return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
+                }
+
+                const isCurrentOrgRootAndSuperTenant: boolean =
+                    OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.getSuperTenant() === (_tenantDomain ?? tenantDomain);
+
+                if (isCurrentOrgRootAndSuperTenant || isFirstLevelOrg) {
+                    if (isPrivilegedUser) {
+                        if (loggedUserName === isSuperAdmin) {
+                            return [ ...commonHiddenRoutes, ...AppConstants.ORGANIZATION_ROUTES ];
+                        } else {
+                            return [
                                 ...commonHiddenRoutes,
                                 ...AppConstants.ORGANIZATION_ROUTES,
                                 ...AppConstants.SUPER_ADMIN_ONLY_ROUTES
-                            ]
-                        : loggedUserName === isSuperAdmin
-                            ? commonHiddenRoutes
-                            : [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ]
-                    : window["AppUtils"].getConfig().organizationName
-                        ? [ ...AppUtils.getHiddenRoutes(), ...OrganizationManagementConstants.ORGANIZATION_ROUTES ]
-                        : [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ]
-                : [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
+                            ];
+                        }
+                    } else {
+                        if (loggedUserName === isSuperAdmin) {
+                            return commonHiddenRoutes;
+                        } else {
+                            return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
+                        }
+                    }
+                } else {
+                    if (window["AppUtils"].getConfig().organizationName) {
+                        return [
+                            ...AppUtils.getHiddenRoutes(),
+                            ...OrganizationManagementConstants.ORGANIZATION_ROUTES
+                        ];
+                    } else {
+                        return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
+                    }
+                }
+            }
+
+            const additionalRoutes: string[] = getAdditionalRoutes();
 
             return [ ...additionalRoutes ];
         };
 
-        const [ appRoutes, sanitizedAppRoutes ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+        const [
+            appRoutes,
+            sanitizedAppRoutes
+        ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
             getAppViewRoutes(commonConfig.useExtendedRoutes),
             featureConfig,
             allowedScopes,
-            window["AppUtils"].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
+            window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
             resolveHiddenRoutes(),
             !OrganizationUtils.isCurrentOrganizationRoot() &&
-                !_isFirstLevelOrg &&
-                AppConstants.ORGANIZATION_ENABLED_ROUTES
+            !isFirstLevelOrg &&
+            AppConstants.ORGANIZATION_ENABLED_ROUTES
         );
 
         // TODO : Remove this logic once getting started pages are removed.
@@ -118,13 +156,13 @@ const useRoutes = (): useRoutesInterface => {
             appRoutes.length === 2 &&
             appRoutes.filter(
                 (route: RouteInterface) =>
-                    route.id === AccessControlUtils.DEVELOP_GETTING_STARTED_ID || route.id === "404"
+                    route.id ===
+                    AccessControlUtils.DEVELOP_GETTING_STARTED_ID ||
+                    route.id === "404"
             ).length === 2
         ) {
-            appRoutes[0] = appRoutes[0].filter((route: RouteInterface) => route.id === "404");
+            appRoutes[ 0 ] = appRoutes[ 0 ].filter((route: RouteInterface) => route.id === "404");
         }
-
-        store.dispatch(setFilteredDevelopRoutes(appRoutes));
 
         if (governanceConnectors?.length > 0) {
             const customGovernanceConnectorRoutes: RouteInterface[] = [];
@@ -135,38 +173,52 @@ const useRoutes = (): useRoutesInterface => {
 
                     category?.connectors?.forEach((connector: GovernanceConnectorForOrgsInterface) => {
                         governanceConnectorChildren.push({
-                            component: lazy(() => import("../../server-configurations/pages/connector-edit-page")),
+                            component: lazy(() =>
+                                import(
+                                    "../../server-configurations/pages/connector-edit-page"
+                                )
+                            ),
                             exact: true,
                             icon: {
                                 icon: getSidePanelIcons().childIcon
                             },
                             id: connector.id,
                             name: connector.name,
-                            path: AppConstants.getPaths()
-                                .get("GOVERNANCE_CONNECTOR_EDIT")
-                                .replace(":categoryId", category.id)
-                                .replace(":connectorId", connector.id),
+                            path: AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
+                                .replace(
+                                    ":categoryId",
+                                    category.id
+                                )
+                                .replace(
+                                    ":connectorId",
+                                    connector.id
+                                ),
                             protected: true,
                             showOnSidePanel: false
                         });
                     });
 
-                    customGovernanceConnectorRoutes.push({
-                        category: category.id,
-                        children: governanceConnectorChildren,
-                        component: lazy(() => import("../../server-configurations/pages/connector-listing-page")),
-                        exact: true,
-                        icon: {
-                            icon: <GearIcon />
-                        },
-                        id: category.id,
-                        name: category.name,
-                        path: AppConstants.getPaths()
-                            .get("GOVERNANCE_CONNECTOR")
-                            .replace(":id", category.id),
-                        protected: true,
-                        showOnSidePanel: true
-                    });
+                    customGovernanceConnectorRoutes.push(
+                        {
+                            category: category.id,
+                            children: governanceConnectorChildren,
+                            component: lazy(() =>
+                                import(
+                                    "../../server-configurations/pages/connector-listing-page"
+                                )
+                            ),
+                            exact: true,
+                            icon: {
+                                icon: <GearIcon />
+                            },
+                            id: category.id,
+                            name: category.name,
+                            path: AppConstants.getPaths().get("GOVERNANCE_CONNECTOR")
+                                .replace(":id", category.id),
+                            protected: true,
+                            showOnSidePanel: true
+                        }
+                    );
                 }
             });
 
@@ -174,32 +226,26 @@ const useRoutes = (): useRoutesInterface => {
             sanitizedAppRoutes.push(...customGovernanceConnectorRoutes);
         }
 
-        store.dispatch(setFilteredDevelopRoutes(appRoutes));
-        store.dispatch(setSanitizedDevelopRoutes(sanitizedAppRoutes));
+        dispatch(setFilteredDevelopRoutes(appRoutes));
+        dispatch(setSanitizedDevelopRoutes(sanitizedAppRoutes));
 
         onRoutesFilterComplete();
 
         if (sanitizedAppRoutes.length < 1) {
-            store.dispatch(setDeveloperVisibility(false));
+            dispatch(setDeveloperVisibility(false));
         }
 
         if (sanitizedAppRoutes.length < 1) {
             history.push({
                 pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
-                search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
+                search:
+                    "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
             });
         }
-
-        const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
-        const orgIdIdToken: string = idToken.org_id;
-
-        console.log('SWITCHED')
-        console.log('SWITCHED:::orgIdIdToken', orgIdIdToken)
     };
 
     return {
-        filterRoutes,
-        onRoutesFilterComplete
+        filterRoutes
     };
 };
 

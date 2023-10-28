@@ -17,42 +17,24 @@
  */
 
 import {
-    AuthenticatedUserInfo,
     BasicUserInfo,
     DecodedIDTokenPayload,
     Hooks,
-    OIDCEndpoints,
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
-import { GearIcon } from "@oxygen-ui/react-icons";
-import { AccessControlUtils } from "@wso2is/access-control";
-import useDeploymentConfig from "@wso2is/common/src/hooks/use-deployment-configs";
-import useResourceEndpoints from "@wso2is/common/src/hooks/use-resource-endpoints";
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import {
-    AppConstants as CommonAppConstants,
-    CommonConstants as CommonConstantsCore,
-    TokenConstants
-} from "@wso2is/core/constants";
+    AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import {
-    ChildRouteInterface,
-    IdentifiableComponentInterface,
-    RouteInterface,
-    TenantListInterface
-} from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     setDeploymentConfigs,
-    setServiceResourceEndpoints,
-    setSignIn,
     setSupportedI18nLanguages,
     setUIConfigs
 } from "@wso2is/core/store";
 import {
     AuthenticateUtils as CommonAuthenticateUtils,
-    RouteUtils as CommonRouteUtils,
-    ContextUtils,
     StringUtils
 } from "@wso2is/core/utils";
 import {
@@ -65,24 +47,19 @@ import {
 import { GovernanceConnectorProvider } from "@wso2is/react-components";
 import axios, { AxiosResponse } from "axios";
 import has from "lodash-es/has";
-import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
     LazyExoticComponent,
     ReactElement,
     lazy,
-    useCallback,
     useEffect,
     useState
 } from "react";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { commonConfig, serverConfigurationConfig } from "./extensions";
-import {
-    AuthenticateUtils,
-    getProfileInformation
-} from "./features/authentication";
+import { commonConfig } from "./extensions";
+import useSignIn from "./features/authentication/hooks/use-sign-in";
 import {
     AppState,
     AppUtils,
@@ -93,35 +70,17 @@ import {
     PreLoader,
     UIConfigInterface,
     getAppViewRoutes,
-    getServerConfigurations,
-    getSidePanelIcons,
-    setCurrentOrganization,
-    setDeveloperVisibility,
     setFilteredDevelopRoutes,
-    setGetOrganizationLoading,
-    setIsFirstLevelOrganization,
-    setOrganization,
-    setOrganizationType,
     setSanitizedDevelopRoutes,
     store
 } from "./features/core";
-import { AppConstants, CommonConstants } from "./features/core/constants";
+import { AppConstants } from "./features/core/constants";
 import { history } from "./features/core/helpers";
-import { OrganizationManagementConstants, OrganizationType } from "./features/organizations/constants";
-import useOrganizationSwitch from "./features/organizations/hooks/use-organization-switch";
-import { OrganizationUtils } from "./features/organizations/utils";
+import useRoutes from "./features/core/hooks/use-routes";
 import {
     GovernanceCategoryForOrgsInterface,
-    GovernanceConnectorForOrgsInterface,
     useGovernanceConnectorCategories
 } from "./features/server-configurations";
-import useAuthorization from "./features/authorization/hooks/use-authorization";
-import useSignIn from "./features/authentication/hooks/use-sign-in";
-
-const AUTHORIZATION_ENDPOINT: string = "authorization_endpoint";
-const TOKEN_ENDPOINT: string = "token_endpoint";
-const OIDC_SESSION_IFRAME_ENDPOINT: string = "oidc_session_iframe_endpoint";
-const LOGOUT_URL: string = "sign_out_url";
 
 const App: LazyExoticComponent<FunctionComponent> = lazy(() => import("./app"));
 
@@ -135,53 +94,34 @@ type AppPropsInterface = IdentifiableComponentInterface;
 export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactElement => {
     const {
         on,
-        getDecodedIDToken,
-        getOIDCServiceEndpoints,
-        updateConfig,
         signIn,
-        requestCustomGrant,
         state: { isAuthenticated }
     } = useAuthContext();
 
-    const { switchOrganization } = useOrganizationSwitch();
-
-    const { legacyAuthzRuntime }  = useAuthorization();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const { onSignIn } = useSignIn();
 
-    const dispatch: Dispatch<any> = useDispatch();
-    const { setResourceEndpoints } = useResourceEndpoints();
-    const { setDeploymentConfig } = useDeploymentConfig();
+    const { filterRoutes } = useRoutes();
+
     const { setUIConfig } = useUIConfig();
-    const [ governanceConnectors, setGovernanceConnectors ] =
-        useState<GovernanceCategoryForOrgsInterface[]>([]);
 
-    const [ renderApp, setRenderApp ] = useState<boolean>(false);
-    const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
-
-    const allowedScopes: string = useSelector(
-        (state: AppState) => state?.auth?.allowedScopes
-    );
     const featureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features
     );
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
-    const isPrivilegedUser: boolean = useSelector(
-        (state: AppState) => state?.auth?.isPrivilegedUser
-    );
-    const isSuperAdmin: string = useSelector(
-        (state: AppState) => state.organization.superAdmin
-    );
-    const loggedUserName: string = store.getState().profile.profileInfo.userName;
 
-    const [ tenant, setTenant ] = useState<string>("");
     const {
         data: originalConnectorCategories,
         error: connectorCategoriesFetchRequestError
     } = useGovernanceConnectorCategories(
         featureConfig?.residentIdp?.enabled && isFirstLevelOrg);
+
+    const [ renderApp, setRenderApp ] = useState<boolean>(false);
+    const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
+    const [ governanceConnectors, setGovernanceConnectors ] = useState<GovernanceCategoryForOrgsInterface[]>([]);
 
     useEffect(() => {
         dispatch(
@@ -209,7 +149,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             await onSignIn(
                 response,
-                (tenantDomain: string) => setTenant(tenantDomain),
+                () => null,
                 (idToken: DecodedIDTokenPayload) => loginSuccessRedirect(idToken),
                 () => setRenderApp(true),
                 false
@@ -289,177 +229,12 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         }
     };
 
-    const filterRoutes: () => void = useCallback((): void => {
-        if (
-            isEmpty(allowedScopes) ||
-            !featureConfig.applications ||
-            !featureConfig.users
-        ) {
-            return;
-        }
-
-        const resolveHiddenRoutes = (): string[] => {
-            const commonHiddenRoutes: string[] = [
-                ...AppUtils.getHiddenRoutes(),
-                ...AppConstants.ORGANIZATION_ONLY_ROUTES
-            ];
-
-            function getAdditionalRoutes() {
-                if (!isOrganizationManagementEnabled) {
-                    return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
-                }
-
-                const isCurrentOrgRootAndSuperTenant: boolean =
-                    OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.getSuperTenant() === tenant;
-
-                if (isCurrentOrgRootAndSuperTenant || isFirstLevelOrg) {
-                    if (isPrivilegedUser) {
-                        if (loggedUserName === isSuperAdmin) {
-                            return [ ...commonHiddenRoutes, ...AppConstants.ORGANIZATION_ROUTES ];
-                        } else {
-                            return [
-                                ...commonHiddenRoutes,
-                                ...AppConstants.ORGANIZATION_ROUTES,
-                                ...AppConstants.SUPER_ADMIN_ONLY_ROUTES
-                            ];
-                        }
-                    } else {
-                        if (loggedUserName === isSuperAdmin) {
-                            return commonHiddenRoutes;
-                        } else {
-                            return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
-                        }
-                    }
-                } else {
-                    if (window["AppUtils"].getConfig().organizationName) {
-                        return [
-                            ...AppUtils.getHiddenRoutes(),
-                            ...OrganizationManagementConstants.ORGANIZATION_ROUTES
-                        ];
-                    } else {
-                        return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
-                    }
-                }
-            }
-
-            const additionalRoutes: string[] = getAdditionalRoutes();
-
-            return [ ...additionalRoutes ];
-        };
-
-        const [
-            appRoutes,
-            sanitizedAppRoutes
-        ] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
-            getAppViewRoutes(commonConfig.useExtendedRoutes),
-            featureConfig,
-            allowedScopes,
-            window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
-            resolveHiddenRoutes(),
-            !OrganizationUtils.isCurrentOrganizationRoot() &&
-            !isFirstLevelOrg &&
-            AppConstants.ORGANIZATION_ENABLED_ROUTES
-        );
-
-        // TODO : Remove this logic once getting started pages are removed.
-        if (
-            appRoutes.length === 2 &&
-            appRoutes.filter(
-                (route: RouteInterface) =>
-                    route.id ===
-                    AccessControlUtils.DEVELOP_GETTING_STARTED_ID ||
-                    route.id === "404"
-            ).length === 2
-        ) {
-            appRoutes[ 0 ] = appRoutes[ 0 ].filter((route: RouteInterface) => route.id === "404");
-        }
-
-        if (governanceConnectors?.length > 0) {
-            const customGovernanceConnectorRoutes: RouteInterface[] = [];
-
-            governanceConnectors.forEach((category: GovernanceCategoryForOrgsInterface) => {
-                if (!serverConfigurationConfig.connectorCategoriesToShow.includes(category.id)) {
-                    const governanceConnectorChildren: ChildRouteInterface[] = [];
-
-                    category?.connectors?.forEach((connector: GovernanceConnectorForOrgsInterface) => {
-                        governanceConnectorChildren.push({
-                            component: lazy(() =>
-                                import(
-                                    "./features/server-configurations/pages/connector-edit-page"
-                                )
-                            ),
-                            exact: true,
-                            icon: {
-                                icon: getSidePanelIcons().childIcon
-                            },
-                            id: connector.id,
-                            name: connector.name,
-                            path: AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
-                                .replace(
-                                    ":categoryId",
-                                    category.id
-                                )
-                                .replace(
-                                    ":connectorId",
-                                    connector.id
-                                ),
-                            protected: true,
-                            showOnSidePanel: false
-                        });
-                    });
-
-                    customGovernanceConnectorRoutes.push(
-                        {
-                            category: category.id,
-                            children: governanceConnectorChildren,
-                            component: lazy(() =>
-                                import(
-                                    "./features/server-configurations/pages/connector-listing-page"
-                                )
-                            ),
-                            exact: true,
-                            icon: {
-                                icon: <GearIcon />
-                            },
-                            id: category.id,
-                            name: category.name,
-                            path: AppConstants.getPaths().get("GOVERNANCE_CONNECTOR")
-                                .replace(":id", category.id),
-                            protected: true,
-                            showOnSidePanel: true
-                        }
-                    );
-                }
-            });
-
-            appRoutes.push(...customGovernanceConnectorRoutes);
-            sanitizedAppRoutes.push(...customGovernanceConnectorRoutes);
-        }
-
-        dispatch(setFilteredDevelopRoutes(appRoutes));
-        dispatch(setSanitizedDevelopRoutes(sanitizedAppRoutes));
-
-        setRoutesFiltered(true);
-
-        if (sanitizedAppRoutes.length < 1) {
-            dispatch(setDeveloperVisibility(false));
-        }
-
-        if (sanitizedAppRoutes.length < 1) {
-            history.push({
-                pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
-                search:
-                    "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
-            });
-        }
-    }, [ allowedScopes, dispatch, featureConfig, governanceConnectors, isFirstLevelOrg, isSuperAdmin ]);
-
     useEffect(() => {
         if (!isAuthenticated) {
             return;
         }
 
-        filterRoutes();
+        filterRoutes(() => setRoutesFiltered(true));
     }, [ filterRoutes, governanceConnectors, isAuthenticated ]);
 
     useEffect(() => {

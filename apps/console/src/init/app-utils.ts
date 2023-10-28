@@ -425,7 +425,6 @@ export const AppUtils: any = (function() {
          * @returns Tenant path.
          */
         getTenantPath: function (skipSuperTenant: boolean = false) {
-            debugger
             if (_config.legacyAuthzRuntime) {
                 if (this.getOrganizationName()) {
                     return "";
