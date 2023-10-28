@@ -118,6 +118,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const scopes: string = useSelector(
         (state: AppState) => state.auth.allowedScopes
     );
+    const userOrganizationID: string = useSelector((state: AppState) =>
+        state?.organization?.userOrganizationId);
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
@@ -382,10 +384,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         // Show the app switch button only if the user is logged in to the
         // user resident organization.
         if (!legacyAuthzRuntime) {
-            return (!window[ "AppUtils" ].getConfig().userOrganization
-                || window[ "AppUtils" ].getConfig().userOrganization === 
-                    window[ "AppUtils" ].getConfig().organizationName
-            );
+            return (!userOrganizationID
+                || userOrganizationID === window[ "AppUtils" ].getConfig().organizationName);
         }
         
         return true;

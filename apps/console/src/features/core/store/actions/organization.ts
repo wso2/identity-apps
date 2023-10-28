@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,8 @@ import {
     SetIsFirstLevelOrganizationInterface,
     SetOrganizationActionInterface,
     SetOrganizationTypeInterface,
-    SetSuperAdminTypeInterface
+    SetSuperAdminTypeInterface,
+    SetUserOrganizationIdInterface
 } from "./types";
 import { OrganizationType } from "../../../organizations/constants";
 import { OrganizationResponseInterface } from "../../../organizations/models";
@@ -55,6 +56,20 @@ export const setCurrentOrganization = (orgName: string): SetCurrentOrganizationA
     return {
         payload: orgName,
         type: OrganizationActionTypes.SET_CURRENT_ORGANIZATION
+    };
+};
+
+/**
+ * This action sets the user organization id in the redux store.
+ *
+ * @param orgId - The user organization id
+ *
+ * @returns - A set user organization id action
+ */
+export const setUserOrganizationId = (orgId: string): SetUserOrganizationIdInterface => {
+    return {
+        payload: orgId,
+        type: OrganizationActionTypes.SET_USER_ORGANIZATION_ID
     };
 };
 

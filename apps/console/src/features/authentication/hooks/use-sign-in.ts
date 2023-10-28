@@ -51,7 +51,8 @@ import {
     setGetOrganizationLoading,
     setIsFirstLevelOrganization,
     setOrganization,
-    setOrganizationType
+    setOrganizationType,
+    setUserOrganizationId
 } from "../../core/store/actions/organization";
 import { OrganizationType } from "../../organizations/constants";
 import useOrganizationSwitch from "../../organizations/hooks/use-organization-switch";
@@ -117,7 +118,7 @@ const useSignIn = (): UseSignInInterface => {
 
         const orgIdIdToken: string = idToken.org_id;
         const orgName: string = idToken.org_name;
-        const userOrganization: string = idToken.user_org;
+        const userOrganizationId: string = idToken.user_org;
 
         let tenantDomain: string = orgName;
 
@@ -146,8 +147,7 @@ const useSignIn = (): UseSignInInterface => {
         }
 
         dispatch(setOrganizationType(orgType));
-
-        window["AppUtils"].updateUserOrganization(userOrganization);
+        dispatch(setUserOrganizationId(userOrganizationId));
 
         let isFirstLevelOrg: boolean = !window["AppUtils"].getConfig().organizationName && !!orgIdIdToken;
 
