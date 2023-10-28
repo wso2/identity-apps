@@ -70,7 +70,6 @@ const LOGOUT_URL: string = "sign_out_url";
 export type UseSignInInterface = {
     onSignIn: (
         response: BasicUserInfo,
-        updateOrgPaths: boolean,
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
         onAppReady: () => void,
@@ -97,7 +96,6 @@ const useSignIn = (): UseSignInInterface => {
 
     const onSignIn = async (
         response: BasicUserInfo,
-        updateOrgPaths: boolean,
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
         onAppReady: () => void
@@ -136,7 +134,7 @@ const useSignIn = (): UseSignInInterface => {
         let orgType: OrganizationType;
 
         // Update the organization name with the newly resolved org.
-        if (updateOrgPaths) {
+        if (!isFirstLevelOrg) {
             window["AppUtils"].updateOrganizationName(orgIdIdToken);
         } else {
             // Update the app base name with the newly resolved tenant.

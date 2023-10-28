@@ -81,7 +81,7 @@ export class Config {
         }
 
         if (skipAuthzRuntimePath) {
-            return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant?.replace("/o/", "");
+            return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant?.replace("/o", "");
         }
 
         return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
@@ -249,7 +249,7 @@ export class Config {
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,
             saml2Meta: `${ this.resolveServerHost(false, true) }/identity/metadata/saml2`,
-            wellKnown: `${ this.resolveServerHost(false, true) }/oauth2/token/.well-known/openid-configuration`
+            wellKnown: `${ this.resolveServerHost(false, true, 'wellKnown') }/oauth2/token/.well-known/openid-configuration`
         };
     }
 

@@ -81,6 +81,7 @@ import {
     GovernanceCategoryForOrgsInterface,
     useGovernanceConnectorCategories
 } from "./features/server-configurations";
+import useOrganizationSwitch from "./features/organizations/hooks/use-organization-switch";
 
 const App: LazyExoticComponent<FunctionComponent> = lazy(() => import("./app"));
 
@@ -101,6 +102,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const dispatch: Dispatch<any> = useDispatch();
 
     const { onSignIn } = useSignIn();
+
+    const { switchOrganization } = useOrganizationSwitch();
 
     const { filterRoutes } = useRoutes();
 
@@ -145,15 +148,37 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         on(Hooks.HttpRequestSuccess, HttpUtils.onHttpRequestSuccess);
 
         on(Hooks.SignIn, async (signInResponse: BasicUserInfo) => {
-            const response: BasicUserInfo = { ...signInResponse };
+            let response: BasicUserInfo = null;
 
-            await onSignIn(
-                response,
-                false,
-                () => null,
-                (idToken: DecodedIDTokenPayload) => loginSuccessRedirect(idToken),
-                () => setRenderApp(true)
-            );
+            const getOrganizationName = () => {
+                const path: string = window.location.pathname;
+                const pathChunks: string[] = path.split("/");
+
+                const orgPrefixIndex: number = pathChunks.indexOf(window["AppUtils"].getConfig().organizationPrefix);
+
+                if (orgPrefixIndex !== -1) {
+                    return pathChunks[ orgPrefixIndex + 1 ];
+                }
+
+                return "";
+            };
+
+            try {
+                if (getOrganizationName()) {
+                    response = await switchOrganization(getOrganizationName());
+                } else {
+                    response = { ...signInResponse };
+                }
+
+                await onSignIn(
+                    response,
+                    () => null,
+                    (idToken: DecodedIDTokenPayload) => loginSuccessRedirect(idToken),
+                    () => setRenderApp(true)
+                );
+            } catch(e) {
+                // TODO: Handle error
+            }
         });
     }, []);
 
