@@ -132,8 +132,14 @@ export const AppUtils: any = (function() {
                 return _config.clientOrigin + this.getOrganizationPath()
                     + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
             }
+            
+            let basePath: string = `${_config.clientOrigin}${this.getTenantPath(true)}`;
+            
+            if (basePath.includes(this.getSuperTenant())) {
+                basePath = _config.clientOrigin;
+            }
 
-            return `${_config.clientOrigin}${this.getTenantPath(true)}${(_config.appBaseName
+            return `${basePath}${(_config.appBaseName
                 ? "/" + _config.appBaseName
                 : "")}${url}`;
         },
