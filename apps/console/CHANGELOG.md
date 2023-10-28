@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.5.3
+
+### Patch Changes
+
+- [#4408](https://github.com/wso2/identity-apps/pull/4408) [`5540412a4f`](https://github.com/wso2/identity-apps/commit/5540412a4fb9dd0813974bc5aed1fce69d72b11f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - fix the user profile back button issue
+
+* [#4422](https://github.com/wso2/identity-apps/pull/4422) [`b86df0fec9`](https://github.com/wso2/identity-apps/commit/b86df0fec9d50ea530005142d39841a1ad595249) Thanks [@Achintha444](https://github.com/Achintha444)! - Hide connected apps tab if the audience is application.
+
+- [#4419](https://github.com/wso2/identity-apps/pull/4419) [`763959f4b4`](https://github.com/wso2/identity-apps/commit/763959f4b46eb15f070f7d94bd3703f93d73e7f6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update roles endpoints to use roleV2 API
+
 ## 2.5.2
 
 ### Patch Changes
