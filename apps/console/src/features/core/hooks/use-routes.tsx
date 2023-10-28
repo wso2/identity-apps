@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import { DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { GearIcon } from "@oxygen-ui/react-icons";
 import { AccessControlUtils } from "@wso2is/access-control";
 import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
 import isEmpty from "lodash-es/isEmpty";
-import React, { lazy, useMemo } from "react";
+import React, { lazy } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { commonConfig } from "../../../extensions/configs/common";
 import { serverConfigurationConfig } from "../../../extensions/configs/server-configuration";
+import useAuthorization from "../../authorization/hooks/use-authorization";
 import { OrganizationManagementConstants } from "../../organizations/constants/organization-constants";
 import { OrganizationUtils } from "../../organizations/utils/organization";
 import { useGovernanceConnectorCategories } from "../../server-configurations/api/governance-connectors";
@@ -39,9 +39,8 @@ import { getSidePanelIcons } from "../configs/ui";
 import { AppConstants } from "../constants/app-constants";
 import { history } from "../helpers/history";
 import { FeatureConfigInterface } from "../models/config";
-import { AppState, setDeveloperVisibility, setFilteredDevelopRoutes, setSanitizedDevelopRoutes, store } from "../store";
+import { AppState, setDeveloperVisibility, setFilteredDevelopRoutes, setSanitizedDevelopRoutes } from "../store";
 import { AppUtils } from "../utils/app-utils";
-import useAuthorization from "../../authorization/hooks/use-authorization";
 
 /**
  * Props interface of {@link useOrganizations}
@@ -61,8 +60,6 @@ export type useRoutesInterface = {
 const useRoutes = (): useRoutesInterface => {
     const dispatch: Dispatch = useDispatch();
 
-    const { getDecodedIDToken } = useAuthContext();
-
     const { legacyAuthzRuntime }  = useAuthorization();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -74,11 +71,18 @@ const useRoutes = (): useRoutesInterface => {
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
 
     const {
-        data: governanceConnectors,
-        error: governanceConnectorsFetchRequestError
+        data: governanceConnectors
     } = useGovernanceConnectorCategories(featureConfig?.residentIdp?.enabled && isFirstLevelOrg);
 
-    const filterRoutes = async (onRoutesFilterComplete, isFirstLevelOrg, _tenantDomain?, _isPrivilegedUser?): Promise<void> => {
+    /**
+     * Filter the routes based on the user roles and permissions.
+     *
+     * @param onRoutesFilterComplete - Callback to be called after the routes are filtered.
+     * @param isFirstLevelOrg - Is the current organization the first level organization.
+     *
+     * @returns A promise containing void.
+     */
+    const filterRoutes = async (onRoutesFilterComplete: () => void, isFirstLevelOrg?: boolean): Promise<void> => {
         if (
             isEmpty(allowedScopes) ||
             !featureConfig.applications ||

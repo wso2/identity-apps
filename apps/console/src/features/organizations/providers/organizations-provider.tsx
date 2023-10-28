@@ -42,20 +42,11 @@ const OrganizationsProvider: FunctionComponent<OrganizationsProviderProps> = (
 
     const [ isOrganizationSwitchRequestLoading, setIsOrganizationSwitchRequestLoading ] = useState<boolean>(false);
 
-    /**
-     * Get the current organization name.
-     * @returns Current organization name.
-     */
-    const getCurrentOrganization = (): string => {
-        return window["AppUtils"].getConfig().organizationName;
-    };
-
     return (
         <OrganizationsContext.Provider
             value={ {
-                currentOrganization: getCurrentOrganization(),
                 isOrganizationSwitchRequestLoading,
-                updateOrganizationSwitchRequestLoadingState: setIsOrganizationSwitchRequestLoading,
+                updateOrganizationSwitchRequestLoadingState: setIsOrganizationSwitchRequestLoading
             } }
         >
             { children }

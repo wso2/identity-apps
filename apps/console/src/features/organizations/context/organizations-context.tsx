@@ -27,10 +27,6 @@ export type OrganizationsContextProps = {
      */
     isOrganizationSwitchRequestLoading: boolean;
     /**
-     * The name of the current organization.
-     */
-    currentOrganization: string;
-    /**
      * Update the application info request loading status.
      */
     updateOrganizationSwitchRequestLoadingState: (status: boolean) => void;

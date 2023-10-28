@@ -133,7 +133,9 @@ export const AppUtils: any = (function() {
                     + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
             }
 
-            return `${_config.clientOrigin}${this.getTenantPath(true)}${(_config.appBaseName ? "/" + _config.appBaseName : "")}${url}`;
+            return `${_config.clientOrigin}${this.getTenantPath(true)}${(_config.appBaseName
+                ? "/" + _config.appBaseName
+                : "")}${url}`;
         },
 
         /**
@@ -210,14 +212,6 @@ export const AppUtils: any = (function() {
             }
 
             return `${_config.clientOrigin}${this.getAppBaseWithTenantAndOrganization()}`;
-        },
-
-        getServerOriginWithTenant: function() {
-            if (_config.legacyAuthzRuntime) {
-                return _config.serverOrigin + this.getTenantPath(true)
-            }
-
-            return `${ _config.serverOrigin}${this.getTenantPath(true)}${this.getOrganizationName() ? "/o" : "" }`;
         },
 
         /**
@@ -374,6 +368,14 @@ export const AppUtils: any = (function() {
          */
         getOrganizationPrefix: function () {
             return _args.organizationPrefix || orgPrefixFallback;
+        },
+        
+        getServerOriginWithTenant: function() {
+            if (_config.legacyAuthzRuntime) {
+                return _config.serverOrigin + this.getTenantPath(true);
+            }
+
+            return `${ _config.serverOrigin}${this.getTenantPath(true)}${this.getOrganizationName() ? "/o" : "" }`;
         },
 
         /**
