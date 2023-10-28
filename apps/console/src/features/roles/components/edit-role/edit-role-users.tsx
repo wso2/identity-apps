@@ -260,7 +260,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 "Operations": []
             },
             method: "PATCH",
-            path: "/Roles/" + role.id
+            path: "v2/Roles/" + role.id
         };
         
         removedUsersOptions?.map((user: UserBasicInterface) => {
