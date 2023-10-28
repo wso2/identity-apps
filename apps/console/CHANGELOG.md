@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.5.1
+
+### Patch Changes
+
+- [#4411](https://github.com/wso2/identity-apps/pull/4411) [`788fa0db90`](https://github.com/wso2/identity-apps/commit/788fa0db90b763b7b352723c942096424fcbb44c) Thanks [@brionmario](https://github.com/brionmario)! - Fix issues with `carbon.super` org switch
+
+* [#4410](https://github.com/wso2/identity-apps/pull/4410) [`0cbf467ba3`](https://github.com/wso2/identity-apps/commit/0cbf467ba3dbc9c4d198281c2177c42406713dbb) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add role uniqueness check
+
 ## 2.5.0
 
 ### Minor Changes
