@@ -68,7 +68,7 @@ export const AppUtils: any = (function() {
     const fallbackServerOrigin: string = "https://localhost:9443";
     const appBaseForHistoryAPIFallback: string = "/";
     const urlPathForSuperTenantOriginsFallback: string = "";
-    const isSaasFallback: boolean = true;
+    const isSaasFallback: boolean = false;
     const tenantResolutionStrategyFallback: string = "id_token";
 
     const SERVER_ORIGIN_IDP_URL_PLACEHOLDER: string = "${serverOrigin}";
