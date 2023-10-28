@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.5.6
+
+### Patch Changes
+
+- [#4426](https://github.com/wso2/identity-apps/pull/4426) [`580864ec22`](https://github.com/wso2/identity-apps/commit/580864ec220f997cbacf41956f051aa0f1ed4e9c) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Hide org switch breadcrumb in Super org
+
 ## 2.5.5
 
 ### Patch Changes
