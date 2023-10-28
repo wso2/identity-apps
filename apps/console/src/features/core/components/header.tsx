@@ -27,6 +27,7 @@ import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
+import { OrganizationType } from "@wso2is/common";
 import { hasRequiredScopes, resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { LocalStorageUtils, StringUtils } from "@wso2is/core/utils";
@@ -57,6 +58,7 @@ import { ReactComponent as BillingPortalIcon } from "../../../themes/wso2is/asse
 import { getApplicationList } from "../../applications/api";
 import { ApplicationListInterface } from "../../applications/models";
 import { OrganizationSwitchBreadcrumb } from "../../organizations/components/organization-switch";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
@@ -118,6 +120,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
+    const orgType: OrganizationType = useGetOrganizationType();
+
     const [ anchorHelpMenu, setAnchorHelpMenu ] = useState<null | HTMLElement>(null);
 
     const openHelpMenu: boolean = Boolean(anchorHelpMenu);
@@ -164,12 +168,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const isOrgSwitcherEnabled: boolean = useMemo(() => {
         return (
             isOrganizationManagementEnabled &&
-            // The `tenantDomain` takes the organization id when you log in to a sub-organization.
-            // So, we cannot use `tenantDomain` to check
-            // if the user is logged in to a non-super-tenant account reliably.
-            // So, we check if the organization id is there in the URL to see if the user is in a sub-organization.
-            (tenantDomain === AppConstants.getSuperTenant() ||
-                window[ "AppUtils" ].getConfig().organizationName ||
+            (orgType === OrganizationType.SUPER_ORGANIZATION ||
+                orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+                orgType === OrganizationType.SUBORGANIZATION ||
                 organizationConfigs.showSwitcherInTenants) &&
             hasRequiredScopes(
                 feature?.organizations,
