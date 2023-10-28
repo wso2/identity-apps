@@ -136,7 +136,7 @@ const useRoutes = (): useRoutesInterface => {
                     }
                 }
 
-                if (isCurrentOrgRootAndSuperTenant) {
+                if (isCurrentOrgRootAndSuperTenant && !window["AppUtils"].getConfig().organizationName) {
                     if (loggedUserName === isSuperAdmin) {
                         return commonHiddenRoutes;
                     } else {
@@ -161,6 +161,16 @@ const useRoutes = (): useRoutesInterface => {
 
             return [ ...additionalRoutes ];
         };
+        
+        let allowedRoutes: string[] = window["AppUtils"].getConfig().organizationName
+            ? AppConstants.ORGANIZATION_ENABLED_ROUTES
+            : undefined;
+            
+        if (legacyAuthzRuntime) {
+            allowedRoutes = !OrganizationUtils.isCurrentOrganizationRoot()
+                && !isFirstLevelOrg
+                && AppConstants.ORGANIZATION_ENABLED_ROUTES;
+        }
 
         const [
             appRoutes,
@@ -171,9 +181,7 @@ const useRoutes = (): useRoutesInterface => {
             allowedScopes,
             window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
             resolveHiddenRoutes(),
-            !OrganizationUtils.isCurrentOrganizationRoot() &&
-            !isFirstLevelOrg &&
-            AppConstants.ORGANIZATION_ENABLED_ROUTES
+            allowedRoutes
         );
 
         // TODO : Remove this logic once getting started pages are removed.
