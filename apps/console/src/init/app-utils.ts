@@ -299,7 +299,8 @@ export const AppUtils: any = (function() {
                 tenantPath: this.getTenantPath(),
                 tenantPathWithoutSuperTenant: this.getTenantPath(true),
                 tenantPrefix: this.getTenantPrefix(),
-                ui: _config.ui
+                ui: _config.ui,
+                userOrganization: _config.userOrganization
             };
         },
 
@@ -688,6 +689,15 @@ export const AppUtils: any = (function() {
             }
 
             _config.appBaseWithTenant = "/" + this.getTenantPrefix() + "/" + tenant + "/" + _config.appBaseName;
+        },
+
+        /**
+         * Updates the user organization.
+         *
+         * @param organizationId - user organization.
+         */
+        updateUserOrganization: function (organizationId: string) {
+            _config.userOrganization = organizationId;
         }
     };
 }());

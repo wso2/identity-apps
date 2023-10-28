@@ -117,6 +117,7 @@ const useSignIn = (): UseSignInInterface => {
 
         const orgIdIdToken: string = idToken.org_id;
         const orgName: string = idToken.org_name;
+        const userOrganization: string = idToken.user_org;
 
         let tenantDomain: string = orgName;
 
@@ -145,6 +146,8 @@ const useSignIn = (): UseSignInInterface => {
         }
 
         dispatch(setOrganizationType(orgType));
+
+        window["AppUtils"].updateUserOrganization(userOrganization);
 
         let isFirstLevelOrg: boolean = !window["AppUtils"].getConfig().organizationName && !!orgIdIdToken;
 

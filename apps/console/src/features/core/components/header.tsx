@@ -374,6 +374,23 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         ];
     };
 
+    const isShowAppSwitchButton = (): boolean => {
+        if (!showAppSwitchButton) {
+            return false;
+        }
+
+        // Show the app switch button only if the user is logged in to the
+        // user resident organization.
+        if (!legacyAuthzRuntime) {
+            return (!window[ "AppUtils" ].getConfig().userOrganization
+                || window[ "AppUtils" ].getConfig().userOrganization === 
+                    window[ "AppUtils" ].getConfig().organizationName
+            );
+        }
+        
+        return true;
+    };
+
     return (
         <OxygenHeader
             className="is-header"
@@ -494,7 +511,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             </MenuItem>
                         </Show>
                     ),
-                    showAppSwitchButton ? (
+                    isShowAppSwitchButton() ? (
                         <MenuItem
                             color="inherit"
                             key={ t(
