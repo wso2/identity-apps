@@ -35,7 +35,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { DropdownProps } from "semantic-ui-react";
 import { useApplicationList } from "../../../applications/api/application";
 import { ApplicationListItemInterface } from "../../../applications/models";
-import { history } from "../../../core";
+import { history, store } from "../../../core";
 import { AppConstants } from "../../../core/constants";
 import { useRolesList } from "../../api/roles";
 import { RoleAudienceTypes, RoleConstants } from "../../constants";
@@ -90,6 +90,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const [ assignedApplicationsSearching, setAssignedApplicationsSearching ] = useState<boolean>(false);
     const [ applicationListOptions, setApplicationListOptions ] = useState<DropdownProps[]>([]);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
+
     const noApplicationsAvailable: MutableRefObject<boolean> = useRef<boolean>(false);
 
     const {
@@ -209,12 +210,17 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      * @param values - Form Values.
      * @returns Form validation.
      */
-    const validateForm = async (values: CreateRoleFormData): Promise<CreateRoleFormData>=> {
+    const validateForm = async (values: CreateRoleFormData): Promise<CreateRoleFormData> => {
 
         const errors: CreateRoleFormData = {
             assignedApplicationId: undefined,
             roleName: undefined
         };
+
+        const organizationId: string = store.getState()?.organization?.organization?.id;
+        const audienceId: string = roleAudience === RoleAudienceTypes.ORGANIZATION
+            ? organizationId
+            : values?.assignedApplicationId;
 
         // Handle the case where the user has not selected an assigned application.
         if (roleAudience === RoleAudienceTypes.APPLICATION && !values.assignedApplicationId?.toString().trim()) {
@@ -227,7 +233,8 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             errors.roleName = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
                 "validations.empty", { type: "Role" });
         } else {
-            setRoleNameSearchQuery(`displayName eq ${values.roleName.toString()}`);
+            // TODO: Need to debounce the function.
+            setRoleNameSearchQuery(`displayName eq ${values.roleName} and audience.value eq ${audienceId}`);
 
             if (!isRolesListLoading || !isRolesListValidating) {
                 if (rolesList?.totalResults > 0) {
