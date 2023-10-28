@@ -118,6 +118,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const scopes: string = useSelector(
         (state: AppState) => state.auth.allowedScopes
     );
+    const userOrganizationID: string = useSelector((state: AppState) =>
+        state?.organization?.userOrganizationId);
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
@@ -374,6 +376,21 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         ];
     };
 
+    const isShowAppSwitchButton = (): boolean => {
+        if (!showAppSwitchButton) {
+            return false;
+        }
+
+        // Show the app switch button only if the user is logged in to the
+        // user resident organization.
+        if (!legacyAuthzRuntime) {
+            return (!userOrganizationID
+                || userOrganizationID === window[ "AppUtils" ].getConfig().organizationName);
+        }
+        
+        return true;
+    };
+
     return (
         <OxygenHeader
             className="is-header"
@@ -494,7 +511,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             </MenuItem>
                         </Show>
                     ),
-                    showAppSwitchButton ? (
+                    isShowAppSwitchButton() ? (
                         <MenuItem
                             color="inherit"
                             key={ t(
