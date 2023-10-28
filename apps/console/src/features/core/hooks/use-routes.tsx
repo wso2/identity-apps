@@ -82,7 +82,7 @@ const useRoutes = (): useRoutesInterface => {
      *
      * @returns A promise containing void.
      */
-    const filterRoutes = async (onRoutesFilterComplete: () => void, isFirstLevelOrg?: boolean): Promise<void> => {
+    const filterRoutes = async (onRoutesFilterComplete: () => void, isFirstLevelOrg: boolean): Promise<void> => {
         if (
             isEmpty(allowedScopes) ||
             !featureConfig.applications ||
@@ -144,16 +144,12 @@ const useRoutes = (): useRoutesInterface => {
                     }
                 }
 
-                if (isFirstLevelOrg) {
-                    return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
-                }
-
                 if (window["AppUtils"].getConfig().organizationName) {
                     return [
                         ...AppUtils.getHiddenRoutes()
                     ];
                 } else {
-                    return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
+                    return [ ...commonHiddenRoutes ];
                 }
             }
 
