@@ -74,7 +74,6 @@ export type UseSignInInterface = {
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
         onAppReady: () => void,
-        _isFirstLevelOrg?: boolean,
     ) => Promise<void>;
 };
 
@@ -101,8 +100,7 @@ const useSignIn = (): UseSignInInterface => {
         updateOrgPaths: boolean,
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
-        onAppReady: () => void,
-        _isFirstLevelOrg?: boolean
+        onAppReady: () => void
     ): Promise<void> => {
         let logoutUrl: string;
         let logoutRedirectUrl: string;
@@ -119,6 +117,7 @@ const useSignIn = (): UseSignInInterface => {
         const orgIdIdToken: string = idToken.org_id;
         const orgName: string = idToken.org_name;
         const userOrganizationId: string = idToken.user_org;
+        const isFirstLevelOrg: boolean = !idToken.user_org || idToken.user_org === idToken.org_id;
 
         let tenantDomain: string = orgName;
 
@@ -144,25 +143,16 @@ const useSignIn = (): UseSignInInterface => {
             window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
         }
 
-        if (window["AppUtils"].getConfig().organizationName) {
-            orgType = OrganizationType.SUBORGANIZATION;
-        } else if (tenantDomain === AppConstants.getSuperTenant()) {
+        if (isFirstLevelOrg && tenantDomain === AppConstants.getSuperTenant()) {
             orgType = OrganizationType.SUPER_ORGANIZATION;
-        } else if (orgIdIdToken) {
+        } else if (isFirstLevelOrg) {
             orgType = OrganizationType.FIRST_LEVEL_ORGANIZATION;
         } else {
-            orgType = OrganizationType.TENANT;
+            orgType = OrganizationType.SUBORGANIZATION;
         }
 
         dispatch(setOrganizationType(orgType));
         dispatch(setUserOrganizationId(userOrganizationId));
-
-        let isFirstLevelOrg: boolean = !window["AppUtils"].getConfig().organizationName && !!orgIdIdToken;
-
-        // TODO: Redux store async issue here. Fix this properly.
-        if (_isFirstLevelOrg === false) {
-            isFirstLevelOrg = false;
-        }
 
         dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
 
