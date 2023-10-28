@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.5.5
+
+### Patch Changes
+
+- [#4420](https://github.com/wso2/identity-apps/pull/4420) [`af4229cf45`](https://github.com/wso2/identity-apps/commit/af4229cf457aa21f612eadbe0dd4265bdbea167b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update My Account link hide logic
+
 ## 2.5.4
 
 ### Patch Changes
