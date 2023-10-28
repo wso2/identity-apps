@@ -245,8 +245,6 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
             return;
         }
 
-
-        debugger
         dispatch(addAlert<AlertInterface>({
             description: t("extensions:develop.branding.notifications.fetch.genericError.description",
                 { tenant: tenantDomain }),
