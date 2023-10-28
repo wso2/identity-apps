@@ -146,6 +146,9 @@ const useSignIn = (): UseSignInInterface => {
             orgType = OrganizationType.TENANT;
         }
 
+        // TODO: Remove this once the hasRequiredScopes() function is moved as a hook.
+        window["AppUtils"].updateOrganizationType(orgType);
+
         dispatch(setOrganizationType(orgType));
         dispatch(setUserOrganizationId(userOrganizationId));
 
