@@ -42,10 +42,10 @@ function loadUserConfig(configFile: string, callback: (responseText: string | nu
     }
 }
 
-function extend(...args) {
+function extend(...args: any[]) {
     args = args || [];
 
-    for (let i = 1; i < args.length; i++) {
+    for (let i: number = 1; i < args.length; i++) {
         if (!args[i])
             continue;
 
