@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -102,7 +102,11 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             dispatchEvent(event);
 
-            const tenantDomain: string = AuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
+            let tenantDomain: string = AuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
+
+            if (tenantDomain === "Super") {
+                tenantDomain = "carbon.super";
+            }
 
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
@@ -133,47 +137,58 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
             // Update post_logout_redirect_uri of logout_url with tenant qualified url
-            if (sessionStorage.getItem(LOGOUT_URL)) {
-                logoutUrl = sessionStorage.getItem(LOGOUT_URL);
+            if (window[ "AppUtils" ].getConfig().isSaas) {
+                if (sessionStorage.getItem(LOGOUT_URL)) {
+                    logoutUrl = sessionStorage.getItem(LOGOUT_URL);
 
-                // If there is a base name, replace the `post_logout_redirect_uri` with the tenanted base name.
-                if (window[ "AppUtils" ].getConfig().appBase) {
-                    logoutUrl = logoutUrl.replace(
-                        window[ "AppUtils" ].getAppBase(),
-                        window[ "AppUtils" ].getAppBaseWithTenant()
-                    );
-                    logoutRedirectUrl = window[ "AppUtils" ]
-                        .getConfig()
-                        .logoutCallbackURL.replace(
+                    // If there is a base name, replace the `post_logout_redirect_uri` with the tenanted base name.
+                    if (window[ "AppUtils" ].getConfig().appBase) {
+                        logoutUrl = logoutUrl.replace(
                             window[ "AppUtils" ].getAppBase(),
                             window[ "AppUtils" ].getAppBaseWithTenant()
                         );
-                } else {
-                    logoutUrl = logoutUrl.replace(
-                        window[ "AppUtils" ].getConfig().logoutCallbackURL,
-                        window[ "AppUtils" ].getConfig().clientOrigin + window[ "AppUtils" ].getConfig().routes.login
-                    );
-                    logoutRedirectUrl =
-                        window[ "AppUtils" ].getConfig().clientOrigin + window[ "AppUtils" ].getConfig().routes.login;
+                        logoutRedirectUrl = window[ "AppUtils" ]
+                            .getConfig()
+                            .logoutCallbackURL.replace(
+                                window[ "AppUtils" ].getAppBase(),
+                                window[ "AppUtils" ].getAppBaseWithTenant()
+                            );
+                    } else {
+                        logoutUrl = logoutUrl.replace(
+                            window[ "AppUtils" ].getConfig().logoutCallbackURL,
+                            window[ "AppUtils" ].getConfig().clientOrigin +
+                        window[ "AppUtils" ].getConfig().routes.login
+                        );
+                        logoutRedirectUrl =
+                        window[ "AppUtils" ].getConfig().clientOrigin +
+                        window[ "AppUtils" ].getConfig().routes.login;
+                    }
+
+                    // If an override URL is defined in config, use that instead.
+                    if (
+                        window[ "AppUtils" ].getConfig().idpConfigs?.logoutEndpointURL
+                    ) {
+                        logoutUrl = resolveIdpURLSAfterTenantResolves(
+                            logoutUrl,
+                            window[ "AppUtils" ].getConfig().idpConfigs
+                                .logoutEndpointURL
+                        );
+                    }
+
+                    // If super tenant proxy is configured, logout url is updated with the 
+                    // configured super tenant proxy.
+                    if (window[ "AppUtils" ].getConfig().superTenantProxy) {
+                        logoutUrl = logoutUrl.replace(
+                            window[ "AppUtils" ].getConfig().superTenant,
+                            window[ "AppUtils" ].getConfig().superTenantProxy
+                        );
+                    }
+
+                    sessionStorage.setItem(LOGOUT_URL, logoutUrl);
                 }
 
-                // If an override URL is defined in config, use that instead.
-                if (window[ "AppUtils" ].getConfig().idpConfigs?.logoutEndpointURL) {
-                    logoutUrl = resolveIdpURLSAfterTenantResolves(
-                        logoutUrl,
-                        window[ "AppUtils" ].getConfig().idpConfigs.logoutEndpointURL
-                    );
-                }
-
-                // If super tenant proxy is configured, logout url is updated with the configured super tenant proxy.
-                if (window[ "AppUtils" ].getConfig().superTenantProxy) {
-                    logoutUrl = logoutUrl.replace(
-                        window[ "AppUtils" ].getConfig().superTenant,
-                        window[ "AppUtils" ].getConfig().superTenantProxy
-                    );
-                }
-
-                sessionStorage.setItem(LOGOUT_URL, logoutUrl);
+            } else {
+                logoutUrl = window[ "AppUtils" ].getConfig().idpConfigs?.logoutEndpointURL;
             }
 
             getDecodedIDToken()

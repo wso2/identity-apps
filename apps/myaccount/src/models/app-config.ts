@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -199,4 +199,34 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * Configs of the Console app.
      */
     consoleApp: ExternalAppConfigInterface;
+}
+
+export interface AppUtilsInterface {
+    constructAppBaseNameForHistoryAPI: () => string;
+    constructAppPaths: (path: string) => string;
+    constructRedirectURLs: (url: string) => string;
+    getAppBase: () => string;
+    getAppBaseWithTenant: () => string;
+    getConfig: () => any;
+    getLocationPathWithoutTenant: () => string;
+    getSuperTenant: () => string;
+    getSuperTenantProxy: () => string;
+    getTenantName: (fromLocation?: boolean) => string;
+    getTenantPath: (skipSuperTenant?: boolean) => string;
+    getTenantPrefix: () => string;
+    getTenantResolutionStrategy: () => string;
+    init: (Args: any) => void;
+    isSaas: () => boolean;
+    isSuperTenant: () => boolean;
+    resolveIdpConfigs: () => any;
+    resolveURLs: () => any;
+    updateTenantQualifiedBaseName: (tenant: string) => void;
+}
+
+export interface InitialConfigInterface {
+    consoleAppOrigin: string;
+    contextPath: string;
+    serverOrigin: string;
+    superTenant: string;
+    tenantPrefix: string;
 }

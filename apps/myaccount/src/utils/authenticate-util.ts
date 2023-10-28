@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,7 +28,7 @@ export const useEndUserSession = (): () => Promise<boolean> => {
     const { revokeAccessToken, on } = useAuthContext();
 
     on(Hooks.RevokeAccessToken, async () => {
-        const LOGOUT_URL = "sign_out_url";
+        const LOGOUT_URL: string = "sign_out_url";
 
         if (sessionStorage.getItem(LOGOUT_URL)) {
             location.href = sessionStorage.getItem(LOGOUT_URL);
@@ -46,7 +46,7 @@ export const useEndUserSession = (): () => Promise<boolean> => {
  * @returns boolean
  */
 export const hasLoginPermission = (): boolean => {
-    const scopes = store.getState().authenticate.scope.split(" ");
+    const scopes: string = store.getState().authenticate.scope.split(" ");
 
     return scopes.includes(TokenConstants.LOGIN_SCOPE);
 };
@@ -57,7 +57,7 @@ export const hasLoginPermission = (): boolean => {
  * @returns boolean
  */
 export const hasScope = (scope: string): boolean => {
-    const scopes = store.getState().authenticationInformation.scope;
+    const scopes: string = store.getState().authenticationInformation.scope;
 
     return scopes.includes(scope);
 };
@@ -70,8 +70,8 @@ export const hasScope = (scope: string): boolean => {
  * @returns string[]
  */
 const resolveBaseUrls = (): string[] => {
-    let baseUrls = window["AppUtils"]?.getConfig().idpConfigs?.baseUrls;
-    const serverOrigin = window["AppUtils"]?.getConfig().serverOrigin;
+    let baseUrls: string[] = window["AppUtils"]?.getConfig().idpConfigs?.baseUrls;
+    const serverOrigin: string = window["AppUtils"]?.getConfig().serverOrigin;
 
     if (baseUrls) {
         // If the server origin is not specified in the overridden config, append it.
@@ -114,9 +114,7 @@ export const getAuthInitializeConfig = (): AuthReactConfig => {
         process.env.NODE_ENV === "production" ? ResponseMode.formPost : ResponseMode.query;
 
     return {
-        baseUrl:
-            window["AppUtils"]?.getConfig().idpConfigs?.serverOrigin ??
-            window[ "AppUtils"]?.getConfig().idpConfigs.serverOrigin,
+        baseUrl: window["AppUtils"]?.getConfig()?.serverOriginWithTenant,
         checkSessionInterval: window["AppUtils"]?.getConfig()?.session?.checkSessionInterval,
         clientHost: window["AppUtils"]?.getConfig().clientOriginWithTenant,
         clientID: window["AppUtils"]?.getConfig().clientID,
@@ -139,6 +137,7 @@ export const getAuthInitializeConfig = (): AuthReactConfig => {
         sessionRefreshInterval: window["AppUtils"]?.getConfig()?.session?.sessionRefreshTimeOut,
         signInRedirectURL: window["AppUtils"]?.getConfig().loginCallbackURL,
         signOutRedirectURL: window["AppUtils"]?.getConfig().loginCallbackURL,
-        storage: resolveStorage() as Storage.WebWorker
+        storage: resolveStorage() as Storage.WebWorker,
+        ...window["AppUtils"]?.getConfig().idpConfigs
     };
 };
