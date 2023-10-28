@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.5.4
+
+### Patch Changes
+
+- [#4421](https://github.com/wso2/identity-apps/pull/4421) [`9735df9176`](https://github.com/wso2/identity-apps/commit/9735df9176ddce1ff832b96028ff3ae8126291d8) Thanks [@brionmario](https://github.com/brionmario)! - Fix first level breadcrumb switch
+
 ## 2.5.3
 
 ### Patch Changes
