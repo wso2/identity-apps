@@ -245,7 +245,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
         AuthenticatorLabels.PASSKEY
     ],
     filterFidoTags: (tags: string[]): string[] => {
-        return tags.filter((tag: string) => 
+        return tags.filter((tag: string) =>
             tag === AuthenticatorLabels.PASSWORDLESS || tag === AuthenticatorLabels.PASSKEY);
     },
     generalDetailsForm: {
@@ -265,7 +265,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
     },
     jitProvisioningSettings: {
         enableAssociateLocalUserField: {
-            show: !!window[ "AppUtils" ].getConfig().organizationName
+            show: !!window[ "AppUtils" ]?.getConfig()?.organizationName
         },
         enableJitProvisioningField: {
             show: true
