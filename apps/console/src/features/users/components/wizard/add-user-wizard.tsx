@@ -1412,11 +1412,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 closeOnEscape
             >
                 <Modal.Header className="wizard-header">
-                    {
-                        wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName
-                            ? " - " + wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName
-                            : ""
-                    }
                     { resolveWizardTitle() }
                     <Heading as="h6">
                         { resolveWizardSubHeading() }
