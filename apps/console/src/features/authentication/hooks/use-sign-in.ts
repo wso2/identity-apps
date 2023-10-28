@@ -184,6 +184,8 @@ const useSignIn = (): UseSignInInterface => {
                 // This is to make sure the endpoints are generated with the organization path.
                 await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
 
+                console.log(Config.getServiceResourceEndpoints());
+
                 // Sets the resource endpoints in the context.
                 setResourceEndpoints(Config.getServiceResourceEndpoints() as any);
 
@@ -283,9 +285,12 @@ const useSignIn = (): UseSignInInterface => {
             }
         }
 
+        // FIXME: Skipping /o/ appending from the `getServiceResourceEndpoints` level seems to be not working.
+        const wellKnownEndpoint: string = Config.getServiceResourceEndpoints().wellKnown.replace("/o/", "/");
+
         // Set configurations related to hostname branding.
         axios
-            .get(Config.getServiceResourceEndpoints().wellKnown)
+            .get(wellKnownEndpoint)
             .then((response: AxiosResponse) => {
                 // Use token endpoint to extract the host url.
                 const splitted: string[] = response?.data?.token_endpoint?.split("/") ?? [];

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,11 +16,13 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import useSWR, { SWRConfiguration, SWRResponse } from "swr";
+import { FetcherResponse } from "swr/dist/types";
 
-const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
+    .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 export type GetRequest = AxiosRequestConfig | null
 
@@ -93,35 +95,36 @@ export interface SWRConfig<Data = unknown, Error = unknown>
 
 const globalConfig: SWRConfiguration = {};
 
-export default function useRequest<Data = unknown, Error = unknown>(
+const useRequest = <Data = unknown, Error = unknown>(
     request: GetRequest,
     { attachToken, fallbackData, ...config }: SWRConfig<Data, Error> = {}
-): RequestResultInterface<Data, Error> {
+): RequestResultInterface<Data, Error> => {
 
-    const _config = {
+    const _config: SWRConfiguration = {
         ...globalConfig,
         ...config
     };
 
-    const {
-        data: response,
-        error,
-        isValidating,
-        mutate
-    } = useSWR<AxiosResponse<Data>, AxiosError<Error>>(
+    const { data: response, error, isValidating, mutate } = useSWR<AxiosResponse<Data>, AxiosError<Error>>(
         request && JSON.stringify(request),
         /**
          * NOTE: Typescript thinks `request` can be `null` here, but the fetcher
          * function is actually only called by `useSWR` when it isn't.
          */
         () =>
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            attachToken === undefined ? httpClient(request!) : ( attachToken ? httpClient(request!) : axios(request!) ),
+            (attachToken === undefined
+                ? httpClient(request)
+                : attachToken
+                    ? httpClient(request)
+                    : axios(request)) as FetcherResponse<AxiosResponse<Data>>,
         {
-            // Revalidates data on document focus.
+            // Re-validates data on document focus.
             // Sends unnecessary request so disabling globally.
             // If needed, can pass in as a special option for selected requests.
             revalidateOnFocus: false,
+            // SWR retries error requests by default, which casuses the UI alert to show multiple times.
+            // There's no real requirement to retry REST API calls, so disabling globally.
+            shouldRetryOnError: false,
             ..._config,
             fallbackData: fallbackData && {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -141,4 +144,6 @@ export default function useRequest<Data = unknown, Error = unknown>(
         mutate,
         response
     };
-}
+};
+
+export default useRequest;
