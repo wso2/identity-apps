@@ -69,10 +69,10 @@ const LOGOUT_URL: string = "sign_out_url";
 export type UseSignInInterface = {
     onSignIn: (
         response: BasicUserInfo,
+        updateOrgPaths: boolean,
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
         onAppReady: () => void,
-        updateOrgPaths: boolean,
         _isFirstLevelOrg?: boolean,
     ) => Promise<void>;
 };
@@ -97,10 +97,10 @@ const useSignIn = (): UseSignInInterface => {
 
     const onSignIn = async (
         response: BasicUserInfo,
+        updateOrgPaths: boolean,
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
         onAppReady: () => void,
-        updateOrgPaths: boolean,
         _isFirstLevelOrg?: boolean
     ): Promise<void> => {
         let logoutUrl: string;
@@ -154,6 +154,14 @@ const useSignIn = (): UseSignInInterface => {
         }
 
         dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
+        
+        // Update the organization name with the newly resolved org.
+        if (updateOrgPaths) {
+            window["AppUtils"].updateOrganizationName(orgIdIdToken);
+        } else {
+            // Update the app base name with the newly resolved tenant.
+            window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
+        }
 
         if (window["AppUtils"].getConfig().organizationName || isFirstLevelOrg) {
             // We are actually getting the orgId here rather than orgName
@@ -199,14 +207,6 @@ const useSignIn = (): UseSignInInterface => {
         }
 
         dispatch(setGetOrganizationLoading(false));
-
-        // Update the organization name with the newly resolved org.
-        if (updateOrgPaths) {
-            window["AppUtils"].updateOrganizationName(orgIdIdToken);
-        } else {
-            // Update the app base name with the newly resolved tenant.
-            window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
-        }
 
         // Update the endpoints with tenant path.
         await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));

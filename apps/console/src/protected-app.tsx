@@ -149,10 +149,10 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
             await onSignIn(
                 response,
+                false,
                 () => null,
                 (idToken: DecodedIDTokenPayload) => loginSuccessRedirect(idToken),
-                () => setRenderApp(true),
-                false
+                () => setRenderApp(true)
             );
         });
     }, []);
@@ -235,7 +235,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         }
 
         filterRoutes(() => setRoutesFiltered(true), isFirstLevelOrg);
-    }, [ filterRoutes, governanceConnectors, isAuthenticated ]);
+    }, [ filterRoutes, governanceConnectors, isAuthenticated, isFirstLevelOrg ]);
 
     useEffect(() => {
         const error: string = new URLSearchParams(location.search).get(

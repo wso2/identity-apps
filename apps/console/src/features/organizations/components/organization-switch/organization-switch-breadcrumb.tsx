@@ -39,7 +39,6 @@ import useSignIn from "../../../authentication/hooks/use-sign-in";
 import useAuthorization from "../../../authorization/hooks/use-authorization";
 import { AppConstants, AppState } from "../../../core";
 import { history } from "../../../core/helpers/history";
-import useRoutes from "../../../core/hooks/use-routes";
 import TenantDropdown from "../../../tenants/components/dropdown/tenant-dropdown";
 import { useGetOrganizationBreadCrumb } from "../../api";
 import { useGetOrganizationType } from "../../hooks/use-get-organization-type";
@@ -59,8 +58,6 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     props: OrganizationSwitchDropdownInterface
 ): ReactElement => {
     const { "data-componentid": componentId } = props;
-
-    const { filterRoutes } = useRoutes();
 
     const { onSignIn } = useSignIn();
 
@@ -98,7 +95,12 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         );
     }, [ isFirstLevelOrg, orgType, tenantDomain ]);
 
-    const { data: breadcrumbList, error, isLoading, mutate: mutateBreadcrumbList } = useGetOrganizationBreadCrumb(
+    const {
+        data: breadcrumbList,
+        error,
+        isLoading,
+        mutate: mutateOrganizationBreadCrumbFetchRequest
+    } = useGetOrganizationBreadCrumb(
         shouldSendRequest
     );
 
@@ -165,13 +167,25 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         }
 
         let response: BasicUserInfo = null;
+        const isFirstLevelOrganization: boolean = breadcrumbList[0].id === organization.id;
 
         try {
             response = await switchOrganization(organization.id);
-            await onSignIn(response, () => null, () => null, () => null, true, false);
-            await filterRoutes(() => null, false);
+            await onSignIn(
+                response,
+                true,
+                () => null,
+                () => {
+                    // If first level org, remove the `/o/` path from the location.
+                    if (isFirstLevelOrganization) {
+                        window["AppUtils"].updateOrganizationName("");
+                    }
+                },
+                () => null,
+                isFirstLevelOrganization
+            );
 
-            mutateBreadcrumbList();
+            mutateOrganizationBreadCrumbFetchRequest();
             history.push(AppConstants.getPaths().get("GETTING_STARTED"));
         } catch(e) {
             // TODO: Handle error

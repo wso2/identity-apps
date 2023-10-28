@@ -56,7 +56,6 @@ import {
     history
 } from "../../core";
 import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
-import useRoutes from "../../core/hooks/use-routes";
 import { deleteOrganization, useGetOrganizationBreadCrumb } from "../api";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
@@ -162,8 +161,6 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
     const dispatch: Dispatch = useDispatch();
 
-    const { filterRoutes } = useRoutes();
-
     const { onSignIn } = useSignIn();
 
     const { switchOrganization } = useOrganizationSwitch();
@@ -192,7 +189,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
         );
     }, [ isFirstLevelOrg, tenantDomain ]);
 
-    const { data: breadcrumbList } = useGetOrganizationBreadCrumb(
+    const { data: breadcrumbList, mutate: mutateOrganizationBreadCrumbFetchRequest } = useGetOrganizationBreadCrumb(
         shouldSendRequest
     );
 
@@ -332,10 +329,10 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
         try {
             response = await switchOrganization(organization.id);
-            await onSignIn(response, () => null, () => null, () => null, true, false);
-            await filterRoutes(() => null, false);
+            await onSignIn(response, true, () => null, () => null, () => null, false);
 
             onListMutate();
+            mutateOrganizationBreadCrumbFetchRequest();
             history.push(AppConstants.getPaths().get("GETTING_STARTED"));
         } catch(e) {
             // TODO: Handle error
