@@ -189,7 +189,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             sectorIdentifierURI: undefined
         };
 
-        if (values.sectorIdentifierURI && !URLUtils.isHttpsUrl(values.sectorIdentifierURI)) {
+        if (values?.sectorIdentifierURI && !URLUtils.isHttpsUrl(values.sectorIdentifierURI)) {
             errors.sectorIdentifierURI= t("console:develop.features.applications.forms.advancedAttributeSettings" +
                 ".sections.subject.fields.sectorIdentifierURI.validations.invalid");
         }
@@ -352,7 +352,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         }
                         required={ claimMappingOn }
                         value={ selectedSubjectValue }
-                        children={ dropDownOptions }
+                        options={ dropDownOptions }
                         hidden={
                             onlyOIDCConfigured &&
                             !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute
@@ -509,7 +509,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         }
                         required={ claimMappingOn }
                         value={ initialRole?.claim?.uri }
-                        children={ dropDownOptions }
+                        options={ dropDownOptions }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-role-attribute-dropdown` }
                         hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute }
