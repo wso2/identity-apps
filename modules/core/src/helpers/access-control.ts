@@ -79,7 +79,6 @@ export const hasRequiredScopes = (
     const windowLegacyAuthzRuntime: boolean = window["AppUtils"]?.getConfig()?.legacyAuthzRuntime;
 
     if (scopes instanceof Array) {
-        // if (!windowLegacyAuthzRuntime && windowOrgType === OrganizationType.SUBORGANIZATION) {
         if (!windowLegacyAuthzRuntime && windowOrgType === OrganizationType.SUBORGANIZATION) {
             /**
              * If the organization type is `SUBORGANIZATION`, the `internal_` scopes should be replaced with
