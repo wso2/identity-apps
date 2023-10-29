@@ -5286,6 +5286,7 @@ export interface ConsoleNS {
                             };
                             permissions: string;
                             roleName: string;
+                            roles: string;
                             users: string;
                             groups: string;
                         };

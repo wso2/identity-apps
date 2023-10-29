@@ -169,6 +169,8 @@ export interface RolesV2Interface {
     meta: {
         location: string;
     };
+    permissions?: string[];
+    schemas?: string[];
 }
 
 /**

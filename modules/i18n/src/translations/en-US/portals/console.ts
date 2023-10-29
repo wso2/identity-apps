@@ -10214,6 +10214,7 @@ export const console: ConsoleNS = {
                             groups: "Assigned Group(s)",
                             permissions: "Permission(s)",
                             roleName: "{{type}} Name",
+                            roles: "Assigned Role(s)",
                             users: "Assigned User(s)"
                         }
                     },

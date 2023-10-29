@@ -419,6 +419,20 @@ export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Pr
 };
 
 /**
+ * Update roles for given role IDs.
+ * 
+ * @param roleIds - Ids of the Roles to be updated
+ * @returns `Promise<APIResourceInterface[]>`
+ * @throws `IdentityAppsApiException`
+ */
+export const updateRolesBulk = (roleIds: string[], roleData: PatchRoleDataInterface): Promise<any[]> => {
+    // send the request for each ID and return the response.
+    return Promise.all(roleIds.map((roleId: string) => {
+        return updateRole(roleId, roleData);
+    }));
+};
+
+/**
  * Retrieve the list of groups that are currently in the system.
  * TODO: Return `response.data` rather than `response` and stop returning any.
  *
