@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.5.8
+
+### Patch Changes
+
+- [#4433](https://github.com/wso2/identity-apps/pull/4433) [`291603ff8b`](https://github.com/wso2/identity-apps/commit/291603ff8ba43429a058ef311fb3620c2330a1ca) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix deployment.config template issue
+
+* [#4429](https://github.com/wso2/identity-apps/pull/4429) [`37091bbce7`](https://github.com/wso2/identity-apps/commit/37091bbce7a491f281728f4575560214e9ed9675) Thanks [@Achintha444](https://github.com/Achintha444)! - update `hasRequiredScopes` function
+
+* Updated dependencies [[`37091bbce7`](https://github.com/wso2/identity-apps/commit/37091bbce7a491f281728f4575560214e9ed9675)]:
+  - @wso2is/core@2.0.10
+
 ## 2.5.7
 
 ### Patch Changes
