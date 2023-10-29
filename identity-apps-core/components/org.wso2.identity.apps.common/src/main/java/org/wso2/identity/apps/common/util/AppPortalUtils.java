@@ -161,6 +161,7 @@ public class AppPortalUtils {
      * @param consumerSecret Consumer secret.
      * @param portalPath     Portal path.
      * @throws IdentityApplicationManagementException IdentityApplicationManagementException.
+     * @deprecated use {@link #createApplication(String, String, String, String, String, String, int, String)}} instead.
      */
     public static void createApplication(String appName, String appOwner, String appDescription, String consumerKey,
                                          String consumerSecret, String tenantDomain, String portalPath)
@@ -265,10 +266,17 @@ public class AppPortalUtils {
                 }
             }
             try {
-                AppsCommonDataHolder.getInstance().getOrgApplicationManager().shareOrganizationApplication(organizationId
-                    , consoleAppId, true, Collections.emptyList());
+                PrivilegedCarbonContext.startTenantFlow();
+                PrivilegedCarbonContext privilegedCarbonContext = PrivilegedCarbonContext.getThreadLocalCarbonContext();
+                privilegedCarbonContext.setTenantId(tenantId);
+                privilegedCarbonContext.setTenantDomain(tenantDomain);
+                AppsCommonDataHolder.getInstance().getOrgApplicationManager()
+                    .shareOrganizationApplication(organizationId, consoleAppId, true,
+                        Collections.emptyList());
             } catch (OrganizationManagementException e) {
                 throw new IdentityApplicationManagementException("Failed to share system application.", e);
+            } finally {
+                PrivilegedCarbonContext.endTenantFlow();
             }
         }
     }
@@ -357,7 +365,7 @@ public class AppPortalUtils {
                     throw e;
                 }
                 AppPortalUtils.createApplication(appPortal.getName(), adminUsername, appPortal.getDescription(),
-                    consumerKey, consumerSecret, tenantDomain, appPortal.getPath());
+                    consumerKey, consumerSecret, tenantDomain, tenantId, appPortal.getPath());
             }
         }
     }

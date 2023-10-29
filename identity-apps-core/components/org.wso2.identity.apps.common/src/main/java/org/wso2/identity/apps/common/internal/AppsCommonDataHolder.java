@@ -20,7 +20,6 @@ import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 import org.wso2.carbon.identity.organization.management.application.OrgApplicationManager;
 import org.wso2.carbon.identity.organization.management.service.OrganizationManagementInitialize;
-import org.wso2.carbon.identity.organization.management.service.OrganizationManager;
 import org.wso2.carbon.user.core.service.RealmService;
 
 import java.util.HashSet;
@@ -133,21 +132,41 @@ public class AppsCommonDataHolder {
         }
     }
 
+    /**
+     * Get organization management application manager.
+     *
+     * @return OrgApplicationManager.
+     */
     public OrgApplicationManager getOrgApplicationManager() {
 
         return orgApplicationManager;
     }
 
+    /**
+     * Set organization management application manager.
+     *
+     * @param orgApplicationManager OrgApplicationManager.
+     */
     public void setOrgApplicationManager(OrgApplicationManager orgApplicationManager) {
 
         this.orgApplicationManager = orgApplicationManager;
     }
 
+    /**
+     * Get realm service.
+     *
+     * @return RealmService.
+     */
     public RealmService getRealmService() {
 
         return realmService;
     }
 
+    /**
+     * Set realm service.
+     *
+     * @param realmService RealmService.
+     */
     public void setRealmService(RealmService realmService) {
 
         this.realmService = realmService;
