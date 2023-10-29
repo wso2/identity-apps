@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.35
+
+### Patch Changes
+
+- [#4440](https://github.com/wso2/identity-apps/pull/4440) [`27c7e8eed1`](https://github.com/wso2/identity-apps/commit/27c7e8eed1f2e46d11f519f130995fe7997e569c) Thanks [@thanujalk](https://github.com/thanujalk)! - Make console b2b
+
 ## 2.0.34
 
 ### Patch Changes
