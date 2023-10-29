@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.0.10
+
+### Patch Changes
+
+- [#4429](https://github.com/wso2/identity-apps/pull/4429) [`37091bbce7`](https://github.com/wso2/identity-apps/commit/37091bbce7a491f281728f4575560214e9ed9675) Thanks [@Achintha444](https://github.com/Achintha444)! - update `hasRequiredScopes` function
+
 ## 2.0.9
 
 ### Patch Changes
