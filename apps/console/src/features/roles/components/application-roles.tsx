@@ -25,6 +25,7 @@ import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormGroup from "@oxygen-ui/react/FormGroup";
 import Radio from "@oxygen-ui/react/Radio";
 import TextField from "@oxygen-ui/react/TextField";
+import { OrganizationType } from "@wso2is/common";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -54,6 +55,7 @@ import { ApplicationInterface } from "../../applications/models";
 import {
     history
 } from "../../core";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getApplicationRolesByAudience } from "../api/roles";
 import { RoleAudienceTypes } from "../constants/role-constants";
 import {
@@ -92,6 +94,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const { t } = useTranslation();
     const dispatch: Dispatch<any> = useDispatch();
     const { getLink } = useDocumentation();
+    const orgType: OrganizationType = useGetOrganizationType();
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -112,8 +115,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const path: string[] = history.location.pathname.split("/");
     const appId: string = path[path.length - 1].split("#")[0];
 
-    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
-    const isReadOnly: boolean = !!isSubOrg;
+    const isReadOnly: boolean = orgType === OrganizationType.SUBORGANIZATION;
 
     /**
      * Fetch application roles on component load and audience switch.
