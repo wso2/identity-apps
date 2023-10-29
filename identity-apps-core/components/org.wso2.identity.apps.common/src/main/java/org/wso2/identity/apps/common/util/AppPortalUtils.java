@@ -37,11 +37,15 @@ import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
 import org.wso2.carbon.identity.oauth.OAuthUtil;
 import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
 import org.wso2.carbon.identity.oauth2.OAuth2Constants;
+import org.wso2.carbon.identity.organization.management.service.constant.OrganizationManagementConstants;
+import org.wso2.carbon.identity.organization.management.service.exception.OrganizationManagementException;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
+import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.identity.apps.common.internal.AppsCommonDataHolder;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -162,6 +166,33 @@ public class AppPortalUtils {
                                          String consumerSecret, String tenantDomain, String portalPath)
         throws IdentityApplicationManagementException {
 
+        RealmService realmService = AppsCommonDataHolder.getInstance().getRealmService();
+        int tenantId;
+        try {
+            tenantId = realmService.getTenantManager().getTenantId(tenantDomain);
+        } catch (org.wso2.carbon.user.api.UserStoreException e) {
+            throw new IdentityApplicationManagementException("Failed to retrieve tenant id for tenant domain: "
+                + tenantDomain, e);
+        }
+        createApplication(appName, appOwner, appDescription, consumerKey, consumerSecret, tenantDomain, tenantId,
+            portalPath);
+    }
+
+    /**
+     * Create portal SaaS application.
+     *
+     * @param appName        Application name.
+     * @param appOwner       Application owner.
+     * @param appDescription Application description.
+     * @param consumerKey    Consumer key.
+     * @param consumerSecret Consumer secret.
+     * @param portalPath     Portal path.
+     * @throws IdentityApplicationManagementException IdentityApplicationManagementException.
+     */
+    public static void createApplication(String appName, String appOwner, String appDescription, String consumerKey,
+                                         String consumerSecret, String tenantDomain, int tenantId, String portalPath)
+        throws IdentityApplicationManagementException {
+
         ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setApplicationName(appName);
         serviceProvider.setDescription(appDescription);
@@ -216,8 +247,30 @@ public class AppPortalUtils {
         claimConfig.setLocalClaimDialect(true);
         serviceProvider.setClaimConfig(claimConfig);
 
-        AppsCommonDataHolder.getInstance().getApplicationManagementService()
+        String consoleAppId = AppsCommonDataHolder.getInstance().getApplicationManagementService()
             .createApplication(serviceProvider, tenantDomain, appOwner);
+
+        if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+            RealmService realmService = AppsCommonDataHolder.getInstance().getRealmService();
+            String organizationId;
+            if (SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
+                organizationId = OrganizationManagementConstants.SUPER_ORG_ID;
+            } else {
+                try {
+                    organizationId = realmService.getTenantManager().getTenant(tenantId)
+                        .getAssociatedOrganizationUUID();
+                } catch (org.wso2.carbon.user.api.UserStoreException e) {
+                    throw new IdentityApplicationManagementException("Failed to organization id for tenant domain: "
+                        + tenantDomain, e);
+                }
+            }
+            try {
+                AppsCommonDataHolder.getInstance().getOrgApplicationManager().shareOrganizationApplication(organizationId
+                    , consoleAppId, true, Collections.emptyList());
+            } catch (OrganizationManagementException e) {
+                throw new IdentityApplicationManagementException("Failed to share system application.", e);
+            }
+        }
     }
 
     /**
