@@ -294,21 +294,21 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                        <Grid.Column width={ 10 }>
-                            <Heading as="h5">
+                        <Grid.Column width={ 16 }>
+                            <Heading as="h5" className="mb-2">
                                 { t("extensions:develop.applications.edit.sections.rolesV2.roleAudience") }
                             </Heading>
-                            <FormGroup className="additional-behaviors">
+                            <FormGroup>
                                 <FormControlLabel
                                     checked={ roleAudience === RoleAudienceTypes.ORGANIZATION }
-                                    control={ <Radio /> }
+                                    control={ <Radio size="small"/> }
                                     onChange={ () => promptAudienceSwitchWarning(RoleAudienceTypes.ORGANIZATION) }
                                     label={ t("extensions:develop.applications.edit.sections.rolesV2.organization") }
                                     data-componentid={ `${ componentId }-organization-audience-checkbox` }
                                 />
                                 <FormControlLabel
                                     checked={ roleAudience === RoleAudienceTypes.APPLICATION }
-                                    control={ <Radio /> }
+                                    control={ <Radio size="small" /> }
                                     onChange={ () => promptAudienceSwitchWarning(RoleAudienceTypes.APPLICATION) }
                                     label={ t("extensions:develop.applications.edit.sections.rolesV2.application") }
                                     data-componentid={ `${ componentId }-application-audience-checkbox` }
@@ -316,8 +316,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                             </FormGroup>
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row className="p-0" verticalAlign="middle">
-                        <Grid.Column width={ 6 }>     
+                    <Grid.Row>
+                        <Grid.Column width={ 16 }>     
                             <Heading as="h5">
                                 { t("extensions:develop.applications.edit.sections.rolesV2.assignedRoles") }
                             </Heading>
@@ -336,9 +336,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     </Grid.Column>
                                 )
                         } */ }
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column width={ 10 }>
+                        <Grid.Column width={ 8 }>
                             <Autocomplete
                                 multiple
                                 disableCloseOnSelect
@@ -456,8 +454,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                             
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row columns={ 1 } className="mt-5">
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Grid.Row className="mt-4">
+                        <Grid.Column width={ 16 }>
                             <PrimaryButton
                                 size="small"
                                 loading={ isSubmitting }
