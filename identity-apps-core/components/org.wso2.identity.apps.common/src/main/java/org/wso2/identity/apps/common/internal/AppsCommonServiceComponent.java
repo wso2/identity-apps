@@ -35,8 +35,10 @@ import org.wso2.carbon.identity.application.mgt.listener.ApplicationMgtListener;
 import org.wso2.carbon.identity.core.util.IdentityCoreInitializedEvent;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 import org.wso2.carbon.identity.oauth.listener.OAuthApplicationMgtListener;
+import org.wso2.carbon.identity.organization.management.application.OrgApplicationManager;
 import org.wso2.carbon.identity.organization.management.service.OrganizationManagementInitialize;
 import org.wso2.carbon.stratos.common.listeners.TenantMgtListener;
+import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.identity.apps.common.listner.AppPortalApplicationMgtListener;
 import org.wso2.identity.apps.common.listner.AppPortalOAuthAppMgtListener;
 import org.wso2.identity.apps.common.listner.AppPortalTenantMgtListener;
@@ -184,6 +186,38 @@ public class AppsCommonServiceComponent {
             OrganizationManagementInitialize organizationManagementInitializeInstance) {
 
         AppsCommonDataHolder.getInstance().setOrganizationManagementEnabled(null);
+    }
+
+    @Reference(name = "organization.app.management.service",
+        service = OrgApplicationManager.class,
+        cardinality = ReferenceCardinality.MANDATORY,
+        policy = ReferencePolicy.DYNAMIC,
+        unbind = "unsetOrgApplicationManager")
+    protected void setOrgApplicationManager(OrgApplicationManager organizationManager) {
+
+        AppsCommonDataHolder.getInstance().setOrgApplicationManager(organizationManager);
+    }
+
+    protected void unsetOrgApplicationManager(OrgApplicationManager organizationManager) {
+
+        AppsCommonDataHolder.getInstance().setOrgApplicationManager(null);
+    }
+
+    @Reference(
+        name = "user.realm.service",
+        service = RealmService.class,
+        cardinality = ReferenceCardinality.MANDATORY,
+        policy = ReferencePolicy.DYNAMIC,
+        unbind = "unsetRealmService"
+    )
+    protected void setRealmService(RealmService realmService) {
+
+        AppsCommonDataHolder.getInstance().setRealmService(realmService);
+    }
+
+    protected void unsetRealmService(RealmService realmService) {
+
+        AppsCommonDataHolder.getInstance().setRealmService(null);
     }
 
     private boolean skipPortalInitialization() {

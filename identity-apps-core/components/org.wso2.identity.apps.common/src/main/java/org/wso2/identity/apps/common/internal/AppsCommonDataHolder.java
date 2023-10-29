@@ -18,7 +18,9 @@ package org.wso2.identity.apps.common.internal;
 
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
+import org.wso2.carbon.identity.organization.management.application.OrgApplicationManager;
 import org.wso2.carbon.identity.organization.management.service.OrganizationManagementInitialize;
+import org.wso2.carbon.user.core.service.RealmService;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,6 +35,10 @@ public class AppsCommonDataHolder {
     private ApplicationManagementService applicationManagementService;
 
     private OAuthAdminServiceImpl oAuthAdminService;
+
+    private OrgApplicationManager orgApplicationManager;
+
+    private RealmService realmService;
 
     private Set<String> systemAppConsumerKeys = new HashSet<>();
 
@@ -124,5 +130,45 @@ public class AppsCommonDataHolder {
         if (organizationManagementInitializeService != null) {
             isOrganizationManagementEnabled = organizationManagementInitializeService.isOrganizationManagementEnabled();
         }
+    }
+
+    /**
+     * Get organization management application manager.
+     *
+     * @return OrgApplicationManager.
+     */
+    public OrgApplicationManager getOrgApplicationManager() {
+
+        return orgApplicationManager;
+    }
+
+    /**
+     * Set organization management application manager.
+     *
+     * @param orgApplicationManager OrgApplicationManager.
+     */
+    public void setOrgApplicationManager(OrgApplicationManager orgApplicationManager) {
+
+        this.orgApplicationManager = orgApplicationManager;
+    }
+
+    /**
+     * Get realm service.
+     *
+     * @return RealmService.
+     */
+    public RealmService getRealmService() {
+
+        return realmService;
+    }
+
+    /**
+     * Set realm service.
+     *
+     * @param realmService RealmService.
+     */
+    public void setRealmService(RealmService realmService) {
+
+        this.realmService = realmService;
     }
 }
