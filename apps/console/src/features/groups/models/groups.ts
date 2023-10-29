@@ -36,6 +36,14 @@ export interface CreateGroupMemberInterface {
 }
 
 /**
+ * Interface to get User information related to create group api
+ */
+export interface CreateGroupUserInterface {
+    id: string;
+    userName?: string;
+}
+
+/**
  * Interface to store form data from create group wizard form.
  */
 export interface CreateGroupFormData {
@@ -92,6 +100,7 @@ export interface GroupsInterface {
     meta?: GroupsMetaInterface;
     members?: GroupsMemberInterface[];
     roles?: RolesMemberInterface[];
+    schemas?: string[];
 }
 
 /**

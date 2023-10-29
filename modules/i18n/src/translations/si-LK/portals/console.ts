@@ -8266,6 +8266,7 @@ export const console: ConsoleNS = {
                             groups: "පවරා ඇති කණ්ඩායම් (ය)",
                             permissions: "අවසර (ය)",
                             roleName: "{{type}} නම",
+                            roles: "පවරා ඇති භූමිකාව (ය)",
                             users: "පවරා ඇති පරිශීලකයින් (ය)"
                         }
                     },
