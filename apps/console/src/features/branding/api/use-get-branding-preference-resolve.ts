@@ -24,7 +24,12 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "../../core/hooks/use-request";
-import { BrandingPreferenceAPIResponseInterface, BrandingPreferenceTypes } from "../models/branding-preferences";
+import { OrganizationType } from "../../organizations/constants/organization-constants";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import {
+    BrandingPreferenceAPIResponseInterface,
+    BrandingPreferenceTypes
+} from "../models/branding-preferences";
 
 /**
  * Hook to get the branding preference via Branding Preferences API.
@@ -34,12 +39,17 @@ import { BrandingPreferenceAPIResponseInterface, BrandingPreferenceTypes } from 
  * @param locale - Resource Locale.
  * @returns `RequestResultInterface<Data, Error>`
  */
-const useGetBrandingPreferenceResolve = <Data = BrandingPreferenceAPIResponseInterface, 
+const useGetBrandingPreferenceResolve = <Data = BrandingPreferenceAPIResponseInterface,
     Error = RequestErrorInterface>(
         name: string,
         type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG,
         locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
     ): RequestResultInterface<Data, Error> => {
+    const organizationType: OrganizationType = useGetOrganizationType();
+
+    const tenantDomain: string = organizationType === OrganizationType.SUBORGANIZATION
+        ? store.getState()?.organization?.organization?.id
+        : name;
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -49,7 +59,7 @@ const useGetBrandingPreferenceResolve = <Data = BrandingPreferenceAPIResponseInt
         method: HttpMethods.GET,
         params: {
             locale,
-            name,
+            name: tenantDomain,
             type
         },
         url: `${store.getState().config.endpoints.brandingPreference}/resolve`

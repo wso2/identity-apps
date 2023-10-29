@@ -42,7 +42,6 @@ import { ThunkDispatch } from "redux-thunk";
 import useAuthorization from "../../authorization/hooks/use-authorization";
 import { Config } from "../../core/configs/app";
 import { AppConstants, CommonConstants } from "../../core/constants";
-import { MultitenantConstants } from "../../core/constants/multitenant-constants";
 import { DeploymentConfigInterface } from "../../core/models/config";
 import { AppState } from "../../core/store";
 import {
@@ -56,6 +55,7 @@ import {
 } from "../../core/store/actions/organization";
 import { OrganizationType } from "../../organizations/constants";
 import useOrganizationSwitch from "../../organizations/hooks/use-organization-switch";
+import useOrganizations from "../../organizations/hooks/use-organizations";
 import { getProfileInformation } from "../store/actions";
 import { AuthenticateUtils } from "../utils/authenticate-utils";
 
@@ -70,11 +70,9 @@ const LOGOUT_URL: string = "sign_out_url";
 export type UseSignInInterface = {
     onSignIn: (
         response: BasicUserInfo,
-        updateOrgPaths: boolean,
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
         onAppReady: () => void,
-        _isFirstLevelOrg?: boolean,
     ) => Promise<void>;
 };
 
@@ -96,13 +94,13 @@ const useSignIn = (): UseSignInInterface => {
 
     const { legacyAuthzRuntime }  = useAuthorization();
 
+    const { transformTenantDomain } = useOrganizations();
+
     const onSignIn = async (
         response: BasicUserInfo,
-        updateOrgPaths: boolean,
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
-        onAppReady: () => void,
-        _isFirstLevelOrg?: boolean
+        onAppReady: () => void
     ): Promise<void> => {
         let logoutUrl: string;
         let logoutRedirectUrl: string;
@@ -119,12 +117,9 @@ const useSignIn = (): UseSignInInterface => {
         const orgIdIdToken: string = idToken.org_id;
         const orgName: string = idToken.org_name;
         const userOrganizationId: string = idToken.user_org;
+        const isFirstLevelOrg: boolean = !idToken.user_org || idToken.user_org === idToken.org_id;
 
-        let tenantDomain: string = orgName;
-
-        if (tenantDomain === MultitenantConstants.SUPER_TENANT_DISPLAY_NAME) {
-            tenantDomain = MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
-        }
+        let tenantDomain: string = transformTenantDomain(orgName);
 
         if (legacyAuthzRuntime) {
             tenantDomain = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
@@ -136,38 +131,26 @@ const useSignIn = (): UseSignInInterface => {
 
         let orgType: OrganizationType;
 
-        if (window["AppUtils"].getConfig().organizationName) {
-            orgType = OrganizationType.SUBORGANIZATION;
-        } else if (tenantDomain === AppConstants.getSuperTenant()) {
-            orgType = OrganizationType.SUPER_ORGANIZATION;
-        } else if (orgIdIdToken) {
-            orgType = OrganizationType.FIRST_LEVEL_ORGANIZATION;
-        } else {
-            orgType = OrganizationType.TENANT;
-        }
-
-        // TODO: Remove this once the hasRequiredScopes() function is moved as a hook.
-        window["AppUtils"].updateOrganizationType(orgType);
-
-        dispatch(setOrganizationType(orgType));
-        dispatch(setUserOrganizationId(userOrganizationId));
-
-        let isFirstLevelOrg: boolean = !window["AppUtils"].getConfig().organizationName && !!orgIdIdToken;
-
-        // TODO: Redux store async issue here. Fix this properly.
-        if (_isFirstLevelOrg === false) {
-            isFirstLevelOrg = false;
-        }
-
-        dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
-        
         // Update the organization name with the newly resolved org.
-        if (updateOrgPaths) {
+        if (!isFirstLevelOrg) {
             window["AppUtils"].updateOrganizationName(orgIdIdToken);
         } else {
             // Update the app base name with the newly resolved tenant.
             window[ "AppUtils" ].updateTenantQualifiedBaseName(tenantDomain);
         }
+
+        if (isFirstLevelOrg && tenantDomain === AppConstants.getSuperTenant()) {
+            orgType = OrganizationType.SUPER_ORGANIZATION;
+        } else if (isFirstLevelOrg) {
+            orgType = OrganizationType.FIRST_LEVEL_ORGANIZATION;
+        } else {
+            orgType = OrganizationType.SUBORGANIZATION;
+        }
+
+        dispatch(setOrganizationType(orgType));
+        dispatch(setUserOrganizationId(userOrganizationId));
+
+        dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
 
         if (window["AppUtils"].getConfig().organizationName || isFirstLevelOrg) {
             // We are actually getting the orgId here rather than orgName
@@ -332,12 +315,16 @@ const useSignIn = (): UseSignInInterface => {
 
         dispatch(
             setSignIn<AuthenticatedUserInfo & TenantListInterface>(
-                Object.assign(CommonAuthenticateUtils.getSignInState(response, response.orgName), {
-                    associatedTenants: isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
-                    defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
-                    fullName: fullName,
-                    isPrivilegedUser: isPrivilegedUser
-                })
+                Object.assign(
+                    CommonAuthenticateUtils.getSignInState(
+                        response,
+                        transformTenantDomain(response.orgName)
+                    ), {
+                        associatedTenants: isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
+                        defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
+                        fullName: fullName,
+                        isPrivilegedUser: isPrivilegedUser
+                    })
             )
         );
 

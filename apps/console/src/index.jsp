@@ -248,12 +248,39 @@
                         : "";
                 };
 
+                /**
+                 * Construct the sign-in redirect URL.
+                 *
+                 * @returns {string} Contructed URL.
+                 */
+                function signInRedirectURL() {
+                    if (getTenantName() === startupConfig.superTenant) {
+                        return applicationDomain.replace(/\/+$/, '')
+                            + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
+                    }
+
+                    return applicationDomain.replace(/\/+$/, '') + getTenantPath()
+                        + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
+                }
+
+                /**
+                 * Construct the sign-out redirect URL.
+                 *
+                 * @returns {string} Contructed URL.
+                 */
+                function getSignOutRedirectURL() {
+                    if (getTenantName() === startupConfig.superTenant) {
+                        return applicationDomain.replace(/\/+$/, '');
+                    }
+
+                    return applicationDomain.replace(/\/+$/, '') + getTenantPath();
+                }
+
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
                 var authConfig = {
-                    signInRedirectURL: applicationDomain.replace(/\/+$/, '') + getTenantPath()
-                        + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>",
-                    signOutRedirectURL: applicationDomain.replace(/\/+$/, '') + getTenantPath(),
+                    signInRedirectURL: signInRedirectURL(),
+                    signOutRedirectURL: getSignOutRedirectURL(),
                     clientID: "<%= htmlWebpackPlugin.options.clientID %>",
                     baseUrl: getApiPath(),
                     responseMode: "form_post",
