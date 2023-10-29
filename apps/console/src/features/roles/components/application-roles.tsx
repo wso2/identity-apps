@@ -112,6 +112,9 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const path: string[] = history.location.pathname.split("/");
     const appId: string = path[path.length - 1].split("#")[0];
 
+    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+    const isReadOnly: boolean = !!isSubOrg;
+
     /**
      * Fetch application roles on component load and audience switch.
      */
@@ -305,6 +308,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     onChange={ () => promptAudienceSwitchWarning(RoleAudienceTypes.ORGANIZATION) }
                                     label={ t("extensions:develop.applications.edit.sections.rolesV2.organization") }
                                     data-componentid={ `${ componentId }-organization-audience-checkbox` }
+                                    disabled={ isReadOnly }
                                 />
                                 <FormControlLabel
                                     checked={ roleAudience === RoleAudienceTypes.APPLICATION }
@@ -312,6 +316,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     onChange={ () => promptAudienceSwitchWarning(RoleAudienceTypes.APPLICATION) }
                                     label={ t("extensions:develop.applications.edit.sections.rolesV2.application") }
                                     data-componentid={ `${ componentId }-application-audience-checkbox` }
+                                    disabled={ isReadOnly }
                                 />
                             </FormGroup>
                         </Grid.Column>
@@ -340,6 +345,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                             <Autocomplete
                                 multiple
                                 disableCloseOnSelect
+                                readOnly={ isReadOnly }
                                 loading={ isLoading }
                                 options={ roleList }
                                 value={ selectedRoles ?? [] }
@@ -349,8 +355,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                 renderInput={ (params: AutocompleteRenderInputParams) => (
                                     <TextField
                                         { ...params }
-                                        placeholder={ t("extensions:develop.applications.edit.sections." +
-                                            "rolesV2.searchPlaceholder") }
+                                        placeholder={ !isReadOnly && t("extensions:develop.applications.edit." +
+                                            "sections.rolesV2.searchPlaceholder") }
                                     />
                                 ) }
                                 onChange={ (event: SyntheticEvent, roles: BasicRoleInterface[]) => {
@@ -454,19 +460,23 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                             
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row className="mt-4">
-                        <Grid.Column width={ 16 }>
-                            <PrimaryButton
-                                size="small"
-                                loading={ isSubmitting }
-                                onClick={ () => updateRoles() }
-                                ariaLabel="Roles update button"
-                                data-componentid={ `${ componentId }-update-button` }
-                            >
-                                { t("common:update") }
-                            </PrimaryButton>
-                        </Grid.Column>
-                    </Grid.Row>
+                    {
+                        !isReadOnly && (
+                            <Grid.Row className="mt-4">
+                                <Grid.Column width={ 16 }>
+                                    <PrimaryButton
+                                        size="small"
+                                        loading={ isSubmitting }
+                                        onClick={ () => updateRoles() }
+                                        ariaLabel="Roles update button"
+                                        data-componentid={ `${ componentId }-update-button` }
+                                    >
+                                        { t("common:update") }
+                                    </PrimaryButton>
+                                </Grid.Column>
+                            </Grid.Row>
+                        )
+                    }
                 </Grid>
             </EmphasizedSegment>
             <ConfirmationModal
