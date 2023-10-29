@@ -148,6 +148,7 @@ const useSignIn = (): UseSignInInterface => {
         }
 
         dispatch(setOrganizationType(orgType));
+        window["AppUtils"].updateOrganizationType(orgType);
         dispatch(setUserOrganizationId(userOrganizationId));
 
         dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
