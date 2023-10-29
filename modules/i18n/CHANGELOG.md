@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.26
+
+### Patch Changes
+
+- [#4435](https://github.com/wso2/identity-apps/pull/4435) [`e968a62d88`](https://github.com/wso2/identity-apps/commit/e968a62d889efcc3cec71363610807620fd1c701) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix async issue in group creation wizard
+
 ## 2.0.25
 
 ### Patch Changes
