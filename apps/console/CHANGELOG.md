@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.5.9
+
+### Patch Changes
+
+- [#4437](https://github.com/wso2/identity-apps/pull/4437) [`c305170756`](https://github.com/wso2/identity-apps/commit/c30517075605322706cd0fbdd0594e25cbd64183) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Set application roles tab read-only in suborgs
+
+* [#4438](https://github.com/wso2/identity-apps/pull/4438) [`213b16a0ef`](https://github.com/wso2/identity-apps/commit/213b16a0ef0b20c5a44d03e4e956f637dbea7125) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in Application's user attribute tab
+
+- [#4435](https://github.com/wso2/identity-apps/pull/4435) [`e968a62d88`](https://github.com/wso2/identity-apps/commit/e968a62d889efcc3cec71363610807620fd1c701) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix async issue in group creation wizard
+
+- Updated dependencies [[`e968a62d88`](https://github.com/wso2/identity-apps/commit/e968a62d889efcc3cec71363610807620fd1c701)]:
+  - @wso2is/i18n@2.0.26
+
 ## 2.5.8
 
 ### Patch Changes
