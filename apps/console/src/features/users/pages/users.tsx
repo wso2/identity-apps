@@ -508,7 +508,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * @returns string
      */
     const generateAttributesString = (attributeMap: IterableIterator<string>) => {
-
         const attArray: any[] = [];
 
         if (attributeMap) {
