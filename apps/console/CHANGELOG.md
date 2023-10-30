@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.5.11
+
+### Patch Changes
+
+- [#4446](https://github.com/wso2/identity-apps/pull/4446) [`279b1e8f71`](https://github.com/wso2/identity-apps/commit/279b1e8f711551a1e8fd434b70f4659455c51226) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue of getting something went wrong page after deleting a user
+
 ## 2.5.10
 
 ### Patch Changes
