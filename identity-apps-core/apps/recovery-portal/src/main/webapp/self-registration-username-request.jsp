@@ -1849,7 +1849,6 @@
             alphanumeric_username_error_msg.hide();
             alphanumericUsernameField.removeClass("error");
             return true
-
         }
 
         function showAlphanumericUsernameValidationStatus() {
