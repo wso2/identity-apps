@@ -299,7 +299,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     useEffect(() => {
         if (initialRoleList.length === 0) {
             if (orgType === OrganizationType.SUPER_ORGANIZATION
-                || OrganizationType.FIRST_LEVEL_ORGANIZATION) {
+                || orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION) {
                 // Get Roles from the SCIM API
                 getRolesList(null)
                     .then((response: AxiosResponse) => {
