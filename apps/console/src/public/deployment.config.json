@@ -220,6 +220,7 @@
             "defaultWhiteLogoUrl": "/libs/themes/default/assets/images/branding/logo-white.svg"
         },
         "appFaviconPath": "/assets/images/branding/favicon.ico",
+        "enableEmailCustomTemplate": true,
         "isGOTEnabledForSuperTenantOnly": true,
         "showAppSwitchButton": true,
         "features": {
