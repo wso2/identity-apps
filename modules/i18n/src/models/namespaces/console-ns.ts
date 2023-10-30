@@ -4419,6 +4419,9 @@ export interface ConsoleNS {
                         name: string;
                         description: string;
                         connectors: {
+                            passwordExpiry: {
+                                friendlyName: string;
+                            };
                             passwordHistory: {
                                 friendlyName: string;
                                 properties: {
@@ -4463,6 +4466,9 @@ export interface ConsoleNS {
                         name: string;
                         description: string;
                         connectors: {
+                            askPassword: {
+                                friendlyName: string;
+                            },
                             selfSignUp: {
                                 friendlyName: string;
                                 properties: {
@@ -4967,6 +4973,7 @@ export interface ConsoleNS {
                     };
                     multiFactorAuthenticators : {
                         name: string;
+                        friendlyName: string;
                         description: string;
                         connectors: {
                             backupCodeAuthenticator: {

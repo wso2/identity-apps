@@ -6452,6 +6452,9 @@ export const console: ConsoleNS = {
                         name: "මුරපද ප්රතිපත්ති",
                         description: "පරිශීලක මුරපද ශක්තිය වැඩි දියුණු කිරීම සඳහා මුරපද ප්රතිපත්ති වින්යාස කරන්න.",
                         connectors: {
+                            passwordExpiry: {
+                                friendlyName: "මුරපද කල් ඉකුත්වීම"
+                            },
                             passwordHistory: {
                                 friendlyName: "මුරපද ඉතිහාසය",
                                 properties: {
@@ -6496,6 +6499,9 @@ export const console: ConsoleNS = {
                         name: "පරිශීලක ඔන්බෝඩ් කිරීම",
                         description: "පරිශීලකයා ඔන්බෝඩ් සැකසුම් වින්යාස කරන්න.",
                         connectors: {
+                            askPassword: {
+                                friendlyName: "මුරපදය සැකසීමට පරිශීලකයාට ආරාධනා කරන්න"
+                            },
                             selfSignUp: {
                                 friendlyName: "ස්වයං ලියාපදිංචිය",
                                 properties: {
@@ -7000,6 +7006,7 @@ export const console: ConsoleNS = {
                     },
                     multiFactorAuthenticators: {
                         name: "බහු සාධක සත්යාපනය",
+                        friendlyName: "සත්යාපන සැකසුම්",
                         description: "බහු සාධක සත්යාපන සැකසුම් වින්යාස කරන්න.",
                         connectors: {
                             backupCodeAuthenticator: {
