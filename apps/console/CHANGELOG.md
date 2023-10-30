@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.5.13
+
+### Patch Changes
+
+- [#4453](https://github.com/wso2/identity-apps/pull/4453) [`79bafd966d`](https://github.com/wso2/identity-apps/commit/79bafd966ddf3b69061d38bfd04d15d6edf5e49b) Thanks [@brionmario](https://github.com/brionmario)! - Fix organization SSO
+
 ## 2.5.12
 
 ### Patch Changes
