@@ -186,7 +186,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const {
         data: validationData
-    } = useValidationConfigData();    
+    } = useValidationConfigData();
 
     /**
      * Update selected user store when userStore changes
@@ -552,7 +552,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setInitialTempGroupList(newGroupList);
     };
 
-    const navigateToNext = () => {        
+    const navigateToNext = () => {
         switch (currentWizardStep) {
             case 0:
                 setSubmitGeneralSettings();
