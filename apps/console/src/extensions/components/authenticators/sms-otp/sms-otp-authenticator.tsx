@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import { AppState } from "apps/console/src/features/core/store";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     CommonAuthenticatorFormInitialValuesInterface,
     CommonAuthenticatorFormMetaInterface
 } from "apps/console/src/features/identity-providers/models/identity-provider";
-import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "modules/core/src/models";
 import { Divider } from "modules/react-components/node_modules/semantic-ui-react";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import {
     SmsOtpAuthenticatorActivationSection
 } from "./sms-otp-authenticator-activation-section";
+import { AppState } from "../../../../features/core/store";
 import {
     SMSOTPAuthenticatorForm
 } from "../../../../features/identity-providers/components/forms/authenticators/sms-otp-authenticator-form";
