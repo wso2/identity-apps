@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.5.10
+
+### Patch Changes
+
+- [#4443](https://github.com/wso2/identity-apps/pull/4443) [`204c554b22`](https://github.com/wso2/identity-apps/commit/204c554b221db651cc84045f7cd45263a957927a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in Role permission section
+
 ## 2.5.9
 
 ### Patch Changes
