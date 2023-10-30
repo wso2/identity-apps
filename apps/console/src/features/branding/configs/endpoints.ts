@@ -28,6 +28,9 @@ export const getBrandingResourceEndpoints =
     (serverHostWithOrgPath: string): BrandingPreferenceResourceEndpointsInterface => {
         return {
             brandingPreference: `${ serverHostWithOrgPath }/api/server/v1/branding-preference`,
+            brandingPreferenceSubOrg: `${ window[ "AppUtils" ]?.
+                getConfig()?.serverOrigin }${ window[ "AppUtils" ]?.
+                getOrganizationPath() }/api/server/v1/branding-preference`,
             brandingTextPreference: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/text`
         };
     };

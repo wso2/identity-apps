@@ -87,6 +87,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             authenticatorTags: "",
             authenticators: "",
             brandingPreference: "",
+            brandingPreferenceSubOrg: "",
             brandingTextPreference: "",
             breadcrumb: "",
             bulk: "",

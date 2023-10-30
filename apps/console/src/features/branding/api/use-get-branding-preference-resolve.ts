@@ -62,7 +62,9 @@ const useGetBrandingPreferenceResolve = <Data = BrandingPreferenceAPIResponseInt
             name: tenantDomain,
             type
         },
-        url: `${store.getState().config.endpoints.brandingPreference}/resolve`
+        url: organizationType === OrganizationType.SUBORGANIZATION
+            ? `${store.getState().config.endpoints.brandingPreferenceSubOrg}/resolve`
+            : `${store.getState().config.endpoints.brandingPreference}/resolve`
     };
 
     const {

@@ -106,14 +106,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
-    const isShowSwitcher: boolean = legacyAuthzRuntime
-        ? (organizationConfigs?.showOrganizationDropdown || isSubOrg)
-        : (
-            organizationConfigs?.showOrganizationDropdown ||
-            orgType === OrganizationType.SUPER_ORGANIZATION ||
-            orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
-            orgType === OrganizationType.SUBORGANIZATION
-        );
+    const isShowSwitcher: boolean = organizationConfigs?.showOrganizationDropdown || isSubOrg;
 
     useEffect(() => {
         if (!error) {
