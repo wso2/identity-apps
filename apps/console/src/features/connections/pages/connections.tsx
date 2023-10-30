@@ -55,11 +55,7 @@ import { useGetOrganizationType } from "../../organizations/hooks/use-get-organi
 import { useGetAuthenticatorTags, useGetAuthenticators } from "../api/authenticators";
 import { useGetConnections } from "../api/connections";
 import { AuthenticatorGrid } from "../components/authenticator-grid";
-import { 
-    ConnectionsManagementUtils,
-    handleGetAuthenticatorTagsError,
-    handleGetConnectionListCallError 
-} from "../utils/connection-utils";
+import { getAuthenticatorList } from "../components/common";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
@@ -71,7 +67,11 @@ import {
     ConnectionInterface,
     ConnectionListResponseInterface
 } from "../models/connection";
-import { getAuthenticatorList } from "../components/common";
+import { 
+    ConnectionsManagementUtils,
+    handleGetAuthenticatorTagsError,
+    handleGetConnectionListCallError 
+} from "../utils/connection-utils";
 
 /**
  * Proptypes for the Connections page component.
@@ -417,12 +417,12 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                     : t("console:develop.pages.idp.title")
             }
             description={
-                <>
+                (<>
                     { t("console:develop.pages.authenticationProvider.subTitle") }
                     <DocumentationLink link={ getLink("develop.connections.learnMore") }>
                         { t("common:learnMore") }
                     </DocumentationLink>
-                </>
+                </>)
             }
             data-testid={ `${ testId }-page-layout` }
             actionColumnWidth={ 4 }
