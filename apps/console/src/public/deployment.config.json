@@ -472,7 +472,7 @@
                 }
             },
             "smsProviders": {
-                "disabledFeatures": [],
+                "disabledFeatures": ["choreoAsSMSProvider"],
                 "enabled": true,
                 "scopes": {
                     "update": [
