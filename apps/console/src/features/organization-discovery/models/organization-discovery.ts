@@ -48,7 +48,25 @@ export interface OrganizationListInterface {
 }
 
 export interface OrganizationListWithDiscoveryInterface {
+    /**
+     * Number of results that match the listing operation.
+     */
+    totalResults?: number;
+    /**
+     * Index of the first element of the page, which will be equal to offset + 1.
+     */
+    startIndex?: number;
+    /**
+     * Number of elements in the returned page.
+     */
+    count?: number;
+    /**
+     * Useful links.
+     */
     links: OrganizationLinkInterface[];
+    /**
+     * Set of organizations.
+     */
     organizations: OrganizationDiscoveryInterface[];
 }
 
