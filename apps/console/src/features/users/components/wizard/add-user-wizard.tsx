@@ -28,7 +28,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import intersection from "lodash-es/intersection";
 import merge from "lodash-es/merge";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -46,7 +46,8 @@ import { AppState } from "../../../core/store";
 import { GroupsInterface } from "../../../groups";
 import { getGroupList, updateGroupDetails } from "../../../groups/api";
 import { getOrganizationRoles } from "../../../organizations/api";
-import { OrganizationRoleManagementConstants } from "../../../organizations/constants";
+import { OrganizationRoleManagementConstants, OrganizationType } from "../../../organizations/constants";
+import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { OrganizationResponseInterface, OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface } from "../../../organizations/models";
 import { OrganizationUtils } from "../../../organizations/utils";
@@ -135,6 +136,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const orgType: OrganizationType = useGetOrganizationType();
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitRoleList, setSubmitRoleList ] = useTrigger();
@@ -174,8 +176,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) =>
         state.organization.organization);
-    const isRootOrganization: boolean = useMemo(() =>
-        OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -186,7 +186,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const {
         data: validationData
-    } = useValidationConfigData();
+    } = useValidationConfigData();    
 
     /**
      * Update selected user store when userStore changes
@@ -298,7 +298,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      */
     useEffect(() => {
         if (initialRoleList.length === 0) {
-            if (isRootOrganization) {
+            if (orgType === OrganizationType.SUPER_ORGANIZATION
+                || OrganizationType.FIRST_LEVEL_ORGANIZATION) {
                 // Get Roles from the SCIM API
                 getRolesList(null)
                     .then((response: AxiosResponse) => {
@@ -551,7 +552,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setInitialTempGroupList(newGroupList);
     };
 
-    const navigateToNext = () => {
+    const navigateToNext = () => {        
         switch (currentWizardStep) {
             case 0:
                 setSubmitGeneralSettings();
