@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.5.12
+
+### Patch Changes
+
+- [#4449](https://github.com/wso2/identity-apps/pull/4449) [`a3d9a7f388`](https://github.com/wso2/identity-apps/commit/a3d9a7f388ba2fa265f1769f8f306876c70edfd6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with branding in sub-orgs
+
 ## 2.5.11
 
 ### Patch Changes
