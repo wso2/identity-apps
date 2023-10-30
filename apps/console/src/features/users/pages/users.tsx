@@ -509,13 +509,17 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      */
     const generateAttributesString = (attributeMap: IterableIterator<string>) => {
         const attArray: any[] = [];
-        const iterator1: IterableIterator<string> = attributeMap[Symbol.iterator]();
 
-        for (const attribute of iterator1) {
-            if (attribute !== "") {
-                attArray.push(attribute);
+        if (attributeMap) {
+            const iterator1: IterableIterator<string> = attributeMap[Symbol.iterator]();
+
+            for (const attribute of iterator1) {
+                if (attribute !== "") {
+                    attArray.push(attribute);
+                }
             }
         }
+
         if (!attArray.includes(UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME"))) {
             attArray.push(UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME"));
         }
