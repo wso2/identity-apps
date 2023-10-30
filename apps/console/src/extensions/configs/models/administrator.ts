@@ -19,4 +19,5 @@
 export interface AdministratorConfig {
     adminRoleName: string;
     enableAdminInvite: boolean;
+    enableEmailCustomTemplate: boolean;
 }

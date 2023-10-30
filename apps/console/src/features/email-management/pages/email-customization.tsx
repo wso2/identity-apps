@@ -33,6 +33,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
+import { administratorConfig } from "../../../extensions/configs/administrator";
 import BrandingPreferenceProvider from "../../branding/providers/branding-preference-provider";
 import { AppConstants, AppState, FeatureConfigInterface, I18nConstants } from "../../core";
 import { history } from "../../core/helpers";
@@ -100,9 +101,15 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         // the deployment.toml file. The below code will map the email template
         // types with the config's displayName and description.
         const availableEmailTemplates: EmailTemplateType[] = emailTemplatesList
-            ? emailTemplatesList.map((template: EmailTemplateType) => {
-                const mappedTemplate: Record<string, string> | undefined = emailTemplates
-                    ?.find((emailTemplate: Record<string, string>) => emailTemplate.id === template.id);
+            ? (!administratorConfig.enableEmailCustomTemplate
+                ? emailTemplatesList.filter((template: EmailTemplateType) =>
+                    emailTemplates?.find((emailTemplate: Record<string, string>) => emailTemplate.id === template.id)
+                )
+                : emailTemplatesList
+            ).map((template: EmailTemplateType) => {
+                const mappedTemplate: Record<string, string> = emailTemplates?.find(
+                    (emailTemplate: Record<string, string>) => emailTemplate.id === template.id
+                );
 
                 return {
                     ...template,

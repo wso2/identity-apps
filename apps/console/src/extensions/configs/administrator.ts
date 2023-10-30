@@ -20,5 +20,6 @@ import { AdministratorConfig } from "./models/administrator";
 
 export const administratorConfig: AdministratorConfig = {
     adminRoleName: "admin",
-    enableAdminInvite: false
+    enableAdminInvite: false,
+    enableEmailCustomTemplate: true
 };
