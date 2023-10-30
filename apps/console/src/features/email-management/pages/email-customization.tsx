@@ -33,7 +33,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
-import { administratorConfig } from "../../../extensions/configs/administrator";
 import BrandingPreferenceProvider from "../../branding/providers/branding-preference-provider";
 import { AppConstants, AppState, FeatureConfigInterface, I18nConstants } from "../../core";
 import { history } from "../../core/helpers";
