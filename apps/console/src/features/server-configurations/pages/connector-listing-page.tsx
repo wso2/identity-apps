@@ -326,6 +326,21 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     };
 
     /**
+     * Remove this once the response name is fixed from the backend.
+     */
+    const resolveConnectorCategoryTitle = (connectorCategory : GovernanceConnectorCategoryInterface): string => {
+        switch (connectorCategory.id) {
+            case ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID:
+                return (
+                    t("console:manage.features.governanceConnectors.connectorCategories.multiFactorAuthenticators." +
+                    "friendlyName")
+                );
+            default:
+                return connectorCategory.name;
+        }
+    };
+
+    /**
      * Get connector categories which generate the connector forms dynamically.
      */
     const getDynamicCategoryConnectors = (): ReactElement[] => {
@@ -360,7 +375,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                                 )}.description`
                             ) }
                             icon={ () => resolveConnectorCategoryIcon(connectorCategory?.id) }
-                            header={ connectorCategory.name }
+                            header={ resolveConnectorCategoryTitle(connectorCategory) }
                             onPrimaryActionClick={ () => handleConnectorCategoryAction(connectorCategory) }
                             primaryAction={ t("common:configure") }
                         />
