@@ -852,7 +852,7 @@ export const myAccount: MyAccountNS = {
             },
             fido: {
                 description: "Vous pouvez utiliser une <1>clé d'accès</1>, une " +
-                    "<1>clé de sécurité FIDO2</1> ou des <1>données biométriques</1> " +
+                    "<1>clé de sécurité FIDO</1> ou des <1>données biométriques</1> " +
                     "sur votre appareil pour vous connecter à votre compte.",
                 form: {
                     label: "Clé d'accès",

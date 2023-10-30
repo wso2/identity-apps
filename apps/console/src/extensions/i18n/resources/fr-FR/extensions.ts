@@ -2731,13 +2731,13 @@ export const extensions: Extensions = {
                     },
                     heading: "Guide de configuration du mot de passe",
                     passkeys: {
-                        docLinkText: "Clé d'accès FIDO2",
+                        docLinkText: "Clé d'accès FIDO",
                         content:
-                            "Les clés de passe fournissent une connexion sans mot de passe simple et sécurisée " +
-                            "pour vos applications qui survit à la perte de l'appareil et fonctionne sur toutes " +
-                            "les plates-formes. Vous pouvez essayer l'authentification par clé d'accès sur " +
-                            "Asgardeo avec « Clé FIDO2.",
-                        heading: "Authentification FIDO2 avec clés d'accès"
+                            "Passkey fournit une connexion sans mot de passe simple et sécurisée pour vos " +
+                            "applications qui survit à la perte de l'appareil et fonctionne sur toutes les " +
+                            "plates-formes. Vous pouvez essayer l'authentification par mot de passe sur " +
+                            "Asgardeo avec \"Passkey\".",
+                        heading: "Authentification FIDO avec mot de passe"
                     },
                     steps: {
                         customizeFlow: {

@@ -801,72 +801,72 @@ export const myAccount: MyAccountNS = {
                 "remaining": "残り"
             },
             "fido": {
-                "description": "<1> PassKey、<1> FIDO2セキュリティキー、または<1>バイオメトリクスを使用して、アカウントにサインインできます。",
+                "description": "<1>パスキー<1> FIDOセキュリティキー、または<1>バイオメトリクスを使用して、アカウントにサインインできます。",
                 "form": {
-                    "label": "セキュリティキー/バイオメトリック",
-                    "placeholder": "セキュリティキー/バイオメトリクスの名前を入力します",
-                    "remove": "セキュリティキー/バイオメトリクスを削除します",
-                    "required": "セキュリティキー/バイオメトリックの名前を入力してください"
+                    "label": "パスキー",
+                    "placeholder": "パスキーの名前を入力します",
+                    "remove": "パスキーを削除します",
+                    "required": "パスキーの名前を入力してください"
                 },
-                "heading": "セキュリティキー/生体認証",
+                "heading": "パスキー",
                 "modals": {
                     "deleteConfirmation": {
-                        "assertionHint": "あなたの行動を確認してください。",
-                        "content": "このアクションは不可逆的であり、セキュリティキー/バイオメトリクスを永久に削除します。",
-                        "description": "このセキュリティキー/バイオメトリクスを削除すると、アカウントに再度サインインできない場合があります。注意して進めてください。",
+                        "assertionHint": "アクションを確認してください。",
+                        "content": "この操作は元に戻すことができず、パスキーが完全に削除されます。",
+                        "description": "このパスキーを削除すると、アカウントに再度サインインできなくなる可能性があります。 慎重に進めてください。",
                         "heading": "本気ですか？"
                     },
                     "deviceRegistrationErrorModal": {
-                        "description": "セキュリティキー/生体認証登録が中断されました。これが意図的でない場合は、フローを再試行することができます。",
-                        "heading": "セキュリティキー/生体認証登録は失敗しました",
-                        "tryWithOlderDevice": "また、古いセキュリティキー/バイオメトリクスで再試行することもできます。"
+                        "description": "パスキーの登録が中断されました。 これが意図的でない場合は、フローを再試行できます。",
+                        "heading": "パスキーの登録に失敗しました",
+                        "tryWithOlderDevice": "古いパスキーを使用して再試行することもできます。"
                     }
                 },
                 "notifications": {
                     "removeDevice": {
                         "error": {
                             "description": "{{description}}",
-                            "message": "セキュリティキー/生体認証の削除中にエラーが発生しました"
+                            "message": "パスキーの削除中にエラーが発生しました"
                         },
                         "genericError": {
-                            "description": "セキュリティキー/生体認証の削除中にエラーが発生しました",
+                            "description": "パスキーの削除中にエラーが発生しました",
                             "message": "何かがうまくいかなかった"
                         },
                         "success": {
-                            "description": "セキュリティキー/バイオメトリクスはリストから正常に削除されました",
-                            "message": "セキュリティキー/生体認証が正常に削除されました"
+                            "description": "パスキーがリストから正常に削除されました",
+                            "message": "パスキーは正常に削除されました"
                         }
                     },
                     "startFidoFlow": {
                         "error": {
                             "description": "{{description}}",
-                            "message": "セキュリティキー/生体認証の取得中にエラーが発生しました"
+                            "message": "パスキーの取得中にエラーが発生しました"
                         },
                         "genericError": {
-                            "description": "セキュリティキー/生体認証の取得中にエラーが発生しました",
+                            "description": "パスキーの取得中にエラーが発生しました",
                             "message": "何かがうまくいかなかった"
                         },
                         "success": {
-                            "description": "セキュリティキー/バイオメトリクスが正常に登録され、認証に使用できるようになりました。",
-                            "message": "セキュリティキー/生体認証が正常に登録されました"
+                            "description": "パスキーが正常に登録されたので、認証に使用できるようになりました。",
+                            "message": "パスキーが正常に登録されました"
                         }
                     },
                     "updateDeviceName": {
                         "error": {
                             "description": "{{description}}",
-                            "message": "セキュリティキー/バイオメトリクス名の更新中にエラーが発生しました"
+                            "message": "パスキー名の更新中にエラーが発生しました"
                         },
                         "genericError": {
-                            "description": "セキュリティキー/バイオメトリクス名の更新中にエラーが発生しました",
+                            "description": "パスキー名の更新中にエラーが発生しました",
                             "message": "何かがうまくいかなかった"
                         },
                         "success": {
-                            "description": "セキュリティキー/バイオメトリクスの名前が正常に更新されました",
-                            "message": "セキュリティキー/バイオメトリック名が正常に更新されました"
+                            "description": "パスキーの名前が正常に更新されました",
+                            "message": "パスキー名が正常に更新されました"
                         }
                     }
                 },
-                "tryButton": "古いセキュリティキー/バイオメトリックで試してください"
+                "tryButton": "古いパスキーで試してください"
             },
             "smsOtp": {
                 "descriptions": {

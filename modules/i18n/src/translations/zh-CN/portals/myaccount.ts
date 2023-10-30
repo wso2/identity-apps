@@ -801,72 +801,72 @@ export const myAccount: MyAccountNS = {
                 "remaining": "其余的"
             },
             "fido": {
-                "description": "您可以在设备中使用<1> Passkey，<1> fido2安全密钥或<1>生物识别技术登录您的帐户。",
+                "description": "您可以使用设备中的<1>密钥</1>、<1>FIDO 安全密钥</1>或<1>生物识别</1>来登录您的帐户。",
                 "form": {
-                    "label": "安全密钥/生物识别",
-                    "placeholder": "输入安全密钥/生物识别技术的名称",
-                    "remove": "删除安全密钥/生物识别技术",
-                    "required": "请输入您的安全密钥/生物识别技术的名称"
+                    "label": "万能钥匙",
+                    "placeholder": "输入密钥的名称",
+                    "remove": "删除密钥",
+                    "required": "请输入您的密钥名称"
                 },
-                "heading": "安全密钥/生物识别技术",
+                "heading": "万能钥匙",
                 "modals": {
                     "deleteConfirmation": {
-                        "assertionHint": "请确认您的行动。",
-                        "content": "此操作是不可逆转的，将永久删除安全密钥/生物识别技术。",
-                        "description": "如果删除此安全密钥/生物识别技术，则可能无法再次登录您的帐户。请谨慎行事。",
+                        "assertionHint": "请确认您的操作。",
+                        "content": "此操作不可逆转，并且将永久删除密钥。",
+                        "description": "如果删除此密钥，您可能无法再次登录您的帐户。 请谨慎行事。",
                         "heading": "你确定吗？"
                     },
                     "deviceRegistrationErrorModal": {
-                        "description": "安全密钥/生物识别器注册被中断。如果这不是故意的，则可以重试流。",
-                        "heading": "安全密钥/生物识别注册失败",
-                        "tryWithOlderDevice": "您也可以使用较旧的安全密钥/生物识别技术重试。"
+                        "description": "密钥注册被中断。 如果这不是故意的，您可以重试该流程。",
+                        "heading": "密钥注册失败",
+                        "tryWithOlderDevice": "您也可以使用旧的密钥重试。"
                     }
                 },
                 "notifications": {
                     "removeDevice": {
                         "error": {
                             "description": "{{description}}",
-                            "message": "删除安全密钥/生物识别技术时发生错误"
+                            "message": "删除密钥时发生错误"
                         },
                         "genericError": {
-                            "description": "删除安全密钥/生物识别技术时发生错误",
+                            "description": "删除密钥时发生错误",
                             "message": "出了些问题"
                         },
                         "success": {
-                            "description": "安全密钥/生物识别技术已成功从列表中删除",
-                            "message": "您的安全密钥/生物特征成功删除了"
+                            "description": "密钥已成功从列表中删除",
+                            "message": "您的密钥已成功删除"
                         }
                     },
                     "startFidoFlow": {
                         "error": {
                             "description": "{{description}}",
-                            "message": "检索安全密钥/生物识别技术时发生错误"
+                            "message": "检索密钥时发生错误"
                         },
                         "genericError": {
-                            "description": "检索安全密钥/生物识别技术时发生错误",
+                            "description": "检索密钥时发生错误",
                             "message": "出了些问题"
                         },
                         "success": {
-                            "description": "安全密钥/生物识别技术已成功注册，现在您可以将其用于身份验证。",
-                            "message": "您的安全密钥/生物识别已成功注册"
+                            "description": "密钥已成功注册，现在您可以使用它进行身份验证。",
+                            "message": "您的密码已成功注册"
                         }
                     },
                     "updateDeviceName": {
                         "error": {
                             "description": "{{description}}",
-                            "message": "更新安全键/生物识别名称时发生错误"
+                            "message": "更新密钥名称时出错"
                         },
                         "genericError": {
-                            "description": "更新安全键/生物识别名称时发生错误",
+                            "description": "更新密钥名称时出错",
                             "message": "出了些问题"
                         },
                         "success": {
-                            "description": "您的安全密钥/生物识别技术的名称已成功更新",
-                            "message": "安全密钥/生物识别名称成功更新了"
+                            "description": "您的密钥名称已成功更新",
+                            "message": "密钥名称更新成功"
                         }
                     }
                 },
-                "tryButton": "尝试使用较旧的安全键/生物识别"
+                "tryButton": "尝试使用较旧的密钥"
             },
             "smsOtp": {
                 "descriptions": {

@@ -203,7 +203,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
             // Set the FIDO authenticator display name and tags.
             if (authenticator.id === AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID) {
                 authenticator.tags = [ AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.PASSKEY ];
-                authenticator.displayName = "FIDO2";
+                authenticator.displayName = "Passkey";
             }
 
             // Set the magic link authenticator tags.
