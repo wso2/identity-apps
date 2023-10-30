@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.5.14
+
+### Patch Changes
+
+- [#4456](https://github.com/wso2/identity-apps/pull/4456) [`05b585335c`](https://github.com/wso2/identity-apps/commit/05b585335cc7ea90d081c8a4ca864daa0636d3bd) Thanks [@savindi7](https://github.com/savindi7)! - Update governance connector names and descriptions
+
+- Updated dependencies [[`05b585335c`](https://github.com/wso2/identity-apps/commit/05b585335cc7ea90d081c8a4ca864daa0636d3bd)]:
+  - @wso2is/i18n@2.0.27
+
 ## 2.5.13
 
 ### Patch Changes
