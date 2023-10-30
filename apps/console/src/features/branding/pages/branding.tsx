@@ -173,7 +173,6 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
      * Publish page visit insights.
      */
     useEffect(() => {
-
         eventPublisher.publish("page-visit-organization-branding");
     }, []);
 

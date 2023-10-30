@@ -26,11 +26,13 @@ import { BrandingPreferenceResourceEndpointsInterface } from "../models/endpoint
  */
 export const getBrandingResourceEndpoints = 
     (serverHostWithOrgPath: string): BrandingPreferenceResourceEndpointsInterface => {
+        const subOrgPath: string = window[ "AppUtils" ]?.getConfig()?.serverOrigin +
+            window[ "AppUtils" ]?.getOrganizationPath();
+
         return {
             brandingPreference: `${ serverHostWithOrgPath }/api/server/v1/branding-preference`,
-            brandingPreferenceSubOrg: `${ window[ "AppUtils" ]?.
-                getConfig()?.serverOrigin }${ window[ "AppUtils" ]?.
-                getOrganizationPath() }/api/server/v1/branding-preference`,
-            brandingTextPreference: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/text`
+            brandingPreferenceSubOrg: `${ subOrgPath }/api/server/v1/branding-preference`,
+            brandingTextPreference: `${ serverHostWithOrgPath }/api/server/v1/branding-preference/text`,
+            brandingTextPreferenceSubOrg: `${ subOrgPath}/api/server/v1/branding-preference/text`
         };
     };

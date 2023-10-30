@@ -32,4 +32,8 @@ export interface BrandingPreferenceResourceEndpointsInterface {
      * Endpoint to get the branding text preferences.
      */
     brandingTextPreference: string;
+    /**
+     * Endpoint to get the branding text preference for a sub organization.
+     */
+    brandingTextPreferenceSubOrg: string;
 }

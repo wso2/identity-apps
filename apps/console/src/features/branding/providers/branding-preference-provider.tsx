@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { OrganizationType } from "@wso2is/common";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormState } from "@wso2is/form";
@@ -30,6 +31,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AppState } from "../../core/store";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { OrganizationResponseInterface } from "../../organizations/models/organizations";
 import deleteCustomTextPreference from "../api/delete-custom-text-preference";
 import updateCustomTextPreference from "../api/update-custom-text-preference";
 import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-resolve";
@@ -73,10 +76,14 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
+    const orgType: OrganizationType = useGetOrganizationType();
 
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state?.global?.supportedI18nLanguages
+    );
+    const currentOrganization: OrganizationResponseInterface = useSelector(
+        (state: AppState) => state?.organization?.organization
     );
 
     const [ selectedScreen, setSelectedPreviewScreen ] = useState<PreviewScreenType>(PreviewScreenType.COMMON);
@@ -171,7 +178,16 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
      * @returns Promise containing the API response.
      */
     const _updateCustomTextPreference = (values: CustomTextPreferenceInterface): Promise<void> => {
-        return updateCustomTextPreference(!!customText, values, tenantDomain, selectedScreen, selectedLocale)
+        let isAlreadyConfigured: boolean = !!customText;
+
+        if (orgType === OrganizationType.SUBORGANIZATION
+            && customText?.name !== currentOrganization?.id) {
+            // This means the sub-org has no custom text preference configured.
+            // It gets the custom text preference from the parent org.
+            isAlreadyConfigured = false;
+        }
+
+        return updateCustomTextPreference(isAlreadyConfigured, values, tenantDomain, selectedScreen, selectedLocale)
             .then(
                 () => {
                     dispatch(

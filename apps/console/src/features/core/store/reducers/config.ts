@@ -89,6 +89,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             brandingPreference: "",
             brandingPreferenceSubOrg: "",
             brandingTextPreference: "",
+            brandingTextPreferenceSubOrg: "",
             breadcrumb: "",
             bulk: "",
             captchaForSSOLogin: "",
