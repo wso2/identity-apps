@@ -69,7 +69,6 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
     const isReadOnlyUser: string = useSelector((state: AppState) => {
         return state.authenticationInformation.profileInfo.isReadOnly;
     });
-    
     /**
      * Return the profile completion percentage.
      *
