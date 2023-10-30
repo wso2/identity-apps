@@ -23,7 +23,7 @@ import {
 } from "apps/console/src/features/identity-providers/models/identity-provider";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "modules/core/src/models";
 import { Divider } from "modules/react-components/node_modules/semantic-ui-react";
-import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import {
     SmsOtpAuthenticatorActivationSection
@@ -80,7 +80,6 @@ export const SmsOTPAuthenticator: FunctionComponent<SmsOTPAuthenticatorInterface
         ...rest
     } = props;
 
-    const [ isReadOnly, setIsReadOnly ] = useState<boolean>(true);
     const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config?.ui?.features?.smsProviders;
     });
@@ -91,13 +90,17 @@ export const SmsOTPAuthenticator: FunctionComponent<SmsOTPAuthenticatorInterface
         return !disabledFeatures.includes("choreoAsSMSProvider");
     }, [ featureConfig ]);
 
+    const [ isReadOnly, setIsReadOnly ] = useState<boolean>(isChoreoEnabledAsSMSProvider);
+
     return (
         <>
             {
                 isChoreoEnabledAsSMSProvider && (
                     <>
                         <SmsOtpAuthenticatorActivationSection
-                            onActivate={ (isActivated: boolean) => setIsReadOnly(!isActivated) }
+                            onActivate={ 
+                                (isActivated: boolean) => setIsReadOnly(isChoreoEnabledAsSMSProvider && !isActivated) 
+                            }
                         />
                         <Divider hidden />
                     </>
