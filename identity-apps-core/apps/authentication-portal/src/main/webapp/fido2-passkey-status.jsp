@@ -228,7 +228,7 @@
         function cancelFlow(){
             var form = document.getElementById('form');
             var scenario = document.getElementById('scenario');
-            scenario.value = JSON.stringify({ errorCode: 400, message: "User cancellation" });
+            scenario.value = "CANCEL_FIDO_AUTH";
             form.submit();
         }
 
