@@ -1833,7 +1833,7 @@
             var alphanumeric_username_error_msg = $("#alphanumeric-username-error-msg");
             var server_error_msg = $("#server-error-msg");
             var alphanumeric_username_error_msg_text = $("#alphanumeric-username-error-msg-text");
-            if (server_error_msg.text() !== null && server_error_msg.text().trim() !== ""  ) {
+            if (server_error_msg.text() !== null && server_error_msg.text().trim() !== "") {
                 alphanumeric_username_error_msg.hide();
                 alphanumericUsernameField.removeClass("error");
             }
