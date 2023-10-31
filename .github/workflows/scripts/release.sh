@@ -2,7 +2,7 @@
 
 # -------------------------------------------------------------------------------------
 #
-# Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+# Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
 #
 # WSO2 LLC. licenses this file to you under the Apache License,
 # Version 2.0 (the "License"); you may not use this file except
@@ -26,13 +26,6 @@
 
 SCRIPT_LOCATION="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
-# The packages to be released.
-PACKAGES=$1
-# The GitHub Action run number.
-GITHUB_RUN_NUMBER=$2
-# The release branch name.
-RELEASE_BRANCH=release-action-$GITHUB_RUN_NUMBER
-
 # Goes to the project root directory.
 goToRootDirectory() {
     cd "$SCRIPT_LOCATION/../../../" || exit 1
@@ -55,7 +48,7 @@ process_console_package() {
         -Dmaven.test.skip=true \
         release:prepare -B \
         -DreleaseVersion="$releaseVersion" \
-        -DscmCommentPrefix="[WSO2 Release] [GitHub Action #$GITHUB_RUN_NUMBER] [Release] [skip ci] " &&
+        -DscmCommentPrefix="[WSO2 Release] [GitHub Action] [Release] [skip ci] " &&
         mvn -Dresume=false \
             -Darguments='-Dadditionalparam=-Xdoclint:none' \
             -Dmaven.test.skip=true \
@@ -81,7 +74,7 @@ process_myaccount_package() {
         -Dmaven.test.skip=true \
         release:prepare -B \
         -DreleaseVersion="$releaseVersion" \
-        -DscmCommentPrefix="[WSO2 Release] [GitHub Action #$GITHUB_RUN_NUMBER] [Release] [skip ci] " &&
+        -DscmCommentPrefix="[WSO2 Release] [GitHub Action] [Release] [skip ci] " &&
         mvn -Dresume=false \
             -Darguments='-Dadditionalparam=-Xdoclint:none' \
             -Dmaven.test.skip=true \
@@ -107,7 +100,7 @@ process_java_apps_package() {
         -Dmaven.test.skip=true \
         release:prepare -B \
         -DreleaseVersion="$releaseVersion" \
-        -DscmCommentPrefix="[WSO2 Release] [GitHub Action #$GITHUB_RUN_NUMBER] [Release] [skip ci] " &&
+        -DscmCommentPrefix="[WSO2 Release] [GitHub Action] [Release] [skip ci] " &&
         mvn -Dresume=false \
             -Darguments='-Dadditionalparam=-Xdoclint:none' \
             -Dmaven.test.skip=true \
@@ -116,40 +109,14 @@ process_java_apps_package() {
             -P include-sources
 }
 
-# Create and checkout a new branch for the release.
-create_and_checkout_release_branch() {
-    local releaseBranch=$RELEASE_BRANCH
-
-    git checkout -b "$releaseBranch" &&
-    echo "Checked out to the release branch: $releaseBranch"
-}
-
-# Merge the release branch back to master.
-merge_to_master() {
-    local releaseBranch=$RELEASE_BRANCH
-    local masterBranch="master"
-
-    git checkout "$masterBranch" &&
-    git pull origin "$masterBranch" &&
-    git merge --no-ff "$releaseBranch" -m "[WSO2 Release] [GitHub Action #$GITHUB_RUN_NUMBER] [Release] [skip ci] Merge release branch $releaseBranch" &&
-    git push origin "$masterBranch" &&
-    echo "Merged $releaseBranch into $masterBranch"
-}
+PACKAGES=$1
 
 if [ -z "$PACKAGES" ]; then
     echo "No packages to be released. Exiting..." &&
         exit 0
 fi
 
-if [ -z "$GITHUB_RUN_NUMBER" ]; then
-    echo "No GitHub Action run number provided. Exiting..." &&
-        exit 0
-fi
-
 echo "Releasing packages: $PACKAGES"
-
-# Create and checkout a new branch for the release.
-create_and_checkout_release_branch
 
 # Iterate over each package in the JSON array
 for package in $(echo "$PACKAGES" | jq -c '.[]'); do
@@ -171,8 +138,5 @@ for package in $(echo "$PACKAGES" | jq -c '.[]'); do
         ;;
     esac
 done
-
-# Merge the release branch back to master.
-merge_to_master
 
 # End of script

@@ -50,11 +50,6 @@ jobs:
                   token: ${{ env.GH_TOKEN }}
                   fetch-depth: 0
 
-            - name: Set up Git user
-              run: |
-                git config user.name ${{ env.BOT_USERNAME }}}
-                git config user.email ${{ env.BOT_EMAIL }}}
-
             - name: 🟢 Setup node
               id: setup-node
               uses: actions/setup-node@v2
@@ -172,4 +167,4 @@ jobs:
               working-directory: .github/workflows
               run: |
                   PACKAGES="${{ toJson(steps.changesets.outputs.publishedPackages) }}"
-                  bash ./scripts/release.sh "$PACKAGES" ${{ github.run_number }}
+                  bash ./scripts/release.sh "$PACKAGES"
