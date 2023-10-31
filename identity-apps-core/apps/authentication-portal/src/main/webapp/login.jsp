@@ -1033,10 +1033,6 @@
                     <% }
                     String clientId = request.getParameter("client_id");
                     String urlParameters = "";
-                    boolean enableLoginPageEarlySignupLink = false;
-                    if (!StringUtils.isBlank(application.getInitParameter("EnableLoginPageEarlySignupLink"))) {
-                        enableLoginPageEarlySignupLink = Boolean.parseBoolean(application.getInitParameter("EnableLoginPageEarlySignupLink"));
-                    }
                     if (!isSelfSignUpEnabledInTenant
                             && StringUtils.isNotBlank(application.getInitParameter("AccountRegisterEndpointURL"))
                             && (StringUtils.equals("CONSOLE",clientId)
