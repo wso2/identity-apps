@@ -169,7 +169,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     const onBackButtonClick = (): void => {
         history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
     };
-    
+
     return (
         <PageLayout
             title={ (serverConfigurationConfig.showPageHeading && connectorCategory?.name) &&
