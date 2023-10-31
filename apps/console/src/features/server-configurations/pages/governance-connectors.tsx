@@ -96,13 +96,13 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
         getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
 
-                if (!OrganizationUtils.isCurrentOrganizationRoot()) {
-                    response.connectors = 
+                if (!OrganizationUtils.isCurrentOrganizationRoot() && !serverConfigurationConfig.dynamicConnectors) {
+                    response.connectors =
                         GovernanceConnectorUtils
                             .filterGovernanceConnectorCategories(categoryId, response.connectors);
 
                     // If the given connector is not available for an organization domains
-                    if (response.connectors.length==0) {
+                    if (response.connectors.length === 0) {
                         dispatch(
                             addAlert({
                                 description: t(
@@ -169,7 +169,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     const onBackButtonClick = (): void => {
         history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
     };
-
+    
     return (
         <PageLayout
             title={ (serverConfigurationConfig.showPageHeading && connectorCategory?.name) &&
