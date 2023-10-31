@@ -31,7 +31,7 @@ import { TenantTierRequestResponse } from "../models/subscription";
  *
  * @returns SWR response object containing the data, error, isValidating, mutate.
  */
-export const useTenantTier = <Data = TenantTierRequestResponse, 
+const useTenantTier = <Data = TenantTierRequestResponse, 
     Error = RequestErrorInterface> (): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -54,3 +54,5 @@ export const useTenantTier = <Data = TenantTierRequestResponse,
         mutate: mutate
     };
 };
+
+export default useTenantTier;
