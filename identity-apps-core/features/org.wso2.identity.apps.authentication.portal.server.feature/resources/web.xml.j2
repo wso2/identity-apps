@@ -71,6 +71,13 @@
         <param-value>true</param-value>
     </context-param-->
 
+    {% if authenticationendpoint.enable_login_page_early_signup_link is defined %}
+    <context-param>
+        <param-name>EnableLoginPageEarlySignupLink</param-name>
+        <param-value>{{ authenticationendpoint.enable_login_page_early_signup_link }}</param-value>
+    </context-param>
+    {% endif %}
+
     {% if authenticationendpoint.registration_url is defined %}
     <context-param>
         <param-name>AccountRegisterEndpointURL</param-name>
