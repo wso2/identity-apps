@@ -136,7 +136,7 @@ merge_to_master() {
     echo "Merged $releaseBranch into $masterBranch"
 }
 
-if [ -z "$PACKAGES" ] || [ ${#PACKAGES[@]} -eq 0 ]; then
+if [ -z "$PACKAGES" ] || [ "$PACKAGES" = "[]" ]; then
     echo "No packages to be released. Exiting..." &&
         exit 0
 fi
