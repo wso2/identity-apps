@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.5.15
+
+### Patch Changes
+
+- [#4444](https://github.com/wso2/identity-apps/pull/4444) [`e76e046cc9`](https://github.com/wso2/identity-apps/commit/e76e046cc9d632952209891d93003a7c9924f157) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Remove choreo configurations from SMS OTP authenticator in connections page
+
+* [#4451](https://github.com/wso2/identity-apps/pull/4451) [`66fdc8faf2`](https://github.com/wso2/identity-apps/commit/66fdc8faf2e2e9ece0048f5a3d332749b6c997ed) Thanks [@asekawa](https://github.com/asekawa)! - Fix placeholder values in Design section-branding
+
+- [#4448](https://github.com/wso2/identity-apps/pull/4448) [`fc912ec554`](https://github.com/wso2/identity-apps/commit/fc912ec5544039e26f658e001a50ae9a95e6d376) Thanks [@Rashmini](https://github.com/Rashmini)! - Fix issue in empty organization list for discovery
+
 ## 2.5.14
 
 ### Patch Changes
