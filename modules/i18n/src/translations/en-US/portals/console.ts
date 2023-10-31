@@ -9487,7 +9487,7 @@ export const console: ConsoleNS = {
                             emailDomains: {
                                 label : "Email Domains",
                                 placeholder: "Enter email domains",
-                                hint: "Enter the email domains you wish to map to the organization. Separate multiple domains by hitting enter and typing the next domain."
+                                hint: "Type and enter to add email domains which should be mapped to the organization. (E.g. gmail.com etc.)"
                             },
                             organizationName: {
                                 label: "Organization Name",
@@ -9515,15 +9515,18 @@ export const console: ConsoleNS = {
                             emailDomains: {
                                 label : "Email Domains",
                                 placeholder: "Enter email domains",
-                                hint: "Enter the email domains you wish to map to the organization. Separate multiple domains by hitting enter and typing the next domain."
+                                hint: "Type and enter to add email domains which should be mapped to the organization. (E.g. gmail.com etc.)."
                             },
                             organizationName: {
                                 label: "Organization Name",
-                                hint: "The name of the organization to which the domain mapping are added."
+                                hint: "The name of the organization to which the domain mappings are added."
                             }
-                        }
+                        },
+                        message: "If you change the email domain mappings, users who are already registered in your organization might " +
+                        "not be able to log in. Therefore, please be conscious when you update the email domains."
                     }
                 },
+                message: "Email domain discovery feature can only be used when email address is configured as the username.",
                 notifications: {
                     addEmailDomains: {
                         error: {

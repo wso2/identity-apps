@@ -32,7 +32,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
-import { ContentLoader, EmphasizedSegment, Hint, PrimaryButton } from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment, Hint, Message, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -200,6 +200,14 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                             onSubmit={ handleSubmit }
                             className="edit-organization-discovery-domains-form"
                         >
+                            <Message
+                                type="warning"
+                                content={ (
+                                    <>
+                                        { t("console:manage.features.organizationDiscovery.edit.form.message") }
+                                    </>
+                                ) }
+                            />
                             <FinalFormField
                                 fullWidth
                                 FormControlProps={ {

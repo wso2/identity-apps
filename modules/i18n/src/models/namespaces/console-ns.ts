@@ -3346,8 +3346,10 @@ export interface ConsoleNS {
                                 hint: string;
                             };
                         };
+                        message: string;
                     };
                 };
+                message: string;
                 notifications: {
                     addEmailDomains: {
                         error: {

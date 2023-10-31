@@ -7707,7 +7707,7 @@ export const console: ConsoleNS = {
                             emailDomains: {
                                 label : "Domaines de messagerie",
                                 placeholder: "Entrez les domaines de messagerie",
-                                hint: "Entrez les domaines de messagerie que vous souhaitez mapper à l'organisation.Séparez plusieurs domaines en appuyant sur Entrée et en tapant le domaine suivant."
+                                hint: "Tapez et entrez pour ajouter des domaines de messagerie qui doivent être mappés à l'organisation. (Par exemple, gmail.com, etc.)"
                             },
                             organizationName: {
                                 label: "nom de l'organisation",
@@ -7735,15 +7735,18 @@ export const console: ConsoleNS = {
                             emailDomains: {
                                 label : "Domaines de messagerie",
                                 placeholder: "Entrez les domaines de messagerie",
-                                hint: "Entrez les domaines de messagerie que vous souhaitez mapper à l'organisation.Séparez plusieurs domaines en appuyant sur Entrée et en tapant le domaine suivant."
+                                hint: "Tapez et entrez pour ajouter des domaines de messagerie qui doivent être mappés à l'organisation. (Par exemple, gmail.com, etc.)"
                             },
                             organizationName: {
                                 label: "nom de l'organisation",
                                 hint: "Entrez le nom de l'organisation que vous souhaitez ajouter la cartographie du domaine."
                             }
-                        }
+                        },
+                        message: "Si vous modifiez les mappages de domaines de messagerie, les utilisateurs déjà enregistrés dans votre organisation risquent de ne " +
+                        "pas pouvoir se connecter. Par conséquent, soyez prudent lorsque vous mettez à jour les domaines de messagerie."
                     }
                 },
+                message: "La fonctionnalité de découverte de domaine de messagerie ne peut être utilisée que lorsque l'adresse e-mail est configurée comme nom d'utilisateur.",
                 notifications: {
                     addEmailDomains: {
                         error: {
