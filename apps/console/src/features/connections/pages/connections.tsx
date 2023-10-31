@@ -107,7 +107,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
     const [ localAuthenticatorList, setLocalAuthenticatorList ] = useState<AuthenticatorInterface[]>([]);
     const [ filter, setFilter ] = useState<string>(null);
     const [ appendConnections, setAppendConnections ] = useState<boolean>(false);
-    const [ isPaginating, setIsPaginating ] = useState<boolean>(false);
+    const [ isPaginating ] = useState<boolean>(false);
 
     const {
         data: authenticators,
