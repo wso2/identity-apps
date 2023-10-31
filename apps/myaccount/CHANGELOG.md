@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.2.4
+
+### Patch Changes
+
+- [#4458](https://github.com/wso2/identity-apps/pull/4458) [`2f2ea8dc9c`](https://github.com/wso2/identity-apps/commit/2f2ea8dc9c57e0c18fffe57d99a6103302ca92d2) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Release My Account 2.2.4
+
+## 2.2.3
+
+### Patch Changes
+
+- [#4450](https://github.com/wso2/identity-apps/pull/4450) [`2f4cc56ff7`](https://github.com/wso2/identity-apps/commit/2f4cc56ff758960fe1ec4d85524dedca511cd246) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue on the profile widget when organization name is provided
+
 ## 2.2.2
 
 ### Patch Changes

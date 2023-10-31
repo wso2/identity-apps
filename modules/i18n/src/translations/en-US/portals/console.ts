@@ -8240,6 +8240,9 @@ export const console: ConsoleNS = {
                         name: "Password Policies",
                         description: "Configure password policies to enhance user password strength.",
                         connectors: {
+                            passwordExpiry: {
+                                friendlyName: "Password Expiry"
+                            },
                             passwordHistory: {
                                 friendlyName: "Password History",
                                 properties: {
@@ -8284,6 +8287,9 @@ export const console: ConsoleNS = {
                         name: "User Onboarding",
                         description: "Configure user onboarding settings.",
                         connectors: {
+                            askPassword: {
+                                friendlyName: "Invite user to set the password"
+                            },
                             selfSignUp: {
                                 friendlyName: "Self Registration",
                                 properties: {
@@ -8756,7 +8762,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             userClaimUpdate: {
-                                friendlyName: "User Claim Update",
+                                friendlyName: "User Attribute Change Verification",
                                 properties: {
                                     userClaimUpdateEmailEnableVerification: {
                                         hint: "Trigger a verification notification when user's email address is updated.",
@@ -8788,6 +8794,7 @@ export const console: ConsoleNS = {
                     },
                     multiFactorAuthenticators : {
                         name: "Multi Factor Authenticators",
+                        friendlyName: "Authenticator Settings",
                         description: "Configure multi factor authenticator settings.",
                         connectors: {
                             backupCodeAuthenticator: {

@@ -1,5 +1,38 @@
 # @wso2is/console
 
+## 2.5.14
+
+### Patch Changes
+
+- [#4456](https://github.com/wso2/identity-apps/pull/4456) [`05b585335c`](https://github.com/wso2/identity-apps/commit/05b585335cc7ea90d081c8a4ca864daa0636d3bd) Thanks [@savindi7](https://github.com/savindi7)! - Update governance connector names and descriptions
+
+- Updated dependencies [[`05b585335c`](https://github.com/wso2/identity-apps/commit/05b585335cc7ea90d081c8a4ca864daa0636d3bd)]:
+  - @wso2is/i18n@2.0.27
+
+## 2.5.13
+
+### Patch Changes
+
+- [#4453](https://github.com/wso2/identity-apps/pull/4453) [`79bafd966d`](https://github.com/wso2/identity-apps/commit/79bafd966ddf3b69061d38bfd04d15d6edf5e49b) Thanks [@brionmario](https://github.com/brionmario)! - Fix organization SSO
+
+## 2.5.12
+
+### Patch Changes
+
+- [#4449](https://github.com/wso2/identity-apps/pull/4449) [`a3d9a7f388`](https://github.com/wso2/identity-apps/commit/a3d9a7f388ba2fa265f1769f8f306876c70edfd6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with branding in sub-orgs
+
+## 2.5.11
+
+### Patch Changes
+
+- [#4446](https://github.com/wso2/identity-apps/pull/4446) [`279b1e8f71`](https://github.com/wso2/identity-apps/commit/279b1e8f711551a1e8fd434b70f4659455c51226) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue of getting something went wrong page after deleting a user
+
+## 2.5.10
+
+### Patch Changes
+
+- [#4443](https://github.com/wso2/identity-apps/pull/4443) [`204c554b22`](https://github.com/wso2/identity-apps/commit/204c554b221db651cc84045f7cd45263a957927a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in Role permission section
+
 ## 2.5.9
 
 ### Patch Changes

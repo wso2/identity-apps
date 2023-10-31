@@ -132,9 +132,9 @@ export const AppUtils: any = (function() {
                 return _config.clientOrigin + this.getOrganizationPath()
                     + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
             }
-            
+
             let basePath: string = `${_config.clientOrigin}${this.getTenantPath(true)}`;
-            
+
             if (basePath.includes(this.getSuperTenant())) {
                 basePath = _config.clientOrigin;
             }
@@ -197,9 +197,19 @@ export const AppUtils: any = (function() {
          * @returns App base with tenant and organization.
          */
         getAppBaseWithTenantAndOrganization: function() {
-            return `${ this.getTenantPath(true) }${ this.getOrganizationPath() }${ _config.appBaseName
-                ? ("/" + _config.appBaseName)
-                : "" }`;
+            if (_config.legacyAuthzRuntime) {
+                return `${ this.getTenantPath(true) }${ this.getOrganizationPath() }${ _config.appBaseName
+                    ? ("/" + _config.appBaseName)
+                    : "" }`;
+            }
+
+            const tenantPath: string = this.getTenantPath(true)
+                || `/${this.getTenantPrefix()}/${this.getSuperTenant()}`;
+            const appBaseName: string = _config.appBaseName
+                ? `/${_config.appBaseName}`
+                : "";
+
+            return `${ tenantPath }${ this.getOrganizationPath() }${ appBaseName }`;
         },
 
         getClientId: function() {
@@ -379,20 +389,29 @@ export const AppUtils: any = (function() {
 
         /**
          * Get the organization type.
-         * 
+         *
          * @returns Organization type.
          * @deprecated This is deprecated.
          */
         getOrganizationType: function () {
             return _config.organizationType;
         },
-        
+
         getServerOriginWithTenant: function() {
             if (_config.legacyAuthzRuntime) {
                 return _config.serverOrigin + this.getTenantPath(true);
             }
 
-            return `${ _config.serverOrigin}${this.getTenantPath(true)}${this.getOrganizationName() ? "/o" : "" }`;
+            let tenantPath: string = this.getTenantPath(true);
+
+            /**
+             * If the tenant path is empty, and the organization name is present, then append the `carbon.super` path.
+             */
+            if (this.getOrganizationName() && !tenantPath) {
+                tenantPath = `/${this.getTenantPrefix()}/${this.getSuperTenant()}`;
+            }
+
+            return `${ _config.serverOrigin }${ tenantPath }${ this.getOrganizationName() ? "/o" : "" }`;
         },
 
         /**
@@ -691,7 +710,7 @@ export const AppUtils: any = (function() {
 
         /**
          * Updates the organization type.
-         * 
+         *
          * @param organizationType - new Organization type.
          * @deprecated This is deprecated.
          */

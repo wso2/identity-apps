@@ -6616,6 +6616,9 @@ export const console: ConsoleNS = {
                         name: "Politiques de mot de passe",
                         description: "Configurer les stratégies de mot de passe pour améliorer la force du mot de passe utilisateur.",
                         connectors: {
+                            passwordExpiry: {
+                                friendlyName: "Expiration du mot de passe"
+                            },
                             passwordHistory: {
                                 friendlyName: "Historique du mot de passe",
                                 properties: {
@@ -6660,6 +6663,9 @@ export const console: ConsoleNS = {
                         name: "Intégration de l'utilisateur",
                         description: "Configurer les paramètres d'intégration de l'utilisateur.",
                         connectors: {
+                            askPassword: {
+                                friendlyName: "Inviter l'utilisateur à définir le mot de passe"
+                            },
                             selfSignUp: {
                                 friendlyName: "Auto-inscription",
                                 properties: {
@@ -7164,6 +7170,7 @@ export const console: ConsoleNS = {
                     },
                     multiFactorAuthenticators: {
                         name: "Authentificateurs multi-facteurs",
+                        friendlyName: "Paramètres d'authentificateur",
                         description: "Configurer les paramètres d'authentificateur multi-facteurs.",
                         connectors: {
                             backupCodeAuthenticator: {

@@ -136,7 +136,7 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
 
             return;
         }
-        history.push(AppConstants.getPaths().get("ACCOUNT_LOGIN"));
+        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
     };
 
     /**
@@ -508,8 +508,8 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
                                 "data-testid": `${componentId}-page-back-button`,
                                 onClick: handleBackButtonClick,
                                 text: isApplicationRedirect ?
-                                    t("extensions:manage.accountLogin.goBackToApplication")
-                                    : t("extensions:manage.accountLogin.goBackToAccountLogin")
+                                    t("extensions:manage.accountLogin.goBackToApplication") :
+                                    t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
                             } }
                             bottomMargin={ false }
                             contentTopMargin={ true }
