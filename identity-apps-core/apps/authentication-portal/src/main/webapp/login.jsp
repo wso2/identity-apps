@@ -1037,7 +1037,9 @@
                     if (!StringUtils.isBlank(application.getInitParameter("EnableLoginPageEarlySignupLink"))) {
                         enableLoginPageEarlySignupLink = Boolean.parseBoolean(application.getInitParameter("EnableLoginPageEarlySignupLink"));
                     }
-                    if (!isSelfSignUpEnabledInTenant && enableLoginPageEarlySignupLink && (StringUtils.equals("CONSOLE",clientId)
+                    if (!isSelfSignUpEnabledInTenant
+                            && StringUtils.isNotBlank(application.getInitParameter("AccountRegisterEndpointURL"))
+                            && (StringUtils.equals("CONSOLE",clientId)
                             || (StringUtils.equals("MY_ACCOUNT",clientId)
                             && StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)))
                             && !StringUtils.equals("true", promptAccountLinking)) {
