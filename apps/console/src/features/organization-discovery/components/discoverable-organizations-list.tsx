@@ -238,7 +238,7 @@ const DiscoverableOrganizationsList: FunctionComponent<DiscoverableOrganizations
      * @returns Placeholders.
      */
     const showPlaceholders = (): ReactElement => {
-        if (searchQuery && (isEmpty(list) || list?.organizations?.length === 0)) {
+        if (searchQuery && (isEmpty(list) || list?.totalResults === 0)) {
             return (
                 <EmptyPlaceholder
                     action={
@@ -263,7 +263,7 @@ const DiscoverableOrganizationsList: FunctionComponent<DiscoverableOrganizations
         }
 
         // When the search returns empty.
-        if (isEmpty(list) || list?.organizations?.length === 0) {
+        if (isEmpty(list) || list?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
                     className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
@@ -284,7 +284,8 @@ const DiscoverableOrganizationsList: FunctionComponent<DiscoverableOrganizations
                     }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    subtitle={ t("console:manage.features.organizationDiscoverys.placeholders.emptyList.subtitles") }
+                    title={ t("console:manage.placeholders.emptySearchResult.title") }
+                    subtitle={ [ t("console:manage.features.organizationDiscovery.placeholders.emptyList.subtitles") ] }
                     data-componentid={ `${ componentId }-empty-placeholder` }
                 />
             );

@@ -334,7 +334,7 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                 && !(!searchQuery
                     && (
                         isEmpty(discoverableOrganizations)
-                        || discoverableOrganizations?.organizations?.length <= 0
+                        || discoverableOrganizations?.totalResults <= 0
                     )
                 ) && (
                     <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
