@@ -96,32 +96,6 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
         getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
 
-                if (!OrganizationUtils.isCurrentOrganizationRoot() && !serverConfigurationConfig.dynamicConnectors) {
-                    response.connectors =
-                        GovernanceConnectorUtils
-                            .filterGovernanceConnectorCategories(categoryId, response.connectors);
-
-                    // If the given connector is not available for an organization domains
-                    if (response.connectors.length === 0) {
-                        dispatch(
-                            addAlert({
-                                description: t(
-                                    "console:manage.features.governanceConnectors.notifications." +
-                                    "getConnector.genericError.description"
-                                ),
-                                level: AlertLevels.ERROR,
-                                message: t(
-                                    "console:manage.features.governanceConnectors.notifications." +
-                                    "getConnector.genericError.message"
-                                )
-                            })
-                        );
-
-                        return;
-                        
-                    }
-                }
-
                 response.connectors.map((connector: GovernanceConnectorWithRef) => {
                     connector.categoryId = categoryId;
                     connector.ref = React.createRef();
