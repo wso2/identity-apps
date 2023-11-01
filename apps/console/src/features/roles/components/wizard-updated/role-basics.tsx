@@ -93,12 +93,18 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
     const noApplicationsAvailable: MutableRefObject<boolean> = useRef<boolean>(false);
 
+    /**
+     * Index of the roles tab.
+     */
+    const ROLES_TAB_INDEX: number = 5;
+
+
     const {
         data: applicationList,
         isLoading: isApplicationListFetchRequestLoading,
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
-    } = useApplicationList("clientId", null, null, applicationSearchQuery);
+    } = useApplicationList("clientId,associatedRoles.allowedAudience", null, null, applicationSearchQuery);
 
     const {
         data: rolesList,
@@ -137,10 +143,26 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                     content: (
                         <ListItemText 
                             primary={ application.name } 
-                            secondary={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." + 
-                                "assignedApplication.applicationSubTitle.application") } 
+                            secondary={ 
+                                application?.associatedRoles?.allowedAudience === RoleAudienceTypes.ORGANIZATION
+                                    ? (
+                                        <>
+                                            { t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." + 
+                                                "assignedApplication.applicationSubTitle.application") }
+                                            <Link
+                                                data-componentid={ `${componentId}-link-navigate-roles` }
+                                                onClick={ () => navigateToApplicationEdit(application?.id) }
+                                                external={ false }
+                                            >
+                                                Change the audience
+                                            </Link>
+                                        </>
+                                    ) : t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." + 
+                                        "assignedApplication.applicationSubTitle.organization")
+                            } 
                         />
                     ),
+                    disabled: application?.associatedRoles?.allowedAudience === RoleAudienceTypes.ORGANIZATION,
                     key: application.id,
                     text: application.name,
                     value: application.id
@@ -203,6 +225,15 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      * Navigate to the API Resources page.
      */
     const navigateToApplications = () => history.push(AppConstants.getPaths().get("APPLICATIONS"));
+
+    /**
+     * Navigate to the Applications Edit page.
+     */
+    const navigateToApplicationEdit = (appId: string) => 
+        history.push({
+            pathname: AppConstants.getPaths().get("APPLICATION_SIGN_IN_METHOD_EDIT")
+                .replace(":id", appId).replace(":tabName", `#tab=${ ROLES_TAB_INDEX }`)
+        });
 
     /**
      * Validates the Form.
