@@ -30,12 +30,10 @@ import { Dispatch } from "redux";
 import { Grid, Menu, Rail, Ref, Sticky } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
 import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history } from "../../core";
-import { OrganizationUtils } from "../../organizations/utils";
 import { getConnectorCategory } from "../api/governance-connectors";
 import { DynamicGovernanceConnector } from "../components";
 import { ServerConfigurationsConstants } from "../constants";
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models";
-import { GovernanceConnectorUtils } from "../utils";
 
 /**
  * Props for the Server Configurations page.
