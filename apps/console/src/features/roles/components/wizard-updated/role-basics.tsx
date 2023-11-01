@@ -98,7 +98,6 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      */
     const ROLES_TAB_INDEX: number = 5;
 
-
     const {
         data: applicationList,
         isLoading: isApplicationListFetchRequestLoading,
