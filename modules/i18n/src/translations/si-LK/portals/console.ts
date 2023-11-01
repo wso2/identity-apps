@@ -1680,6 +1680,10 @@ export const console: ConsoleNS = {
                                 hint: "මෙම සංවිධානයේ කළමනාකරණ API වෙත ප්‍රවේශ වීමට යෙදුමට ඉඩ දීමට සබල කරන්න.",
                                 label: "කළමනාකරණ යෙදුම"
                             },
+                            isFapiApp: {
+                                hint: "යෙදුම FAPI අනුකූල වීමට ඉඩ දීමට සබල කරන්න.",
+                                label: "FAPI යෙදුම"
+                            },
                             name: {
                                 label: "නම",
                                 placeholder: "මගේ යෙදුම",

@@ -1688,6 +1688,10 @@ export const console: ConsoleNS = {
                                 hint: "Enable to allow the application to access management API of this organization.",
                                 label: "Management Application"
                             },
+                            isFapiApp: {
+                                hint: "Enable to allow the application to be FAPI compliant.",
+                                label: "FAPI Application"
+                            },
                             name: {
                                 label: "Name",
                                 placeholder: "My App",

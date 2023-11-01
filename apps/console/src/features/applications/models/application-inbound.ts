@@ -165,6 +165,7 @@ export interface OIDCDataInterface {
     validateRequestObjectSignature?: boolean;
     scopeValidators?: string[];
     subject?: SubjectConfigInterface;
+    isFAPIApplication?: boolean;
 }
 
 /**

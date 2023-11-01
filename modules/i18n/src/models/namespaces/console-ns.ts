@@ -978,6 +978,7 @@ export interface ConsoleNS {
                             accessUrl: FormAttributes;
                             isSharingEnabled: FormAttributes;
                             isManagementApp: FormAttributes;
+                            isFapiApp: FormAttributes;
                         };
                         managementAppBanner: string;
 
