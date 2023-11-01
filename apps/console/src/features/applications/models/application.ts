@@ -41,6 +41,7 @@ export interface ApplicationBasicInterface {
     templateId?: string;
     isManagementApp?: boolean;
     advancedConfigurations?: AdvancedConfigurationsInterface;
+    associatedRoles?: AssociatedRolesInterface;
 }
 
 export enum ApplicationAccessTypes {

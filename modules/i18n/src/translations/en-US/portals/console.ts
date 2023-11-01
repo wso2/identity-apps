@@ -10170,7 +10170,7 @@ export const console: ConsoleNS = {
                                 label: "Assigned application",
                                 placeholder: "Select application to assign the role",
                                 applicationSubTitle: {
-                                    application: "Support application-scoped roles",
+                                    application: "Support application-scoped roles. ",
                                     organization: "Support organization-scoped roles"
                                 },
                                 validations: {
