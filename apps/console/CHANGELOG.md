@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.5.16
+
+### Patch Changes
+
+- [#4454](https://github.com/wso2/identity-apps/pull/4454) [`499c0a3d5d`](https://github.com/wso2/identity-apps/commit/499c0a3d5d30fa2a009fcda43c36300f599c7241) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in add administrator wizard
+
 ## 2.5.15
 
 ### Patch Changes
