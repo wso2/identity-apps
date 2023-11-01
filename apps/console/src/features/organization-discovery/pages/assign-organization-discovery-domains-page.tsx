@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useCallback, useMemo } from "react";
@@ -47,6 +47,7 @@ const AssignOrganizationDiscoverDomainsPage: FunctionComponent<EmailDomainAssign
 
     const { t } = useTranslation();
 
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config?.ui?.features?.organizationDiscovery;
     });
@@ -55,7 +56,11 @@ const AssignOrganizationDiscoverDomainsPage: FunctionComponent<EmailDomainAssign
         return (
             !isFeatureEnabled(
                 featureConfig,
-                OrganizationDiscoveryConstants.FEATURE_DICTIONARY.get("ORGANIZATION_UPDATE")
+                OrganizationDiscoveryConstants.FEATURE_DICTIONARY.get("ORGANIZATION_DISCOVERY_UPDATE")
+            ) || !hasRequiredScopes(
+                featureConfig,
+                featureConfig.scopes?.update,
+                allowedScopes
             )
         );
     }, [ featureConfig ]);

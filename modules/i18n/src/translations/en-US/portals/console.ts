@@ -9481,7 +9481,7 @@ export const console: ConsoleNS = {
                 },
                 assign: {
                     title: "Assign Email Domains",
-                    description: "Add email domains for sub organizations.",
+                    description: "Assign email domains for sub organizations.",
                     form: {
                         fields: {
                             emailDomains: {
@@ -9492,7 +9492,10 @@ export const console: ConsoleNS = {
                             organizationName: {
                                 label: "Organization Name",
                                 placeholder: "Select an organization",
-                                emptyPlaceholder: "All the organization have assigned domains",
+                                emptyPlaceholder: {
+                                    0: "There are no organizations available.",
+                                    1: "All the organizations have assigned domains."
+                                },
                                 hint: "Enter the name of the organization you wish to add the domain mapping."
                             }
                         }

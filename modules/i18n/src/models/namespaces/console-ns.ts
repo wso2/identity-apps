@@ -3316,7 +3316,10 @@ export interface ConsoleNS {
                             organizationName: {
                                 label: string;
                                 placeholder: string;
-                                emptyPlaceholder: string;
+                                emptyPlaceholder: {
+                                    0: string;
+                                    1: string;
+                                }
                                 hint: string;
                             }
                         }
