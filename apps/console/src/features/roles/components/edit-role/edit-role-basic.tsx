@@ -167,7 +167,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                     <Field.Input
                         ariaLabel="roleName"
                         name="roleName"
-                        inputType="resource_name"
+                        inputType="roleName"
                         required={ true }
                         readOnly={ isReadOnly }
                         value={ role?.displayName }

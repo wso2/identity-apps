@@ -266,7 +266,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         >
             <Field.Input
                 ariaLabel="roleName"
-                inputType="resource_name"
+                inputType="roleName"
                 data-componentid={ `${ componentId }-role-name-input` }
                 type="text"
                 name="roleName"
