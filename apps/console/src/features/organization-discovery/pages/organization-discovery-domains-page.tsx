@@ -16,11 +16,12 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import { ListLayout, Message, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import find from "lodash-es/find";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -362,14 +363,9 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
         >
             { discoveryToggle() }
             <Divider hidden />
-            <Message
-                type="info"
-                content={ (
-                    <>
-                        { t("console:manage.features.organizationDiscovery.message") }
-                    </>
-                ) }
-            />
+            <Alert severity="info">
+                { t("console:manage.features.organizationDiscovery.message") }
+            </Alert>
             <Divider hidden />
             { isOrganizationDiscoveryEnabled && (
                 <ListLayout
