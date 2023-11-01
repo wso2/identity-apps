@@ -20,6 +20,7 @@ import { Alert, ListItemText } from "@oxygen-ui/react";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Link } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import React, {
     FunctionComponent,
@@ -263,15 +264,20 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             errors.roleName = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
                 "validations.empty", { type: "Role" });
         } else {
-            // TODO: Need to debounce the function.
-            setRoleNameSearchQuery(`displayName eq ${values.roleName} and audience.value eq ${audienceId}`);
-
-            if (!isRolesListLoading || !isRolesListValidating) {
-                if (rolesList?.totalResults > 0) {
-                    errors.roleName = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
-                        "roleName.validations.duplicate", { type: "Role" });
+            if (!FormValidation.isValidRoleName(values.roleName?.toString().trim())) {
+                errors.roleName = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                    "roleName.validations.invalid", { type: "Role" });
+            } else {
+                // TODO: Need to debounce the function.
+                setRoleNameSearchQuery(`displayName eq ${values.roleName} and audience.value eq ${audienceId}`);
+    
+                if (!isRolesListLoading || !isRolesListValidating) {
+                    if (rolesList?.totalResults > 0) {
+                        errors.roleName = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
+                            "roleName.validations.duplicate", { type: "Role" });
+                    }
                 }
-            }   
+            }
         }
 
         if (errors.roleName || errors.assignedApplicationId) {
