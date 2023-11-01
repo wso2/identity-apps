@@ -1376,7 +1376,7 @@ export const extensions: Extensions = {
                                             + " et d'une taille inférieure à <3>1 mb</3> pour de meilleures"
                                             + " performances.",
                                         label: "URL de l'image latérale",
-                                        placeholder: "https://asgardeo.io/placeholder.jpeg"
+                                        placeholder: "https://myapp.com/placeholder.jpeg"
                                     }
                                 },
                                 heading: "Image latérale",
@@ -1664,7 +1664,7 @@ export const extensions: Extensions = {
                                             "S'il n'est pas défini, les valeurs par défaut de {{ productName }} " +
                                             "seront utilisées.",
                                         label: "URL de l'icône de favori",
-                                        placeholder: "https://asgardeo.io/favicon.ico"
+                                        placeholder: "https://myapp.com/favicon.ico"
                                     }
                                 },
                                 heading: "Icône de favori",
@@ -1689,7 +1689,7 @@ export const extensions: Extensions = {
                                             "S'il n'est pas défini, les valeurs par défaut de {{ productName }} " +
                                             "seront utilisées.",
                                         label: "URL du logo",
-                                        placeholder: "https://asgardeo.io/logo.png"
+                                        placeholder: "https://myapp.com/logo.png"
                                     }
                                 },
                                 heading: "Logo",
@@ -1710,7 +1710,7 @@ export const extensions: Extensions = {
                                     url: {
                                         hint: "Utilisez une image au moins <1>250x50 pixels</1> et moins de <3>1mb</3> de taille pour de meilleures performances.Si ce n'est pas défini, {{ productName }} Les défauts sont utilisés.",
                                         label: "URL du logo de mon compte",
-                                        placeholder: "https://myaccount.asgardeo.io/logo.png"
+                                        placeholder: "https://myaccount.myapp.com/logo.png"
                                     }
                                 },
                                 heading: "Le logo de mon compte",

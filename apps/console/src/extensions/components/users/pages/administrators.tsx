@@ -1409,6 +1409,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                     rolesList={ rolesList }
                     emailVerificationEnabled={ false }
                     isAdminUser={ true }
+                    defaultUserTypeSelection={ UserAccountTypes.ADMINISTRATOR }
                 />
             );
         }
