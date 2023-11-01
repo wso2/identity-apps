@@ -52,6 +52,10 @@
     boolean enablePasskeyProgressiveEnrollment = (boolean) data.get("FIDO.EnablePasskeyProgressiveEnrollment");
 %>
 
+<%!
+    private static final String MY_ACCOUNT = "/myaccount";
+%>
+
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp" />
 
@@ -212,15 +216,17 @@
     <script type="text/javascript" src="libs/base64js/base64js-1.3.0.min.js"></script>
     <script type="text/javascript" src="libs/base64url.js"></script>
 
+    <%
+        String myaccountUrl = application.getInitParameter("MyAccountURL");
+        if (StringUtils.isEmpty(myaccountUrl)) {
+            myaccountUrl = ServiceURLBuilder.create().addPath(MY_ACCOUNT).build().getAbsolutePublicURL();
+        }
+    %>
+
     <script type="text/javascript">
         $(document).ready(function () {
-            var myaccountUrl = '<%=application.getInitParameter("MyAccountURL")%>';
-
-            if ("<%=tenantDomain%>" !== "" || "<%=tenantDomain%>" !== "null") {
-                myaccountUrl = myaccountUrl + "/t/" + "<%=tenantDomain%>";
-            }
-
-            $("#my-account-link").attr("href", myaccountUrl);
+            
+            $("#my-account-link").attr("href", '<%=myaccountUrl%>');
         });
     </script>
 
@@ -228,7 +234,7 @@
         function cancelFlow(){
             var form = document.getElementById('form');
             var scenario = document.getElementById('scenario');
-            scenario.value = JSON.stringify({ errorCode: 400, message: "User cancellation" });
+            scenario.value = "CANCEL_FIDO_AUTH";
             form.submit();
         }
 

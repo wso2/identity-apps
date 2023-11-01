@@ -127,13 +127,15 @@
                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.info.name.passkey")%>
                             </p>
                             <div class="ui form">
-                                <!-- Add an element to display the error message -->
-                                <div class="ui red message" id="keynameError" style="display: none;">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.error.name.passkey")%>
-                                </div>
                                 <div class="field">
                                     <input type="text" id="keynameInput" 
-                                        placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.placeholder.name.passkey")%>">
+                                            placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.placeholder.name.passkey")%>">
+                                    <div class="mt-1 left aligned" id="keynameError" style="display: none;">
+                                        <i class="red exclamation circle fitted icon"></i>
+                                        <span class="validation-error-message" id="keynameErrorText">
+                                           <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.error.name.passkey")%>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="mt-4">

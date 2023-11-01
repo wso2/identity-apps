@@ -1389,7 +1389,7 @@ export const console: ConsoleNS = {
                                                 heading: "Add TOTP as a second factor"
                                             },
                                             usernameless: {
-                                                description: "Enable users to log in using a passkey, security key or "
+                                                description: "Enable users to log in using a passkey, FIDO security key or "
                                                     + "biometrics.",
                                                 heading: "Add Passkey Login",
                                                 info: "On-the-fly passkey enrollment is available exclusively " +

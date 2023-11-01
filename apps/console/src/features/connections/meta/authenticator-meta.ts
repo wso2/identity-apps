@@ -45,8 +45,8 @@ export class AuthenticatorMeta {
                 "credentials.",
             [ AuthenticatorManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Get users Identity first to " +
                 "control the authentication flow.",
-            [ AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Login users with Passkey, Biometrics " +
-                "or Security Keys.",
+            [ AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID ]: "Login users with passkey, FIDO security key" +
+                "or biometrics.",
             [ AuthenticatorManagementConstants.TOTP_AUTHENTICATOR_ID ]: "Two-factor authentication using " +
                 "Time-Based One Time passcode.",
             [ AuthenticatorManagementConstants.OIDC_AUTHENTICATOR_ID ]: "Authenticate users with " +

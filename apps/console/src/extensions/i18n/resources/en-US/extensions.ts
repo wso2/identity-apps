@@ -2661,12 +2661,12 @@ export const extensions: Extensions = {
                     },
                     heading: "Passkey Set Up Guide",
                     passkeys: {
-                        docLinkText: "FIDO2 passkey",
+                        docLinkText: "FIDO passkey",
                         content:
                             "Passkey provide simple and secure passwordless login for your applications that " +
                             "survives device loss and works across platforms. You can try out passkey " +
                             "authentication on Asgardeo with \"Passkey\".",
-                        heading: "FIDO2 authentication with passkey"
+                        heading: "FIDO authentication with passkey"
                     },
                     steps: {
                         customizeFlow: {
