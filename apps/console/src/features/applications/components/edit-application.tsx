@@ -393,7 +393,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 inboundProtocolConfig: inboundProtocolConfig,
                 inboundProtocols: inboundProtocolList,
                 onApplicationUpdate: () => {
-                    onUpdate(application?.id);
+                    handleApplicationUpdate(application?.id);
                 },
                 onTriggerTabUpdate: (tabIndex: number) => {
                     setActiveTabIndex(tabIndex);
