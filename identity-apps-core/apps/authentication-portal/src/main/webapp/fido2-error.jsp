@@ -21,7 +21,6 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="java.io.File" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 <%@ include file="includes/localize.jsp" %>
 
@@ -35,10 +34,10 @@
     session.invalidate();
 
     String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
-    String authenticationFailed = "false";
+    Boolean authenticationFailed = false;
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
-        authenticationFailed = "true";
+        authenticationFailed = true;
 
         if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
@@ -63,22 +62,32 @@
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
     %>
-    <jsp:include page="extensions/header.jsp"/>
+        <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-    <jsp:include page="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
+    <% } %>
+
+    <%-- analytics --%>
+    <%
+        File analyticsFile = new File(getServletContext().getRealPath("extensions/analytics.jsp"));
+        if (analyticsFile.exists()) {
+    %>
+        <jsp:include page="extensions/analytics.jsp"/>
+    <% } else { %>
+        <jsp:include page="includes/analytics.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout">
-    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>">
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
                 if (productTitleFile.exists()) {
             %>
-            <jsp:include page="extensions/product-title.jsp"/>
+                <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-            <jsp:include page="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
         </layout:component>
         <layout:component componentName="MainSection">
@@ -87,7 +96,7 @@
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.error.title")%>
                     </h3>
                     <%
-                        if ("true".equals(authenticationFailed)) {
+                        if (authenticationFailed) {
                     %>
                         <p class="portal-tagline-description">
                             <%=Encode.forHtmlContent(errorMessage)%>
@@ -101,7 +110,6 @@
                         <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
                             <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
                         </a> 
-                
                     </p>
                     <div class="ui divider hidden"></div>
                 </div>
