@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.37
+
+### Patch Changes
+
+- [#4476](https://github.com/wso2/identity-apps/pull/4476) [`eb7c05e180`](https://github.com/wso2/identity-apps/commit/eb7c05e180454a87f73cb03f91b33f5f01ec2c1c) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue related to the configured layout is not applied to missing claim requesting prompt during login flow
+
 ## 2.0.36
 
 ### Patch Changes
