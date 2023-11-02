@@ -1,5 +1,28 @@
 # @wso2is/console
 
+## 2.5.17
+
+### Patch Changes
+
+- [#4468](https://github.com/wso2/identity-apps/pull/4468) [`f0bbe0f7e6`](https://github.com/wso2/identity-apps/commit/f0bbe0f7e616c99d8e17246dd2a8c854441ca44f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add config to disable email provider in super org
+
+* [#4460](https://github.com/wso2/identity-apps/pull/4460) [`1e515a6da6`](https://github.com/wso2/identity-apps/commit/1e515a6da610b6955d5d3b0ea4cc5413e7e640b3) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add multi-language support for fido specific components and fix bugs in fido related components
+
+- [#4474](https://github.com/wso2/identity-apps/pull/4474) [`e5cbb09265`](https://github.com/wso2/identity-apps/commit/e5cbb0926585b0589ea927691c6ff328c4ed1b8a) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Improve the application selection dropdown under Application audience role creation
+
+* [#4477](https://github.com/wso2/identity-apps/pull/4477) [`8318089363`](https://github.com/wso2/identity-apps/commit/831808936323c8241c93b0e582c31a3e2778adb9) Thanks [@Rashmini](https://github.com/Rashmini)! - Add UI improvements to the organization discovery feature
+
+- [#4472](https://github.com/wso2/identity-apps/pull/4472) [`abfc5e25ea`](https://github.com/wso2/identity-apps/commit/abfc5e25eaa7a4afd8d2063fd019e6147fc39021) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Update role name field input validation
+
+* [#4466](https://github.com/wso2/identity-apps/pull/4466) [`eec164e767`](https://github.com/wso2/identity-apps/commit/eec164e767859c028e9ab5b7fd07e7b655a5fa86) Thanks [@Rashmini](https://github.com/Rashmini)! - Add info/warning messages for organization discovery
+
+- [#4478](https://github.com/wso2/identity-apps/pull/4478) [`0273606475`](https://github.com/wso2/identity-apps/commit/0273606475093da5cc90a17fdb696ecbbf137ca6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issue with the application role edit tab
+
+- Updated dependencies [[`1e515a6da6`](https://github.com/wso2/identity-apps/commit/1e515a6da610b6955d5d3b0ea4cc5413e7e640b3), [`e5cbb09265`](https://github.com/wso2/identity-apps/commit/e5cbb0926585b0589ea927691c6ff328c4ed1b8a), [`8318089363`](https://github.com/wso2/identity-apps/commit/831808936323c8241c93b0e582c31a3e2778adb9), [`abfc5e25ea`](https://github.com/wso2/identity-apps/commit/abfc5e25eaa7a4afd8d2063fd019e6147fc39021), [`eec164e767`](https://github.com/wso2/identity-apps/commit/eec164e767859c028e9ab5b7fd07e7b655a5fa86)]:
+  - @wso2is/i18n@2.0.28
+  - @wso2is/form@2.0.6
+  - @wso2is/validation@2.0.1
+
 ## 2.5.16
 
 ### Patch Changes

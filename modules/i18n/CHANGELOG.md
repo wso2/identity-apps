@@ -1,5 +1,17 @@
 # @wso2is/i18n
 
+## 2.0.28
+
+### Patch Changes
+
+- [#4460](https://github.com/wso2/identity-apps/pull/4460) [`1e515a6da6`](https://github.com/wso2/identity-apps/commit/1e515a6da610b6955d5d3b0ea4cc5413e7e640b3) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add multi-language support for fido specific components and fix bugs in fido related components
+
+* [#4474](https://github.com/wso2/identity-apps/pull/4474) [`e5cbb09265`](https://github.com/wso2/identity-apps/commit/e5cbb0926585b0589ea927691c6ff328c4ed1b8a) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Improve the application selection dropdown under Application audience role creation
+
+- [#4477](https://github.com/wso2/identity-apps/pull/4477) [`8318089363`](https://github.com/wso2/identity-apps/commit/831808936323c8241c93b0e582c31a3e2778adb9) Thanks [@Rashmini](https://github.com/Rashmini)! - Add UI improvements to the organization discovery feature
+
+* [#4466](https://github.com/wso2/identity-apps/pull/4466) [`eec164e767`](https://github.com/wso2/identity-apps/commit/eec164e767859c028e9ab5b7fd07e7b655a5fa86) Thanks [@Rashmini](https://github.com/Rashmini)! - Add info/warning messages for organization discovery
+
 ## 2.0.27
 
 ### Patch Changes

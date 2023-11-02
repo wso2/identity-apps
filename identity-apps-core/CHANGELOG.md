@@ -1,5 +1,15 @@
 # @wso2is/identity-apps-core
 
+## 2.0.36
+
+### Patch Changes
+
+- [#4460](https://github.com/wso2/identity-apps/pull/4460) [`1e515a6da6`](https://github.com/wso2/identity-apps/commit/1e515a6da610b6955d5d3b0ea4cc5413e7e640b3) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add multi-language support for fido specific components and fix bugs in fido related components
+
+* [#4464](https://github.com/wso2/identity-apps/pull/4464) [`a46c95f237`](https://github.com/wso2/identity-apps/commit/a46c95f23736e3296af9f281c079aacebeee717d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Hide registration link from IS
+
+- [#4442](https://github.com/wso2/identity-apps/pull/4442) [`81eed0a76c`](https://github.com/wso2/identity-apps/commit/81eed0a76c5910d1e07b2746f03e965e68b4310d) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Disable input validation for usename in IS by default
+
 ## 2.0.35
 
 ### Patch Changes
