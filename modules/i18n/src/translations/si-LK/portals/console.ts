@@ -7074,7 +7074,7 @@ export const console: ConsoleNS = {
                             message: "යම් දෝෂයක් ඇති වී ඇත"
                         },
                         success: {
-                            description: "{{name}} සම්බන්ධකය සාර්ථකව යාවත්කාලීන කරන ලදි.",
+                            description: "{{name}} වින්‍යාසය සාර්ථකව යාවත්කාලීන කරන ලදී.",
                             message: "යාවත්කාලීන කිරීම සාර්ථකයි."
                         }
                     }

@@ -7239,7 +7239,7 @@ export const console: ConsoleNS = {
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Le connecteur {{ name }} a été mis à jour avec succès.",
+                            description: "La configuration {{ name }} a été mise à jour avec succès.",
                             message: "Mise à jour réussie."
                         }
                     }
