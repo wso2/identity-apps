@@ -25,7 +25,6 @@ import Chip from "@oxygen-ui/react/Chip";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import InputLabel from "@oxygen-ui/react/InputLabel";
 import TextField from "@oxygen-ui/react/TextField";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -36,10 +35,10 @@ import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@w
 import { ContentLoader, EmphasizedSegment, Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../core";
+import { FeatureConfigInterface } from "../../core";
 import updateOrganizationDiscoveryAttributes from "../api/update-organization-email-domains";
 import {
     OrganizationDiscoveryAttributeDataInterface,
@@ -104,11 +103,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
 
     const dispatch: Dispatch<any> = useDispatch();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
     const [ emailDomains, setEmailDomains ] = useState<string[]>([]);
-    const [ hasScopes, setHasScopes ] = useState(false);
 
     const optionsArray: string[] = [];
 
@@ -119,17 +114,6 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
     useEffect(() => {
         setEmailDomains(organizationDiscoveryAttributes?.attributes[0]?.values ?? []);
     }, [ organizationDiscoveryAttributes ]);
-
-    /**
-     * Set the hasScopes state based on the feature config.
-     */
-    useEffect(() => {
-        setHasScopes(
-            !hasRequiredScopes(
-                featureConfig?.organizationDiscovery,
-                featureConfig?.organizationDiscovery?.scopes?.update,
-                allowedScopes));
-    }, [ featureConfig, organization ]);
 
     /**
      * Function to handle the form submit action.
@@ -286,13 +270,12 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                     ) }
                                 </Hint>
                             </FormHelperText>
-                            { !isReadOnly && !hasScopes && (
+                            { !isReadOnly && (
                                 <PrimaryButton
                                     data-componentid={ `${componentId}-form-save-button` }
                                     disabled={ submitting }
                                     loading={ submitting }
                                     type="submit"
-                                    style={ { marginTop: "20px" } }
                                 >
                                     { t("common:update") }
                                 </PrimaryButton>

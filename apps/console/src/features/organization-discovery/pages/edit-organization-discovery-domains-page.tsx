@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteChildrenProps } from "react-router-dom";
 import { Dispatch } from "redux";
-import { AppConstants, FeatureConfigInterface, history } from "../../core";
+import { AppConstants, history } from "../../core";
 import { AppState } from "../../core/store";
 import useGetOrganization from "../../organizations/api/use-get-organization";
 import useGetOrganizationDiscoveryAttributes from "../api/use-get-organization-discovery-attributes";
@@ -57,8 +57,9 @@ const EditOrganizationDiscoveryDomainsPage: FunctionComponent<EditOrganizationDi
 
     const dispatch: Dispatch = useDispatch();
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => {
-        return state.config.ui.features.organizationDiscovery;
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state?.config?.ui?.features?.organizationDiscovery;
     });
 
     const organizationId: string = useMemo(() => {
@@ -86,11 +87,14 @@ const EditOrganizationDiscoveryDomainsPage: FunctionComponent<EditOrganizationDi
     useEffect(() => {
         setIsReadOnly(
             !isFeatureEnabled(
-                featureConfig?.organizationDiscovery,
-                OrganizationDiscoveryConstants.FEATURE_DICTIONARY.get(
-                    "ORGANIZATION_UPDATE_ORGANIZATION_DISCOVERY_DOMAINS"
-                )
-            ));
+                featureConfig,
+                OrganizationDiscoveryConstants.FEATURE_DICTIONARY.get("ORGANIZATION_DISCOVERY_UPDATE")
+            ) || !hasRequiredScopes(
+                featureConfig,
+                featureConfig.scopes?.update,
+                allowedScopes
+            )
+        );
     }, [ featureConfig, organization ]);
 
     useEffect(() => {
