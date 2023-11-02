@@ -15,6 +15,7 @@ To create a release, follow these steps:
 # Root of the project
 pnpm changeset
 ```
+> Note: Changeset identifies the changed packages comparing your `feature branch` to with the `master branch`. If these branches are not properly synced with remote, you'll some irrelevant packages listed under changed packages. It is recommended to rebase your `feature branch` and `master branch` with remote before executing `pnpm changeset`.
 
 This will open a prompt to select the packages that have changed. Select the packages that have changed and press `Enter`.
 
