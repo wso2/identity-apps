@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.5.18
+
+### Patch Changes
+
+- [#4467](https://github.com/wso2/identity-apps/pull/4467) [`42706047b2`](https://github.com/wso2/identity-apps/commit/42706047b295beaa364377755a023026aca0ab4c) Thanks [@savindi7](https://github.com/savindi7)! - Fix Connector edit page load issue in tenanted path
+
 ## 2.5.17
 
 ### Patch Changes
