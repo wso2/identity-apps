@@ -22,7 +22,7 @@ import Joi, { ValidationResult } from "joi";
 type ValidationFunction = (value: string) => boolean;
 
 /**
- * This validates email domains. Returns true if valid. False if not valid.
+ * This validates domains. Returns true if valid. False if not valid.
  *
  * @param value - string to be validated.
  */
