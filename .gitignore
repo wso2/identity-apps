@@ -132,3 +132,4 @@ tests/dist/
 .project
 .repository/
 apps/console/src/extensions/i18n/tmp/**
+.nx  
