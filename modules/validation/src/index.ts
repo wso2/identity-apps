@@ -18,6 +18,7 @@
 
 import "fastestsmallesttextencoderdecoder";
 import {
+    domain,
     email,
     identifier,
     imageUrl,
@@ -35,6 +36,7 @@ import {
 } from "./validation";
 
 export const FormValidation = {
+    domain,
     email,
     identifier,
     imageUrl,

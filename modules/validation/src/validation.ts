@@ -22,6 +22,23 @@ import Joi, { ValidationResult } from "joi";
 type ValidationFunction = (value: string) => boolean;
 
 /**
+ * This validates email domains. Returns true if valid. False if not valid.
+ *
+ * @param value - string to be validated.
+ */
+export const domain: ValidationFunction = (value: string): boolean => {
+    if (
+        Joi.string()
+            .domain({ allowUnicode: false, tlds: false })
+            .validate(value).error
+    ) {
+        return false;
+    }
+
+    return true;
+};
+
+/**
  * This validates email addresses. Returns true if valid. False if not valid.
  * Doesn't check for the validity of the top level domain.
  *

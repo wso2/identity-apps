@@ -7707,7 +7707,13 @@ export const console: ConsoleNS = {
                             emailDomains: {
                                 label : "Domaines de messagerie",
                                 placeholder: "Entrez les domaines de messagerie",
-                                hint: "Tapez et entrez pour ajouter des domaines de messagerie qui doivent être mappés à l'organisation. (Par exemple, gmail.com, etc.)"
+                                hint: "Tapez et entrez pour ajouter des domaines de messagerie qui doivent être mappés à l'organisation. (Par exemple, gmail.com, etc.)",
+                                validations: {
+                                    invalid: {
+                                        0: "Veuillez saisir un domaine de messagerie valide.",
+                                        1: "Le domaine de messagerie fourni est déjà mappé à une autre organisation."
+                                    }
+                                }
                             },
                             organizationName: {
                                 label: "nom de l'organisation",

@@ -34,6 +34,7 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import { ContentLoader, EmphasizedSegment, Hint, PrimaryButton } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -109,6 +110,8 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
 
     const [ emailDomains, setEmailDomains ] = useState<string[]>([]);
     const [ hasScopes, setHasScopes ] = useState(false);
+    const [ isEmailDomainDataError, setIsEmailDomainDataError ] = useState<boolean>(false);
+    const [ emailDomainDataError, setEmailDomainDataError ] = useState<string>("");
 
     const optionsArray: string[] = [];
 
@@ -184,6 +187,25 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
     if (!organization) {
         return <ContentLoader dimmer />;
     }
+
+    /**
+     * Function to validate the input string is an email domain.
+     *
+     * @param values - Email domains.
+     */
+    const validateEmailDomain = (emailDomainList: string[]) => {
+
+        const emailDomainValidation: boolean = FormValidation.domain(emailDomainList[emailDomainList.length-1]);
+
+        if (!emailDomainValidation) {
+            setIsEmailDomainDataError(true);
+            setEmailDomainDataError( t(
+                "console:manage.features.organizationDiscovery.assign.form." +
+                "fields.emailDomains.validations.invalid.0"
+            ) );
+            emailDomainList.pop();
+        }
+    };
 
     return (
         <EmphasizedSegment padded="very" key={ organization?.id }>
@@ -267,6 +289,11 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                             } }
                                             { ...params }
                                             margin="dense"
+                                            error={ isEmailDomainDataError }
+                                            helperText= { 
+                                                isEmailDomainDataError
+                                            && emailDomainDataError
+                                            }
                                             placeholder={ t(
                                                 "console:manage.features.organizationDiscovery.edit." +
                                                 "form.fields.emailDomains.placeholder"
@@ -276,6 +303,10 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                 ) }
                                 onChange={ (_: SyntheticEvent<Element, Event>, value: string[]) => {
                                     setEmailDomains(value);
+                                    validateEmailDomain(value);
+                                } }
+                                onInputChange={ () => {
+                                    setIsEmailDomainDataError(false);
                                 } }
                             />
                             <FormHelperText>
