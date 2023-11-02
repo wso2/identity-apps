@@ -8869,7 +8869,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "{{ name }} Connector updated successfully.",
+                            description: "{{ name }} configuration updated successfully.",
                             message: "Update Successful."
                         }
                     }
