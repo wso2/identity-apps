@@ -1,5 +1,14 @@
 # @wso2is/form
 
+## 2.0.7
+
+### Patch Changes
+
+- [#4481](https://github.com/wso2/identity-apps/pull/4481) [`8972f071cf`](https://github.com/wso2/identity-apps/commit/8972f071cfe5c844a759ca1278f5895855aeb6e2) Thanks [@Rashmini](https://github.com/Rashmini)! - Add email domain validation for organization discovery
+
+- Updated dependencies [[`8972f071cf`](https://github.com/wso2/identity-apps/commit/8972f071cfe5c844a759ca1278f5895855aeb6e2)]:
+  - @wso2is/validation@2.0.2
+
 ## 2.0.6
 
 ### Patch Changes

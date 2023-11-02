@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.0.29
+
+### Patch Changes
+
+- [#4481](https://github.com/wso2/identity-apps/pull/4481) [`8972f071cf`](https://github.com/wso2/identity-apps/commit/8972f071cfe5c844a759ca1278f5895855aeb6e2) Thanks [@Rashmini](https://github.com/Rashmini)! - Add email domain validation for organization discovery
+
+* [#4479](https://github.com/wso2/identity-apps/pull/4479) [`65f3a79b4a`](https://github.com/wso2/identity-apps/commit/65f3a79b4a1cf85d0fc18928dbf8df1d7157ced7) Thanks [@asekawa](https://github.com/asekawa)! - Improve update message of Login and Registration section.
+
 ## 2.0.28
 
 ### Patch Changes
