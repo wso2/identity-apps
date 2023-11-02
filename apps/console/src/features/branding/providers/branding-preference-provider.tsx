@@ -347,7 +347,14 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 selectedLocale,
                 selectedScreen,
                 updateActiveCustomTextConfigurationMode: setActiveCustomTextConfigurationMode,
-                updateActiveTab: setActiveTab,
+                updateActiveTab: (tab: string) => {
+                    // eslint-disable-next-line no-console
+                    console.log("updateActiveTab", tab);
+                    if (tab === "text") {
+                        setSelectedPreviewScreen(PreviewScreenType.COMMON);
+                    }
+                    setActiveTab(tab);
+                },
                 updateCustomTextFormSubscription: (
                     subscription: FormState<CustomTextInterface, CustomTextInterface>
                 ): void => {
