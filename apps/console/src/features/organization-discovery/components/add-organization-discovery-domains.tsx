@@ -106,7 +106,6 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
 
     const [ emailDomains, setEmailDomains ] = useState<string[]>([]);
     const [ isEmailDomainDataError, setIsEmailDomainDataError ] = useState<boolean>(false);
-    const [ emailDomainDataError, setEmailDomainDataError ] = useState<string>("");
 
     /**
      * Filter the already configured organizations from the list of organizations.
@@ -175,18 +174,14 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
     /**
      * Function to validate the input string is an email domain.
      *
-     * @param values - Email domains.
+     * @param emailDomainList - Email domains.
      */
     const validateEmailDomain = (emailDomainList: string[]) => {
 
-        const emailDomainValidation: boolean = FormValidation.domain(emailDomainList[emailDomainList.length-1]);
+        const isEmailDomainValid: boolean = FormValidation.domain(emailDomainList[emailDomainList.length-1]);
 
-        if (!emailDomainValidation) {
+        if (!isEmailDomainValid) {
             setIsEmailDomainDataError(true);
-            setEmailDomainDataError( t(
-                "console:manage.features.organizationDiscovery.assign.form." +
-                "fields.emailDomains.validations.invalid.0"
-            ) );
             emailDomainList.pop();
         }
     };
@@ -300,7 +295,11 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                             error={ isEmailDomainDataError }
                                             helperText= { 
                                                 isEmailDomainDataError
-                                            && emailDomainDataError
+                                                    ? t(
+                                                        "console:manage.features.organizationDiscovery.assign.form." +
+                                                        "fields.emailDomains.validations.invalid.0"
+                                                    )
+                                                    : null
                                             }
                                             placeholder={ t(
                                                 "console:manage.features.organizationDiscovery.assign.form." +

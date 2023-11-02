@@ -3349,6 +3349,12 @@ export interface ConsoleNS {
                                 label : string;
                                 placeholder: string;
                                 hint: string;
+                                validations: {
+                                    invalid: {
+                                        0: string;
+                                        1: string;
+                                    }
+                                }
                             };
                             organizationName: {
                                 label: string;
