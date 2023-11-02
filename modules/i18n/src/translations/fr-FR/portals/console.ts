@@ -7701,7 +7701,7 @@ export const console: ConsoleNS = {
                 },
                 assign: {
                     title: "Affecter les domaines e-mail",
-                    description: "Add email domains for sub organizations.",
+                    description: "Attribuez des domaines de messagerie aux sous-organisations.",
                     form: {
                         fields: {
                             emailDomains: {
@@ -7718,7 +7718,10 @@ export const console: ConsoleNS = {
                             organizationName: {
                                 label: "nom de l'organisation",
                                 placeholder: "Sélectionnez une organisation",
-                                emptyPlaceholder: "Toutes les organisations ont attribué des domaines",
+                                emptyPlaceholder: {
+                                    0: "Aucune organisation n'est disponible.",
+                                    1: "Toutes les organisations ont des domaines attribués."
+                                },
                                 hint: "Entrez le nom de l'organisation que vous souhaitez ajouter le mappage de domaine."
                             }
                         }

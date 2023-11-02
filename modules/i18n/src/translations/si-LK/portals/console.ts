@@ -7532,7 +7532,7 @@ export const console: ConsoleNS = {
                 },
                 assign: {
                     title: "ඊමේල් වසම්",
-                    description: "උප සංවිධාන සඳහා ඊමේල් වසම් එක් කරන්න.",
+                    description: "උප සංවිධාන සඳහා විද්‍යුත් තැපැල් වසම් පවරන්න.",
                     form: {
                         fields: {
                             emailDomains: {
@@ -7549,7 +7549,10 @@ export const console: ConsoleNS = {
                             organizationName: {
                                 label: "සංවිධානයේ නම",
                                 placeholder: "සංවිධානයක් තෝරන්න",
-                                emptyPlaceholder: "සියලුම සංවිධානයට වසම් පවරා ඇත",
+                                emptyPlaceholder: {
+                                    0: "ලබා ගත හැකි සංවිධාන නොමැත.",
+                                    1: "සියලුම ආයතන විසින් වසම් පවරා ඇත."
+                                },
                                 hint: "වසම් සිතියම්කරණය එකතු කිරීමට ඔබ කැමති සංවිධානයේ නම ඇතුළත් කරන්න."
                             }
                         }

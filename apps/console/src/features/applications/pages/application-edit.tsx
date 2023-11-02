@@ -118,6 +118,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         data: application,
         mutate: mutateApplicationGetRequest,
         isLoading: isApplicationGetRequestLoading,
+        isValidating: isApplicationGetRequestValidating,
         error: applicationGetRequestError
     } = useGetApplication(applicationId, !!applicationId);
 
@@ -553,7 +554,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 count: 5,
                 imageType: "square"
             } }
-            isLoading={ isApplicationRequestLoading }
+            isLoading={ isApplicationRequestLoading || isApplicationGetRequestValidating }
             backButton={ {
                 "data-componentid": `${componentId}-page-back-button`,
                 onClick: handleBackButtonClick,
