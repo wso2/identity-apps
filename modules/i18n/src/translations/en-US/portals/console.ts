@@ -9487,7 +9487,13 @@ export const console: ConsoleNS = {
                             emailDomains: {
                                 label : "Email Domains",
                                 placeholder: "Enter email domains",
-                                hint: "Type and enter to add email domains which should be mapped to the organization. (E.g. gmail.com etc.)"
+                                hint: "Type and enter to add email domains which should be mapped to the organization. (E.g. gmail.com etc.)",
+                                validations: {
+                                    invalid: {
+                                        0: "Please enter a valid email domain.",
+                                        1: "Provided email domain is already mapped to a different organization."
+                                    }
+                                }
                             },
                             organizationName: {
                                 label: "Organization Name",
@@ -9518,7 +9524,13 @@ export const console: ConsoleNS = {
                             emailDomains: {
                                 label : "Email Domains",
                                 placeholder: "Enter email domains",
-                                hint: "Type and enter to add email domains which should be mapped to the organization. (E.g. gmail.com etc.)."
+                                hint: "Type and enter to add email domains which should be mapped to the organization. (E.g. gmail.com etc.).",
+                                validations: {
+                                    invalid: {
+                                        0: "Please enter a valid email domain.",
+                                        1: "Provided email domain is already mapped to a different organization."
+                                    }
+                                }
                             },
                             organizationName: {
                                 label: "Organization Name",
