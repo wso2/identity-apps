@@ -258,3 +258,24 @@ export interface APIResourceEndpointsInterface {
      */
     scopes: string;
 }
+
+/**
+ * Interface to contain scope information
+ */
+export interface ScopeInterface {
+    id: string;
+    displayName?: string;
+    name?: string;
+    description?: string;
+}
+
+/**
+ * Interface to store authorized API list item.
+ */
+export interface AuthorizedAPIListItemInterface {
+    id: string,
+    identifier: string,
+    displayName: string,
+    policyId: string,
+    authorizedScopes: ScopeInterface[]
+}
