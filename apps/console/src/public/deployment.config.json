@@ -221,6 +221,7 @@
             "defaultLogoUrl": "/libs/themes/default/assets/images/branding/logo.svg",
             "defaultWhiteLogoUrl": "/libs/themes/default/assets/images/branding/logo-white.svg"
         },
+        "enableEmailCustomTemplate": true,
         "appFaviconPath": "/assets/images/branding/favicon.ico",
         "isGOTEnabledForSuperTenantOnly": true,
         "showAppSwitchButton": true,
@@ -964,7 +965,6 @@
         "isRequestPathAuthenticationEnabled": false,
         "isLeftNavigationCategorized": true,
         "isSAASDeployment": false,
-        "enableEmailCustomTemplate": true,
         "isSignatureValidationCertificateAliasEnabled": false,
         "listAllAttributeDialects": true,
         "privacyPolicyConfigs": {},

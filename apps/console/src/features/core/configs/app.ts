@@ -274,6 +274,7 @@ export class Config {
                 defaultLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultLogoUrl,
                 defaultWhiteLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultWhiteLogoUrl
             },
+            enableEmailCustomTemplate: window[ "AppUtils" ]?.getConfig()?.ui?.enableEmailCustomTemplate,
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
             googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
             gravatarConfig: window[ "AppUtils" ]?.getConfig()?.ui?.gravatarConfig,
@@ -296,7 +297,6 @@ export class Config {
             isRequestPathAuthenticationEnabled:
                 window[ "AppUtils" ]?.getConfig()?.ui?.isRequestPathAuthenticationEnabled,
             isSAASDeployment: window[ "AppUtils" ]?.getConfig()?.ui?.isSAASDeployment,
-            enableEmailCustomTemplate: window[ "AppUtils" ]?.getConfig()?.ui?.enableEmailCustomTemplate,
             isSignatureValidationCertificateAliasEnabled:
                 window[ "AppUtils" ]?.getConfig()?.ui?.isSignatureValidationCertificateAliasEnabled,
             listAllAttributeDialects: window[ "AppUtils" ]?.getConfig()?.ui?.listAllAttributeDialects,
