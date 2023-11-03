@@ -44,6 +44,9 @@ export interface GrantTypeMetaDataInterface {
     options?: GrantTypeInterface[];
 }
 
+/**
+ * FAPI related metadata.
+ */
 export interface FapiMetaDataInterface {
     allowedSignatureAlgorithms: MetadataPropertyInterface;
     allowedEncryptionAlgorithms: MetadataPropertyInterface;
