@@ -286,11 +286,14 @@ export const LoginPlaygroundWizard: FunctionComponent<LoginPlaygroundWizardProps
         setShowApplicationCreationScreen(true);
         
         const modifiedApplication: MainApplicationInterface = cloneDeep(LoginApplicationTemplate.application);
-
+        const queryParams: URLSearchParams = new URLSearchParams([ [ "client_id", tryItAppClientId],
+            ["org", tenantDomain] ]);
+        const loginPlaygroundURLWithQueryParams: string = `${asgardeoLoginPlaygroundURL}/?${queryParams}`;
+        
         modifiedApplication.inboundProtocolConfiguration.oidc.clientId = tryItAppClientId;
-        modifiedApplication.inboundProtocolConfiguration.oidc.callbackURLs = [ asgardeoLoginPlaygroundURL ];
+        modifiedApplication.inboundProtocolConfiguration.oidc.callbackURLs = [ loginPlaygroundURLWithQueryParams ];
         modifiedApplication.inboundProtocolConfiguration.oidc.allowedOrigins = [ asgardeoLoginPlaygroundURL ];
-        modifiedApplication.accessUrl = asgardeoLoginPlaygroundURL;
+        modifiedApplication.accessUrl = loginPlaygroundURLWithQueryParams;
 
         /**
          * Creating the try it app on demand
