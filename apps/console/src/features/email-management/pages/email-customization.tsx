@@ -71,8 +71,8 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
 
     const emailTemplates: Record<string, string>[] = useSelector(
         (state: AppState) => state.config.deployment.extensions.emailTemplates) as Record<string, string>[];
-    const enableEmailCustomTemplate: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.enableEmailCustomTemplate);
+    const enableCustomEmailTemplates: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableCustomEmailTemplates);
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -98,7 +98,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         // the deployment.toml file. The below code will map the email template
         // types with the config's displayName and description.
         const availableEmailTemplates: EmailTemplateType[] = emailTemplatesList
-            ? (!enableEmailCustomTemplate
+            ? (!enableCustomEmailTemplates
                 ? emailTemplatesList.filter((template: EmailTemplateType) =>
                     emailTemplates?.find((emailTemplate: Record<string, string>) => emailTemplate.id === template.id)
                 )
