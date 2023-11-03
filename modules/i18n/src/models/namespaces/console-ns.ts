@@ -3313,11 +3313,20 @@ export interface ConsoleNS {
                                 label : string;
                                 placeholder: string;
                                 hint: string;
+                                validations: {
+                                    invalid: {
+                                        0: string;
+                                        1: string;
+                                    }
+                                }
                             },
                             organizationName: {
                                 label: string;
                                 placeholder: string;
-                                emptyPlaceholder: string;
+                                emptyPlaceholder: {
+                                    0: string;
+                                    1: string;
+                                }
                                 hint: string;
                             }
                         }
@@ -3341,14 +3350,22 @@ export interface ConsoleNS {
                                 label : string;
                                 placeholder: string;
                                 hint: string;
+                                validations: {
+                                    invalid: {
+                                        0: string;
+                                        1: string;
+                                    }
+                                }
                             };
                             organizationName: {
                                 label: string;
                                 hint: string;
                             };
                         };
+                        message: string;
                     };
                 };
+                message: string;
                 notifications: {
                     addEmailDomains: {
                         error: {
@@ -4420,6 +4437,9 @@ export interface ConsoleNS {
                         name: string;
                         description: string;
                         connectors: {
+                            passwordExpiry: {
+                                friendlyName: string;
+                            };
                             passwordHistory: {
                                 friendlyName: string;
                                 properties: {
@@ -4464,6 +4484,9 @@ export interface ConsoleNS {
                         name: string;
                         description: string;
                         connectors: {
+                            askPassword: {
+                                friendlyName: string;
+                            },
                             selfSignUp: {
                                 friendlyName: string;
                                 properties: {
@@ -4968,6 +4991,7 @@ export interface ConsoleNS {
                     };
                     multiFactorAuthenticators : {
                         name: string;
+                        friendlyName: string;
                         description: string;
                         connectors: {
                             backupCodeAuthenticator: {

@@ -164,6 +164,7 @@
                                                 required="required"
                                                 data-testid="request-claims-page-form-field-claim-<%=Encode.forHtmlAttribute(claim)%>-input"
                                                 placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter")%> <%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, claimDisplayName)%>"
+                                            />
                                         </div>
                                     <% } %>
                                 </div>

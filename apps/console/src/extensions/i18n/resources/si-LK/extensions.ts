@@ -1352,7 +1352,7 @@ export const extensions: Extensions = {
                                         hint: "වඩා හොඳ කාර්ය සාධනයක් සඳහා අවම වශයෙන් <1>1920x1080 පික්සල</1> සහ"
                                             + " <3>1 mb</3> ප්‍රමාණයෙන් අඩු රූපයක් භාවිතා කරන්න.",
                                         label: "පැති රූප URL",
-                                        placeholder: "https://asgardeo.io/placeholder.jpeg"
+                                        placeholder: "https://myapp.com/placeholder.jpeg"
                                     }
                                 },
                                 heading: "පැති රූපය",
@@ -1632,7 +1632,7 @@ export const extensions: Extensions = {
                                             "<1>16x16 පික්සල</1> හෝ ඊට වැඩි රූපයක් භාවිත කරන්න. සකසා නොමැති නම්, " +
                                             "{{ productName }} පෙරනිමි භාවිතා වේ.",
                                         label: "Favicon URL",
-                                        placeholder: "https://asgardeo.io/favicon.ico"
+                                        placeholder: "https://myapp.com/favicon.ico"
                                     }
                                 },
                                 heading: "Favicon",
@@ -1656,7 +1656,7 @@ export const extensions: Extensions = {
                                             "{{ productName }} පෙරනිමි " +
                                             "භාවිතා වේ.",
                                         label: "ලාංඡනයේ URL",
-                                        placeholder: "https://asgardeo.io/logo.png"
+                                        placeholder: "https://myapp.com/logo.png"
                                     }
                                 },
                                 heading: "ලාංඡනය",
@@ -1677,7 +1677,7 @@ export const extensions: Extensions = {
                                     url: {
                                         hint: "අවම වශයෙන් <1>250x50 pixels</1> සහ වඩා හොඳ කාර්ය සාධනයක් සඳහා ප්රමාණයේ සහ ප්රමාණයෙන් <3>1mb</3> ට වඩා අඩු රූපයක් භාවිතා කරන්න.සකසා නොමැති නම්, {{ productName }} පෙරනිමි භාවිතා වේ.",
                                         label: "මගේ ගිණුම ලාංඡනය URL",
-                                        placeholder: "https://myaccount.asgardeo.io/logo.png"
+                                        placeholder: "https://myaccount.myapp.com/logo.png"
                                     }
                                 },
                                 heading: "මගේ ගිණුම් ලාංඡනය",
@@ -2635,12 +2635,12 @@ export const extensions: Extensions = {
                     },
                     heading: "මුර යතුර සැකසුම් මාර්ගෝපදේශය",
                     passkeys: {
-                        docLinkText: "FIDO2 මුර යතුර",
+                        docLinkText: "FIDO මුර යතුර",
                         content:
                             "මුර යතුරු ඔබගේ යෙදුම් සඳහා සරල සහ ආරක්ෂිත මුරපද රහිත සත්‍යාපන ක්‍රමයක් සපයන අතර එය " +
                             "උපාංග නැතිවීමෙන් ආරක්ශිත අතර ඕනෑම උපාංගයකට ක්‍රියා කරයි. " +
-                            "ඔබට \"ආරක්‍ෂක යතුර/ ජීවමිතික\" සමඟ Asgardeo හි මුරපද සත්‍යාපනය උත්සාහ කළ හැක. ",
-                        heading: "මුර යතුරු සමඟ FIDO2 සත්‍යාපනය"
+                            "ඔබට \"මුර යතුර\" සමඟ Asgardeo හි මුරපද සත්‍යාපනය උත්සාහ කළ හැක. ",
+                        heading: "මුර යතුරු සමඟ FIDO සත්‍යාපනය"
                     },
                     steps: {
                         customizeFlow: {

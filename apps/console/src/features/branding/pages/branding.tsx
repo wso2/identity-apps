@@ -46,6 +46,7 @@ import { ExtendedFeatureConfigInterface } from "../../../extensions/configs/mode
 import { EventPublisher } from "../../core";
 import { AppState } from "../../core/store";
 import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { OrganizationResponseInterface } from "../../organizations/models/organizations";
 import { deleteBrandingPreference, updateBrandingPreference } from "../api";
 import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-resolve";
 import { BrandingPreferenceTabs } from "../components";
@@ -96,6 +97,9 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
     const featureConfig: ExtendedFeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const theme: string = useSelector((state: AppState) => state.config.ui.theme?.name);
+    const currentOrganization: OrganizationResponseInterface = useSelector(
+        (state: AppState) => state?.organization?.organization
+    );
 
     const [ isBrandingConfigured, setIsBrandingConfigured ] = useState<boolean>(true);
     const [
@@ -169,7 +173,6 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
      * Publish page visit insights.
      */
     useEffect(() => {
-
         eventPublisher.publish("page-visit-organization-branding");
     }, []);
 
@@ -202,19 +205,15 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
             return;
         }
 
-        // Check if the returned Branding preference is of the intended tenant.
-        if (originalBrandingPreference.name !== tenantDomain) {
-            dispatch(addAlert<AlertInterface>({
-                description: t("extensions:develop.branding.notifications.fetch.tenantMismatch.description",
-                    { tenant: tenantDomain }),
-                level: AlertLevels.ERROR,
-                message: t("extensions:develop.branding.notifications.fetch.tenantMismatch.message")
-            }));
-
-            return;
+        if (orgType === OrganizationType.SUBORGANIZATION
+            && originalBrandingPreference?.name !== currentOrganization?.id) {
+            // This means the sub-org has no branding preference configured.
+            // It gets the branding preference from the parent org.
+            setIsBrandingConfigured(false);
+        } else {
+            setIsBrandingConfigured(true);
         }
 
-        setIsBrandingConfigured(true);
         setBrandingPreference(BrandingPreferenceUtils.migrateLayoutPreference(
             BrandingPreferenceUtils.migrateThemePreference(
                 originalBrandingPreference.preference,
@@ -397,22 +396,6 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                     return;
                 }
 
-                // Check if the returned Branding preference is of the intended tenant.
-                if (response.name !== tenantDomain) {
-                    if (shouldShowNotifications) {
-                        dispatch(addAlert<AlertInterface>({
-                            description: t(
-                                "extensions:develop.branding.notifications.update.tenantMismatch.description",
-                                { tenant: tenantDomain }
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t("extensions:develop.branding.notifications.update.tenantMismatch.message")
-                        }));
-                    }
-
-                    return;
-                }
-
                 setIsBrandingConfigured(true);
                 // By defefault, when preference is saved, we set the enable to true.
                 setIsBrandingPublished(true);
@@ -463,8 +446,23 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                         message: t("extensions:develop.branding.notifications.update.genericError.message")
                     }));
                 }
-
-                setBrandingPreference(DEFAULT_PREFERENCE);
+                
+                if (originalBrandingPreference
+                    && !(originalBrandingPreference instanceof IdentityAppsApiException)) {                    
+                    setBrandingPreference(BrandingPreferenceUtils.migrateLayoutPreference(
+                        BrandingPreferenceUtils.migrateThemePreference(
+                            originalBrandingPreference.preference,
+                            {
+                                theme: predefinedThemes
+                            }
+                        ),
+                        {
+                            layout: predefinedLayouts
+                        }
+                    ));
+                } else {
+                    setBrandingPreference(DEFAULT_PREFERENCE);
+                }
             })
             .finally(() => {
                 setIsBrandingFeatureRequestLoading(false);

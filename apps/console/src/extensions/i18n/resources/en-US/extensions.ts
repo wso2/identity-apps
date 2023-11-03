@@ -1368,7 +1368,7 @@ export const extensions: Extensions = {
                                         hint: "Use an image that’s at least <1>1920x1080 pixels</1> and less than"
                                             + " <3>1 mb</3> in size for better performance.",
                                         label: "Side Image URL",
-                                        placeholder: "https://asgardeo.io/placeholder.jpeg"
+                                        placeholder: "https://myapp.com/placeholder.jpeg"
                                     }
                                 },
                                 heading: "Side Image",
@@ -1651,7 +1651,7 @@ export const extensions: Extensions = {
                                             "pixels</1> in size for better results. If not set, {{ productName }} " +
                                             "defaults are used.",
                                         label: "Favicon URL",
-                                        placeholder: "https://asgardeo.io/favicon.ico"
+                                        placeholder: "https://myapp.com/favicon.ico"
                                     }
                                 },
                                 heading: "Favicon",
@@ -1674,7 +1674,7 @@ export const extensions: Extensions = {
                                             "<3>1mb</3> in size for better performance. If not set, " +
                                             "{{ productName }} defaults are used.",
                                         label: "Logo URL",
-                                        placeholder: "https://asgardeo.io/logo.png"
+                                        placeholder: "https://myapp.com/logo.png"
                                     }
                                 },
                                 heading: "Logo",
@@ -1695,7 +1695,7 @@ export const extensions: Extensions = {
                                     url: {
                                         hint: "Use an image that’s at least <1>250x50 pixels</1> and less than <3>1mb</3> in size for better performance. If not set, {{ productName }} defaults are used.",
                                         label: "My Account Logo URL",
-                                        placeholder: "https://myaccount.asgardeo.io/logo.png"
+                                        placeholder: "https://myaccount.myapp.com/logo.png"
                                     }
                                 },
                                 heading: "My Account Logo",
@@ -2661,12 +2661,12 @@ export const extensions: Extensions = {
                     },
                     heading: "Passkey Set Up Guide",
                     passkeys: {
-                        docLinkText: "FIDO2 passkey",
+                        docLinkText: "FIDO passkey",
                         content:
                             "Passkey provide simple and secure passwordless login for your applications that " +
                             "survives device loss and works across platforms. You can try out passkey " +
                             "authentication on Asgardeo with \"Passkey\".",
-                        heading: "FIDO2 authentication with passkey"
+                        heading: "FIDO authentication with passkey"
                     },
                     steps: {
                         customizeFlow: {

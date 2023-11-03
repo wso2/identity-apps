@@ -1389,7 +1389,7 @@ export const console: ConsoleNS = {
                                                 heading: "Add TOTP as a second factor"
                                             },
                                             usernameless: {
-                                                description: "Enable users to log in using a passkey, security key or "
+                                                description: "Enable users to log in using a passkey, FIDO security key or "
                                                     + "biometrics.",
                                                 heading: "Add Passkey Login",
                                                 info: "On-the-fly passkey enrollment is available exclusively " +
@@ -8244,6 +8244,9 @@ export const console: ConsoleNS = {
                         name: "Password Policies",
                         description: "Configure password policies to enhance user password strength.",
                         connectors: {
+                            passwordExpiry: {
+                                friendlyName: "Password Expiry"
+                            },
                             passwordHistory: {
                                 friendlyName: "Password History",
                                 properties: {
@@ -8288,6 +8291,9 @@ export const console: ConsoleNS = {
                         name: "User Onboarding",
                         description: "Configure user onboarding settings.",
                         connectors: {
+                            askPassword: {
+                                friendlyName: "Invite user to set the password"
+                            },
                             selfSignUp: {
                                 friendlyName: "Self Registration",
                                 properties: {
@@ -8760,7 +8766,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             userClaimUpdate: {
-                                friendlyName: "User Claim Update",
+                                friendlyName: "User Attribute Change Verification",
                                 properties: {
                                     userClaimUpdateEmailEnableVerification: {
                                         hint: "Trigger a verification notification when user's email address is updated.",
@@ -8792,6 +8798,7 @@ export const console: ConsoleNS = {
                     },
                     multiFactorAuthenticators : {
                         name: "Multi Factor Authenticators",
+                        friendlyName: "Authenticator Settings",
                         description: "Configure multi factor authenticator settings.",
                         connectors: {
                             backupCodeAuthenticator: {
@@ -8866,7 +8873,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "{{ name }} Connector updated successfully.",
+                            description: "{{ name }} configuration updated successfully.",
                             message: "Update Successful."
                         }
                     }
@@ -9478,18 +9485,27 @@ export const console: ConsoleNS = {
                 },
                 assign: {
                     title: "Assign Email Domains",
-                    description: "Add email domains for sub organizations.",
+                    description: "Assign email domains for sub organizations.",
                     form: {
                         fields: {
                             emailDomains: {
                                 label : "Email Domains",
                                 placeholder: "Enter email domains",
-                                hint: "Enter the email domains you wish to map to the organization. Separate multiple domains by hitting enter and typing the next domain."
+                                hint: "Type and enter to add email domains which should be mapped to the organization. (E.g. gmail.com etc.)",
+                                validations: {
+                                    invalid: {
+                                        0: "Please enter a valid email domain.",
+                                        1: "Provided email domain is already mapped to a different organization."
+                                    }
+                                }
                             },
                             organizationName: {
                                 label: "Organization Name",
                                 placeholder: "Select an organization",
-                                emptyPlaceholder: "All the organization have assigned domains",
+                                emptyPlaceholder: {
+                                    0: "There are no organizations available.",
+                                    1: "All the organizations have assigned domains."
+                                },
                                 hint: "Enter the name of the organization you wish to add the domain mapping."
                             }
                         }
@@ -9512,15 +9528,24 @@ export const console: ConsoleNS = {
                             emailDomains: {
                                 label : "Email Domains",
                                 placeholder: "Enter email domains",
-                                hint: "Enter the email domains you wish to map to the organization. Separate multiple domains by hitting enter and typing the next domain."
+                                hint: "Type and enter to add email domains which should be mapped to the organization. (E.g. gmail.com etc.).",
+                                validations: {
+                                    invalid: {
+                                        0: "Please enter a valid email domain.",
+                                        1: "Provided email domain is already mapped to a different organization."
+                                    }
+                                }
                             },
                             organizationName: {
                                 label: "Organization Name",
-                                hint: "The name of the organization to which the domain mapping are added."
+                                hint: "The name of the organization to which the domain mappings are added."
                             }
-                        }
+                        },
+                        message: "If you change the email domain mappings, users who are already registered in your organization might " +
+                        "not be able to log in. Therefore, please be conscious when you update the email domains."
                     }
                 },
+                message: "Email domain discovery feature can only be used when email address is configured as the username.",
                 notifications: {
                     addEmailDomains: {
                         error: {
@@ -10164,7 +10189,7 @@ export const console: ConsoleNS = {
                                 label: "Assigned application",
                                 placeholder: "Select application to assign the role",
                                 applicationSubTitle: {
-                                    application: "Support application-scoped roles",
+                                    application: "Support application-scoped roles. ",
                                     organization: "Support organization-scoped roles"
                                 },
                                 validations: {

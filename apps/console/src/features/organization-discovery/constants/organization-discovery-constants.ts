@@ -56,8 +56,8 @@ export class OrganizationDiscoveryConstants {
      * Set of keys used to enable/disable features.
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("ORGANIZATION_EMAIL_DOMAIN_CREATE", "organizationDiscovery.create")
-        .set("ORGANIZATION_UPDATE_ORGANIZATION_DISCOVERY_DOMAINS", "organizationDiscovery.update")
-        .set("ORGANIZATION_EMAIL_DOMAIN_DELETE", "organizationDiscovery.delete")
-        .set("ORGANIZATION_EMAIL_DOMAIN_READ", "organizationDiscovery.read");
+        .set("ORGANIZATION_DISCOVERY_CREATE", "organizationDiscovery.create")
+        .set("ORGANIZATION_DISCOVERY_UPDATE", "organizationDiscovery.update")
+        .set("ORGANIZATION_DISCOVERY_DELETE", "organizationDiscovery.delete")
+        .set("ORGANIZATION_DISCOVERY_READ", "organizationDiscovery.read");
 }

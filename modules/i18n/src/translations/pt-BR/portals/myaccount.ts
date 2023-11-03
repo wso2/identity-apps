@@ -827,77 +827,76 @@ export const myAccount: MyAccountNS = {
                 remaining: "restante"
             },
             fido: {
-                description: "Você pode usar uma chave <1>Passkey</1>, <1>De Segurança FIDO2</1> ou " +
+                description: "Você pode usar uma chave <1>Chave de acesso</1>, <1>De Segurança FIDO</1> ou " +
                     "<1>Biometria</1> em seu dispositivo para fazer login em sua conta.",
                 form: {
-                    label: "Chave de segurança/biometria",
-                    placeholder: "Insira um nome para a chave de segurança/biométrico",
-                    remove: "Remova a chave de segurança/biométrica",
-                    required: "Insira um nome para sua chave de segurança/biometria"
+                    label: "Chave de acesso",
+                    placeholder: "Insira um nome para a chave de acesso",
+                    remove: "Remova a chave de acesso",
+                    required: "Insira um nome para sua chave de acesso"
                 },
-                heading: "Chave de segurança/biometria",
+                heading: "Chave de acesso",
                 modals: {
                     deleteConfirmation: {
                         assertionHint: "Por favor, confirme sua ação.",
-                        content: "Esta ação é irreversível e excluirá permanentemente a chave de segurança/biométrica.",
-                        description: "Se você excluir essa chave de segurança/biométrica, talvez não consiga fazer" +
+                        content: "Esta ação é irreversível e excluirá permanentemente a chave de acesso.",
+                        description: "Se você excluir essa chave de acesso, talvez não consiga fazer" +
                             " login na sua conta novamente. Por favor, prossiga com cautela.",
                         heading: "Tem certeza?"
                     },
                     deviceRegistrationErrorModal: {
-                        description: "TA chave de segurança/registro biométrico foi interrompido. " +
+                        description: "TA chave de acesso foi interrompido. " +
                             "Se isso não foi intencional, você pode tentar novamente o fluxo.",
-                        heading: "Falha no registro biométrico/chave de segurança",
-                        tryWithOlderDevice: "Você também pode tentar novamente com uma " +
-                            "chave de segurança/biométrica mais antiga."
+                        heading: "Falha no registro da chave de acesso",
+                        tryWithOlderDevice: "Você também pode tentar novamente com uma senha mais antiga."
                     }
                 },
                 notifications: {
                     removeDevice: {
                         error: {
                             description: "{{description}}",
-                            message: "Ocorreu um erro ao remover a chave de segurança/biométrica"
+                            message: "Ocorreu um erro ao remover a chave de acesso"
                         },
                         genericError: {
-                            description: "Ocorreu um erro ao remover a chave de segurança/biométrica",
+                            description: "Ocorreu um erro ao remover a chave de acesso",
                             message: "Algo deu errado"
                         },
                         success: {
-                            description: "A chave de segurança/biometria foi removida com sucesso da lista",
-                            message: "Sua chave de segurança/biométrico removido com sucesso"
+                            description: "A chave de acesso foi removida com sucesso da lista",
+                            message: "Sua chave de acesso removido com sucesso"
                         }
                     },
                     startFidoFlow: {
                         error: {
                             description: "{{description}}",
-                            message: "Ocorreu um erro ao recuperar a chave de segurança/biométrica"
+                            message: "Ocorreu um erro ao recuperar a chave de acesso"
                         },
                         genericError: {
-                            description: "Ocorreu um erro ao recuperar a chave de segurança/biométrica",
+                            description: "Ocorreu um erro ao recuperar a chave de acesso",
                             message: "Algo deu errado"
                         },
                         success: {
-                            description: "A chave de segurança/biométrica foi registrada com sucesso " +
+                            description: "A chave de acesso foi registrada com sucesso " +
                                 "e agora você pode usá-la para autenticação.",
-                            message: "Sua chave de segurança/biométrico registrado com sucesso"
+                            message: "Sua chave de acesso registrado com sucesso"
                         }
                     },
                     updateDeviceName: {
                         error: {
                             description: "{{description}}",
-                            message: "Ocorreu um erro ao atualizar a chave de segurança/nome biométrico"
+                            message: "Ocorreu um erro ao atualizar o nome da chave de acesso"
                         },
                         genericError: {
-                            description: "Ocorreu um erro ao atualizar a chave de segurança/nome biométrico",
+                            description: "Ocorreu um erro ao atualizar o nome da chave de acesso",
                             message: "Algo deu errado"
                         },
                         success: {
-                            description: "O nome da sua chave de segurança/biometria foi atualizado com sucesso",
-                            message: "Chave de segurança/nome biométrico atualizado com sucesso"
+                            description: "O nome da sua chave de acesso foi atualizado com sucesso",
+                            message: "Nome da senha atualizado com sucesso"
                         }
                     }
                 },
-                tryButton: "Tente com uma chave de segurança/biométrica mais antiga"
+                tryButton: "Tente com uma senha mais antiga"
             },
             smsOtp: {
                 descriptions: {

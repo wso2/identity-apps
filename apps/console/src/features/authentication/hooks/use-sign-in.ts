@@ -117,14 +117,17 @@ const useSignIn = (): UseSignInInterface => {
         const orgIdIdToken: string = idToken.org_id;
         const orgName: string = idToken.org_name;
         const userOrganizationId: string = idToken.user_org;
-        const isFirstLevelOrg: boolean = !idToken.user_org || idToken.user_org === idToken.org_id;
+        const tenantDomainFromSubject: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
+            response.sub
+        );
+        const isFirstLevelOrg: boolean = !idToken.user_org
+            || idToken.org_name === tenantDomainFromSubject
+            || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomainFromSubject);
 
         let tenantDomain: string = transformTenantDomain(orgName);
 
         if (legacyAuthzRuntime) {
-            tenantDomain = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
-                response.sub
-            );
+            tenantDomain = tenantDomainFromSubject;
         }
 
         onTenantResolve(tenantDomain);
@@ -198,11 +201,13 @@ const useSignIn = (): UseSignInInterface => {
 
         dispatch(setGetOrganizationLoading(false));
 
+        const endpoints: Record<string, any> = Config.getServiceResourceEndpoints();
+
         // Update the endpoints with tenant path.
-        await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
+        await dispatch(setServiceResourceEndpoints(endpoints));
 
         // Sets the resource endpoints in the context.
-        setResourceEndpoints(Config.getServiceResourceEndpoints() as any);
+        setResourceEndpoints(endpoints);
 
         // When the tenant domain changes, we have to reset the auth callback in session storage.
         // If not, it will hang and the app will be unresponsive with in the tab.

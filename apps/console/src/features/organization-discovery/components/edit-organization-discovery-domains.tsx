@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
@@ -24,7 +25,6 @@ import Chip from "@oxygen-ui/react/Chip";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import InputLabel from "@oxygen-ui/react/InputLabel";
 import TextField from "@oxygen-ui/react/TextField";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -33,11 +33,13 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import { ContentLoader, EmphasizedSegment, Hint, PrimaryButton } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { AppState, FeatureConfigInterface } from "../../core";
+import { Divider } from "semantic-ui-react";
+import { FeatureConfigInterface } from "../../core";
 import updateOrganizationDiscoveryAttributes from "../api/update-organization-email-domains";
 import {
     OrganizationDiscoveryAttributeDataInterface,
@@ -102,11 +104,8 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
 
     const dispatch: Dispatch<any> = useDispatch();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
     const [ emailDomains, setEmailDomains ] = useState<string[]>([]);
-    const [ hasScopes, setHasScopes ] = useState(false);
+    const [ isEmailDomainDataError, setIsEmailDomainDataError ] = useState<boolean>(false);
 
     const optionsArray: string[] = [];
 
@@ -117,17 +116,6 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
     useEffect(() => {
         setEmailDomains(organizationDiscoveryAttributes?.attributes[0]?.values ?? []);
     }, [ organizationDiscoveryAttributes ]);
-
-    /**
-     * Set the hasScopes state based on the feature config.
-     */
-    useEffect(() => {
-        setHasScopes(
-            !hasRequiredScopes(
-                featureConfig?.organizationDiscovery,
-                featureConfig?.organizationDiscovery?.scopes?.update,
-                allowedScopes));
-    }, [ featureConfig, organization ]);
 
     /**
      * Function to handle the form submit action.
@@ -183,8 +171,27 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
         return <ContentLoader dimmer />;
     }
 
+    /**
+     * Function to validate the input string is an email domain.
+     *
+     * @param emailDomainList - Email domains.
+     */
+    const validateEmailDomain = (emailDomainList: string[]) => {
+
+        const isEmailDomainValid: boolean = FormValidation.domain(emailDomainList[emailDomainList.length-1]);
+
+        if (!isEmailDomainValid) {
+            setIsEmailDomainDataError(true);
+            emailDomainList.pop();
+        }
+    };
+
     return (
         <EmphasizedSegment padded="very" key={ organization?.id }>
+            <Alert severity="warning">
+                { t("console:manage.features.organizationDiscovery.edit.form.message") }
+            </Alert>
+            <Divider hidden />
             <FinalForm
                 initialValues={ {
                     organizationName: organization.name
@@ -261,6 +268,15 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                             } }
                                             { ...params }
                                             margin="dense"
+                                            error={ isEmailDomainDataError }
+                                            helperText= { 
+                                                isEmailDomainDataError
+                                                    ? t(
+                                                        "console:manage.features.organizationDiscovery.edit.form." +
+                                                        "fields.emailDomains.validations.invalid.0"
+                                                    )
+                                                    : null
+                                            }
                                             placeholder={ t(
                                                 "console:manage.features.organizationDiscovery.edit." +
                                                 "form.fields.emailDomains.placeholder"
@@ -270,6 +286,10 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                 ) }
                                 onChange={ (_: SyntheticEvent<Element, Event>, value: string[]) => {
                                     setEmailDomains(value);
+                                    validateEmailDomain(value);
+                                } }
+                                onInputChange={ () => {
+                                    setIsEmailDomainDataError(false);
                                 } }
                             />
                             <FormHelperText>
@@ -280,13 +300,12 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                     ) }
                                 </Hint>
                             </FormHelperText>
-                            { !isReadOnly && !hasScopes && (
+                            { !isReadOnly && (
                                 <PrimaryButton
                                     data-componentid={ `${componentId}-form-save-button` }
                                     disabled={ submitting }
                                     loading={ submitting }
                                     type="submit"
-                                    style={ { marginTop: "20px" } }
                                 >
                                     { t("common:update") }
                                 </PrimaryButton>

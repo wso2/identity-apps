@@ -55,23 +55,23 @@ import { useGetOrganizationType } from "../../organizations/hooks/use-get-organi
 import { useGetAuthenticatorTags, useGetAuthenticators } from "../api/authenticators";
 import { useGetConnections } from "../api/connections";
 import { AuthenticatorGrid } from "../components/authenticator-grid";
-import { 
-    ConnectionsManagementUtils,
-    handleGetAuthenticatorTagsError,
-    handleGetConnectionListCallError 
-} from "../utils/connection-utils";
+import { getAuthenticatorList } from "../components/common";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
     AuthenticatorInterface,
     AuthenticatorLabels,
-    AuthenticatorTypes,
+    AuthenticatorTypes
 } from "../models/authenticators";
 import {
     ConnectionInterface,
     ConnectionListResponseInterface
 } from "../models/connection";
-import { getAuthenticatorList } from "../components/common";
+import { 
+    ConnectionsManagementUtils,
+    handleGetAuthenticatorTagsError,
+    handleGetConnectionListCallError 
+} from "../utils/connection-utils";
 
 /**
  * Proptypes for the Connections page component.
@@ -107,7 +107,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
     const [ localAuthenticatorList, setLocalAuthenticatorList ] = useState<AuthenticatorInterface[]>([]);
     const [ filter, setFilter ] = useState<string>(null);
     const [ appendConnections, setAppendConnections ] = useState<boolean>(false);
-    const [ isPaginating, setIsPaginating ] = useState<boolean>(false);
+    const isPaginating: boolean = false;
 
     const {
         data: authenticators,
@@ -126,7 +126,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
     const {
         data: authenticatorTags,
         isLoading: isAuthenticatorTagsFetchRequestLoading,
-        error: authenticatorTagsFetchRequestError,
+        error: authenticatorTagsFetchRequestError
     } = useGetAuthenticatorTags();
 
     useEffect(() => {
@@ -203,7 +203,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
             // Set the FIDO authenticator display name and tags.
             if (authenticator.id === AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID) {
                 authenticator.tags = [ AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.PASSKEY ];
-                authenticator.displayName = "FIDO2";
+                authenticator.displayName = "Passkey";
             }
 
             // Set the magic link authenticator tags.
@@ -417,12 +417,12 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                     : t("console:develop.pages.idp.title")
             }
             description={
-                <>
+                (<>
                     { t("console:develop.pages.authenticationProvider.subTitle") }
                     <DocumentationLink link={ getLink("develop.connections.learnMore") }>
                         { t("common:learnMore") }
                     </DocumentationLink>
-                </>
+                </>)
             }
             data-testid={ `${ testId }-page-layout` }
             actionColumnWidth={ 4 }

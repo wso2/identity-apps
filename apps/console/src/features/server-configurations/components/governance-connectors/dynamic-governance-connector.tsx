@@ -156,7 +156,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                         description: t(
                             "console:manage.features.governanceConnectors.notifications." +
                             "updateConnector.success.description",
-                            { name: connector?.friendlyName }
+                            { name: resolveConnectorTitle(connector) }
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
@@ -222,6 +222,21 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             return null;
         }
 
+        if (connector?.id === ServerConfigurationsConstants.PASSWORD_EXPIRY_CONNECTOR_ID) {
+            return t("console:manage.features.governanceConnectors.connectorCategories.passwordPolicies." +
+            "connectors.passwordExpiry.friendlyName");
+        }
+
+        if (connector?.id === ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID) {
+            return t("console:manage.features.governanceConnectors.connectorCategories.userOnboarding." +
+            "connectors.askPassword.friendlyName");
+        }
+
+        if (connector?.id === ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID) {
+            return t("console:manage.features.governanceConnectors.connectorCategories.otherSettings." +
+            "connectors.userClaimUpdate.friendlyName");
+        }
+
         const connectorTitleKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
             camelCase(connector?.category) + ".connectors." + camelCase(connector?.name) + ".friendlyName";
         let connectorTitle: string = connector?.friendlyName;
@@ -229,7 +244,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         if (i18n.exists(connectorTitleKey)) {
             connectorTitle = t(connectorTitleKey);
         }
-        
+
         return connectorTitle;
     };
 
@@ -246,7 +261,22 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         }
 
         let connectorName: string = connector?.friendlyName;
-    
+
+        if (connector?.id === ServerConfigurationsConstants.PASSWORD_EXPIRY_CONNECTOR_ID) {
+            connectorName = t("console:manage.features.governanceConnectors.connectorCategories.passwordPolicies." +
+            "connectors.passwordExpiry.friendlyName");
+        }
+
+        if (connector?.id === ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID) {
+            connectorName = t("console:manage.features.governanceConnectors.connectorCategories.userOnboarding." +
+            "connectors.askPassword.friendlyName");
+        }
+
+        if (connector?.id === ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID) {
+            connectorName = t("console:manage.features.governanceConnectors.connectorCategories.otherSettings." +
+            "connectors.userClaimUpdate.friendlyName");
+        }
+
         if (connectorName.includes(ServerConfigurationsConstants.DEPRECATION_MATCHER)) {
             connectorName = connectorName.replace(ServerConfigurationsConstants.DEPRECATION_MATCHER, "");
         }

@@ -69,7 +69,9 @@ const useGetCustomTextPreference = <
             screen,
             type
         },
-        url: store.getState().config.endpoints.brandingTextPreference
+        url: organizationType === OrganizationType.SUBORGANIZATION
+            ? store.getState().config.endpoints.brandingTextPreferenceSubOrg
+            : store.getState().config.endpoints.brandingTextPreference
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch? requestConfig : null, {

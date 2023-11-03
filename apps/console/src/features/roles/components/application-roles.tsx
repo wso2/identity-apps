@@ -303,6 +303,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                             <Heading as="h5" className="mb-2">
                                 { t("extensions:develop.applications.edit.sections.rolesV2.roleAudience") }
                             </Heading>
+                        </Grid.Column>
+                        <Grid.Column width={ 2 }>
                             <FormGroup>
                                 <FormControlLabel
                                     checked={ roleAudience === RoleAudienceTypes.ORGANIZATION }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -24,6 +25,7 @@ import { Progress } from "semantic-ui-react";
 import { getWidgetIcons } from "../../../configs";
 import { AppConstants, CommonConstants, UIConstants } from "../../../constants";
 import { history } from "../../../helpers";
+import { useBrandingPreference } from "../../../hooks";
 import { ConfigReducerStateInterface, ProfileCompletion, ProfileCompletionStatus } from "../../../models";
 import { AppState } from "../../../store";
 import { CommonUtils } from "../../../utils";
@@ -55,6 +57,7 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
 
 
     const { t } = useTranslation();
+    const { organizationDetails } = useBrandingPreference();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
@@ -66,7 +69,6 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
     const isReadOnlyUser: string = useSelector((state: AppState) => {
         return state.authenticationInformation.profileInfo.isReadOnly;
     });
-
     /**
      * Return the profile completion percentage.
      *
@@ -129,7 +131,12 @@ export const ProfileWidget: FunctionComponent<ProfileWidgetPropsInterface> = (
                 className="overview"
                 data-testid={ `${testId}-settings-section` }
                 header={ t("myAccount:components.overview.widgets.profileStatus.header" ,
-                    { productName: config.ui.productName }) }
+                    { 
+                        productName: !isEmpty(organizationDetails?.displayName)
+                            ? organizationDetails?.displayName 
+                            : config?.ui?.productName 
+                    }
+                ) }
                 description={
                     (<>
                         {
