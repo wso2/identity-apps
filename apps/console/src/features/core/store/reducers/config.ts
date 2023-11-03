@@ -182,7 +182,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 defaultLogoUrl: "",
                 defaultWhiteLogoUrl: ""
             },
-            enableEmailCustomTemplate: undefined,
+            enableCustomEmailTemplates: undefined,
             features: {
                 applications: null,
                 approvals: null,
