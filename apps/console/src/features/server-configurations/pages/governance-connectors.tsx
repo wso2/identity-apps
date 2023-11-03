@@ -22,7 +22,6 @@ import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
 import { EmphasizedSegment, PageLayout, useUIElementSizes } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import camelCase from "lodash-es/camelCase";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
