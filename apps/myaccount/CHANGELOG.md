@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.2.8
+
+### Patch Changes
+
+- [#4493](https://github.com/wso2/identity-apps/pull/4493) [`216054b7ae`](https://github.com/wso2/identity-apps/commit/216054b7aebcaf52247eff618a7ed4f69d98d4ac) Thanks [@Achintha444](https://github.com/Achintha444)! - More details popover handled on hover
+
+- Updated dependencies [[`216054b7ae`](https://github.com/wso2/identity-apps/commit/216054b7aebcaf52247eff618a7ed4f69d98d4ac)]:
+  - @wso2is/core@2.0.11
+  - @wso2is/theme@2.0.28
+
 ## 2.2.7
 
 ### Patch Changes
