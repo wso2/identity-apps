@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.5.21
+
+### Patch Changes
+
+- [#4489](https://github.com/wso2/identity-apps/pull/4489) [`9f8a1e5cc5`](https://github.com/wso2/identity-apps/commit/9f8a1e5cc5c3a6891e43e92566da2065c09af1fe) Thanks [@asha15](https://github.com/asha15)! - Add enable custom email template config
+
 ## 2.5.20
 
 ### Patch Changes
