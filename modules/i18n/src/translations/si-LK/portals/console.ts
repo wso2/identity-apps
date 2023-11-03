@@ -1682,7 +1682,7 @@ export const console: ConsoleNS = {
                             },
                             isFapiApp: {
                                 hint: "යෙදුම FAPI අනුකූල වීමට ඉඩ දීමට සබල කරන්න.",
-                                label: "FAPI යෙදුම"
+                                label: "FAPI අනුකූල යෙදුම"
                             },
                             name: {
                                 label: "නම",

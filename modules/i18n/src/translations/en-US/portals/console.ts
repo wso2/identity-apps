@@ -1690,7 +1690,7 @@ export const console: ConsoleNS = {
                             },
                             isFapiApp: {
                                 hint: "Enable to allow the application to be FAPI compliant.",
-                                label: "FAPI Application"
+                                label: "FAPI Compliant Application"
                             },
                             name: {
                                 label: "Name",
