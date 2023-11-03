@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.5.20
+
+### Patch Changes
+
+- [#4482](https://github.com/wso2/identity-apps/pull/4482) [`6a46abddbb`](https://github.com/wso2/identity-apps/commit/6a46abddbbd3d54c8c05f0ed32b787c1af4deeb0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix danger zone subheader taking full width in medium and large screen sizes
+
+- Updated dependencies [[`6a46abddbb`](https://github.com/wso2/identity-apps/commit/6a46abddbbd3d54c8c05f0ed32b787c1af4deeb0)]:
+  - @wso2is/theme@2.0.27
+
 ## 2.5.19
 
 ### Patch Changes
