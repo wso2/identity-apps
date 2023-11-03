@@ -243,6 +243,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isMarketingConsentBannerEnabled: undefined,
             isRequestPathAuthenticationEnabled: undefined,
             isSAASDeployment: undefined,
+            enableEmailCustomTemplate: undefined,
             isSignatureValidationCertificateAliasEnabled: undefined,
             listAllAttributeDialects: undefined,
             privacyPolicyConfigs: null,

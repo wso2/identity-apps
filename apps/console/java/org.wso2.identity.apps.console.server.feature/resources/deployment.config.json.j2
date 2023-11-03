@@ -1567,6 +1567,11 @@
         {% if console.ui.is_request_path_authentication_enabled is defined %}
         "isRequestPathAuthenticationEnabled": {{ console.ui.is_request_path_authentication_enabled }},
         {% endif %}
+        {% if console.ui.enableEmailCustomTemplate is defined %}
+            "enableEmailCustomTemplate": {{ console.ui.enableEmailCustomTemplate }},
+        {% else %}
+            "enableEmailCustomTemplate": true,
+        {% endif %}
         {% if console.ui.is_left_navigation_categorized is defined %}
         "isLeftNavigationCategorized": {{ console.ui.is_left_navigation_categorized }},
         {% endif %}

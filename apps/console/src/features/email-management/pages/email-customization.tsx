@@ -71,6 +71,8 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
 
     const emailTemplates: Record<string, string>[] = useSelector(
         (state: AppState) => state.config.deployment.extensions.emailTemplates) as Record<string, string>[];
+    const enableEmailCustomTemplate: boolean = useSelector(
+            (state: AppState) => state?.config?.ui?.enableEmailCustomTemplate);
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -90,26 +92,29 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     } = useEmailTemplate(selectedEmailTemplateId, selectedLocale);
 
     useEffect(() => {
-        // As of now, we need to show only the used email templates, and we don't have a good displayName and
-        // description coming from the backend for the email template types. So as we agreed to filter only the used
-        // templates, and we will use the displayName and description from the email template types config defined in
-        // the deployment.toml file. The below code will first filter all the email templates and map the email template
-        // types with the config's displayName and description.
-        const availableEmailTemplates: EmailTemplateType[] = emailTemplatesList?.filter(
-            (template: EmailTemplateType) => {
-                return emailTemplates?.find((emailTemplate: Record<string, string>) =>
-                    emailTemplate.id === template.id);
-            })
-            .map((template: EmailTemplateType) => {
-                const mappedTemplate: Record<string, string> = emailTemplates
-                    ?.find((emailTemplate: Record<string, string>) => emailTemplate.id === template.id);
+            // we don't have a good displayName and description coming from the backend
+            // for the email template types. So as we agreed use the displayName and
+            // description from the email template types config defined in
+            // the deployment.toml file. The below code will map the email template
+            // types with the config's displayName and description.
+            const availableEmailTemplates: EmailTemplateType[] = emailTemplatesList
+                ? (!enableEmailCustomTemplate
+                    ? emailTemplatesList.filter((template: EmailTemplateType) =>
+                        emailTemplates?.find((emailTemplate: Record<string, string>) => emailTemplate.id === template.id)
+                    )
+                    : emailTemplatesList
+                ).map((template: EmailTemplateType) => {
+                    const mappedTemplate: Record<string, string> = emailTemplates?.find(
+                        (emailTemplate: Record<string, string>) => emailTemplate.id === template.id
+                    );
 
-                return {
-                    ...template,
-                    description: mappedTemplate?.description || `${ template.displayName } Template`,
-                    displayName: mappedTemplate?.displayName || template.displayName
-                };
-            });
+                    return {
+                        ...template,
+                        description: mappedTemplate?.description || `${template.displayName} Template`,
+                        displayName: mappedTemplate?.displayName || template.displayName
+                    };
+                })
+                : [];
 
         setAvailableEmailTemplatesList(availableEmailTemplates);
 
