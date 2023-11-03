@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { ChipProps } from "@oxygen-ui/react";
-import Chip from "@oxygen-ui/react/Chip";
+import Chip, { ChipProps } from "@oxygen-ui/react/Chip";
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
 import { ChipMoreDetails } from "./chip-more-details";
@@ -86,6 +85,7 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
                 key={ key }
                 label={ primaryText }
                 onMouseEnter={ handleChipMouseEnter }
+                onMouseLeave={ handleChipMouseLeave }
             />
             {
                 activeOption?.value === option.value
