@@ -68,7 +68,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                             label={ t("extensions:develop.smsProviders.form.twilio.accountSID.label") }
                             placeholder={ t("extensions:develop.smsProviders.form.twilio.accountSID.placeholder") }
                             helperText={ (
-                                <Hint>
+                                <Hint compact>
                                     { t("extensions:develop.smsProviders.form.twilio.accountSID.hint") } 
                                 </Hint>
                             ) }
@@ -94,7 +94,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                             label={ t("extensions:develop.smsProviders.form.twilio.authToken.label") }
                             placeholder={ t("extensions:develop.smsProviders.form.twilio.authToken.placeholder") }
                             helperText={ (
-                                <Hint>
+                                <Hint compact>
                                     { t("extensions:develop.smsProviders.form.twilio.authToken.hint") }
                                 </Hint>
                             ) }
@@ -122,7 +122,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                             label={ t("extensions:develop.smsProviders.form.twilio.sender.label") }
                             placeholder={ t("extensions:develop.smsProviders.form.twilio.sender.placeholder") }
                             helperText={ (
-                                <Hint>
+                                <Hint compact>
                                     { t("extensions:develop.smsProviders.form.twilio.sender.hint") }
                                 </Hint>
                             ) }
@@ -134,7 +134,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                     </Grid.Column>
                 </Grid.Row>
                 <Divider hidden />
-                <Grid.Row columns={ 1 } className="mt-6">
+                <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <PrimaryButton
                             size="small"
