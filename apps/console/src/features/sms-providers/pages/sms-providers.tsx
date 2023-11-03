@@ -561,13 +561,15 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                                             { `${componentId}
                                                                                 -sms-provider-info-card` }
                                                                         image={ provider.icon }
-                                                                        imageSize="mini"
+                                                                        imageSize="x30"
                                                                         header={
                                                                             provider.name
                                                                         }
                                                                         className=
-                                                                            { smsProviderSettings.selectedProvider 
-                                                                                    === provider.key ? "selected" : "" 
+                                                                            {  smsProviderSettings.selectedProvider === 
+                                                                                provider.key 
+                                                                                ? "sms-provider-info-card selected" 
+                                                                                : "sms-provider-info-card" 
                                                                             }
                                                                         key={ provider.id }
                                                                         onClick={ () => 
@@ -581,10 +583,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                     </Grid.Row>
                                                 </Grid>
                                             </div>
-                                            { smsProviderSettings.selectedProvider && (
-                                                <Divider hidden />
-
-                                            ) }
                                             { smsProviderSettings.selectedProvider && (
                                                 <>
                                                     { smsProviderSettings.selectedProvider === 
