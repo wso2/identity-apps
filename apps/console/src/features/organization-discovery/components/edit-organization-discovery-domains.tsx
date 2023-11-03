@@ -40,6 +40,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../core";
+import checkEmailDomainAvailable from "../api/check-email-domain-available";
 import updateOrganizationDiscoveryAttributes from "../api/update-organization-email-domains";
 import {
     OrganizationDiscoveryAttributeDataInterface,
@@ -106,6 +107,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
 
     const [ emailDomains, setEmailDomains ] = useState<string[]>([]);
     const [ isEmailDomainDataError, setIsEmailDomainDataError ] = useState<boolean>(false);
+    const [ isEmailDomainAvailableError, setIsEmailDomainAvailableError ] = useState<boolean>(false);
 
     const optionsArray: string[] = [];
 
@@ -172,16 +174,58 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
     }
 
     /**
-     * Function to validate the input string is an email domain.
+     * Function to check whether an email domain is available.
+     *
+     * @param values - Email domains.
+     */
+    const checkEmailDomainAvailability = async (emailDomain: string): Promise<boolean> => {
+
+        let available: boolean = true;
+
+        await checkEmailDomainAvailable(emailDomain)
+            .then((response: any) => {
+                available = response?.available;
+            })
+            .catch(() => {
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:manage.features.organizationDiscovery.notifications" +
+                                ".checkEmailDomain.error.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.features.organizationDiscovery.notifications" +
+                                ".checkEmailDomain.error.message"
+                        )
+                    })
+                );
+            });
+
+        return available;
+    };
+
+    /**
+     * Function to validate the input string is a valid email domain.
      *
      * @param emailDomainList - Email domains.
      */
-    const validateEmailDomain = (emailDomainList: string[]) => {
+    const validateEmailDomain = async (emailDomainList: string[]) => {
 
         const isEmailDomainValid: boolean = FormValidation.domain(emailDomainList[emailDomainList.length-1]);
 
         if (!isEmailDomainValid) {
             setIsEmailDomainDataError(true);
+            emailDomainList.pop();
+
+            return;
+        } 
+
+        const isEmailDomainAvailable: boolean = await checkEmailDomainAvailability(emailDomainList[
+            emailDomainList.length-1]);
+
+        if (!isEmailDomainAvailable) {
+            setIsEmailDomainAvailableError(true);
             emailDomainList.pop();
         }
     };
@@ -268,14 +312,19 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                             } }
                                             { ...params }
                                             margin="dense"
-                                            error={ isEmailDomainDataError }
+                                            error={ isEmailDomainDataError || isEmailDomainAvailableError }
                                             helperText= { 
                                                 isEmailDomainDataError
                                                     ? t(
-                                                        "console:manage.features.organizationDiscovery.edit.form." +
+                                                        "console:manage.features.organizationDiscovery.assign.form." +
                                                         "fields.emailDomains.validations.invalid.0"
                                                     )
-                                                    : null
+                                                    : isEmailDomainAvailableError
+                                                        ? t(
+                                                            "console:manage.features.organizationDiscovery.assign." +
+                                                            "form.fields.emailDomains.validations.invalid.1"
+                                                        )
+                                                        : null
                                             }
                                             placeholder={ t(
                                                 "console:manage.features.organizationDiscovery.edit." +
@@ -286,10 +335,13 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                 ) }
                                 onChange={ (_: SyntheticEvent<Element, Event>, value: string[]) => {
                                     setEmailDomains(value);
-                                    validateEmailDomain(value);
+                                    if (value.length > 0) {
+                                        validateEmailDomain(value);
+                                    }
                                 } }
                                 onInputChange={ () => {
                                     setIsEmailDomainDataError(false);
+                                    setIsEmailDomainAvailableError(false);
                                 } }
                             />
                             <FormHelperText>
@@ -303,7 +355,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                             { !isReadOnly && (
                                 <PrimaryButton
                                     data-componentid={ `${componentId}-form-save-button` }
-                                    disabled={ submitting }
+                                    disabled={ submitting || isEmailDomainDataError || isEmailDomainAvailableError }
                                     loading={ submitting }
                                     type="submit"
                                 >

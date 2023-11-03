@@ -7707,7 +7707,7 @@ export const console: ConsoleNS = {
                             emailDomains: {
                                 label : "Domaines de messagerie",
                                 placeholder: "Entrez les domaines de messagerie",
-                                hint: "Tapez et entrez pour ajouter des domaines de messagerie qui doivent être mappés à l'organisation. (Par exemple, gmail.com, etc.)",
+                                hint: "Tapez et entrez les domaines de messagerie à mapper à l'organisation. (Par exemple, gmail.com, etc.)",
                                 validations: {
                                     invalid: {
                                         0: "Veuillez saisir un domaine de messagerie valide.",
@@ -7744,7 +7744,7 @@ export const console: ConsoleNS = {
                             emailDomains: {
                                 label : "Domaines de messagerie",
                                 placeholder: "Entrez les domaines de messagerie",
-                                hint: "Tapez et entrez pour ajouter des domaines de messagerie qui doivent être mappés à l'organisation. (Par exemple, gmail.com, etc.)",
+                                hint: "Tapez et entrez les domaines de messagerie à mapper à l'organisation. (Par exemple, gmail.com, etc.)",
                                 validations: {
                                     invalid: {
                                         0: "Veuillez saisir un domaine de messagerie valide.",
@@ -7757,8 +7757,7 @@ export const console: ConsoleNS = {
                                 hint: "Entrez le nom de l'organisation que vous souhaitez ajouter la cartographie du domaine."
                             }
                         },
-                        message: "Si vous modifiez les mappages de domaines de messagerie, les utilisateurs déjà enregistrés dans votre organisation risquent de ne " +
-                        "pas pouvoir se connecter. Par conséquent, soyez prudent lorsque vous mettez à jour les domaines de messagerie."
+                        message: "La modification des mappages de domaines de messagerie peut empêcher les utilisateurs existants de se connecter."
                     }
                 },
                 message: "La fonctionnalité de découverte de domaine de messagerie ne peut être utilisée que lorsque l'adresse e-mail est configurée comme nom d'utilisateur.",
@@ -7771,6 +7770,12 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Domaines de messagerie ajoutés avec succès.",
                             message: "Ajouté avec succès"
+                        }
+                    },
+                    checkEmailDomain: {
+                        error: {
+                            description: "La validation de l'existence du domaine de messagerie a échoué.",
+                            message: "Validation échouée"
                         }
                     },
                     disableEmailDomainDiscovery: {

@@ -260,17 +260,19 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                     mutateOrganizationDiscoveryConfigFetchRequest();
                 })
                 .catch(() => {
-                    addAlert({
-                        description: t(
-                            "console:manage.features.organizationDiscovery.notifications." +
-                            "enableEmailDomainDiscovery.error.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "console:manage.features.organizationDiscovery.notifications." +
-                            "enableEmailDomainDiscovery.error.message"
-                        )
-                    });
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "console:manage.features.organizationDiscovery.notifications." +
+                                "enableEmailDomainDiscovery.error.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.organizationDiscovery.notifications." +
+                                "enableEmailDomainDiscovery.error.message"
+                            )
+                        })
+                    );
                 });
 
             return;
