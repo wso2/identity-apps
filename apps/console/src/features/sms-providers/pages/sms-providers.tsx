@@ -45,12 +45,13 @@ import {
     FeatureConfigInterface
 } from "../../core";
 import { history } from "../../core/helpers";
-import { deleteSMSProviders, updateSMSProvider, useSMSProviders } from "../api";
+import { createSMSProvider, deleteSMSProviders, updateSMSProvider, useSMSProviders } from "../api";
 import { providerCards } from "../configs/provider-cards";
 import { SMSProviderConstants } from "../constants";
 import {
     ContentType,
     SMSProviderAPIInterface,
+    SMSProviderAPIResponseInterface,
     SMSProviderCardInterface,
     SMSProviderConfigFormErrorValidationsInterface,
     SMSProviderInterface,
@@ -120,6 +121,20 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         error: smsProviderConfigFetchRequestError
     } = useSMSProviders();
     const [ isLoading, setIsLoading ] = useState(true);
+
+    const [ existingSMSProviders, setExistingSMSProviders ] = useState<string[]>([]);
+
+    useEffect(() => {
+        if(!isSMSProviderConfigFetchRequestLoading && originalSMSProviderConfig?.length > 0) {
+            const existingSMSProviderNames: string[] = [];
+
+            originalSMSProviderConfig?.map((smsProvider: SMSProviderAPIResponseInterface) => {
+                existingSMSProviderNames.push(smsProvider.provider + "SMSProvider");
+            });
+
+            setExistingSMSProviders(existingSMSProviderNames);
+        }
+    },[ isSMSProviderConfigFetchRequestLoading ]);
 
     useEffect(() => {
         if (!originalSMSProviderConfig) {
@@ -276,47 +291,40 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             submittingValues.providerURL = values.providerURL;
         }
 
-        handleConfigurationDelete(true).then((isDeleted: boolean) => {
-            if (isDeleted) {
-                updateSMSProvider(submittingValues)
-                    .then((updatedData: SMSProviderAPIInterface) => {
-                        const updatedSMSProvider: SMSProviderInterface = {
-                            contentType: updatedData.contentType as ContentType,
-                            headers: updatedData.properties.find(
-                                (property: SMSProviderPropertiesInterface) => property.key === "http.headers")?.value,
-                            httpMethod: updatedData.properties.find(
-                                (property: SMSProviderPropertiesInterface) => property.key === "http.method")?.value,
-                            key: updatedData.key,
-                            name: updatedData.name,
-                            payload: updatedData.properties.find(
-                                (property: SMSProviderPropertiesInterface) => property.key === "body")?.value,
-                            provider: updatedData.provider,
-                            providerURL: updatedData.providerURL,
-                            secret: updatedData.secret,
-                            sender: updatedData.sender
-                        };
-                        const updatedParams: { [key: string]: SMSProviderInterface } =
-                            { ...defaultProviderParams, [selectedProvider as string]: updatedSMSProvider };
+        const handleSMSConfigValues: any = existingSMSProviders.includes(selectedProvider) ? 
+            updateSMSProvider(submittingValues) :  
+            createSMSProvider(submittingValues);
+        
+        handleSMSConfigValues.then((updatedData: SMSProviderAPIInterface) => {
+            const updatedSMSProvider: SMSProviderInterface = {
+                contentType: updatedData.contentType as ContentType,
+                headers: updatedData.properties.find(
+                    (property: SMSProviderPropertiesInterface) => property.key === "http.headers")?.value,
+                httpMethod: updatedData.properties.find(
+                    (property: SMSProviderPropertiesInterface) => property.key === "http.method")?.value,
+                key: updatedData.key,
+                name: updatedData.name,
+                payload: updatedData.properties.find(
+                    (property: SMSProviderPropertiesInterface) => property.key === "body")?.value,
+                provider: updatedData.provider,
+                providerURL: updatedData.providerURL,
+                secret: updatedData.secret,
+                sender: updatedData.sender
+            };
+            const updatedParams: { [key: string]: SMSProviderInterface } =
+                        { ...defaultProviderParams, [selectedProvider as string]: updatedSMSProvider };
 
-                        setSmsProviderSettings({ ...smsProviderSettings, providerParams: updatedParams });
-                        setIsSubmitting(false);
-                        handleUpdateSuccess();
-                    })
-                    .catch(() => {
-                        handleUpdateError();
-                        setIsSubmitting(false);
-                    }).finally(() => {
-                        setIsSubmitting(false);
-                        mutateSMSProviderConfig();
-                    });
-            } else {
-                handleDeleteError();
-                setIsSubmitting(false);
-            }
-        }).catch(() => {
-            handleDeleteError();
+            setSmsProviderSettings({ ...smsProviderSettings, providerParams: updatedParams });
             setIsSubmitting(false);
-        });
+            handleUpdateSuccess();
+        })
+            .catch(() => {
+                handleUpdateError();
+                setIsSubmitting(false);
+            }).finally(() => {
+                setIsSubmitting(false);
+                mutateSMSProviderConfig();
+            });
     };
 
     const buildProperties = (values: SMSProviderInterface) => {
@@ -432,24 +440,21 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         return error;
     };
 
-    const handleConfigurationDelete = async (deleteBeforeUpdate?: boolean): Promise<boolean> => {
-        !deleteBeforeUpdate && setIsDeleting(true);
+    const handleConfigurationDelete = async (): Promise<boolean> => {
+        setIsDeleting(true);
 
         return deleteSMSProviders()
             .then(() => {
-                !deleteBeforeUpdate && handleDeleteSuccess();
-                !deleteBeforeUpdate && setSmsProviderSettings({ providerParams: {}, 
+                handleDeleteSuccess();
+                setSmsProviderSettings({ providerParams: {}, 
                     selectedProvider: SMSProviderConstants.TWILIO_SMS_PROVIDER });
-                !deleteBeforeUpdate && mutateSMSProviderConfig();
+                mutateSMSProviderConfig();
 
                 return true;
             })
             .catch((e: IdentityAppsApiException) => {
-                !deleteBeforeUpdate && handleDeleteError();
-                if (deleteBeforeUpdate && e.response.status === 404) {
-                    return true;
-                }
-
+                handleDeleteError(e);
+                
                 return false;
             }).finally(() => {
                 setIsDeleting(false);
@@ -457,14 +462,25 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
     };
 
 
-    const handleDeleteError = () => {
+    const handleDeleteError = (error?: IdentityAppsApiException) => {
+        let errorMessage: string = t("extensions:develop.smsProviders." +
+        "notifications.deleteConfiguration.error.message");
+
+        let errorDescription: string = t("extensions:develop.smsProviders." +
+        "notifications.deleteConfiguration.error.description");
+
+        // If the SMS provider is being used by SMS OTP connection and it is
+        // configured for one or more applications
+        if (error?.response?.data?.code === "NSM-60008") {
+            errorMessage = error?.response?.data?.message;
+            errorDescription = error?.response?.data?.description;
+        }
+
         dispatch(
             addAlert({
-                description: t("extensions:develop.smsProviders." +
-                    "notifications.deleteConfiguration.error.description"),
+                description: errorDescription,
                 level: AlertLevels.ERROR,
-                message: t("extensions:develop.smsProviders." +
-                    "notifications.deleteConfiguration.error.message")
+                message: errorMessage
             })
         );
     };
