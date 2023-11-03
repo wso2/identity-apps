@@ -44,6 +44,12 @@ export interface GrantTypeMetaDataInterface {
     options?: GrantTypeInterface[];
 }
 
+export interface FapiMetaDataInterface {
+    allowedSignatureAlgorithms: MetadataPropertyInterface;
+    allowedEncryptionAlgorithms: MetadataPropertyInterface;
+    tokenEndpointAuthMethod: MetadataPropertyInterface;
+}
+
 /**
  * OIDC related metadata.
  */
@@ -68,6 +74,7 @@ export interface OIDCMetadataInterface {
     requestObjectEncryptionAlgorithm?: MetadataPropertyInterface;
     subjectType?: MetadataPropertyInterface;
     tlsClientAuthSubjectDn?: string;
+    fapiMetadata?: FapiMetaDataInterface;
 }
 
 export enum State {

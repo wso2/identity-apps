@@ -181,8 +181,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         state?.organization?.organizationType);
     const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) =>
         state.organization.organization);
+    const isFapiCompliantApp: boolean = initialValues?.isFAPIApplication;
 
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
+    const [ isPublicClient, setPublicClient ] = useState(false);
     const [ callBackUrls, setCallBackUrls ] = useState("");
     const [ audienceUrls, setAudienceUrls ] = useState("");
     const [ showURLError, setShowURLError ] = useState(false);
@@ -1092,7 +1094,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             ...inboundConfigFormValues,
             clientAuthentication: {
                 tlsClientAuthSubjectDn: subjectDN,
-                tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod"),
+                tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod") !== "None" ?
+                    values.get("tokenEndpointAuthMethod") : null,
                 tokenEndpointAuthSigningAlg: values.get("tokenEndpointAuthSigningAlg")
             },
             pushAuthorizationRequest: {
@@ -1239,6 +1242,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         () => {
             if (initialValues?.idToken?.encryption) {
                 setEncryptionEnable(initialValues.idToken.encryption?.enabled);
+            }
+        }, [ initialValues ]
+    );
+
+    useEffect(
+        () => {
+            if (initialValues?.publicClient) {
+                setPublicClient(initialValues.publicClient);
             }
         }, [ initialValues ]
     );
@@ -1451,6 +1462,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             {
                 !isSPAApplication
                 && !isMobileApplication
+                && !isFapiCompliantApp
                 && (
                     selectedGrantTypes?.includes(ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
                     || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
@@ -1481,6 +1493,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         }
                                     ] }
                                     readOnly={ readOnly }
+                                    listen={ (values: Map<string, FormValue>): void => {
+                                        const isPublicClient: boolean = values.get("supportPublicClients")
+                                            .includes("supportPublicClients");
+
+                                        setPublicClient(isPublicClient);
+                                    } }
                                     data-testid={ `${ testId }-public-client-checkbox` }
                                 />
                                 <Hint>
@@ -1769,113 +1787,124 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             { /* Client Authentication*/ }
-            <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Divider />
-                    <Divider hidden />
-                </Grid.Column>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Heading as="h4">
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".clientAuthentication.heading") }
-                    </Heading>
-                    <Field
-                        ref={ tokenEndpointAuthMethod }
-                        name="tokenEndpointAuthMethod"
-                        label={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".clientAuthentication.fields.authenticationMethod.label")
-                        }
-                        required={ false }
-                        type="dropdown"
-                        disabled={ false }
-                        default={
-                            initialValues?.clientAuthentication ?
-                                initialValues.clientAuthentication.tokenEndpointAuthMethod
-                                : metadata.tokenEndpointAuthMethod.defaultValue
-                        }
-                        placeholder={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".clientAuthentication.fields.authenticationMethod.placeholder")
-                        }
-                        listen={ (values: Map<string, FormValue>) => handleAuthMethodChange(values) }
-                        children={ getAllowedList(metadata.tokenEndpointAuthMethod) }
-                        readOnly={ readOnly }
-                    />
-                    <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".clientAuthentication.fields.authenticationMethod.hint") }
-                    </Hint>
-                </Grid.Column>
-            </Grid.Row>
-
-            { selectedAuthMethod === PRIVATE_KEY_JWT &&
+            { !isPublicClient &&
                 (
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <Field
-                                ref={ tokenEndpointAuthSigningAlg }
-                                name="tokenEndpointAuthSigningAlg"
-                                label={
-                                    t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                        ".clientAuthentication.fields.signingAlgorithm.label")
-                                }
-                                required={ false }
-                                type="dropdown"
-                                disabled={ false }
-                                default={
-                                    initialValues?.clientAuthentication ?
-                                        initialValues.clientAuthentication.tokenEndpointAuthSigningAlg
-                                        : metadata.tokenEndpointSignatureAlgorithm.defaultValue
-                                }
-                                placeholder={
-                                    t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                        ".clientAuthentication.fields.signingAlgorithm.placeholder")
-                                }
-                                children={ getAllowedList(metadata.tokenEndpointSignatureAlgorithm) }
-                                readOnly={ readOnly }
-                            />
-                            <Hint>
-                                { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                    ".clientAuthentication.fields.signingAlgorithm.hint") }
-                            </Hint>
+                    <>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Divider />
+                                <Divider hidden />
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Heading as="h4">
+                                    { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                        ".clientAuthentication.heading") }
+                                </Heading>
+                                <Field
+                                    ref={ tokenEndpointAuthMethod }
+                                    name="tokenEndpointAuthMethod"
+                                    label={
+                                        t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            ".clientAuthentication.fields.authenticationMethod.label")
+                                    }
+                                    required={ false }
+                                    type="dropdown"
+                                    disabled={ false }
+                                    default={
+                                        initialValues?.clientAuthentication ?
+                                            initialValues.clientAuthentication.tokenEndpointAuthMethod
+                                            : metadata.tokenEndpointAuthMethod.defaultValue
+                                    }
+                                    placeholder={
+                                        t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            ".clientAuthentication.fields.authenticationMethod.placeholder")
+                                    }
+                                    listen={ (values: Map<string, FormValue>) => handleAuthMethodChange(values) }
+                                    children={ isFapiCompliantApp ?
+                                        getAllowedList(metadata.fapiMetadata.tokenEndpointAuthMethod)
+                                        : getAllowedList(metadata.tokenEndpointAuthMethod) }
+                                    readOnly={ readOnly }
+                                />
+                                <Hint>
+                                    { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                        ".clientAuthentication.fields.authenticationMethod.hint") }
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
 
-                        </Grid.Column>
-                    </Grid.Row>
-                )
-            }
+                        { selectedAuthMethod === PRIVATE_KEY_JWT &&
+                            (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Field
+                                            ref={ tokenEndpointAuthSigningAlg }
+                                            name="tokenEndpointAuthSigningAlg"
+                                            label={
+                                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                                    ".clientAuthentication.fields.signingAlgorithm.label")
+                                            }
+                                            required={ false }
+                                            type="dropdown"
+                                            disabled={ false }
+                                            default={
+                                                initialValues?.clientAuthentication ?
+                                                    initialValues.clientAuthentication.tokenEndpointAuthSigningAlg
+                                                    : metadata.tokenEndpointSignatureAlgorithm.defaultValue
+                                            }
+                                            placeholder={
+                                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                                    ".clientAuthentication.fields.signingAlgorithm.placeholder")
+                                            }
+                                            children={ isFapiCompliantApp ?
+                                                getAllowedList(metadata.fapiMetadata.allowedSignatureAlgorithms) :
+                                                getAllowedList(metadata.tokenEndpointSignatureAlgorithm) }
+                                            readOnly={ readOnly }
+                                        />
+                                        <Hint>
+                                            { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                                ".clientAuthentication.fields.signingAlgorithm.hint") }
+                                        </Hint>
 
-            { selectedAuthMethod === TLS_CLIENT_AUTH &&
-                (
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <Form.Input
-                                ref={ tlsClientAuthSubjectDn }
-                                ariaLabel="TLS client auth subject DN"
-                                inputType="name"
-                                name="tlsClientAuthSubjectDn"
-                                label={ t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                    ".clientAuthentication.fields.subjectDN.label")
-                                }
-                                required={ false }
-                                placeholder={
-                                    t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                        ".clientAuthentication.fields.subjectDN.placeholder")
-                                }
-                                value={ subjectDN }
-                                onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                                    setTLSClientAuthSubjectDN(e.target.value) }
-                                readOnly={ false }
-                                maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_NAME_MAX_LENGTH }
-                                minLength={ 3 }
-                                width={ 16 }
-                            />
-                            <Hint>
-                                { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                    ".clientAuthentication.fields.subjectDN.hint") }
-                            </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                        }
+
+                        { selectedAuthMethod === TLS_CLIENT_AUTH &&
+                            (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Form.Input
+                                            ref={ tlsClientAuthSubjectDn }
+                                            ariaLabel="TLS client auth subject DN"
+                                            inputType="name"
+                                            name="tlsClientAuthSubjectDn"
+                                            label={ t("console:develop.features.applications.forms.inboundOIDC" +
+                                                ".sections.clientAuthentication.fields.subjectDN.label")
+                                            }
+                                            required={ false }
+                                            placeholder={
+                                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                                    ".clientAuthentication.fields.subjectDN.placeholder")
+                                            }
+                                            value={ subjectDN }
+                                            onChange={ (e: ChangeEvent<HTMLInputElement>) =>
+                                                setTLSClientAuthSubjectDN(e.target.value) }
+                                            readOnly={ false }
+                                            maxLength={ ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS
+                                                .APP_NAME_MAX_LENGTH }
+                                            minLength={ 3 }
+                                            width={ 16 }
+                                        />
+                                        <Hint>
+                                            { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                                ".clientAuthentication.fields.subjectDN.hint") }
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                        }
+                    </>
                 )
             }
 
@@ -1936,13 +1965,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         type="dropdown"
                         disabled={ false }
                         default={
-                            initialValues?.requestObject ? initialValues.requestObject.requestObjectSigningAlg : null
+                            initialValues?.requestObject?.requestObjectSigningAlg ?
+                                initialValues.requestObject.requestObjectSigningAlg : null
                         }
                         placeholder={
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".requestObject.fields.requestObjectSigningAlg.placeholder")
                         }
-                        children={ getAllowedList(metadata.requestObjectSignatureAlgorithm) }
+                        children={ isFapiCompliantApp ? getAllowedList(metadata.fapiMetadata.allowedSignatureAlgorithms)
+                            : getAllowedList(metadata.requestObjectSignatureAlgorithm) }
                         readOnly={ readOnly }
                     />
                     <Hint>
@@ -1971,13 +2002,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         type="dropdown"
                         disabled={ false }
                         default={
-                            initialValues?.requestObject ? initialValues.requestObject.encryption.algorithm : null
+                            initialValues?.requestObject?.encryption?.algorithm ?
+                                initialValues.requestObject.encryption.algorithm : null
                         }
                         placeholder={
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".requestObject.fields.requestObjectEncryptionAlgorithm.placeholder")
                         }
-                        children={ getAllowedList(metadata.requestObjectEncryptionAlgorithm) }
+                        children={ isFapiCompliantApp ?
+                            getAllowedList(metadata.fapiMetadata.allowedEncryptionAlgorithms) :
+                            getAllowedList(metadata.requestObjectEncryptionAlgorithm) }
                         readOnly={ readOnly }
                     />
                     <Hint>
@@ -2006,7 +2040,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         type="dropdown"
                         disabled={ false }
                         default={
-                            initialValues?.requestObject ? initialValues.requestObject.encryption.method : null
+                            initialValues?.requestObject?.encryption?.method
+                                ? initialValues.requestObject.encryption.method : null
                         }
                         placeholder={
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
@@ -2659,7 +2694,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                             ".idToken.fields.algorithm.placeholder")
                                     }
-                                    children={ getAllowedList(metadata.idTokenEncryptionAlgorithm) }
+                                    children={ isFapiCompliantApp ?
+                                        getAllowedList(metadata.fapiMetadata.allowedEncryptionAlgorithms) :
+                                        getAllowedList(metadata.idTokenEncryptionAlgorithm) }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-encryption-algorithm-dropdown` }
                                 />
@@ -2740,7 +2777,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".idToken.fields.signing.placeholder")
                         }
-                        children={ getAllowedList(metadata.idTokenSignatureAlgorithm) }
+                        children={ isFapiCompliantApp ?
+                            getAllowedList(metadata.fapiMetadata.allowedSignatureAlgorithms) :
+                            getAllowedList(metadata.idTokenSignatureAlgorithm) }
                         readOnly={ readOnly }
                     />
                     <Hint disabled={ !isEncryptionEnabled || !isCertAvailableForEncrypt }>
