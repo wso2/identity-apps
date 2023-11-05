@@ -29,11 +29,10 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Update the branding preference text customizations.
+ * Check whether a given email domain is available.
  *
- * @param domain - Domains to be checked.
+ * @param domain - Domain to be checked.
  * @returns Promise containing the response.
- * @throws Throws an IdentityAppsApiException if the request fails.
  */
 const checkEmailDomainAvailable = (
     domain: string
