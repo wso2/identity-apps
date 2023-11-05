@@ -44,6 +44,7 @@ import checkEmailDomainAvailable from "../api/check-email-domain-available";
 import updateOrganizationDiscoveryAttributes from "../api/update-organization-email-domains";
 import {
     OrganizationDiscoveryAttributeDataInterface,
+    OrganizationDiscoveryCheckResponseInterface,
     OrganizationResponseInterface
 } from "../models/organization-discovery";
 import "./edit-organization-discovery-domains.scss";
@@ -183,7 +184,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
         let available: boolean = true;
 
         await checkEmailDomainAvailable(emailDomain)
-            .then((response: any) => {
+            .then((response: OrganizationDiscoveryCheckResponseInterface) => {
                 available = response?.available;
             })
             .catch(() => {
@@ -316,12 +317,12 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                                             helperText= { 
                                                 isEmailDomainDataError
                                                     ? t(
-                                                        "console:manage.features.organizationDiscovery.assign.form." +
+                                                        "console:manage.features.organizationDiscovery.edit.form." +
                                                         "fields.emailDomains.validations.invalid.0"
                                                     )
                                                     : isEmailDomainAvailableError
                                                         ? t(
-                                                            "console:manage.features.organizationDiscovery.assign." +
+                                                            "console:manage.features.organizationDiscovery.edit." +
                                                             "form.fields.emailDomains.validations.invalid.1"
                                                         )
                                                         : null
@@ -355,7 +356,7 @@ const EditOrganizationDiscoveryDomains: FunctionComponent<EditOrganizationDiscov
                             { !isReadOnly && (
                                 <PrimaryButton
                                     data-componentid={ `${componentId}-form-save-button` }
-                                    disabled={ submitting || isEmailDomainDataError || isEmailDomainAvailableError }
+                                    disabled={ submitting }
                                     loading={ submitting }
                                     type="submit"
                                 >

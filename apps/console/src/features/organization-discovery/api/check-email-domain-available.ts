@@ -17,11 +17,10 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core/store";
-import { OrganizationDiscoveryConstants } from "../constants/organization-discovery-constants";
+import { OrganizationDiscoveryCheckResponseInterface } from "../models/organization-discovery";
 
 /**
  * Get an axios instance.
@@ -38,7 +37,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  */
 const checkEmailDomainAvailable = (
     domain: string
-): Promise<void> => {
+): Promise<OrganizationDiscoveryCheckResponseInterface> => {
     const requestConfig: AxiosRequestConfig = {
         data: {
             type: "emailDomain",

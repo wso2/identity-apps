@@ -100,3 +100,7 @@ export interface OrganizationResponseInterface {
     };
     attributes: OrganizationAttributesInterface[];
 }
+
+export interface OrganizationDiscoveryCheckResponseInterface {
+    available: boolean;
+}

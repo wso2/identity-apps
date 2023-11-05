@@ -52,7 +52,10 @@ import { OrganizationInterface } from "../../organizations/models/organizations"
 import addOrganizationEmailDomain from "../api/add-organization-email-domains";
 import checkEmailDomainAvailable from "../api/check-email-domain-available";
 import useGetOrganizationDiscovery from "../api/use-get-organization-discovery";
-import { OrganizationDiscoveryInterface } from "../models/organization-discovery";
+import { 
+    OrganizationDiscoveryCheckResponseInterface, 
+    OrganizationDiscoveryInterface 
+} from "../models/organization-discovery";
 import "./add-organization-discovery-domains.scss";
 
 /**
@@ -183,7 +186,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
         let available: boolean = true;
 
         await checkEmailDomainAvailable(emailDomain)
-            .then((response: any) => {
+            .then((response: OrganizationDiscoveryCheckResponseInterface) => {
                 available = response?.available;
             })
             .catch(() => {
@@ -383,7 +386,6 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                             data-componentid={ `${componentId}-form-submit-button` }
                                             disabled={
                                                 submitting || isEmpty(emailDomains) || isEmpty(values?.organizationName)
-                                                || isEmailDomainDataError || isEmailDomainAvailableError
                                             }
                                             loading={ submitting }
                                             type="submit"
