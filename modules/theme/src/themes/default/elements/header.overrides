@@ -87,7 +87,7 @@ h6.ui.header .sub.header {
     }
 
     &.oxygen-header .oxygen-brand-logo {
-        height: 18px
+        height: 18px;
         max-width: none;
     }
 
