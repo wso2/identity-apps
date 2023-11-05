@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import Switch from "@mui/material/Switch";
-import { Divider, Grid, Typography } from "@oxygen-ui/react";
+import { Divider, Grid, Switch, Typography } from "@oxygen-ui/react";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, PrimaryButton } from "@wso2is/react-components";

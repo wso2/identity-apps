@@ -326,7 +326,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     };
 
     /**
-     * Remove this once the response name is fixed from the backend.
+     * TODO: Remove this once the response name is fixed from the backend.
      */
     const resolveConnectorCategoryTitle = (connectorCategory : GovernanceConnectorCategoryInterface): string => {
         switch (connectorCategory.id) {

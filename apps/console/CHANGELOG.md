@@ -1,5 +1,43 @@
 # @wso2is/console
 
+## 2.5.22
+
+### Patch Changes
+
+- [#4493](https://github.com/wso2/identity-apps/pull/4493) [`216054b7ae`](https://github.com/wso2/identity-apps/commit/216054b7aebcaf52247eff618a7ed4f69d98d4ac) Thanks [@Achintha444](https://github.com/Achintha444)! - More details popover handled on hover
+
+- Updated dependencies [[`216054b7ae`](https://github.com/wso2/identity-apps/commit/216054b7aebcaf52247eff618a7ed4f69d98d4ac)]:
+  - @wso2is/core@2.0.11
+  - @wso2is/theme@2.0.28
+
+## 2.5.21
+
+### Patch Changes
+
+- [#4489](https://github.com/wso2/identity-apps/pull/4489) [`9f8a1e5cc5`](https://github.com/wso2/identity-apps/commit/9f8a1e5cc5c3a6891e43e92566da2065c09af1fe) Thanks [@asha15](https://github.com/asha15)! - Add enable custom email template config
+
+## 2.5.20
+
+### Patch Changes
+
+- [#4482](https://github.com/wso2/identity-apps/pull/4482) [`6a46abddbb`](https://github.com/wso2/identity-apps/commit/6a46abddbbd3d54c8c05f0ed32b787c1af4deeb0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix danger zone subheader taking full width in medium and large screen sizes
+
+- Updated dependencies [[`6a46abddbb`](https://github.com/wso2/identity-apps/commit/6a46abddbbd3d54c8c05f0ed32b787c1af4deeb0)]:
+  - @wso2is/theme@2.0.27
+
+## 2.5.19
+
+### Patch Changes
+
+- [#4481](https://github.com/wso2/identity-apps/pull/4481) [`8972f071cf`](https://github.com/wso2/identity-apps/commit/8972f071cfe5c844a759ca1278f5895855aeb6e2) Thanks [@Rashmini](https://github.com/Rashmini)! - Add email domain validation for organization discovery
+
+* [#4479](https://github.com/wso2/identity-apps/pull/4479) [`65f3a79b4a`](https://github.com/wso2/identity-apps/commit/65f3a79b4a1cf85d0fc18928dbf8df1d7157ced7) Thanks [@asekawa](https://github.com/asekawa)! - Improve update message of Login and Registration section.
+
+* Updated dependencies [[`8972f071cf`](https://github.com/wso2/identity-apps/commit/8972f071cfe5c844a759ca1278f5895855aeb6e2), [`65f3a79b4a`](https://github.com/wso2/identity-apps/commit/65f3a79b4a1cf85d0fc18928dbf8df1d7157ced7)]:
+  - @wso2is/validation@2.0.2
+  - @wso2is/form@2.0.7
+  - @wso2is/i18n@2.0.29
+
 ## 2.5.18
 
 ### Patch Changes

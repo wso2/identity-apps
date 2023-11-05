@@ -69,7 +69,7 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                             label={ t("extensions:develop.smsProviders.form.vonage.accountSID.label") }
                             placeholder={ t("extensions:develop.smsProviders.form.vonage.accountSID.placeholder") }
                             helperText={ (
-                                <Hint>
+                                <Hint compact>
                                     { t("extensions:develop.smsProviders.form.vonage.accountSID.hint") }
                                 </Hint>
                             ) }
@@ -96,7 +96,7 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                             label={ t("extensions:develop.smsProviders.form.vonage.authToken.label") }
                             placeholder={ t("extensions:develop.smsProviders.form.vonage.authToken.placeholder") }
                             helperText={ (
-                                <Hint>
+                                <Hint compact>
                                     { t("extensions:develop.smsProviders.form.vonage.authToken.hint") } 
                                 </Hint>
                             ) }
@@ -124,7 +124,7 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                             label={ t("extensions:develop.smsProviders.form.vonage.sender.label") }
                             placeholder={ t("extensions:develop.smsProviders.form.vonage.sender.placeholder") }
                             helperText={ (
-                                <Hint>
+                                <Hint compact>
                                     { t("extensions:develop.smsProviders.form.vonage.sender.hint") } 
                                 </Hint>
                             ) }
@@ -136,7 +136,7 @@ const VonageSMSProvider: FunctionComponent<VonageSMSProviderPageInterface> = (
                     </Grid.Column>
                 </Grid.Row>
                 <Divider hidden />
-                <Grid.Row columns={ 1 } className="mt-6">
+                <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <PrimaryButton
                             size="small"
