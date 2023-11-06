@@ -321,7 +321,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         })
             .catch(() => {
                 handleUpdateError();
-                setIsSubmitting(false);
             }).finally(() => {
                 setIsSubmitting(false);
                 mutateSMSProviderConfig();
