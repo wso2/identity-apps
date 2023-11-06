@@ -11153,7 +11153,7 @@ export const console: ConsoleNS = {
                                 primaryButton: "Invite",
                                 rolesLabel: "Roles",
                                 rolesPlaceholder: "Enter roles",
-                                warningMessage: "The manual option to invite multiple users is available only when email as username is enabled."
+                                warningMessage: "Manual invite multiple users feature can only be used when email address is configured as the username."
                             },
                             fileBased: {
                                 hint: "Bulk invite multiple users using a CSV file."

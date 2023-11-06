@@ -21,7 +21,7 @@ import {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
 } from "@mui/material";
-import { Chip, TextField } from "@oxygen-ui/react";
+import { Chip, TextField, Typography } from "@oxygen-ui/react";
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import InputLabel from "@oxygen-ui/react/InputLabel/InputLabel";
@@ -68,6 +68,7 @@ import {
     UserStoreProperty,
     getCertificateIllustrations
 } from "../../../core";
+import { RoleAudienceTypes } from "../../../roles/constants";
 import { PatchRoleDataInterface } from "../../../roles/models";
 import { PRIMARY_USERSTORE } from "../../../userstores/constants";
 import { addBulkUsers } from "../../api";
@@ -1501,7 +1502,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             <Alert severity="warning">
                                                 { 
                                                     t("console:manage.features.user.modals.bulkImportUserWizard" +
-                                                ".wizardSummary.manualCreation.warningMessage") 
+                                                    ".wizardSummary.manualCreation.warningMessage") 
                                                 }
                                             </Alert>
                                         </Grid.Column>
@@ -1511,7 +1512,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             <Form.Field required={ true }>
                                                 <label className="pb-2">
                                                     { t("console:manage.features.user.forms.addUserForm."+
-                                                            "inputs.domain.placeholder") }
+                                                    "inputs.domain.placeholder") }
                                                 </label>
                                                 <Dropdown
                                                     className="mt-2"
@@ -1544,6 +1545,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     { allRolesList
                                     &&  (
                                         <Autocomplete
+                                            size="small"
                                             multiple
                                             fullWidth
                                             disablePortal
@@ -1560,17 +1562,32 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     component="li"
                                                     { ...props }
                                                 >
-                                                    { option?.displayName }
-                                                    <label className="mr-2 ml-6">
+                                                    <Typography
+                                                        sx={ { fontWeight: 500 } }
+                                                    >
+                                                        { option?.displayName }
+                                                    </Typography>
+                                                    <Typography
+                                                        variant="caption"
+                                                        className="mr-2 ml-6"
+                                                    >
+                                                        { " Audience:"  }
+                                                    </Typography>
+                                                    <label>
                                                         {
                                                             option?.audience?.type.charAt(0).toUpperCase()
-                                                            + option?.audience?.type.slice(1)
+                                                            +option?.audience?.type.slice(1)
                                                         }
                                                     </label>
                                                     <Label
                                                         pointing="left"
                                                         size="mini"
-                                                        className={ "client-id-label" }
+                                                        className={ 
+                                                            RoleAudienceTypes.ORGANIZATION
+                                                            === option?.audience?.type.toUpperCase()
+                                                                ? "issuer-label"
+                                                                : "client-id-label"
+                                                        }
                                                     >
                                                         { option?.audience?.display }
                                                     </Label>
@@ -1617,6 +1634,28 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             ) => {
                                                 setRolesData(value);
                                             } }
+                                            renderTags={ (
+                                                value: RolesInterface[],
+                                                getTagProps: AutocompleteRenderGetTagProps
+                                            ) =>
+                                                value.map((option: RolesInterface, index: number) => (
+                                                    <Chip 
+                                                        key={ index }
+                                                        size="small"
+                                                        className="oxygen-chip-beta"
+                                                        label={ 
+                                                            (<label>
+                                                                {
+                                                                    `${option?.displayName}:
+                                                                    ${option?.audience?.type.charAt(0).toUpperCase()}${
+                                                                    option?.audience?.type.slice(1)}`
+                                                                }
+                                                            </label>)
+                                                        }
+                                                        { ...getTagProps({ index }) } 
+                                                    />
+                                                ))
+                                            }
                                         />)
                                     }
                                     <Autocomplete
