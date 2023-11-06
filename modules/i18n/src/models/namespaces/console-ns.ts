@@ -921,6 +921,7 @@ export interface ConsoleNS {
                             createApplicationRoleWizard: {
                                 title: string;
                                 subTitle: string;
+                                button: string;
                             };
                         }
                     };

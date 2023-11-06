@@ -1478,7 +1478,8 @@ export const console: ConsoleNS = {
                         roles: {
                             createApplicationRoleWizard: {
                                 title: "Créer un rôle d'application",
-                                subTitle: "Créez un nouveau rôle d'application dans le système."
+                                subTitle: "Créez un nouveau rôle d'application dans le système.",
+                                button: "Créer un rôle"
                             }
                         }
                     }

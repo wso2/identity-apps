@@ -338,7 +338,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                         variant="text"
                                         onClick={ handleAddNewRoleWizardClick }
                                     >
-                                        Create Role
+                                        { t("console:develop.features.applications.edit." + 
+                                        "sections.roles.createApplicationRoleWizard.button") }
                                     </Button>
                                 </Grid.Row>
                             </FormGroup>

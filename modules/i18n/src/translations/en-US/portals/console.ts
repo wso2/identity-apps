@@ -1453,7 +1453,8 @@ export const console: ConsoleNS = {
                         roles: {
                             createApplicationRoleWizard: {
                                 title: "Create Application Role",
-                                subTitle: "Create a new application role in the system."
+                                subTitle: "Create a new application role in the system.",
+                                button: "Create Role"
                             }
                         }
                     }

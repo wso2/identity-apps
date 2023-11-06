@@ -1449,7 +1449,8 @@ export const console: ConsoleNS = {
                         roles: {
                             createApplicationRoleWizard: {
                                 title: "යෙදුම් භූමිකාව සාදන්න",
-                                subTitle: "පද්ධතිය තුළ නව යෙදුම් භූමිකාවක් සාදන්න."
+                                subTitle: "පද්ධතිය තුළ නව යෙදුම් භූමිකාවක් සාදන්න.",
+                                button: "භූමිකාව සාදන්න"
                             }
                         }
                     }
