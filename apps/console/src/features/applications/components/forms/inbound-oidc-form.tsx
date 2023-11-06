@@ -181,10 +181,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         state?.organization?.organizationType);
     const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) =>
         state.organization.organization);
-    const isFapiCompliantApp: boolean = initialValues?.isFAPIApplication;
+    const { isFAPIApplication } = initialValues;
 
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
-    const [ isPublicClient, setPublicClient ] = useState(false);
+    const [ isPublicClient, setPublicClient ] = useState<boolean>(false);
     const [ callBackUrls, setCallBackUrls ] = useState("");
     const [ audienceUrls, setAudienceUrls ] = useState("");
     const [ showURLError, setShowURLError ] = useState(false);
@@ -1462,7 +1462,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             {
                 !isSPAApplication
                 && !isMobileApplication
-                && !isFapiCompliantApp
+                && !isFAPIApplication
                 && (
                     selectedGrantTypes?.includes(ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
                     || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
@@ -1820,7 +1820,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".clientAuthentication.fields.authenticationMethod.placeholder")
                                     }
                                     listen={ (values: Map<string, FormValue>) => handleAuthMethodChange(values) }
-                                    children={ isFapiCompliantApp ?
+                                    children={ isFAPIApplication ?
                                         getAllowedList(metadata.fapiMetadata.tokenEndpointAuthMethod)
                                         : getAllowedList(metadata.tokenEndpointAuthMethod) }
                                     readOnly={ readOnly }
@@ -1855,7 +1855,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                                     ".clientAuthentication.fields.signingAlgorithm.placeholder")
                                             }
-                                            children={ isFapiCompliantApp ?
+                                            children={ isFAPIApplication ?
                                                 getAllowedList(metadata.fapiMetadata.allowedSignatureAlgorithms) :
                                                 getAllowedList(metadata.tokenEndpointSignatureAlgorithm) }
                                             readOnly={ readOnly }
@@ -1972,7 +1972,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".requestObject.fields.requestObjectSigningAlg.placeholder")
                         }
-                        children={ isFapiCompliantApp ? getAllowedList(metadata.fapiMetadata.allowedSignatureAlgorithms)
+                        children={ isFAPIApplication ? getAllowedList(metadata.fapiMetadata.allowedSignatureAlgorithms)
                             : getAllowedList(metadata.requestObjectSignatureAlgorithm) }
                         readOnly={ readOnly }
                     />
@@ -2009,7 +2009,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".requestObject.fields.requestObjectEncryptionAlgorithm.placeholder")
                         }
-                        children={ isFapiCompliantApp ?
+                        children={ isFAPIApplication ?
                             getAllowedList(metadata.fapiMetadata.allowedEncryptionAlgorithms) :
                             getAllowedList(metadata.requestObjectEncryptionAlgorithm) }
                         readOnly={ readOnly }
@@ -2694,7 +2694,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                             ".idToken.fields.algorithm.placeholder")
                                     }
-                                    children={ isFapiCompliantApp ?
+                                    children={ isFAPIApplication ?
                                         getAllowedList(metadata.fapiMetadata.allowedEncryptionAlgorithms) :
                                         getAllowedList(metadata.idTokenEncryptionAlgorithm) }
                                     readOnly={ readOnly }
@@ -2777,7 +2777,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                 ".idToken.fields.signing.placeholder")
                         }
-                        children={ isFapiCompliantApp ?
+                        children={ isFAPIApplication ?
                             getAllowedList(metadata.fapiMetadata.allowedSignatureAlgorithms) :
                             getAllowedList(metadata.idTokenSignatureAlgorithm) }
                         readOnly={ readOnly }
