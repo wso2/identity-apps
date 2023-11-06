@@ -7246,7 +7246,7 @@ export const console: ConsoleNS = {
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Le connecteur {{ name }} a été mis à jour avec succès.",
+                            description: "La configuration {{ name }} a été mise à jour avec succès.",
                             message: "Mise à jour réussie."
                         }
                     }
@@ -7701,18 +7701,27 @@ export const console: ConsoleNS = {
                 },
                 assign: {
                     title: "Affecter les domaines e-mail",
-                    description: "Add email domains for sub organizations.",
+                    description: "Attribuez des domaines de messagerie aux sous-organisations.",
                     form: {
                         fields: {
                             emailDomains: {
                                 label : "Domaines de messagerie",
                                 placeholder: "Entrez les domaines de messagerie",
-                                hint: "Entrez les domaines de messagerie que vous souhaitez mapper à l'organisation.Séparez plusieurs domaines en appuyant sur Entrée et en tapant le domaine suivant."
+                                hint: "Tapez et entrez pour ajouter des domaines de messagerie qui doivent être mappés à l'organisation. (Par exemple, gmail.com, etc.)",
+                                validations: {
+                                    invalid: {
+                                        0: "Veuillez saisir un domaine de messagerie valide.",
+                                        1: "Le domaine de messagerie fourni est déjà mappé à une autre organisation."
+                                    }
+                                }
                             },
                             organizationName: {
                                 label: "nom de l'organisation",
                                 placeholder: "Sélectionnez une organisation",
-                                emptyPlaceholder: "Toutes les organisations ont attribué des domaines",
+                                emptyPlaceholder: {
+                                    0: "Aucune organisation n'est disponible.",
+                                    1: "Toutes les organisations ont des domaines attribués."
+                                },
                                 hint: "Entrez le nom de l'organisation que vous souhaitez ajouter le mappage de domaine."
                             }
                         }
@@ -7735,15 +7744,24 @@ export const console: ConsoleNS = {
                             emailDomains: {
                                 label : "Domaines de messagerie",
                                 placeholder: "Entrez les domaines de messagerie",
-                                hint: "Entrez les domaines de messagerie que vous souhaitez mapper à l'organisation.Séparez plusieurs domaines en appuyant sur Entrée et en tapant le domaine suivant."
+                                hint: "Tapez et entrez pour ajouter des domaines de messagerie qui doivent être mappés à l'organisation. (Par exemple, gmail.com, etc.)",
+                                validations: {
+                                    invalid: {
+                                        0: "Veuillez saisir un domaine de messagerie valide.",
+                                        1: "Le domaine de messagerie fourni est déjà mappé à une autre organisation."
+                                    }
+                                }
                             },
                             organizationName: {
                                 label: "nom de l'organisation",
                                 hint: "Entrez le nom de l'organisation que vous souhaitez ajouter la cartographie du domaine."
                             }
-                        }
+                        },
+                        message: "Si vous modifiez les mappages de domaines de messagerie, les utilisateurs déjà enregistrés dans votre organisation risquent de ne " +
+                        "pas pouvoir se connecter. Par conséquent, soyez prudent lorsque vous mettez à jour les domaines de messagerie."
                     }
                 },
+                message: "La fonctionnalité de découverte de domaine de messagerie ne peut être utilisée que lorsque l'adresse e-mail est configurée comme nom d'utilisateur.",
                 notifications: {
                     addEmailDomains: {
                         error: {
@@ -8398,7 +8416,7 @@ export const console: ConsoleNS = {
                                 label: "Application attribuée",
                                 placeholder: "Sélectionnez l'application pour attribuer le rôle",
                                 applicationSubTitle: {
-                                    application: "Prise en charge des rôles à application",
+                                    application: "Prise en charge des rôles à application. ",
                                     organization: "Rôles de soutien à l'organisation"
                                 },
                                 validations: {

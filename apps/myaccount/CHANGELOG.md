@@ -1,5 +1,46 @@
 # @wso2is/myaccount
 
+## 2.2.8
+
+### Patch Changes
+
+- [#4493](https://github.com/wso2/identity-apps/pull/4493) [`216054b7ae`](https://github.com/wso2/identity-apps/commit/216054b7aebcaf52247eff618a7ed4f69d98d4ac) Thanks [@Achintha444](https://github.com/Achintha444)! - More details popover handled on hover
+
+- Updated dependencies [[`216054b7ae`](https://github.com/wso2/identity-apps/commit/216054b7aebcaf52247eff618a7ed4f69d98d4ac)]:
+  - @wso2is/core@2.0.11
+  - @wso2is/theme@2.0.28
+
+## 2.2.7
+
+### Patch Changes
+
+- [#4482](https://github.com/wso2/identity-apps/pull/4482) [`6a46abddbb`](https://github.com/wso2/identity-apps/commit/6a46abddbbd3d54c8c05f0ed32b787c1af4deeb0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix danger zone subheader taking full width in medium and large screen sizes
+
+- Updated dependencies [[`6a46abddbb`](https://github.com/wso2/identity-apps/commit/6a46abddbbd3d54c8c05f0ed32b787c1af4deeb0)]:
+  - @wso2is/theme@2.0.27
+
+## 2.2.6
+
+### Patch Changes
+
+- [#4481](https://github.com/wso2/identity-apps/pull/4481) [`8972f071cf`](https://github.com/wso2/identity-apps/commit/8972f071cfe5c844a759ca1278f5895855aeb6e2) Thanks [@Rashmini](https://github.com/Rashmini)! - Add email domain validation for organization discovery
+
+* [#4479](https://github.com/wso2/identity-apps/pull/4479) [`65f3a79b4a`](https://github.com/wso2/identity-apps/commit/65f3a79b4a1cf85d0fc18928dbf8df1d7157ced7) Thanks [@asekawa](https://github.com/asekawa)! - Improve update message of Login and Registration section.
+
+* Updated dependencies [[`8972f071cf`](https://github.com/wso2/identity-apps/commit/8972f071cfe5c844a759ca1278f5895855aeb6e2), [`65f3a79b4a`](https://github.com/wso2/identity-apps/commit/65f3a79b4a1cf85d0fc18928dbf8df1d7157ced7)]:
+  - @wso2is/validation@2.0.2
+  - @wso2is/i18n@2.0.29
+
+## 2.2.5
+
+### Patch Changes
+
+- [#4460](https://github.com/wso2/identity-apps/pull/4460) [`1e515a6da6`](https://github.com/wso2/identity-apps/commit/1e515a6da610b6955d5d3b0ea4cc5413e7e640b3) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add multi-language support for fido specific components and fix bugs in fido related components
+
+- Updated dependencies [[`1e515a6da6`](https://github.com/wso2/identity-apps/commit/1e515a6da610b6955d5d3b0ea4cc5413e7e640b3), [`e5cbb09265`](https://github.com/wso2/identity-apps/commit/e5cbb0926585b0589ea927691c6ff328c4ed1b8a), [`8318089363`](https://github.com/wso2/identity-apps/commit/831808936323c8241c93b0e582c31a3e2778adb9), [`abfc5e25ea`](https://github.com/wso2/identity-apps/commit/abfc5e25eaa7a4afd8d2063fd019e6147fc39021), [`eec164e767`](https://github.com/wso2/identity-apps/commit/eec164e767859c028e9ab5b7fd07e7b655a5fa86)]:
+  - @wso2is/i18n@2.0.28
+  - @wso2is/validation@2.0.1
+
 ## 2.2.4
 
 ### Patch Changes

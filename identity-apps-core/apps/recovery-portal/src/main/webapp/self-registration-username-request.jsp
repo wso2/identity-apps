@@ -50,6 +50,8 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ValidationConfigurationRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 <%@ page import="org.wso2.carbon.utils.multitenancy.MultitenantUtils" %>
@@ -91,7 +93,8 @@
     boolean allowchangeusername = Boolean.parseBoolean(request.getParameter("allowchangeusername"));
     boolean isPasswordProvisionEnabled = Boolean.parseBoolean(request.getParameter("passwordProvisionEnabled"));
     boolean piisConfigured = false;
-
+    PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+    boolean isSelfRegistrationLockOnCreationEnabled = preferenceRetrievalClient.checkSelfRegistrationLockOnCreation(tenantDomain);
     String callback = Encode.forHtmlAttribute(request.getParameter("callback"));
     String backToUrl = callback;
     String sp = Encode.forHtmlAttribute(request.getParameter("sp"));
@@ -118,7 +121,7 @@
 
     SelfRegistrationMgtClient selfRegistrationMgtClient = new SelfRegistrationMgtClient();
     User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
-
+    boolean isUsernameValidationEnabled = Boolean.parseBoolean(IdentityUtil.getProperty("InputValidation.Username.Enabled"));
     ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
     try {
         // Retrieve application Id.
@@ -531,10 +534,9 @@
                         </div>
                     </div>
                     <br>
-                    <% } else { 
+                    <% } else {
 
                         String logoPath = imageURL;
-                                        
                         if (!imageURL.isEmpty() && imageURL.contains("/")) {
                             String[] imageURLSegements = imageURL.split("/");
                             String logoFileName = imageURLSegements[imageURLSegements.length - 1];
@@ -670,7 +672,7 @@
                             <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
                         <% if (emailPII != null) { %>
                         <div id="usernameField"
-                            <%if (emailPII.getRequired() || !isAlphanumericUsernameEnabled) { %>
+                            <%if (isSelfRegistrationLockOnCreationEnabled || emailPII.getRequired() || !isAlphanumericUsernameEnabled) { %>
                                 class="field required"
                             <%} else { %>
                                 class="field"
@@ -687,7 +689,7 @@
                                     placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.your.email")%>"
                                     data-testid="self-register-page-username-input"
                                     autocomplete="off"
-                                    <%if (emailPII.getRequired() || !isAlphanumericUsernameEnabled) {%> required <%}%>
+                                    <%if (emailPII.getRequired() || !isAlphanumericUsernameEnabled || isSelfRegistrationLockOnCreationEnabled) {%> required <%}%>
                                 />
                                 <i aria-hidden="true" class="envelope outline icon"></i>
                             </div>
@@ -1281,6 +1283,9 @@
             + " " + (usernameConfig.maxLength ?? 255) + " "
             + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters.including.one.letter")%>"
         );
+        if (!<%=isUsernameValidationEnabled%>) {
+            $("#alphanumeric-username-msg").hide();
+        }
 
         // Check whether the alphanumeric username is enabled or disabled.
         function isAlphanumericUsernameEnabled() {
@@ -1291,6 +1296,9 @@
         if (isAlphanumericUsernameEnabled()) {
             $("#alphanumericUsernameField").show();
             document.getElementById("alphanumericUsernameUserInput").setAttribute("name", "alphanumericUsernameUserInput");
+        }
+        if (!<%=isUsernameValidationEnabled%>) {
+            $("#alphanumericUsernameField").show();
         }
 
         // Reloads the page if the page is loaded by going back in history.
@@ -1318,7 +1326,11 @@
 
         // Fires when username field lose focus.
         $('#alphanumericUsernameUserInput').bind('blur', function () {
-            showAlphanumericUsernameValidationStatus();
+            if (<%=isUsernameValidationEnabled%>) {
+                showAlphanumericUsernameValidationStatus();
+            } else {
+            	showUsernameRegexValidationStatus();
+            }
         });
 
         // Fires when password field lose focus.
@@ -1488,8 +1500,16 @@
                         var error_msg = $("#error-msg");
                         var server_error_msg = $("#server-error-msg");
 
-                        // Username validation.
-                        if (isAlphanumericUsernameEnabled()) {
+                        if (!<%=isUsernameValidationEnabled%>) {
+                            if (showUsernameRegexValidationStatus()) {
+                                userName.value = alphanumericUsernameUserInput.value.trim();
+                            } else {
+                                validInput = false;
+                            }
+                            if (<%=isSelfRegistrationLockOnCreationEnabled%> && !showUsernameValidationStatus()) {
+                                validInput = false
+                            }
+                        } else if (isAlphanumericUsernameEnabled()) {
                             if (showAlphanumericUsernameValidationStatus()) {
                                 userName.value = alphanumericUsernameUserInput.value.trim();
                             } else {
@@ -1606,7 +1626,16 @@
                 var server_error_msg = $("#server-error-msg");
 
                 // Username validation.
-                if (isAlphanumericUsernameEnabled()) {
+                if (!<%=isUsernameValidationEnabled%>) {
+                    if (showUsernameRegexValidationStatus()) {
+                        userName.value = alphanumericUsernameUserInput.value.trim();
+                    } else {
+                        validInput = false;
+                    }
+                    if (<%=isSelfRegistrationLockOnCreationEnabled%> && !showUsernameValidationStatus()) {
+                        validInput = false
+                    }
+		        } else if (isAlphanumericUsernameEnabled()) {
                     if (showAlphanumericUsernameValidationStatus()) {
                         userName.value = alphanumericUsernameUserInput.value.trim();
                     } else {
@@ -1797,6 +1826,31 @@
             $("#" + element_field).removeClass("error");
         }
 
+        function showUsernameRegexValidationStatus() {
+
+            var alphanumericUsernameUserInput = document.getElementById("alphanumericUsernameUserInput");
+            var alphanumericUsernameField = $("#alphanumericUsernameField");
+            var alphanumeric_username_error_msg = $("#alphanumeric-username-error-msg");
+            var server_error_msg = $("#server-error-msg");
+            var alphanumeric_username_error_msg_text = $("#alphanumeric-username-error-msg-text");
+            if (server_error_msg.text() !== null && server_error_msg.text().trim() !== "") {
+                alphanumeric_username_error_msg.hide();
+                alphanumericUsernameField.removeClass("error");
+            }
+
+            if (alphanumericUsernameUserInput.value.trim() === "")  {
+                alphanumeric_username_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.your.username")%>");
+                alphanumeric_username_error_msg.show();
+                alphanumericUsernameField.addClass("error");
+                $("html, body").animate({scrollTop: alphanumeric_username_error_msg_text.offset().top}, 'slow');
+
+                return false;
+            }
+            alphanumeric_username_error_msg.hide();
+            alphanumericUsernameField.removeClass("error");
+            return true
+        }
+
         function showAlphanumericUsernameValidationStatus() {
             var alphanumericUsernameUserInput = document.getElementById("alphanumericUsernameUserInput");
             var alphanumericUsernameField = $("#alphanumericUsernameField");
@@ -1849,7 +1903,9 @@
             var username_error_msg = $("#username-error-msg");
             var server_error_msg = $("#server-error-msg");
             var username_error_msg_text = $("#username-error-msg-text");
-            <% if (emailPII != null) { %>
+            <% if (isSelfRegistrationLockOnCreationEnabled) { %>
+            	var emailRequired = true;
+            <% } else if (emailPII != null) { %>
                 var emailRequired = <%=emailPII.getRequired()%>;
             <% } else { %>
                 var emailRequired = false;

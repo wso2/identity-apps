@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -361,6 +362,10 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
             data-componentid={ `${ testId }-page-layout` }
         >
             { discoveryToggle() }
+            <Divider hidden />
+            <Alert severity="info">
+                { t("console:manage.features.organizationDiscovery.message") }
+            </Alert>
             <Divider hidden />
             { isOrganizationDiscoveryEnabled && (
                 <ListLayout

@@ -3312,11 +3312,20 @@ export interface ConsoleNS {
                                 label : string;
                                 placeholder: string;
                                 hint: string;
+                                validations: {
+                                    invalid: {
+                                        0: string;
+                                        1: string;
+                                    }
+                                }
                             },
                             organizationName: {
                                 label: string;
                                 placeholder: string;
-                                emptyPlaceholder: string;
+                                emptyPlaceholder: {
+                                    0: string;
+                                    1: string;
+                                }
                                 hint: string;
                             }
                         }
@@ -3340,14 +3349,22 @@ export interface ConsoleNS {
                                 label : string;
                                 placeholder: string;
                                 hint: string;
+                                validations: {
+                                    invalid: {
+                                        0: string;
+                                        1: string;
+                                    }
+                                }
                             };
                             organizationName: {
                                 label: string;
                                 hint: string;
                             };
                         };
+                        message: string;
                     };
                 };
+                message: string;
                 notifications: {
                     addEmailDomains: {
                         error: {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,7 @@
 
 import "fastestsmallesttextencoderdecoder";
 import {
+    domain,
     email,
     identifier,
     imageUrl,
@@ -27,6 +28,7 @@ import {
     isValidDescription,
     isValidResourceKey,
     isValidResourceName,
+    isValidRoleName,
     mobileNumber,
     resourceName,
     scopes,
@@ -34,6 +36,7 @@ import {
 } from "./validation";
 
 export const FormValidation = {
+    domain,
     email,
     identifier,
     imageUrl,
@@ -43,6 +46,7 @@ export const FormValidation = {
     isValidDescription,
     isValidResourceKey,
     isValidResourceName,
+    isValidRoleName,
     mobileNumber,
     resourceName,
     scopes,

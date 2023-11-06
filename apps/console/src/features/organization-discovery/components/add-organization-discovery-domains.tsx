@@ -24,7 +24,6 @@ import Chip from "@oxygen-ui/react/Chip";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import InputLabel from "@oxygen-ui/react/InputLabel";
 import TextField from "@oxygen-ui/react/TextField";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -39,14 +38,15 @@ import {
     SelectFieldAdapter
 } from "@wso2is/form";
 import { EmphasizedSegment, Hint, PrimaryButton } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { AppState, FeatureConfigInterface } from "../../core";
 import { AppConstants } from "../../core/constants/app-constants";
 import { history } from "../../core/helpers/history";
+import { FeatureConfigInterface } from "../../core/models/config";
 import useGetOrganizations from "../../organizations/api/use-get-organizations";
 import { OrganizationInterface } from "../../organizations/models/organizations";
 import addOrganizationEmailDomain from "../api/add-organization-email-domains";
@@ -100,26 +100,12 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
 
     const dispatch: Dispatch = useDispatch();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
     const { data: organizations } = useGetOrganizations(true, null, null, null, null, true);
 
     const { data: discoverableOrganizations } = useGetOrganizationDiscovery(true, null, null, null);
 
     const [ emailDomains, setEmailDomains ] = useState<string[]>([]);
-    const [ hasScopes, setHasScopes ] = useState(false);
-
-    /**
-     * Set the hasScopes state based on the feature config.
-     */
-    useEffect(() => {
-        setHasScopes(
-            !hasRequiredScopes(
-                featureConfig?.organizationDiscovery,
-                featureConfig?.organizationDiscovery?.scopes?.update,
-                allowedScopes));
-    }, [ featureConfig ]);
+    const [ isEmailDomainDataError, setIsEmailDomainDataError ] = useState<boolean>(false);
 
     /**
      * Filter the already configured organizations from the list of organizations.
@@ -150,9 +136,15 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
             .then(() => {
                 dispatch(
                     addAlert({
-                        description: "Successfully added the email domains to the organization.",
+                        description: t(
+                            "console:manage.features.organizationDiscovery.notifications." +
+                                "addEmailDomains.success.description"
+                        ),
                         level: AlertLevels.SUCCESS,
-                        message: "Email domains added successfully"
+                        message: t(
+                            "console:manage.features.organizationDiscovery.notifications." +
+                                "addEmailDomains.success.message"
+                        )
                     })
                 );
 
@@ -163,12 +155,35 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                 });
             })
             .catch(() => {
-                addAlert({
-                    description: "Adding the email domains to the organization was unsuccessful.",
-                    level: AlertLevels.SUCCESS,
-                    message: "Could not add email domains"
-                });
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:manage.features.organizationDiscovery.notifications" +
+                                ".addEmailDomains.error.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.features.organizationDiscovery.notifications" +
+                                ".addEmailDomains.error.message"
+                        )
+                    })
+                );
             });
+    };
+
+    /**
+     * Function to validate the input string is an email domain.
+     *
+     * @param emailDomainList - Email domains.
+     */
+    const validateEmailDomain = (emailDomainList: string[]) => {
+
+        const isEmailDomainValid: boolean = FormValidation.domain(emailDomainList[emailDomainList.length-1]);
+
+        if (!isEmailDomainValid) {
+            setIsEmailDomainDataError(true);
+            emailDomainList.pop();
+        }
     };
 
     return (
@@ -198,14 +213,20 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                     "fields.organizationName.label"
                                 ) }
                                 placeholder={
-                                    isEmpty(filteredDiscoverableOrganizations)
+                                    isEmpty(organizations?.organizations)
                                         ? t(
                                             "console:manage.features.organizationDiscovery.assign.form." +
-                                            "fields.organizationName.emptyPlaceholder"
-                                        ): t(
-                                            "console:manage.features.organizationDiscovery.assign.form." +
-                                            "fields.organizationName.placeholder"
+                                            "fields.organizationName.emptyPlaceholder.0"
                                         )
+                                        : (
+                                            isEmpty(filteredDiscoverableOrganizations)
+                                                ? t(
+                                                    "console:manage.features.organizationDiscovery.assign.form." +
+                                                    "fields.organizationName.emptyPlaceholder.1"
+                                                ): t(
+                                                    "console:manage.features.organizationDiscovery.assign.form." +
+                                                    "fields.organizationName.placeholder"
+                                                ))
                                 }
                                 helperText={ (
                                     <Hint>
@@ -271,6 +292,15 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                             } }
                                             { ...params }
                                             margin="dense"
+                                            error={ isEmailDomainDataError }
+                                            helperText= { 
+                                                isEmailDomainDataError
+                                                    ? t(
+                                                        "console:manage.features.organizationDiscovery.assign.form." +
+                                                        "fields.emailDomains.validations.invalid.0"
+                                                    )
+                                                    : null
+                                            }
                                             placeholder={ t(
                                                 "console:manage.features.organizationDiscovery.assign.form." +
                                                 "fields.emailDomains.placeholder"
@@ -280,6 +310,10 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                 ) }
                                 onChange={ (_: SyntheticEvent<Element, Event>, value: string[]) => {
                                     setEmailDomains(value);
+                                    validateEmailDomain(value);
+                                } }
+                                onInputChange={ () => {
+                                    setIsEmailDomainDataError(false);
                                 } }
                             />
                             <FormHelperText>
@@ -292,7 +326,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                             </FormHelperText>
                             <FormSpy subscription={ { values: true } }>
                                 { ({ values }: { values: AddOrganizationDiscoveryDomainsFormValuesInterface }) => (
-                                    !isReadOnly && !hasScopes && (
+                                    !isReadOnly && (
                                         <PrimaryButton
                                             data-componentid={ `${componentId}-form-submit-button` }
                                             disabled={
@@ -300,7 +334,6 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                             }
                                             loading={ submitting }
                                             type="submit"
-                                            style={ { marginTop: "20px" } }
                                         >
                                             { t("console:manage.features.organizationDiscovery.assign.buttons.assign") }
                                         </PrimaryButton>

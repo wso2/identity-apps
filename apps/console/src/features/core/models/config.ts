@@ -331,6 +331,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isSAASDeployment: boolean;
     /**
+     * Enable/Disable custom email template feature
+     */
+    enableCustomEmailTemplates: boolean;
+    /**
      * Enable signature validation certificate alias.
      */
     isSignatureValidationCertificateAliasEnabled?: boolean;

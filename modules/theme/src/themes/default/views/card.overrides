@@ -852,6 +852,13 @@
             padding: 1em;
         }
 
+        &.sms-provider-info-card {
+            .content {
+                display: flex;
+                align-items: center;
+            }
+        }
+
         &:hover {
             transform: none;
             text-decoration: none;

@@ -156,7 +156,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                         description: t(
                             "console:manage.features.governanceConnectors.notifications." +
                             "updateConnector.success.description",
-                            { name: connector?.friendlyName }
+                            { name: resolveConnectorTitle(connector) }
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
@@ -244,7 +244,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         if (i18n.exists(connectorTitleKey)) {
             connectorTitle = t(connectorTitleKey);
         }
-        
+
         return connectorTitle;
     };
 

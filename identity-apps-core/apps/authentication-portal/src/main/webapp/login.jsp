@@ -1033,7 +1033,9 @@
                     <% }
                     String clientId = request.getParameter("client_id");
                     String urlParameters = "";
-                    if ((StringUtils.equals("CONSOLE",clientId)
+                    if (!isSelfSignUpEnabledInTenant
+                            && StringUtils.isNotBlank(application.getInitParameter("AccountRegisterEndpointURL"))
+                            && (StringUtils.equals("CONSOLE",clientId)
                             || (StringUtils.equals("MY_ACCOUNT",clientId)
                             && StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)))
                             && !StringUtils.equals("true", promptAccountLinking)) {

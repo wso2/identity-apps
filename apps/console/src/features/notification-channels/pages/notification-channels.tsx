@@ -17,6 +17,7 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
+import { OrganizationType } from "@wso2is/common";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -26,6 +27,7 @@ import { Divider } from "semantic-ui-react";
 import { ReactComponent as EmailIcon } from "../../../themes/default/assets/images/icons/email-icon.svg";
 import { ReactComponent as SMSIcon } from "../../../themes/default/assets/images/icons/sms-icon.svg";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { SettingsSection } from "../settings/settings-section";
 
 /**
@@ -45,6 +47,8 @@ export const NotificationChannelPage: FunctionComponent<NotificationChannelPageI
     const { ["data-componentid"]: componentid } = props;
 
     const { t } = useTranslation();
+    const orgType: OrganizationType = useGetOrganizationType();
+
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     /**
@@ -65,8 +69,10 @@ export const NotificationChannelPage: FunctionComponent<NotificationChannelPageI
             description={ t("extensions:develop.notificationChannel.description") }
             data-testid={ `${componentid}-page-layout` }
         >
-            <>
-                { featureConfig.emailProviders?.enabled ? (
+            { featureConfig.emailProviders?.enabled
+                && !(featureConfig?.emailProviders?.disabledFeatures?.includes("superTenantProvider")
+                && orgType === OrganizationType.SUPER_ORGANIZATION) && (
+                <>
                     <Grid xs={ 12 } lg={ 6 }>
                         <SettingsSection
                             data-componentid={ "account-login-page-section" }
@@ -78,24 +84,24 @@ export const NotificationChannelPage: FunctionComponent<NotificationChannelPageI
                             primaryAction={ t("common:configure") }
                         />
                     </Grid>
-                ) : null }
-                <Divider hidden/>
-                { featureConfig.smsProviders?.enabled ? (
-                    <Grid xs={ 12 } lg={ 6 }>
-                        <SettingsSection
-                            data-componentid={ "account-login-page-section" }
-                            data-testid={ "account-login-page-section" }
-                            description={ t("extensions:develop.smsProviders.description") }
-                            icon={ SMSIcon }
-                            header={
-                                t("extensions:develop.smsProviders.heading")
-                            }
-                            onPrimaryActionClick={ handleSMSSelection }
-                            primaryAction={ t("common:configure") }
-                        />
-                    </Grid>
-                ): null }    
-            </>
+                    <Divider hidden/>
+                </>
+            ) }
+            { featureConfig.smsProviders?.enabled && (
+                <Grid xs={ 12 } lg={ 6 }>
+                    <SettingsSection
+                        data-componentid={ "account-login-page-section" }
+                        data-testid={ "account-login-page-section" }
+                        description={ t("extensions:develop.smsProviders.description") }
+                        icon={ SMSIcon }
+                        header={
+                            t("extensions:develop.smsProviders.heading")
+                        }
+                        onPrimaryActionClick={ handleSMSSelection }
+                        primaryAction={ t("common:configure") }
+                    />
+                </Grid>
+            ) }
         </PageLayout>
     );
 };

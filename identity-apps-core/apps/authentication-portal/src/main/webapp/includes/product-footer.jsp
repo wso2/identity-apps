@@ -130,7 +130,7 @@
                 List<String> langSwitcherEnabledServlets = Arrays.asList("/oauth2_login.do", "/oauth2_error.do",
                     "/confirmregistration.do", "/confirmrecovery.do", "/claims.do", "/oauth2_consent.do",
                     "/fido2-auth.jsp", "/fido2-identifierfirst.jsp", "/fido2-enroll.jsp", "/fido2-passkey-status.jsp",
-                    "/email_otp.do", "/org_name.do", "/org_discovery.do", "/retry.do", "/totp_enroll.do",
+                    "/fido2-error.jsp", "/email_otp.do", "/org_name.do", "/org_discovery.do", "/retry.do", "/totp_enroll.do",
                     "/backup_code.do", "/device.do", "/error.do");
                 if (langSwitcherEnabledServlets.contains(request.getServletPath())) {
             %>

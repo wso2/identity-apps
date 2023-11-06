@@ -201,9 +201,7 @@ const DiscoverableOrganizationsList: FunctionComponent<DiscoverableOrganizations
                 hidden: (): boolean =>
                     !isFeatureEnabled(
                         featureConfig,
-                        OrganizationDiscoveryConstants.FEATURE_DICTIONARY.get(
-                            "ORGANIZATION_UPDATE_ORGANIZATION_DISCOVERY_DOMAINS"
-                        )
+                        OrganizationDiscoveryConstants.FEATURE_DICTIONARY.get( "ORGANIZATION_DISCOVERY_UPDATE")
                     ),
                 icon: (): SemanticICONS => {
 

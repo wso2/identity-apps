@@ -21,7 +21,7 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
-import { EmphasizedSegment, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -65,7 +65,6 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
 
     const { t } = useTranslation();
 
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ wsFederationConfig , setWSFederationConfig ] = 
         useState<WSFederationConfigFormValuesInterface>(undefined);
 
@@ -141,10 +140,9 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
     /**
      * Handle WSFederation form submit.
      */
-    const handleSubmit = (values: WSFederationConfigFormValuesInterface) => {
-        setIsSubmitting(true);
+    const handleSubmit = (value: boolean) => {
         const data: WSFederationConfigAPIResponseInterface = {
-            enableRequestSigning: values.enableRequestSigning
+            enableRequestSigning: value
         };
         
         updateWSFederationConfigurations(data).then(() => {
@@ -152,7 +150,6 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
         }).catch(() => {
             handleUpdateError();
         }).finally(() => {
-            setIsSubmitting(false);
             mutateWSFederationConfig();
         });  
     };
@@ -223,7 +220,7 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
                                             <Form
                                                 id={ FORM_ID }
                                                 uncontrolledForm={ true }
-                                                onSubmit={ handleSubmit }
+                                                onSubmit={ null }
                                                 initialValues={ wsFederationConfig }
                                                 enableReinitialize={ true }
                                                 ref={ formRef }
@@ -243,28 +240,14 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
                                                                 data-componentid={ 
                                                                     `${componentId}-enable-request-signing` }
                                                                 toggle
+                                                                listen={ (value: boolean) => {
+                                                                    handleSubmit(value);
+                                                                } }
                                                             />
                                                         </Grid.Column>
                                                     </Grid.Row>
                                                 </Grid>
                                             </Form>
-                                            <Divider hidden />
-                                            <Grid.Row columns={ 1 } className="mt-6">
-                                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                                    <PrimaryButton
-                                                        size="small"
-                                                        loading={ isSubmitting }
-                                                        disabled={ isReadOnly }
-                                                        onClick={ () => {
-                                                            formRef?.current?.triggerSubmit();
-                                                        } }
-                                                        ariaLabel="WSFederation Configuration form update button"
-                                                        data-componentid={ `${ componentId }-update-button` }
-                                                    >
-                                                        { t("common:update") }
-                                                    </PrimaryButton>
-                                                </Grid.Column>
-                                            </Grid.Row>
                                         </>
                                     ) 
                                 }
