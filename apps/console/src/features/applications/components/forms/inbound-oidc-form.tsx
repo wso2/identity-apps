@@ -1248,7 +1248,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     useEffect(
         () => {
-           setPublicClient(initialValues?.publicClient);
+            setPublicClient(initialValues?.publicClient);
         }, [ initialValues ]
     );
 
