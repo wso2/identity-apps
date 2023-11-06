@@ -1,5 +1,14 @@
 # @wso2is/identity-apps-core
 
+## 2.0.40
+
+### Patch Changes
+
+- [#4502](https://github.com/wso2/identity-apps/pull/4502) [`71a96f34c4`](https://github.com/wso2/identity-apps/commit/71a96f34c4e7c978fbe304bdef29a1a3638f4e0c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Directly Redirect to Email OTP Page when it is the sole second factor configured
+
+- Updated dependencies [[`d94af75927`](https://github.com/wso2/identity-apps/commit/d94af7592757363f360147c78d54673d92d86a51)]:
+  - @wso2is/theme@2.0.29
+
 ## 2.0.39
 
 ### Patch Changes
