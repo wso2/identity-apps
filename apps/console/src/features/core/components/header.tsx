@@ -33,11 +33,16 @@ import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/co
 import { LocalStorageUtils, StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import { GenericIcon, useDocumentation } from "@wso2is/react-components";
+import { 
+    TenantTier, 
+    TenantTierRequestResponse 
+} from "apps/console/src/extensions/components/subscription/models/subscription";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
     ReactElement,
     ReactNode,
+    useContext,
     useEffect,
     useMemo,
     useState
@@ -46,6 +51,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { organizationConfigs } from "../../../extensions";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
+import { SubscriptionContext } from "../../../extensions/components/subscription/contexts/subscription-context";
 import { ReactComponent as LogoutIcon } from "../../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../../themes/default/assets/images/icons/user-icon.svg";
 import { ReactComponent as AskHelpIcon } from "../../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
@@ -122,6 +128,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         state?.organization?.userOrganizationId);
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+    const { tierName }: TenantTierRequestResponse = useContext(SubscriptionContext);
 
     const orgType: OrganizationType = useGetOrganizationType();
 
@@ -350,7 +357,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     </Menu>
                 </>
             ),
-            billingPortalURL && !isPrivilegedUser &&
+            tierName === TenantTier.FREE && billingPortalURL && !isPrivilegedUser &&
             window[ "AppUtils" ].getConfig().extensions
                 .upgradeButtonEnabled && (
                 <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
