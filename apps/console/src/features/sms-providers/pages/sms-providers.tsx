@@ -128,7 +128,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         if(!isSMSProviderConfigFetchRequestLoading && originalSMSProviderConfig?.length > 0) {
             const existingSMSProviderNames: string[] = [];
 
-            originalSMSProviderConfig?.map((smsProvider: SMSProviderAPIResponseInterface) => {
+            originalSMSProviderConfig?.forEach((smsProvider: SMSProviderAPIResponseInterface) => {
                 existingSMSProviderNames.push(smsProvider.provider + "SMSProvider");
             });
 
