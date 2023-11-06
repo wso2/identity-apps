@@ -78,7 +78,6 @@
     private static final String BACKUP_CODE_AUTHENTICATOR = "backup-code-authenticator";
     private static final String SMS_OTP_AUTHENTICATOR = "sms-otp-authenticator";
     private static final String EMAIL_OTP_AUTHENTICATOR = "email-otp-authenticator";
-
     private static final String TOTP_AUTHENTICATOR = "totp";
     private static final String ENTERPRISE_LOGIN_KEY = "isEnterpriseLoginEnabled";
     private static final String ENTERPRISE_API_RELATIVE_PATH = "/api/asgardeo-enterprise-login/v1/business-user-login/";
