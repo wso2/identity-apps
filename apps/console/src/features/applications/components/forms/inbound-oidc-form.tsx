@@ -1867,7 +1867,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Grid.Row>
                             )
                         }
-
                         { selectedAuthMethod === TLS_CLIENT_AUTH &&
                             (
                                 <Grid.Row columns={ 1 }>
