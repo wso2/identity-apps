@@ -1066,7 +1066,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     }
                     <div className="pt-0 mt-0">
                         <Field
-                            data-testid={ `${ testId }-fapi-app-checkbox` }
+                            data-componentid={ `${ testId }-fapi-app-checkbox` }
                             name={ "isFAPIApp" }
                             required={ false }
                             type="checkbox"
