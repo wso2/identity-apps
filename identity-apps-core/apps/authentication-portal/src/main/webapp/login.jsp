@@ -214,9 +214,7 @@
                 response.sendRedirect(directTo);
 
                 return;
-            }
-            
-            else if (localAuthenticatorNames.contains(SMS_OTP_AUTHENTICATOR)) {
+            } else if (localAuthenticatorNames.contains(SMS_OTP_AUTHENTICATOR)) {
                 String directTo = commonauthURL + "?idp=LOCAL&authenticator=" + SMS_OTP_AUTHENTICATOR + "&sessionDataKey="
                     + Encode.forUriComponent(request.getParameter("sessionDataKey")) + multiOptionURIParam;
                 response.sendRedirect(directTo);
