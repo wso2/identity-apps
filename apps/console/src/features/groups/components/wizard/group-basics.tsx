@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,11 +25,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { AddGroupUsers } from "./group-assign-users";
-import { store } from "../../../core";
 import { SharedUserStoreConstants } from "../../../core/constants";
 import { SharedUserStoreUtils } from "../../../core/utils";
 // TODO: Remove this once the api is updated.
-import { RootOnlyComponent } from "../../../organizations/components";
+import { FirstLevelOrgOnlyComponent } from "../../../organizations/components/first-level-org-only-component";
 import { OrganizationUtils } from "../../../organizations/utils";
 import {
     APPLICATION_DOMAIN,
@@ -189,7 +188,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
         setUserStore(storeOptions[ 0 ].value);
 
-        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (OrganizationUtils.isCurrentOrganizationFirstLevel()) {
             getUserStoreList()
                 .then((response) => {
                     if (storeOptions.length === 0) {
@@ -234,7 +233,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
             >
                 <Grid>
                     <GridRow columns={ 2 }>
-                        <RootOnlyComponent>
+                        <FirstLevelOrgOnlyComponent>
                             <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     data-testid={ `${ testId }-domain-dropdown` }
@@ -253,7 +252,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                     value={ initialValues?.basicDetails?.domain ?? userStoreOptions[ 0 ]?.value }
                                 />
                             </GridColumn>
-                        </RootOnlyComponent>
+                        </FirstLevelOrgOnlyComponent>
                         <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 ref={ groupName }
