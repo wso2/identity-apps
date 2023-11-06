@@ -953,7 +953,7 @@
             }
         },
         "connectionResourcesUrl": "",
-        "isFeatureGateEnabled": true,
+        "isFeatureGateEnabled": false,
         "isCookieConsentBannerEnabled": true,
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "isMarketingConsentBannerEnabled": false,

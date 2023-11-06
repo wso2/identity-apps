@@ -1,5 +1,24 @@
 # @wso2is/console
 
+## 2.5.24
+
+### Patch Changes
+
+- [#4504](https://github.com/wso2/identity-apps/pull/4504) [`b149eb5b0d`](https://github.com/wso2/identity-apps/commit/b149eb5b0d69d65a5b4fc07202276899b454c2d2) Thanks [@savindi7](https://github.com/savindi7)! - Fix search margin issue
+
+* [#4503](https://github.com/wso2/identity-apps/pull/4503) [`2286beb24a`](https://github.com/wso2/identity-apps/commit/2286beb24a19c05ed040548646e3ee296c30dba5) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve text branding section logic
+
+## 2.5.23
+
+### Patch Changes
+
+- [#4497](https://github.com/wso2/identity-apps/pull/4497) [`ef928cfa17`](https://github.com/wso2/identity-apps/commit/ef928cfa1733c49ca0734dc49c167f277da562e6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Use PUT Endpoint for SMS Provider Configuration Update
+
+* [#4494](https://github.com/wso2/identity-apps/pull/4494) [`d94af75927`](https://github.com/wso2/identity-apps/commit/d94af7592757363f360147c78d54673d92d86a51) Thanks [@savindi7](https://github.com/savindi7)! - Fix cosmetic issues in SMS provider
+
+* Updated dependencies [[`d94af75927`](https://github.com/wso2/identity-apps/commit/d94af7592757363f360147c78d54673d92d86a51)]:
+  - @wso2is/theme@2.0.29
+
 ## 2.5.22
 
 ### Patch Changes

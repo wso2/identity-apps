@@ -39,6 +39,7 @@ import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-
 import useGetCustomTextPreference from "../api/use-get-custom-text-preference";
 import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
 import useGetCustomTextPreferenceMeta from "../api/use-get-custom-text-preference-meta";
+import { BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import AuthenticationFlowContext from "../context/branding-preference-context";
 import { BrandingSubFeatures, PreviewScreenType } from "../models/branding-preferences";
@@ -363,7 +364,15 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 selectedLocale,
                 selectedScreen,
                 updateActiveCustomTextConfigurationMode: setActiveCustomTextConfigurationMode,
-                updateActiveTab: setActiveTab,
+                updateActiveTab: (tab: string) => {
+                    // If the tab is the text tab, set the preview screen to common before changing the tab.
+                    // This is done to overcome an issue occurred in only production.
+                    if (tab === BrandingPreferencesConstants.TABS.TEXT_TAB_ID) {
+                        setSelectedPreviewScreen(PreviewScreenType.COMMON);
+                    }
+
+                    setActiveTab(tab);
+                },
                 updateCustomTextFormSubscription: (
                     subscription: FormState<CustomTextInterface, CustomTextInterface>
                 ): void => {
