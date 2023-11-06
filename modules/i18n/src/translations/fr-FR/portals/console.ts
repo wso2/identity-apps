@@ -1474,6 +1474,13 @@ export const console: ConsoleNS = {
                         },
                         apiAuthorization: {
                             m2mPolicyMessage: "Toutes les étendues autorisées d'une ressource API sont disponibles pour une application M2M malgré la politique d'autorisation spécifiée pour la ressource."
+                        },
+                        roles: {
+                            createApplicationRoleWizard: {
+                                title: "Créer un rôle d'application",
+                                subTitle: "Créez un nouveau rôle d'application dans le système.",
+                                button: "Créer un rôle"
+                            }
                         }
                     }
                 },
@@ -8426,7 +8433,8 @@ export const console: ConsoleNS = {
                                 },
                                 validations: {
                                     empty: "L'application attribuée est nécessaire pour créer un rôle à application."
-                                }
+                                },
+                                note: "Notez que l'application attribuée pour ce rôle ne peut pas être modifiée après la création du rôle."
                             }
                         },
                         rolePermission: {

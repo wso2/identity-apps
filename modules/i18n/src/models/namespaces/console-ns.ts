@@ -916,6 +916,13 @@ export interface ConsoleNS {
                         };
                         apiAuthorization: {
                             m2mPolicyMessage: string;
+                        };
+                        roles: {
+                            createApplicationRoleWizard: {
+                                title: string;
+                                subTitle: string;
+                                button: string;
+                            };
                         }
                     };
                 };

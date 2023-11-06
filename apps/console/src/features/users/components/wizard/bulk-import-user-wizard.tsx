@@ -1644,9 +1644,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             <Modal.Content className="content-container" scrolling>
                 <Grid>
                     { resolveMultipleUsersModeSelection() }
-                    {
-                        resolveMultipleUsersConfiguration()
-                    }
+                    { resolveMultipleUsersConfiguration() }
                 </Grid>
 
             </Modal.Content>
