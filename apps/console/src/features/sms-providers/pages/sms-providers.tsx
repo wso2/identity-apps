@@ -125,7 +125,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
     const [ existingSMSProviders, setExistingSMSProviders ] = useState<string[]>([]);
 
     useEffect(() => {
-        if(!isSMSProviderConfigFetchRequestLoading && originalSMSProviderConfig?.length > 0) {
+        if (!isSMSProviderConfigFetchRequestLoading && originalSMSProviderConfig?.length > 0) {
             const existingSMSProviderNames: string[] = [];
 
             originalSMSProviderConfig?.forEach((smsProvider: SMSProviderAPIResponseInterface) => {
