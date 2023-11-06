@@ -292,9 +292,9 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         }
 
         const handleSMSConfigValues: Promise<SMSProviderAPIResponseInterface> = 
-            existingSMSProviders.includes(selectedProvider) ? 
-                updateSMSProvider(submittingValues) :  
-                createSMSProvider(submittingValues);
+            existingSMSProviders.includes(selectedProvider)
+                ? updateSMSProvider(submittingValues)
+                : createSMSProvider(submittingValues);
         
         handleSMSConfigValues.then((updatedData: SMSProviderAPIInterface) => {
             const updatedSMSProvider: SMSProviderInterface = {
