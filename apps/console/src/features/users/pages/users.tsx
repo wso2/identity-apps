@@ -725,6 +725,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         return (
             <ListLayout
                 // TODO add sorting functionality.
+                className="mt-5"
                 advancedSearch={ advancedSearchFilter() }
                 currentListSize={ usersList.itemsPerPage }
                 listItemLimit={ listItemLimit }
