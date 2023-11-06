@@ -48,6 +48,15 @@ export class OrganizationUtils {
     }
 
     /**
+     * Returns true if the current organization is a first level organization.
+     *
+     * @returns if the current organization is a first level organization.
+     */
+    public static isCurrentOrganizationFirstLevel(): boolean {
+        return !!store.getState().organization?.isFirstLevelOrganization;
+    }
+
+    /**
      * Get the type of the current organization.
      *
      * @returns The type of the current organization.
