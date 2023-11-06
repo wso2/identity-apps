@@ -3376,6 +3376,12 @@ export interface ConsoleNS {
                             description: string;
                         };
                     };
+                    checkEmailDomain: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                    };
                     disableEmailDomainDiscovery: {
                         error: {
                             description: string;

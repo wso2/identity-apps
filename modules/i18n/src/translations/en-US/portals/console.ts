@@ -9487,7 +9487,7 @@ export const console: ConsoleNS = {
                             emailDomains: {
                                 label : "Email Domains",
                                 placeholder: "Enter email domains",
-                                hint: "Type and enter to add email domains which should be mapped to the organization. (E.g. gmail.com etc.)",
+                                hint: "Type and enter email domains to map to the organization. (E.g. gmail.com etc.)",
                                 validations: {
                                     invalid: {
                                         0: "Please enter a valid email domain.",
@@ -9524,7 +9524,7 @@ export const console: ConsoleNS = {
                             emailDomains: {
                                 label : "Email Domains",
                                 placeholder: "Enter email domains",
-                                hint: "Type and enter to add email domains which should be mapped to the organization. (E.g. gmail.com etc.).",
+                                hint: "Type and enter email domains to map to the organization. (E.g. gmail.com etc.)",
                                 validations: {
                                     invalid: {
                                         0: "Please enter a valid email domain.",
@@ -9537,8 +9537,7 @@ export const console: ConsoleNS = {
                                 hint: "The name of the organization to which the domain mappings are added."
                             }
                         },
-                        message: "If you change the email domain mappings, users who are already registered in your organization might " +
-                        "not be able to log in. Therefore, please be conscious when you update the email domains."
+                        message: "Changing email domain mappings may result in existing users being unable to log in."
                     }
                 },
                 message: "Email domain discovery feature can only be used when email address is configured as the username.",
@@ -9551,6 +9550,12 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Email domains added successfully.",
                             message: "Added successfully"
+                        }
+                    },
+                    checkEmailDomain: {
+                        error: {
+                            description: "Validating the email domain existence was unsuccessful.",
+                            message: "Validating unsuccessful"
                         }
                     },
                     disableEmailDomainDiscovery: {
