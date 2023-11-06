@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { Button } from "@oxygen-ui/react";
+import { PlusIcon } from "@oxygen-ui/react-icons";
 import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
@@ -50,6 +52,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import { AutoCompleteRenderOption } from "./auto-complete-render-option";
+import { ApplicationRoleWizard } from "./wizard-updated/application-role-wizard";
 import { updateApplicationDetails } from "../../applications/api";
 import { ApplicationInterface } from "../../applications/models";
 import {
@@ -116,6 +119,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const appId: string = path[path.length - 1].split("#")[0];
 
     const isReadOnly: boolean = orgType === OrganizationType.SUBORGANIZATION;
+    const [ showWizard, setShowWizard ] = useState<boolean>(false);
 
     /**
      * Fetch application roles on component load and audience switch.
@@ -142,6 +146,13 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             }));
         }
     }, [ initialSelectedRoles, selectedRoles ]);
+
+    /**
+     * Handles the click event of the New Role button.
+     */
+    const handleAddNewRoleWizardClick = (): void => {
+        setShowWizard(true);
+    };
 
     /**
      * Fetch application roles.
@@ -312,14 +323,24 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     data-componentid={ `${ componentId }-organization-audience-checkbox` }
                                     disabled={ isReadOnly }
                                 />
-                                <FormControlLabel
-                                    checked={ roleAudience === RoleAudienceTypes.APPLICATION }
-                                    control={ <Radio size="small" /> }
-                                    onChange={ () => promptAudienceSwitchWarning(RoleAudienceTypes.APPLICATION) }
-                                    label={ t("extensions:develop.applications.edit.sections.rolesV2.application") }
-                                    data-componentid={ `${ componentId }-application-audience-checkbox` }
-                                    disabled={ isReadOnly }
-                                />
+                                <Grid.Row>
+                                    <FormControlLabel
+                                        checked={ roleAudience === RoleAudienceTypes.APPLICATION }
+                                        control={ <Radio size="small" /> }
+                                        onChange={ () => promptAudienceSwitchWarning(RoleAudienceTypes.APPLICATION) }
+                                        label={ t("extensions:develop.applications.edit.sections.rolesV2.application") }
+                                        data-componentid={ `${ componentId }-application-audience-checkbox` }
+                                        disabled={ isReadOnly }
+                                        className="mr-6"
+                                    />
+                                    <Button
+                                        startIcon={ <PlusIcon/> }
+                                        variant="text"
+                                        onClick={ handleAddNewRoleWizardClick }
+                                    >
+                                        Create Role
+                                    </Button>
+                                </Grid.Row>
                             </FormGroup>
                         </Grid.Column>
                     </Grid.Row>
@@ -533,6 +554,16 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
+            { showWizard &&
+                (<ApplicationRoleWizard
+                    setUserListRequestLoading={ null }
+                    data-testid="user-mgt-add-user-wizard-modal"
+                    closeWizard={ () => {
+                        setShowWizard(false);
+                    } }
+                    application={ application }
+                />)
+            }
         </>
     );
 };

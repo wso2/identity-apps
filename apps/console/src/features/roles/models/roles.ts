@@ -48,10 +48,11 @@ export interface CreateRoleMemberInterface {
  */
 export interface CreateRoleFormData {
     domain?: string;
-    roleName: string;
+    roleName?: string;
     assignedApplicationId?: string;
     assignedApplicationName?: string;
     roleAudience?: string;
+    displayName?: string;
 }
 
 /**

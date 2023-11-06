@@ -1445,6 +1445,12 @@ export const console: ConsoleNS = {
                         },
                         apiAuthorization: {
                             m2mPolicyMessage: "සම්පත සඳහා නිශ්චිතව දක්වා ඇති අවසර ප්‍රතිපත්තිය නොතකා API සම්පතක සියලුම බලයලත් විෂය පථයන් M2M යෙදුමක් සඳහා ලබා ගත හැකිය."
+                        },
+                        roles: {
+                            createApplicationRoleWizard: {
+                                title: "යෙදුම් භූමිකාව සාදන්න",
+                                subTitle: "පද්ධතිය තුළ නව යෙදුම් භූමිකාවක් සාදන්න."
+                            }
                         }
                     }
                 },
@@ -8227,7 +8233,8 @@ export const console: ConsoleNS = {
                                 },
                                 validations: {
                                     empty: "අයදුම්පත් සහිත භූමිකාවක් නිර්මාණය කිරීම සඳහා පවරා ඇති අයදුම්පතක් අවශ්ය වේ."
-                                }
+                                },
+                                note: "මෙම භූමිකාව සඳහා පවරා ඇති අයදුම්පත නිර්මාණය කිරීමෙන් පසු සංස්කරණය කළ නොහැකි බව සලකන්න."
                             }
                         },
                         rolePermission: {

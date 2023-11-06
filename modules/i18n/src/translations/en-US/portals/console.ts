@@ -1449,6 +1449,12 @@ export const console: ConsoleNS = {
                         },
                         apiAuthorization: {
                             m2mPolicyMessage: "All the authorized scopes of an API resource are available for an M2M application despite the authorization policy specified for the resource."
+                        },
+                        roles: {
+                            createApplicationRoleWizard: {
+                                title: "Create Application Role",
+                                subTitle: "Create a new application role in the system."
+                            }
                         }
                     }
                 },
@@ -10175,7 +10181,8 @@ export const console: ConsoleNS = {
                                 },
                                 validations: {
                                     empty: "Assigned application is required to create an application-scoped role."
-                                }
+                                },
+                                note: "Note that assigned application for this role cannot be edited after the role is created."
                             }
                         },
                         rolePermission: {

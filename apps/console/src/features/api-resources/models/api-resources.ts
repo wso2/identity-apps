@@ -48,11 +48,11 @@ export interface APIResourceInterface {
     /**
      * Display name of the API resource.
      */
-    name: string;
+    name?: string;
     /**
      * Identifier of the API resource. [Usually this is an API endpoint]
      */
-    identifier: string;
+    identifier?: string;
     /**
      * Required authorization.
      */
