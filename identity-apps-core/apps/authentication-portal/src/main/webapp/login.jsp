@@ -77,6 +77,8 @@
     private static final String USER_TYPE_ASGARDEO = "asg";
     private static final String BACKUP_CODE_AUTHENTICATOR = "backup-code-authenticator";
     private static final String SMS_OTP_AUTHENTICATOR = "sms-otp-authenticator";
+    private static final String EMAIL_OTP_AUTHENTICATOR = "email-otp-authenticator";
+
     private static final String TOTP_AUTHENTICATOR = "totp";
     private static final String ENTERPRISE_LOGIN_KEY = "isEnterpriseLoginEnabled";
     private static final String ENTERPRISE_API_RELATIVE_PATH = "/api/asgardeo-enterprise-login/v1/business-user-login/";
@@ -207,7 +209,15 @@
                 response.sendRedirect(directTo);
 
                 return;
-            } else if (localAuthenticatorNames.contains(SMS_OTP_AUTHENTICATOR)) {
+            } else if (localAuthenticatorNames.contains(EMAIL_OTP_AUTHENTICATOR)) {
+                String directTo = commonauthURL + "?idp=LOCAL&authenticator=" + EMAIL_OTP_AUTHENTICATOR + "&sessionDataKey="
+                    + Encode.forUriComponent(request.getParameter("sessionDataKey")) + multiOptionURIParam;
+                response.sendRedirect(directTo);
+
+                return;
+            }
+            
+            else if (localAuthenticatorNames.contains(SMS_OTP_AUTHENTICATOR)) {
                 String directTo = commonauthURL + "?idp=LOCAL&authenticator=" + SMS_OTP_AUTHENTICATOR + "&sessionDataKey="
                     + Encode.forUriComponent(request.getParameter("sessionDataKey")) + multiOptionURIParam;
                 response.sendRedirect(directTo);
