@@ -16,10 +16,9 @@
  * under the License.
  */
 
-import FormHelperText from "@oxygen-ui/react/FormHelperText";
-import { FormHelperTextProps } from "@oxygen-ui/react/FormHelperText";
+import FormHelperText, { FormHelperTextProps } from "@oxygen-ui/react/FormHelperText";
 import React, { ReactElement } from "react";
-import { FieldMetaState, useField } from "react-final-form";
+import { FieldMetaState } from "react-final-form";
 import { DynamicField } from "./dynamic-form-field";
 
 export interface ErrorMessageProps {
@@ -44,13 +43,13 @@ export interface ErrorMessageProps {
 }
 
 export function ErrorMessage({ showError, meta, formHelperTextProps, helperText }: ErrorMessageProps): ReactElement {
-	if (showError) {
-		return <FormHelperText { ...formHelperTextProps }>{ meta.error || meta.submitError }</FormHelperText>;
-	} else if (helperText) {
-		return <FormHelperText { ...formHelperTextProps }>{ helperText }</FormHelperText>;
-	} else {
-		return <></>;
-	}
+    if (showError) {
+        return <FormHelperText { ...formHelperTextProps }>{ meta.error || meta.submitError }</FormHelperText>;
+    } else if (helperText) {
+        return <FormHelperText { ...formHelperTextProps }>{ helperText }</FormHelperText>;
+    } else {
+        return <></>;
+    }
 }
 
 export type ShowErrorFunc = (props: ShowErrorProps) => boolean;
@@ -59,40 +58,28 @@ export interface ShowErrorProps {
 	meta: FieldMetaState<any>;
 }
 
-const config = {
-	subscription: {
-		dirtySinceLastSubmit: true,
-		error: true,
-		submitError: true,
-		modified: true,
-		touched: true
-	}
-};
-
-export const useFieldForErrors = (name: string) => useField(name, config);
-
 export const showErrorOnChange: ShowErrorFunc = ({
-	meta: { submitError, dirtySinceLastSubmit, error, touched, modified }
+    meta: { submitError, dirtySinceLastSubmit, error, touched, modified }
 }: ShowErrorProps) => !!(((submitError && !dirtySinceLastSubmit) || error) && (touched || modified));
 
 export const showErrorOnBlur: ShowErrorFunc = ({
-	meta: { submitError, dirtySinceLastSubmit, error, touched },
+    meta: { submitError, dirtySinceLastSubmit, error, touched }
 }: ShowErrorProps) => !!(((submitError && !dirtySinceLastSubmit) || error) && touched);
 
 export const renderFormFields = (fields: Record<string, any>): ReactElement => {
 
-	return fields?.map((fieldProps, index) => (
-		<DynamicField.Input
-			key={ index }
-			name={ fieldProps.name }
-			label={ fieldProps.label }
-			type={ fieldProps.type }
-			{ ...fieldProps }
-		/>
-	));
+    return fields?.map((fieldProps, index) => (
+        <DynamicField.Input
+            key={ index }
+            name={ fieldProps.name }
+            label={ fieldProps.label }
+            type={ fieldProps.type }
+            { ...fieldProps }
+        />
+    ));
 };
 
-export const resolveFieldInitailValue = (meta: any, name: string, values: any): any => {
+export const resolveFieldInitailValue = (meta: FieldMetaState<any>, name: string, values: Partial<any>): any => {
     if (meta?.initial) {
         return meta?.initial;
     } else if (values && values[ name ]) {
@@ -100,4 +87,4 @@ export const resolveFieldInitailValue = (meta: any, name: string, values: any): 
     } else {
         return "";
     }
-}
+};
