@@ -29,7 +29,7 @@ import {
     Message
 } from "semantic-ui-react";
 import { SharedUserStoreUtils } from "../../core/utils";
-import { RootOnlyComponent } from "../../organizations/components";
+import { FirstLevelOrgOnlyComponent } from "../../organizations/components/first-level-org-only-component";
 import { OrganizationUtils } from "../../organizations/utils";
 import { getUserStoreList } from "../../userstores/api";
 import {
@@ -212,7 +212,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
         setUserStore(storeOptions[ 0 ].value as string);
 
-        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (OrganizationUtils.isCurrentOrganizationFirstLevel()) {
             getUserStoreList()
                 .then((response: AxiosResponse) => {
                     if (storeOptions.length === 0) {
@@ -430,7 +430,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             submitState={ triggerSubmit }
         >
             <Grid>
-                <RootOnlyComponent>
+                <FirstLevelOrgOnlyComponent>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             data-testid="user-mgt-add-user-form-domain-dropdown"
@@ -449,7 +449,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             tabIndex={ 1 }
                         />
                     </Grid.Column>
-                </RootOnlyComponent>
+                </FirstLevelOrgOnlyComponent>
 
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                     <Field

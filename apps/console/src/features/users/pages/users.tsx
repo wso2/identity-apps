@@ -65,7 +65,7 @@ import {
     history,
     store
 } from "../../core";
-import { RootOnlyComponent } from "../../organizations/components";
+import { FirstLevelOrgOnlyComponent } from "../../organizations/components/first-level-org-only-component";
 import { OrganizationUtils } from "../../organizations/utils";
 import {
     ConnectorPropertyInterface,
@@ -206,7 +206,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Fetch the list of available userstores.
      */
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (!OrganizationUtils.isCurrentOrganizationFirstLevel()) {
             return;
         }
 
@@ -760,7 +760,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                     </Button>)
                                 }
                             />
-                            <RootOnlyComponent>
+                            <FirstLevelOrgOnlyComponent>
                                 <Dropdown
                                     data-testid="user-mgt-user-list-userstore-dropdown"
                                     selection
@@ -768,7 +768,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                     onChange={ handleDomainChange }
                                     defaultValue="all"
                                 />
-                            </RootOnlyComponent>
+                            </FirstLevelOrgOnlyComponent>
                         </>
                     )
                 }
