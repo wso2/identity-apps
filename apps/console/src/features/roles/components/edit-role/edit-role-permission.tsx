@@ -226,7 +226,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                         const selectedAPIResource: AuthorizedAPIListItemInterface =
                             authorizedAPIListForApplication.find(
                                 (api: AuthorizedAPIListItemInterface) => api.id === apiResource.id
-                        );
+                            );
 
                         selectedAPIResourcesList.push({
                             id: selectedAPIResource.id,
