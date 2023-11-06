@@ -472,7 +472,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
 
         // If the SMS provider is being used by SMS OTP connection and it is
         // configured for one or more applications
-        if (error?.response?.data?.code === "NSM-60008") {
+        if (error?.response?.data?.code === SMSProviderConstants.SMS_PROVIDER_CONFIG_UNABLE_TO_DISABLE_ERROR_CODE) {
             errorMessage = error?.response?.data?.message;
             errorDescription = error?.response?.data?.description;
         }
