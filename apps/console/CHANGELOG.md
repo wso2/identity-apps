@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.5.26
+
+### Patch Changes
+
+- [#4517](https://github.com/wso2/identity-apps/pull/4517) [`e0eeba60a3`](https://github.com/wso2/identity-apps/commit/e0eeba60a3deac12ddc1d811e08a599e43b87591) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix incorrect attribute name in saml Idp configuration
+
 ## 2.5.25
 
 ### Patch Changes
