@@ -77,7 +77,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetOrganizationType();
 
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
@@ -181,7 +181,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const _updateCustomTextPreference = (values: CustomTextPreferenceInterface): Promise<void> => {
         let isAlreadyConfigured: boolean = !!customText;
 
-        if (orgType === OrganizationType.SUBORGANIZATION
+        if (organizationType === OrganizationType.SUBORGANIZATION
             && customText?.name !== currentOrganization?.id) {
             // This means the sub-org has no custom text preference configured.
             // It gets the custom text preference from the parent org.

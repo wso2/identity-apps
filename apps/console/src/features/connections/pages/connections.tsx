@@ -90,7 +90,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetOrganizationType();
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -213,7 +213,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
 
             // Hide the SMS OTP authenticator for sub organizations.
             if (authenticator.id === AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
-                orgType === OrganizationType.SUBORGANIZATION) {
+                organizationType === OrganizationType.SUBORGANIZATION) {
                 return false;
             }
 
@@ -273,7 +273,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                 }
 
                 if (authenticator.id === AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
-                    orgType === OrganizationType.SUBORGANIZATION) {
+                    organizationType === OrganizationType.SUBORGANIZATION) {
                     return false;
                 }
 

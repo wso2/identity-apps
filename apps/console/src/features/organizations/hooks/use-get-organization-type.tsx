@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,12 +21,76 @@ import { AppState } from "../../core";
 import { OrganizationType } from "../constants";
 
 /**
- * This is a React hook that returns the type of the organization.
- *
- * @returns The type of the organization.
+ * Interface for the useGetOrganizationType hook.
  */
-export const useGetOrganizationType = (): OrganizationType => {
-    return useSelector(
+interface UseGetOrganizationTypeInterface {
+    /**
+     * Type of the organization.
+     */
+    organizationType: OrganizationType;
+    /**
+     * Checks if the organization is the super organization.
+     * @returns True if the organization is a super organization.
+     */
+    isSuperOrganization: () => boolean;
+    /**
+     * Checks if the organization is a first level organization.
+     * @returns True if the organization is a first level organization.
+     */
+    isFirstLevelOrganization: () => boolean;
+    /**
+     * Checks if the organization is a sub organization.
+     * @returns True if the organization is a sub organization.
+     */
+    isSubOrganization: () => boolean;
+    /**
+     * If the organization is a super organization or a first level organization.
+     */
+    isRootOrganization: boolean;
+}
+
+/**
+ * Hook to get the type of the organization.
+ *
+ * @returns An object containing the organization type and helper methods.
+ */
+export const useGetOrganizationType = (): UseGetOrganizationTypeInterface => {
+    const orgType: OrganizationType = useSelector(
         (state: AppState) => state.organization.organizationType
     );
+
+    /**
+     * Checks if the organization is the super organization.
+     *
+     * @returns True if the organization is a super organization.
+     */
+    const isSuperOrganization = (): boolean => {
+        return orgType === OrganizationType.SUPER_ORGANIZATION;
+    };
+
+    /**
+     * Checks if the organization is a first level organization.
+     *
+     * @returns True if the organization is a first level organization.
+     */
+    const isFirstLevelOrganization = (): boolean => {
+        return orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION;
+    };
+
+    /**
+     * Checks if the organization is a sub organization.
+     *
+     * @returns True if the organization is a sub organization.
+     */
+    const isSubOrganization = (): boolean => {
+        return orgType === OrganizationType.SUBORGANIZATION;
+    };
+
+    return {
+        isFirstLevelOrganization,
+        isRootOrganization: isSuperOrganization() || isFirstLevelOrganization(),
+        isSubOrganization,
+        isSuperOrganization,
+        organizationType: orgType
+    };
 };
