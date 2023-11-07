@@ -1318,6 +1318,11 @@ export const extensions: Extensions = {
                 advance: {
                     links: {
                         fields: {
+                            common: {
+                                validations: {
+                                    invalid: "Veuillez saisir une URL valide"
+                                }
+                            },
                             cookiePolicyURL: {
                                 hint:
                                     "Lien vers un document ou une page contenant tous les cookies utilisés par " +

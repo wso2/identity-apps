@@ -1299,6 +1299,11 @@ export const extensions: Extensions = {
                 advance: {
                     links: {
                         fields: {
+                            common: {
+                                validations: {
+                                    invalid: "වලංගු URL එකක් ඇතුලත් කරන්න"
+                                }
+                            },
                             cookiePolicyURL: {
                                 hint:
                                     "ඔබගේ යෙදුම් භාවිතා කරන සියලුම කුකීස් අඩංගු ලේඛනයකට හෝ පිටුවකට සම්බන්ධ කරන්න. " +
