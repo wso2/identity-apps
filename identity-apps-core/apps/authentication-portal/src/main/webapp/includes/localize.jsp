@@ -34,6 +34,16 @@
     String uiLocaleFromURL = request.getParameter("ui_locales");
     String localeFromCookie = null;
     String BUNDLE = "org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources";
+    
+    // Map to store default supported language codes.
+    // TODO: Use this map to generate the `language-switcher.jsp`.
+    Map<String, String> supportedLanguages = new HashMap<>();
+    supportedLanguages.put("en", "US");
+    supportedLanguages.put("fr", "FR");
+    supportedLanguages.put("es", "ES");
+    supportedLanguages.put("pt", "PT");
+    supportedLanguages.put("de", "DE");
+    supportedLanguages.put("ja", "JP");
 
     // Check cookie for the user selected language first
     Cookie[] cookies = request.getCookies();
@@ -104,7 +114,14 @@
             }
         }
     } else {
-        userLocale = browserLocale;
+        // `browserLocale` is coming as `en` instead of `en_US` for the first render before switching the language from the dropdown.
+        String countryCode = supportedLanguages.get(browserLocale.getLanguage());
+
+        if (StringUtils.isNotBlank(countryCode)) {
+            userLocale = new Locale(browserLocale.getLanguage(), countryCode);
+        } else {
+            userLocale = browserLocale;
+        }
     }
 
     ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE, userLocale, new
