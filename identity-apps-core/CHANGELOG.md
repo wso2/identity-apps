@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.0.41
+
+### Patch Changes
+
+- [#4511](https://github.com/wso2/identity-apps/pull/4511) [`71556d2bf5`](https://github.com/wso2/identity-apps/commit/71556d2bf529f2dda13d60bba2426d7a931c8d73) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Temporarily fix IDP image issue in the sub org level
+
+* [#4499](https://github.com/wso2/identity-apps/pull/4499) [`92f29f6105`](https://github.com/wso2/identity-apps/commit/92f29f61051309c211178f03697e0c29ff164584) Thanks [@Rashmini](https://github.com/Rashmini)! - dd validation for email domain availability in organization discovery feature
+
 ## 2.0.40
 
 ### Patch Changes
