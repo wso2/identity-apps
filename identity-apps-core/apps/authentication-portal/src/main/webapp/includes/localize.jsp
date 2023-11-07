@@ -23,6 +23,7 @@
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%
@@ -33,6 +34,16 @@
     String uiLocaleFromURL = request.getParameter("ui_locales");
     String localeFromCookie = null;
     String BUNDLE = "org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources";
+    
+    // Map to store default supported language codes.
+    // TODO: Use this map to generate the `language-switcher.jsp`.
+    Map<String, String> supportedLanguages = new HashMap<>();
+    supportedLanguages.put("en", "US");
+    supportedLanguages.put("fr", "FR");
+    supportedLanguages.put("es", "ES");
+    supportedLanguages.put("pt", "PT");
+    supportedLanguages.put("de", "DE");
+    supportedLanguages.put("ja", "JP");
 
     // Check cookie for the user selected language first
     Cookie[] cookies = request.getCookies();
@@ -103,7 +114,14 @@
             }
         }
     } else {
-        userLocale = browserLocale;
+        // `browserLocale` is coming as `en` instead of `en_US` for the first render before switching the language from the dropdown.
+        String countryCode = supportedLanguages.get(browserLocale.getLanguage());
+
+        if (StringUtils.isNotBlank(countryCode)) {
+            userLocale = new Locale(browserLocale.getLanguage(), countryCode);
+        } else {
+            userLocale = browserLocale;
+        }
     }
 
     ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE, userLocale, new
@@ -177,5 +195,44 @@
         localizedString = localizedString.replace("\\n", "\n");
 
         return localizedString.replace("{{currentYear}}", String.valueOf(currentYear));
+    }
+
+    /**
+     * Replaces i18n path placeholders in a given link with locale and country codes.
+     *
+     * @param locale The locale from which to derive values for placeholders.
+     * @param link The link containing i18n placeholders (e.g., {{lang}}, {{country}}, {{locale}}).
+     * @return The link with placeholders replaced by actual values based on the given locale.
+     */
+    public String i18nLink(Locale locale, String link) {
+        String transformedLink = link;
+
+        try {
+            String langCode = locale.getLanguage();
+            String countryCode = locale.getCountry();
+            String localeCode = locale.toLanguageTag();
+
+            String LANGUAGE_PLACEHOLDER = "{{lang}}";
+            String COUNTRY_PLACEHOLDER = "{{country}}";
+            String LOCALE_PLACEHOLDER = "{{locale}}";
+
+            if (transformedLink.contains(LANGUAGE_PLACEHOLDER) || transformedLink.contains(COUNTRY_PLACEHOLDER) || transformedLink.contains(LOCALE_PLACEHOLDER)) {            
+                transformedLink = transformedLink
+                    .replace("{{lang}}", langCode)
+                    .replace("{{country}}", countryCode)
+                    .replace("{{locale}}", localeCode);
+            } else {
+                if (transformedLink.contains("?")) {
+                    return transformedLink.concat("&ui_locales=" + localeCode);
+                } else {
+                    return transformedLink.concat("?ui_locales=" + localeCode);
+                }
+            }
+
+            return StringEscapeUtils.escapeHtml4(transformedLink);
+        } catch (Exception e) {
+            // Return the link itself as a fallback.
+            return StringEscapeUtils.escapeHtml4(transformedLink);
+        }
     }
 %>

@@ -1299,28 +1299,25 @@ export const extensions: Extensions = {
                 advance: {
                     links: {
                         fields: {
+                            common: {
+                                validations: {
+                                    invalid: "වලංගු URL එකක් ඇතුලත් කරන්න"
+                                }
+                            },
                             cookiePolicyURL: {
-                                hint:
-                                    "ඔබගේ යෙදුම් භාවිතා කරන සියලුම කුකීස් අඩංගු ලේඛනයකට හෝ පිටුවකට සම්බන්ධ කරන්න. " +
-                                    "සකසා නොමැති නම්, {{ productName }} පෙරනිමි භාවිතා වේ.",
-                                label: "කුකී ප්‍රතිපත්තිය",
-                                placeholder: "https://myapp.com/cookie-policy"
+                                hint: "ඔබගේ යෙදුම් සහ ඒ සෑම එකක්ම භාවිතා කරන සියලුම කුකීස් පිළිබඳ සවිස්තරාත්මක තොරතුරු සහිත ලේඛනයකට හෝ වෙබ් පිටුවකට සම්බන්ධ කරන්න. විවිධ කලාප හෝ භාෂා සඳහා URL අභිරුචිකරණය කිරීමට <1>{{lang}}</1>, <3>{{country}}</3>, හෝ <5>{{locale}}</5> placeholders භාවිතා කළ හැකිය.",
+                                label: "කුකී ප්රතිපත්තිය",
+                                placeholder: "https://myapp.com/{{locale}}/cookie-policy"
                             },
                             privacyPolicyURL: {
-                                hint:
-                                    "ඔබේ සංවිධානයේ යෙදුම් හෝ වෙනත් සේවාවන් භාවිතා කිරීම සඳහා ඔබේ පාරිභෝගික " +
-                                    "පරිශීලකයා එකඟ විය යුතු සහ පිළිපැදිය යුතු ගිවිසුමකට සම්බන්ධ කරන්න. සකසා " +
-                                    "නොමැති නම්, {{ productName }} පෙරනිමි භාවිතා වේ.",
+                                hint: "ඔබගේ සංවිධානය එකතු කරන ආකාරය, හසුරුවන සහ නරඹන්නන්ගේ දත්ත පවසන පරිදි ප්රකාශයක් හෝ නෛතික ලේඛනයක් සමඟ සම්බන්ධ වන්න. විවිධ කලාප හෝ භාෂා සඳහා URL අභිරුචිකරණය කිරීමට <1>{{lang}}</1>, <3>{{country}}</3>, හෝ <5>{{locale}}</5> placeholders භාවිතා කළ හැකිය.",
                                 label: "රහස්යතා ප්රතිපත්තිය",
-                                placeholder: "https://myapp.com/privacy-policy"
+                                placeholder: "https://myapp.com/{{locale}}/privacy-policy"
                             },
                             termsOfUseURL: {
-                                hint:
-                                    "ඔබේ සංවිධානය ඔබේ ගනුදෙනුකරුවන්ගේ සහ අමුත්තන්ගේ දත්ත රැස් කරන, හසුරුවන සහ සකසන " +
-                                    "ආකාරය සඳහන් කරන ප්‍රකාශයකට හෝ නීතිමය ලේඛනයකට සබැඳිය. සකසා නොමැති නම්, " +
-                                    "{{ productName }} පෙරනිමි භාවිතා වේ.",
+                                hint: "ඔබේ ආයෝජන යෙදුම් හෝ වෙනත් සේවාවන් භාවිතා කිරීම සඳහා ඔබේ ගනුදෙනුකරුවන් ඊට එකඟ වී පිළිපැදිය යුතු ගිවිසුමකට සම්බන්ධ වන්න. විවිධ කලාප හෝ භාෂා සඳහා URL අභිරුචිකරණය කිරීමට <1>{{lang}}</1>, <3>{{country}}</3>, හෝ <5>{{locale}}</5> placeholders භාවිතා කළ හැකිය.",
                                 label: "සේවා කොන්දේසි",
-                                placeholder: "https://myapp.com/terms-of-service"
+                                placeholder: "https://myapp.com/{{locale}}/terms-of-service"
                             }
                         },
                         heading: "සබැඳි"

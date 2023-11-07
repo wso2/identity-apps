@@ -1317,26 +1317,25 @@ export const extensions: Extensions = {
                 advance: {
                     links: {
                         fields: {
+                            common: {
+                                validations: {
+                                    invalid: "Please enter a valid URL"
+                                }
+                            },
                             cookiePolicyURL: {
-                                hint:
-                                    "Link to a document or a webpage with detailed information on all cookies " +
-                                    "used by your applications and the purpose of each of them.",
+                                hint: "Link to a document or a webpage with detailed information on all cookies used by your applications and the purpose of each of them. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
                                 label: "Cookie Policy",
-                                placeholder: "https://myapp.com/cookie-policy"
+                                placeholder: "https://myapp.com/{{locale}}/cookie-policy"
                             },
                             privacyPolicyURL: {
-                                hint:
-                                    "Link to a statement or a legal document that states how your organization " +
-                                    "collects, handles, and processes the data of your customers and visitors.",
+                                hint: "Link to a statement or a legal document that states how your organization collects, handles, and processes the data of your customers and visitors. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
                                 label: "Privacy Policy",
-                                placeholder: "https://myapp.com/privacy-policy"
+                                placeholder: "https://myapp.com/{{locale}}/privacy-policy"
                             },
                             termsOfUseURL: {
-                                hint:
-                                    "Link to an agreement that your customers must agree to and abide by in " +
-                                    "order to use your organization's applications or other services.",
+                                hint: "Link to an agreement that your customers must agree to and abide by in order to use your organization's applications or other services. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
                                 label: "Terms of Service",
-                                placeholder: "https://myapp.com/terms-of-service"
+                                placeholder: "https://myapp.com/{{locale}}/terms-of-service"
                             }
                         },
                         heading: "Links"
