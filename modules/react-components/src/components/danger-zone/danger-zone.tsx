@@ -106,6 +106,7 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
 
     return (
         <Segment data-testid={ testId } data-componentid={ componentId } className="danger-zone" padded clearing>
+            <div className="header-wrapper">
             <Header
                 as="h5"
                 color="red"
@@ -122,6 +123,7 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                     { subheader }
                 </Header.Subheader>
             </Header>
+            </div>
             {
                 toggle
                     ? (
