@@ -65,6 +65,7 @@ import {
     history,
     store
 } from "../../core";
+import { RootOnlyComponent } from "../../organizations/components";
 import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import {
     ConnectorPropertyInterface,
@@ -760,7 +761,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                     </Button>)
                                 }
                             />
-                            { isRootOrganization && (
+                            <RootOnlyComponent>
                                 <Dropdown
                                     data-testid="user-mgt-user-list-userstore-dropdown"
                                     selection
@@ -768,7 +769,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                     onChange={ handleDomainChange }
                                     defaultValue="all"
                                 />
-                            ) }
+                            </RootOnlyComponent>
                         </>
                     )
                 }

@@ -25,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import PasswordStrengthBar from "react-password-strength-bar";
 import { DropdownItemProps, Grid, Message } from "semantic-ui-react";
 import { SharedUserStoreUtils } from "../../core/utils";
+import { RootOnlyComponent } from "../../organizations/components";
 import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getUserStoreList } from "../../userstores/api";
 import {
@@ -427,7 +428,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             submitState={ triggerSubmit }
         >
             <Grid>
-                { isRootOrganization && (
+                <RootOnlyComponent>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             data-testid="user-mgt-add-user-form-domain-dropdown"
@@ -446,7 +447,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             tabIndex={ 1 }
                         />
                     </Grid.Column>
-                ) }
+                </RootOnlyComponent>
 
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                     <Field

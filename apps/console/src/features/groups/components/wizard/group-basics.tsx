@@ -29,6 +29,7 @@ import { UserStoreDetails } from "../../../core";
 import { SharedUserStoreConstants } from "../../../core/constants";
 import { SharedUserStoreUtils } from "../../../core/utils";
 // TODO: Remove this once the api is updated.
+import { RootOnlyComponent } from "../../../organizations/components";
 import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { OrganizationUtils } from "../../../organizations/utils";
 import { getUserStoreList } from "../../../userstores/api";
@@ -211,7 +212,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
             >
                 <Grid>
                     <GridRow columns={ 2 }>
-                        { isRootOrganization && (
+                        <RootOnlyComponent>
                             <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     data-testid={ `${ testId }-domain-dropdown` }
@@ -230,7 +231,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                     value={ initialValues?.basicDetails?.domain ?? userStoreOptions[ 0 ]?.value }
                                 />
                             </GridColumn>
-                        ) }
+                        </RootOnlyComponent>
                         <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 ref={ groupName }

@@ -41,6 +41,7 @@ import {
     getAUserStore,
     getEmptyPlaceholderIllustrations
 } from "../../core";
+import { RootOnlyComponent } from "../../organizations/components";
 import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { OrganizationUtils } from "../../organizations/utils";
 import { getUserStoreList } from "../../userstores/api";
@@ -427,8 +428,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 onPageChange={ handlePaginationChange }
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
                 sortStrategy={ listSortingStrategy }
-                rightActionPanel={
-                    isRootOrganization && (
+                rightActionPanel={ (
+                    <RootOnlyComponent>
                         <Dropdown
                             data-testid="group-mgt-groups-list-stores-dropdown"
                             selection
@@ -437,8 +438,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                             onChange={ handleDomainChange }
                             defaultValue={ GroupConstants.ALL_USER_STORES_OPTION_VALUE }
                         />
-                    )
-                }
+                    </RootOnlyComponent> 
+                ) }
                 showPagination={ paginatedGroups.length > 0  }
                 showTopActionPanel={ isGroupsListRequestLoading
                     || !(!searchQuery
