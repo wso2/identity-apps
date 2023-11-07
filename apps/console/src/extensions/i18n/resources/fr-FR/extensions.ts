@@ -1333,6 +1333,11 @@ export const extensions: Extensions = {
                                 label: "politique de confidentialité",
                                 placeholder: "https://myapp.com/{{locale}}/privacy-policy"
                             },
+                            selfSignUpURL: {
+                                hint: "Lien vers la page Web d'auto-inscription de votre organisation. Vous pouvez utiliser des espaces réservés comme <1>{{lang}}</1>, <3>{{country}}</3>, ou <5>{{locale}}</5> pour personnaliser l'URL pour différentsrégions ou langues.",
+                                label: "Auto-inscription",
+                                placeholder: "https://myapp.com/self-signup"
+                            },
                             termsOfUseURL: {
                                 hint: "Lien vers un accord que vos clients doivent accepter et respecter afin d'utiliser les applications ou d'autres services de votre organisation.Vous pouvez utiliser des espaces réservés comme <1>{{lang}}</1>, <3>{{country}}</3>, ou <5>{{locale}}</5> pour personnaliser l'URL pour différentsrégions ou langues.",
                                 label: "Conditions d'utilisation",

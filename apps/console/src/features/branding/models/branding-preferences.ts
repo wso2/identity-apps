@@ -159,6 +159,10 @@ export interface BrandingPreferenceURLInterface {
      * Link for Cookie Policy.
      */
     cookiePolicyURL: string;
+    /**
+     * Link for Self Sign Up.
+     */
+    selfSignUpURL?: string;
 }
 
 /**

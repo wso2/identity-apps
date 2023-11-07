@@ -1314,6 +1314,11 @@ export const extensions: Extensions = {
                                 label: "රහස්යතා ප්රතිපත්තිය",
                                 placeholder: "https://myapp.com/{{locale}}/privacy-policy"
                             },
+                            selfSignUpURL: {
+                                hint: "ඔබේ සංවිධානයේ ස්වයං ලියාපදිංචි වීමේ වෙබ් පිටුවට සම්බන්ධ වන්න. විවිධ කලාප හෝ භාෂා සඳහා URL අභිරුචිකරණය කිරීමට <1>{{lang}}</1>, <3>{{country}}</3>, හෝ <5>{{locale}}</5> placeholders භාවිතා කළ හැකිය.",
+                                label: "ස්වයං ලියාපදිංචි වීම",
+                                placeholder: "https://myapp.com/self-signup"
+                            },
                             termsOfUseURL: {
                                 hint: "ඔබේ ආයෝජන යෙදුම් හෝ වෙනත් සේවාවන් භාවිතා කිරීම සඳහා ඔබේ ගනුදෙනුකරුවන් ඊට එකඟ වී පිළිපැදිය යුතු ගිවිසුමකට සම්බන්ධ වන්න. විවිධ කලාප හෝ භාෂා සඳහා URL අභිරුචිකරණය කිරීමට <1>{{lang}}</1>, <3>{{country}}</3>, හෝ <5>{{locale}}</5> placeholders භාවිතා කළ හැකිය.",
                                 label: "සේවා කොන්දේසි",

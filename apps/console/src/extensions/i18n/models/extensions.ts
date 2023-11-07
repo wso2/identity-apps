@@ -1147,6 +1147,11 @@ export interface Extensions {
                                 label: string;
                                 placeholder: string;
                             };
+                            selfSignUpURL: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                            };
                             termsOfUseURL: {
                                 hint: string;
                                 label: string;
