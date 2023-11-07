@@ -55,4 +55,6 @@ export class GroupConstants {
      * @type {string}
      */
     public static ALL_GROUPS: string = "All user stores";
+
+    public static ALL_USER_STORES_OPTION_VALUE: string = "all";
 }

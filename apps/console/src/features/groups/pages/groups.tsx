@@ -50,6 +50,7 @@ import { UserStorePostData } from "../../userstores/models/user-stores";
 import { deleteGroupById, getGroupList, searchGroupList } from "../api";
 import { GroupList } from "../components";
 import { CreateGroupWizard } from "../components/wizard";
+import { GroupConstants } from "../constants";
 import { GroupsInterface, SearchGroupInterface } from "../models";
 
 const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
@@ -86,7 +87,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userStoreOptions, setUserStoresList ] = useState<DropdownItemProps[]>([]);
-    const [ userStore, setUserStore ] = useState(undefined);
+    const [ userStore, setUserStore ] = useState(null);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     // TODO: Check the usage and delete id not required.
     const [ , setIsEmptyResults ] = useState<boolean>(false);
@@ -182,14 +183,14 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     };
 
     /**
-     * The following function fetch the user store list and set it to the state.
+     * The following function fetches the user store list and sets it to the state.
      */
     const getUserStores = () => {
         const storeOptions: DropdownItemProps[] = [
             {
                 key: -2,
                 text: "All user stores",
-                value: null
+                value: GroupConstants.ALL_USER_STORES_OPTION_VALUE
             },
             {
                 key: -1,
@@ -203,8 +204,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             text: "",
             value: ""
         };
-
-        setUserStore(storeOptions[ 0 ].value);
 
         if (orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION) {
             getUserStoreList()
@@ -292,7 +291,11 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     };
 
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
-        setUserStore(data.value as string);
+        if (data.value === GroupConstants.ALL_USER_STORES_OPTION_VALUE) {
+            setUserStore(null);
+        } else {
+            setUserStore(data.value as string);
+        }
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
@@ -433,8 +436,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                             selection
                             options={ userStoreOptions && userStoreOptions }
                             placeholder={ t("console:manage.features.groups.list.storeOptions") }
-                            value={ userStore && userStore }
                             onChange={ handleDomainChange }
+                            defaultValue={ GroupConstants.ALL_USER_STORES_OPTION_VALUE }
                         />
                     </FirstLevelOrgOnlyComponent>)
                 }
