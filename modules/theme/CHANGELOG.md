@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.29
+
+### Patch Changes
+
+- [#4494](https://github.com/wso2/identity-apps/pull/4494) [`d94af75927`](https://github.com/wso2/identity-apps/commit/d94af7592757363f360147c78d54673d92d86a51) Thanks [@savindi7](https://github.com/savindi7)! - Fix cosmetic issues in SMS provider
+
 ## 2.0.28
 
 ### Patch Changes

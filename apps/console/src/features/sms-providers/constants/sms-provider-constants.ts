@@ -35,6 +35,7 @@ export class SMSProviderConstants {
 	public static readonly SMS_PROVIDER_CONFIG_UPDATE_ERROR_CODE: string = "ASG-SP-00003";
 	public static readonly SMS_PROVIDER_CONFIG_DELETE_ERROR_CODE: string = "ASG-SP-60004";
     public static readonly SMS_PROVIDER_CONFIG_NOT_FOUND_ERROR_CODE: string = "NSM-60006";
+    public static readonly SMS_PROVIDER_CONFIG_UNABLE_TO_DISABLE_ERROR_CODE: string = "NSM-60008";
 
     public static readonly SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH: number = 0;
     public static readonly SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH: number = 100;
