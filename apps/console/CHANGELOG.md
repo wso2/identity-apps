@@ -1,5 +1,23 @@
 # @wso2is/console
 
+## 2.5.25
+
+### Patch Changes
+
+- [#4395](https://github.com/wso2/identity-apps/pull/4395) [`53764bfbe4`](https://github.com/wso2/identity-apps/commit/53764bfbe44a04e317fc6bc0c5e737366f5c7003) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Implement role assignment for manual multiple user invites
+
+* [#4507](https://github.com/wso2/identity-apps/pull/4507) [`b81948fe05`](https://github.com/wso2/identity-apps/commit/b81948fe050d5be8a8476090f30a791fd4b6b87d) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Fix typo
+
+- [#4499](https://github.com/wso2/identity-apps/pull/4499) [`92f29f6105`](https://github.com/wso2/identity-apps/commit/92f29f61051309c211178f03697e0c29ff164584) Thanks [@Rashmini](https://github.com/Rashmini)! - dd validation for email domain availability in organization discovery feature
+
+* [#4350](https://github.com/wso2/identity-apps/pull/4350) [`92f4c1caad`](https://github.com/wso2/identity-apps/commit/92f4c1caad1502c33d3acd24066d48949439e2b1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Conditionally show/hide UI features based on the tenant tier
+
+- [#4513](https://github.com/wso2/identity-apps/pull/4513) [`1ed2c49041`](https://github.com/wso2/identity-apps/commit/1ed2c4904159252c6966202501b0943268a8586a) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Implement Create Application Role in Application Roles section
+
+- Updated dependencies [[`53764bfbe4`](https://github.com/wso2/identity-apps/commit/53764bfbe44a04e317fc6bc0c5e737366f5c7003), [`b81948fe05`](https://github.com/wso2/identity-apps/commit/b81948fe050d5be8a8476090f30a791fd4b6b87d), [`92f29f6105`](https://github.com/wso2/identity-apps/commit/92f29f61051309c211178f03697e0c29ff164584), [`1ed2c49041`](https://github.com/wso2/identity-apps/commit/1ed2c4904159252c6966202501b0943268a8586a)]:
+  - @wso2is/i18n@2.0.30
+  - @wso2is/dynamic-forms@2.0.8
+
 ## 2.5.24
 
 ### Patch Changes
