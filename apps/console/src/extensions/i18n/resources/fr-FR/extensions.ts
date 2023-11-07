@@ -1324,31 +1324,19 @@ export const extensions: Extensions = {
                                 }
                             },
                             cookiePolicyURL: {
-                                hint:
-                                    "Lien vers un document ou une page contenant tous les cookies utilisés par " +
-                                    "vos applications avec des informations détaillées sur la finalité de chacun " +
-                                    "d'entre eux. S'il n'est pas défini, les valeurs par défaut de " +
-                                    "{{ productName }} seront utilisées.",
-                                label: "Politique relative aux cookies",
-                                placeholder: "https://myapp.com/cookie-policy"
+                                hint: "Lien vers un document ou une page Web avec des informations détaillées sur tous les cookies utilisés par vos applications et le but de chacun d'eux.Vous pouvez utiliser des espaces réservés comme <1>{{lang}}</1>, <3>{{country}}</3>, ou <5>{{locale}}</5> pour personnaliser l'URL pour différentsrégions ou langues.",
+                                label: "Politique de cookie",
+                                placeholder: "https://myapp.com/{{locale}}/cookie-policy"
                             },
                             privacyPolicyURL: {
-                                hint:
-                                    "Lien vers un accord que l'utilisateur de votre client doit accepter et " +
-                                    "respecter afin d'utiliser les applications ou d'autres services de votre " +
-                                    "organisation. S'il n'est pas défini, les valeurs par défaut de " +
-                                    "{{ productName }} seront utilisées.",
-                                label: "Politique de confidentialité",
-                                placeholder: "https://myapp.com/privacy-policy"
+                                hint: "Lien vers une déclaration ou un document juridique qui indique comment votre organisation collecte, gère et traite les données de vos clients et visiteurs.Vous pouvez utiliser des espaces réservés comme <1>{{lang}}</1>, <3>{{country}}</3>, ou <5>{{locale}}</5> pour personnaliser l'URL pour différentsrégions ou langues.",
+                                label: "politique de confidentialité",
+                                placeholder: "https://myapp.com/{{locale}}/privacy-policy"
                             },
                             termsOfUseURL: {
-                                hint:
-                                    "Lien vers une déclaration ou un document juridique qui indique " +
-                                    "comment votre organisation collecte, gère et traite les données de " +
-                                    "vos clients et visiteurs. S'il n'est pas défini, les valeurs par défaut " +
-                                    "de {{ productName }} seront utilisées.",
+                                hint: "Lien vers un accord que vos clients doivent accepter et respecter afin d'utiliser les applications ou d'autres services de votre organisation.Vous pouvez utiliser des espaces réservés comme <1>{{lang}}</1>, <3>{{country}}</3>, ou <5>{{locale}}</5> pour personnaliser l'URL pour différentsrégions ou langues.",
                                 label: "Conditions d'utilisation",
-                                placeholder: "https://myapp.com/terms-of-service"
+                                placeholder: "https://myapp.com/{{locale}}/terms-of-service"
                             }
                         },
                         heading: "Liens"
