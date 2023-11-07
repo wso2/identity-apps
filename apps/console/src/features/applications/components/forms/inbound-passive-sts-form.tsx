@@ -201,7 +201,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                             label={ 
                                 t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout.label") 
                             }
-                            required={ true }
+                            required
                             requiredErrorMessage={
                                 t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout" +
                                     ".validations.empty")
