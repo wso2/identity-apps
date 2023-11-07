@@ -30,10 +30,7 @@ import { GroupBasics } from "./group-basics";
 import { CreateGroupSummary } from "./group-summary";
 import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "../../../core";
 import { getOrganizationRoles } from "../../../organizations/api";
-import {
-    OrganizationRoleManagementConstants,
-    OrganizationType
-} from "../../../organizations/constants/organization-constants";
+import { OrganizationRoleManagementConstants } from "../../../organizations/constants/organization-constants";
 import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import {
     GenericOrganization,
@@ -95,7 +92,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { isRootOrganization } = useGetOrganizationType();
 
     const [ currentStep, setCurrentWizardStep ] = useState<number>(initStep);
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
@@ -147,12 +144,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
     useEffect(() => {
         if (roleList.length < 1) {
-            const isSuperOrFirstLevelOrg: boolean = [
-                OrganizationType.SUPER_ORGANIZATION,
-                OrganizationType.FIRST_LEVEL_ORGANIZATION
-            ].includes(orgType);
-
-            if (isSuperOrFirstLevelOrg) {
+            if (isRootOrganization) {
                 getRolesList(null)
                     .then((response: AxiosResponse<RolesV2ResponseInterface>) => {
                         setRoleList(response?.data?.Resources);

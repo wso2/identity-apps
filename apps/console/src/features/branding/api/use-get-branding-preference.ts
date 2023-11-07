@@ -44,7 +44,7 @@ const useGetBrandingPreference = <Data = BrandingPreferenceAPIResponseInterface,
     type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG,
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
 ): RequestResultInterface<Data, Error> => {
-    const organizationType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetOrganizationType();
 
     const tenantDomain: string = organizationType === OrganizationType.SUBORGANIZATION
         ? store.getState()?.organization?.organization?.id

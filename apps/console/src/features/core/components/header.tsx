@@ -130,7 +130,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
     const { tierName }: TenantTierRequestResponse = useContext(SubscriptionContext);
 
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetOrganizationType();
 
     const { legacyAuthzRuntime }  = useAuthorization();
 
@@ -198,9 +198,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
         return (
             isOrganizationManagementEnabled &&
-            (orgType === OrganizationType.SUPER_ORGANIZATION ||
-                orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
-                orgType === OrganizationType.SUBORGANIZATION ||
+            (organizationType === OrganizationType.SUPER_ORGANIZATION ||
+                organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+                organizationType === OrganizationType.SUBORGANIZATION ||
                 organizationConfigs.showSwitcherInTenants) &&
             hasRequiredScopes(
                 feature?.organizations,

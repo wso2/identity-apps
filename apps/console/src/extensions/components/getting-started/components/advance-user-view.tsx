@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -108,7 +108,8 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
         isTryItApplicationSearchRequestLoading,
         setIsTryItApplicationSearchRequestLoading
     ] = useState<boolean>(false);
-    const orgType: OrganizationType = useGetOrganizationType();
+
+    const { organizationType } = useGetOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -472,7 +473,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
             <Grid stackable>
                 <Grid.Row columns={ 2 }>
                     {
-                        orgType !== OrganizationType.SUBORGANIZATION && (
+                        organizationType !== OrganizationType.SUBORGANIZATION && (
                             <Show
                                 when={
                                     [
@@ -517,7 +518,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                                 </Show>
                             </Grid.Row>
                             {
-                                orgType !== OrganizationType.SUBORGANIZATION && (
+                                organizationType !== OrganizationType.SUBORGANIZATION && (
                                     <Show
                                         when={ AccessControlConstants.APPLICATION_WRITE }
                                         featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }

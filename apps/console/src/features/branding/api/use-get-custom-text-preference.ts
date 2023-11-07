@@ -51,7 +51,7 @@ const useGetCustomTextPreference = <
         locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE,
         type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG
     ): RequestResultInterface<Data, Error> => {
-    const organizationType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetOrganizationType();
 
     const tenantDomain: string = organizationType === OrganizationType.SUBORGANIZATION
         ? store.getState()?.organization?.organization?.id

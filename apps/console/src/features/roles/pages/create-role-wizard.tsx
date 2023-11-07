@@ -29,7 +29,6 @@ import { Dispatch } from "redux";
 import { AppConstants } from "../../core/constants";
 import { history } from "../../core/helpers";
 import { store } from "../../core/store";
-import { OrganizationType } from "../../organizations/constants/organization-constants";
 import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { createRole } from "../api/roles";
 import { RoleBasics } from "../components/wizard-updated/role-basics";
@@ -61,7 +60,7 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { isRootOrganization } = useGetOrganizationType();
 
     const [ stepperState, setStepperState ] = useState<CreateRoleStateInterface>(undefined);
     const [ isBasicDetailsNextButtonDisabled, setIsBasicDetailsNextButtonDisabled ] = useState<boolean>(true);
@@ -105,12 +104,7 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
             };
 
             // If the organization is a super or first level organization, no need to send the audience.
-            const isSuperOrFirstLevelOrg: boolean = [
-                OrganizationType.SUPER_ORGANIZATION,
-                OrganizationType.FIRST_LEVEL_ORGANIZATION
-            ].includes(orgType);
-
-            if (!isSuperOrFirstLevelOrg) {
+            if (!isRootOrganization) {
                 roleData.audience = roleAudience === RoleAudienceTypes.ORGANIZATION
                     ? {
                         type: roleAudience,
