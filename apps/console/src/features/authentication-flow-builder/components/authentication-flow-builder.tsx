@@ -24,7 +24,7 @@ import Tabs from "@oxygen-ui/react/Tabs";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, SVGAttributes, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { ReactFlowProvider } from "reactflow";
@@ -32,7 +32,6 @@ import AuthenticationFlowModeSwitchDisclaimerModal from "./authentication-flow-m
 import AuthenticationFlowVisualEditor from "./authentication-flow-visual-editor";
 import PredefinedFlowsSidePanel from "./predefined-flows-side-panel/predefined-flows-side-panel";
 import ScriptBasedFlowSwitch from "./script-editor-side-panel/script-based-flow-switch";
-import ScriptEditorSidePanel from "./script-editor-side-panel/script-editor-side-panel";
 import SidePanelDrawer from "./side-panel-drawer";
 import { AppState } from "../../core/store";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
@@ -52,21 +51,6 @@ export interface AuthenticationFlowBuilderPropsInterface extends IdentifiableCom
      */
     onIDPCreateWizardTrigger: (type: string, cb: () => void, template?: any) => void;
 }
-
-// TODO: Move this to Oxygen UI once https://github.com/wso2/oxygen-ui/issues/158 is fixed.
-const CodeWindowIcon = ({ width = 16, height = 16, ...rest }: SVGAttributes<SVGSVGElement>): ReactElement => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width={ width }
-        height={ height }
-        viewBox="0 0 640 512"
-        { ...rest }
-    >
-        { /* eslint-disable max-len */ }
-        <path d="M392.8 1.2c-17-4.9-34.7 5-39.6 22l-128 448c-4.9 17 5 34.7 22 39.6s34.7-5 39.6-22l128-448c4.9-17-5-34.7-22-39.6zm80.6 120.1c-12.5 12.5-12.5 32.8 0 45.3L562.7 256l-89.4 89.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-112-112c-12.5-12.5-32.8-12.5-45.3 0zm-306.7 0c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l112 112c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l89.4-89.4c12.5-12.5 12.5-32.8 0-45.3z"/>
-        { /* eslint-enable max-len */ }
-    </svg>
-);
 
 /**
  * Authentication flow builder component.
@@ -105,7 +89,6 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
 
     const [ activeFlowMode, setActiveFlowMode ] = useState<AuthenticationFlowBuilderModesInterface>(FlowModes[0]);
     const [ flowModeToSwitch, setFlowModeToSwitch ] = useState<AuthenticationFlowBuilderModesInterface>(null);
-    const [ isScriptEditorSidePanelDrawerOpen, setIsScriptEditorSidePanelDrawerOpen ] = useState<boolean>(false);
     const [ isPredefinedFlowsSidePanelDrawerOpen ] = useState<boolean>(isAuthenticationSequenceDefault);
     const [
         showAuthenticationFlowModeSwitchDisclaimerModal,
@@ -190,27 +173,14 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                                 className="visual-editor-tab-panel"
                                 data-componentid={ `${componentId}-visual-builder` }
                             >
-                                <SidePanelDrawer
-                                    open={ isScriptEditorSidePanelDrawerOpen }
-                                    onClose={ () => {
-                                        setIsScriptEditorSidePanelDrawerOpen(false);
-                                    } }
-                                    className={
-                                        classNames("script-editor-drawer", { "standalone": !isLegacyEditorEnabled })
-                                    }
-                                    drawerIcon={ <CodeWindowIcon height={ 16 } width={ 16 } /> }
-                                    panel={ isAdaptiveAuthAvailable && <ScriptEditorSidePanel /> }
-                                    panelControlsLabel={ t("console:loginFlow.scriptEditor.panelHeader") }
-                                >
-                                    <ReactFlowProvider>
-                                        <AuthenticationFlowVisualEditor
-                                            onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
-                                            className={
-                                                classNames("visual-editor", { "with-panel": isAdaptiveAuthAvailable })
-                                            }
-                                        />
-                                    </ReactFlowProvider>
-                                </SidePanelDrawer>
+                                <ReactFlowProvider>
+                                    <AuthenticationFlowVisualEditor
+                                        onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
+                                        className={
+                                            classNames("visual-editor", { "with-panel": isAdaptiveAuthAvailable })
+                                        }
+                                    />
+                                </ReactFlowProvider>
                             </TabPanel>
                         </Box>
                     </div>
