@@ -32,7 +32,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import AdaptiveScriptResetConfirmationModal from "./adaptive-script-reset-confirmation-modal";
-import ScriptEditorSidePanel from "./script-editor-side-panel";
+import ScriptEditorPanel from "./script-editor-panel";
 import { AdaptiveScriptUtils } from "../../../applications/utils/adaptive-script-utils";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import "./script-based-flow-switch.scss";
@@ -136,7 +136,7 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                         </Grid>
                     </AccordionSummary>
                     <AccordionDetails className="script-based-flow-switch-accordion-details">
-                        <ScriptEditorSidePanel/>
+                        <ScriptEditorPanel/>
                     </AccordionDetails>
                 </Accordion>
             </Box>

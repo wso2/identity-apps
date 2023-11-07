@@ -31,7 +31,7 @@ import { ReactFlowProvider } from "reactflow";
 import AuthenticationFlowModeSwitchDisclaimerModal from "./authentication-flow-mode-switch-disclaimer-modal";
 import AuthenticationFlowVisualEditor from "./authentication-flow-visual-editor";
 import PredefinedFlowsSidePanel from "./predefined-flows-side-panel/predefined-flows-side-panel";
-import ScriptBasedFlowSwitch from "./script-editor-side-panel/script-based-flow-switch";
+import ScriptBasedFlowSwitch from "./script-editor-panel/script-based-flow-switch";
 import SidePanelDrawer from "./side-panel-drawer";
 import { AppState } from "../../core/store";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";

@@ -45,24 +45,24 @@ import { AdaptiveScriptUtils } from "../../../applications/utils/adaptive-script
 import { SecretModel } from "../../../secrets/models/secret";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import { SupportedEditorThemes } from "../../models/script-editor";
-import "./script-editor-side-panel.scss";
+import "./script-editor.scss";
 
 /**
- * Proptypes for the Script editor side panel component.
+ * Proptypes for the Script editor panel component.
  */
-export type ScriptEditorSidePanelPropsInterface = IdentifiableComponentInterface & HTMLAttributes<HTMLDivElement>;
+export type ScriptEditorPanelPropsInterface = IdentifiableComponentInterface & HTMLAttributes<HTMLDivElement>;
 
 const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
     import("@monaco-editor/react" /* webpackChunkName: "MDMonacoEditor" */)
 );
 
 /**
- * Script editor side panel component.
+ * Script editor panel component.
  *
  * @param props - Props injected to the component.
- * @returns Script editor side panel component.
+ * @returns Script editor panel component.
  */
-const ScriptEditorSidePanel = (props: PropsWithChildren<ScriptEditorSidePanelPropsInterface>): ReactElement => {
+const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterface>): ReactElement => {
     const { className, "data-componentid": componentId } = props;
 
     const { t } = useTranslation();
@@ -142,7 +142,7 @@ const ScriptEditorSidePanel = (props: PropsWithChildren<ScriptEditorSidePanelPro
 
     return (
         <Suspense fallback={ <CircularProgress /> }>
-            <div className={ classNames("script-editor-side-panel", className) } data-componentid={ componentId }>
+            <div className={ classNames("script-editor-panel", className) } data-componentid={ componentId }>
                 <Box className="toolbar-container">
                     <Toolbar variant="dense">
                         <Box>
@@ -203,10 +203,10 @@ const ScriptEditorSidePanel = (props: PropsWithChildren<ScriptEditorSidePanelPro
 };
 
 /**
- * Default props for the script editor side panel component.
+ * Default props for the script editor panel component.
  */
-ScriptEditorSidePanel.defaultProps = {
-    "data-componentid": "script-editor-side-panel"
+ScriptEditorPanel.defaultProps = {
+    "data-componentid": "script-editor-panel"
 };
 
-export default ScriptEditorSidePanel;
+export default ScriptEditorPanel;
