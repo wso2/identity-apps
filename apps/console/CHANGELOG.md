@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.5.27
+
+### Patch Changes
+
+- [#4522](https://github.com/wso2/identity-apps/pull/4522) [`87c84d4373`](https://github.com/wso2/identity-apps/commit/87c84d4373426cc547c467607b632d9bf7f47a45) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Refactor organization type check and improve create role, group logic
+
+* [#4525](https://github.com/wso2/identity-apps/pull/4525) [`22e0966ed9`](https://github.com/wso2/identity-apps/commit/22e0966ed97af7668e702b4d3fa07cdb6bafae47) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Change role pactch path
+
+- [#4520](https://github.com/wso2/identity-apps/pull/4520) [`98832e3ab1`](https://github.com/wso2/identity-apps/commit/98832e3ab1523b436bfbe7c738511601a3ec22a2) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Fix ethereum idp connector template issue
+
 ## 2.5.26
 
 ### Patch Changes
