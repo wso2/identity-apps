@@ -86,7 +86,7 @@
         .header-wrapper {
             max-width: 75%;
         }
-        
+
         .sub-header {
             margin-top: 5px;
         }
