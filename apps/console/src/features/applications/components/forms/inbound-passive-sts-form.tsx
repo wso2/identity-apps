@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,11 +18,11 @@
 
 import { DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
-import { Code, Hint } from "@wso2is/react-components";
+import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState  } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
 import { 
     ApplicationInterface, 
@@ -59,9 +59,9 @@ interface InboundPassiveStsFormPropsInterface extends TestableComponentInterface
 /**
  * Inbound Passive Sts protocol configurations form.
  *
- * @param {InboundPassiveStsFormPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Inbound passive sts form.
  */
 export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormPropsInterface> = (
     props: InboundPassiveStsFormPropsInterface
@@ -80,10 +80,8 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
 
     const { t } = useTranslation();
 
-    const [ isPEMSelected, setPEMSelected ] = useState<boolean>(false);
     const [ showCertificateModal, setShowCertificateModal ] = useState<boolean>(false);
-    const [ PEMValue, setPEMValue ] = useState<string>(undefined);
-    const [ certificateDisplay, setCertificateDisplay ] = useState<DisplayCertificate>(null);
+    const [ certificateDisplay ] = useState<DisplayCertificate>(null);
     const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
@@ -102,7 +100,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
      * Prepares form values for submit.
      *
      * @param values - Form values.
-     * @return {any} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const updateConfiguration = (values: any): any => {
 
@@ -127,7 +125,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
 
     /**
      * Handle form submit.
-     * @param {Map<string, >} values - Form values.
+     * @param values - Form values.
      */
     const handleFormSubmit = (values: Map<string, FormValue>): void => {
         setTriggerCertSubmit();
@@ -200,21 +198,24 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
                             name="replyToLogout"
-                            label={ t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout.label") }
+                            label={ 
+                                t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout.label") 
+                            }
                             required={ true }
                             requiredErrorMessage={
-                                t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout.validations" +
-                                    ".empty")
+                                t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout" +
+                                    ".validations.empty")
                             }
                             placeholder={
-                                t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout.placeholder")
+                                t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout" +
+                                    ".placeholder")
                             }
                             validation={ (value: string, validation: Validation) => {
                                 if (!FormValidation.url(value)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout" +
-                                            ".validations.invalid")
+                                        t("console:develop.features.applications.forms.inboundSTS.fields." +
+                                            "replyToLogout.validations.invalid")
                                     );
                                 }
                             } }
