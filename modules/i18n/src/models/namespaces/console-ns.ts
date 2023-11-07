@@ -5906,6 +5906,8 @@ export interface ConsoleNS {
                                     description: string;
                                 };
                                 primaryButton: string;
+                                rolesLabel: string;
+                                rolesPlaceholder: string;
                                 warningMessage: string;
                             };
                             fileBased: {
