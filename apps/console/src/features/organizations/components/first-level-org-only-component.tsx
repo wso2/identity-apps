@@ -17,7 +17,8 @@
  */
 
 import React, { PropsWithChildren, ReactElement } from "react";
-import { OrganizationUtils } from "../utils";
+import { OrganizationType } from "../constants";
+import { useGetOrganizationType } from "../hooks/use-get-organization-type";
 
 /**
  * Renders the child component only in a first level organization.
@@ -29,5 +30,7 @@ export const FirstLevelOrgOnlyComponent = (props: PropsWithChildren<Record<strin
 
     const { children } = props;
 
-    return <>{ OrganizationUtils.isCurrentOrganizationFirstLevel() ? children : null }</>;
+    const orgType: OrganizationType = useGetOrganizationType();
+
+    return <>{ orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION ? children : null }</>;
 };

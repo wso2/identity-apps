@@ -46,16 +46,7 @@ export class OrganizationUtils {
         return store.getState().organization?.organization?.id
             === OrganizationManagementConstants.ROOT_ORGANIZATION_ID;
     }
-
-    /**
-     * Returns true if the current organization is a first level organization.
-     *
-     * @returns if the current organization is a first level organization.
-     */
-    public static isCurrentOrganizationFirstLevel(): boolean {
-        return !!store.getState().organization?.isFirstLevelOrganization;
-    }
-
+    
     /**
      * Get the type of the current organization.
      *

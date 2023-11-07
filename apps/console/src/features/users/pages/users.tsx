@@ -66,7 +66,8 @@ import {
     store
 } from "../../core";
 import { FirstLevelOrgOnlyComponent } from "../../organizations/components/first-level-org-only-component";
-import { OrganizationUtils } from "../../organizations/utils";
+import { OrganizationType } from "../../organizations/constants";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorCategoryInterface,
@@ -159,6 +160,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ finalGuestList, setFinalGuestList ] = useState<UserInviteInterface[]>([]);
     const [ paginatedGuestList, setPaginateGuestList ] = useState<UserInviteInterface[]>([]);
 
+    const orgType: OrganizationType = useGetOrganizationType();
 
     const init : MutableRefObject<boolean> = useRef(true);
 
@@ -206,7 +208,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Fetch the list of available userstores.
      */
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationFirstLevel()) {
+        if (orgType !== OrganizationType.FIRST_LEVEL_ORGANIZATION) {
             return;
         }
 

@@ -42,6 +42,8 @@ import {
     getEmptyPlaceholderIllustrations
 } from "../../core";
 import { FirstLevelOrgOnlyComponent } from "../../organizations/components/first-level-org-only-component";
+import { OrganizationType } from "../../organizations/constants";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { OrganizationUtils } from "../../organizations/utils";
 import { getUserStoreList } from "../../userstores/api";
 import { UserStorePostData } from "../../userstores/models/user-stores";
@@ -97,6 +99,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ paginatedGroups, setPaginatedGroups ] = useState<GroupsInterface[]>([]);
 
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(GROUPS_SORTING_OPTIONS[ 0 ]);
+
+    const orgType: OrganizationType = useGetOrganizationType();
 
     useEffect(() => {
         if(searchQuery == "") {
@@ -202,7 +206,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
 
         setUserStore(storeOptions[ 0 ].value);
 
-        if (OrganizationUtils.isCurrentOrganizationFirstLevel()) {
+        if (orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION) {
             getUserStoreList()
                 .then((response: AxiosResponse<UserstoreListResponseInterface[]>) => {
                     if (storeOptions.length === 0) {
