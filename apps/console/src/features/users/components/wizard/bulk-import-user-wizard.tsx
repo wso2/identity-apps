@@ -183,7 +183,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         = useState<BulkResponseSummary>(initialBulkResponseSummary);
     const [ readWriteUserStoresList, setReadWriteUserStoresList ] = useState<DropdownItemProps[]>([]);
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>("");
-    const [ configureMode, setConfigureMode ] = useState<string>(undefined);
+    const [ configureMode, setConfigureMode ] = useState<string>(MultipleInviteMode.MANUAL);
     const [ emailData, setEmailData ] = useState<string[]>();
     const [ isEmailDataError, setIsEmailDataError ] = useState<boolean>(false);
     const [ emailDataError, setEmailDataError ] = useState<string>("");
@@ -253,13 +253,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     }, [ userstore ]);
 
     /**
-     * Set the default multiple invites option.
-     */
-    useEffect(() => {
-        setConfigureMode(MultipleInviteMode.MANUAL);
-    }, [ ]);
-
-    /**
      * Fetch the group list.
      */
     const getGroupMemberAssociation = async (): Promise<Record<string, GroupMemberAssociation>> => {
@@ -290,7 +283,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
         if (!emailValidation) {
             setIsEmailDataError(true);
-            setEmailDataError("Enter a valid email address");
+            setEmailDataError(
+                t("console:manage.features.users.guestUsers.fields." +
+                "username.validations.regExViolation")
+            );
             emailList.pop();
         }
     };
@@ -1036,7 +1032,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     };
 
     /**
-     * Generate SCIM Bulk Request Body
+     * Generate SCIM Bulk Request Body.
      *
      * @param attributeMapping - attribute mapping.
      * @returns SCIMBulkRequestBody
@@ -1098,13 +1094,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @returns SCIMBulkRequestBody
      */
     const generateMultipleUsersSCIMRequestBody = (): SCIMBulkEndpointInterface => {
-        // Create the data operations
+        // Create the data operations.
         const operations: SCIMBulkOperation[] = [];
         const users : { value: string; }[]= [];
         const asyncOperationID: string = uuidv4();
         const bulkIdEmail: string = "";
 
-        // Create the user record
+        // Create the user record.
         emailData?.map((email: string) => {
             const userDetails: UserDetailsInterface = {
                 emails: [
@@ -1144,7 +1140,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             operations.push(SCIMBulkOperation);
         });
 
-        // Create the roles record
+        // Create the roles record.
         rolesData?.map((role: RolesInterface) => {
             const roleDetails: PatchRoleDataInterface = {
                 "Operations":[
