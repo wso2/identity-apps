@@ -2514,6 +2514,15 @@ export const console: ConsoleNS = {
                                     empty: "C'est un champ obligatoire.",
                                     invalid: "Ce n'est pas une URL valide"
                                 }
+                            },
+                            replyToLogout: {
+                                hint: "Saisir l'URL du RP qui gère la réponse à la déconnexion.",
+                                label: "URL de la réponse à la déconnexion.",
+                                placeholder: "Saisir l'URL de la réponse à la déconnexion.",
+                                validations: {
+                                    empty: "C'est un champ obligatoire.",
+                                    invalid: "Ce n'est pas une URL valide"
+                                }
                             }
                         }
                     },

@@ -119,7 +119,8 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
             },
             inbound: {
                 realm: values.get("realm"),
-                replyTo: values.get("replyTo")
+                replyTo: values.get("replyTo"),
+                replyToLogout: values.get("replyToLogout")
             }
         };
     };
@@ -192,6 +193,38 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                         />
                         <Hint>
                             { t("console:develop.features.applications.forms.inboundSTS.fields.replyTo.hint") }
+                        </Hint>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <Field
+                            name="replyToLogout"
+                            label={ t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout.label") }
+                            required={ true }
+                            requiredErrorMessage={
+                                t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout.validations" +
+                                    ".empty")
+                            }
+                            placeholder={
+                                t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout.placeholder")
+                            }
+                            validation={ (value: string, validation: Validation) => {
+                                if (!FormValidation.url(value)) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(
+                                        t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout" +
+                                            ".validations.invalid")
+                                    );
+                                }
+                            } }
+                            type="text"
+                            value={ initialValues?.replyToLogout }
+                            readOnly={ readOnly }
+                            data-testid={ `${ testId }-reply-to-logout-url-input` }
+                        />
+                        <Hint>
+                            { t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

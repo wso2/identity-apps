@@ -367,6 +367,7 @@ export interface WSTrustMetaDataInterface {
 export interface PassiveStsConfigurationInterface {
     realm: string;
     replyTo: string;
+    replyToLogout: string;
 }
 
 export enum CustomTypeEnum {

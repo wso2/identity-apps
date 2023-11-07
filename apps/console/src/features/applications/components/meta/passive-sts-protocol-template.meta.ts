@@ -37,7 +37,8 @@ export const PassiveStsProtocolTemplate: ApplicationTemplateInterface = {
         inboundProtocolConfiguration: {
             passiveSts: {
                 realm: "",
-                replyTo: ""
+                replyTo: "",
+                replyToLogout: ""
             }
         },
         name: ""
