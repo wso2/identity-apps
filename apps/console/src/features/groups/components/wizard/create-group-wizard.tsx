@@ -21,7 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -30,7 +30,11 @@ import { GroupBasics } from "./group-basics";
 import { CreateGroupSummary } from "./group-summary";
 import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "../../../core";
 import { getOrganizationRoles } from "../../../organizations/api";
-import { OrganizationRoleManagementConstants } from "../../../organizations/constants";
+import {
+    OrganizationRoleManagementConstants,
+    OrganizationType
+} from "../../../organizations/constants/organization-constants";
+import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import {
     GenericOrganization,
     OrganizationRoleListItemInterface,
@@ -91,6 +95,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const orgType: OrganizationType = useGetOrganizationType();
 
     const [ currentStep, setCurrentWizardStep ] = useState<number>(initStep);
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
@@ -114,8 +119,6 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     const [ isEnded, setEnded ] = useState<boolean>(false);
 
     const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
-    const isRootOrganization: boolean = useMemo(() =>
-        OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
@@ -144,7 +147,12 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
     useEffect(() => {
         if (roleList.length < 1) {
-            if (isRootOrganization) {
+            const isSuperOrFirstLevelOrg: boolean = [
+                OrganizationType.SUPER_ORGANIZATION,
+                OrganizationType.FIRST_LEVEL_ORGANIZATION
+            ].includes(orgType);
+
+            if (isSuperOrFirstLevelOrg) {
                 getRolesList(null)
                     .then((response: AxiosResponse<RolesV2ResponseInterface>) => {
                         setRoleList(response?.data?.Resources);
