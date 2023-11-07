@@ -16,27 +16,31 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Heading } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { AddGroupUsers } from "./group-assign-users";
+import { UserStoreDetails } from "../../../core";
 import { SharedUserStoreConstants } from "../../../core/constants";
 import { SharedUserStoreUtils } from "../../../core/utils";
 // TODO: Remove this once the api is updated.
 import { FirstLevelOrgOnlyComponent } from "../../../organizations/components/first-level-org-only-component";
 import { OrganizationUtils } from "../../../organizations/utils";
-import {
-    APPLICATION_DOMAIN,
-    INTERNAL_DOMAIN
-} from "../../../roles/constants";
 import { getUserStoreList } from "../../../userstores/api";
+import { UserStoreProperty } from "../../../userstores/models";
 import { searchGroupList } from "../../api";
 import { CreateGroupFormData, SearchGroupInterface } from "../../models";
+
+type StoreOption = {
+    key: number;
+    text: string;
+    value: string;
+}
 
 /**
  * Interface to capture group basics props.
@@ -51,7 +55,7 @@ interface GroupBasicProps extends TestableComponentInterface {
 /**
  * Component to capture basic details of a new role.
  *
- * @param props Group Basic prop types
+ * @param props - props Group Basic prop types
  */
 export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasicProps): ReactElement => {
 
@@ -63,7 +67,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
     } = props;
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ userStore, setUserStore ] = useState<string>();
@@ -71,7 +75,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
     const [ basicDetails, setBasicDetails ] = useState<any>(null);
     const [ userList, setUserList ] = useState<any>(null);
 
-    const groupName = useRef<HTMLDivElement>();
+    const groupName: React.MutableRefObject<HTMLDivElement | undefined> = useRef<HTMLDivElement>();
 
     useEffect(() => {
         getUserStores();
@@ -82,36 +86,10 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
             onSubmit({ basicDetails, userList });
         }
     }, [ basicDetails, userList ]);
-
-    /**
-     * Contains domains needed for role creation.
-     *
-     * Note : Since primary domain is available all time,
-     *        hardcoded in the dropdown elements.
-     *
-     * TODO : Discuss and add or remove the Hybrid domains
-     *        to the dropdown.
-     */
-    const groupDomains = [ {
-        key: -1,
-        text: SharedUserStoreConstants.PRIMARY_USER_STORE, value: SharedUserStoreConstants.PRIMARY_USER_STORE
-    } ];
-
-    const roleDomains = [
-        {
-            key: -1,
-            text: APPLICATION_DOMAIN, value: APPLICATION_DOMAIN
-        },
-        {
-            key: 0,
-            text: INTERNAL_DOMAIN, value: INTERNAL_DOMAIN
-        }
-    ];
-
     /**
      * The following function change of the user stores.
      *
-     * @param values
+     * @param values - contains values from form elements 
      */
     const handleDomainChange = (values: Map<string, FormValue>) => {
         const domain: string = values.get("domain").toString();
@@ -130,28 +108,26 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
     /**
      * The following function validates role name against the user store regEx.
-     *
-     * @param roleName - User input role name
      */
     const validateGroupNamePattern = async (): Promise<string> => {
         if (!OrganizationUtils.isCurrentOrganizationRoot()) {
             return Promise.resolve(".*");
         }
 
-        let userStoreRegEx = "";
+        let userStoreRegEx: string = "";
 
         if (userStore && userStore !== SharedUserStoreConstants.PRIMARY_USER_STORE.toLocaleLowerCase()) {
             await SharedUserStoreUtils.getUserStoreRegEx(userStore,
                 SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
-                .then((response) => {
+                .then((response: string) => {
                     setRegExLoading(true);
                     userStoreRegEx = response;
                 });
         } else {
-            await SharedUserStoreUtils.getPrimaryUserStore().then((response) => {
+            await SharedUserStoreUtils.getPrimaryUserStore().then((response: void | UserStoreDetails) => {
                 setRegExLoading(true);
                 if (response && response.properties) {
-                    userStoreRegEx = response?.properties?.filter(property => {
+                    userStoreRegEx = response?.properties?.filter((property: UserStoreProperty) => {
                         return property.name === "RolenameJavaScriptRegEx";
                     })[ 0 ].value;
                 }
@@ -160,7 +136,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
         setRegExLoading(false);
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve: (value: string) => void, reject: (reason: string) => void) => {
             if (userStoreRegEx !== "") {
                 resolve(userStoreRegEx);
             } else {
@@ -173,14 +149,14 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
      * The following function fetch the user store list and set it to the state.
      */
     const getUserStores = () => {
-        const storeOptions = [
+        const storeOptions: StoreOption[] = [
             {
                 key: -1,
                 text: "Primary",
                 value: "primary"
             }
         ];
-        let storeOption = {
+        let storeOption: StoreOption = {
             key: null,
             text: "",
             value: ""
@@ -190,11 +166,11 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
         if (OrganizationUtils.isCurrentOrganizationFirstLevel()) {
             getUserStoreList()
-                .then((response) => {
+                .then((response: UserstoreListResponseInterface[] | any) => {
                     if (storeOptions.length === 0) {
                         storeOptions.push(storeOption);
                     }
-                    response.data.map((store, index) => {
+                    response.data.map((store: UserstoreListResponseInterface, index: number) => {
                         storeOption = {
                             key: index,
                             text: store.name,
@@ -226,7 +202,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
         <>
             <Forms
                 data-testid={ testId }
-                onSubmit={ (values) => {
+                onSubmit={ (values: Map<string, FormValue>) => {
                     setBasicDetails(getFormValues(values));
                 } }
                 submitState={ triggerSubmit }
@@ -268,9 +244,9 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                     "roleBasicDetails.roleName.validations.empty", { type: "Group" }) }
                                 validation={ async (value: string, validation: Validation) => {
                                     if (value) {
-                                        let isGroupNameValid = true;
+                                        let isGroupNameValid: boolean = true;
 
-                                        await validateGroupNamePattern().then(regex => {
+                                        await validateGroupNamePattern().then((regex: string) => {
                                             isGroupNameValid = SharedUserStoreUtils
                                                 .validateInputAgainstRegEx(value, regex);
                                         });
@@ -294,7 +270,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                             startIndex: 1
                                         };
 
-                                        await searchGroupList(searchData).then(response => {
+                                        await searchGroupList(searchData).then((response: any) => {
                                             if (response?.data?.totalResults !== 0) {
                                                 validation.isValid = false;
                                                 validation.errorMessages.push(
@@ -328,7 +304,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                 triggerSubmit={ triggerSubmit }
                 userStore={ userStore ?? SharedUserStoreConstants.PRIMARY_USER_STORE }
                 initialValues={ initialValues?.userList }
-                onSubmit={ (values) => setUserList(values) }
+                onSubmit={ (values: any) => setUserList(values) }
             />
         </>
     );
