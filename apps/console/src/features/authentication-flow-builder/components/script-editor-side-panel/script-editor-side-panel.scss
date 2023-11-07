@@ -24,8 +24,6 @@
     }
 
     .toolbar-container {
-        border-bottom: 1px solid var(--oxygen-palette-divider);
-
         .oxygen-toolbar {
             display: flex;
             justify-content: space-between;
@@ -33,6 +31,8 @@
             align-content: center;
             flex-wrap: nowrap;
             flex-direction: row;
+            padding-left: 0;
+            padding-right: 0;
 
             .actions {
                 display: flex;
@@ -53,6 +53,7 @@
     }
 
     .script-editor {
-        border-left: 1px solid var(--oxygen-palette-divider);
+        border: 1px solid var(--oxygen-palette-divider);
+        height: 500px;
     }
 }

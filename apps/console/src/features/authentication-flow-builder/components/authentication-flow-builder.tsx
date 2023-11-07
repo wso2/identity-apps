@@ -31,6 +31,7 @@ import { ReactFlowProvider } from "reactflow";
 import AuthenticationFlowModeSwitchDisclaimerModal from "./authentication-flow-mode-switch-disclaimer-modal";
 import AuthenticationFlowVisualEditor from "./authentication-flow-visual-editor";
 import PredefinedFlowsSidePanel from "./predefined-flows-side-panel/predefined-flows-side-panel";
+import ScriptBasedFlowSwitch from "./script-editor-side-panel/script-based-flow-switch";
 import ScriptEditorSidePanel from "./script-editor-side-panel/script-editor-side-panel";
 import SidePanelDrawer from "./side-panel-drawer";
 import { AppState } from "../../core/store";
@@ -138,97 +139,102 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
     };
 
     return (
-        <Box className="sign-in-method-split-view">
-            <SidePanelDrawer
-                open={ isPredefinedFlowsSidePanelDrawerOpen }
-                className={
-                    classNames("predefined-side-panel-drawer", { hidden: activeFlowMode.id === FlowModes[0].id })
-                }
-                panel={ <PredefinedFlowsSidePanel showAdaptiveLoginTemplates={ isAdaptiveAuthAvailable } /> }
-                panelControlsLabel={ t("console:loginFlow.predefinedFlows.panelHeader") }
-            >
-                <div id="drawer-container" style={ { position: "relative" } }>
-                    <Box>
-                        { isLegacyEditorEnabled && isVisualEditorEnabled && (
-                            <Box>
-                                <Tabs
-                                    value={ activeFlowMode.id }
-                                    onChange={ handleTabChange }
-                                    aria-label="basic tabs example"
-                                >
-                                    { FlowModes.map((mode: AuthenticationFlowBuilderModesInterface) => (
-                                        <Tab
-                                            key={ mode.id }
-                                            label={ (
-                                                <div className="beta-feature-tab-item">
-                                                    <Typography sx={ { fontWeight: 500 } }>{ mode.label }</Typography>
-                                                    { isSAASDeployment && mode.extra }
-                                                </div>
-                                            ) }
-                                            data-componentid={ `${componentId}-${ mode.id }-tab` }
-                                        />
-                                    )) }
-                                </Tabs>
-                            </Box>
-                        ) }
-                        <TabPanel
-                            index={ 0 }
-                            value={ activeFlowMode.id }
-                            data-componentid={ `${componentId}-legacy-builder` }
-                        >
-                            <div className="ui basic very padded segment sign-on-methods-tab-content">
-                                { LegacyBuilder }
-                            </div>
-                        </TabPanel>
-                        <TabPanel
-                            index={ 1 }
-                            value={ activeFlowMode.id }
-                            className="visual-editor-tab-panel"
-                            data-componentid={ `${componentId}-visual-builder` }
-                        >
-                            <SidePanelDrawer
-                                open={ isScriptEditorSidePanelDrawerOpen }
-                                onClose={ () => {
-                                    setIsScriptEditorSidePanelDrawerOpen(false);
-                                } }
-                                className={
-                                    classNames("script-editor-drawer", { "standalone": !isLegacyEditorEnabled })
-                                }
-                                drawerIcon={ <CodeWindowIcon height={ 16 } width={ 16 } /> }
-                                panel={ isAdaptiveAuthAvailable && <ScriptEditorSidePanel /> }
-                                panelControlsLabel={ t("console:loginFlow.scriptEditor.panelHeader") }
+        <Box>
+            <Box className="sign-in-method-split-view">
+                <SidePanelDrawer
+                    open={ isPredefinedFlowsSidePanelDrawerOpen }
+                    className={
+                        classNames("predefined-side-panel-drawer", { hidden: activeFlowMode.id === FlowModes[0].id })
+                    }
+                    panel={ <PredefinedFlowsSidePanel showAdaptiveLoginTemplates={ isAdaptiveAuthAvailable } /> }
+                    panelControlsLabel={ t("console:loginFlow.predefinedFlows.panelHeader") }
+                >
+                    <div id="drawer-container" style={ { position: "relative" } }>
+                        <Box>
+                            { isLegacyEditorEnabled && isVisualEditorEnabled && (
+                                <Box>
+                                    <Tabs
+                                        value={ activeFlowMode.id }
+                                        onChange={ handleTabChange }
+                                        aria-label="basic tabs example"
+                                    >
+                                        { FlowModes.map((mode: AuthenticationFlowBuilderModesInterface) => (
+                                            <Tab
+                                                key={ mode.id }
+                                                label={ (
+                                                    <div className="beta-feature-tab-item">
+                                                        <Typography sx={ { fontWeight: 500 } }>
+                                                            { mode.label }
+                                                        </Typography>
+                                                        { isSAASDeployment && mode.extra }
+                                                    </div>
+                                                ) }
+                                                data-componentid={ `${componentId}-${ mode.id }-tab` }
+                                            />
+                                        )) }
+                                    </Tabs>
+                                </Box>
+                            ) }
+                            <TabPanel
+                                index={ 0 }
+                                value={ activeFlowMode.id }
+                                data-componentid={ `${componentId}-legacy-builder` }
                             >
-                                <ReactFlowProvider>
-                                    <AuthenticationFlowVisualEditor
-                                        onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
-                                        className={
-                                            classNames("visual-editor", { "with-panel": isAdaptiveAuthAvailable })
-                                        }
-                                    />
-                                </ReactFlowProvider>
-                            </SidePanelDrawer>
-                        </TabPanel>
-                    </Box>
-                </div>
-            </SidePanelDrawer>
-            {
-                showAuthenticationFlowModeSwitchDisclaimerModal && (
-                    <AuthenticationFlowModeSwitchDisclaimerModal
-                        mode={ flowModeToSwitch }
-                        open={ showAuthenticationFlowModeSwitchDisclaimerModal }
-                        onPrimaryActionClick={ () => {
-                            setActiveFlowMode(flowModeToSwitch);
-                            setFlowModeToSwitch(null);
-                            setShowAuthenticationFlowModeSwitchDisclaimerModal(false);
-                            refetchApplication();
-                        } }
-                        onClose={ () => {
-                            setFlowModeToSwitch(null);
-                            setShowAuthenticationFlowModeSwitchDisclaimerModal(false);
-                        } }
-                    />
-                )
-            }
+                                <div className="ui basic very padded segment sign-on-methods-tab-content">
+                                    { LegacyBuilder }
+                                </div>
+                            </TabPanel>
+                            <TabPanel
+                                index={ 1 }
+                                value={ activeFlowMode.id }
+                                className="visual-editor-tab-panel"
+                                data-componentid={ `${componentId}-visual-builder` }
+                            >
+                                <SidePanelDrawer
+                                    open={ isScriptEditorSidePanelDrawerOpen }
+                                    onClose={ () => {
+                                        setIsScriptEditorSidePanelDrawerOpen(false);
+                                    } }
+                                    className={
+                                        classNames("script-editor-drawer", { "standalone": !isLegacyEditorEnabled })
+                                    }
+                                    drawerIcon={ <CodeWindowIcon height={ 16 } width={ 16 } /> }
+                                    panel={ isAdaptiveAuthAvailable && <ScriptEditorSidePanel /> }
+                                    panelControlsLabel={ t("console:loginFlow.scriptEditor.panelHeader") }
+                                >
+                                    <ReactFlowProvider>
+                                        <AuthenticationFlowVisualEditor
+                                            onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
+                                            className={
+                                                classNames("visual-editor", { "with-panel": isAdaptiveAuthAvailable })
+                                            }
+                                        />
+                                    </ReactFlowProvider>
+                                </SidePanelDrawer>
+                            </TabPanel>
+                        </Box>
+                    </div>
+                </SidePanelDrawer>
+                {
+                    showAuthenticationFlowModeSwitchDisclaimerModal && (
+                        <AuthenticationFlowModeSwitchDisclaimerModal
+                            mode={ flowModeToSwitch }
+                            open={ showAuthenticationFlowModeSwitchDisclaimerModal }
+                            onPrimaryActionClick={ () => {
+                                setActiveFlowMode(flowModeToSwitch);
+                                setFlowModeToSwitch(null);
+                                setShowAuthenticationFlowModeSwitchDisclaimerModal(false);
+                                refetchApplication();
+                            } }
+                            onClose={ () => {
+                                setFlowModeToSwitch(null);
+                                setShowAuthenticationFlowModeSwitchDisclaimerModal(false);
+                            } }
+                        />
+                    )
+                }
+            </Box>
+            { isAdaptiveAuthAvailable && <ScriptBasedFlowSwitch /> }
         </Box>
     );
 };

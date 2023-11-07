@@ -41,6 +41,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import SecretSelectionDropdown from "./secret-selection-dropdown";
+import { AdaptiveScriptUtils } from "../../../applications/utils/adaptive-script-utils";
 import { SecretModel } from "../../../secrets/models/secret";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import { SupportedEditorThemes } from "../../models/script-editor";
@@ -125,6 +126,20 @@ const ScriptEditorSidePanel = (props: PropsWithChildren<ScriptEditorSidePanelPro
         setIsSecretSelectionDropdownOpen(false);
     };
 
+    /**
+     * Get the adaptive script from authentication sequence.
+     * If the script is empty then default script will be returned.
+     *
+     * @returns Adaptive script.
+     */
+    const getAdaptiveScript = (): string => {
+        if (AdaptiveScriptUtils.isEmptyScript(authenticationSequence?.script)) {
+            return AdaptiveScriptUtils.generateScript(authenticationSequence?.steps?.length + 1).join("\n");
+        }
+
+        return authenticationSequence?.script;
+    };
+
     return (
         <Suspense fallback={ <CircularProgress /> }>
             <div className={ classNames("script-editor-side-panel", className) } data-componentid={ componentId }>
@@ -174,7 +189,7 @@ const ScriptEditorSidePanel = (props: PropsWithChildren<ScriptEditorSidePanelPro
                     height="100%"
                     language="javascript"
                     theme={ editorTheme }
-                    value={ authenticationSequence.script }
+                    value={ getAdaptiveScript() }
                     options={ {
                         automaticLayout: true
                     } }
