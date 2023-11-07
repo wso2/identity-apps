@@ -40,7 +40,7 @@ import "./script-based-flow-switch.scss";
 /**
  * Proptypes for the Script Based Flow switching component.
  */
-interface ScriptBasedFlowSwitchPropsInterface extends IdentifiableComponentInterface {
+export interface ScriptBasedFlowSwitchPropsInterface extends IdentifiableComponentInterface {
     /**
      * Make the form read only.
      */
