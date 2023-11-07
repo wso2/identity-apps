@@ -29,8 +29,6 @@ import { UserStoreDetails } from "../../../core";
 import { SharedUserStoreConstants } from "../../../core/constants";
 import { SharedUserStoreUtils } from "../../../core/utils";
 // TODO: Remove this once the api is updated.
-import { FirstLevelOrgOnlyComponent } from "../../../organizations/components/first-level-org-only-component";
-import { OrganizationType } from "../../../organizations/constants";
 import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { OrganizationUtils } from "../../../organizations/utils";
 import { getUserStoreList } from "../../../userstores/api";
@@ -77,7 +75,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
     const [ basicDetails, setBasicDetails ] = useState<any>(null);
     const [ userList, setUserList ] = useState<any>(null);
 
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { isRootOrganization } = useGetOrganizationType();
 
     const groupName: React.MutableRefObject<HTMLDivElement | undefined> = useRef<HTMLDivElement>();
 
@@ -168,7 +166,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
         setUserStore(storeOptions[ 0 ].value);
 
-        if (orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION) {
+        if (isRootOrganization) {
             getUserStoreList()
                 .then((response: UserstoreListResponseInterface[] | any) => {
                     if (storeOptions.length === 0) {
@@ -213,26 +211,26 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
             >
                 <Grid>
                     <GridRow columns={ 2 }>
-                        <FirstLevelOrgOnlyComponent>
+                        { isRootOrganization && (
                             <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
                                     data-testid={ `${ testId }-domain-dropdown` }
                                     type="dropdown"
                                     label={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
-                                    "domain.label.group") }
+                                        "domain.label.group") }
                                     name="domain"
                                     children={ userStoreOptions }
                                     placeholder={ t("console:manage.features.roles.addRoleWizard." +
                                         "forms.roleBasicDetails.domain.placeholder") }
                                     requiredErrorMessage={ t("console:manage.features.roles.addRoleWizard.forms." +
-                                    "roleBasicDetails.domain.validation.empty.group") }
+                                        "roleBasicDetails.domain.validation.empty.group") }
                                     required={ true }
                                     element={ <div></div> }
                                     listen={ handleDomainChange }
                                     value={ initialValues?.basicDetails?.domain ?? userStoreOptions[ 0 ]?.value }
                                 />
                             </GridColumn>
-                        </FirstLevelOrgOnlyComponent>
+                        ) }
                         <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 ref={ groupName }

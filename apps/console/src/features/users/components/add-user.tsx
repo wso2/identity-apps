@@ -25,8 +25,6 @@ import { useTranslation } from "react-i18next";
 import PasswordStrengthBar from "react-password-strength-bar";
 import { DropdownItemProps, Grid, Message } from "semantic-ui-react";
 import { SharedUserStoreUtils } from "../../core/utils";
-import { FirstLevelOrgOnlyComponent } from "../../organizations/components/first-level-org-only-component";
-import { OrganizationType } from "../../organizations/constants";
 import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getUserStoreList } from "../../userstores/api";
 import {
@@ -84,7 +82,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
     const { t } = useTranslation();
 
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { isRootOrganization } = useGetOrganizationType();
 
     // Username input validation error messages.
     const USER_ALREADY_EXIST_ERROR_MESSAGE: string = t("console:manage.features.user.forms.addUserForm.inputs." +
@@ -211,7 +209,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
         setUserStore(storeOptions[ 0 ].value as string);
 
-        if (orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION) {
+        if (isRootOrganization) {
             getUserStoreList()
                 .then((response: AxiosResponse) => {
                     if (storeOptions.length === 0) {
@@ -429,7 +427,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             submitState={ triggerSubmit }
         >
             <Grid>
-                <FirstLevelOrgOnlyComponent>
+                { isRootOrganization && (
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             data-testid="user-mgt-add-user-form-domain-dropdown"
@@ -448,7 +446,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             tabIndex={ 1 }
                         />
                     </Grid.Column>
-                </FirstLevelOrgOnlyComponent>
+                ) }
 
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                     <Field

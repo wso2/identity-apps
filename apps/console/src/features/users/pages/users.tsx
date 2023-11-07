@@ -65,8 +65,6 @@ import {
     history,
     store
 } from "../../core";
-import { FirstLevelOrgOnlyComponent } from "../../organizations/components/first-level-org-only-component";
-import { OrganizationType } from "../../organizations/constants";
 import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import {
     ConnectorPropertyInterface,
@@ -160,7 +158,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ finalGuestList, setFinalGuestList ] = useState<UserInviteInterface[]>([]);
     const [ paginatedGuestList, setPaginateGuestList ] = useState<UserInviteInterface[]>([]);
 
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { isRootOrganization } = useGetOrganizationType();
 
     const init : MutableRefObject<boolean> = useRef(true);
 
@@ -208,7 +206,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Fetch the list of available userstores.
      */
     useEffect(() => {
-        if (orgType !== OrganizationType.FIRST_LEVEL_ORGANIZATION) {
+        if (!isRootOrganization) {
             return;
         }
 
@@ -762,7 +760,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                     </Button>)
                                 }
                             />
-                            <FirstLevelOrgOnlyComponent>
+                            { isRootOrganization && (
                                 <Dropdown
                                     data-testid="user-mgt-user-list-userstore-dropdown"
                                     selection
@@ -770,7 +768,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                     onChange={ handleDomainChange }
                                     defaultValue="all"
                                 />
-                            </FirstLevelOrgOnlyComponent>
+                            ) }
                         </>
                     )
                 }
