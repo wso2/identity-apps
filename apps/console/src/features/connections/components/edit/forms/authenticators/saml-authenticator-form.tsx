@@ -109,6 +109,7 @@ export interface SamlPropertiesInterface {
     isEnableAssertionSigning?: boolean,   
     attributeConsumingServiceIndex?: string;
     AuthnContextComparisonLevel?: string;
+    IsAssertionEncrypted?: boolean;
 }
 
 const FORM_ID: string = "saml-authenticator-form";
@@ -250,10 +251,12 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             SSOUrl: findPropVal<string>({ defaultValue: "", key: "SSOUrl" }),
             SignatureAlgorithm: findPropVal<string>({ defaultValue: "RSA with SHA256", key: "SignatureAlgorithm" }),
             commonAuthQueryParams: findPropVal<string>({ defaultValue: "", key: "commonAuthQueryParams" }),
+            IsAssertionEncrypted: findPropVal<boolean>({ defaultValue: false, key: "IsAssertionEncrypted" }),
             /**
              * https://github.com/wso2/product-is/issues/17004
              */
-            isEnableAssertionSigning: findPropVal<boolean>({ defaultValue: false, key: "isEnableAssertionSigning" })
+            isEnableAssertionSigning: findPropVal<boolean>({ defaultValue: false, key: "isEnableAssertionSigning" }),
+
         } as SamlPropertiesInterface;
 
     }, []);
@@ -270,6 +273,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
         setIsArtifactBindingEnabled(initialFormValues.ISArtifactBindingEnabled);
         setFormValues({ ...initialFormValues });
+        setIsEnableAssetionEncryption(initialFormValues.IsAssertionEncrypted);
     }, [ initialFormValues ]);
 
     useEffect(() => {
