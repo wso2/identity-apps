@@ -45,7 +45,7 @@ import { AdaptiveScriptUtils } from "../../../applications/utils/adaptive-script
 import { SecretModel } from "../../../secrets/models/secret";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import { SupportedEditorThemes } from "../../models/script-editor";
-import "./script-editor.scss";
+import "./script-editor-panel.scss";
 
 /**
  * Proptypes for the Script editor panel component.
