@@ -41,6 +41,7 @@ import {
     getAUserStore,
     getEmptyPlaceholderIllustrations
 } from "../../core";
+import { FirstLevelOrgOnlyComponent } from "../../organizations/components/first-level-org-only-component";
 import { OrganizationUtils } from "../../organizations/utils";
 import { getUserStoreList } from "../../userstores/api";
 import { UserStorePostData } from "../../userstores/models/user-stores";
@@ -422,14 +423,16 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
                 sortStrategy={ listSortingStrategy }
                 rightActionPanel={
-                    (<Dropdown
-                        data-testid="group-mgt-groups-list-stores-dropdown"
-                        selection
-                        options={ userStoreOptions && userStoreOptions }
-                        placeholder={ t("console:manage.features.groups.list.storeOptions") }
-                        value={ userStore && userStore }
-                        onChange={ handleDomainChange }
-                    />)
+                    (<FirstLevelOrgOnlyComponent>
+                        <Dropdown
+                            data-testid="group-mgt-groups-list-stores-dropdown"
+                            selection
+                            options={ userStoreOptions && userStoreOptions }
+                            placeholder={ t("console:manage.features.groups.list.storeOptions") }
+                            value={ userStore && userStore }
+                            onChange={ handleDomainChange }
+                        />
+                    </FirstLevelOrgOnlyComponent>)
                 }
                 showPagination={ paginatedGroups.length > 0  }
                 showTopActionPanel={ isGroupsListRequestLoading
