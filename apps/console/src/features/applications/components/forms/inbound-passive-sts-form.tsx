@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -81,7 +81,6 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
     const { t } = useTranslation();
 
     const [ showCertificateModal, setShowCertificateModal ] = useState<boolean>(false);
-    const [ certificateDisplay ] = useState<DisplayCertificate>(null);
     const [ finalCertValue, setFinalCertValue ] = useState<string>(undefined);
     const [ selectedCertType, setSelectedCertType ] = useState<CertificateTypeInterface>(CertificateTypeInterface.NONE);
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
@@ -222,7 +221,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                             type="text"
                             value={ initialValues?.replyToLogout }
                             readOnly={ readOnly }
-                            data-testid={ `${ testId }-reply-to-logout-url-input` }
+                            data-componentid={ `${ testId }-reply-to-logout-url-input` }
                         />
                         <Hint>
                             { t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout.hint") }
@@ -253,7 +252,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                     showCertificateModal && (
                         <CertificateFormFieldModal
                             open={ showCertificateModal }
-                            certificate={ certificateDisplay }
+                            certificate={ null }
                             onClose={ () => {
                                 setShowCertificateModal(false);
                             } }
