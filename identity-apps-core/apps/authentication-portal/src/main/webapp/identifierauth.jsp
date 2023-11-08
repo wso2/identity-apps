@@ -327,7 +327,7 @@ if (!StringUtils.equals("CONSOLE",clientId)
             <button
                 type="button"
                 <% if(StringUtils.isNotBlank(selfSignUpOverrideURL)) { %>
-                onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(selfSignUpOverrideURL)%>';"
+                onclick="window.location.href='<%=i18nLink(userLocale, selfSignUpOverrideURL)%>';"
                 <% } else { %>
                 onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>';"
                 <% } %>
