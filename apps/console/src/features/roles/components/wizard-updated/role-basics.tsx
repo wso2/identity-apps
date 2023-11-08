@@ -148,7 +148,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                     ? (
                                         <>
                                             { t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." + 
-                                                "assignedApplication.applicationSubTitle.application") }
+                                                "assignedApplication.applicationSubTitle.organization") }
                                             <Link
                                                 data-componentid={ `${componentId}-link-navigate-roles` }
                                                 onClick={ () => navigateToApplicationEdit(application?.id) }
@@ -158,7 +158,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                             </Link>
                                         </>
                                     ) : t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." + 
-                                        "assignedApplication.applicationSubTitle.organization")
+                                        "assignedApplication.applicationSubTitle.application")
                             } 
                         />
                     ),
