@@ -210,7 +210,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
 
         const sequence: AuthenticationSequenceInterface = {
             ...template.sequence,
-            script: template.sequence.script ? template.sequence.script : 
+            script: template.sequence.script ??
                 AdaptiveScriptUtils.generateScript(template.sequence.steps.length + 1).join("\n")
         };
 
