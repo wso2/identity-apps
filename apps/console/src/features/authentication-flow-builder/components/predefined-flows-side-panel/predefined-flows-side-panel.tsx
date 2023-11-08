@@ -210,7 +210,8 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
 
         const sequence: AuthenticationSequenceInterface = {
             ...template.sequence,
-            script: AdaptiveScriptUtils.generateScript(template.sequence.steps.length + 1).join("\n")
+            script: template.sequence.script ??
+                AdaptiveScriptUtils.generateScript(template.sequence.steps.length + 1).join("\n")
         };
 
         if (template.sequenceCategoryId === PredefinedFlowCategories.Social) {
