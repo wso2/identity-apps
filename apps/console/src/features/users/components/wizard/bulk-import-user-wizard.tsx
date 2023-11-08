@@ -1506,10 +1506,17 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }> 
                                             <Form.Field required={ true }>
-                                                <label className="pb-2">
+                                                <InputLabel
+                                                    htmlFor="tags-filled"
+                                                    disableAnimation
+                                                    shrink={ false }
+                                                    margin="dense"
+                                                    className="pb-2"
+                                                    data-componentid={ `${componentId}-userstore-label` }
+                                                >
                                                     { t("console:manage.features.user.forms.addUserForm."+
-                                                    "inputs.domain.placeholder") }
-                                                </label>
+                                                    "inputs.domain.label") }
+                                                </InputLabel>
                                                 <Dropdown
                                                     className="mt-2"
                                                     fluid
@@ -1782,10 +1789,17 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         <Grid.Row columns={ 1 }>
                                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }> 
                                                 <Form.Field required={ true }>
-                                                    <label className="pb-2">
+                                                    <InputLabel
+                                                        htmlFor="tags-filled"
+                                                        disableAnimation
+                                                        shrink={ false }
+                                                        margin="dense"
+                                                        className="pb-2"
+                                                        data-componentid={ `${componentId}-userstore-label` }
+                                                    >
                                                         { t("console:manage.features.user.forms.addUserForm."+
-                                                            "inputs.domain.placeholder") }
-                                                    </label>
+                                                        "inputs.domain.label") }
+                                                    </InputLabel>
                                                     <Dropdown
                                                         className="mt-2"
                                                         fluid
@@ -1801,6 +1815,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                         }
                                                         name="userstore"
                                                         disabled={ true }
+                                                        readOnly={ true }
                                                         value={ selectedUserStore }
                                                         onChange={
                                                             (e: React.ChangeEvent<HTMLInputElement>,
