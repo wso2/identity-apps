@@ -19,6 +19,10 @@
 .script-editor-panel {
     height: 100%;
 
+    .predefined-flows-side-panel-content {
+        border-left: 1px solid var(--oxygen-palette-divider);
+    }
+
     .toolbar-container {
         .oxygen-toolbar {
             display: flex;

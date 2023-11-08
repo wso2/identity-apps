@@ -17,11 +17,12 @@
  */
 
 .script-based-flow-switch {
-    border: 1px solid var(--oxygen-palette-divider);
-    border-radius: 8px;
-    border-top-left-radius: 0;
-    border-top: none;
-    padding-right: calc(var(--asg-auth-flow-builder-side-panel-drawer-mini-width) + 2px);
+    .oxygen-accordion {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        border-top: 1px solid var(--oxygen-palette-divider);
+    }
 
     .script-based-flow-switch-accordion-summary {
         display: flex;
