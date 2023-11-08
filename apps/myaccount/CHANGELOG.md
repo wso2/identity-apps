@@ -1,5 +1,18 @@
 # @wso2is/myaccount
 
+## 2.2.10
+
+### Patch Changes
+
+- [#4516](https://github.com/wso2/identity-apps/pull/4516) [`2fb7b58007`](https://github.com/wso2/identity-apps/commit/2fb7b58007edd8fd1ecb8a05be7a589a784e4a9c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix danger zone text taking full width in medium and large screen sizes
+
+* [#4526](https://github.com/wso2/identity-apps/pull/4526) [`352f7882bd`](https://github.com/wso2/identity-apps/commit/352f7882bd88c0b468a13df9aad3fbea08ffc455) Thanks [@Achintha444](https://github.com/Achintha444)! - Add self signup URL text to the branding.
+
+* Updated dependencies [[`2fb7b58007`](https://github.com/wso2/identity-apps/commit/2fb7b58007edd8fd1ecb8a05be7a589a784e4a9c), [`352f7882bd`](https://github.com/wso2/identity-apps/commit/352f7882bd88c0b468a13df9aad3fbea08ffc455)]:
+  - @wso2is/react-components@2.0.13
+  - @wso2is/theme@2.0.30
+  - @wso2is/i18n@2.0.31
+
 ## 2.2.9
 
 ### Patch Changes
