@@ -20,10 +20,11 @@ import { AlertLevels, TestableComponentInterface, UserstoreListResponseInterface
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Heading } from "@wso2is/react-components";
-import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid, GridColumn, GridRow } from "semantic-ui-react";
+import { Dispatch } from "redux";
+import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { AddGroupUsers } from "./group-assign-users";
 import { UserStoreDetails } from "../../../core";
 import { SharedUserStoreConstants } from "../../../core/constants";
@@ -36,12 +37,6 @@ import { getUserStoreList } from "../../../userstores/api";
 import { UserStoreProperty } from "../../../userstores/models";
 import { searchGroupList } from "../../api";
 import { CreateGroupFormData, SearchGroupInterface } from "../../models";
-
-type StoreOption = {
-    key: number;
-    text: string;
-    value: string;
-}
 
 /**
  * Interface to capture group basics props.
@@ -68,7 +63,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
     } = props;
 
     const { t } = useTranslation();
-    const dispatch: Dispatch<any> = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ userStore, setUserStore ] = useState<string>();
@@ -152,20 +147,20 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
      * The following function fetch the user store list and set it to the state.
      */
     const getUserStores = () => {
-        const storeOptions: StoreOption[] = [
+        const storeOptions: DropdownItemProps[] = [
             {
                 key: -1,
                 text: "Primary",
                 value: "primary"
             }
         ];
-        let storeOption: StoreOption = {
+        let storeOption: DropdownItemProps = {
             key: null,
             text: "",
             value: ""
         };
 
-        setUserStore(storeOptions[ 0 ].value);
+        setUserStore(storeOptions[ 0 ].value as string);
 
         if (isRootOrganization) {
             getUserStoreList()

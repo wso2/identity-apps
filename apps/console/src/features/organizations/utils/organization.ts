@@ -46,7 +46,7 @@ export class OrganizationUtils {
         return store.getState().organization?.organization?.id
             === OrganizationManagementConstants.ROOT_ORGANIZATION_ID;
     }
-    
+
     /**
      * Get the type of the current organization.
      *
