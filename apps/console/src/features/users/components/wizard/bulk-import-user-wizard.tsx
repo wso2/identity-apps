@@ -21,8 +21,9 @@ import {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
 } from "@mui/material";
-import { Chip, TextField } from "@oxygen-ui/react";
+import { Chip, TextField, Typography } from "@oxygen-ui/react";
 import Alert from "@oxygen-ui/react/Alert";
+import Box from "@oxygen-ui/react/Box";
 import InputLabel from "@oxygen-ui/react/InputLabel/InputLabel";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -53,7 +54,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon, Modal } from "semantic-ui-react";
+import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon, Label, Modal } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
 import { getUserStores } from "../../../../extensions/components/users/api";
 import { UsersConstants } from "../../../../extensions/components/users/constants";
@@ -67,6 +68,8 @@ import {
     UserStoreProperty,
     getCertificateIllustrations
 } from "../../../core";
+import { RoleAudienceTypes } from "../../../roles/constants";
+import { PatchRoleDataInterface } from "../../../roles/models";
 import { PRIMARY_USERSTORE } from "../../../userstores/constants";
 import { addBulkUsers } from "../../api";
 import {
@@ -168,24 +171,38 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
     const [ selectedCSVFile, setSelectedCSVFile ] = useState<File>(null);
     const [ userData, setUserData ] = useState<CSVResult>();
-    const [ alert, setAlert, alertComponent ] = useWizardAlert({ "data-componentid": `${componentId}-alert` });
     const [ hasError, setHasError ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ response, setResponse ] = useState<BulkUserImportOperationResponse[]>([]);
+    const [ manualInviteResponse, setManualInviteResponse ] = useState<BulkUserImportOperationResponse[]>([]);
     const [ showResponseView, setShowResponseView ] = useState<boolean>(false);
     const [ showManualInviteTable, setshowManualInviteTable ] = useState<boolean>(false);
     const [ bulkResponseSummary, setBulkResponseSummary ] = useState<BulkResponseSummary>(initialBulkResponseSummary);
+    const [ manualInviteResponseSummary, setManualInviteesponseSummary ]
+        = useState<BulkResponseSummary>(initialBulkResponseSummary);
     const [ readWriteUserStoresList, setReadWriteUserStoresList ] = useState<DropdownItemProps[]>([]);
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>("");
-    const [ configureMode, setConfigureMode ] = useState<string>(undefined);
+    const [ configureMode, setConfigureMode ] = useState<string>(MultipleInviteMode.MANUAL);
     const [ emailData, setEmailData ] = useState<string[]>();
     const [ isEmailDataError, setIsEmailDataError ] = useState<boolean>(false);
     const [ emailDataError, setEmailDataError ] = useState<string>("");
     const [ roleUserAssociations, setRoleUserAssociations ] = useState<Record<string, RoleUserAssociation>>({});
+    const [ rolesData, setRolesData ] = useState<RolesInterface[]>();
+    const [ alert, setAlert, alertComponent ] = useWizardAlert({ "data-componentid": `${componentId}-alert` });
+    const [ manualInviteAlert, setManualInviteAlert, manualInviteAlertComponent ]
+        = useWizardAlert({ "data-componentid": `${componentId}-manual-invite-alert` });
 
     const optionsArray: string[] = [];
     
+    const {
+        data: allRolesList,
+        isLoading: isAllRolesListLoading,
+        error: allRolesListError
+    } = useRolesList(
+        undefined, undefined, undefined
+    );
+
     const {
         data: rolesList,
         isLoading: isRolesListLoading,
@@ -198,7 +215,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * Handle if any error occurs while fetching the roles list.
      */
     useEffect(() => {
-        if (rolesListError) {
+        if (rolesListError || allRolesListError) {
             dispatch(
                 addAlert({
                     description: t("console:manage.features.roles.notifications.fetchRoles.genericError.description"),
@@ -207,7 +224,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 })
             );
         }
-    }, [ rolesListError ]);
+    }, [ rolesListError, allRolesListError ]);
     
     /**
      * Fetch the user roles list.
@@ -259,12 +276,20 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         }
     };
 
-    /**
-     * Set the default multiple invites option.
-     */
-    useEffect(() => {
-        setConfigureMode(MultipleInviteMode.MANUAL);
-    }, [ ]);
+    // Validate the input string is an email address.
+    const validateEmail = (emailList: string[]) => {
+
+        const emailValidation: boolean = FormValidation.email(emailList[emailList.length-1]);
+
+        if (!emailValidation) {
+            setIsEmailDataError(true);
+            setEmailDataError(
+                t("console:manage.features.users.guestUsers.fields." +
+                "username.validations.regExViolation")
+            );
+            emailList.pop();
+        }
+    };
 
     /**
      * Fetches SCIM dialects.
@@ -1007,7 +1032,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     };
 
     /**
-     * Generate SCIM Bulk Request Body
+     * Generate SCIM Bulk Request Body.
      *
      * @param attributeMapping - attribute mapping.
      * @returns SCIMBulkRequestBody
@@ -1069,10 +1094,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
      * @returns SCIMBulkRequestBody
      */
     const generateMultipleUsersSCIMRequestBody = (): SCIMBulkEndpointInterface => {
-        // Create the data operations
+        // Create the data operations.
         const operations: SCIMBulkOperation[] = [];
+        const users : { value: string; }[]= [];
+        const asyncOperationID: string = uuidv4();
+        const bulkIdEmail: string = "";
 
-        // Create the user record
+        // Create the user record.
         emailData?.map((email: string) => {
             const userDetails: UserDetailsInterface = {
                 emails: [
@@ -1096,7 +1124,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     askPassword: "true"
                 }
             };
-            const asyncOperationID: string = uuidv4();
             
             const SCIMBulkOperation: SCIMBulkOperation = {
                 bulkId: `bulkId:${email}:${asyncOperationID}`,
@@ -1105,7 +1132,35 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 path: UserManagementConstants.SCIM_USER_PATH
             };
 
+            const user: { value: string; } = {
+                value: `bulkId:bulkId:${email}:${asyncOperationID}`
+            };
+            
+            users.push(user);
             operations.push(SCIMBulkOperation);
+        });
+
+        // Create the roles record.
+        rolesData?.map((role: RolesInterface) => {
+            const roleDetails: PatchRoleDataInterface = {
+                "Operations":[
+                    {
+                        op: "add",
+                        value: {
+                            users: users
+                        }
+                    }
+                ]
+            };
+            
+            const SCIMRolesOperation: SCIMBulkOperation = {
+                bulkId: `bulkId:${bulkIdEmail}:${asyncOperationID}`,
+                data: roleDetails,
+                method: HttpMethods.PATCH,
+                path: `${UserManagementConstants.SCIM_V2_ROLE_PATH}/${role?.id}`
+            };
+
+            operations.push(SCIMRolesOperation);
         });
 
         return {
@@ -1130,12 +1185,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 throw new Error("Failed to import users.");
             }
 
-            const response: BulkUserImportOperationResponse[] = scimResponse.data.Operations.map(generateBulkResponse);
+            const response: BulkUserImportOperationResponse[]
+                = scimResponse.data.Operations.map(generateManualInviteResponse);
 
-            setResponse(response);
+            setManualInviteResponse(response);
         } catch (error) {
             setHasError(true);
-            setAlert({
+            setManualInviteAlert({
                 description: t(
                     "console:manage.features.users.notifications.bulkImportUser.submit.genericError.description"),
                 level: AlertLevels.ERROR,
@@ -1279,6 +1335,88 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     };
 
     /**
+     * Generate bulk response. 
+     * @param operation - SCIM bulk operation.
+     * @returns - BulkUserImportOperationResponse
+     */
+    const generateManualInviteResponse = (operation: SCIMBulkResponseOperation): BulkUserImportOperationResponse => {
+        const resourceIdentifier: string = operation?.bulkId.split(":")[1];
+        const statusCode: number = operation?.status?.code;
+        let operationType: BulkImportResponseOperationTypes = BulkImportResponseOperationTypes.USER_CREATION;
+
+        const defaultMsg: string = t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary." +
+        "tableMessages.internalErrorMessage");
+
+        let statusMessages: Record<number, string> = {};
+
+        if (operation?.method === HttpMethods.POST) {
+            statusMessages = {
+                201: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "userCreatedMessage"),
+                202: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "userCreationAcceptedMessage"),
+                400: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "invalidDataMessage"),
+                409: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "userAlreadyExistsMessage"),
+                500: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                    "internalErrorMessage")
+            };
+        } else if (operation?.method === HttpMethods.PATCH) {
+            operationType = BulkImportResponseOperationTypes.ROLE_ASSIGNMENT;
+            statusMessages = {
+                200: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                "userAssignmentSuccessMessage", { resource: resourceIdentifier }),
+                400: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                "userAssignmentFailedMessage", { resource: resourceIdentifier }),
+                500: t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary.tableMessages." +
+                "userAssignmentInternalErrorMessage", { resource: resourceIdentifier })
+            };
+        }
+        
+        // Functional update to update the bulk response summary.
+        setManualInviteesponseSummary((prevSummary: BulkResponseSummary) => {
+            const successUserAssignment: number = (operation?.method === HttpMethods.PATCH && statusCode === 200) ?
+                prevSummary.successUserAssignment + 1 : prevSummary.successUserAssignment;
+            
+            const failedUserAssignment: number = (operation?.method === HttpMethods.PATCH && statusCode !== 200) ?
+                prevSummary.failedUserAssignment + 1 : prevSummary.failedUserAssignment;
+            
+            const successUserCreation: number =
+                (operation?.method === HttpMethods.POST && (statusCode === 201 || statusCode === 202)) ?
+                    prevSummary.successUserCreation + 1 :
+                    prevSummary.successUserCreation;
+            
+            const failedUserCreation: number =
+                (operation?.method === HttpMethods.POST && (statusCode !== 201 && statusCode !== 202)) ?
+                    prevSummary.failedUserCreation + 1 :
+                    prevSummary.failedUserCreation;
+
+            return {
+                ...prevSummary,
+                failedUserAssignment,
+                failedUserCreation,
+                successUserAssignment,
+                successUserCreation
+            };
+        });
+
+        let _statusCode: BulkUserImportStatus = BulkUserImportStatus.FAILED;
+        
+        if (statusCode === 201 || statusCode === 202 || statusCode === 200) {
+            _statusCode = BulkUserImportStatus.SUCCESS;
+        }
+
+        return {
+            message: statusMessages[statusCode] || defaultMsg,
+            operationType,
+            resourceIdentifier,
+            status: getStatusFromCode(statusCode),
+            statusCode: _statusCode
+        };
+    };
+
+    /**
      * Get status message from the status code.
      *
      * @param statusCode - Status code from the bulk response.
@@ -1342,6 +1480,15 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         if (configureMode == MultipleInviteMode.MANUAL) {
             return (
                 <>
+                    { manualInviteAlert
+                            && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        { manualInviteAlertComponent }
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                    }
                     {
                         !showManualInviteTable
                             ? (
@@ -1351,7 +1498,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             <Alert severity="warning">
                                                 { 
                                                     t("console:manage.features.user.modals.bulkImportUserWizard" +
-                                                ".wizardSummary.manualCreation.warningMessage") 
+                                                    ".wizardSummary.manualCreation.warningMessage") 
                                                 }
                                             </Alert>
                                         </Grid.Column>
@@ -1361,7 +1508,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             <Form.Field required={ true }>
                                                 <label className="pb-2">
                                                     { t("console:manage.features.user.forms.addUserForm."+
-                                                            "inputs.domain.placeholder") }
+                                                    "inputs.domain.placeholder") }
                                                 </label>
                                                 <Dropdown
                                                     className="mt-2"
@@ -1391,6 +1538,122 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             </Form.Field> 
                                         </Grid.Column>
                                     </Grid.Row>
+                                    { allRolesList
+                                    &&  (
+                                        <Autocomplete
+                                            size="small"
+                                            multiple
+                                            fullWidth
+                                            disablePortal
+                                            id="combo-box-demo"
+                                            options={ 
+                                                allRolesList?.Resources
+                                            }
+                                            getOptionLabel={ (option: RolesInterface) => option?.displayName }
+                                            renderOption={ (
+                                                props: React.HTMLAttributes<HTMLLIElement>,
+                                                option: RolesInterface
+                                            ) => (
+                                                <Box 
+                                                    component="li"
+                                                    { ...props }
+                                                >
+                                                    <Typography
+                                                        sx={ { fontWeight: 500 } }
+                                                    >
+                                                        { option?.displayName }
+                                                    </Typography>
+                                                    <Typography
+                                                        variant="caption"
+                                                        className="mr-2 ml-6"
+                                                    >
+                                                        { " Audience:"  }
+                                                    </Typography>
+                                                    <label>
+                                                        {
+                                                            option?.audience?.type.charAt(0).toUpperCase()
+                                                            +option?.audience?.type.slice(1)
+                                                        }
+                                                    </label>
+                                                    <Label
+                                                        pointing="left"
+                                                        size="mini"
+                                                        className={ 
+                                                            RoleAudienceTypes.ORGANIZATION
+                                                            === option?.audience?.type.toUpperCase()
+                                                                ? "issuer-label"
+                                                                : "client-id-label"
+                                                        }
+                                                    >
+                                                        { option?.audience?.display }
+                                                    </Label>
+                                                </Box>
+                                            ) }
+                                            renderInput={ (params: AutocompleteRenderInputParams) => 
+                                                (<>
+                                                    <InputLabel
+                                                        htmlFor="tags-filled"
+                                                        disableAnimation
+                                                        shrink={ false }
+                                                        margin="dense"
+                                                        className="mt-2"
+                                                        data-componentid={ `${componentId}-roles-label` }
+                                                    >
+                                                        { 
+                                                            t("console:manage.features.user.modals." +
+                                                            "bulkImportUserWizard.wizardSummary." +
+                                                            "manualCreation.rolesLabel")
+                                                        }
+                                                    </InputLabel>
+                                                    <TextField
+                                                        id="tags-filled"
+                                                        margin="normal"
+                                                        InputLabelProps= { {
+                                                            required: true
+                                                        } }
+                                                        { ...params }
+                                                        required
+                                                        variant="outlined"
+                                                        placeholder={
+                                                            t("console:manage.features.user.modals." +
+                                                            "bulkImportUserWizard.wizardSummary." +
+                                                            "manualCreation.rolesPlaceholder") 
+                                                        }
+                                                        data-componentid={ `${componentId}-roles-input` }
+                                                
+                                                    />
+                                                </>)
+                                            }
+                                            onChange={ (
+                                                event: React.SyntheticEvent<Element, Event>,
+                                                value: RolesInterface[]
+                                            ) => {
+                                                setRolesData(value);
+                                            } }
+                                            renderTags={ (
+                                                value: RolesInterface[],
+                                                getTagProps: AutocompleteRenderGetTagProps
+                                            ) =>
+                                                value.map((option: RolesInterface, index: number) => (
+                                                    <Chip 
+                                                        key={ index }
+                                                        size="small"
+                                                        className="oxygen-chip-beta"
+                                                        label={ 
+                                                            (<label>
+                                                                {
+                                                                    `${option?.displayName}:
+                                                                    ${option?.audience?.type.charAt(0).toUpperCase()}${
+                                                                    option?.audience?.type.slice(1)}`
+                                                                }
+                                                            </label>)
+                                                        }
+                                                        { ...getTagProps({ index }) } 
+                                                    />
+                                                ))
+                                            }
+                                        />)
+                                    }
                                     <Autocomplete
                                         size="small"
                                         limitTags={ userConfig.bulkUserImportLimit.inviteEmails }
@@ -1427,7 +1690,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                 >
                                                     { 
                                                         t("console:manage.features.user.modals.bulkImportUserWizard" +
-                                                    ".wizardSummary.manualCreation.emailsLabel")
+                                                        ".wizardSummary.manualCreation.emailsLabel")
                                                     }
                                                 </InputLabel>
                                                 <TextField
@@ -1436,7 +1699,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     error={ isEmailDataError }
                                                     helperText= { 
                                                         isEmailDataError
-                                                    && emailDataError
+                                                        && emailDataError
                                                     }
                                                     InputLabelProps= { {
                                                         required: true
@@ -1446,7 +1709,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     variant="outlined"
                                                     placeholder={
                                                         t("console:manage.features.user.modals.bulkImportUserWizard" +
-                                                    ".wizardSummary.manualCreation.emailsPlaceholder") 
+                                                        ".wizardSummary.manualCreation.emailsPlaceholder") 
                                                     }
                                                     data-componentid={ `${componentId}-email-input` }
                                                 />
@@ -1465,16 +1728,16 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     />
                                     <Hint>
                                         { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
-                                    ".manualCreation.hint" ) }
+                                        ".manualCreation.hint" ) }
                                     </Hint>
                                 </>
                             )
                             : (
                                 <>
-                                    { alert && (
+                                    { manualInviteAlert && (
                                         <Grid.Row columns={ 1 }>
                                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                                { alertComponent }
+                                                { manualInviteAlertComponent }
                                             </Grid.Column>
                                         </Grid.Row>
                                     ) }
@@ -1482,8 +1745,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         isLoading={ isSubmitting }
                                         data-componentid={ `${componentId}-manual-response-list` }
                                         hasError={ hasError }
-                                        responseList={ response }
-                                        bulkResponseSummary={ bulkResponseSummary }
+                                        responseList={ manualInviteResponse }
+                                        bulkResponseSummary={ manualInviteResponseSummary }
                                     />
                                 </>
                             )
@@ -1502,7 +1765,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             { alertComponent }
                                         </Grid.Column>
                                     </Grid.Row>
-                                ) }
+                                )
+                            }
                             { !isLoading && !hideUserStoreDropdown()
                                 && (
                                     <>
@@ -1612,18 +1876,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         }
     };
 
-    // Validate the input string is an email address.
-    const validateEmail = (emailList: string[]) => {
-
-        const emailValidation: boolean = FormValidation.email(emailList[emailList.length-1]);
-
-        if (!emailValidation) {
-            setIsEmailDataError(true);
-            setEmailDataError("Enter a valid email address");
-            emailList.pop();
-        }
-    };
-
     return (
         <Modal
             data-testid={ componentId }
@@ -1638,15 +1890,15 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         >
             <Modal.Header className="wizard-header">
                 { t("console:manage.features.user.modals.bulkImportUserWizard.title") }
-                <Heading as="h6">{ t("console:manage.features.user.modals.bulkImportUserWizard.subTitle") }</Heading>
+                <Heading as="h6">
+                    { t("console:manage.features.user.modals.bulkImportUserWizard.subTitle") }
+                </Heading>
             </Modal.Header>
 
             <Modal.Content className="content-container" scrolling>
                 <Grid>
                     { resolveMultipleUsersModeSelection() }
-                    {
-                        resolveMultipleUsersConfiguration()
-                    }
+                    { resolveMultipleUsersConfiguration() }
                 </Grid>
 
             </Modal.Content>
@@ -1679,10 +1931,15 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     floated="right"
                                                     onClick={ manualInviteMultipleUsers }
                                                     loading={ isSubmitting }
-                                                    disabled={ isLoading || isSubmitting || hasError }
+                                                    disabled={ 
+                                                        isLoading
+                                                        ||isSubmitting
+                                                        || hasError
+                                                        || isAllRolesListLoading
+                                                    }
                                                 >
                                                     { t("console:manage.features.user.modals." +
-                                                "bulkImportUserWizard.wizardSummary.manualCreation.primaryButton") }
+                                                    "bulkImportUserWizard.wizardSummary.manualCreation.primaryButton") }
                                                 </PrimaryButton>
                                             </Grid.Column>
                                         )

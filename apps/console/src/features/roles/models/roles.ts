@@ -48,10 +48,11 @@ export interface CreateRoleMemberInterface {
  */
 export interface CreateRoleFormData {
     domain?: string;
-    roleName: string;
+    roleName?: string;
     assignedApplicationId?: string;
     assignedApplicationName?: string;
     roleAudience?: string;
+    displayName?: string;
 }
 
 /**
@@ -76,7 +77,7 @@ export interface SearchRoleInterface {
 }
 
 export interface PatchRoleDataInterface {
-    schemas: string[];
+    schemas?: string[];
     Operations: ScimOperationsInterface[];
 }
 

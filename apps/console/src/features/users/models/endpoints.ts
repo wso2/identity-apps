@@ -17,6 +17,7 @@
  */
 
 import { UserDetailsInterface } from "./user";
+import { PatchRoleDataInterface } from "../../roles/models";
 
 /**
  * Interface for the Users feature resource endpoints.
@@ -50,7 +51,7 @@ export interface SCIMBulkOperation {
     method: string;
     bulkId: string;
     path: string;
-    data: Record<string, unknown> | UserDetailsInterface;
+    data: Record<string, unknown> | UserDetailsInterface | PatchRoleDataInterface;
 }
 
 /**

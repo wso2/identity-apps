@@ -78,7 +78,8 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
     const { isMobileViewport } = useMediaContext();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const orgType: OrganizationType = useGetOrganizationType();
+
+    const { organizationType } = useGetOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -195,7 +196,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             ) }
                             {
                                 (!hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_SMS_OTP) &&
-                                    orgType !== OrganizationType.SUBORGANIZATION) && (
+                                    organizationType !== OrganizationType.SUBORGANIZATION) && (
                                     <InfoCard
                                         fluid
                                         data-componentid="sms-otp-mfa-flow-card"

@@ -811,8 +811,12 @@
                                     <% } else {
 
                                         String logoPath = imageURL;
+
+                                        if (imageURL == null || imageURL.isEmpty()) {
+                                            logoPath = "libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
+                                        }
                                         
-                                        if (!imageURL.isEmpty() && imageURL.contains("/")) {
+                                        if (!imageURL.isEmpty() && imageURL.contains("assets/images/logos/")) {
                                             String[] imageURLSegements = imageURL.split("/");
                                             String logoFileName = imageURLSegements[imageURLSegements.length - 1];
 

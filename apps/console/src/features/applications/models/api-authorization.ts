@@ -20,7 +20,7 @@
  * Interface to store authorized API list item.
  */
 export interface AuthorizedAPIListItemInterface {
-    id: string;
+    id?: string;
     displayName?: string;
     identifier?: string;
     policyId?: string;

@@ -32,27 +32,6 @@
 <%-- Localization --%>
 <jsp:directive.include file="localize.jsp" />
 
-<%-- Appending locale to privacy policy and ToC links --%>
-<%
-    String localeString = userLocale.toLanguageTag();
-
-    if (!StringUtils.isBlank(privacyPolicyURL)) {
-        if (privacyPolicyURL.contains("?")) {
-            privacyPolicyURL = privacyPolicyURL.concat("&ui_locales=" + localeString);
-        } else {
-            privacyPolicyURL = privacyPolicyURL.concat("?ui_locales=" + localeString);
-        }
-    }
-
-    if (!StringUtils.isBlank(termsOfUseURL)) {
-        if (termsOfUseURL.contains("?")) {
-            termsOfUseURL = termsOfUseURL.concat("&ui_locales=" + localeString);
-        } else {
-            termsOfUseURL = termsOfUseURL.concat("?ui_locales=" + localeString);
-        }
-    }
-%>
-
 <%-- Cookie Consent Banner --%>
 <%
     if (config.getServletContext().getResource("extensions/cookie-consent-banner.jsp") != null) {
@@ -103,7 +82,7 @@
                 <a
                     id="privacy-policy"
                     class="item"
-                    href="<%= StringEscapeUtils.escapeHtml4(privacyPolicyURL) %>"
+                    href="<%= i18nLink(userLocale, privacyPolicyURL) %>"
                     target="_blank"
                     rel="noopener noreferrer"
                     data-testid="login-page-privacy-policy-link"
@@ -117,7 +96,7 @@
                 <a
                     id="terms-of-service"
                     class="item"
-                    href="<%= StringEscapeUtils.escapeHtml4(termsOfUseURL) %>"
+                    href="<%= i18nLink(userLocale, termsOfUseURL) %>"
                     target="_blank"
                     rel="noopener noreferrer"
                     data-testid="login-page-privacy-policy-link"

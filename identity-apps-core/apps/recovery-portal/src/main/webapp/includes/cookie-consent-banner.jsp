@@ -43,7 +43,7 @@
     <div class="banner-content" data-testid="cookie-consent-banner-content">
         <div class="title" data-testid="cookie-consent-banner-content-title">
             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "cookie.consent.banner.content")%>
-            <a href="<%= StringEscapeUtils.escapeHtml4(cookiePolicyURL) %>" target="_blank" rel="noopener noreferrer" data-testid="cookie-policy-link">
+            <a href="<%= i18nLink(userLocale, cookiePolicyURL) %>" target="_blank" rel="noopener noreferrer" data-testid="cookie-policy-link">
                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cookie.policy")%>
             </a>.
         </div>

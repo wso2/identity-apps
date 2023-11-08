@@ -30,8 +30,8 @@ export interface APIResourceListInterface {
  * Interface to contain api resource information
  */
 export interface APIResourceInterface {
-    id: string;
-    name: string;
+    id?: string;
+    name?: string;
     identifier?: string;
     scopes?: ScopeInterface[];
 }
@@ -40,7 +40,7 @@ export interface APIResourceInterface {
  * Interface to contain scope information
  */
 export interface ScopeInterface {
-    id: string;
+    id?: string;
     displayName?: string;
     name?: string;
     description?: string;
