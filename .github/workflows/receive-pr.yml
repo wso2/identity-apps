@@ -35,7 +35,10 @@ jobs:
 
             # imitation of a build process
             - name: Build
-              run: /bin/bash ./build.sh
+              run: |
+                  echo "Building..."
+                  sleep 5
+                  echo "Done!"
 
             - name: Save PR number
               run: |
