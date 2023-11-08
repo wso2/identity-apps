@@ -66,7 +66,7 @@ import {
     store
 } from "../../core";
 import { RootOnlyComponent } from "../../organizations/components";
-import { OrganizationUtils } from "../../organizations/utils";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorCategoryInterface,
@@ -139,7 +139,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ userStore, setUserStore ] = useState(PRIMARY_USERSTORE);
+    const [ userStore, setUserStore ] = useState<string>(null);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
@@ -159,6 +159,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ finalGuestList, setFinalGuestList ] = useState<UserInviteInterface[]>([]);
     const [ paginatedGuestList, setPaginateGuestList ] = useState<UserInviteInterface[]>([]);
 
+    const { isRootOrganization } = useGetOrganizationType();
 
     const init : MutableRefObject<boolean> = useRef(true);
 
@@ -206,7 +207,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Fetch the list of available userstores.
      */
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (!isRootOrganization) {
             return;
         }
 

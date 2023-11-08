@@ -23,14 +23,10 @@ import { AxiosResponse } from "axios";
 import React, { ReactElement, Suspense, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import PasswordStrengthBar from "react-password-strength-bar";
-import {
-    DropdownItemProps,
-    Grid,
-    Message
-} from "semantic-ui-react";
+import { DropdownItemProps, Grid, Message } from "semantic-ui-react";
 import { SharedUserStoreUtils } from "../../core/utils";
 import { RootOnlyComponent } from "../../organizations/components";
-import { OrganizationUtils } from "../../organizations/utils";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getUserStoreList } from "../../userstores/api";
 import {
     CONSUMER_USERSTORE,
@@ -86,6 +82,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const confirmPasswordRef: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
 
     const { t } = useTranslation();
+
+    const { isRootOrganization } = useGetOrganizationType();
 
     // Username input validation error messages.
     const USER_ALREADY_EXIST_ERROR_MESSAGE: string = t("console:manage.features.user.forms.addUserForm.inputs." +
@@ -212,7 +210,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
         setUserStore(storeOptions[ 0 ].value as string);
 
-        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (isRootOrganization) {
             getUserStoreList()
                 .then((response: AxiosResponse) => {
                     if (storeOptions.length === 0) {
