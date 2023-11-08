@@ -24,7 +24,7 @@ name: Receive PR
 # no access to secrets
 on:
     pull_request:
-    branches: [ improve-pr-builder ]
+        branches: [ improve-pr-builder ]
 
 jobs:
     build:
