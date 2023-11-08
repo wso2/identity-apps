@@ -1,5 +1,28 @@
 # @wso2is/console
 
+## 2.5.28
+
+### Patch Changes
+
+- [#4521](https://github.com/wso2/identity-apps/pull/4521) [`130909dd12`](https://github.com/wso2/identity-apps/commit/130909dd129e866456855ea4b92a20407e8f440f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show the updated value for enable assertion encryption field
+
+* [#4512](https://github.com/wso2/identity-apps/pull/4512) [`d772b161f0`](https://github.com/wso2/identity-apps/commit/d772b161f014db9f30b12fd2eb7bac836d4727a5) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Fix issues with the user store dropdown menu visibility in Users and Groups pages.
+
+- [#4516](https://github.com/wso2/identity-apps/pull/4516) [`2fb7b58007`](https://github.com/wso2/identity-apps/commit/2fb7b58007edd8fd1ecb8a05be7a589a784e4a9c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix danger zone text taking full width in medium and large screen sizes
+
+* [#4527](https://github.com/wso2/identity-apps/pull/4527) [`f8e5b9939a`](https://github.com/wso2/identity-apps/commit/f8e5b9939ae8fb73e58557e8c8dcf9a4419d624e) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update add user dropdown text
+
+- [#4530](https://github.com/wso2/identity-apps/pull/4530) [`9cbf87c53c`](https://github.com/wso2/identity-apps/commit/9cbf87c53c9bcc56ba442accdf3575e52dab800d) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix audience type issue in roles
+
+* [#4531](https://github.com/wso2/identity-apps/pull/4531) [`5ece84dd6c`](https://github.com/wso2/identity-apps/commit/5ece84dd6c72f3c9b119de771aff6ae5c9be1527) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Fix script not appearing in the Visual Editor for templates
+
+- [#4526](https://github.com/wso2/identity-apps/pull/4526) [`352f7882bd`](https://github.com/wso2/identity-apps/commit/352f7882bd88c0b468a13df9aad3fbea08ffc455) Thanks [@Achintha444](https://github.com/Achintha444)! - Add self signup URL text to the branding.
+
+- Updated dependencies [[`2fb7b58007`](https://github.com/wso2/identity-apps/commit/2fb7b58007edd8fd1ecb8a05be7a589a784e4a9c), [`352f7882bd`](https://github.com/wso2/identity-apps/commit/352f7882bd88c0b468a13df9aad3fbea08ffc455)]:
+  - @wso2is/react-components@2.0.13
+  - @wso2is/theme@2.0.30
+  - @wso2is/i18n@2.0.31
+
 ## 2.5.27
 
 ### Patch Changes
