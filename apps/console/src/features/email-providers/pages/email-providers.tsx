@@ -427,7 +427,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
     };
 
     const handleBackButtonClick = () => {
-        history.push(`${ AppConstants.getDeveloperViewBasePath() }/notification-channels`);
+        history.push(`${ AppConstants.getDeveloperViewBasePath() }/channels`);
     };
 
     return (

@@ -530,7 +530,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
     };
 
     const handleBackButtonClick = () => {
-        history.push(`${ AppConstants.getDeveloperViewBasePath() }/notification-channels`);
+        history.push(`${ AppConstants.getDeveloperViewBasePath() }/channels`);
     };
 
     return (
