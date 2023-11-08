@@ -51,7 +51,7 @@ interface GroupBasicProps extends TestableComponentInterface {
 /**
  * Component to capture basic details of a new role.
  *
- * @param props - props Group Basic prop types
+ * @param props - Group Basic prop types
  */
 export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasicProps): ReactElement => {
 
