@@ -16,27 +16,30 @@
 # specific language governing permissions and limitations
 # under the License.
 #
-# --------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------
 
-name: Trigger Changeset Checker
+name: Receive PR
 
+# read-only repo token
+# no access to secrets
 on:
     pull_request:
-        types:
-            - opened
-            - synchronize
+    branches: [ improve-pr-builder ]
 
 jobs:
-    trigger:
+    build:
         runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v2
 
+            # imitation of a build process
+            - name: Build
+              run: /bin/bash ./build.sh
+
             - name: Save PR number
               run: |
                   mkdir -p ./pr
-                  echo PR number: ${{ github.event.number }}
                   echo ${{ github.event.number }} > ./pr/NR
             - uses: actions/upload-artifact@v2
               with:
