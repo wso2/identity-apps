@@ -1,5 +1,11 @@
 # @wso2is/dynamic-forms
 
+## 2.0.8
+
+### Patch Changes
+
+- [#4513](https://github.com/wso2/identity-apps/pull/4513) [`1ed2c49041`](https://github.com/wso2/identity-apps/commit/1ed2c4904159252c6966202501b0943268a8586a) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Implement Create Application Role in Application Roles section
+
 ## 2.0.7
 
 ### Patch Changes

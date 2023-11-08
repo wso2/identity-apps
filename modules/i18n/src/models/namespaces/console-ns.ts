@@ -916,6 +916,13 @@ export interface ConsoleNS {
                         };
                         apiAuthorization: {
                             m2mPolicyMessage: string;
+                        };
+                        roles: {
+                            createApplicationRoleWizard: {
+                                title: string;
+                                subTitle: string;
+                                button: string;
+                            };
                         }
                     };
                 };
@@ -5899,6 +5906,8 @@ export interface ConsoleNS {
                                     description: string;
                                 };
                                 primaryButton: string;
+                                rolesLabel: string;
+                                rolesPlaceholder: string;
                                 warningMessage: string;
                             };
                             fileBased: {

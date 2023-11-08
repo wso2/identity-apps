@@ -91,6 +91,7 @@
                 "disabled_features": []
             }
         },
+        "subscriptionApiPath": "",
         "applicationInsightsProxyEndpoint": "",
         "applicationInsightsInstrumentationKey": "",
         "applicationInsightsEnabled": false,

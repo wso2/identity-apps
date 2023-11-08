@@ -115,7 +115,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     const [ organizationName, setOrganizationName ] = useState<string>("");
     const [ isCopying, setIsCopying ] = useState<boolean>(false);
 
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetOrganizationType();
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
@@ -405,7 +405,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                 }
                                             >
                                                 {
-                                                    orgType === OrganizationType.SUBORGANIZATION
+                                                    organizationType === OrganizationType.SUBORGANIZATION
                                                         ? organizationName
                                                         : tenantAssociations
                                                             ? tenantAssociations.currentTenant
@@ -464,7 +464,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                             }
                             {
                                 !isSubOrg &&
-                                orgType !== OrganizationType.SUBORGANIZATION &&
+                                organizationType !== OrganizationType.SUBORGANIZATION &&
                                 tenantAssociations ? (
                                         tenantAssociations.currentTenant ===
                                         tenantAssociations.defaultTenant ? (

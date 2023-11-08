@@ -143,7 +143,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
     const [ includeCert, setIncludeCert ] = useState<boolean>(false);
     const [ includeNameIDPolicy, setIncludeNameIDPolicy ] = useState<boolean>(false);
-    const [ isEnableAssetionEncription, setIsEnableAssetionEncription ] = useState<boolean>(false);
+    const [ isEnableAssetionEncryption, setIsEnableAssetionEncryption ] = useState<boolean>(false);
     const [ isArtifactBindingEnabled, setIsArtifactBindingEnabled ] = useState<boolean>(false);
 
     const getIncludeAuthenticationContextOptions = (): DropdownChild[] => {
@@ -724,24 +724,21 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         </SectionRow>
                     ) }
                    
-
-                
-                    { /* IsEnableAssetionEncription */ }
                     { identityProviderConfig?.extendedSamlConfig?.isAssertionEncryptionEnabled && (
                         <SectionRow>
                             <Field.Checkbox
                                 required={ false }
-                                name="IsEnableAssetionEncription"
-                                initialValue={ isEnableAssetionEncription }
+                                name="IsAssertionEncrypted"
+                                initialValue={ isEnableAssetionEncryption }
                                 ariaLabel={ "Enable Assertion Encryption" }
                                 data-testid={ `${ testId }-isEnableAssertionEncryption-field` }
                                 label={ (
-                                    <FormInputLabel htmlFor="IsEnableAssertionEncription">
+                                    <FormInputLabel htmlFor="IsEnableAssertionEncryption">
                                         { t(`${ I18N_TARGET_KEY }.isEnableAssertionEncryption.label`) }
                                     </FormInputLabel>
                                 ) }
                                 hint={ t(`${ I18N_TARGET_KEY }.isEnableAssertionEncryption.hint`) }
-                                listen={ (value: any) => setIsEnableAssetionEncription(Boolean(value)) }
+                                listen={ (value: any) => setIsEnableAssetionEncryption(Boolean(value)) }
                                 readOnly={ readOnly }
                             />
                         </SectionRow>

@@ -818,7 +818,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         {
             "data-componentid": `${ componentId }-add-internal-user`,
             key: 1,
-            text: t("console:manage.features.parentOrgInvitations.createDropdown.createLabel"),
+            text: t("console:manage.features.users.addUserDropDown.addNewUser"),
             value: UserAccountTypesMain.INTERNAL
         },
         {
