@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.43
+
+### Patch Changes
+
+- [#4514](https://github.com/wso2/identity-apps/pull/4514) [`20c2f0ea15`](https://github.com/wso2/identity-apps/commit/20c2f0ea15e188cff13873889d74fbcd2b05c8df) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable resolved username identifier for super tenant
+
 ## 2.0.42
 
 ### Patch Changes
