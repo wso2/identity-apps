@@ -2134,6 +2134,109 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
                 <Grid.Column>
                     <Divider horizontal>
                         <Heading as="h6">
+                            { t("extensions:develop.branding.forms.design.theme.buttons.secondary.heading") }
+                        </Heading>
+                    </Divider>
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column>
+                    <Field.ColorPicker
+                        ariaLabel="Secondary button font color picker"
+                        name={ `theme.${theme.activeTheme}.buttons.secondary.base.font.color` }
+                        value={ initialValues.theme[theme.activeTheme].buttons.secondary.base.font.color }
+                        data-componentid={ `${componentId}-secondary-button-font-color` }
+                        required={ false }
+                        readOnly={ readOnly }
+                        label={
+                            t("extensions:develop.branding.forms.design.theme.buttons.secondary." +
+                                "fields.fontColor.label") }
+                        hint={
+                            t("extensions:develop.branding.forms.design.theme.buttons.secondary." +
+                                "fields.fontColor.hint") }
+                        placeholder={
+                            t("extensions:develop.branding.forms.design.theme.buttons.secondary." +
+                                "fields.fontColor.placeholder")
+                        }
+                        listen={ (value: string) => setTheme({
+                            ...theme,
+                            [theme.activeTheme]: {
+                                ...theme[theme.activeTheme],
+                                buttons: {
+                                    ...theme[theme.activeTheme].buttons,
+                                    secondary: {
+                                        ...theme[theme.activeTheme].buttons.secondary,
+                                        base: {
+                                            ...theme[theme.activeTheme].buttons.secondary.base,
+                                            font: {
+                                                ...theme[theme.activeTheme].buttons.secondary.base.font,
+                                                color: value
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }) }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={ 1 }>
+                <Grid.Column>
+                    <Field.Input
+                        ariaLabel="Secondary button border radius input field"
+                        inputType="default"
+                        name={ `theme.${theme.activeTheme}.buttons.secondary.base.border.borderRadius` }
+                        value={ initialValues.theme[theme.activeTheme].buttons.secondary.base.border.borderRadius }
+                        label={
+                            t("extensions:develop.branding.forms.design.theme.buttons.secondary." +
+                                "fields.borderRadius.label")
+                        }
+                        hint={ t("extensions:develop.branding.forms.design.theme.buttons.secondary." +
+                            "fields.borderRadius.hint") }
+                        placeholder={
+                            t("extensions:develop.branding.forms.design.theme.buttons.secondary.fields"
+                                + ".borderRadius.placeholder")
+                        }
+                        required={ false }
+                        readOnly={ readOnly }
+                        maxLength={
+                            BrandingPreferencesConstants
+                                .DESIGN_FORM_FIELD_CONSTRAINTS.BORDER_RADIUS_MAX_LENGTH
+                        }
+                        minLength={
+                            BrandingPreferencesConstants
+                                .DESIGN_FORM_FIELD_CONSTRAINTS.BORDER_RADIUS_MIN_LENGTH
+                        }
+                        width={ 16 }
+                        data-componentid={ `${componentId}-secondary-button-border-radius` }
+                        listen={ (value: string) => setTheme({
+                            ...theme,
+                            [theme.activeTheme]: {
+                                ...theme[theme.activeTheme],
+                                buttons: {
+                                    ...theme[theme.activeTheme].buttons,
+                                    secondary: {
+                                        ...theme[theme.activeTheme].buttons.secondary,
+                                        base: {
+                                            ...theme[theme.activeTheme].buttons.secondary.base,
+                                            border: {
+                                                ...theme[theme.activeTheme].buttons.secondary.base.border,
+                                                borderRadius: value
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }) }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={ 1 }>
+                <Grid.Column>
+                    <Divider horizontal>
+                        <Heading as="h6">
                             { t("extensions:develop.branding.forms.design.theme.buttons.externalConnections.heading") }
                         </Heading>
                     </Divider>
