@@ -29,6 +29,12 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
+import { AuthenticatorManagementConstants } from "apps/console/src/features/connections";
+import { getMultiFactorAuthenticatorDetails } from "apps/console/src/features/identity-providers/api";
+import { 
+    ConnectorPropertyInterface, 
+    GovernanceConnectorInterface 
+} from "apps/console/src/features/server-configurations/models/governance-connectors";
 import { AxiosError, AxiosResponse } from "axios";
 import kebabCase from "lodash-es/kebabCase";
 import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
@@ -144,6 +150,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(true);
     const [ isButtonDisabled, setIsButtonDisabled ] = useState<boolean>(false);
     const [ updatedSteps, setUpdatedSteps ] = useState<AuthenticationStepInterface[]>();
+    const [ isPasskeyProgressiveEnrollmentEnabled, setIsPasskeyProgressiveEnrollmentEnabled ] = 
+        useState<boolean>(false);
 
     const [ validationResult, setValidationResult ] =
         useState<ConnectionsJITUPConflictWithMFAReturnValue | undefined>(undefined);
@@ -191,6 +199,20 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
      */
     useEffect(() => {
         fetchRequestPathAuthenticators();
+    }, []);
+
+    useEffect(() => {
+        getMultiFactorAuthenticatorDetails(AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID)
+            .then((response: GovernanceConnectorInterface) => {
+                const properties: ConnectorPropertyInterface[] = response?.properties;
+                const passkeyProgressiveEnrollmentProperty: ConnectorPropertyInterface | undefined = 
+                    properties?.find((property: ConnectorPropertyInterface) => 
+                        property.name === "FIDO.EnablePasskeyProgressiveEnrollment");
+                const isPasskeyProgressiveEnrollmentEnabled: boolean = 
+                    passkeyProgressiveEnrollmentProperty?.value === "true";
+    
+                setIsPasskeyProgressiveEnrollmentEnabled(!!isPasskeyProgressiveEnrollmentEnabled);
+            });
     }, []);
 
     /**
@@ -681,30 +703,57 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     step.options.find((authenticator: AuthenticatorInterface) => 
                         authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR))
                 && (
-                    <Message
-                        type="warning"
-                        content={
-                            (<>
-                                <Trans
-                                    i18nKey={
-                                        t("console:develop.features.applications.edit.sections" +
-                                            ".signOnMethod.sections.landing.flowBuilder." +
-                                            "types.usernameless.info")
-                                    }
-                                >
-                                    On-the-fly passkey enrollment is available exclusively 
-                                    for FIDO2 supported passkeys and further users wishing to enroll 
-                                    multiple passkeys, they must do so via MyAccount.
-                                </Trans>
-                                <DocumentationLink
-                                    link={ getLink("develop.applications.editApplication.signInMethod.fido") }
-                                    showEmptyLink={ false }
-                                >
-                                    { t("common:learnMore") }
-                                </DocumentationLink>
-                            </>)
-                        }
-                    />
+                    isPasskeyProgressiveEnrollmentEnabled
+                        ? (
+                            <Message
+                                type="warning"
+                                content={
+                                    (<>
+                                        <Trans
+                                            i18nKey={
+                                                t("console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections.landing.flowBuilder." +
+                                                "types.passkey.info.progressiveEnrollmentEnabled")
+                                            }
+                                        >
+                                        On-the-fly passkey enrollment is available exclusively 
+                                        for FIDO2 supported passkeys and further users wishing to enroll 
+                                        multiple passkeys, they must do so via MyAccount.
+                                        </Trans>
+                                        <DocumentationLink
+                                            link={ getLink("develop.applications.editApplication.signInMethod.fido") }
+                                            showEmptyLink={ false }
+                                        >
+                                            { t("common:learnMore") }
+                                        </DocumentationLink>
+                                    </>)
+                                }
+                            />
+                        ):(
+                            <Message
+                                type="warning"
+                                content={
+                                    (<>
+                                        <Trans
+                                            i18nKey={
+                                                t("console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections.landing.flowBuilder." +
+                                                "types.passkey.info.progressiveEnrollmentDisabled")
+                                            }
+                                        >
+                                        To sign in with passwordless login, your users should have 
+                                        their passkeys enrolled via MyAccount.
+                                        </Trans>
+                                        <DocumentationLink
+                                            link={ getLink("develop.applications.editApplication.signInMethod.fido") }
+                                            showEmptyLink={ false }
+                                        >
+                                            { t("common:learnMore") }
+                                        </DocumentationLink>
+                                    </>)
+                                }
+                            />
+                        )
                 )
             }
             { !validationResult?.conflicting && smsValidationResult?.conflicting && smsValidationResult?.idpList.length

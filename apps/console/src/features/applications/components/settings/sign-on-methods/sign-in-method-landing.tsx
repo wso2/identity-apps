@@ -244,12 +244,12 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     imageSize="mini"
                                     header={ t(
                                         "console:develop.features.applications.edit.sections.signOnMethod" +
-                                        ".sections.landing.flowBuilder.types.usernameless.heading")
+                                        ".sections.landing.flowBuilder.types.passkey.heading")
                                     }
                                     description={ t(
                                         "console:develop.features.applications.edit.sections" +
                                             ".signOnMethod.sections.landing.flowBuilder." +
-                                            "types.usernameless.description"
+                                            "types.passkey.description"
                                     ) }
                                     onClick={ () => {
                                         eventPublisher.publish(

@@ -1396,6 +1396,18 @@ export const console: ConsoleNS = {
                                                 "for FIDO2 supported passkeys and further users wishing to enroll " +
                                                 "multiple passkeys, they must do so via MyAccount."
                                             },
+                                            passkey: {
+                                                description: "Enable users to log in using a passkey, FIDO security key or " +
+                                                "biometrics.",
+                                                heading: "Add Passkey Login",
+                                                info: {
+                                                    progressiveEnrollmentEnabled: "On-the-fly passkey enrollment is available " +
+                                                    "exclusively for FIDO2 supported passkeys and further users wishing to enroll " +
+                                                    "multiple passkeys, they must do so via MyAccount.",
+                                                    progressiveEnrollmentDisabled: "To sign in with passwordless login, your users " +
+                                                    "should have their passkeys enrolled via MyAccount."
+                                                }
+                                            },
                                             emailOTP: {
                                                 description: "Enable additional authentication layer with Email based OTP.",
                                                 heading: "Add Email OTP as a second factor"

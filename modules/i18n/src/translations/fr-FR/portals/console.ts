@@ -1420,6 +1420,20 @@ export const console: ConsoleNS = {
                                                     "pour les clés d'accès prises en charge par FIDO2 et les autres utilisateurs " +
                                                     "souhaitant enregistrer plusieurs clés d'accès doivent le faire via Mon compte."
                                             },
+                                            passkey: {
+                                                description: "Permettez aux utilisateurs de se connecter à l'aide d'un mot " +
+                                                "de passe, d'une clé de sécurité FIDO ou de données biométriques.",
+                                                heading: "Ajouter une connexion par mot de passe",
+                                                info: {
+                                                    progressiveEnrollmentEnabled: "L'inscription des clés d'accès à la volée " +
+                                                    "est disponible exclusivement pour les clés d'accès prises en charge par " +
+                                                    "FIDO2 et les autres utilisateurs souhaitant enregistrer plusieurs clés " +
+                                                    "d'accès doivent le faire via Mon compte.",
+                                                    progressiveEnrollmentDisabled: "Pour se connecter avec une connexion sans " +
+                                                    "mot de passe, vos utilisateurs doivent avoir leurs mots de passe " +
+                                                    "enregistrés via MyAccount."
+                                                }
+                                            },
                                             emailOTP: {
                                                 description: "Activez une couche supplémentaire d'authentification avec OTP basé sur Email.",
                                                 heading: "Ajouter Email OTP comme deuxième facteur"
