@@ -665,26 +665,27 @@
     </div>
 
     <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) { %>
-        <div class="mt-0">
-            <div class="buttons">
-                <button
-                    type="button"
+        <div class="mt-4 mb-4">
+            <div class="mt-3 external-link-container text-small">
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.an.account")%>
+                <a
                     <% if(StringUtils.isNotBlank(selfSignUpOverrideURL)) { %>
-                    onclick="window.location.href='<%=i18nLink(userLocale, selfSignUpOverrideURL)%>';"
+                    href="<%=i18nLink(userLocale, selfSignUpOverrideURL)%>"
                     <% } else { %>
-                    onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointURL, srURLEncodedURL, urlParameters))%>';"
+                    href="<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>"
                     <% } %>
-                    class="ui large fluid button secondary"
+                    target="_self"
+                    class="clickable-link"
+                    rel="noopener noreferrer"
                     id="registerLink"
-                    role="button"
                     data-testid="login-page-create-account-button"
+                    style="cursor: pointer;"
                 >
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.an.account")%>
-                </button>
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "register")%>
+                </a>
             </div>
         </div>
     <% } %>
-
     <% if (isIdentifierFirstLogin(inputType) && !StringUtils.equals("true", promptAccountLinking)) { %>
         <div class="field external-link-container text-small mt-4">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "not.you")%>
