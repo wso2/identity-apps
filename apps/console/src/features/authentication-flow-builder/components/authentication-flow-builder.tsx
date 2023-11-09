@@ -175,7 +175,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                             <ReactFlowProvider>
                                 <AuthenticationFlowVisualEditor
                                     onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
-                                    className={ "visual-editor" }
+                                    className="visual-editor"
                                 />
                             </ReactFlowProvider>
                             { isAdaptiveAuthAvailable && <ScriptBasedFlowSwitch /> }

@@ -51,6 +51,7 @@ import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import { AutoCompleteRenderOption } from "./auto-complete-render-option";
 import { updateApplicationDetails } from "../../applications/api";
+import { useGetApplication } from "../../applications/api/use-get-application";
 import { ApplicationInterface } from "../../applications/models";
 import {
     history
@@ -67,10 +68,6 @@ import {
 
 interface ApplicationRolesSettingsInterface extends IdentifiableComponentInterface {
     /**
-     * Application.
-     */
-    application?: ApplicationInterface
-    /**
      * on application update callback
      */
     onUpdate: (id: string) => void;
@@ -86,15 +83,18 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 ): ReactElement => {
 
     const {
-        application,
         onUpdate,
         [ "data-componentid" ]: componentId
     } = props;
+
+    const path: string[] = history.location.pathname.split("/");
+    const appId: string = path[path.length - 1].split("#")[0];
 
     const { t } = useTranslation();
     const dispatch: Dispatch<any> = useDispatch();
     const { getLink } = useDocumentation();
     const orgType: OrganizationType = useGetOrganizationType();
+    const { data: application } = useGetApplication(appId, !!appId);
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -111,9 +111,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
         useState<BasicRoleInterface[]>(application?.associatedRoles?.roles ?? []);
     const [ activeOption, setActiveOption ] = useState<BasicRoleInterface>(undefined);
     const [ removedRolesOptions, setRemovedRolesOptions ] = useState<BasicRoleInterface[]>(undefined);
-
-    const path: string[] = history.location.pathname.split("/");
-    const appId: string = path[path.length - 1].split("#")[0];
 
     const isReadOnly: boolean = orgType === OrganizationType.SUBORGANIZATION;
 
