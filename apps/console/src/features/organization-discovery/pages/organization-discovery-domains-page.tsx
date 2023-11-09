@@ -339,7 +339,6 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
      * @returns `true` if `Next` page nav button should be shown.
      */
     const shouldShowNextPageNavigation = (orgList: OrganizationListWithDiscoveryInterface): boolean => {
-
         return orgList?.startIndex + orgList?.count !== orgList?.totalResults + 1;
     };
 
