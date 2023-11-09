@@ -1425,13 +1425,13 @@ export const console: ConsoleNS = {
                                                 "de passe, d'une clé de sécurité FIDO ou de données biométriques.",
                                                 heading: "Ajouter une connexion par mot de passe",
                                                 info: {
-                                                    progressiveEnrollmentEnabled: "L'inscription des clés d'accès à la volée " +
-                                                    "est disponible exclusivement pour les clés d'accès prises en charge par " +
-                                                    "FIDO2 et les autres utilisateurs souhaitant enregistrer plusieurs clés " +
-                                                    "d'accès doivent le faire via Mon compte.",
-                                                    progressiveEnrollmentDisabled: "Pour se connecter avec une connexion sans " +
-                                                    "mot de passe, vos utilisateurs doivent avoir leurs mots de passe " +
-                                                    "enregistrés via MyAccount."
+                                                    progressiveEnrollmentEnabled: "L1inscription progressive par mot de passe " +
+                                                    "est activée. Les utilisateurs peuvent enregistrer des clés d'accès à " +
+                                                    "la volée. S’ils souhaitent enregistrer plusieurs mots de passe, ils " +
+                                                    "doivent le faire via Mon compte.",
+                                                    progressiveEnrollmentDisabled: "L'inscription du mot de passe à la volée " +
+                                                    "est désactivée. Les utilisateurs doivent enregistrer leurs clés d'accès " +
+                                                    "via MyAccount pour utiliser la connexion sans mot de passe."
                                                 }
                                             },
                                             emailOTP: {

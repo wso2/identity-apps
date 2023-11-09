@@ -716,9 +716,9 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                                 "types.passkey.info.progressiveEnrollmentEnabled")
                                             }
                                         >
-                                        On-the-fly passkey enrollment is available exclusively 
-                                        for FIDO2 supported passkeys and further users wishing to enroll 
-                                        multiple passkeys, they must do so via MyAccount.
+                                        Passkey progressive enrollment is enabled. Users can enroll passkeys 
+                                        on-the-fly. If they wish to enroll multiple passkeys they should do 
+                                        so via MyAccount.
                                         </Trans>
                                         <DocumentationLink
                                             link={ getLink("develop.applications.editApplication.signInMethod.fido") }
@@ -741,8 +741,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                                 "types.passkey.info.progressiveEnrollmentDisabled")
                                             }
                                         >
-                                        To sign in with passwordless login, your users should have 
-                                        their passkeys enrolled via MyAccount.
+                                        Passkey progressive enrollment is disabled. Users must enroll 
+                                        their passkeys through MyAccount to use passwordless sign-in.
                                         </Trans>
                                         <DocumentationLink
                                             link={ getLink("develop.applications.editApplication.signInMethod.fido") }
