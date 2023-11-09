@@ -50,10 +50,11 @@ import { Dispatch } from "redux";
 import { DropdownProps } from "semantic-ui-react";
 import { RenderChip } from "./edit-role-common/render-chip";
 import { RoleAPIResourcesListItem } from "./edit-role-common/role-api-resources-list-item";
+import { useGetAuthorizedAPIList } from "../../../api-resources/api/useGetAuthorizedAPIList";
 import { getAPIResourceDetailsBulk, updateRoleDetails, useAPIResourceDetails, useAPIResourcesList } from "../../api";
-import { RoleConstants } from "../../constants/role-constants";
+import { RoleAudienceTypes, RoleConstants } from "../../constants/role-constants";
 import { PatchRoleDataInterface, PermissionUpdateInterface, SelectedPermissionsInterface } from "../../models";
-import { APIResourceInterface, ScopeInterface } from "../../models/apiResources";
+import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../models/apiResources";
 
 /**
  * Interface to capture permission edit props.
@@ -82,7 +83,7 @@ interface RolePermissionDetailProps extends IdentifiableComponentInterface {
  */
 export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetailProps> = (props:
     RolePermissionDetailProps): ReactElement => {
-    
+
     const {
         isReadOnly,
         role,
@@ -118,17 +119,29 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         error: selectedAPIResourceFetchRequestError
     } = useAPIResourceDetails(selectedAPIResourceId);
 
+    const {
+        data: authorizedAPIListForApplication,
+        isLoading: isAuthorizedAPIListForApplicationLoading,
+        error: authorizedAPIListForApplicationError
+    } = useGetAuthorizedAPIList(
+        role.audience.type.toUpperCase() === RoleAudienceTypes.APPLICATION ? role.audience.value : null
+    );
+
     useEffect(() => {
-        !isReadOnly 
+        !isReadOnly
             ? getExistingAPIResources()
             : null;
     }, [ role ]);
 
     /**
      * Show error if the API resource fetch request failed.
-     */ 
+     */
     useEffect(() => {
-        if ( selectedAPIResourceFetchRequestError ||  apiResourcsListFetchRequestError) {
+        if (
+            selectedAPIResourceFetchRequestError ||
+            apiResourcsListFetchRequestError ||
+            authorizedAPIListForApplicationError
+        ) {
             dispatch(
                 addAlert({
                     description: t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
@@ -144,28 +157,44 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     useEffect(() => {
         const options: DropdownProps[] = [];
 
-        apiResourcesList?.apiResources?.map((apiResource: APIResourceInterface) => {
-            if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) => 
-                selectedAPIResource?.id === apiResource?.id)) {
-                options.push({
-                    key: apiResource?.id,
-                    text: apiResource?.name,
-                    value: apiResource?.id
-                });
-            }
-        });
+        if (role.audience.type.toUpperCase() === RoleAudienceTypes.ORGANIZATION) {
+            // API resources list options when role audience is "organization".
+            apiResourcesList?.apiResources?.map((apiResource: APIResourceInterface) => {
+                if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
+                    selectedAPIResource?.id === apiResource?.id)) {
+                    options.push({
+                        key: apiResource.id,
+                        text: apiResource.name,
+                        value: apiResource.id
+                    });
+                }
+            });
+        } else {
+            // API resources list options when role audience is "application".
+            authorizedAPIListForApplication?.map((api: AuthorizedAPIListItemInterface) => {
+                if (
+                    !selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
+                        selectedAPIResource?.id === api?.id)) {
+                    options.push({
+                        key: api.id,
+                        text: api.displayName,
+                        value: api.id
+                    });
+                }
+            });
+        }
 
         setAPIResourcesListOptions(options);
-    }, [ apiResourcesList, selectedAPIResources ]);
+    }, [ authorizedAPIListForApplication, apiResourcesList, selectedAPIResources ]);
 
     /**
      * Add API resource to the selected API resources list.
      */
     useEffect(() => {
-        if (selectedAPIResource 
-            && !isSelectedAPIResourceFetchRequestLoading 
+        if (selectedAPIResource
+            && !isSelectedAPIResourceFetchRequestLoading
             && !isSelectedAPIResourceFetchRequestValidating) {
-            
+
             if (!selectedAPIResources.find(
                 (apiResource: APIResourceInterface) => selectedAPIResource?.id === apiResource?.id)) {
                 setSelectedAPIResources([ selectedAPIResource, ...selectedAPIResources ]);
@@ -178,7 +207,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     useEffect(() => {
         getAPIResourceById(initialAPIResourceIds);
     }, [ initialAPIResourceIds ]);
-        
+
     const getAPIResourceById = async (initialAPIResourceIds: string[]): Promise<void> => {
         const apiResourceIds: string[] = initialAPIResourceIds;
 
@@ -188,7 +217,25 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
 
         getAPIResourceDetailsBulk(apiResourceIds)
             .then((response: APIResourceInterface[]) => {
-                setSelectedAPIResources(response);
+                if (role.audience.type.toUpperCase() === RoleAudienceTypes.ORGANIZATION) {
+                    setSelectedAPIResources(response);
+                } else {
+                    const selectedAPIResourcesList: APIResourceInterface[] = [];
+
+                    response.map((apiResource: APIResourceInterface) => {
+                        const selectedAPIResource: AuthorizedAPIListItemInterface =
+                            authorizedAPIListForApplication.find(
+                                (api: AuthorizedAPIListItemInterface) => api.id === apiResource.id
+                            );
+
+                        selectedAPIResourcesList.push({
+                            id: selectedAPIResource.id,
+                            name: selectedAPIResource.displayName,
+                            scopes: selectedAPIResource.authorizedScopes
+                        });
+                    });
+                    setSelectedAPIResources(selectedAPIResourcesList);
+                }
             })
             .catch(() => {
                 handleAlerts({
@@ -213,9 +260,9 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 // Populate the selected permissions list.
                 if (!currentPermissions.find((selectedPermission: SelectedPermissionsInterface) =>
                     selectedPermission.apiResourceId === apiResourceId)) {
-                    // Found a new API resource id.                 
+                    // Found a new API resource id.
                     uniqueAPIResourceIds.push(apiResourceId);
-                    
+
                     // Add it to the selected API resources list.
                     currentPermissions.push({
                         apiResourceId: apiResourceId,
@@ -228,7 +275,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 } else {
                     // Found a matching API resource id
                     const index: number = currentPermissions.findIndex(
-                        (selectedPermission: SelectedPermissionsInterface) => 
+                        (selectedPermission: SelectedPermissionsInterface) =>
                             selectedPermission.apiResourceId === apiResourceId
                     );
 
@@ -241,7 +288,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 }
             }
         });
-        
+
         setInitialAPIResourceIds(uniqueAPIResourceIds);
         setSelectedPermissions(currentPermissions);
         setInitialSelectedPermissions(currentPermissions);
@@ -303,11 +350,11 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     /**
      * The following function handles the search query for the groups list.
      */
-    const searchAPIResources: DebouncedFunc<(query: string) => void> = 
+    const searchAPIResources: DebouncedFunc<(query: string) => void> =
         useCallback(debounce((query: string) => {
             setAPIResourceSearchQuery(
-                !isEmpty(query) 
-                    ? `name co ${query}` 
+                !isEmpty(query)
+                    ? `name co ${query}`
                     : null
             );
             mutateAPIResourcesListFetchRequest().finally(() => {
@@ -317,10 +364,28 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
 
     /**
      * Handles the selection of an API resource.
+     *
+     * Only retrieve the API resource details when the role audience is "organization",
+     * else add the API resource to the selected API resources list from the authorized API list.
      */
     const onAPIResourceSelected = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
         event.preventDefault();
-        setSelectedAPIResourceId(data.value.toString());
+        if (role.audience.type.toUpperCase() === RoleAudienceTypes.ORGANIZATION) {
+            setSelectedAPIResourceId(data.value.toString());
+        } else {
+            const selectedAPIResource: AuthorizedAPIListItemInterface = authorizedAPIListForApplication.find(
+                (api: AuthorizedAPIListItemInterface) => api.id === data.value.toString()
+            );
+
+            setSelectedAPIResources([
+                {
+                    id: selectedAPIResource.id,
+                    name: selectedAPIResource.displayName,
+                    scopes: selectedAPIResource.authorizedScopes
+                },
+                ...selectedAPIResources
+            ]);
+        }
         setAPIResourceSearchQuery(undefined);
     };
 
@@ -334,10 +399,10 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
 
     const onChangeScopes = (apiResource: APIResourceInterface, scopes: ScopeInterface[]): void => {
         const selectedScopes: SelectedPermissionsInterface[] = selectedPermissions.filter(
-            (selectedPermission: SelectedPermissionsInterface) => 
+            (selectedPermission: SelectedPermissionsInterface) =>
                 selectedPermission.apiResourceId !== apiResource.id
         );
-        
+
         selectedScopes.push(
             {
                 apiResourceId: apiResource.id,
@@ -368,8 +433,8 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={ 2 }>
             <Grid xs={ 8 }>
                 <Form
-                    id={ componentId } 
-                    uncontrolledForm={ false } 
+                    id={ componentId }
+                    uncontrolledForm={ false }
                     onSubmit={ undefined }
                 >
                     <Field.Dropdown
@@ -397,7 +462,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             </Grid>
             <Grid xs={ 12 }>
                 {
-                    selectedAPIResources?.length > 0 
+                    selectedAPIResources?.length > 0
                         ? (
                             <div className="role-permission-list field">
                                 <label className="form-label">
@@ -408,16 +473,17 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                                     className="mt-2"
                                     data-componentid={ componentId }
                                     basic
-                                    loading={ 
+                                    loading={
                                         selectedAPIResourceId &&
-                                        (isSelectedAPIResourceFetchRequestLoading 
-                                            || isSelectedAPIResourceFetchRequestValidating) 
+                                        (isSelectedAPIResourceFetchRequestLoading
+                                            || isSelectedAPIResourceFetchRequestValidating
+                                            || isAuthorizedAPIListForApplicationLoading)
                                     }
                                 >
                                     {
                                         selectedAPIResources?.map((apiResource: APIResourceInterface) => {
                                             return (
-                                                <RoleAPIResourcesListItem 
+                                                <RoleAPIResourcesListItem
                                                     key={ apiResource?.id }
                                                     apiResource={ apiResource }
                                                     onChangeScopes={ onChangeScopes }
@@ -432,7 +498,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                                                             selectedPermission.apiResourceId === apiResource?.id)
                                                         ?.scopes
                                                     }
-                                                /> 
+                                                />
                                             );
                                         })
                                     }
@@ -458,10 +524,10 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 />
             ) }
             renderTags={ (
-                value: RolePermissionInterface[], 
+                value: RolePermissionInterface[],
                 getTagProps: AutocompleteRenderGetTagProps
             ) => value.map((option: RolePermissionInterface, index: number) => (
-                <RenderChip 
+                <RenderChip
                     { ...getTagProps({ index }) }
                     key={ index }
                     className="pt-5 m-1"

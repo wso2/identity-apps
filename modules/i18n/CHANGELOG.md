@@ -1,5 +1,17 @@
 # @wso2is/i18n
 
+## 2.0.32
+
+### Patch Changes
+
+- [#4528](https://github.com/wso2/identity-apps/pull/4528) [`1b74de3e5b`](https://github.com/wso2/identity-apps/commit/1b74de3e5b08c5b0b33fe224be123fe09d7bb20a) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Change wording in SMS/ Email provider.
+
+## 2.0.31
+
+### Patch Changes
+
+- [#4526](https://github.com/wso2/identity-apps/pull/4526) [`352f7882bd`](https://github.com/wso2/identity-apps/commit/352f7882bd88c0b468a13df9aad3fbea08ffc455) Thanks [@Achintha444](https://github.com/Achintha444)! - Add self signup URL text to the branding.
+
 ## 2.0.30
 
 ### Patch Changes
