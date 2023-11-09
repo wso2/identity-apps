@@ -21,14 +21,12 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import useRequest, {
-    RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "../../core/hooks/use-request";
 import { store } from "../../core/store";
-import { APIResourceInterface, APIResourcePermissionInterface, APIResourcesListInterface,
-    AuthorizedAPIListItemInterface,
-    UpdatedAPIResourceInterface } from "../models";
+import { APIResourceInterface, APIResourcePermissionInterface, APIResourcesListInterface, UpdatedAPIResourceInterface }
+    from "../models";
 
 /**
  * Get an axios instance.
@@ -338,33 +336,4 @@ export const deleteScopeFromAPIResource = (
                 error.response,
                 error.config);
         });
-};
-
-/**
- * Get the authorized APIs of the application with authorized permissions.
- *
- * @param appId - Application ID.
- *
- * @returns A promise containing the response.
- */
-export const useGetAuthorizedAPIList = <Data = AuthorizedAPIListItemInterface[], Error = RequestErrorInterface>(
-    applicationId: string
-): RequestResultInterface<Data, Error> => {
-    const requestConfig: RequestConfigInterface = {
-        method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.applications }/${ applicationId }/authorized-apis`
-    };
-
-    /**
-     * Pass `null` if the `apiResourceId` is not available. This will prevent the request from being called.
-     */
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(applicationId ? requestConfig : null);
-
-    return {
-        data,
-        error: error,
-        isLoading: !error && !data,
-        isValidating,
-        mutate
-    };
 };
