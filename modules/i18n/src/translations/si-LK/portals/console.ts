@@ -8249,8 +8249,9 @@ export const console: ConsoleNS = {
                                 label: "පවරා ඇති අයදුම්පත",
                                 placeholder: "භූමිකාව පැවරීම සඳහා අයදුම්පත තෝරන්න",
                                 applicationSubTitle: {
-                                    application: "අයදුම්පත් සහිත භූමිකාවන් සහාය. ",
-                                    organization: "සංවිධාන භූමිකාවන් සහාය"
+                                    application: "අයදුම්පත් සහිත භූමිකාවන් සහාය.",
+                                    organization: "සංවිධාන භූමිකාවන් සහාය. ",
+                                    changeAudience: "ප්‍රේක්ෂකයින් වෙනස් කරන්න"
                                 },
                                 validations: {
                                     empty: "අයදුම්පත් සහිත භූමිකාවක් නිර්මාණය කිරීම සඳහා පවරා ඇති අයදුම්පතක් අවශ්ය වේ."
