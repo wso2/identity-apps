@@ -29,12 +29,6 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
-import { AuthenticatorManagementConstants } from "apps/console/src/features/connections";
-import { getMultiFactorAuthenticatorDetails } from "apps/console/src/features/identity-providers/api";
-import { 
-    ConnectorPropertyInterface, 
-    GovernanceConnectorInterface 
-} from "apps/console/src/features/server-configurations/models/governance-connectors";
 import { AxiosError, AxiosResponse } from "axios";
 import kebabCase from "lodash-es/kebabCase";
 import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
@@ -46,12 +40,18 @@ import { Divider, Grid, Icon } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
+import { AuthenticatorManagementConstants } from "../../../../connections";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
+import { getMultiFactorAuthenticatorDetails } from "../../../../identity-providers/api";
 import { 
     IdentityProviderManagementConstants
 } from "../../../../identity-providers/constants/identity-provider-management-constants";
 import { GenericAuthenticatorInterface } from "../../../../identity-providers/models/identity-provider";
 import { OrganizationType } from "../../../../organizations/constants";
+import { 
+    ConnectorPropertyInterface, 
+    GovernanceConnectorInterface 
+} from "../../../../server-configurations/models/governance-connectors";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
 import {
     AdaptiveAuthTemplateInterface,
@@ -211,7 +211,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 const isPasskeyProgressiveEnrollmentEnabled: boolean = 
                     passkeyProgressiveEnrollmentProperty?.value === "true";
     
-                setIsPasskeyProgressiveEnrollmentEnabled(!!isPasskeyProgressiveEnrollmentEnabled);
+                setIsPasskeyProgressiveEnrollmentEnabled(isPasskeyProgressiveEnrollmentEnabled);
             });
     }, []);
 
