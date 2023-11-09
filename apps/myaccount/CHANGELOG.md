@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.2.12
+
+### Patch Changes
+
+- [#4532](https://github.com/wso2/identity-apps/pull/4532) [`3db28dcd8e`](https://github.com/wso2/identity-apps/commit/3db28dcd8e78f16f3573bc26f42bee0ccd3a3ca3) Thanks [@shanggeeth](https://github.com/shanggeeth)! - Change disabled dropdown style for better UX
+
+- Updated dependencies [[`3db28dcd8e`](https://github.com/wso2/identity-apps/commit/3db28dcd8e78f16f3573bc26f42bee0ccd3a3ca3)]:
+  - @wso2is/theme@2.0.31
+
 ## 2.2.11
 
 ### Patch Changes
