@@ -144,15 +144,20 @@ const BasicAuthFragment: FunctionComponent<BasicAuthFragmentInterface> = (
                             </button>
                         </div>
                     </div>
-                    <div className="mt-0">
-                        <div className="buttons">
-                            <button
-                                type="button"
-                                className="ui large fluid button secondary"
+                    <div className="mt-4 mb-4">
+                        <div className="mt-3 external-link-container text-small">
+                            { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.REGISTER_TEXT.MESSAGE, 
+                                "Don't have an account? ") }
+                            <a
+                                target="_self"
+                                id="registerLink"
+                                className="clickable-link"
+                                rel="noopener noreferrer"
                                 data-testid="login-page-create-account-button"
                             >
-                                Create an account
-                            </button>
+                                { i18n(CustomTextPreferenceConstants.TEXT_BUNDLE_KEYS.REGISTER_TEXT.REGISTER, 
+                                    "Register") }
+                            </a>
                         </div>
                     </div>
                 </div>
