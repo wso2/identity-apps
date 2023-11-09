@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.0.44
+
+### Patch Changes
+
+- [#4534](https://github.com/wso2/identity-apps/pull/4534) [`d4f77b595f`](https://github.com/wso2/identity-apps/commit/d4f77b595f4e4fbf013040d7274dff9d7df33991) Thanks [@savindi7](https://github.com/savindi7)! - Hide action to choose another authentication option when multi auth is unavailable
+
+* [#4544](https://github.com/wso2/identity-apps/pull/4544) [`aa05ad36f7`](https://github.com/wso2/identity-apps/commit/aa05ad36f7546bd525120110f0bc8999000cfe52) Thanks [@Achintha444](https://github.com/Achintha444)! - Remove `Create an account` button
+
 ## 2.0.43
 
 ### Patch Changes

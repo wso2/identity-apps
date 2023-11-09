@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.33
+
+### Patch Changes
+
+- [#4539](https://github.com/wso2/identity-apps/pull/4539) [`c3cb0e1b78`](https://github.com/wso2/identity-apps/commit/c3cb0e1b78255c857bd96ef651509e8f4c17b8e6) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update Classic Editor Sign-In Message for Passkey Config Toggle
+
 ## 2.0.32
 
 ### Patch Changes

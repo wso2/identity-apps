@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.5.30
+
+### Patch Changes
+
+- [#4538](https://github.com/wso2/identity-apps/pull/4538) [`0089e68f83`](https://github.com/wso2/identity-apps/commit/0089e68f837f5f1e60f810e56b6b3791305c023a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add pagination support for organization discovery feature
+
+* [#4539](https://github.com/wso2/identity-apps/pull/4539) [`c3cb0e1b78`](https://github.com/wso2/identity-apps/commit/c3cb0e1b78255c857bd96ef651509e8f4c17b8e6) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update Classic Editor Sign-In Message for Passkey Config Toggle
+
+- [#4490](https://github.com/wso2/identity-apps/pull/4490) [`1d96405a46`](https://github.com/wso2/identity-apps/commit/1d96405a46e106c04f92a89ce958e9c19cab6fee) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Display only the permissions of allowed API resources for roles with application audience
+
+* [#4544](https://github.com/wso2/identity-apps/pull/4544) [`aa05ad36f7`](https://github.com/wso2/identity-apps/commit/aa05ad36f7546bd525120110f0bc8999000cfe52) Thanks [@Achintha444](https://github.com/Achintha444)! - Remove `Create an account` button
+
+* Updated dependencies [[`c3cb0e1b78`](https://github.com/wso2/identity-apps/commit/c3cb0e1b78255c857bd96ef651509e8f4c17b8e6)]:
+  - @wso2is/i18n@2.0.33
+
 ## 2.5.29
 
 ### Patch Changes
