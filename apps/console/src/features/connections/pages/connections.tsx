@@ -105,6 +105,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
     const [ connectionsList, setConnectionsList ] = useState<ConnectionListResponseInterface>({});
     const [ authenticatorList, setAuththenticatorList ] = useState<AuthenticatorInterface[]>([]);
     const [ localAuthenticatorList, setLocalAuthenticatorList ] = useState<AuthenticatorInterface[]>([]);
+    const [ filteredAuthenticatorList, setFilteredAuthenticatorList ] = useState<AuthenticatorInterface[]>([]);
     const [ filter, setFilter ] = useState<string>(null);
     const [ appendConnections, setAppendConnections ] = useState<boolean>(false);
     const isPaginating: boolean = false;
@@ -239,6 +240,26 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         setLocalAuthenticatorList(moderated);
         setListItemLimit(UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT - moderated.length);
     }, [ authenticators ]);
+
+    /**
+     * Filters the filtered authenticator list based on the configurable local authenticator list.
+     */
+    useEffect(() => {
+        const filtered: AuthenticatorInterface[] = authenticatorList.filter((authenticator: AuthenticatorInterface) => {
+
+            // Filtered authenticator list should only contain local authenticators that are configurable.
+            if (authenticator.type === AuthenticatorTypes.LOCAL) {
+
+                return localAuthenticatorList.some((localAuthenticator: AuthenticatorInterface) => {
+                    return localAuthenticator.id === authenticator.id;
+                });
+            }
+
+            return true;
+        });
+
+        setFilteredAuthenticatorList(filtered);
+    }, [ authenticatorList, localAuthenticatorList ]);
 
     /**
      * Fetches the local authenticators and stores them in the internal state.
@@ -495,7 +516,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
             >
                 <AuthenticatorGrid
                     isLoading= { isConnectionsFetchRequestLoading || isAuthenticatorsFetchRequestLoading }
-                    authenticators={ showFilteredList ? authenticatorList : connectionsList?.identityProviders }
+                    authenticators={ showFilteredList ? filteredAuthenticatorList : connectionsList?.identityProviders }
                     onEmptyListPlaceholderActionClick={ () => {
                         eventPublisher.publish("connections-click-new-connection-button");
                         history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
