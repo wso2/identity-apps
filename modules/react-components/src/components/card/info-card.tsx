@@ -223,9 +223,11 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                     />
                                 ) }
                             </Item>                        
-                            <Item>
-                                { featureStatus }
-                            </Item>                        
+                            { featureStatus && (
+                                <Item>
+                                    { featureStatus }
+                                </Item>
+                            ) }                        
                         </Grid>
                     }
 
