@@ -5604,7 +5604,11 @@ export interface ConsoleNS {
                             message: string;
                         };
                         error: {
-                            genericError: {
+                            updateError: {
+                                description: string;
+                                message: string;
+                            };
+                            fetchError: {
                                 description: string;
                                 message: string;
                             };

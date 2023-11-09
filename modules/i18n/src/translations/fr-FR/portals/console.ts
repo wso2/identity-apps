@@ -8995,9 +8995,13 @@ export const console: ConsoleNS = {
                             message: "Mis à jour avec succés."
                         },
                         error: {
-                            genericError: {
+                            updateError: {
                                 description: "Une erreur s'est produite lors de la mise à jour de la configuration de la publication des journaux à distance.",
                                 message: "Quelque chose s'est mal passé"
+                            },
+                            fetchError: {
+                                description: "Une erreur s'est produite lors de l'obtention de la configuration de la publication des journaux à distance.",
+                                message: "Impossible d'obtenir la configuration de la publication des journaux à distance."
                             }
                         }
                     }
