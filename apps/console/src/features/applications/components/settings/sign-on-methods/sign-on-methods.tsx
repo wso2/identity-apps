@@ -35,10 +35,10 @@ import GitHubLoginSequenceTemplate from "./templates/github-login-sequence.json"
 import GoogleLoginSequenceTemplate from "./templates/google-login-sequence.json";
 import MagicLinkSequenceTemplate from "./templates/magic-link-sequence.json";
 import MicrosoftLoginSequenceTemplate from "./templates/microsoft-login-sequence.json";
+import PasskeyLoginSequenceTemplate from "./templates/passkey-login-sequence.json";
 import SecondFactorEMAILOTPSequenceTemplate from "./templates/second-factor-email-otp-sequence.json";
 import SecondFactorSMSOTPSequenceTemplate from "./templates/second-factor-sms-otp-sequence.json";
 import SecondFactorTOTPSequenceTemplate from "./templates/second-factor-totp-sequence.json";
-import UsernamelessSequenceTemplate from "./templates/usernameless-login-sequence.json";
 import AuthenticationFlowBuilder from "../../../../authentication-flow-builder/components/authentication-flow-builder";
 import AuthenticationFlowProvider from "../../../../authentication-flow-builder/providers/authentication-flow-provider";
 import { ConnectionsManagementUtils } from "../../../../connections/utils/connection-utils";
@@ -348,7 +348,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             );
             setModeratedAuthenticationSequence({
                 ...authenticationSequence,
-                ...cloneDeep(UsernamelessSequenceTemplate)
+                ...cloneDeep(PasskeyLoginSequenceTemplate)
             });
         } else if (loginFlow === LoginFlowTypes.GOOGLE_LOGIN) {
             eventPublisher.publish(

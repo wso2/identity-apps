@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.30
+
+### Patch Changes
+
+- [#4516](https://github.com/wso2/identity-apps/pull/4516) [`2fb7b58007`](https://github.com/wso2/identity-apps/commit/2fb7b58007edd8fd1ecb8a05be7a589a784e4a9c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix danger zone text taking full width in medium and large screen sizes
+
 ## 2.0.29
 
 ### Patch Changes

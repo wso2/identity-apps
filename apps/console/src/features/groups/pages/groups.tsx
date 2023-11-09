@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -41,12 +41,15 @@ import {
     getAUserStore,
     getEmptyPlaceholderIllustrations
 } from "../../core";
+import { RootOnlyComponent } from "../../organizations/components";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { OrganizationUtils } from "../../organizations/utils";
 import { getUserStoreList } from "../../userstores/api";
 import { UserStorePostData } from "../../userstores/models/user-stores";
 import { deleteGroupById, getGroupList, searchGroupList } from "../api";
 import { GroupList } from "../components";
 import { CreateGroupWizard } from "../components/wizard";
+import { GroupConstants } from "../constants";
 import { GroupsInterface, SearchGroupInterface } from "../models";
 
 const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
@@ -83,7 +86,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userStoreOptions, setUserStoresList ] = useState<DropdownItemProps[]>([]);
-    const [ userStore, setUserStore ] = useState(undefined);
+    const [ userStore, setUserStore ] = useState(null);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     // TODO: Check the usage and delete id not required.
     const [ , setIsEmptyResults ] = useState<boolean>(false);
@@ -96,6 +99,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ paginatedGroups, setPaginatedGroups ] = useState<GroupsInterface[]>([]);
 
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(GROUPS_SORTING_OPTIONS[ 0 ]);
+
+    const { isRootOrganization } = useGetOrganizationType();
 
     useEffect(() => {
         if(searchQuery == "") {
@@ -177,14 +182,14 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     };
 
     /**
-     * The following function fetch the user store list and set it to the state.
+     * The following function fetches the user store list and sets it to the state.
      */
     const getUserStores = () => {
         const storeOptions: DropdownItemProps[] = [
             {
                 key: -2,
                 text: "All user stores",
-                value: null
+                value: GroupConstants.ALL_USER_STORES_OPTION_VALUE
             },
             {
                 key: -1,
@@ -199,9 +204,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             value: ""
         };
 
-        setUserStore(storeOptions[ 0 ].value);
-
-        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (isRootOrganization) {
             getUserStoreList()
                 .then((response: AxiosResponse<UserstoreListResponseInterface[]>) => {
                     if (storeOptions.length === 0) {
@@ -287,7 +290,11 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     };
 
     const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
-        setUserStore(data.value as string);
+        if (data.value === GroupConstants.ALL_USER_STORES_OPTION_VALUE) {
+            setUserStore(null);
+        } else {
+            setUserStore(data.value as string);
+        }
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
@@ -421,16 +428,18 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 onPageChange={ handlePaginationChange }
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
                 sortStrategy={ listSortingStrategy }
-                rightActionPanel={
-                    (<Dropdown
-                        data-testid="group-mgt-groups-list-stores-dropdown"
-                        selection
-                        options={ userStoreOptions && userStoreOptions }
-                        placeholder={ t("console:manage.features.groups.list.storeOptions") }
-                        value={ userStore && userStore }
-                        onChange={ handleDomainChange }
-                    />)
-                }
+                rightActionPanel={ (
+                    <RootOnlyComponent>
+                        <Dropdown
+                            data-testid="group-mgt-groups-list-stores-dropdown"
+                            selection
+                            options={ userStoreOptions && userStoreOptions }
+                            placeholder={ t("console:manage.features.groups.list.storeOptions") }
+                            onChange={ handleDomainChange }
+                            defaultValue={ GroupConstants.ALL_USER_STORES_OPTION_VALUE }
+                        />
+                    </RootOnlyComponent> 
+                ) }
                 showPagination={ paginatedGroups.length > 0  }
                 showTopActionPanel={ isGroupsListRequestLoading
                     || !(!searchQuery

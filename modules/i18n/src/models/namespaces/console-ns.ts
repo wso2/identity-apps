@@ -860,6 +860,14 @@ export interface ConsoleNS {
                                                 heading: string;
                                                 info: string;
                                             },
+                                            passkey: {
+                                                description: string;
+                                                heading: string;
+                                                info: {
+                                                    progressiveEnrollmentEnabled: string;
+                                                    progressiveEnrollmentDisabled: string;
+                                                }
+                                            }
                                             magicLink: {
                                                 description: string;
                                                 heading: string;

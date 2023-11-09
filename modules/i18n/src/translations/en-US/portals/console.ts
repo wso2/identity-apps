@@ -1396,6 +1396,18 @@ export const console: ConsoleNS = {
                                                 "for FIDO2 supported passkeys and further users wishing to enroll " +
                                                 "multiple passkeys, they must do so via MyAccount."
                                             },
+                                            passkey: {
+                                                description: "Enable users to log in using a passkey, FIDO security key or " +
+                                                "biometrics.",
+                                                heading: "Add Passkey Login",
+                                                info: {
+                                                    progressiveEnrollmentEnabled: "Passkey progressive enrollment is enabled. " +
+                                                    "Users can enroll passkeys on-the-fly. If they wish to enroll multiple passkeys " +
+                                                    "they should do so via MyAccount.",
+                                                    progressiveEnrollmentDisabled: "On-the-fly passkey enrollment is disabled. " + 
+                                                    "Users must enroll their passkeys through MyAccount to use passwordless sign-in."
+                                                }
+                                            },
                                             emailOTP: {
                                                 description: "Enable additional authentication layer with Email based OTP.",
                                                 heading: "Add Email OTP as a second factor"
@@ -10197,8 +10209,9 @@ export const console: ConsoleNS = {
                                 label: "Assigned application",
                                 placeholder: "Select application to assign the role",
                                 applicationSubTitle: {
-                                    application: "Support application-scoped roles. ",
-                                    organization: "Support organization-scoped roles"
+                                    application: "Support application-scoped roles.",
+                                    organization: "Support organization-scoped role. ",
+                                    changeAudience: "Change the audience"
                                 },
                                 validations: {
                                     empty: "Assigned application is required to create an application-scoped role."
