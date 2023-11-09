@@ -78,7 +78,7 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
         }
 
         onConditionalAuthenticationToggle(false);
-    }, [ authenticationSequence ]);
+    }, [ authenticationSequence.script ]);
 
     const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
 

@@ -48,7 +48,7 @@
     }
 
     .revert-to-default-button {
-        right: var(--asg-auth-flow-builder-side-panel-drawer-mini-width);
+        right: 0;
         box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.08);
         position: absolute;
         z-index: 5;

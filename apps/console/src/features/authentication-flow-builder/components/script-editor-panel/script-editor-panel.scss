@@ -18,12 +18,10 @@
 
 .script-editor-panel {
     height: 100%;
-
-    .predefined-flows-side-panel-content {
-        border-left: 1px solid var(--oxygen-palette-divider);
-    }
+    width: calc(100% - 16px);
 
     .toolbar-container {
+
         .oxygen-toolbar {
             display: flex;
             justify-content: space-between;
