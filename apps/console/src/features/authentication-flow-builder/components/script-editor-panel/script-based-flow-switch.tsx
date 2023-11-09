@@ -65,6 +65,12 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
         updateAuthenticationSequence
     } = useAuthenticationFlow();
 
+    const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
+
+    /**
+     * This useEffect is responsible for deciding whether
+     * the adaptive script section should be enabled or not.
+     */
     useEffect(() => {
         if (authenticationSequence?.script
                 && !AdaptiveScriptUtils.isDefaultScript(
@@ -80,8 +86,10 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
         onConditionalAuthenticationToggle(false);
     }, [ authenticationSequence.script ]);
 
-    const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
-
+    /**
+     * This function will handle the on and off
+     * actions of the switch component.
+     */
     const handleSwitchChange = () => {
         if (isConditionalAuthenticationEnabled) {
             setShowScriptResetWarning(true);
