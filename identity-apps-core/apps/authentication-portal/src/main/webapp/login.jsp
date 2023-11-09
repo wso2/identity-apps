@@ -534,6 +534,94 @@
                         if ((hasLocalLoginOptions && localAuthenticatorNames.size() > 1) || (!hasLocalLoginOptions)
                                 || (hasLocalLoginOptions && idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1)) {
                     %>
+                    <%
+                    String clientId = request.getParameter("client_id");
+                    String urlParameters = "";
+                    if (!isSelfSignUpEnabledInTenant
+                            && StringUtils.isNotBlank(application.getInitParameter("AccountRegisterEndpointURL"))
+                            && (StringUtils.equals("CONSOLE",clientId)
+                            || (StringUtils.equals("MY_ACCOUNT",clientId)
+                            && StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)))
+                            && !StringUtils.equals("true", promptAccountLinking)) {
+                            String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
+                            String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
+                            Boolean isRecoveryEPAvailable = false;
+                            Boolean isSelfSignUpEPAvailable = false;
+                            String urlEncodedURL = "";
+                            if (StringUtils.isNotBlank(recoveryEPAvailable)) {
+                                isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
+                            } else {
+                                isRecoveryEPAvailable = isRecoveryEPAvailable();
+                            }
+                            if (StringUtils.isNotBlank(enableSelfSignUpEndpoint)) {
+                                isSelfSignUpEPAvailable = Boolean.valueOf(enableSelfSignUpEndpoint);
+                            } else {
+                                isSelfSignUpEPAvailable = isSelfSignUpEPAvailable();
+                            }
+                            if (isRecoveryEPAvailable || isSelfSignUpEPAvailable) {
+                                if (StringUtils.equals("business-app", insightsAppIdentifier)) {
+                                    String scheme = request.getScheme();
+                                    String serverName = request.getServerName();
+                                    int serverPort = request.getServerPort();
+                                    String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
+                                    String prmstr = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
+                                    String urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
+                                    urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
+                                    urlParameters = prmstr;
+                                } else {
+                                    urlParameters = "utm_source=" + insightsAppIdentifier;
+                                }
+                                if (StringUtils.isBlank(accountRegistrationEndpointContextURL)) {
+                                    accountRegistrationEndpointContextURL = identityMgtEndpointContextURL + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
+                                }
+                            }
+                        %>
+                            <div class="mt-4 mb-4">
+                                <div class="mt-3 external-link-container text-small">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.an.account")%>
+                                    <a
+                                        onclick="handleSignupClick()"
+                                        href="<%=getRegistrationUrl(accountRegistrationEndpointContextURL, urlEncodedURL, urlParameters)%>"
+                                        target="_self"
+                                        class="clickable-link"
+                                        rel="noopener noreferrer"
+                                        data-testid="login-page-early-signup-link"
+                                        style="cursor: pointer;"
+                                    >
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "register")%>
+                                    </a>
+                                </div>
+                            </div>
+                            <% }
+                            if (!StringUtils.equals("CONSOLE",clientId)
+                                    && !StringUtils.equals("MY_ACCOUNT",clientId) && !hasLocalLoginOptions && hasFederatedOptions &&
+                                    isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) {
+                                    urlParameters = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
+                            %>
+                                    <div class="ui horizontal divider">
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
+                                    </div>
+                                    <div class="mt-0">
+                                    <div class="buttons">
+                                        <button
+                                            type="button"
+                                            <% if(StringUtils.isNotBlank(selfSignUpOverrideURL)) { %>
+                                            onclick="window.location.href='<%=i18nLink(userLocale, selfSignUpOverrideURL)%>';"
+                                            <% } else { %>
+                                            onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>';"
+                                            <% } %>
+                                            class="ui large fluid button secondary"
+                                            id="registerLink"
+                                            role="button"
+                                            data-testid="login-page-create-account-button"
+                                        >
+                                            Create an account
+                                        </button>
+                                    </div>
+                                </div>
+                            <%
+                            }
+                            %>
                     <% if (localAuthenticatorNames.contains(BASIC_AUTHENTICATOR) ||
                             localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) { %>
                     <div class="ui horizontal divider">
@@ -1041,94 +1129,7 @@
                             } %>
                             </div>
                         </div>
-                    <% }
-                    String clientId = request.getParameter("client_id");
-                    String urlParameters = "";
-                    if (!isSelfSignUpEnabledInTenant
-                            && StringUtils.isNotBlank(application.getInitParameter("AccountRegisterEndpointURL"))
-                            && (StringUtils.equals("CONSOLE",clientId)
-                            || (StringUtils.equals("MY_ACCOUNT",clientId)
-                            && StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)))
-                            && !StringUtils.equals("true", promptAccountLinking)) {
-                            String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
-                            String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
-                            Boolean isRecoveryEPAvailable = false;
-                            Boolean isSelfSignUpEPAvailable = false;
-                            String urlEncodedURL = "";
-                            if (StringUtils.isNotBlank(recoveryEPAvailable)) {
-                                isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
-                            } else {
-                                isRecoveryEPAvailable = isRecoveryEPAvailable();
-                            }
-                            if (StringUtils.isNotBlank(enableSelfSignUpEndpoint)) {
-                                isSelfSignUpEPAvailable = Boolean.valueOf(enableSelfSignUpEndpoint);
-                            } else {
-                                isSelfSignUpEPAvailable = isSelfSignUpEPAvailable();
-                            }
-                            if (isRecoveryEPAvailable || isSelfSignUpEPAvailable) {
-                                if (StringUtils.equals("business-app", insightsAppIdentifier)) {
-                                    String scheme = request.getScheme();
-                                    String serverName = request.getServerName();
-                                    int serverPort = request.getServerPort();
-                                    String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
-                                    String prmstr = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
-                                    String urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
-                                    urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
-                                    urlParameters = prmstr;
-                                } else {
-                                    urlParameters = "utm_source=" + insightsAppIdentifier;
-                                }
-                                if (StringUtils.isBlank(accountRegistrationEndpointContextURL)) {
-                                    accountRegistrationEndpointContextURL = identityMgtEndpointContextURL + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
-                                }
-                            }
-                        %>
-                            <div class="mt-4">
-                                <div class="mt-3 external-link-container text-small">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.an.account")%>
-                                    <a
-                                        onclick="handleSignupClick()"
-                                        href="<%=getRegistrationUrl(accountRegistrationEndpointContextURL, urlEncodedURL, urlParameters)%>"
-                                        target="_self"
-                                        class="clickable-link"
-                                        rel="noopener noreferrer"
-                                        data-testid="login-page-early-signup-link"
-                                        style="cursor: pointer;"
-                                    >
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "register")%>
-                                    </a>
-                                </div>
-                            </div>
-                            <% }
-                            if (!StringUtils.equals("CONSOLE",clientId)
-                                    && !StringUtils.equals("MY_ACCOUNT",clientId) && !hasLocalLoginOptions && hasFederatedOptions &&
-                                    isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) {
-                                    urlParameters = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
-                            %>
-                                    <div class="ui horizontal divider">
-                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
-                                    </div>
-                                    <div class="mt-0">
-                                    <div class="buttons">
-                                        <button
-                                            type="button"
-                                            <% if(StringUtils.isNotBlank(selfSignUpOverrideURL)) { %>
-                                            onclick="window.location.href='<%=i18nLink(userLocale, selfSignUpOverrideURL)%>';"
-                                            <% } else { %>
-                                            onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>';"
-                                            <% } %>
-                                            class="ui large fluid button secondary"
-                                            id="registerLink"
-                                            role="button"
-                                            data-testid="login-page-create-account-button"
-                                        >
-                                            Create an account
-                                        </button>
-                                    </div>
-                                </div>
-                            <%
-                            }
-                            %>
+                    <% } %>
                 </div>
             </div>
         </layout:component>
