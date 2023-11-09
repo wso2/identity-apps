@@ -1511,7 +1511,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     disableAnimation
                                                     shrink={ false }
                                                     margin="dense"
-                                                    className="pb-2"
+                                                    className="spacing-bottom"
                                                     data-componentid={ `${componentId}-userstore-label` }
                                                 >
                                                     { t("console:manage.features.user.forms.addUserForm."+
@@ -1794,7 +1794,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                         disableAnimation
                                                         shrink={ false }
                                                         margin="dense"
-                                                        className="pb-2"
+                                                        className="spacing-bottom"
                                                         data-componentid={ `${componentId}-userstore-label` }
                                                     >
                                                         { t("console:manage.features.user.forms.addUserForm."+
