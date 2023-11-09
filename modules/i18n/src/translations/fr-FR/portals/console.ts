@@ -8428,8 +8428,9 @@ export const console: ConsoleNS = {
                                 label: "Application attribuée",
                                 placeholder: "Sélectionnez l'application pour attribuer le rôle",
                                 applicationSubTitle: {
-                                    application: "Prise en charge des rôles à application. ",
-                                    organization: "Rôles de soutien à l'organisation"
+                                    application: "Prise en charge des rôles à application.",
+                                    organization: "Rôles de soutien à l'organisation. ",
+                                    changeAudience: "Changer le public"
                                 },
                                 validations: {
                                     empty: "L'application attribuée est nécessaire pour créer un rôle à application."

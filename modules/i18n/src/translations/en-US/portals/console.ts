@@ -10197,8 +10197,9 @@ export const console: ConsoleNS = {
                                 label: "Assigned application",
                                 placeholder: "Select application to assign the role",
                                 applicationSubTitle: {
-                                    application: "Support application-scoped roles. ",
-                                    organization: "Support organization-scoped roles"
+                                    application: "Support application-scoped roles.",
+                                    organization: "Support organization-scoped role. ",
+                                    changeAudience: "Change the audience"
                                 },
                                 validations: {
                                     empty: "Assigned application is required to create an application-scoped role."
