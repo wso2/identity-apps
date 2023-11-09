@@ -136,6 +136,19 @@ merge_to_master() {
     echo "Merged $releaseBranch into $masterBranch"
 }
 
+# Delete the release branch from both local and remote.
+delete_release_branch() {
+    local releaseBranch=$RELEASE_BRANCH
+
+    # Delete the local branch.
+    git branch -d "$releaseBranch" &&
+    echo "Deleted local branch: $releaseBranch"
+
+    # Delete the remote branch.
+    git push origin --delete "$releaseBranch" &&
+    echo "Deleted remote branch: $releaseBranch"
+}
+
 if [ -z "$PACKAGES" ] || [ "$PACKAGES" = "[]" ]; then
     echo "No packages to be released. Exiting..." &&
         exit 0
@@ -174,5 +187,8 @@ done
 
 # Merge the release branch back to master.
 merge_to_master
+
+# Delete the release branch from both local and remote.
+delete_release_branch
 
 # End of script

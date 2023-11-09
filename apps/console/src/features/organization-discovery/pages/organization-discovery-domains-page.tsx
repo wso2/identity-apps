@@ -53,7 +53,10 @@ import deleteOrganizationDiscoveryConfig from "../api/delete-organization-discov
 import useGetOrganizationDiscovery from "../api/use-get-organization-discovery";
 import useGetOrganizationDiscoveryConfig from "../api/use-get-organization-discovery-config";
 import DiscoverableOrganizationsList from "../components/discoverable-organizations-list";
-import { OrganizationDiscoveryConfigInterface } from "../models/organization-discovery";
+import {
+    OrganizationDiscoveryConfigInterface,
+    OrganizationListWithDiscoveryInterface
+} from "../models/organization-discovery";
 
 const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -260,17 +263,19 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                     mutateOrganizationDiscoveryConfigFetchRequest();
                 })
                 .catch(() => {
-                    addAlert({
-                        description: t(
-                            "console:manage.features.organizationDiscovery.notifications." +
-                            "enableEmailDomainDiscovery.error.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "console:manage.features.organizationDiscovery.notifications." +
-                            "enableEmailDomainDiscovery.error.message"
-                        )
-                    });
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "console:manage.features.organizationDiscovery.notifications." +
+                                "enableEmailDomainDiscovery.error.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.organizationDiscovery.notifications." +
+                                "enableEmailDomainDiscovery.error.message"
+                            )
+                        })
+                    );
                 });
 
             return;
@@ -325,6 +330,16 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                 data-testId={ `${ testId }-enable-toggle` }
             />
         );
+    };
+
+    /**
+     * Checks if the `Next` page nav button should be shown.
+     *
+     * @param orgList - List of discoverable organizations.
+     * @returns `true` if `Next` page nav button should be shown.
+     */
+    const shouldShowNextPageNavigation = (orgList: OrganizationListWithDiscoveryInterface): boolean => {
+        return orgList?.startIndex + orgList?.count !== orgList?.totalResults + 1;
     };
 
     return (
@@ -406,7 +421,6 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                     onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                     onPageChange={ handlePaginationChange }
                     onSortStrategyChange={ handleListSortingStrategyOnChange }
-                    showPagination={ false }
                     showTopActionPanel={
                         isDiscoverableOrganizationsFetchRequestLoading ||
                                 !(!searchQuery && discoverableOrganizations?.organizations?.length <= 0)
@@ -416,7 +430,11 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                     totalPages={ 10 }
                     totalListSize={ discoverableOrganizations?.organizations?.length }
                     isLoading={ isDiscoverableOrganizationsFetchRequestLoading }
+                    paginationOptions={ {
+                        disableNextButton: !shouldShowNextPageNavigation(discoverableOrganizations)
+                    } }
                     data-componentid={ `${ testId }-list-layout` }
+                    showPagination
                 >
                     <DiscoverableOrganizationsList
                         list={ discoverableOrganizations }

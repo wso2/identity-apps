@@ -1,5 +1,23 @@
 # @wso2is/theme
 
+## 2.0.31
+
+### Patch Changes
+
+- [#4532](https://github.com/wso2/identity-apps/pull/4532) [`3db28dcd8e`](https://github.com/wso2/identity-apps/commit/3db28dcd8e78f16f3573bc26f42bee0ccd3a3ca3) Thanks [@shanggeeth](https://github.com/shanggeeth)! - Change disabled dropdown style for better UX
+
+## 2.0.30
+
+### Patch Changes
+
+- [#4516](https://github.com/wso2/identity-apps/pull/4516) [`2fb7b58007`](https://github.com/wso2/identity-apps/commit/2fb7b58007edd8fd1ecb8a05be7a589a784e4a9c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix danger zone text taking full width in medium and large screen sizes
+
+## 2.0.29
+
+### Patch Changes
+
+- [#4494](https://github.com/wso2/identity-apps/pull/4494) [`d94af75927`](https://github.com/wso2/identity-apps/commit/d94af7592757363f360147c78d54673d92d86a51) Thanks [@savindi7](https://github.com/savindi7)! - Fix cosmetic issues in SMS provider
+
 ## 2.0.28
 
 ### Patch Changes

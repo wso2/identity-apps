@@ -53,14 +53,14 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetOrganizationType();
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ filterBy, setFilterBy ] = useState<string>(undefined);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
-    const isSubOrg: boolean = orgType === OrganizationType.SUBORGANIZATION;
+    const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
 
     const {
         data: rolesList,

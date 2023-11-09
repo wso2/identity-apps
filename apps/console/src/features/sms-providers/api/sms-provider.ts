@@ -63,7 +63,7 @@ export const useSMSProviders = <Data = SMSProviderAPIResponseInterface[], Error 
     };
 };
 
-export const updateSMSProvider = (
+export const createSMSProvider = (
     smsProvider: SMSProviderAPIInterface
 ): Promise<SMSProviderAPIResponseInterface> => {
 
@@ -75,6 +75,45 @@ export const updateSMSProvider = (
         },
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.smsProviderEndpoint
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200 && response.status !== 201) {
+                throw new IdentityAppsApiException(
+                    SMSProviderConstants.ErrorMessages.SMS_PROVIDER_CONFIG_FETCH_INVALID_STATUS_CODE_ERROR_CODE
+                        .getErrorMessage(),
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as SMSProviderAPIResponseInterface);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                SMSProviderConstants.ErrorMessages.SMS_PROVIDER_CONFIG_UPDATE_ERROR_CODE.getErrorMessage(),
+                error.stack,
+                error.response?.data?.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+export const updateSMSProvider = (
+    smsProvider: SMSProviderAPIInterface
+): Promise<SMSProviderAPIResponseInterface> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        data: smsProvider,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.smsProviderEndpoint + "/SMSPublisher"
     };
 
     return httpClient(requestConfig)

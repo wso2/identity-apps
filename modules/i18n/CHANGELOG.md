@@ -1,5 +1,35 @@
 # @wso2is/i18n
 
+## 2.0.33
+
+### Patch Changes
+
+- [#4539](https://github.com/wso2/identity-apps/pull/4539) [`c3cb0e1b78`](https://github.com/wso2/identity-apps/commit/c3cb0e1b78255c857bd96ef651509e8f4c17b8e6) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update Classic Editor Sign-In Message for Passkey Config Toggle
+
+## 2.0.32
+
+### Patch Changes
+
+- [#4528](https://github.com/wso2/identity-apps/pull/4528) [`1b74de3e5b`](https://github.com/wso2/identity-apps/commit/1b74de3e5b08c5b0b33fe224be123fe09d7bb20a) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Change wording in SMS/ Email provider.
+
+## 2.0.31
+
+### Patch Changes
+
+- [#4526](https://github.com/wso2/identity-apps/pull/4526) [`352f7882bd`](https://github.com/wso2/identity-apps/commit/352f7882bd88c0b468a13df9aad3fbea08ffc455) Thanks [@Achintha444](https://github.com/Achintha444)! - Add self signup URL text to the branding.
+
+## 2.0.30
+
+### Patch Changes
+
+- [#4395](https://github.com/wso2/identity-apps/pull/4395) [`53764bfbe4`](https://github.com/wso2/identity-apps/commit/53764bfbe44a04e317fc6bc0c5e737366f5c7003) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Implement role assignment for manual multiple user invites
+
+* [#4507](https://github.com/wso2/identity-apps/pull/4507) [`b81948fe05`](https://github.com/wso2/identity-apps/commit/b81948fe050d5be8a8476090f30a791fd4b6b87d) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Fix typo
+
+- [#4499](https://github.com/wso2/identity-apps/pull/4499) [`92f29f6105`](https://github.com/wso2/identity-apps/commit/92f29f61051309c211178f03697e0c29ff164584) Thanks [@Rashmini](https://github.com/Rashmini)! - dd validation for email domain availability in organization discovery feature
+
+* [#4513](https://github.com/wso2/identity-apps/pull/4513) [`1ed2c49041`](https://github.com/wso2/identity-apps/commit/1ed2c4904159252c6966202501b0943268a8586a) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Implement Create Application Role in Application Roles section
+
 ## 2.0.29
 
 ### Patch Changes

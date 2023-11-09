@@ -496,9 +496,9 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                 <List.Header>{ t("myAccount:components.mfa.fido.heading") }</List.Header>
                                 <List.Description className="mt-2">
                                     <Trans i18nKey="myAccount:components.mfa.fido.description">
-                                        You can use a <Label size="tiny">Passkey</Label>,
-                                        <Label size="tiny">FIDO Security Key</Label> or
-                                        <Label size="tiny">Biometrics</Label> in your device
+                                        You can use a <Label size="tiny">passkey</Label>,
+                                        <Label size="tiny">FIDO security key</Label> or
+                                        <Label size="tiny">biometrics</Label> in your device
                                         to sign in to your account.
                                     </Trans>
                                 </List.Description>

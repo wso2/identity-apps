@@ -39,6 +39,7 @@ import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-
 import useGetCustomTextPreference from "../api/use-get-custom-text-preference";
 import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
 import useGetCustomTextPreferenceMeta from "../api/use-get-custom-text-preference-meta";
+import { BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import AuthenticationFlowContext from "../context/branding-preference-context";
 import { BrandingSubFeatures, PreviewScreenType } from "../models/branding-preferences";
@@ -76,7 +77,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetOrganizationType();
 
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
@@ -180,7 +181,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const _updateCustomTextPreference = (values: CustomTextPreferenceInterface): Promise<void> => {
         let isAlreadyConfigured: boolean = !!customText;
 
-        if (orgType === OrganizationType.SUBORGANIZATION
+        if (organizationType === OrganizationType.SUBORGANIZATION
             && customText?.name !== currentOrganization?.id) {
             // This means the sub-org has no custom text preference configured.
             // It gets the custom text preference from the parent org.
@@ -363,7 +364,15 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
                 selectedLocale,
                 selectedScreen,
                 updateActiveCustomTextConfigurationMode: setActiveCustomTextConfigurationMode,
-                updateActiveTab: setActiveTab,
+                updateActiveTab: (tab: string) => {
+                    // If the tab is the text tab, set the preview screen to common before changing the tab.
+                    // This is done to overcome an issue occurred in only production.
+                    if (tab === BrandingPreferencesConstants.TABS.TEXT_TAB_ID) {
+                        setSelectedPreviewScreen(PreviewScreenType.COMMON);
+                    }
+
+                    setActiveTab(tab);
+                },
                 updateCustomTextFormSubscription: (
                     subscription: FormState<CustomTextInterface, CustomTextInterface>
                 ): void => {

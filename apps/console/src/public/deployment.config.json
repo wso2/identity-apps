@@ -91,6 +91,7 @@
                 "disabled_features": []
             }
         },
+        "subscriptionApiPath": "",
         "applicationInsightsProxyEndpoint": "",
         "applicationInsightsInstrumentationKey": "",
         "applicationInsightsEnabled": false,
@@ -953,7 +954,7 @@
             }
         },
         "connectionResourcesUrl": "",
-        "isFeatureGateEnabled": true,
+        "isFeatureGateEnabled": false,
         "isCookieConsentBannerEnabled": true,
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "isMarketingConsentBannerEnabled": false,
