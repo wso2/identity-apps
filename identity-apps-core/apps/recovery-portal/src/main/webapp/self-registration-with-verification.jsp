@@ -1413,7 +1413,8 @@
             var firstNameUserInput = document.getElementById("firstNameUserInput");
             var lastNameUserInput = document.getElementById("lastNameUserInput");
 
-            if ( firstNameUserInput.value.trim() === "" ||  lastNameUserInput.value.trim() === "")  {
+            if ( (!!firstNameUserInput &&  firstNameUserInput.value.trim() === "")
+                || ( !!lastNameUserInput && lastNameUserInput.value.trim() === ""))  {
                 return false;
             }
 
