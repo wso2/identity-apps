@@ -39,8 +39,8 @@ const useGetOrganizationDiscovery = <
     Error = RequestErrorInterface>(
         shouldFetch: boolean = true,
         filter: string,
-        _offset?: number,
-        _limit?: number
+        offset?: number,
+        limit?: number
     ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -49,7 +49,9 @@ const useGetOrganizationDiscovery = <
         },
         method: HttpMethods.GET,
         params: {
-            filter
+            filter,
+            limit,
+            offset
         },
         url: `${ store.getState().config.endpoints.organizations }/organizations/discovery`
     };
