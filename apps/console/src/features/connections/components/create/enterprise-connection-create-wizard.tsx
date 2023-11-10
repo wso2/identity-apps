@@ -68,6 +68,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon, Grid as SemanticGrid } from "semantic-ui-react";
+import { commonConfig } from "../../../../extensions";
 import { EventPublisher } from "../../../core";
 import { createConnection, useGetConnectionTemplate, useGetConnections } from "../../api/connections";
 import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
@@ -261,7 +262,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
      * @param value - URL to check.
      */
     const isLoopBackCall = (value: string) => {
-        return (!(URLUtils.isLoopBackCall(value))) ?
+        return (!(URLUtils.isLoopBackCall(value) && commonConfig?.blockLoopBackCalls)) ? 
             undefined : t("console:develop.features.idp.forms.common." +
                 "internetResolvableErrorMessage");
     };
