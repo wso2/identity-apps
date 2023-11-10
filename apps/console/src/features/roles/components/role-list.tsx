@@ -272,7 +272,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             },
             {
                 hidden: (role: RolesInterface) => isSubOrg || (role?.displayName === RoleConstants.ADMIN_ROLE ||
-                    role?.displayName === RoleConstants.ADMIN_GROUP)
+                    role?.displayName === RoleConstants.ADMIN_GROUP) || (role?.displayName === 
+                        RoleConstants.EVERYONE_ROLE || role?.displayName === RoleConstants.EVERYONE_GROUP)
                     || !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.delete, allowedScopes),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {

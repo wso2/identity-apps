@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,8 +24,6 @@ export class RoleConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
@@ -33,10 +31,15 @@ export class RoleConstants {
     // API errors
     public static readonly ROLES_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR: string = "Received an invalid " +
         "status code while retrieving user roles.";
+
     public static readonly ROLES_FETCH_REQUEST_ERROR: string = "An error occurred while fetching the " +
         "user roles.";
 
     // Admin role display names.
     public static readonly ADMIN_ROLE: string = "admin";
     public static readonly ADMIN_GROUP: string = "Internal/admin";
+
+    // Everyone role display names.
+    public static readonly EVERYONE_ROLE: string = "everyone";
+    public static readonly EVERYONE_GROUP: string = "Internal/everyone";
 }
