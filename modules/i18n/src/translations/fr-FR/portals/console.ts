@@ -1741,6 +1741,10 @@ export const console: ConsoleNS = {
                                     "organisation.",
                                 label: "Application de gestion"
                             },
+                            isFapiApp: {
+                                hint: "Activez cette option pour permettre à l'application d'être conforme à FAPI.",
+                                label: "Application conforme FAPI"
+                            },
                             name: {
                                 label: "Nom",
                                 placeholder: "Mon appli",
@@ -9387,7 +9391,7 @@ export const console: ConsoleNS = {
                                 userCreationAcceptedMessage: "Création d'utilisateur acceptée",
                                 internalErrorMessage: "Une erreur s'est produite lors de l'importation des " +
                                     "utilisateurs",
-                                userAssignmentSuccessMessage: "Les utilisateurs ont été attribués avec succès à " + 
+                                userAssignmentSuccessMessage: "Les utilisateurs ont été attribués avec succès à " +
                                     "{{resource}}",
                                 userAssignmentFailedMessage: "L'affectation de l'utilisateur à {{resource}} a échoué",
                                 userAssignmentInternalErrorMessage: "Une erreur s'est produite lors de " +
