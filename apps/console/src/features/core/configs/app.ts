@@ -294,7 +294,7 @@ export class Config {
             isHeaderAvatarLabelAllowed: window[ "AppUtils" ]?.getConfig()?.ui?.isHeaderAvatarLabelAllowed,
             isLeftNavigationCategorized: window[ "AppUtils" ]?.getConfig()?.ui?.isLeftNavigationCategorized,
             isMarketingConsentBannerEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isMarketingConsentBannerEnabled,
-            isPasswordPoliciesEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isPasswordPoliciesEnabled,
+            isPasswordInputValidationEnabled: window["AppUtils"]?.getConfig()?.ui?.isPasswordInputValidationEnabled,
             isRequestPathAuthenticationEnabled:
                 window[ "AppUtils" ]?.getConfig()?.ui?.isRequestPathAuthenticationEnabled,
             isSAASDeployment: window[ "AppUtils" ]?.getConfig()?.ui?.isSAASDeployment,
