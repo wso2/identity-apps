@@ -17,7 +17,6 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Section } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { AppConstants, history } from "../../core";
