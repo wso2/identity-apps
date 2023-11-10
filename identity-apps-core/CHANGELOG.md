@@ -1,5 +1,14 @@
 # @wso2is/identity-apps-core
 
+## 2.0.46
+
+### Patch Changes
+
+- fix connections search issue
+
+- Updated dependencies []:
+  - @wso2is/theme@2.0.32
+
 ## 2.0.45
 
 ### Patch Changes

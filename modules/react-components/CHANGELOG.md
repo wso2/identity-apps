@@ -1,5 +1,14 @@
 # @wso2is/react-components
 
+## 2.0.14
+
+### Patch Changes
+
+- fix connections search issue
+
+- Updated dependencies []:
+  - @wso2is/theme@2.0.32
+
 ## 2.0.13
 
 ### Patch Changes

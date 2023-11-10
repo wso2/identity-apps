@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.32
+
+### Patch Changes
+
+- fix connections search issue
+
 ## 2.0.31
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.2.13
+
+### Patch Changes
+
+- fix connections search issue
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.0.14
+  - @wso2is/theme@2.0.32
+
 ## 2.2.12
 
 ### Patch Changes

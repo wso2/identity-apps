@@ -1,5 +1,23 @@
 # @wso2is/console
 
+## 2.6.0
+
+### Minor Changes
+
+- [#4492](https://github.com/wso2/identity-apps/pull/4492) [`cf12296f44`](https://github.com/wso2/identity-apps/commit/cf12296f447fbaad874eccdfbc0711befaacd029) Thanks [@RivinduM](https://github.com/RivinduM)! - Add support for FAPI application creation from UI
+
+### Patch Changes
+
+- [#4557](https://github.com/wso2/identity-apps/pull/4557) [`276964043e`](https://github.com/wso2/identity-apps/commit/276964043ec930295d62a63c64312a54a2cddf3f) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Allow loopback URL
+
+* [#4542](https://github.com/wso2/identity-apps/pull/4542) [`3d7e5a9a32`](https://github.com/wso2/identity-apps/commit/3d7e5a9a32c19330d96592d168213f4d1b049bee) Thanks [@dhaura](https://github.com/dhaura)! - Fix IS Console refreshing issue for the super tenant.
+
+- fix connections search issue
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.0.14
+  - @wso2is/theme@2.0.32
+
 ## 2.5.31
 
 ### Patch Changes
