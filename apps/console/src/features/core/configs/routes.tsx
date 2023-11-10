@@ -521,14 +521,14 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
                         component: lazy(() =>
-                            import("../../../features/notification-channels/" + "pages/notification-channels")
+                            import("../../../features/email-and-sms/" + "pages/email-and-sms")
                         ),
                         exact: true,
                         icon: { icon: <EnvelopeGearIcon fill="black" className="icon" /> },
-                        id: "notification-channels",
-                        name: "Channels",
+                        id: "email-and-sms",
+                        name: "Email & SMS",
                         order: 15,
-                        path: `${ AppConstants.getDeveloperViewBasePath() }/channels`,
+                        path: `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms`,
                         protected: true,
                         showOnSidePanel: true
                     },
