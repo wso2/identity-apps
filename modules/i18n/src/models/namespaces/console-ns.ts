@@ -1750,12 +1750,13 @@ export interface ConsoleNS {
                             IsUserIdInClaims: FormAttributes;
                             commonAuthQueryParams: FormAttributes;
 
-                            isEnableAssertionSigning: FormAttributes;
+                            isAssertionSigned: FormAttributes;
                             includeCert: FormAttributes;
                             includeNameIDPolicy: FormAttributes;
                             isEnableAssertionEncryption: FormAttributes;
 
                             authenticationContextClass: FormAttributes;
+                            customAuthenticationContextClass: FormAttributes;
                             attributeConsumingServiceIndex: FormAttributes;
 
                             isArtifactBindingEnabled: FormAttributes;

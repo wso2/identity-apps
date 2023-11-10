@@ -4051,8 +4051,7 @@ export const console: ConsoleNS = {
                                 ariaLabel: "SAML request additional query parameters",
                                 label: "Additional query parameters"
                             },
-                            // New additions
-                            isEnableAssertionSigning:  {
+                            isAssertionSigned:  {
                                 ariaLabel: "Enable assertion signing",
                                 hint: "Specify if SAMLAssertion element is signed",
                                 label: "Enable assertion signing"
@@ -4077,6 +4076,12 @@ export const console: ConsoleNS = {
                                 hint: "Authentication context class",
                                 label: "Authentication context class",
                                 placeholder: "Enter authentication context class"
+                            },
+                            customAuthenticationContextClass: {
+                                ariaLabel: "Custom Authentication context class",
+                                hint: "Specify the custom authentication context class",
+                                label: "Custom authentication context class",
+                                placeholder: "Enter custom authentication context class"
                             },
                             attributeConsumingServiceIndex: {
                                 ariaLabel: "Attribute consuming service index",
