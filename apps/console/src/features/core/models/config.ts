@@ -44,6 +44,7 @@ import { TenantResourceEndpointsInterface } from "../../tenants/models/endpoints
 import { UsersResourceEndpointsInterface } from "../../users/models/endpoints";
 import { UserstoreResourceEndpointsInterface } from "../../userstores/models/endpoints";
 import { ValidationServiceEndpointsInterface } from "../../validation/models";
+import { WorkspaceSettingsResourceEndpointsInterface } from "../../workspace-settings/models/endpoints";
 
 export type ConfigInterface = CommonConfigInterface<
     DeploymentConfigInterface,
@@ -425,7 +426,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     TenantResourceEndpointsInterface,
     ValidationServiceEndpointsInterface,
     JWTAuthenticationServiceEndpointsInterface,
-    BrandingPreferenceResourceEndpointsInterface {
+    BrandingPreferenceResourceEndpointsInterface,
+    WorkspaceSettingsResourceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details
