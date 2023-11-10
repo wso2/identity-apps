@@ -85,6 +85,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const isPasswordPoliciesEnabled: boolean = useSelector((state: AppState) => 
+        state?.config?.ui?.isPasswordPoliciesEnabled);
 
     const [ connectorCategories, setConnectorCategories ] = useState<GovernanceConnectorCategoryInterface[]>([]);
     const [ connectors, setConnectors ] = useState<GovernanceConnectorWithRef[]>([]);
@@ -134,6 +136,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 }
 
                 connectorCategoryArray.push(...response?.filter((category: GovernanceConnectorCategoryInterface) => {
+
+                    if (category.id === ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID) {
+                        return isPasswordPoliciesEnabled;
+                    }
+
                     return serverConfigurationConfig.connectorCategoriesToShow.includes(category.id); 
                 }));
 
@@ -467,6 +474,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                                                 <Grid xs={ 12 } lg={ 6 }>
                                                     <AdminAdvisoryBannerSection />
                                                 </Grid>
+                                                { !isPasswordPoliciesEnabled && (
+                                                    <Grid xs={ 12 } lg={ 6 }>
+                                                        <ValidationConfigPage/>
+                                                    </Grid>
+                                                ) }
                                             </>
                                         ) : (
                                             <>
