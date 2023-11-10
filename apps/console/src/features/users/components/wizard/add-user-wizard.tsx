@@ -1308,9 +1308,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const STEPS: WizardStepInterface[] = isAdminUser 
         ? [ ALL_STEPS[0], ...ALL_STEPS.slice(3) ]
-        : OrganizationUtils.isCurrentOrganizationRoot()
-            ? [ ...ALL_STEPS ]
-            : [ ...ALL_STEPS.slice(0, 2), ...ALL_STEPS.slice(3) ];
+        : [ ...ALL_STEPS ];
 
     const showInternalUserWizard = (): ReactElement => {
         return (
