@@ -662,7 +662,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                                             size="small"
                                             color="grey"
                                             name="add"
-                                            disabled={ isLoading || (!isMFAConfigured && isSuperTenantLogin) }
+                                            disabled={ isLoading }
                                             data-testid={ `${componentid}-init-button` }
                                         />)
                                     }
@@ -673,21 +673,6 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                         </List.Content>
                     </Grid.Column>
                 </Grid.Row>
-                { !isMFAConfigured && isSuperTenantLogin ? (
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 1 } className="first-column" verticalAlign="middle">
-                        </Grid.Column>
-                        <Grid.Column width={ 12 } className="first-column" verticalAlign="middle">
-                            <Message className="display-flex" size="tiny" info>
-                                <Icon name="info" color="teal" corner />
-                                <Message.Content className="tiny">
-                                    { t(translateKey + "messages.disabledMessage") }
-                                </Message.Content>
-                            </Message>
-                        </Grid.Column>
-                    </Grid.Row>) :
-                    null
-                }
             </Grid>
         </>
     );
