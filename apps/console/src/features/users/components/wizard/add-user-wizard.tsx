@@ -50,7 +50,6 @@ import { OrganizationRoleManagementConstants, OrganizationType } from "../../../
 import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { OrganizationResponseInterface, OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface } from "../../../organizations/models";
-import { OrganizationUtils } from "../../../organizations/utils";
 import { getRolesList, updateRoleDetails } from "../../../roles/api";
 import { useValidationConfigData } from "../../../validation/api";
 import { addUser } from "../../api";
@@ -565,9 +564,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
                 break;
             case 2:
-                OrganizationUtils.isCurrentOrganizationRoot()
-                    ? setSubmitRoleList()
-                    : setFinishSubmit();
+                setSubmitRoleList();
 
                 break;
             case 3:
