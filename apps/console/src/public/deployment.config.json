@@ -966,6 +966,7 @@
         "isRequestPathAuthenticationEnabled": false,
         "isLeftNavigationCategorized": true,
         "isSAASDeployment": false,
+        "isPasswordPoliciesEnabled" : false,
         "isSignatureValidationCertificateAliasEnabled": false,
         "listAllAttributeDialects": true,
         "privacyPolicyConfigs": {},

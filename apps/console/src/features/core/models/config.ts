@@ -327,6 +327,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isMarketingConsentBannerEnabled: boolean;
     /**
+     * Flags to check if the password policy connector is enabled.
+     */
+    isPasswordPoliciesEnabled: boolean;
+    /**
      * Whether a SAAS deployment or not.
      */
     isSAASDeployment: boolean;
