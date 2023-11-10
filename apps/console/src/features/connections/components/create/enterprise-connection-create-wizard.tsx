@@ -261,10 +261,12 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
      * Check whether loop back call is allowed or not.
      * @param value - URL to check.
      */
-    const isLoopBackCall = (value: string) => {
-        return (!(URLUtils.isLoopBackCall(value) && commonConfig?.blockLoopBackCalls)) ? 
-            undefined : t("console:develop.features.idp.forms.common." +
-                "internetResolvableErrorMessage");
+    const checkValueIsLoopBackCall = (value: string) => {
+        if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
+            return t("console:develop.features.idp.forms.common.internetResolvableErrorMessage");
+        }
+ 
+        return undefined;
     };
 
     /**
@@ -665,13 +667,13 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                     errors.authorizationEndpointUrl = composeValidators(
                         required,
                         isUrl,
-                        isLoopBackCall,
+                        checkValueIsLoopBackCall,
                         length(OIDC_URL_MAX_LENGTH)
                     )(values.authorizationEndpointUrl);
                     errors.tokenEndpointUrl = composeValidators(
                         required,
                         isUrl,
-                        isLoopBackCall,
+                        checkValueIsLoopBackCall,
                         length(OIDC_URL_MAX_LENGTH)
                     )(values.tokenEndpointUrl);
                     setNextShouldBeDisabled(ifFieldsHave(errors));
@@ -743,7 +745,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                     if (values.jwks_endpoint?.length > 0) {
                         errors.jwks_endpoint = composeValidators(
                             length(JWKS_URL_LENGTH),
-                            isLoopBackCall,
+                            checkValueIsLoopBackCall,
                             isUrl
                         )(values.jwks_endpoint);
                     }
