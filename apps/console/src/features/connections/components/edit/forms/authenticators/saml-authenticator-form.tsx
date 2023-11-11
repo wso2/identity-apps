@@ -109,6 +109,7 @@ export interface SamlPropertiesInterface {
     isEnableAssertionSigning?: boolean,   
     attributeConsumingServiceIndex?: string;
     AuthnContextComparisonLevel?: string;
+    IsAssertionEncrypted?: boolean;
 }
 
 const FORM_ID: string = "saml-authenticator-form";
@@ -143,7 +144,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
     const [ includeCert, setIncludeCert ] = useState<boolean>(false);
     const [ includeNameIDPolicy, setIncludeNameIDPolicy ] = useState<boolean>(false);
-    const [ isEnableAssetionEncription, setIsEnableAssetionEncription ] = useState<boolean>(false);
+    const [ isEnableAssetionEncryption, setIsEnableAssetionEncryption ] = useState<boolean>(false);
     const [ isArtifactBindingEnabled, setIsArtifactBindingEnabled ] = useState<boolean>(false);
 
     const getIncludeAuthenticationContextOptions = (): DropdownChild[] => {
@@ -227,6 +228,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             ISAuthnReqSigned: findPropVal<boolean>({ defaultValue: false, key: "ISAuthnReqSigned" }),
             IdPEntityId: findPropVal<string>({ defaultValue: "", key: "IdPEntityId" }),
             IncludeProtocolBinding: findPropVal<boolean>({ defaultValue: false, key: "IncludeProtocolBinding" }),
+            IsAssertionEncrypted: findPropVal<boolean>({ defaultValue: false, key: "IsAssertionEncrypted" }),
             /**
              * `IsAuthnRespSigned` is by default set to true when creating the SAML IdP so,
              * always the value will be true. Keeping this here to indicate for the user and
@@ -254,6 +256,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
              * https://github.com/wso2/product-is/issues/17004
              */
             isEnableAssertionSigning: findPropVal<boolean>({ defaultValue: false, key: "isEnableAssertionSigning" })
+
         } as SamlPropertiesInterface;
 
     }, []);
@@ -270,6 +273,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
         setIsArtifactBindingEnabled(initialFormValues.ISArtifactBindingEnabled);
         setFormValues({ ...initialFormValues });
+        setIsEnableAssetionEncryption(initialFormValues.IsAssertionEncrypted);
     }, [ initialFormValues ]);
 
     useEffect(() => {
@@ -724,24 +728,21 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         </SectionRow>
                     ) }
                    
-
-                
-                    { /* IsEnableAssetionEncription */ }
                     { identityProviderConfig?.extendedSamlConfig?.isAssertionEncryptionEnabled && (
                         <SectionRow>
                             <Field.Checkbox
                                 required={ false }
-                                name="IsEnableAssetionEncription"
-                                initialValue={ isEnableAssetionEncription }
+                                name="IsAssertionEncrypted"
+                                initialValue={ isEnableAssetionEncryption }
                                 ariaLabel={ "Enable Assertion Encryption" }
                                 data-testid={ `${ testId }-isEnableAssertionEncryption-field` }
                                 label={ (
-                                    <FormInputLabel htmlFor="IsEnableAssertionEncription">
+                                    <FormInputLabel htmlFor="IsEnableAssertionEncryption">
                                         { t(`${ I18N_TARGET_KEY }.isEnableAssertionEncryption.label`) }
                                     </FormInputLabel>
                                 ) }
                                 hint={ t(`${ I18N_TARGET_KEY }.isEnableAssertionEncryption.hint`) }
-                                listen={ (value: any) => setIsEnableAssetionEncription(Boolean(value)) }
+                                listen={ (value: any) => setIsEnableAssetionEncryption(Boolean(value)) }
                                 readOnly={ readOnly }
                             />
                         </SectionRow>

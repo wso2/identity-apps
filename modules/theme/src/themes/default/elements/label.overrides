@@ -168,3 +168,8 @@
     align-items: baseline;
     gap: 10px;
 }
+
+
+.spacing-bottom {
+    padding-bottom: 0.5rem;
+}

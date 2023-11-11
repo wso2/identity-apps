@@ -218,6 +218,12 @@
 @readOnlyFormFieldBgColor: #e9ecef;
 @readOnlyFieldCursor: default;
 
+/*-------------------------
+           dropdowns
+--------------------------*/
+
+@DisabledDropdownBgColor: #e9ecef;
+
 /*-------------------
     Site Colors
 --------------------*/

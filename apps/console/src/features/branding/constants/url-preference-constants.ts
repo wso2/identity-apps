@@ -16,6 +16,16 @@
  * under the License.
  */
 
-export { default as EmailOTPPasswordlessLoginSequence } from "./email-otp-sequence.json";
-export { default as MagicLinkPasswordlessLoginSequence } from "./magic-link-sequence.json";
-export { default as FIDO2PasswordlessLoginSequence } from "./passkey-login-sequence.json";
+/**
+ * Class containing Branding URL Preferences constants.
+ */
+export class BrandingURLPreferenceConstants {
+    /**
+     * Private constructor to avoid object instantiation from outside the class.
+     */
+    private constructor() {}
+
+    public static readonly LANGUAGE_PLACEHOLDER: string = "{{lang}}";
+    public static readonly COUNTRY_PLACEHOLDER: string = "{{country}}";
+    public static readonly LOCALE_PLACEHOLDER: string = "{{locale}}";
+}

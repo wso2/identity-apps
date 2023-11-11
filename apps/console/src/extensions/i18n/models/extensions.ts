@@ -1132,12 +1132,22 @@ export interface Extensions {
                 advance: {
                     links: {
                         fields: {
+                            common: {
+                                validations: {
+                                    invalid: string;
+                                };
+                            };
                             cookiePolicyURL: {
                                 hint: string;
                                 label: string;
                                 placeholder: string;
                             };
                             privacyPolicyURL: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                            };
+                            selfSignUpURL: {
                                 hint: string;
                                 label: string;
                                 placeholder: string;
@@ -1621,11 +1631,11 @@ export interface Extensions {
                         message: string;
                     };
                     successWaiting: {
-                        description: string; 
+                        description: string;
                         message: string;
                     };
                     successWaitingAlert: {
-                        description: string; 
+                        description: string;
                         message: string;
                     };
                 };
@@ -1661,11 +1671,11 @@ export interface Extensions {
                         message: string;
                     };
                     successWaiting: {
-                        description: string; 
+                        description: string;
                         message: string;
                     };
                     successWaitingAlert: {
-                        description: string; 
+                        description: string;
                         message: string;
                     };
                     tenantMismatch: {

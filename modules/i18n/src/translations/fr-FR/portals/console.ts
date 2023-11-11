@@ -1420,6 +1420,20 @@ export const console: ConsoleNS = {
                                                     "pour les clés d'accès prises en charge par FIDO2 et les autres utilisateurs " +
                                                     "souhaitant enregistrer plusieurs clés d'accès doivent le faire via Mon compte."
                                             },
+                                            passkey: {
+                                                description: "Permettez aux utilisateurs de se connecter à l'aide d'un mot " +
+                                                "de passe, d'une clé de sécurité FIDO ou de données biométriques.",
+                                                heading: "Ajouter une connexion par mot de passe",
+                                                info: {
+                                                    progressiveEnrollmentEnabled: "L1inscription progressive par mot de passe " +
+                                                    "est activée. Les utilisateurs peuvent enregistrer des clés d'accès à " +
+                                                    "la volée. S’ils souhaitent enregistrer plusieurs mots de passe, ils " +
+                                                    "doivent le faire via Mon compte.",
+                                                    progressiveEnrollmentDisabled: "L'inscription du mot de passe à la volée " +
+                                                    "est désactivée. Les utilisateurs doivent enregistrer leurs clés d'accès " +
+                                                    "via MyAccount pour utiliser la connexion sans mot de passe."
+                                                }
+                                            },
                                             emailOTP: {
                                                 description: "Activez une couche supplémentaire d'authentification avec OTP basé sur Email.",
                                                 heading: "Ajouter Email OTP comme deuxième facteur"
@@ -1726,6 +1740,10 @@ export const console: ConsoleNS = {
                                 hint: "Activez pour autoriser l'application à accéder à l'API de gestion de cette " +
                                     "organisation.",
                                 label: "Application de gestion"
+                            },
+                            isFapiApp: {
+                                hint: "Activez cette option pour permettre à l'application d'être conforme à FAPI.",
+                                label: "Application conforme FAPI"
                             },
                             name: {
                                 label: "Nom",
@@ -8428,8 +8446,9 @@ export const console: ConsoleNS = {
                                 label: "Application attribuée",
                                 placeholder: "Sélectionnez l'application pour attribuer le rôle",
                                 applicationSubTitle: {
-                                    application: "Prise en charge des rôles à application. ",
-                                    organization: "Rôles de soutien à l'organisation"
+                                    application: "Prise en charge des rôles à application.",
+                                    organization: "Rôles de soutien à l'organisation. ",
+                                    changeAudience: "Changer le public"
                                 },
                                 validations: {
                                     empty: "L'application attribuée est nécessaire pour créer un rôle à application."
@@ -9372,7 +9391,7 @@ export const console: ConsoleNS = {
                                 userCreationAcceptedMessage: "Création d'utilisateur acceptée",
                                 internalErrorMessage: "Une erreur s'est produite lors de l'importation des " +
                                     "utilisateurs",
-                                userAssignmentSuccessMessage: "Les utilisateurs ont été attribués avec succès à " + 
+                                userAssignmentSuccessMessage: "Les utilisateurs ont été attribués avec succès à " +
                                     "{{resource}}",
                                 userAssignmentFailedMessage: "L'affectation de l'utilisateur à {{resource}} a échoué",
                                 userAssignmentInternalErrorMessage: "Une erreur s'est produite lors de " +

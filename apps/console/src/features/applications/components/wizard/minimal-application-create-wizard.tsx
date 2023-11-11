@@ -332,7 +332,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     oidc: {
                         grantTypes: [
                             "client_credentials"
-                        ]
+                        ],
+                        isFAPIApplication: generalFormValues.get("isFAPIApp").length >= 2
                     }
                 };
             } else if (customApplicationProtocol === SupportedAuthProtocolTypes.SAML) {
@@ -1063,6 +1064,26 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             </div>
                         )
                     }
+                    <div className="pt-0 mt-0">
+                        <Field
+                            data-componentid={ `${ testId }-fapi-app-checkbox` }
+                            name={ "isFAPIApp" }
+                            required={ false }
+                            type="checkbox"
+                            value={ [ "isFAPIApp" ] }
+                            children={ [
+                                {
+                                    label: t("console:develop.features.applications.forms.generalDetails.fields" +
+                                        ".isFapiApp.label" ),
+                                    value: "fapiApp"
+                                }
+                            ] }
+                        />
+                        <Hint compact>
+                            { t("console:develop.features.applications.forms.generalDetails.fields" +
+                                ".isFapiApp.hint" ) }
+                        </Hint>
+                    </div>
                     {
                         isOrganizationManagementEnabled
                         && applicationConfig.editApplication.showApplicationShare

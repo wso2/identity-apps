@@ -47,7 +47,7 @@ export const NotificationChannelPage: FunctionComponent<NotificationChannelPageI
     const { ["data-componentid"]: componentid } = props;
 
     const { t } = useTranslation();
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetOrganizationType();
 
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -71,7 +71,7 @@ export const NotificationChannelPage: FunctionComponent<NotificationChannelPageI
         >
             { featureConfig.emailProviders?.enabled
                 && !(featureConfig?.emailProviders?.disabledFeatures?.includes("superTenantProvider")
-                && orgType === OrganizationType.SUPER_ORGANIZATION) && (
+                && organizationType === OrganizationType.SUPER_ORGANIZATION) && (
                 <>
                     <Grid xs={ 12 } lg={ 6 }>
                         <SettingsSection

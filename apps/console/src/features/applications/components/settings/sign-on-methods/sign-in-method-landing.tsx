@@ -78,7 +78,8 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
     const { isMobileViewport } = useMediaContext();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const orgType: OrganizationType = useGetOrganizationType();
+
+    const { organizationType } = useGetOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -195,7 +196,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             ) }
                             {
                                 (!hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_SMS_OTP) &&
-                                    orgType !== OrganizationType.SUBORGANIZATION) && (
+                                    organizationType !== OrganizationType.SUBORGANIZATION) && (
                                     <InfoCard
                                         fluid
                                         data-componentid="sms-otp-mfa-flow-card"
@@ -243,12 +244,12 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     imageSize="mini"
                                     header={ t(
                                         "console:develop.features.applications.edit.sections.signOnMethod" +
-                                        ".sections.landing.flowBuilder.types.usernameless.heading")
+                                        ".sections.landing.flowBuilder.types.passkey.heading")
                                     }
                                     description={ t(
                                         "console:develop.features.applications.edit.sections" +
                                             ".signOnMethod.sections.landing.flowBuilder." +
-                                            "types.usernameless.description"
+                                            "types.passkey.description"
                                     ) }
                                     onClick={ () => {
                                         eventPublisher.publish(

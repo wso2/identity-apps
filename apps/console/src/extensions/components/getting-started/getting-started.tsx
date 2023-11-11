@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -66,7 +66,7 @@ const GettingStartedPage: FunctionComponent<GettingStartedPageInterface> = (
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const activeView: string = useSelector((state: AppState) => state.global.activeView);
     
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -75,8 +75,8 @@ const GettingStartedPage: FunctionComponent<GettingStartedPageInterface> = (
     const { getLink } = useDocumentation();
 
     const featureAnnouncement: boolean = useMemo(() => {
-        return orgType !== OrganizationType.SUBORGANIZATION && false;
-    }, [ orgType ]);
+        return organizationType !== OrganizationType.SUBORGANIZATION && false;
+    }, [ organizationType ]);
 
     /**
      * Make sure `QUICKSTART` tab is highlighed when this page is in use.
