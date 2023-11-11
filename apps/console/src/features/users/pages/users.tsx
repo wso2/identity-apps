@@ -42,11 +42,9 @@ import { InvitationStatus } from "apps/console/src/extensions/components/users/m
 import { AxiosError, AxiosResponse } from "axios";
 import React, {
     FunctionComponent, 
-    MutableRefObject, 
     ReactElement, 
     SyntheticEvent, 
-    useEffect, 
-    useRef, 
+    useEffect,
     useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

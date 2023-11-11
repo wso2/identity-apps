@@ -57,7 +57,7 @@ import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState }
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon, Label, Modal } from "semantic-ui-react";
+import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon, Label } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
 import { getUserStores } from "../../../../extensions/components/users/api";
 import { UsersConstants } from "../../../../extensions/components/users/constants";
