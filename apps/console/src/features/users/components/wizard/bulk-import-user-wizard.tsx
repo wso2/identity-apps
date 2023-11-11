@@ -24,6 +24,7 @@ import {
 import { Chip, TextField, Typography } from "@oxygen-ui/react";
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
+import Divider from "@oxygen-ui/react/Divider";
 import InputLabel from "@oxygen-ui/react/InputLabel/InputLabel";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -40,9 +41,11 @@ import { addAlert } from "@wso2is/core/store";
 import {
     CSVFileStrategy,
     CSVResult,
+    ContentLoader,
     FilePicker,
     Heading,
     Hint,
+    Link,
     LinkButton,
     PickerResult,
     PrimaryButton,
@@ -50,8 +53,8 @@ import {
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import Axios,  { AxiosResponse }from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon, Label, Modal } from "semantic-ui-react";
@@ -59,14 +62,18 @@ import { v4 as uuidv4 } from "uuid";
 import { getUserStores } from "../../../../extensions/components/users/api";
 import { UsersConstants } from "../../../../extensions/components/users/constants";
 import { userConfig } from "../../../../extensions/configs";
+import { ClaimManagementConstants } from "../../../../features/claims/constants";
 import { getGroupList } from "../../../../features/groups/api";
 import { GroupsInterface } from "../../../../features/groups/models";
 import { useRolesList } from "../../../../features/roles/api";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
 import {
+    AppConstants,
+    ModalWithSidePanel,
     UserStoreDetails,
     UserStoreProperty,
-    getCertificateIllustrations
+    getCertificateIllustrations,
+    history
 } from "../../../core";
 import { RoleAudienceTypes } from "../../../roles/constants";
 import { PatchRoleDataInterface } from "../../../roles/models";
@@ -1775,7 +1782,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                 <Alert severity="info">
                                                     { t("console:manage.features.user.modals." +
                                                         "bulkImportUserWizard.wizardSummary." +
-                                                        "disabledSecondaryStoreInfo") }
+                                                        "disabledSecondaryStoreInfo.local") }
                                                 </Alert>
                                             </Grid.Column>
                                         </Grid.Row>
@@ -1876,8 +1883,74 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         }
     };
 
+    /**
+     * Renders the help panel containing wizard help.
+     *
+     * @returns Help Panel.
+     */
+    const renderHelpPanel = (): ReactElement => {
+        return (
+            <ModalWithSidePanel.SidePanel>
+                <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
+                    <div className="help-panel-header-text">
+                        { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.heading") }
+                    </div>
+                </ModalWithSidePanel.Header>
+                <ModalWithSidePanel.Content>
+                    <Suspense fallback={ <ContentLoader /> }>
+                        <>
+                            <Heading as="h5">
+                                { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel.manual") }
+                            </Heading>
+                            <p>
+                                { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
+                                        ".manualCreation.hint" ) }
+                            </p>
+                            <Divider />
+                            <Heading as="h5">
+                                { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel.fileBased") }
+                            </Heading>
+                            <p>
+                                { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
+                                        ".fileBased.hint" ) }
+                            </p>
+                            <Heading as="h6">
+                                { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
+                                    "fileFormatTitle") }
+                            </Heading>
+                            <p>
+                                <Trans
+                                    i18nKey={
+                                        "console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
+                                    "fileFormatContent"
+                                    }
+                                >
+                                    Headers of the CSV file should be user attributes that are mapped to
+                                    local <Link onClick={ navigateToSCIMAttributes }>attribute names</Link>.
+                                </Trans>
+                            </p>
+                            <p> { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
+                                    "fileFormatSampleHeading") }</p>
+                            <p>
+                                <code>userName,givenname,emailaddress<br/>
+                                    user1,john,john@test.com<br/>
+                                    user2,jake,jake@test.com<br/>
+                                    user3,jane,jane@test.com<br/>
+                                </code>
+                            </p>
+                        </>
+                    </Suspense>
+                </ModalWithSidePanel.Content>
+            </ModalWithSidePanel.SidePanel>
+        );
+    };
+
+    const navigateToSCIMAttributes = () => history.push(AppConstants.getPaths()
+        .get("ATTRIBUTE_MAPPINGS")
+        .replace(":type", ClaimManagementConstants.SCIM));
+
     return (
-        <Modal
+        <ModalWithSidePanel
             data-testid={ componentId }
             data-componentid={ componentId }
             open={ true }
@@ -1888,106 +1961,108 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             closeOnDimmerClick={ false }
             closeOnEscape
         >
-            <Modal.Header className="wizard-header">
-                { t("console:manage.features.user.modals.bulkImportUserWizard.title") }
-                <Heading as="h6">
-                    { t("console:manage.features.user.modals.bulkImportUserWizard.subTitle") }
-                </Heading>
-            </Modal.Header>
+            <ModalWithSidePanel.MainPanel>
+                <ModalWithSidePanel.Header className="wizard-header">
+                    { t("console:manage.features.user.modals.bulkImportUserWizard.title") }
+                    <Heading as="h6">
+                        { t("console:manage.features.user.modals.bulkImportUserWizard.subTitle") }
+                    </Heading>
+                </ModalWithSidePanel.Header>
 
-            <Modal.Content className="content-container" scrolling>
-                <Grid>
-                    { resolveMultipleUsersModeSelection() }
-                    { resolveMultipleUsersConfiguration() }
-                </Grid>
+                <ModalWithSidePanel.Content className="content-container">
+                    <Grid>
+                        { resolveMultipleUsersModeSelection() }
+                        { resolveMultipleUsersConfiguration() }
+                    </Grid>
 
-            </Modal.Content>
-            <Modal.Actions>
-                <Grid>
-                    {
-                        configureMode == MultipleInviteMode.MANUAL
-                            ? (
-                                <Grid.Row column={ 1 }>
-                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                        <LinkButton
-                                            data-testid={ `${componentId}-close-button` }
-                                            data-componentid={ `${componentId}-close-button` }
-                                            floated="left"
-                                            onClick={ () => {
-                                                closeWizard();
-                                                setshowManualInviteTable(false);
-                                            } }
-                                            disabled={ isSubmitting }
-                                        >
-                                            { t("common:close") }
-                                        </LinkButton>
-                                    </Grid.Column>
-                                    { !showManualInviteTable || isSubmitting
-                                        ? (
-                                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                                <PrimaryButton
-                                                    data-testid={ `${componentId}-invite-button` }
-                                                    data-componentid={ `${componentId}-invite-button` }
-                                                    floated="right"
-                                                    onClick={ manualInviteMultipleUsers }
-                                                    loading={ isSubmitting }
-                                                    disabled={ 
-                                                        isLoading
+                </ModalWithSidePanel.Content>
+                <ModalWithSidePanel.Actions>
+                    <Grid>
+                        {
+                            configureMode == MultipleInviteMode.MANUAL
+                                ? (
+                                    <Grid.Row column={ 1 }>
+                                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                            <LinkButton
+                                                data-testid={ `${componentId}-close-button` }
+                                                data-componentid={ `${componentId}-close-button` }
+                                                floated="left"
+                                                onClick={ () => {
+                                                    closeWizard();
+                                                    setshowManualInviteTable(false);
+                                                } }
+                                                disabled={ isSubmitting }
+                                            >
+                                                { t("common:close") }
+                                            </LinkButton>
+                                        </Grid.Column>
+                                        { !showManualInviteTable || isSubmitting
+                                            ? (
+                                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                                    <PrimaryButton
+                                                        data-testid={ `${componentId}-invite-button` }
+                                                        data-componentid={ `${componentId}-invite-button` }
+                                                        floated="right"
+                                                        onClick={ manualInviteMultipleUsers }
+                                                        loading={ isSubmitting }
+                                                        disabled={ 
+                                                            isLoading
                                                         ||isSubmitting
                                                         || hasError
                                                         || isAllRolesListLoading
-                                                    }
-                                                >
-                                                    { t("console:manage.features.user.modals." +
+                                                        }
+                                                    >
+                                                        { t("console:manage.features.user.modals." +
                                                     "bulkImportUserWizard.wizardSummary.manualCreation.primaryButton") }
-                                                </PrimaryButton>
-                                            </Grid.Column>
-                                        )
-                                        : null
-                                    }
-                                </Grid.Row>
-                            ) : (
-                                <Grid.Row column={ 1 }>
-                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                        <LinkButton
-                                            data-testid={ `${componentId}-cancel-button` }
-                                            data-componentid={ `${componentId}-cancel-button` }
-                                            floated="left"
-                                            onClick={ () => {
-                                                closeWizard();
-                                                setShowResponseView(false);
-                                            } }
-                                            disabled={ isSubmitting }
-                                        >
-                                            { t("common:close") }
-                                        </LinkButton>
-                                    </Grid.Column>
-                                    { !showResponseView || isSubmitting
-                                        ? (
-                                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                                <PrimaryButton
-                                                    data-testid={ `${componentId}-finish-button` }
-                                                    data-componentid={ `${componentId}-finish-button` }
-                                                    floated="right"
-                                                    onClick={ handleBulkUserImport }
-                                                    loading={ isSubmitting }
-                                                    disabled={ isLoading || isSubmitting || hasError
+                                                    </PrimaryButton>
+                                                </Grid.Column>
+                                            )
+                                            : null
+                                        }
+                                    </Grid.Row>
+                                ) : (
+                                    <Grid.Row column={ 1 }>
+                                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                            <LinkButton
+                                                data-testid={ `${componentId}-cancel-button` }
+                                                data-componentid={ `${componentId}-cancel-button` }
+                                                floated="left"
+                                                onClick={ () => {
+                                                    closeWizard();
+                                                    setShowResponseView(false);
+                                                } }
+                                                disabled={ isSubmitting }
+                                            >
+                                                { t("common:close") }
+                                            </LinkButton>
+                                        </Grid.Column>
+                                        { !showResponseView || isSubmitting
+                                            ? (
+                                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                                    <PrimaryButton
+                                                        data-testid={ `${componentId}-finish-button` }
+                                                        data-componentid={ `${componentId}-finish-button` }
+                                                        floated="right"
+                                                        onClick={ handleBulkUserImport }
+                                                        loading={ isSubmitting }
+                                                        disabled={ isLoading || isSubmitting || hasError
                                                         || !selectedCSVFile || isRolesListLoading
-                                                    }
-                                                >
-                                                    { t("console:manage.features.user.modals." +
+                                                        }
+                                                    >
+                                                        { t("console:manage.features.user.modals." +
                                                     "bulkImportUserWizard.buttons.import") }
-                                                </PrimaryButton>
-                                            </Grid.Column>
-                                        )
-                                        : null }
-                                </Grid.Row>
-                            )
-                    }
-                    
-                </Grid>
-            </Modal.Actions>
-        </Modal>
+                                                    </PrimaryButton>
+                                                </Grid.Column>
+                                            )
+                                            : null }
+                                    </Grid.Row>
+                                )
+                        }
+                    </Grid>
+                </ModalWithSidePanel.Actions>
+            </ModalWithSidePanel.MainPanel>
+            { renderHelpPanel() }
+        </ModalWithSidePanel>
     );
 };
 

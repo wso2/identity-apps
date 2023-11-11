@@ -11139,8 +11139,10 @@ export const console: ConsoleNS = {
                                 searchByRoleOrGroup: "Search by Role/Group",
                                 roleGroupFilterAttributePlaceHolder: "Role/Group Name"
                             },
-                            disabledSecondaryStoreInfo: "Bulk import to external user stores is not available " +
-                                "at the moment.",
+                            disabledSecondaryStoreInfo: {
+                                local: "Bulk import is only available for primary user store at the moment.",
+                                remote: "Bulk import is only available for default user store at the moment."
+                            },
                             manualCreation: {
                                 hint: "Add emails and send invitations to multiple users.",
                                 emailsLabel: "Emails",
@@ -11165,6 +11167,14 @@ export const console: ConsoleNS = {
                         },
                         buttons: {
                             import: "Import"
+                        },
+                        sidePanel: {
+                            manual: "Manual",
+                            fileBased: "File Based",
+                            fileFormatTitle: "CSV File Format",
+                            fileFormatContent: "Headers of the CSV file should be user attributes that are " +
+                                    "mapped to <1>local attributes</1>.",
+                            fileFormatSampleHeading: "Sample CSV file format:"
                         }
                     },
                     changePasswordModal: {
@@ -11653,6 +11663,13 @@ export const console: ConsoleNS = {
                             "session. They will loose the progress of any ongoing tasks. Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently terminate the session."
+                    },
+                    addMultipleUser: {
+                        header: "Before you proceed",
+                        message: "Invite users option is disabled",
+                        content: "Invite users option should be enabled to invite multiple users. Please enable it and " +
+                            "try again.",
+                        assertionHint: "Please confirm your action."
                     }
                 },
                 consumerUsers: {

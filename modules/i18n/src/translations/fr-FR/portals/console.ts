@@ -9402,8 +9402,12 @@ export const console: ConsoleNS = {
                                 searchByRoleOrGroup: "Recherche par nom de rôle/groupe",
                                 roleGroupFilterAttributePlaceHolder: "Nom du rôle/groupe"
                             },
-                            disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
-                                "externes n’est pas disponible pour le moment.",
+                            disabledSecondaryStoreInfo: {
+                                local: "L'importation groupée n'est disponible que pour le magasin de l'utilisateur " +
+                                    "principal pour le moment.",
+                                remote: "L'importation groupée n'est disponible que pour le magasin d'utilisateurs " +
+                                    "par défaut pour le moment."
+                            },
                             manualCreation: {
                                 hint: "Ajoutez des e-mails et envoyez des invitations à plusieurs utilisateurs.",
                                 emailsLabel: "E-mails",
@@ -9428,6 +9432,14 @@ export const console: ConsoleNS = {
                         },
                         buttons: {
                             import: "Importer"
+                        },
+                        sidePanel: {
+                            manual: "Manuel",
+                            fileBased: "Basé sur un fichier",
+                            fileFormatTitle: "Format de fichier CSV",
+                            fileFormatContent: "Les en-têtes du fichier CSV doivent être des attributs utilisateur " +
+                                "mappés aux <1>attributs locaux</1>.",
+                            fileFormatSampleHeading: "Exemple de format de fichier CSV:"
                         }
                     },
                     changePasswordModal: {
@@ -9950,6 +9962,13 @@ export const console: ConsoleNS = {
                             "procéder avec prudence.",
                         header: "Êtes-vous sûr?",
                         message: "Cette action est irréversible et mettra fin définitivement à la session."
+                    },
+                    addMultipleUser: {
+                        header: "Avant de continuer",
+                        message: "L'option Inviter des utilisateurs est désactivée",
+                        content: "L’option Inviter des utilisateurs doit être activée pour inviter plusieurs " + 
+                            "utilisateurs. Veuillez l'activer et réessayer.",
+                        assertionHint: "Veuillez confirmer votre action."
                     }
                 },
                 consumerUsers: {

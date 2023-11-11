@@ -28,6 +28,7 @@ import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import {
     Button,
+    ConfirmationModal,
     EmptyPlaceholder,
     ListLayout,
     PageLayout,
@@ -158,9 +159,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ filterGuestList, setFilterGuestList ] = useState<UserInviteInterface[]>();
     const [ finalGuestList, setFinalGuestList ] = useState<UserInviteInterface[]>([]);
     const [ paginatedGuestList, setPaginateGuestList ] = useState<UserInviteInterface[]>([]);
-
-
-    const init : MutableRefObject<boolean> = useRef(true);
+    const [ showMultipleInviteConfirmationModal, setShowMultipleInviteConfirmationModal ] = useState<boolean>(false);
+    const [ connectorConfigLoading, setConnecterConfigLoading ] = useState<boolean>(false);
 
     const username: string = useSelector((state: AppState) => state.auth.username);
     const tenantName: string = store.getState().config.deployment.tenant;
@@ -300,16 +300,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         getList(listItemLimit, listOffset, null, attributes, userStore);
         setListUpdated(false);
     }, [ isListUpdated ]);
-
+    
     useEffect(() => {
-        if (init.current) {
-            init.current = false;
-        } else {
-            if (emailVerificationEnabled !== undefined) {
-                setShowWizard(true);
-            }
+        if (showBulkImportWizard && !connectorConfigLoading && !emailVerificationEnabled) {
+            setShowMultipleInviteConfirmationModal(true);
         }
-    }, [ emailVerificationEnabled ]);
+    }, [ showBulkImportWizard, connectorConfigLoading ]);
 
     /**
      * Handles parent user invitation pagination.
@@ -636,7 +632,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Handles the click event of the create new user button.
      */
     const handleAddNewUserWizardClick = (): void => {
-
+        setConnecterConfigLoading(true);
         getConnectorCategory(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
             .then((response: GovernanceConnectorCategoryInterface) => {
                 const connectors: GovernanceConnectorInterface[]  = response?.connectors;
@@ -650,7 +646,9 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED);
 
                 setEmailVerificationEnabled(emailVerification.value === "true");
+                setConnecterConfigLoading(false);
             }).catch((error: AxiosError) => {
+                setConnecterConfigLoading(false);
                 handleAlerts({
                     description: error?.response?.data?.description ?? t(
                         "console:manage.features.governanceConnectors.notifications." +
@@ -852,6 +850,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             setShowWizard(true);
             setUserType(UserAccountTypesMain.EXTERNAL);
         } else if (value === UserAddOptionTypes.BULK_IMPORT) {
+            handleAddNewUserWizardClick();
             setShowBulkImportWizard(true);
         }
     };
@@ -1029,7 +1028,37 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             return NUMBER_OF_PAGES_FOR_LDAP;
         }
     };
-    
+
+    const renderMultipleInviteConfirmationModel = (): ReactElement => {
+        return (
+            <ConfirmationModal
+                data-componentid={ `${componentId}-select-multiple-invite-confirmation-modal` }
+                onClose={ (): void => {
+                    setShowMultipleInviteConfirmationModal(false);
+                    setShowBulkImportWizard(false);
+                } }
+                type="warning"
+                open={ showMultipleInviteConfirmationModal }
+                primaryAction={ t("common:close") }
+                onPrimaryActionClick={ (): void => {
+                    setShowMultipleInviteConfirmationModal(false);
+                    setShowBulkImportWizard(false);
+                } }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header>
+                    { t("console:manage.features.users.confirmations.addMultipleUser.header") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message attached warning>
+                    { t("console:manage.features.users.confirmations.addMultipleUser.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content>
+                    { t("console:manage.features.users.confirmations.addMultipleUser.content") }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        );
+    };
+
     return (
         <PageLayout
             action={
@@ -1060,12 +1089,17 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 showWizard && ( showUserWizard())
             } 
             {
-                showBulkImportWizard && (
+                showBulkImportWizard && !connectorConfigLoading && emailVerificationEnabled  && (
                     <BulkImportUserWizard
                         data-componentid="user-mgt-bulk-import-user-wizard-modal"
                         closeWizard={ handleBulkImportWizardClose }
                         userstore={ PRIMARY_USERSTORE }
                     />
+                )
+            }
+            {
+                showMultipleInviteConfirmationModal && (
+                    renderMultipleInviteConfirmationModel()
                 )
             }
         </PageLayout>
