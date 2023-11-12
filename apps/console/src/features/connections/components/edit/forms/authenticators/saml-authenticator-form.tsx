@@ -890,22 +890,30 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
                     <SectionRow>
                         <Typography variant="body1">Authentication context class</Typography>
+                        
                         <Autocomplete
                             multiple
+                            className="forms-wrapped-autocomplete"
                             disableCloseOnSelect
+                            size="small"
                             options={ authenticationContextClassOptions }
-                            value={ selectedAuthnContextClasses?.length > 0 ? selectedAuthnContextClasses : [] }
+                            value={ selectedAuthnContextClasses }
                             onChange={ (_event: React.SyntheticEvent,classes: DropdownChild[]) => {
                                 setSelectedAuthnContextClasses(classes);
                             } }
                             getOptionLabel={ (role: DropdownChild) => role?.text as string }
-                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                <TextField
-                                    { ...params }
-                                    size="small"
-                                    placeholder= { "Search available authentication context classes" }
-                                />
-                            ) }
+                            renderInput={ (params: AutocompleteRenderInputParams) => {
+
+                                params.inputProps.className = "forms-wrapped-autocomplete-render-input";
+
+                                return (
+                                    <TextField
+                                        { ...params }
+                                        size="small"
+                                        placeholder= { "Search available authentication context classes" }
+                                    />
+                                );
+                            } }
                         />
                     </SectionRow>
 
