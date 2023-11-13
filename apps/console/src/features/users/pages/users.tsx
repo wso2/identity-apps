@@ -302,9 +302,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     }, [ isListUpdated ]);
     
     useEffect(() => {
-        if (showBulkImportWizard && !connectorConfigLoading && !emailVerificationEnabled) {
-            setShowMultipleInviteConfirmationModal(true);
-        }
+        setShowMultipleInviteConfirmationModal(showBulkImportWizard && !connectorConfigLoading
+            && !emailVerificationEnabled);
     }, [ showBulkImportWizard, connectorConfigLoading ]);
 
     /**
@@ -646,9 +645,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED);
 
                 setEmailVerificationEnabled(emailVerification.value === "true");
-                setConnecterConfigLoading(false);
             }).catch((error: AxiosError) => {
-                setConnecterConfigLoading(false);
                 handleAlerts({
                     description: error?.response?.data?.description ?? t(
                         "console:manage.features.governanceConnectors.notifications." +
@@ -660,7 +657,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         "getConnector.genericError.message"
                     )
                 });
-            });
+            }).finally(() => setConnecterConfigLoading(false));
     };
 
     const addUserDropdownTrigger: ReactElement = (
