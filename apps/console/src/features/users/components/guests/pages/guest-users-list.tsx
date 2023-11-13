@@ -308,10 +308,10 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                         image
                         as="h6" 
                         className="header-with-icon"
-                        data-componentid={ `${ componentId }-item-heading` }
+                        data-componentid={ `${ componentId }-item-image` }
                     >
                         <UserAvatar
-                            data-componentid={ `${ componentId }-item-image` }
+                            data-componentid={ `${ componentId }-item-image-inner` }
                             name={ invite.email }
                             size="mini"
                             image={ invite.email }
