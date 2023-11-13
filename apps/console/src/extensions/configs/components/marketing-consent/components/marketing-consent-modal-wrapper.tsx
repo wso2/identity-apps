@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,9 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
+import { useSelector } from "react-redux";
 import { MarketingConsentModal } from "./marketing-consent-modal";
 import { AppState } from "../../../../../features/core";
 import { useUserConsentList } from "../api";
@@ -39,9 +36,6 @@ export const MarketingConsentModalWrapper: FunctionComponent<IdentifiableCompone
     props: IdentifiableComponentInterface
 ): ReactElement => {
     const { ["data-componentid"]: componentId } = props;
-
-    const dispatch: Dispatch = useDispatch();
-    const { t } = useTranslation();
 
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
@@ -82,12 +76,6 @@ export const MarketingConsentModalWrapper: FunctionComponent<IdentifiableCompone
         if (isConsentListLoading) return;
 
         if (userConsentListFetchRequestError) {
-            dispatch(addAlert<AlertInterface>({
-                description: t("extensions:console.marketingConsent.notifications.errors.fetch.description"),
-                level: AlertLevels.ERROR,
-                message: t("extensions:console.marketingConsent.notifications.errors.fetch.message")
-            }));
-
             return;
         }
 
