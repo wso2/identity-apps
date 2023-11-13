@@ -1,5 +1,14 @@
 # @wso2is/i18n
 
+## 2.0.34
+
+### Patch Changes
+
+- [#4518](https://github.com/wso2/identity-apps/pull/4518) [`9ae04065e4`](https://github.com/wso2/identity-apps/commit/9ae04065e429f465e5085afeb7b9a59d01a2feb1) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support for logout wreply validation in Passive STS application
+
+- Updated dependencies [[`bc18db27a5`](https://github.com/wso2/identity-apps/commit/bc18db27a59d43ccb38f965899c0546c9816d2b7)]:
+  - @wso2is/core@2.0.12
+
 ## 2.0.33
 
 ### Patch Changes

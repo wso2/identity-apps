@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.47
+
+### Patch Changes
+
+- [#4564](https://github.com/wso2/identity-apps/pull/4564) [`bc18db27a5`](https://github.com/wso2/identity-apps/commit/bc18db27a59d43ccb38f965899c0546c9816d2b7) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Fix password patterns updated via console not being reflected in My Account and reset password window
+
 ## 2.0.46
 
 ### Patch Changes
