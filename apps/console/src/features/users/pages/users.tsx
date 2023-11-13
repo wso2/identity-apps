@@ -726,7 +726,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         return (
             <ListLayout
                 // TODO add sorting functionality.
-                className="mt-5"
+                className="sub-org-users-list"
                 advancedSearch={ advancedSearchFilter() }
                 currentListSize={ usersList.itemsPerPage }
                 listItemLimit={ listItemLimit }
@@ -926,17 +926,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     
         panes.push({
             componentId: "users",
-            menuItem: {
-                content: t("console:manage.features.parentOrgInvitations.tab.usersTab")
-            },
+            menuItem: t("console:manage.features.parentOrgInvitations.tab.usersTab"),
             render: renderUsersList
         });
     
         panes.push({
             componentId: "invitations",
-            menuItem: {
-                content: t("console:manage.features.parentOrgInvitations.tab.invitationsTab")
-            },
+            menuItem: t("console:manage.features.parentOrgInvitations.tab.invitationsTab"),
             render: renderInvitationsList
         });
     
@@ -946,6 +942,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const renderInvitationsList = (): ReactElement => {
         return (
             <ListLayout
+                className="sub-org-users-list"
                 advancedSearch={ advancedSearchFilter() }
                 currentListSize={ usersList?.itemsPerPage }
                 listItemLimit={ listItemLimit }

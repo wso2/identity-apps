@@ -20,13 +20,12 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    AnimatedAvatar,
-    AppAvatar,
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
     LinkButton,
-    TableColumnInterface
+    TableColumnInterface,
+    UserAvatar
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
@@ -36,11 +35,11 @@ import { Dispatch } from "redux";
 import { Header, SemanticICONS } from "semantic-ui-react";
 import { deleteInvite, resendInvite } from "../../../../../extensions/components/users/api";
 import { InvitationStatus } from "../../../../../extensions/components/users/models";
-import { 
-    AppState, 
-    FeatureConfigInterface, 
-    UserListInterface, 
-    getEmptyPlaceholderIllustrations 
+import {
+    AppState,
+    FeatureConfigInterface,
+    UserListInterface,
+    getEmptyPlaceholderIllustrations
 } from "../../../../core";
 import { UserAccountTypesMain } from "../../../constants";
 import { deleteParentOrgInvite } from "../api/invite";
@@ -305,19 +304,18 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 id: "email",
                 key: 0,
                 render: (invite: UserInviteInterface) => (
-                    <Header as="h6" image>
-                        <AppAvatar
-                            image={ (
-                                <AnimatedAvatar
-                                    name={ invite.email }
-                                    size="mini"
-                                    data-componentid={ `${ componentId }-item-image-inner` }
-                                />
-                            ) }
-                            size="mini"
-                            spaced="right"
+                    <Header 
+                        image
+                        as="h6" 
+                        className="header-with-icon"
+                        data-componentid={ `${ componentId }-item-heading` }
+                    >
+                        <UserAvatar
                             data-componentid={ `${ componentId }-item-image` }
-                            data-suppress=""
+                            name={ invite.email }
+                            size="mini"
+                            image={ invite.email }
+                            spaced="right"
                         />
                         <Header.Content>
                             { userTypeSelection === UserAccountTypesMain.EXTERNAL
@@ -337,7 +335,15 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 render: (invite: UserInviteInterface) => {
                     const status: string = invite.status;
 
-                    return status.charAt(0).toUpperCase() + status.substr(1).toLowerCase();
+                    return (
+                        <Header as="h6" data-componentid={ `${ componentId }-invite-status` }>
+                            <Header.Content>
+                                <Header.Subheader>
+                                    { status.charAt(0).toUpperCase() + status.slice(1).toLowerCase() }
+                                </Header.Subheader>
+                            </Header.Content>
+                        </Header>
+                    );
                 },
                 textAlign: "left",
                 title: "Invitation Status"
@@ -358,11 +364,11 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
     return (
         <>
             <DataTable<UserInviteInterface>
+                className="users-table"
                 showSearch={ true }
-                padded
                 isLoading={ isGuestUsersRequestLoading }
                 loadingStateOptions={
-                    { count: 5, imageType: "square" }
+                    { count: 5, imageType: "circular" }
                 }
                 placeholders={
                     showPlaceholders()
@@ -400,7 +406,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 data={ guestUsersList }
                 columns={ resolveTableColumns() }
                 onRowClick={ null }
-                showHeader={ true }
+                showHeader={ false }
                 transparent={ !isGuestUsersRequestLoading && (showPlaceholders() !== null) }
             />
             {

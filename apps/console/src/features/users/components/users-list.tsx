@@ -259,7 +259,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 spaced="right"
                             />
                             <Header.Content>
-                                <div className={ isNameAvailable ? "mt-2" : "" }>{ header as ReactNode }</div>
+                                <div>{ header as ReactNode }</div>
                                 {
                                     (!isNameAvailable) &&
                                     (
