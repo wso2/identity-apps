@@ -67,6 +67,7 @@ import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../.
 import { getUserDetails, updateUserInfo } from "../api";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
+import { OrganizationType } from "../../organizations/constants";
 
 /**
  * Prop types for the basic details component.
@@ -182,7 +183,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const modifiedDate: string = user?.meta?.lastModified;
 
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (OrganizationUtils.getOrganizationType() !== OrganizationType.SUPER_ORGANIZATION &&
+            OrganizationUtils.getOrganizationType() !== OrganizationType.FIRST_LEVEL_ORGANIZATION) {
             return;
         }
 

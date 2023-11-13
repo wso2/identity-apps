@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { hasRequiredScopes, resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
 import {
     AlertInterface,
@@ -32,6 +33,7 @@ import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import { getProfileInformation } from "../../authentication/store";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
+import { OrganizationType } from "../../organizations/constants";
 import { OrganizationUtils } from "../../organizations/utils";
 import { getGovernanceConnectors } from "../../server-configurations/api";
 import { ServerConfigurationsConstants } from "../../server-configurations/constants";
@@ -64,7 +66,8 @@ const UserEditPage = (): ReactElement => {
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (OrganizationUtils.getOrganizationType() !== OrganizationType.SUPER_ORGANIZATION &&
+            OrganizationUtils.getOrganizationType() !== OrganizationType.FIRST_LEVEL_ORGANIZATION) {
             return;
         }
 
