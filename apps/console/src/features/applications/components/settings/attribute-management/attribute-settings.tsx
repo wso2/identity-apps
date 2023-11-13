@@ -1079,10 +1079,14 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         if (applicationConfig.excludeSubjectClaim && onlyOIDCConfigured) {
             delete submitValue.claimConfiguration.subject;
         }
-
+        
+        const isProtocolOAuth: boolean = technology?.find((protocol: InboundProtocolListItemInterface) => 
+            protocol.type === SupportedAuthProtocolTypes.OAUTH2) !== undefined;
+        
         Promise.all([
             updateClaimConfiguration(appId, submitValue),
-            updateAuthProtocolConfig<OIDCDataInterface>(appId, oidcSubmitValue, SupportedAuthProtocolTypes.OIDC)
+            isProtocolOAuth ? updateAuthProtocolConfig<OIDCDataInterface>(appId, oidcSubmitValue, 
+                SupportedAuthProtocolTypes.OIDC) : Promise.resolve()
         ]).then(() => {
             onUpdate(appId);
             dispatch(addAlert({
