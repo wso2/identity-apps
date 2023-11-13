@@ -364,7 +364,6 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
     return (
         <>
             <DataTable<UserInviteInterface>
-                className="users-table"
                 showSearch={ true }
                 isLoading={ isGuestUsersRequestLoading }
                 loadingStateOptions={
