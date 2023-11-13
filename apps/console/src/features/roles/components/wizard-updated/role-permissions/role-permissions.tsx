@@ -223,7 +223,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
         /**
          * Handles the change of the search query of application list.
          */
-        const onSearchChangeAPIResourcs = (event: ChangeEvent<HTMLInputElement>): void => {
+        const onSearchChangeAPIResources = (event: ChangeEvent<HTMLInputElement>): void => {
             // Only search the role audience is "organization".
             if (roleAudience === RoleAudienceTypes.ORGANIZATION) {
                 setAPIResourcesSearching(true);
@@ -319,6 +319,9 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                         fullWidth
                         aria-label="API resource selection"
                         componentsProps={ {
+                            paper: {
+                                elevation: 2
+                            },
                             popper: {
                                 modifiers: [
                                     {
@@ -342,7 +345,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                         onChange={ onAPIResourceSelected }
                         options={ !isAPIResourcesSearching ? apiResourcesListOptions
                             .sort((a: DropdownProps, b: DropdownProps) =>
-                                -b.type.localeCompare(a.type)) : [] }
+                                -b?.type?.localeCompare(a?.type)) : [] }
                         noOptionsText={
                             isAPIResourcesListFetchRequestLoading
                                 ? t("common:searching")
@@ -353,7 +356,9 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                                 { ...params }
                                 label={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
                                     "apiResource.label") }
-                                onChange={ onSearchChangeAPIResourcs }
+                                onChange={ onSearchChangeAPIResources }
+                                placeholder={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
+                                    "apiResource.placeholder") }
                                 size="small"
                             />
                         ) }
