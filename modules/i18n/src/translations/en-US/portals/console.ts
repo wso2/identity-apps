@@ -11120,8 +11120,8 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Invite multiple users",
-                        subTitle: "Invite multiple users to the organization.",
+                        title: "Add multiple users",
+                        subTitle: "Add multiple users manually or using a CSV file.",
                         wizardSummary: {
                             successCount: "Successful Imports",
                             failedCount: "Failed Imports",
@@ -11168,7 +11168,7 @@ export const console: ConsoleNS = {
                             disabledSecondaryStoreInfo: "Bulk import to external user stores is not available " +
                                 "at the moment.",
                             manualCreation: {
-                                hint: "Add emails and send invitations to multiple users.",
+                                hint: "Add the email address of the user you wish to invite and press enter.",
                                 emailsLabel: "Emails",
                                 emailsPlaceholder: "Enter email addresses",
                                 disabledHint: "The manual option is disabled due to the usage of alphanumeric usernames in your organization.",
@@ -11176,7 +11176,7 @@ export const console: ConsoleNS = {
                                     buttonText: "Upload CSV File",
                                     description: "Drag and drop a CSV file here."
                                 },
-                                primaryButton: "Invite",
+                                primaryButton: "Add",
                                 rolesLabel: "Roles",
                                 rolesPlaceholder: "Enter roles",
                                 warningMessage: "Manual invite multiple users feature can only be used when email address is configured as the username."

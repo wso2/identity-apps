@@ -44,6 +44,7 @@ import {
     Heading,
     Hint,
     LinkButton,
+    Message,
     PickerResult,
     PrimaryButton,
     useWizardAlert
@@ -1912,6 +1913,17 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
             <Modal.Content className="content-container" scrolling>
                 <Grid>
+                <>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Message
+                                icon="mail"
+                                content="An email with a confirmation link will be sent to the provided email address
+                                for the user to set their own password."
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </>
                     { resolveMultipleUsersModeSelection() }
                     { resolveMultipleUsersConfiguration() }
                 </Grid>
