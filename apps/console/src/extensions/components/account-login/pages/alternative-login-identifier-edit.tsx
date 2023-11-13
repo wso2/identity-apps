@@ -112,8 +112,7 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
     const [ isApplicationRedirect, setApplicationRedirect ] = useState<boolean>(false);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
     const [ availableClaims, setAvailableClaims ] = useState<ExtendedClaimInterface[]>([]);
-    const [ isClaimRequestLoading, setIsClaimRequestLoading ] = useState(false);
-    const [ isConnectorRequestLoading, setConnectorRequestLoading ] = useState<boolean>(false);
+    const [ isLoading, setIsLoading ] = useState(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<AlternativeLoginIdentifierFormInterface>(undefined);
     const availiableLoginIdentifierAttributes: string[] = 
@@ -143,8 +142,6 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
      * Load multi attribute login connector.
      */
     const loadConnectorDetails = () => {
-
-        setConnectorRequestLoading(true); 
 
         getConnectorDetails(categoryId, connectorId)
             .then((response: GovernanceConnectorInterface) => {
@@ -182,9 +179,6 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
                         })
                     );
                 }
-            })
-            .finally(() => {
-                setConnectorRequestLoading(false);
             });
     };
 
@@ -193,7 +187,6 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
      */
     const getClaims = () => {
 
-        setIsClaimRequestLoading(true);
         const params: ClaimsGetParams = {
             "exclude-identity-claims": applicationConfig.excludeIdentityClaims,
             filter: null,
@@ -217,8 +210,6 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
                     message: t("console:manage.features.claims.local.notifications.fetchLocalClaims." +
                         "genericError.message")
                 }));
-            }).finally(() => {
-                setIsClaimRequestLoading(false);
             });
     };
 
@@ -358,6 +349,7 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
             });
         }
         setIsSubmitting(true);
+        setIsLoading(true);
         updateGovernanceConnector(data, categoryId, connectorId)
             .then(() => {
                 updateClaims(checkedClaims);
@@ -369,6 +361,7 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
             })
             .finally(() => {
                 setIsSubmitting(false);
+                setIsLoading(false);
             });
     };
 
@@ -457,16 +450,15 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
     }, []);
 
     useEffect(() => {
-        if (isClaimRequestLoading && isConnectorRequestLoading) {
+        if (isLoading) {
             return;
         }
 
         initializeForm();
     }, [
         availableClaims,
-        isClaimRequestLoading,
         connector,
-        isConnectorRequestLoading
+        isLoading
     ]);
 
     /** 
@@ -482,14 +474,16 @@ export const AlternativeLoginIdentifierEditPage: FunctionComponent<AlternativeLo
      * Load multiattribute login and claim data.
      */
     useEffect(() => {
+        setIsLoading(true);
         getClaims();
         loadConnectorDetails();
+        setIsLoading(false);
     }, []);
 
     return (
         <>
             {
-                !isClaimRequestLoading && !isConnectorRequestLoading && initialFormValues 
+                !isLoading && initialFormValues 
                     ? (
                         <PageLayout
                             pageTitle={ t("extensions:manage.accountLogin.alternativeLoginIdentifierPage.pageTitle") }
