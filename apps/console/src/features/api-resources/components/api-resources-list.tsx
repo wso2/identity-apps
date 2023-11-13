@@ -67,6 +67,10 @@ interface APIResourcesListProps extends SBACInterface<FeatureConfigInterface>, I
      * Show list item actions.
      */
     showListItemActions?: boolean;
+    /**
+     * API Category
+     */
+    categoryId: string
 }
 
 /**
@@ -78,6 +82,7 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
     props: APIResourcesListProps): ReactElement => {
     const {
         apiResourcesList,
+        categoryId,
         featureConfig,
         isAPIResourcesListLoading,
         setShowAddAPIWizard,
@@ -325,7 +330,9 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
      *
      */
     const handleAPIResourceEdit = (apiResource: APIResourceInterface, e: SyntheticEvent<Element, Event>): void => {
-        history.push(APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT").replace(":id", apiResource.id));
+        history.push(APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT")
+            .replace(":categoryId", categoryId)
+            .replace(":id", apiResource.id));
         onListItemClick && onListItemClick(e, apiResource);
     };
 

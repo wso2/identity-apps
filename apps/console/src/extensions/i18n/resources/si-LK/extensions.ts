@@ -450,6 +450,10 @@ export const extensions: Extensions = {
                         "කරුණාකර ප්රවේශමෙන් ඉදිරියට යන්න."
                 }
             },
+            managementAPI: {
+                header: "කළමනාකරණ API",
+                description: "ඔබේ ස්වයං සංවිධානයේ සම්පත් කළමනාකරණය කිරීමට API"
+            },
             notifications: {
                 deleteAPIResource: {
                     unauthorizedError: {
@@ -541,6 +545,10 @@ export const extensions: Extensions = {
                         message: "API සම්පත නිර්මාණය කරන ලදි"
                     }
                 }
+            },
+            organizationAPI: {
+                header: "සංවිධානය API",
+                description: "සම්පත් කළමනාකරණය කිරීමට API ඔබේ වෙනත් සංවිධාන"
             },
             table: {
                 name: {

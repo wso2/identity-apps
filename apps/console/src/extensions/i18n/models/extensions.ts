@@ -324,6 +324,10 @@ export interface Extensions {
                     message: string;
                 };
             };
+            managementAPI: {
+                header: string;
+                description: string;
+            }
             notifications: {
                 deleteAPIResource: {
                     unauthorizedError: {
@@ -416,6 +420,10 @@ export interface Extensions {
                     };
                 };
             };
+            organizationAPI: {
+                header: string;
+                description: string;
+            }
             table: {
                 name: {
                     column: string;

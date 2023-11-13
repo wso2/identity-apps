@@ -17,14 +17,23 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Grid from "@oxygen-ui/react/Grid";
+import TextField from "@oxygen-ui/react/TextField";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useCallback, useEffect, useState } from "react";
+import React, {
+    ChangeEvent,
+    FunctionComponent,
+    ReactElement,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useState
+} from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -157,6 +166,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                             options.push({
                                 key: apiResource.id,
                                 text: apiResource.name,
+                                type: apiResource.type,
                                 value: apiResource.id
                             });
                         }
@@ -213,11 +223,11 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
         /**
          * Handles the change of the search query of application list.
          */
-        const onSearchChangeAPIResourcs = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
+        const onSearchChangeAPIResourcs = (event: ChangeEvent<HTMLInputElement>): void => {
             // Only search the role audience is "organization".
             if (roleAudience === RoleAudienceTypes.ORGANIZATION) {
                 setAPIResourcesSearching(true);
-                searchAPIResources(data?.searchQuery?.toString().trim());
+                searchAPIResources(event?.target?.value?.toString().trim());
             }
         };
 
@@ -230,10 +240,10 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
         const onAPIResourceSelected = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
             event.preventDefault();
             if(roleAudience === RoleAudienceTypes.ORGANIZATION) {
-                setSelectedAPIResourceId(data.value.toString());
+                setSelectedAPIResourceId(data?.value?.toString());
             } else {
                 const selectedAPIResource: AuthorizedAPIListItemInterface = authorizedAPIListForApplication.find(
-                    (api: AuthorizedAPIListItemInterface) => api.id === data.value.toString()
+                    (api: AuthorizedAPIListItemInterface) => api?.id === data?.value?.toString()
                 );
 
                 setSelectedAPIResources([ 
@@ -304,33 +314,50 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                         ) : null
                 }
                 <Grid xs={ 12 }>
-                    <Form
-                        id={ componentId } 
-                        uncontrolledForm={ false } 
-                        onSubmit={ undefined }
-                    >
-                        <Field.Dropdown
-                            search
-                            selection
-                            selectOnNavigation={ false }
-                            ariaLabel="assignedApplication"
-                            name="assignedApplication"
-                            label={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
-                                "apiResource.label") }
-                            options={ apiResourcesListOptions }
-                            data-componentid={ `${componentId}-typography-font-family-dropdown` }
-                            placeholder={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
-                                "apiResource.placeholder") }
-                            noResultsMessage={
-                                isAPIResourcesListFetchRequestLoading
-                                    ? t("common:searching")
-                                    : t("common:noResultsFound")
+                    <Autocomplete
+                        disableCloseOnSelect
+                        fullWidth
+                        aria-label="API resource selection"
+                        componentsProps={ {
+                            popper: {
+                                modifiers: [
+                                    {
+                                        enabled: false,
+                                        name: "flip"
+                                    },
+                                    {
+                                        enabled: false,
+                                        name: "preventOverflow"
+                                    }
+                                ]
                             }
-                            loading={ isAPIResourcesSearching }
-                            onSearchChange={ onSearchChangeAPIResourcs }
-                            onChange={ onAPIResourceSelected }
-                        />
-                    </Form>
+                        } }
+                        getOptionLabel={ (apiResourcesListOption: DropdownProps) => apiResourcesListOption.text }
+                        groupBy={ (apiResourcesListOption: DropdownProps) => apiResourcesListOption.type }
+                        isOptionEqualToValue={ 
+                            (option: DropdownProps, value: DropdownProps) => 
+                                option.value === value.value 
+                        }
+                        loading={ isAPIResourcesSearching }
+                        onChange={ onAPIResourceSelected }
+                        options={ !isAPIResourcesSearching ? apiResourcesListOptions
+                            .sort((a: DropdownProps, b: DropdownProps) =>
+                                -b.type.localeCompare(a.type)) : [] }
+                        noOptionsText={
+                            isAPIResourcesListFetchRequestLoading
+                                ? t("common:searching")
+                                : t("common:noResultsFound")
+                        }
+                        renderInput={ (params: AutocompleteRenderInputParams) => (
+                            <TextField
+                                { ...params }
+                                label={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
+                                    "apiResource.label") }
+                                onChange={ onSearchChangeAPIResourcs }
+                                size="small"
+                            />
+                        ) }
+                    />
                 </Grid>
                 <Grid xs={ 12 }>
                     {
