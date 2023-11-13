@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.6.2
+
+### Patch Changes
+
+- [#4566](https://github.com/wso2/identity-apps/pull/4566) [`eede5f1732`](https://github.com/wso2/identity-apps/commit/eede5f1732eecfd72bc137136a9b13499186c000) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in role creation with application audience
+
 ## 2.6.1
 
 ### Patch Changes
