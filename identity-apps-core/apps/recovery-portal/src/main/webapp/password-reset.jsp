@@ -68,7 +68,7 @@
     JSONObject passwordConfig = null;
     /*
      This variable exists for backward compatibility.If isPasswordInputValidationEnabled is true, the password 
-     validation will be done via the new input validation listener.Otherwise,it will be done via the old password
+     validation will be done via the new input validation listener. Otherwise, it will be done via the old password
      policy validation handler.
     */
     Boolean isPasswordInputValidationEnabled = Boolean.parseBoolean(getServletContext().getInitParameter("isPasswordInputValidationEnabled"));
@@ -536,7 +536,7 @@
             }
 
             /**
-             * Function to enable cross-marks on unmet criteria when submitting.When isPasswordInputValidationEnabled 
+             * Function to enable cross-marks on unmet criteria when submitting. When isPasswordInputValidationEnabled 
              * is false, only the basic password validation will be performed.
              */
             function passwordSubmitValidation() {
