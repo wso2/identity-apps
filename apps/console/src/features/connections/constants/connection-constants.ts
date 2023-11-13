@@ -134,6 +134,9 @@ export class ConnectionManagementConstants {
     public static readonly CONNECTION_CLAIMS_UPDATE_ERROR: string = "An error occurred while updating claims " +
         "configurations of the identity provider.";
 
+    public static readonly CONNECTION_IMPLICIT_ASSOCIATION_UPDATE_ERROR: string = "An error occurred while " +
+        "updating implicit association configurations of the identity provider.";
+
     /**
      * Identity provider create limit reached error.
     **/

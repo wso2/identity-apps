@@ -79,6 +79,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
         return {
             alias: values.get("alias"),
             homeRealmIdentifier: values.get("homeRealmIdentifier"),
+            idpIssuerName: values.get("issuer"),
             isFederationHub: !!values.get("federationHub")?.includes("federationHub")
         };
     };

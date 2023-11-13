@@ -50,7 +50,8 @@ import {
     ConnectionAdvanceInterface,
     ConnectionInterface,
     ConnectionTabTypes,
-    ConnectionTemplateInterface
+    ConnectionTemplateInterface,
+    ImplicitAssociaionConfigInterface
 } from "../../models/connection";
 
 /**
@@ -171,6 +172,11 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         isFederationHub: identityProvider.isFederationHub
     };
 
+    const idpImplicitAssociationConfig: ImplicitAssociaionConfigInterface = {
+        isEnabled: identityProvider.implicitAssociation.isEnabled,
+        lookupAttribute: identityProvider.implicitAssociation.lookupAttribute
+    };
+
     const Loader = (): ReactElement => (
         <EmphasizedSegment padded>
             <ContentLoader inline="centered" active/>
@@ -280,11 +286,13 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             <AdvanceSettings
                 editingIDP={ identityProvider }
                 advancedConfigurations={ idpAdvanceConfig }
+                implicitAssociationConfig={ idpImplicitAssociationConfig }
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-advance-settings` }
                 isReadOnly={ isReadOnly }
                 isLoading={ isLoading }
                 loader={ Loader }
+                isTrustedTokenIssuer={ isTrustedTokenIssuer }
             />
         </ResourceTab.Pane>
     );
@@ -384,6 +392,12 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 "data-tabid": ConnectionManagementConstants.GENERAL_TAB_ID,
                 menuItem: "General",
                 render: GeneralIdentityProviderSettingsTabPane
+            });
+
+            panes.push({
+                "data-tabid": ConnectionManagementConstants.ADVANCED_TAB_ID,
+                menuItem: "Advanced",
+                render: AdvancedSettingsTabPane
             });
         } else {
             panes.push({
