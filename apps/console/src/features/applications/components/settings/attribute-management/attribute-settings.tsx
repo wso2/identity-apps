@@ -1080,13 +1080,14 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             delete submitValue.claimConfiguration.subject;
         }
         
-        const isProtocolOAuth: boolean = technology?.find((protocol: InboundProtocolListItemInterface) => 
-            protocol.type === SupportedAuthProtocolTypes.OAUTH2) !== undefined;
+        const isProtocolOAuth: boolean = !!technology?.find((protocol: InboundProtocolListItemInterface) => 
+            protocol.type === SupportedAuthProtocolTypes.OAUTH2);
         
         Promise.all([
             updateClaimConfiguration(appId, submitValue),
-            isProtocolOAuth ? updateAuthProtocolConfig<OIDCDataInterface>(appId, oidcSubmitValue, 
-                SupportedAuthProtocolTypes.OIDC) : Promise.resolve()
+            isProtocolOAuth 
+                ? updateAuthProtocolConfig<OIDCDataInterface>(appId, oidcSubmitValue, SupportedAuthProtocolTypes.OIDC) 
+                : Promise.resolve()
         ]).then(() => {
             onUpdate(appId);
             dispatch(addAlert({
