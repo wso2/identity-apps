@@ -72,6 +72,12 @@ export interface ConnectionInterface extends StrictConnectionInterface {
     provisioning?: ProvisioningInterface;
     docLink?: string;
     type?: string;
+    implicitAssociation?: ImplicitAssociaionConfigInterface;
+}
+
+export interface ImplicitAssociaionConfigInterface {
+    isEnabled: boolean;
+    lookupAttribute: string[];
 }
 
 /**
@@ -606,6 +612,7 @@ export enum SupportedQuickStartTemplateTypes {
 export interface ConnectionAdvanceInterface {
     isFederationHub?: boolean;
     homeRealmIdentifier?: string;
+    issuer?: string;
     alias?: string;
     certificate?: CertificateConfigInterface;
 }

@@ -42,6 +42,7 @@ import {
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
     FederatedAuthenticatorMetaInterface,
+    ImplicitAssociaionConfigInterface,
     JITProvisioningResponseInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorListItemInterface,
@@ -986,6 +987,47 @@ export const updateClaimsConfigs = (
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ConnectionManagementConstants.CONNECTION_CLAIMS_UPDATE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Update implicit association configuration of the specified IDP.
+ *
+ * @param idpId - ID of the Identity Provider.
+ * @param configs - implicit association configs.
+ * @returns A promise containing the response.
+ */
+export const updateImplicitAssociationConfig = (
+    idpId: string, 
+    configs: ImplicitAssociaionConfigInterface
+): Promise<ConnectionInterface> => {
+    
+    const requestConfig: RequestConfigInterface = {
+        data: configs,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/implicit-association"
+    };
+    
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update implicit association" + 
+                " configs for identity provider: " + idpId));
+            }
+
+            return Promise.resolve(response.data as ConnectionInterface);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ConnectionManagementConstants.CONNECTION_IMPLICIT_ASSOCIATION_UPDATE_ERROR,
                 error.stack,
                 error.code,
                 error.request,
