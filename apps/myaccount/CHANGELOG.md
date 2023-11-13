@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.2.14
+
+### Patch Changes
+
+- [#4564](https://github.com/wso2/identity-apps/pull/4564) [`bc18db27a5`](https://github.com/wso2/identity-apps/commit/bc18db27a59d43ccb38f965899c0546c9816d2b7) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Fix password patterns updated via console not being reflected in My Account and reset password window
+
+* [#4560](https://github.com/wso2/identity-apps/pull/4560) [`7cff1f63fb`](https://github.com/wso2/identity-apps/commit/7cff1f63fb4c0caf14a6505c13490c4820a233b1) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Make Backup Codes enabled by default
+
+* Updated dependencies [[`bc18db27a5`](https://github.com/wso2/identity-apps/commit/bc18db27a59d43ccb38f965899c0546c9816d2b7), [`9ae04065e4`](https://github.com/wso2/identity-apps/commit/9ae04065e429f465e5085afeb7b9a59d01a2feb1)]:
+  - @wso2is/core@2.0.12
+  - @wso2is/i18n@2.0.34
+
 ## 2.2.13
 
 ### Patch Changes
