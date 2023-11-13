@@ -9181,9 +9181,9 @@ export const console: ConsoleNS = {
                 addUserWizard: {
                     heading: "Invite Parent User",
                     description: "Invite a user from the parent organization.",
-                    hint: "Invited users are managed by the <1>{{currentOrganization}}</1> organization.",
+                    hint: "Invited users are managed by the parent organization.",
                     usernameHint: "Username should belong to a user " +
-                        "from the <1>{{currentOrganization}}</1> organization."
+                        "from the parent organization."
                 },
                 tab: {
                     usersTab: "Users",

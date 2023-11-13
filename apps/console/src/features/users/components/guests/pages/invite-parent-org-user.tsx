@@ -91,10 +91,7 @@ export const InviteParentOrgUser: React.FunctionComponent<InviteParentOrgUserPro
                                         i18nKey= "console:manage.features.parentOrgInvitations.addUserWizard.hint"
                                         tOptions={ { currentOrganization: currentOrganization } }
                                     >
-                                        Invited users are managed 
-                                        by the <strong>
-                                            { currentOrganization }
-                                        </strong> organization.                        
+                                        Invited users are managed by the parent organization.                        
                                     </Trans>)
                                 }
                             />
