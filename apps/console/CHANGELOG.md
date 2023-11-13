@@ -1,5 +1,21 @@
 # @wso2is/console
 
+## 2.6.3
+
+### Patch Changes
+
+- [#4572](https://github.com/wso2/identity-apps/pull/4572) [`d6b83f8118`](https://github.com/wso2/identity-apps/commit/d6b83f8118c5ad0f25172366b93c053ead6c988a) Thanks [@Achintha444](https://github.com/Achintha444)! - Fix alignment issue in sub0org invited user list page
+
+* [#4576](https://github.com/wso2/identity-apps/pull/4576) [`94edb8d036`](https://github.com/wso2/identity-apps/commit/94edb8d0360865c0d556487ddb4208c8a3206452) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Change invite parent user messages
+
+- [#4339](https://github.com/wso2/identity-apps/pull/4339) [`d805503037`](https://github.com/wso2/identity-apps/commit/d805503037ad9a1157143918424072c107979993) Thanks [@sandushi](https://github.com/sandushi)! - Fix duplicate loading issue in alternative login identifiers
+
+* [#4577](https://github.com/wso2/identity-apps/pull/4577) [`e74ebe77d5`](https://github.com/wso2/identity-apps/commit/e74ebe77d597ba06a2b6f0e461ae68e9dcf85edf) Thanks [@Achintha444](https://github.com/Achintha444)! - Fix misleading instruction in application registration flow
+
+* Updated dependencies [[`d6b83f8118`](https://github.com/wso2/identity-apps/commit/d6b83f8118c5ad0f25172366b93c053ead6c988a), [`94edb8d036`](https://github.com/wso2/identity-apps/commit/94edb8d0360865c0d556487ddb4208c8a3206452)]:
+  - @wso2is/theme@2.0.33
+  - @wso2is/i18n@2.0.35
+
 ## 2.6.2
 
 ### Patch Changes
