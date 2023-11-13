@@ -7429,9 +7429,8 @@ export const console: ConsoleNS = {
                 addUserWizard: {
                     heading: "Inviter un utilisateur parent",
                     description: "Invitez un utilisateur de l’organisation parente.",
-                    hint: "Les utilisateurs invités sont gérés par l'organisation <1>{{currentOrganization}></1>.",
-                    usernameHint: "Le nom d'utilisateur doit appartenir à un utilisateur " +
-                        "de l'organisation <1>{{currentOrganization}></1>."
+                    hint: "Les utilisateurs invités sont gérés par l'organisation parente.",
+                    usernameHint: "Le nom d'utilisateur doit appartenir à un utilisateur de l'organisation parente."
                 },
                 tab: {
                     usersTab: "Utilisateurs",
