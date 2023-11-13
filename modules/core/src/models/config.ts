@@ -187,7 +187,7 @@ export interface CommonUIConfigInterface<T = Record<string, unknown>> {
      */
     isLeftNavigationCategorized?: boolean;
     /**
-    * Flags to check whether the password validation is performed using input validation listener.
+    * Flag to check whether the password validation is performed using input validation listener.
     */
     isPasswordInputValidationEnabled: boolean;
     /**
