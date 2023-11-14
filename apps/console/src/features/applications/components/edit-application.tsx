@@ -228,9 +228,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             // When application selection is done through the strong authentication flow.
             const tabIndex: number = applicationConfig.editApplication.getStrongAuthenticationFlowTabIndex(
                 application.clientId,
-                tenantDomain,
-                template.id,
-                CustomApplicationTemplate.id
+                tenantDomain
             );
 
             handleActiveTabIndexChange(tabIndex);

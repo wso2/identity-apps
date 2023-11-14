@@ -356,16 +356,12 @@ export const applicationConfig: ApplicationConfig = {
         },
         getStrongAuthenticationFlowTabIndex: (
             clientId: string,
-            tenantDomain: string,
-            templateId: string,
-            customApplicationTemplateId: string
+            tenantDomain: string
         ): number => {
             if (clientId === getTryItClientId(tenantDomain)) {
-                return 2; // For Asgardeo Try It App
-            } else if (templateId === customApplicationTemplateId) {
-                return 3; // For other apps built on Custom Application Templates
+                return ApplicationManagementConstants.TRY_IT_SIGNIN_TAB; // For Asgardeo Try It App
             } else {
-                return 4; // Anything else
+                return ApplicationManagementConstants.APPLICATION_SIGNIN_TAB; // For other applications
             }
         },
         getTabExtensions: (
