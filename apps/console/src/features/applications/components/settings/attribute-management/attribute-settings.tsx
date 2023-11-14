@@ -1080,6 +1080,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             delete submitValue.claimConfiguration.subject;
         }
 
+        /**
+         * Handles the error scenario of the claim configuration update by displaying a generic claim configuration
+         * update failure alert.
+         */
         const onClaimConfigUpdateError = () => {
             dispatch(addAlert({
                 description: t("console:develop.features.applications.notifications.updateClaimConfig" +
@@ -1090,6 +1094,10 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             }));
         };
 
+        /**
+         * Handles the successful claim configuration update scenario by executing the `onUpdate` callback and 
+         * displaying a success alert.
+         */
         const onSuccessfulClaimConfigUpdate = () => {
             onUpdate(appId);
             dispatch(addAlert({
