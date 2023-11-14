@@ -885,7 +885,9 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                     ) }
 
                     <SectionRow>
-                        <Typography variant="body1">Authentication context class</Typography>
+                        <Typography variant="body1">
+                            { t(`${ I18N_TARGET_KEY }.authenticationContextClass.label`) }
+                        </Typography>
                         
                         <Autocomplete
                             multiple
@@ -905,7 +907,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                     <TextField
                                         { ...params }
                                         size="small"
-                                        placeholder= { "Search available authentication context classes" }
+                                        placeholder={ t(`${ I18N_TARGET_KEY }.authenticationContextClass.placeholder`) }
                                     />
                                 );
                             } }

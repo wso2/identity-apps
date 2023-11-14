@@ -4075,7 +4075,7 @@ export const console: ConsoleNS = {
                                 ariaLabel: "Authentication context class",
                                 hint: "Authentication context class",
                                 label: "Authentication context class",
-                                placeholder: "Enter authentication context class"
+                                placeholder: "Search available authentication context classes"
                             },
                             customAuthenticationContextClass: {
                                 ariaLabel: "Custom Authentication context class",
