@@ -359,9 +359,9 @@ export const applicationConfig: ApplicationConfig = {
             tenantDomain: string
         ): number => {
             if (clientId === getTryItClientId(tenantDomain)) {
-                return ApplicationManagementConstants.TRY_IT_SIGNIN_STEP; // For Asgardeo Try It App
+                return ApplicationManagementConstants.TRY_IT_SIGNIN_TAB; // For Asgardeo Try It App
             } else {
-                return ApplicationManagementConstants.APPLICATION_SIGNIN_STEP; // For other applications
+                return ApplicationManagementConstants.APPLICATION_SIGNIN_TAB; // For other applications
             }
         },
         getTabExtensions: (

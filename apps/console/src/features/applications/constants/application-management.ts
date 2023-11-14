@@ -465,12 +465,12 @@ export class ApplicationManagementConstants {
     /**
      * Sign in step of the try it application.
      */
-    public static readonly TRY_IT_SIGNIN_STEP: number = 2;
+    public static readonly TRY_IT_SIGNIN_TAB: number = 2;
     
     /**
      * Sign in step of other applications.
      */
-    public static readonly APPLICATION_SIGNIN_STEP: number = 3;
+    public static readonly APPLICATION_SIGNIN_TAB: number = 3;
 }
 
 export enum ShareWithOrgStatus {
