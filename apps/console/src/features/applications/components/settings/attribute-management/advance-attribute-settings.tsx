@@ -28,6 +28,7 @@ import { applicationConfig } from "../../../../../extensions";
 import { ApplicationManagementConstants } from "../../../constants";
 import {
     AdvanceAttributeSettingsErrorValidationInterface,
+    ApplicationValidateLocalAccountTypes,
     InboundProtocolListItemInterface,
     OIDCDataInterface,
     RoleConfigInterface,
@@ -59,6 +60,11 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
 export const SubjectAttributeFieldName: string = "subjectAttribute";
 
 const FORM_ID: string = "application-attributes-advance-settings-form";
+const VALIDATE_LOCAL_ACCOUNT_OPTIONS: ApplicationValidateLocalAccountTypes[] = [ 
+    ApplicationValidateLocalAccountTypes.DISABLED,
+    ApplicationValidateLocalAccountTypes.OPTIONAL,
+    ApplicationValidateLocalAccountTypes.MANDATORY
+];
 
 /**
  * Advanced attribute settings component.
@@ -197,7 +203,37 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         return errors;
     };
 
+    const getValidateLocalAccountDropdownValue = (): string => {
+        if (initialSubject?.useMappedLocalSubject) {
+            if (initialSubject?.mappedLocalSubjectMandatory) {
+                return ApplicationValidateLocalAccountTypes.MANDATORY;
+            } else {
+                return ApplicationValidateLocalAccountTypes.OPTIONAL;
+            }
+        } else {
+            return ApplicationValidateLocalAccountTypes.DISABLED;
+        }
+    };
+
+    const resolveValidateLocalAccountConfig = (values: Record<string, any>): [ boolean, boolean ] => {
+        if (values.validateLocalAccount) {
+            switch (values.validateLocalAccount) {
+                case ApplicationValidateLocalAccountTypes.DISABLED:
+                    return [ false, false ];
+                case ApplicationValidateLocalAccountTypes.OPTIONAL:
+                    return [ true, false ];
+                case ApplicationValidateLocalAccountTypes.MANDATORY:
+                    return [ true, true ];
+            }
+        } else {
+            return [ initialSubject.useMappedLocalSubject , initialSubject.mappedLocalSubjectMandatory ];
+        }
+    };
+
     const submitValues = (values: Record<string, any>) => {
+        console.log(initialSubject);
+
+        const [ useMappedLocalSubject, mappedLocalSubjectMandatory ] = resolveValidateLocalAccountConfig(values);
 
         const settingValues: {
             role: RoleInterface;
@@ -220,7 +256,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                 claim: getDefaultDropDownValue(dropDownOptions, values.subjectAttribute),
                 includeTenantDomain: !!values.subjectIncludeTenantDomain,
                 includeUserDomain: !!values.subjectIncludeUserDomain,
-                useMappedLocalSubject: !!values.subjectUseMappedLocalSubject
+                mappedLocalSubjectMandatory: mappedLocalSubjectMandatory,
+                useMappedLocalSubject: useMappedLocalSubject
             }
         };
 
@@ -310,6 +347,16 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     ".subject.fields.subjectAttribute.hint") }
             </Hint>
         );
+    };
+
+    const getValidateLocalAccountDropdownOptions = (): DropdownOptionsInterface[] => {
+        return VALIDATE_LOCAL_ACCOUNT_OPTIONS.map((option: ApplicationValidateLocalAccountTypes) => {
+            return {
+                key: option,
+                text: option,
+                value: option
+            };
+        });
     };
 
     return (
@@ -423,6 +470,54 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings." +
                             "sections.subject.fields.subjectUseMappedLocalSubject.hint")
+                        }
+                    />
+                    <Divider />
+                    <Heading
+                        as="h4"
+                    >
+                        { "Local Account Validation" }
+                    </Heading>
+                    <Divider hidden/>
+                    <Field.Dropdown
+                        ariaLabel="Validate local account configuration"
+                        name="validateLocalAccount"
+                        label={
+                            "Validate linked local account"
+                        }
+                        required={ false }
+                        value={ getValidateLocalAccountDropdownValue() }
+                        options={ getValidateLocalAccountDropdownOptions() }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-role-attribute-dropdown` }
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute }
+                        hint={"This option will decide how the linked local user account is validated with the " + 
+                        "authenticated identity."}
+                    />
+                    <Message
+                        type="info"
+                        content={
+                            // <p><strong>Disabled</strong> - The linked local user account is not validated</p>
+                            (
+                                <Text className="message-info-text">
+                                    {/* <Trans
+                                        i18nKey="extensions:develop.applications.quickstart.spa.common.prerequisites.node"
+                                    > */}
+                                    <strong>Disabled</strong> - Validation of a linked local user account 
+                                        associated with the authenticated identity is disabled. The profile of 
+                                        the authenticated identity is always shared<br/><br/>
+                                    <strong>Optional</strong> - Having a linked local user account with 
+                                        the authenticated identity is not mandatory for successful authentication. 
+                                        If such a linked account exists, its profile is shared; otherwise, the 
+                                        profile of the authenticated identity is shared.<br/><br/>
+                                    <strong>Mandatory</strong> - Mandate existence of a linked local user account 
+                                        with the authenticated identity for successful authentication.  If the linked 
+                                        local user account exists, share its profile in the authentication response; 
+                                        otherwise, authentication will fail.
+                                        
+                                    {/* </Trans> */}
+                                </Text>
+                            )
                         }
                     />
                     <Divider />

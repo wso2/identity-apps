@@ -541,7 +541,7 @@ export const applicationConfig: ApplicationConfig = {
         showProvisioningSettings: true
     },
     excludeIdentityClaims: true,
-    excludeSubjectClaim: true,
+    excludeSubjectClaim: false,
     generalSettings: {
         getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string): boolean => {
             let isEnterpriseLoginMgt: string;
