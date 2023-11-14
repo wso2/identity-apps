@@ -9277,7 +9277,9 @@ export const console: ConsoleNS = {
                                 placeholder: "Veuillez saisir une adresse e-mail",
                                 validations: {
                                     empty: "L'adresse e-mail est obligatoire",
-                                    invalid: "L'adresse e-mail est invalide"
+                                    invalid: "S'il vous plaît, mettez une adresse email valide.Vous pouvez utiliser alphanumérique "+
+                                        "Caractères, caractères Unicode, soulignements (_), tirets (-), périodes (.)," +
+                                        "Et un signe AT (@)."
                                 }
                             },
                             firstName: {

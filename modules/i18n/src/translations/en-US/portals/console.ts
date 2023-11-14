@@ -11020,7 +11020,9 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter the email address",
                                 validations: {
                                     empty: "Email address cannot be empty",
-                                    invalid: "Please enter a valid email address"
+                                    invalid: "Please enter a valid email address. You can use alphanumeric " +
+                                        "characters, unicode characters, underscores (_), dashes (-), periods (.), " +
+                                        "and an at sign (@)."
                                 }
                             },
                             firstName: {
