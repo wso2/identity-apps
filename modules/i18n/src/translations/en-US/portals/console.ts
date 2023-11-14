@@ -11178,8 +11178,7 @@ export const console: ConsoleNS = {
                                 },
                                 primaryButton: "Invite",
                                 rolesLabel: "Roles",
-                                rolesPlaceholder: "Enter roles",
-                                warningMessage: "Manual invite multiple users feature can only be used when email address is configured as the username."
+                                rolesPlaceholder: "Enter roles"
                             },
                             fileBased: {
                                 hint: "Bulk invite multiple users using a CSV file."
@@ -11187,7 +11186,8 @@ export const console: ConsoleNS = {
                             responseOperationType: {
                                 userCreation: "User Creation",
                                 roleAssignment: "Role/Group Assignment"
-                            }
+                            },
+                            userstoreMessage: "The created users will be added to the <1>{{ userstore }}</1> user store."
                         },
                         buttons: {
                             import: "Import"

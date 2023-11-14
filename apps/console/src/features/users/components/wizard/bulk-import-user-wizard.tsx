@@ -25,7 +25,6 @@ import { Chip, TextField, Typography } from "@oxygen-ui/react";
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import InputLabel from "@oxygen-ui/react/InputLabel/InputLabel";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertLevels,
     ClaimDialect,
@@ -50,24 +49,19 @@ import {
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import Axios,  { AxiosResponse }from "axios";
+import camelCase from "lodash-es/camelCase";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon, Label, Modal } from "semantic-ui-react";
+import { Button, Grid, Icon, Label, Modal } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
-import { getUserStores } from "../../../../extensions/components/users/api";
-import { UsersConstants } from "../../../../extensions/components/users/constants";
 import { userConfig } from "../../../../extensions/configs";
 import { getGroupList } from "../../../../features/groups/api";
 import { GroupsInterface } from "../../../../features/groups/models";
 import { useRolesList } from "../../../../features/roles/api";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
-import {
-    UserStoreDetails,
-    UserStoreProperty,
-    getCertificateIllustrations
-} from "../../../core";
+import { getCertificateIllustrations } from "../../../core";
 import { RoleAudienceTypes } from "../../../roles/constants";
 import { PatchRoleDataInterface } from "../../../roles/models";
 import { PRIMARY_USERSTORE } from "../../../userstores/constants";
@@ -181,8 +175,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ bulkResponseSummary, setBulkResponseSummary ] = useState<BulkResponseSummary>(initialBulkResponseSummary);
     const [ manualInviteResponseSummary, setManualInviteesponseSummary ]
         = useState<BulkResponseSummary>(initialBulkResponseSummary);
-    const [ readWriteUserStoresList, setReadWriteUserStoresList ] = useState<DropdownItemProps[]>([]);
-    const [ selectedUserStore, setSelectedUserStore ] = useState<string>("");
     const [ configureMode, setConfigureMode ] = useState<string>(MultipleInviteMode.MANUAL);
     const [ emailData, setEmailData ] = useState<string[]>();
     const [ isEmailDataError, setIsEmailDataError ] = useState<boolean>(false);
@@ -243,14 +235,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     
         setRoleUserAssociations(newRoles);
     }, [ rolesList ]);
-    
-    /**
-     * Set the user store list.
-     */
-    useEffect(() => {
-        setSelectedUserStore(userstore);
-        getUserStoreList();
-    }, [ userstore ]);
 
     /**
      * Fetch the group list.
@@ -405,76 +389,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         } finally {
             setIsLoading(false);
         }
-    };
-
-    /**
-     * This will fetch userstore list.
-     */
-    const getUserStoreList = (): void => {
-        setIsLoading(true);
-
-        getUserStores()
-            .then((response: UserStoreDetails[]) => {                      
-                const userStoreArray: DropdownItemProps[] = [];
-
-                response?.forEach((item: UserStoreDetails, index: number) => {
-                    // Set read/write enabled userstores based on the type.
-                    if (checkReadWriteUserStore(item)) {    
-                        userStoreArray.push({
-                            key: index,
-                            text: item?.name.toUpperCase(),
-                            value: item?.name.toUpperCase()
-                        });
-                    }});
-
-                if (userstore === PRIMARY_USERSTORE) {
-                    userStoreArray.push({
-                        key: userStoreArray.length,
-                        text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
-                        value: PRIMARY_USERSTORE.toUpperCase()
-                    });
-                }
-                
-                setReadWriteUserStoresList(userStoreArray);
-            }).catch((_error: IdentityAppsApiException) => {
-                dispatch(addAlert({
-                    description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError." +
-                        "description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
-                }));
-                setHasError(true);
-
-                return;
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-    };
-
-    /**
-     * Check the given user store is Read/Write enabled.
-     * 
-     * @param userStore - Userstore
-     * @returns If the given userstore is read only or not.
-     */
-    const checkReadWriteUserStore = (userStore: UserStoreDetails): boolean => {
-        if( userStore?.typeName === UsersConstants.DEFAULT_USERSTORE_TYPE_NAME ) {
-            return true;
-        } else {
-            return  userStore?.enabled && userStore?.properties.filter((property: UserStoreProperty)=>
-                property.name===UsersConstants.USER_STORE_PROPERTY_READ_ONLY)[0].value==="false";
-        }
-    };
-
-    const hideUserStoreDropdown = (): boolean => {
-        // TODO: Currently only primary userstore is supported.
-        // if(readWriteUserStoresList) {
-        //     return readWriteUserStoresList?.length === 0 || (readWriteUserStoresList?.length === 1 && 
-        //         readWriteUserStoresList[0]?.value === userstore);
-        // }
-        
-        return false;
     };
 
     const joinWithAnd = (arr: string[]): string => {
@@ -708,9 +622,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         throw new Error(DATA_VALIDATION_ERROR);
                     }
 
-                    dataObj[RequiredBulkUserImportAttributes.USERNAME] = selectedUserStore &&
-                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
-                        ? `${selectedUserStore}/${attributeValue}`
+                    dataObj[RequiredBulkUserImportAttributes.USERNAME] = 
+                    userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
+                        ? `${userstore}/${attributeValue}`
                         : attributeValue;
                 
                     continue;
@@ -1495,54 +1409,20 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                 <>
                                     <Grid.Row columns={ 1 } className="mb-0 pb-0">
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }> 
-                                            <Alert severity="warning">
-                                                { 
-                                                    t("console:manage.features.user.modals.bulkImportUserWizard" +
-                                                    ".wizardSummary.manualCreation.warningMessage") 
-                                                }
+                                            <Alert severity="info">
+                                                <Trans
+                                                    i18nKey={
+                                                        "console:manage.features.user.modals.bulkImportUserWizard" +
+                                                        ".wizardSummary.userstoreMessage"
+                                                    }
+                                                    tOptions={ {
+                                                        userstore: camelCase(userstore)
+                                                    } }
+                                                > 
+                                                    The created users will be added to 
+                                                    the <b>{ camelCase(userstore) }</b> user store.          
+                                                </Trans>
                                             </Alert>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }> 
-                                            <Form.Field required={ true }>
-                                                <InputLabel
-                                                    htmlFor="tags-filled"
-                                                    disableAnimation
-                                                    shrink={ false }
-                                                    margin="dense"
-                                                    className="spacing-bottom"
-                                                    data-componentid={ `${componentId}-userstore-label` }
-                                                >
-                                                    { t("console:manage.features.user.forms.addUserForm."+
-                                                    "inputs.domain.label") }
-                                                </InputLabel>
-                                                <Dropdown
-                                                    className="mt-2"
-                                                    fluid
-                                                    selection
-                                                    labeled
-                                                    options={ readWriteUserStoresList }
-                                                    loading={ false }
-                                                    data-testid={
-                                                        `${componentId}-userstore-dropdown`
-                                                    }
-                                                    data-componentid={
-                                                        `${componentId}-userstore-dropdown`
-                                                    }
-                                                    name="userstore"
-                                                    disabled={ true }
-                                                    value={ selectedUserStore }
-                                                    onChange={
-                                                        (e: React.ChangeEvent<HTMLInputElement>,
-                                                            data: DropdownProps) => {
-                                                            setSelectedUserStore(data.value.toString());
-                                                        }
-                                                    }
-                                                    tabIndex={ 1 }
-                                                    maxLength={ 60 }
-                                                />
-                                            </Form.Field> 
                                         </Grid.Column>
                                     </Grid.Row>
                                     { allRolesList
@@ -1774,59 +1654,25 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     </Grid.Row>
                                 )
                             }
-                            { !isLoading && !hideUserStoreDropdown()
+                            { !isLoading
                                 && (
                                     <>
                                         <Grid.Row columns={ 1 } className="mb-0 pb-0">
                                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }> 
                                                 <Alert severity="info">
-                                                    { t("console:manage.features.user.modals." +
-                                                        "bulkImportUserWizard.wizardSummary." +
-                                                        "disabledSecondaryStoreInfo") }
+                                                    <Trans
+                                                        i18nKey={
+                                                            "console:manage.features.user.modals.bulkImportUserWizard" +
+                                                        ".wizardSummary.userstoreMessage"
+                                                        }
+                                                        tOptions={ {
+                                                            userstore: camelCase(userstore)
+                                                        } }
+                                                    > 
+                                                        The created users will be added to 
+                                                        the <b>{ camelCase(userstore) }</b> user store.          
+                                                    </Trans>
                                                 </Alert>
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                        <Grid.Row columns={ 1 }>
-                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }> 
-                                                <Form.Field required={ true }>
-                                                    <InputLabel
-                                                        htmlFor="tags-filled"
-                                                        disableAnimation
-                                                        shrink={ false }
-                                                        margin="dense"
-                                                        className="spacing-bottom"
-                                                        data-componentid={ `${componentId}-userstore-label` }
-                                                    >
-                                                        { t("console:manage.features.user.forms.addUserForm."+
-                                                        "inputs.domain.label") }
-                                                    </InputLabel>
-                                                    <Dropdown
-                                                        className="mt-2"
-                                                        fluid
-                                                        selection
-                                                        labeled
-                                                        options={ readWriteUserStoresList }
-                                                        loading={ false }
-                                                        data-testid={
-                                                            `${componentId}-userstore-dropdown`
-                                                        }
-                                                        data-componentid={
-                                                            `${componentId}-userstore-dropdown`
-                                                        }
-                                                        name="userstore"
-                                                        disabled={ true }
-                                                        readOnly={ true }
-                                                        value={ selectedUserStore }
-                                                        onChange={
-                                                            (e: React.ChangeEvent<HTMLInputElement>,
-                                                                data: DropdownProps) => {
-                                                                setSelectedUserStore(data.value.toString());
-                                                            }
-                                                        }
-                                                        tabIndex={ 1 }
-                                                        maxLength={ 60 }
-                                                    />
-                                                </Form.Field> 
                                             </Grid.Column>
                                         </Grid.Row>
                                     </>

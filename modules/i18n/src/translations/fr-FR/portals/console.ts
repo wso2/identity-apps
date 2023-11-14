@@ -9442,8 +9442,7 @@ export const console: ConsoleNS = {
                                 },
                                 primaryButton: "Inviter",
                                 rolesLabel: "Les rôles",
-                                rolesPlaceholder: "Entrez les rôles",
-                                warningMessage: "La fonctionnalité d'invitation manuelle de plusieurs utilisateurs ne peut être utilisée que lorsque l'adresse e-mail est configurée comme nom d'utilisateur."
+                                rolesPlaceholder: "Entrez les rôles"
                             },
                             fileBased: {
                                 hint: "Invitez plusieurs utilisateurs en masse à l’aide d’un fichier CSV."
@@ -9451,7 +9450,8 @@ export const console: ConsoleNS = {
                             responseOperationType: {
                                 userCreation: "Création d'utilisateur",
                                 roleAssignment: "Affectation de rôle/groupe"
-                            }
+                            },
+                            userstoreMessage: "Les utilisateurs créés seront ajoutés au magasin d'utilisateurs <1>{{ userstore }></1>."
                         },
                         buttons: {
                             import: "Importer"

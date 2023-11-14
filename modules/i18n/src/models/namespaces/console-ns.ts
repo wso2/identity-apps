@@ -5918,7 +5918,6 @@ export interface ConsoleNS {
                                 primaryButton: string;
                                 rolesLabel: string;
                                 rolesPlaceholder: string;
-                                warningMessage: string;
                             };
                             fileBased: {
                                 hint: string;
@@ -5926,7 +5925,8 @@ export interface ConsoleNS {
                             responseOperationType: {
                                 userCreation: string;
                                 roleAssignment: string;
-                            }
+                            };
+                            userstoreMessage: string;
                         };
                         buttons: {
                             import: string;
