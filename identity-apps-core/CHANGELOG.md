@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.49
+
+### Patch Changes
+
+- [#4593](https://github.com/wso2/identity-apps/pull/4593) [`772196ccd8`](https://github.com/wso2/identity-apps/commit/772196ccd8815d73b8688dde15706732112fdb1a) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Fix content of roles tabs in users and groups to convey that this tab is read only
+
 ## 2.0.48
 
 ### Patch Changes
