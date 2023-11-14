@@ -415,6 +415,7 @@ export const applicationConfig: ApplicationConfig = {
                     applicationRoles?.enabled) 
                 && (
                     application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                    || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
                     || application?.templateId === MobileAppTemplate?.id
                     || application?.templateId === OIDCWebAppTemplate?.id
                     || application?.templateId === SinglePageAppTemplate?.id
