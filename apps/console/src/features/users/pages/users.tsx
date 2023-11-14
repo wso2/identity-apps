@@ -333,6 +333,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         });
     };
 
+    //TODO: Use the useUsersList SWR hook to fetch the user data.
     const getList = (limit: number, offset: number, filter: string, attribute: string, domain: string) => {
         setUserListRequestLoading(true);
 
@@ -906,7 +907,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     history.push(UsersConstants.getPaths().get("CUSTOMER_USER_EDIT_PATH")
                         .replace(":id", id));
                 } }
-                defaultUserTypeSelection={ selectedAddUserType }
                 userTypeSelection={ userType }
                 listOffset={ listOffset }
                 listItemLimit={ listItemLimit }
