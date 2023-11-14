@@ -54,7 +54,6 @@ import {
     required
 } from "../../../../utils/saml-idp-utils";
 
-
 /**
  * The i18n namespace entry key for this component's contents.
  * Optionally you can pass this key to {@link useTranslation}
