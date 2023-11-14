@@ -1587,6 +1587,7 @@ export const myAccount: MyAccountNS = {
     "sections": {
         "accountRecovery": {
             "description": "Verwalten Sie Wiederherstellungsinformationen, mit denen Sie Ihr Passwort wiederherstellen können",
+            "emptyPlaceholderText": "Keine Optionen zur Wiederherstellung von Kontos zur Verfügung stehen",
             "heading": "Konto-Wiederherstellung"
         },
         "changePassword": {

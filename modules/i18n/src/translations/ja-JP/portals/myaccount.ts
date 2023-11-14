@@ -1586,6 +1586,7 @@ export const myAccount: MyAccountNS = {
     "sections": {
         "accountRecovery": {
             "description": "パスワードの回復に役立つリカバリ情報を管理する",
+            "emptyPlaceholderText": "アカウントの回復オプションはありません",
             "heading": "アカウント復旧"
         },
         "changePassword": {
