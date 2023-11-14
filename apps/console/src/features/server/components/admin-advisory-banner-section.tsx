@@ -25,7 +25,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { SettingsSection } from "./settings-section";
 import { AppConstants, history } from "../../core";
-import { useAdminAdvisoryBannerConfigs } from "../api";
+import { useAdminAdvisoryBannerConfigs } from "../api/server";
 
 /**
  * Props for the Admin Advisory page.
@@ -97,9 +97,4 @@ AdminAdvisoryBannerSection.defaultProps = {
     "data-componentid": "admin-advisory"
 };
 
-/**
- * A default export was added to support React.lazy.
- * TODO: Change this to a named export once react starts supporting named exports for code splitting.
- * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
- */
 export default AdminAdvisoryBannerSection;

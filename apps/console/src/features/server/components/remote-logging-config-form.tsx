@@ -32,8 +32,8 @@ import { Form } from "semantic-ui-react";
 import { 
     restoreRemoteLogPublishingConfigurationByLogType,
     updateRemoteLogPublishingConfigurationByLogType
-} from "../api";
-import { LogType, RemoteLogPublishingConfigurationInterface } from "../models";
+} from "../api/server";
+import { LogType, RemoteLogPublishingConfigurationInterface } from "../models/server";
 
 interface RemoteLoggingConfigFormProps extends IdentifiableComponentInterface {
     logType: LogType;

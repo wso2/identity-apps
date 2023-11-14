@@ -28,8 +28,8 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
-import { updateAdminAdvisoryBannerConfiguration, useAdminAdvisoryBannerConfigs } from "../api";
-import { AdminAdvisoryBannerConfigurationInterface } from "../models";
+import { updateAdminAdvisoryBannerConfiguration, useAdminAdvisoryBannerConfigs } from "../api/server";
+import { AdminAdvisoryBannerConfigurationInterface } from "../models/server";
 
 /**
  * Props for the Admin Session Advisory Banner page.
@@ -101,7 +101,7 @@ export const AdminSessionAdvisoryBannerEditPage: FC<AdmindvisoryBannerEditPageIn
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
+        history.push(AppConstants.getPaths().get("SERVER"));
     };
 
     const handleToggleChange = (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
@@ -191,7 +191,7 @@ export const AdminSessionAdvisoryBannerEditPage: FC<AdmindvisoryBannerEditPageIn
             backButton={ {
                 "data-testid": `${ componentId }-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+                text: t("console:manage.pages.rolesEdit.backButton", { type: "Server" })
             } }
             bottomMargin={ false }
             contentTopMargin={ true }
@@ -263,9 +263,4 @@ AdminSessionAdvisoryBannerEditPage.defaultProps = {
     "data-componentid": "admin-advisory-edit"
 };
 
-/**
- * A default export was added to support React.lazy.
- * TODO: Change this to a named export once react starts supporting named exports for code splitting.
- * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
- */
 export default AdminSessionAdvisoryBannerEditPage;
