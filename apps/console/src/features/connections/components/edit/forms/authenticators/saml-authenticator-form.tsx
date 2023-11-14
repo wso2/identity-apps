@@ -882,7 +882,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                 readOnly={ readOnly }
                             />
                         </SectionRow>
-                    ) }  
+                    ) }
 
                     <SectionRow>
                         <Typography variant="body1">Authentication context class</Typography>
