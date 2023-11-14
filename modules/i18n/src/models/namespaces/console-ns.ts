@@ -5908,6 +5908,9 @@ export interface ConsoleNS {
                             };
                             disabledSecondaryStoreInfo: string;
                             manualCreation: {
+                                alerts: {
+                                    creationSuccess: NotificationItem;
+                                };
                                 hint: string;
                                 emailsLabel: string;
                                 emailsPlaceholder: string;

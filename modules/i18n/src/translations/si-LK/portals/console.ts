@@ -9201,7 +9201,7 @@ export const console: ConsoleNS = {
                             alerts: {
                                 importSuccess: {
                                     description: "පරිශීලකයන් සාර්ථකව ආනයනය කරන ලදී.",
-                                    message: "පරිශීලක නිර්මාණය සාර්ථකයි"
+                                    message: "ආනයනය සාර්ථකයි"
                                 },
                                 importFailed: {
                                     description: "<1>{{failedUserCreationCount}} පරිශීලක නිර්මාණය</1> කිරීමේ මෙහෙයුම් සහ " +
@@ -9217,6 +9217,12 @@ export const console: ConsoleNS = {
                             disabledSecondaryStoreInfo: "බාහිර පරිශීලක වෙළඳසැල් වෙත පරිශීලක තොග ආනයනය මේ මොහොතේ ලබා " +
                                 "දිය නොහැක.",
                             manualCreation: {
+                                alerts: {
+                                    creationSuccess: {
+                                        description: "පරිශීලක ගිණුම් සාර්ථකව නිර්මාණය කරන ලදි.",
+                                        message: "පරිශීලක නිර්මාණය සාර්ථකයි"
+                                    }
+                                },
                                 hint: "ඔබට ආරාධනා කිරීමට අවශ්ය පරිශීලකයාගේ විද්යුත් තැපැල් ලිපිනය එක් කරන්න සහ Enter ඔබන්න.",
                                 emailsLabel: "ඊමේල්",
                                 emailsPlaceholder: "ඊමේල් ලිපින ඇතුලත් කරන්න",

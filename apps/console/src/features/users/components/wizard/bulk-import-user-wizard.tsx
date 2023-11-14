@@ -17,6 +17,7 @@
  */
 
 import {
+    AlertTitle,
     Autocomplete,
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
@@ -1770,6 +1771,23 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         hasError={ hasError }
                                         responseList={ manualInviteResponse }
                                         bulkResponseSummary={ manualInviteResponseSummary }
+                                        successAlert={ (
+                                            <Alert
+                                                severity="success"
+                                                data-componentid={ `${componentId}-success-alert` }
+                                            >
+                                                <AlertTitle data-componentid={ `${componentId}-success-alert-title` }>
+                                                    {
+                                                        t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                                        "wizardSummary.manualCreation.alerts.creationSuccess.message")
+                                                    }
+                                                </AlertTitle>
+                                                {
+                                                    t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                                    "wizardSummary.manualCreation.alerts.creationSuccess.description")
+                                                }
+                                            </Alert>
+                                        ) }
                                     />
                                 </>
                             )

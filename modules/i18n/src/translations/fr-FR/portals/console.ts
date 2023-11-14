@@ -9415,7 +9415,7 @@ export const console: ConsoleNS = {
                             alerts: {
                                 importSuccess: {
                                     description: "Les utilisateurs ont été importés avec succès.",
-                                    message: "Création d'utilisateurs réussie"
+                                    message: "Importation réussie"
                                 },
                                 importFailed: {
                                     description: "Problèmes rencontrés dans <1>{{failedUserCreationCount}} " +
@@ -9433,6 +9433,12 @@ export const console: ConsoleNS = {
                             disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
                                 "externes n’est pas disponible pour le moment.",
                             manualCreation: {
+                                alerts: {
+                                    creationSuccess: {
+                                        description: "Les comptes d'utilisateurs ont été créés avec succès.",
+                                        message: "Création d'utilisateurs réussie"
+                                    }
+                                },
                                 hint: "Ajoutez l'adresse e-mail de l'utilisateur que vous souhaitez inviter et appuyez sur Entrée.",
                                 emailsLabel: "E-mails",
                                 emailsPlaceholder: "Entrez les adresses e-mail",

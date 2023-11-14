@@ -11152,7 +11152,7 @@ export const console: ConsoleNS = {
                             alerts: {
                                 importSuccess: {
                                     description: "The user accounts were imported successfully.",
-                                    message: "User Creation Successful"
+                                    message: "Import Successful"
                                 },
                                 importFailed: {
                                     description: "Issues encountered in <1>{{failedUserCreationCount}} user " +
@@ -11169,6 +11169,12 @@ export const console: ConsoleNS = {
                             disabledSecondaryStoreInfo: "Bulk import to external user stores is not available " +
                                 "at the moment.",
                             manualCreation: {
+                                alerts: {
+                                    creationSuccess: {
+                                        description: "The user accounts were created successfully.",
+                                        message: "User Creation Successful"
+                                    }
+                                },
                                 hint: "Add the email address of the user you wish to invite and press enter.",
                                 emailsLabel: "Emails",
                                 emailsPlaceholder: "Enter email addresses",

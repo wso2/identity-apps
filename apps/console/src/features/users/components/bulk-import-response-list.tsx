@@ -50,6 +50,10 @@ interface BulkImportResponseListProps {
     ["data-componentid"]?: string;
     bulkResponseSummary?: BulkResponseSummary
     hasError: boolean;
+    /**
+     * Alert component to show the success message.
+     */
+    successAlert?: ReactElement;
 }
 
 const ALL_STATUS: string = "ALL";
@@ -66,7 +70,15 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     props: BulkImportResponseListProps
 ): ReactElement => {
 
-    const { responseList, isLoading, ["data-componentid"]: componentId, bulkResponseSummary, hasError } = props;
+    const {
+        responseList,
+        isLoading,
+        bulkResponseSummary,
+        hasError,
+        successAlert,
+        ["data-componentid"]: componentId
+    } = props;
+
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ selectedStatus, setSelectedStatus ] = useState<FilterStatus>(ALL_STATUS);
@@ -384,19 +396,22 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                         isLoading || hasError
                             ? null 
                             : bulkResponseSummary.failedUserCreation === 0 
-                                ? (<Alert severity="success" data-componentid={ `${componentId}-success-alert` }>
-                                    <AlertTitle data-componentid={ `${componentId}-success-alert-title` }>
-                                        {
-                                            t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                ? (
+                                    successAlert ?? (
+                                        <Alert severity="success" data-componentid={ `${componentId}-success-alert` }>
+                                            <AlertTitle data-componentid={ `${componentId}-success-alert-title` }>
+                                                {
+                                                    t("console:manage.features.user.modals.bulkImportUserWizard." +
                                             "wizardSummary.alerts.importSuccess.message")
-                                        }
-                                    </AlertTitle>
-                                    {
-                                        t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                                }
+                                            </AlertTitle>
+                                            {
+                                                t("console:manage.features.user.modals.bulkImportUserWizard." +
                                             "wizardSummary.alerts.importSuccess.description")
-                                    }
-                                </Alert>)
-                                : (
+                                            }
+                                        </Alert>
+                                    )
+                                ) : (
                                     <Alert severity="error" data-componentid={ `${componentId}-error-alert` }>
                                         <AlertTitle data-componentid={ `${componentId}-error-alert-title` }>
                                             {
