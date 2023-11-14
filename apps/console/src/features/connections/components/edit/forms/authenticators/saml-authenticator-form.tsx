@@ -150,7 +150,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
     const [ includeNameIDPolicy, setIncludeNameIDPolicy ] = useState<boolean>(false);
     const [ isEnableAssetionEncryption, setIsEnableAssetionEncryption ] = useState<boolean>(false);
     const [ isArtifactBindingEnabled, setIsArtifactBindingEnabled ] = useState<boolean>(false);
-
     const [ selectedAuthnContextClasses, setSelectedAuthnContextClasses ] = useState<DropdownChild[]>([]);
 
     const getIncludeAuthenticationContextOptions = (): DropdownChild[] => {
