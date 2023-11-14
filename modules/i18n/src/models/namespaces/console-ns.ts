@@ -4407,7 +4407,11 @@ export interface ConsoleNS {
                             heading: string;
                             subHeading: string;
                         };
+                        heading: string;
                         subHeading: string;
+                        placeHolders: {
+                            emptyListPlaceholder: Placeholder;
+                        };
                     };
                 };
                 list: {
@@ -6104,6 +6108,9 @@ export interface ConsoleNS {
                                     0: string;
                                     1: string;
                                 };
+                            };
+                            placeholders: {
+                                emptyPlaceholder: Placeholder;
                             };
                             heading: string;
                             popups: {

@@ -7315,13 +7315,19 @@ export const console: ConsoleNS = {
                         }
                     },
                     roles: {
+                        placeHolders: {
+                            emptyListPlaceholder: {
+                                subtitles: "Il n'y a aucun rôle attribué à ce groupe pour le moment.",
+                                title: "Aucun rôle attribué"
+                            }
+                        },
+                        heading: "Rôles attribués",
                         addRolesModal: {
                             heading: "Mettre à jour les rôles de groupe",
                             subHeading: "Ajoutez de nouveaux rôles ou supprimez les rôles existants attribués " +
                                 "au groupe."
                         },
-                        subHeading: "Ajoutez ou supprimez les rôles auxquels ce groupe est affecté et " +
-                            "notez que cela affectera l'exécution de certaines tâches."
+                        subHeading: "Afficher les rôles attribués pour le groupe."
                     }
                 },
                 list: {
@@ -9829,6 +9835,12 @@ export const console: ConsoleNS = {
                                 header: "Êtes-vous sûr?",
                                 message: "Cette action modifiera le rôle de cet utilisateur."
                             },
+                            placeholders: {
+                                emptyPlaceholder: {
+                                    title: "Aucun rôle attribué",
+                                    subtitles: "Il n'y a aucun rôle attribué à l'utilisateur pour le moment."
+                                }
+                            },
                             heading: "Rôles assignés",
                             popups: {
                                 viewPermissions: "Voir les permissions"
@@ -9848,8 +9860,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             searchPlaceholder: "Rechercher des rôles",
-                            subHeading: "Ajouter ou supprimer le rôle auquel l'utilisateur est affecté. Notez que " +
-                                "cela affectera également l'exécution de certaines tâches."
+                            subHeading: "Afficher les rôles attribués pour l'utilisateur."
                         },
                         notifications: {
                             addUserRoles: {

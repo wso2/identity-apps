@@ -8937,12 +8937,18 @@ export const console: ConsoleNS = {
                         }
                     },
                     roles: {
+                        placeHolders: {
+                            emptyListPlaceholder: {
+                                subtitles: "There are no roles assigned to this group at the moment.",
+                                title: "No Roles Assigned"
+                            }
+                        },
+                        heading: "Assigned Roles",
                         addRolesModal: {
                             heading: "Update Group Roles",
                             subHeading: "Add new roles or remove existing roles assigned to the group."
                         },
-                        subHeading: "Add or remove the roles this group is assigned with and note that this " +
-                            "will affect performing certain tasks."
+                        subHeading: "View assigned roles for the group."
                     }
                 },
                 list: {
@@ -11541,6 +11547,12 @@ export const console: ConsoleNS = {
                                 header: "Are you sure?",
                                 message: "This action will modify the role of this user."
                             },
+                            placeholders: {
+                                emptyPlaceholder: {
+                                    title: "No roles assigned",
+                                    subtitles: "There are no roles assigned to the user at the moment."
+                                }
+                            },
                             heading: "Assigned Roles",
                             popups: {
                                 viewPermissions: "View Permissions"
@@ -11560,8 +11572,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             searchPlaceholder: "Search Roles",
-                            subHeading: "Add or remove the roles this user is assigned with and note that this " +
-                                "will affect performing certain tasks."
+                            subHeading: "View assigned roles for the user."
                         },
                         notifications: {
                             addUserRoles: {
