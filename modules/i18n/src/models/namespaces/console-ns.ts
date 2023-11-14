@@ -4408,7 +4408,11 @@ export interface ConsoleNS {
                             heading: string;
                             subHeading: string;
                         };
+                        heading: string;
                         subHeading: string;
+                        placeHolders: {
+                            emptyListPlaceholder: Placeholder;
+                        };
                     };
                 };
                 list: {
@@ -5615,7 +5619,11 @@ export interface ConsoleNS {
                             message: string;
                         };
                         error: {
-                            genericError: {
+                            updateError: {
+                                description: string;
+                                message: string;
+                            };
+                            fetchError: {
                                 description: string;
                                 message: string;
                             };
@@ -5873,6 +5881,7 @@ export interface ConsoleNS {
                         title: string;
                         subTitle: string;
                         wizardSummary: {
+                            inviteEmailInfo: string;
                             successCount: string;
                             failedCount: string;
                             totalUserCreationCount: string;
@@ -5911,6 +5920,9 @@ export interface ConsoleNS {
                                 remote: string;
                             };
                             manualCreation: {
+                                alerts: {
+                                    creationSuccess: NotificationItem;
+                                };
                                 hint: string;
                                 emailsLabel: string;
                                 emailsPlaceholder: string;
@@ -6115,6 +6127,9 @@ export interface ConsoleNS {
                                     0: string;
                                     1: string;
                                 };
+                            };
+                            placeholders: {
+                                emptyPlaceholder: Placeholder;
                             };
                             heading: string;
                             popups: {

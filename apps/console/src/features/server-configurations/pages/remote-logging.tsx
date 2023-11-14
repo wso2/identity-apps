@@ -44,18 +44,18 @@ export default function RemoteLogging(): ReactElement {
 
 
     useEffect(() => {
-        if (!remoteLogPublishingConfigRetrievalError) {
-            return;
+        if (remoteLogPublishingConfigRetrievalError && !isRemoteLogPublishingConfigsLoading) {
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("console:manage.features.serverConfigs.remoteLogPublishing." + 
+                    "notification.error.fetchError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.serverConfigs.remoteLogPublishing." + 
+                    "notification.error.fetchError.message")
+                })
+            );
         }
-
-        dispatch(
-            addAlert<AlertInterface>({
-                description: t("extensions:develop.branding.notifications.fetch.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("extensions:develop.branding.notifications.fetch.genericError.message")
-            })
-        );
-    }, [ remoteLogPublishingConfigRetrievalError ]);
+    }, [ ]);
 
     const panes: any = [
         {

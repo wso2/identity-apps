@@ -7315,13 +7315,19 @@ export const console: ConsoleNS = {
                         }
                     },
                     roles: {
+                        placeHolders: {
+                            emptyListPlaceholder: {
+                                subtitles: "Il n'y a aucun rôle attribué à ce groupe pour le moment.",
+                                title: "Aucun rôle attribué"
+                            }
+                        },
+                        heading: "Rôles attribués",
                         addRolesModal: {
                             heading: "Mettre à jour les rôles de groupe",
                             subHeading: "Ajoutez de nouveaux rôles ou supprimez les rôles existants attribués " +
                                 "au groupe."
                         },
-                        subHeading: "Ajoutez ou supprimez les rôles auxquels ce groupe est affecté et " +
-                            "notez que cela affectera l'exécution de certaines tâches."
+                        subHeading: "Afficher les rôles attribués pour le groupe."
                     }
                 },
                 list: {
@@ -7429,9 +7435,8 @@ export const console: ConsoleNS = {
                 addUserWizard: {
                     heading: "Inviter un utilisateur parent",
                     description: "Invitez un utilisateur de l’organisation parente.",
-                    hint: "Les utilisateurs invités sont gérés par l'organisation <1>{{currentOrganization}></1>.",
-                    usernameHint: "Le nom d'utilisateur doit appartenir à un utilisateur " +
-                        "de l'organisation <1>{{currentOrganization}></1>."
+                    hint: "Les utilisateurs invités sont gérés par l'organisation parente.",
+                    usernameHint: "Le nom d'utilisateur doit appartenir à un utilisateur de l'organisation parente."
                 },
                 tab: {
                     usersTab: "Utilisateurs",
@@ -9023,9 +9028,13 @@ export const console: ConsoleNS = {
                             message: "Mis à jour avec succés."
                         },
                         error: {
-                            genericError: {
+                            updateError: {
                                 description: "Une erreur s'est produite lors de la mise à jour de la configuration de la publication des journaux à distance.",
                                 message: "Quelque chose s'est mal passé"
+                            },
+                            fetchError: {
+                                description: "Une erreur s'est produite lors de l'obtention de la configuration de la publication des journaux à distance.",
+                                message: "Impossible d'obtenir la configuration de la publication des journaux à distance."
                             }
                         }
                     }
@@ -9381,9 +9390,10 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Inviter plusieurs utilisateurs",
-                        subTitle: "Invitez plusieurs utilisateurs dans l’organisation.",
+                        title: "Ajouter plusieurs utilisateurs",
+                        subTitle: "Ajoutez plusieurs utilisateurs manuellement ou en utilisant un fichier CSV.",
                         wizardSummary: {
+                            inviteEmailInfo: "Un e-mail avec un lien de confirmation sera envoyé à l'adresse e-mail fournie à l'utilisateur afin de définir son propre mot de passe.",
                             successCount: "Nombre de réussites",
                             failedCount: "Nombre d'échecs",
                             totalUserCreationCount: "Nombre total de créations d'utilisateurs",
@@ -9437,7 +9447,13 @@ export const console: ConsoleNS = {
                                     "par défaut pour le moment."
                             },
                             manualCreation: {
-                                hint: "Ajoutez des e-mails et envoyez des invitations à plusieurs utilisateurs.",
+                                alerts: {
+                                    creationSuccess: {
+                                        description: "Les comptes d'utilisateurs ont été créés avec succès.",
+                                        message: "Création d'utilisateurs réussie"
+                                    }
+                                },
+                                hint: "Ajoutez l'adresse e-mail de l'utilisateur que vous souhaitez inviter et appuyez sur Entrée.",
                                 emailsLabel: "E-mails",
                                 emailsPlaceholder: "Entrez les adresses e-mail",
                                 disabledHint: "TL'option manuelle est désactivée en raison de l'utilisation de noms d'utilisateur alphanumériques dans votre organisation.",
@@ -9445,7 +9461,7 @@ export const console: ConsoleNS = {
                                     buttonText: "Télécharger le fichier CSV",
                                     description: "Faites glisser et déposez un fichier CSV ici."
                                 },
-                                primaryButton: "Inviter",
+                                primaryButton: "Ajouter",
                                 rolesLabel: "Les rôles",
                                 rolesPlaceholder: "Entrez les rôles",
                                 warningMessage: "La fonctionnalité d'invitation manuelle de plusieurs utilisateurs ne peut être utilisée que lorsque l'adresse e-mail est configurée comme nom d'utilisateur."
@@ -9841,6 +9857,12 @@ export const console: ConsoleNS = {
                                 header: "Êtes-vous sûr?",
                                 message: "Cette action modifiera le rôle de cet utilisateur."
                             },
+                            placeholders: {
+                                emptyPlaceholder: {
+                                    title: "Aucun rôle attribué",
+                                    subtitles: "Il n'y a aucun rôle attribué à l'utilisateur pour le moment."
+                                }
+                            },
                             heading: "Rôles assignés",
                             popups: {
                                 viewPermissions: "Voir les permissions"
@@ -9860,8 +9882,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             searchPlaceholder: "Rechercher des rôles",
-                            subHeading: "Ajouter ou supprimer le rôle auquel l'utilisateur est affecté. Notez que " +
-                                "cela affectera également l'exécution de certaines tâches."
+                            subHeading: "Afficher les rôles attribués pour l'utilisateur."
                         },
                         notifications: {
                             addUserRoles: {

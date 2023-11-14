@@ -130,7 +130,8 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.DEVICE_GRANT,
             ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
             ApplicationManagementConstants.SAML2_BEARER,
-            ApplicationManagementConstants.JWT_BEARER
+            ApplicationManagementConstants.JWT_BEARER,
+            ApplicationManagementConstants.IWA_NTLM
         ],
         [ "m2m-application" ]: [
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
@@ -356,16 +357,12 @@ export const applicationConfig: ApplicationConfig = {
         },
         getStrongAuthenticationFlowTabIndex: (
             clientId: string,
-            tenantDomain: string,
-            templateId: string,
-            customApplicationTemplateId: string
+            tenantDomain: string
         ): number => {
             if (clientId === getTryItClientId(tenantDomain)) {
-                return 2; // For Asgardeo Try It App
-            } else if (templateId === customApplicationTemplateId) {
-                return 3; // For other apps built on Custom Application Templates
+                return ApplicationManagementConstants.TRY_IT_SIGNIN_TAB; // For Asgardeo Try It App
             } else {
-                return 4; // Anything else
+                return ApplicationManagementConstants.APPLICATION_SIGNIN_TAB; // For other applications
             }
         },
         getTabExtensions: (
@@ -418,6 +415,7 @@ export const applicationConfig: ApplicationConfig = {
                     applicationRoles?.enabled) 
                 && (
                     application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                    || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
                     || application?.templateId === MobileAppTemplate?.id
                     || application?.templateId === OIDCWebAppTemplate?.id
                     || application?.templateId === SinglePageAppTemplate?.id

@@ -1,5 +1,17 @@
 # @wso2is/i18n
 
+## 2.0.36
+
+### Patch Changes
+
+- [#4581](https://github.com/wso2/identity-apps/pull/4581) [`e0c4bf346f`](https://github.com/wso2/identity-apps/commit/e0c4bf346fd2c6ad6a63ba2196098d6ee8696a12) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve Add multiple users UX
+
+## 2.0.35
+
+### Patch Changes
+
+- [#4576](https://github.com/wso2/identity-apps/pull/4576) [`94edb8d036`](https://github.com/wso2/identity-apps/commit/94edb8d0360865c0d556487ddb4208c8a3206452) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Change invite parent user messages
+
 ## 2.0.34
 
 ### Patch Changes
