@@ -136,20 +136,18 @@ const useRoutes = (): useRoutesInterface => {
                     }
                 }
 
-                if (isCurrentOrgRootAndSuperTenant && !window["AppUtils"].getConfig().organizationName) {
-                    if (loggedUserName === isSuperAdmin) {
-                        return commonHiddenRoutes;
-                    } else {
-                        return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
-                    }
-                }
-
                 if (window["AppUtils"].getConfig().organizationName) {
                     return [
                         ...AppUtils.getHiddenRoutes()
                     ];
                 } else {
-                    return [ ...commonHiddenRoutes ];
+                    if (isCurrentOrgRootAndSuperTenant && loggedUserName === isSuperAdmin) {
+                        return commonHiddenRoutes;
+                    } else if (!isCurrentOrgRootAndSuperTenant) {
+                        return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
+                    }else {
+                        return [ ...commonHiddenRoutes ];
+                    }
                 }
             }
 
