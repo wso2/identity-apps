@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.6.4
+
+### Patch Changes
+
+- [#4578](https://github.com/wso2/identity-apps/pull/4578) [`068d1590e5`](https://github.com/wso2/identity-apps/commit/068d1590e540ff4bd27c3e1d01ad6526690f89b0) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Prevent sending oidc protocol update request when updating user attributes of non oauth applications.
+
 ## 2.6.3
 
 ### Patch Changes
