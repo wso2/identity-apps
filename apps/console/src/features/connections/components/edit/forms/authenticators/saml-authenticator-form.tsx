@@ -209,7 +209,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         { key: 19, text: "Telephony (Personalized)", value: "Telephony (Personalized)" },
         { key: 20, text: "Telephony (Authenticated)", value: "Telephony (Authenticated)" },
         { key: 21, text: "Secure Remote Password", value: "Secure Remote Password" },
-        { key: 22, text: "SSL/TLS Certificate-Based Client Authentication", 
+        { key: 22, text: "SSL/TLS Certificate-Based Client Authentication",
             value: "SSL/TLS Certificate-Based Client Authentication" },
         { key: 23, text: "Time Sync Token", value: "Time Sync Token" },
         { key: 24, text: "Unspecified", value: "Unspecified" },
