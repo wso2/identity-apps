@@ -109,7 +109,7 @@ export interface SamlPropertiesInterface {
     ISArtifactResolveReqSigned?: string, 
     ISArtifactResponseSigned?: string,
     
-    isAssertionSigned?: boolean,   
+    isAssertionSigned?: boolean,
     attributeConsumingServiceIndex?: string;
     AuthnContextComparisonLevel?: string;
     IsAssertionEncrypted?: boolean;
