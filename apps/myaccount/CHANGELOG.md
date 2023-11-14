@@ -1,5 +1,18 @@
 # @wso2is/myaccount
 
+## 2.2.17
+
+### Patch Changes
+
+- [#4549](https://github.com/wso2/identity-apps/pull/4549) [`67b884e836`](https://github.com/wso2/identity-apps/commit/67b884e836e2a55d6147c43b0b4df72bc020f7ad) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix invalid error message in remote logging page
+
+* [#4593](https://github.com/wso2/identity-apps/pull/4593) [`772196ccd8`](https://github.com/wso2/identity-apps/commit/772196ccd8815d73b8688dde15706732112fdb1a) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Fix content of roles tabs in users and groups to convey that this tab is read only
+
+- [#4598](https://github.com/wso2/identity-apps/pull/4598) [`60e9da3933`](https://github.com/wso2/identity-apps/commit/60e9da39331b754ed296130e4ffa9f06dc8f9743) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) add missing localization text in the account recovery panel in my account
+
+- Updated dependencies [[`67b884e836`](https://github.com/wso2/identity-apps/commit/67b884e836e2a55d6147c43b0b4df72bc020f7ad), [`772196ccd8`](https://github.com/wso2/identity-apps/commit/772196ccd8815d73b8688dde15706732112fdb1a), [`60e9da3933`](https://github.com/wso2/identity-apps/commit/60e9da39331b754ed296130e4ffa9f06dc8f9743)]:
+  - @wso2is/i18n@2.0.37
+
 ## 2.2.16
 
 ### Patch Changes
