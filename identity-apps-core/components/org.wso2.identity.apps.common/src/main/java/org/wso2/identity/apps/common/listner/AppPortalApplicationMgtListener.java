@@ -21,9 +21,9 @@ package org.wso2.identity.apps.common.listner;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementClientException;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
+import org.wso2.carbon.identity.application.common.util.IdentityApplicationManagementUtil;
 import org.wso2.carbon.identity.application.mgt.listener.AbstractApplicationMgtListener;
 import org.wso2.carbon.identity.oauth.Error;
-import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.identity.apps.common.internal.AppsCommonDataHolder;
 
 import java.util.Set;
@@ -62,42 +62,41 @@ public class AppPortalApplicationMgtListener extends AbstractApplicationMgtListe
 
     @Override
     public boolean doPreUpdateApplication(ServiceProvider serviceProvider, String tenantDomain, String userName)
-            throws IdentityApplicationManagementException {
+        throws IdentityApplicationManagementException {
 
-        if (!isEnable() || !MultitenantConstants.SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
+        if (!isEnable() || IdentityApplicationManagementUtil.getAllowUpdateSystemApplicationThreadLocal()) {
             return true;
         }
 
         ServiceProvider existingApplication = getApplicationByResourceId(serviceProvider.getApplicationResourceId(),
-                tenantDomain);
+            tenantDomain);
 
         if (existingApplication == null || systemApplications.stream()
-                .noneMatch(existingApplication.getApplicationName()::equalsIgnoreCase)) {
+            .noneMatch(existingApplication.getApplicationName()::equalsIgnoreCase)) {
             return true;
         }
 
         throw new IdentityApplicationManagementClientException(Error.INVALID_UPDATE.getErrorCode(),
-                "Update of system applications are not allowed. Application name: " + existingApplication
-                        .getApplicationName());
+            "Update of system applications are not allowed. Application name: " + existingApplication
+                .getApplicationName());
     }
 
     @Override
     public boolean doPreDeleteApplication(String applicationName, String tenantDomain, String userName)
-            throws IdentityApplicationManagementException {
+        throws IdentityApplicationManagementException {
 
-        if (!isEnable() || !MultitenantConstants.SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain) || systemApplications
-                .stream().noneMatch(applicationName::equalsIgnoreCase)) {
+        if (!isEnable() || systemApplications.stream().noneMatch(applicationName::equalsIgnoreCase)) {
             return true;
         }
 
         throw new IdentityApplicationManagementClientException(Error.INVALID_DELETE.getErrorCode(),
-                "Deletion of system applications are not allowed. Application name: " + applicationName);
+            "Deletion of system applications are not allowed. Application name: " + applicationName);
     }
 
     private ServiceProvider getApplicationByResourceId(String resourceId, String tenantDomain)
-            throws IdentityApplicationManagementException {
+        throws IdentityApplicationManagementException {
 
         return AppsCommonDataHolder.getInstance().getApplicationManagementService()
-                .getApplicationByResourceId(resourceId, tenantDomain);
+            .getApplicationByResourceId(resourceId, tenantDomain);
     }
 }
