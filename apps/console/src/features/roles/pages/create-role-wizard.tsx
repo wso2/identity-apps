@@ -29,6 +29,7 @@ import { Dispatch } from "redux";
 import { AppConstants } from "../../core/constants";
 import { history } from "../../core/helpers";
 import { store } from "../../core/store";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { createRole } from "../api/roles";
 import { RoleBasics } from "../components/wizard-updated/role-basics";
 import { RolePermissionsList } from "../components/wizard-updated/role-permissions/role-permissions";
@@ -53,12 +54,13 @@ type CreateRoleProps = IdentifiableComponentInterface;
  *
  * @param props - props related to the create role stepper
  */
-const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: CreateRoleProps): ReactElement => {
+const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRoleProps): ReactElement => {
 
     const { [ "data-componentid" ]: componentId } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { isRootOrganization } = useGetOrganizationType();
 
     const [ stepperState, setStepperState ] = useState<CreateRoleStateInterface>(undefined);
     const [ isBasicDetailsNextButtonDisabled, setIsBasicDetailsNextButtonDisabled ] = useState<boolean>(true);
@@ -100,8 +102,7 @@ const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: CreateRoleP
                     ? {
                         type: roleAudience,
                         value: organizationId
-                    }    
-                    : {
+                    } : {
                         type: roleAudience,
                         value: stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ].assignedApplicationId
                     },
@@ -109,6 +110,12 @@ const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: CreateRoleP
                 permissions: selectedPermissionsList,
                 schemas: []
             };
+
+            // If the organization is super or a first level organization,
+            // no need to send the audience for Organization audience.
+            if (isRootOrganization && roleAudience === RoleAudienceTypes.ORGANIZATION) {
+                delete roleData.audience;
+            }
     
             // Create Role API Call.
             createRole(roleData)
@@ -236,8 +243,8 @@ const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: CreateRoleP
 /**
  * Default props for Create role wizard component.
  */
-CreateRoleWizard.defaultProps = {
+CreateRolePage.defaultProps = {
     "data-componentid": "create-role-wizard"
 };
 
-export default CreateRoleWizard;
+export default CreateRolePage;

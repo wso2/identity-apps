@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -163,7 +163,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
-    const orgType: OrganizationType = useGetOrganizationType();
+
+    const { organizationType } = useGetOrganizationType();
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
@@ -545,18 +546,21 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             return (
                 <EmptyPlaceholder
                     className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
-                    action={ (onEmptyListPlaceholderActionClick && orgType !== OrganizationType.SUBORGANIZATION) && (
-                        <Show when={ AccessControlConstants.APPLICATION_WRITE }>
-                            <PrimaryButton
-                                onClick={ () => {
-                                    eventPublisher.publish(componentId + "-click-new-application-button");
-                                    onEmptyListPlaceholderActionClick();
-                                } }>
-                                <Icon name="add" />
-                                { t("console:develop.features.applications.placeholders.emptyList.action") }
-                            </PrimaryButton>
-                        </Show>
-                    ) }
+                    action={ (onEmptyListPlaceholderActionClick
+                        && organizationType !== OrganizationType.SUBORGANIZATION)
+                        && (
+                            <Show when={ AccessControlConstants.APPLICATION_WRITE }>
+                                <PrimaryButton
+                                    onClick={ () => {
+                                        eventPublisher.publish(componentId + "-click-new-application-button");
+                                        onEmptyListPlaceholderActionClick();
+                                    } }>
+                                    <Icon name="add" />
+                                    { t("console:develop.features.applications.placeholders.emptyList.action") }
+                                </PrimaryButton>
+                            </Show>
+                        )
+                    }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [

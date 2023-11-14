@@ -338,6 +338,11 @@
         {% if myaccount.ui.is_header_avatar_label_allowed is defined %}
         "isHeaderAvatarLabelAllowed": {{ myaccount.ui.is_header_avatar_label_allowed }},
         {% endif %}
+        {% if event.default_listener.validation.enable is defined %}
+        "isPasswordInputValidationEnabled": {{ event.default_listener.validation.enable }},
+        {% else %}
+        "isPasswordInputValidationEnabled": true,
+        {% endif %}
         "i18nConfigs": {
             {% if myaccount.i18n_configs.items() is defined %}
             {% for key, value in myaccount.i18n_configs.items() %}

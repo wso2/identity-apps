@@ -1,5 +1,38 @@
 # @wso2is/i18n
 
+## 2.0.35
+
+### Patch Changes
+
+- [#4576](https://github.com/wso2/identity-apps/pull/4576) [`94edb8d036`](https://github.com/wso2/identity-apps/commit/94edb8d0360865c0d556487ddb4208c8a3206452) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Change invite parent user messages
+
+## 2.0.34
+
+### Patch Changes
+
+- [#4518](https://github.com/wso2/identity-apps/pull/4518) [`9ae04065e4`](https://github.com/wso2/identity-apps/commit/9ae04065e429f465e5085afeb7b9a59d01a2feb1) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support for logout wreply validation in Passive STS application
+
+- Updated dependencies [[`bc18db27a5`](https://github.com/wso2/identity-apps/commit/bc18db27a59d43ccb38f965899c0546c9816d2b7)]:
+  - @wso2is/core@2.0.12
+
+## 2.0.33
+
+### Patch Changes
+
+- [#4539](https://github.com/wso2/identity-apps/pull/4539) [`c3cb0e1b78`](https://github.com/wso2/identity-apps/commit/c3cb0e1b78255c857bd96ef651509e8f4c17b8e6) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update Classic Editor Sign-In Message for Passkey Config Toggle
+
+## 2.0.32
+
+### Patch Changes
+
+- [#4528](https://github.com/wso2/identity-apps/pull/4528) [`1b74de3e5b`](https://github.com/wso2/identity-apps/commit/1b74de3e5b08c5b0b33fe224be123fe09d7bb20a) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Change wording in SMS/ Email provider.
+
+## 2.0.31
+
+### Patch Changes
+
+- [#4526](https://github.com/wso2/identity-apps/pull/4526) [`352f7882bd`](https://github.com/wso2/identity-apps/commit/352f7882bd88c0b468a13df9aad3fbea08ffc455) Thanks [@Achintha444](https://github.com/Achintha444)! - Add self signup URL text to the branding.
+
 ## 2.0.30
 
 ### Patch Changes

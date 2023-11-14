@@ -1340,6 +1340,11 @@ export const extensions: Extensions = {
                                 label: "Privacy Policy",
                                 placeholder: "https://myapp.com/{{locale}}/privacy-policy"
                             },
+                            selfSignUpURL: {
+                                hint: "Link to your organization's Self Signup webpage. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
+                                label: "Self Signup",
+                                placeholder: "https://myapp.com/self-signup"
+                            },
                             termsOfUseURL: {
                                 hint: "Link to an agreement that your customers must agree to and abide by in order to use your organization's applications or other services. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
                                 label: "Terms of Service",
@@ -1985,13 +1990,13 @@ export const extensions: Extensions = {
         },
         emailProviders: {
             configureEmailProvider: "Configure Email Provider",
-            heading: "Email Provider",
+            heading: "Custom Email Provider",
             subHeading: "Configure a custom SMTP server to send emails to your users with your own email address.",
-            description: "Configure the following settings according to your SMTP server.",
+            description: "Configure the email provider settings according to your SMTP server.",
             info: "You can customize the email content using <1>Email Templates</1>.",
             updateButton: "Update",
             sendTestMailButton: "Send Test Email",
-            goBack: "Go back to Notification Channels",
+            goBack: "Go back to Channels",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
                 content: "If you delete this configuration, the emails will be sent from the Asgardeo Email Address. " +
@@ -2085,18 +2090,18 @@ export const extensions: Extensions = {
             }
         },
         notificationChannel: {
-            heading: "Notification Channels",
-            title: "Notification Channels",
-            description: "Configure the notification channels for your organization."
+            heading: "SMS / Email Providers",
+            title: "SMS / Email Providers",
+            description: "Configure the SMS and Email providers for your organization."
         },
         smsProviders: {
-            heading: "SMS Provider",
+            heading: "Custom SMS Provider",
             subHeading: "Configure a custom SMS provider to send SMS to your users.",
-            description: "Configure the following settings according to your SMS provider.",
+            description: "Configure the SMS provider settings according to your SMS provider.",
             info: "You can customize the SMS content using <1>SMS Templates</1>.",
             updateButton: "Update",
             sendTestSMSButton: "Send Test SMS",
-            goBack: "Go back to Notification Channels",
+            goBack: "Go back to Channels",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
                 content: "If you delete this configuration, you will not receive SMS." +

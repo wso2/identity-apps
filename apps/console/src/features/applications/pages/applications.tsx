@@ -138,7 +138,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
 
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -440,7 +440,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     return (
         <PageLayout
             pageTitle="Applications"
-            action={ (orgType !== OrganizationType.SUBORGANIZATION && applicationList?.totalResults > 0) && (
+            action={ (organizationType !== OrganizationType.SUBORGANIZATION && applicationList?.totalResults > 0) && (
                 <Show when={ AccessControlConstants.APPLICATION_WRITE }>
                     <PrimaryButton
                         onClick={ (): void => {
@@ -455,7 +455,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 </Show>
             ) }
             title={ t("console:develop.pages.applications.title") }
-            description={ orgType !== OrganizationType.SUBORGANIZATION
+            description={ organizationType !== OrganizationType.SUBORGANIZATION
                 ? (
                     <p>
                         { t("console:develop.pages.applications.subTitle") }
@@ -480,7 +480,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             contentTopMargin={ (AppConstants.getTenant() === AppConstants.getSuperTenant()) }
             data-testid={ `${ testId }-page-layout` }
         >
-            { orgType !== OrganizationType.SUBORGANIZATION && renderTenantedMyAccountLink() }
+            { organizationType !== OrganizationType.SUBORGANIZATION && renderTenantedMyAccountLink() }
             <ListLayout
                 advancedSearch={ (
                     <AdvancedSearchWithBasicFilters

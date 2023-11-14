@@ -1396,6 +1396,18 @@ export const console: ConsoleNS = {
                                                 "for FIDO2 supported passkeys and further users wishing to enroll " +
                                                 "multiple passkeys, they must do so via MyAccount."
                                             },
+                                            passkey: {
+                                                description: "Enable users to log in using a passkey, FIDO security key or " +
+                                                "biometrics.",
+                                                heading: "Add Passkey Login",
+                                                info: {
+                                                    progressiveEnrollmentEnabled: "Passkey progressive enrollment is enabled. " +
+                                                    "Users can enroll passkeys on-the-fly. If they wish to enroll multiple passkeys " +
+                                                    "they should do so via MyAccount.",
+                                                    progressiveEnrollmentDisabled: "On-the-fly passkey enrollment is disabled. " + 
+                                                    "Users must enroll their passkeys through MyAccount to use passwordless sign-in."
+                                                }
+                                            },
                                             emailOTP: {
                                                 description: "Enable additional authentication layer with Email based OTP.",
                                                 heading: "Add Email OTP as a second factor"
@@ -1694,6 +1706,10 @@ export const console: ConsoleNS = {
                             isManagementApp: {
                                 hint: "Enable to allow the application to access management API of this organization.",
                                 label: "Management Application"
+                            },
+                            isFapiApp: {
+                                hint: "Enable to allow the application to be FAPI compliant.",
+                                label: "FAPI Compliant Application"
                             },
                             name: {
                                 label: "Name",
@@ -2475,6 +2491,15 @@ export const console: ConsoleNS = {
                                 hint: "Enter RP endpoint URL that handles the response.",
                                 label: "Reply URL",
                                 placeholder: "Enter Reply URL",
+                                validations: {
+                                    empty: "This is a required field.",
+                                    invalid: "Enter a valid URL"
+                                }
+                            },
+                            replyToLogout: {
+                                hint: "Enter RP endpoint URL that handles the response at logout.",
+                                label: "Reply Logout URL",
+                                placeholder: "Enter Reply Logout URL",
                                 validations: {
                                     empty: "This is a required field.",
                                     invalid: "Enter a valid URL"
@@ -9156,9 +9181,9 @@ export const console: ConsoleNS = {
                 addUserWizard: {
                     heading: "Invite Parent User",
                     description: "Invite a user from the parent organization.",
-                    hint: "Invited users are managed by the <1>{{currentOrganization}}</1> organization.",
+                    hint: "Invited users are managed by the parent organization.",
                     usernameHint: "Username should belong to a user " +
-                        "from the <1>{{currentOrganization}}</1> organization."
+                        "from the parent organization."
                 },
                 tab: {
                     usersTab: "Users",
@@ -10197,8 +10222,9 @@ export const console: ConsoleNS = {
                                 label: "Assigned application",
                                 placeholder: "Select application to assign the role",
                                 applicationSubTitle: {
-                                    application: "Support application-scoped roles. ",
-                                    organization: "Support organization-scoped roles"
+                                    application: "Support application-scoped roles.",
+                                    organization: "Support organization-scoped role. ",
+                                    changeAudience: "Change the audience"
                                 },
                                 validations: {
                                     empty: "Assigned application is required to create an application-scoped role."
@@ -11094,9 +11120,10 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Invite multiple users",
-                        subTitle: "Invite multiple users to the organization.",
+                        title: "Add multiple users",
+                        subTitle: "Add multiple users manually or using a CSV file.",
                         wizardSummary: {
+                            inviteEmailInfo: "An email with a confirmation link will be sent to the provided email address for the user to set their own password.",
                             successCount: "Successful Imports",
                             failedCount: "Failed Imports",
                             totalUserCreationCount: "Total user creation count",
@@ -11142,7 +11169,13 @@ export const console: ConsoleNS = {
                             disabledSecondaryStoreInfo: "Bulk import to external user stores is not available " +
                                 "at the moment.",
                             manualCreation: {
-                                hint: "Add emails and send invitations to multiple users.",
+                                alerts: {
+                                    creationSuccess: {
+                                        description: "The user accounts were created successfully.",
+                                        message: "User Creation Successful"
+                                    }
+                                },
+                                hint: "Add the email address of the user you wish to invite and press enter.",
                                 emailsLabel: "Emails",
                                 emailsPlaceholder: "Enter email addresses",
                                 disabledHint: "The manual option is disabled due to the usage of alphanumeric usernames in your organization.",
@@ -11150,7 +11183,7 @@ export const console: ConsoleNS = {
                                     buttonText: "Upload CSV File",
                                     description: "Drag and drop a CSV file here."
                                 },
-                                primaryButton: "Invite",
+                                primaryButton: "Add",
                                 rolesLabel: "Roles",
                                 rolesPlaceholder: "Enter roles",
                                 warningMessage: "Manual invite multiple users feature can only be used when email address is configured as the username."

@@ -97,7 +97,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const { t } = useTranslation();
     const dispatch: Dispatch<any> = useDispatch();
     const { getLink } = useDocumentation();
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetOrganizationType();
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -118,7 +118,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const path: string[] = history.location.pathname.split("/");
     const appId: string = path[path.length - 1].split("#")[0];
 
-    const isReadOnly: boolean = orgType === OrganizationType.SUBORGANIZATION;
+    const isReadOnly: boolean = organizationType === OrganizationType.SUBORGANIZATION;
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
 
     /**
@@ -339,6 +339,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                         startIcon={ <PlusIcon/> }
                                         variant="text"
                                         onClick={ handleAddNewRoleWizardClick }
+                                        disabled={ isReadOnly }
                                     >
                                         { t("console:develop.features.applications.edit." + 
                                         "sections.roles.createApplicationRoleWizard.button") }

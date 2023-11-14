@@ -1420,6 +1420,20 @@ export const console: ConsoleNS = {
                                                     "pour les clés d'accès prises en charge par FIDO2 et les autres utilisateurs " +
                                                     "souhaitant enregistrer plusieurs clés d'accès doivent le faire via Mon compte."
                                             },
+                                            passkey: {
+                                                description: "Permettez aux utilisateurs de se connecter à l'aide d'un mot " +
+                                                "de passe, d'une clé de sécurité FIDO ou de données biométriques.",
+                                                heading: "Ajouter une connexion par mot de passe",
+                                                info: {
+                                                    progressiveEnrollmentEnabled: "L1inscription progressive par mot de passe " +
+                                                    "est activée. Les utilisateurs peuvent enregistrer des clés d'accès à " +
+                                                    "la volée. S’ils souhaitent enregistrer plusieurs mots de passe, ils " +
+                                                    "doivent le faire via Mon compte.",
+                                                    progressiveEnrollmentDisabled: "L'inscription du mot de passe à la volée " +
+                                                    "est désactivée. Les utilisateurs doivent enregistrer leurs clés d'accès " +
+                                                    "via MyAccount pour utiliser la connexion sans mot de passe."
+                                                }
+                                            },
                                             emailOTP: {
                                                 description: "Activez une couche supplémentaire d'authentification avec OTP basé sur Email.",
                                                 heading: "Ajouter Email OTP comme deuxième facteur"
@@ -1726,6 +1740,10 @@ export const console: ConsoleNS = {
                                 hint: "Activez pour autoriser l'application à accéder à l'API de gestion de cette " +
                                     "organisation.",
                                 label: "Application de gestion"
+                            },
+                            isFapiApp: {
+                                hint: "Activez cette option pour permettre à l'application d'être conforme à FAPI.",
+                                label: "Application conforme FAPI"
                             },
                             name: {
                                 label: "Nom",
@@ -2510,6 +2528,15 @@ export const console: ConsoleNS = {
                                 hint: "Saisir l'URL du RP qui gère la réponse.",
                                 label: "URL de la réponse",
                                 placeholder: "Saisir l'URL de la réponse",
+                                validations: {
+                                    empty: "C'est un champ obligatoire.",
+                                    invalid: "Ce n'est pas une URL valide"
+                                }
+                            },
+                            replyToLogout: {
+                                hint: "Saisir l'URL du RP qui gère la réponse à la déconnexion.",
+                                label: "URL de la réponse à la déconnexion.",
+                                placeholder: "Saisir l'URL de la réponse à la déconnexion.",
                                 validations: {
                                     empty: "C'est un champ obligatoire.",
                                     invalid: "Ce n'est pas une URL valide"
@@ -7402,9 +7429,8 @@ export const console: ConsoleNS = {
                 addUserWizard: {
                     heading: "Inviter un utilisateur parent",
                     description: "Invitez un utilisateur de l’organisation parente.",
-                    hint: "Les utilisateurs invités sont gérés par l'organisation <1>{{currentOrganization}></1>.",
-                    usernameHint: "Le nom d'utilisateur doit appartenir à un utilisateur " +
-                        "de l'organisation <1>{{currentOrganization}></1>."
+                    hint: "Les utilisateurs invités sont gérés par l'organisation parente.",
+                    usernameHint: "Le nom d'utilisateur doit appartenir à un utilisateur de l'organisation parente."
                 },
                 tab: {
                     usersTab: "Utilisateurs",
@@ -8428,8 +8454,9 @@ export const console: ConsoleNS = {
                                 label: "Application attribuée",
                                 placeholder: "Sélectionnez l'application pour attribuer le rôle",
                                 applicationSubTitle: {
-                                    application: "Prise en charge des rôles à application. ",
-                                    organization: "Rôles de soutien à l'organisation"
+                                    application: "Prise en charge des rôles à application.",
+                                    organization: "Rôles de soutien à l'organisation. ",
+                                    changeAudience: "Changer le public"
                                 },
                                 validations: {
                                     empty: "L'application attribuée est nécessaire pour créer un rôle à application."
@@ -9353,9 +9380,10 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Inviter plusieurs utilisateurs",
-                        subTitle: "Invitez plusieurs utilisateurs dans l’organisation.",
+                        title: "Ajouter plusieurs utilisateurs",
+                        subTitle: "Ajoutez plusieurs utilisateurs manuellement ou en utilisant un fichier CSV.",
                         wizardSummary: {
+                            inviteEmailInfo: "Un e-mail avec un lien de confirmation sera envoyé à l'adresse e-mail fournie à l'utilisateur afin de définir son propre mot de passe.",
                             successCount: "Nombre de réussites",
                             failedCount: "Nombre d'échecs",
                             totalUserCreationCount: "Nombre total de créations d'utilisateurs",
@@ -9372,7 +9400,7 @@ export const console: ConsoleNS = {
                                 userCreationAcceptedMessage: "Création d'utilisateur acceptée",
                                 internalErrorMessage: "Une erreur s'est produite lors de l'importation des " +
                                     "utilisateurs",
-                                userAssignmentSuccessMessage: "Les utilisateurs ont été attribués avec succès à " + 
+                                userAssignmentSuccessMessage: "Les utilisateurs ont été attribués avec succès à " +
                                     "{{resource}}",
                                 userAssignmentFailedMessage: "L'affectation de l'utilisateur à {{resource}} a échoué",
                                 userAssignmentInternalErrorMessage: "Une erreur s'est produite lors de " +
@@ -9405,7 +9433,13 @@ export const console: ConsoleNS = {
                             disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
                                 "externes n’est pas disponible pour le moment.",
                             manualCreation: {
-                                hint: "Ajoutez des e-mails et envoyez des invitations à plusieurs utilisateurs.",
+                                alerts: {
+                                    creationSuccess: {
+                                        description: "Les comptes d'utilisateurs ont été créés avec succès.",
+                                        message: "Création d'utilisateurs réussie"
+                                    }
+                                },
+                                hint: "Ajoutez l'adresse e-mail de l'utilisateur que vous souhaitez inviter et appuyez sur Entrée.",
                                 emailsLabel: "E-mails",
                                 emailsPlaceholder: "Entrez les adresses e-mail",
                                 disabledHint: "TL'option manuelle est désactivée en raison de l'utilisation de noms d'utilisateur alphanumériques dans votre organisation.",
@@ -9413,7 +9447,7 @@ export const console: ConsoleNS = {
                                     buttonText: "Télécharger le fichier CSV",
                                     description: "Faites glisser et déposez un fichier CSV ici."
                                 },
-                                primaryButton: "Inviter",
+                                primaryButton: "Ajouter",
                                 rolesLabel: "Les rôles",
                                 rolesPlaceholder: "Entrez les rôles",
                                 warningMessage: "La fonctionnalité d'invitation manuelle de plusieurs utilisateurs ne peut être utilisée que lorsque l'adresse e-mail est configurée comme nom d'utilisateur."

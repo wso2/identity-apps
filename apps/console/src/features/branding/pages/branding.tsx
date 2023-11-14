@@ -90,7 +90,7 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
     const { isGreaterThanComputerViewport } = useMediaContext();
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetOrganizationType();
 
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const productName: string = useSelector((state: AppState) => state.config.ui.productName);
@@ -205,7 +205,7 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
             return;
         }
 
-        if (orgType === OrganizationType.SUBORGANIZATION
+        if (organizationType === OrganizationType.SUBORGANIZATION
             && originalBrandingPreference?.name !== currentOrganization?.id) {
             // This means the sub-org has no branding preference configured.
             // It gets the branding preference from the parent org.
@@ -409,7 +409,7 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                 );
 
                 if (shouldShowNotifications) {
-                    if(orgType !== OrganizationType.SUBORGANIZATION) {
+                    if(organizationType !== OrganizationType.SUBORGANIZATION) {
                         dispatch(addAlert<AlertInterface>({
                             description: t("extensions:develop.branding.notifications.update.success.description",
                                 { tenant: tenantDomain }),
@@ -520,7 +520,7 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
                 // Increment the tabs component key to remount the component on branding revert.
                 setPreferenceTabsComponentKey(preferenceTabsComponentKey + 1);
 
-                if(orgType !== OrganizationType.SUBORGANIZATION) {
+                if(organizationType !== OrganizationType.SUBORGANIZATION) {
                     dispatch(addAlert<AlertInterface>({
                         description: t("extensions:develop.branding.notifications.delete.success.description",
                             { tenant: tenantDomain }),

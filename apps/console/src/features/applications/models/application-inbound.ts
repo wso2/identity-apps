@@ -45,6 +45,15 @@ export interface GrantTypeMetaDataInterface {
 }
 
 /**
+ * FAPI related metadata.
+ */
+export interface FapiMetaDataInterface {
+    allowedSignatureAlgorithms: MetadataPropertyInterface;
+    allowedEncryptionAlgorithms: MetadataPropertyInterface;
+    tokenEndpointAuthMethod: MetadataPropertyInterface;
+}
+
+/**
  * OIDC related metadata.
  */
 export interface OIDCMetadataInterface {
@@ -68,6 +77,7 @@ export interface OIDCMetadataInterface {
     requestObjectEncryptionAlgorithm?: MetadataPropertyInterface;
     subjectType?: MetadataPropertyInterface;
     tlsClientAuthSubjectDn?: string;
+    fapiMetadata?: FapiMetaDataInterface;
 }
 
 export enum State {
@@ -165,6 +175,7 @@ export interface OIDCDataInterface {
     validateRequestObjectSignature?: boolean;
     scopeValidators?: string[];
     subject?: SubjectConfigInterface;
+    isFAPIApplication?: boolean;
 }
 
 /**
@@ -367,6 +378,7 @@ export interface WSTrustMetaDataInterface {
 export interface PassiveStsConfigurationInterface {
     realm: string;
     replyTo: string;
+    replyToLogout: string;
 }
 
 export enum CustomTypeEnum {

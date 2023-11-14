@@ -1,5 +1,139 @@
 # @wso2is/console
 
+## 2.6.5
+
+### Patch Changes
+
+- [#4587](https://github.com/wso2/identity-apps/pull/4587) [`7bf2c2c057`](https://github.com/wso2/identity-apps/commit/7bf2c2c057a5f12fdce0b97a1c50ebf169390508) Thanks [@savindi7](https://github.com/savindi7)! - Fix user list filtering issue
+
+* [#4583](https://github.com/wso2/identity-apps/pull/4583) [`39a76d017a`](https://github.com/wso2/identity-apps/commit/39a76d017ae8b3c9f04705d37152857b9034327a) Thanks [@Achintha444](https://github.com/Achintha444)! - update `customize-steps.png` image of magic-link authenticator
+
+## 2.6.4
+
+### Patch Changes
+
+- [#4578](https://github.com/wso2/identity-apps/pull/4578) [`068d1590e5`](https://github.com/wso2/identity-apps/commit/068d1590e540ff4bd27c3e1d01ad6526690f89b0) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Prevent sending oidc protocol update request when updating user attributes of non oauth applications.
+
+## 2.6.3
+
+### Patch Changes
+
+- [#4572](https://github.com/wso2/identity-apps/pull/4572) [`d6b83f8118`](https://github.com/wso2/identity-apps/commit/d6b83f8118c5ad0f25172366b93c053ead6c988a) Thanks [@Achintha444](https://github.com/Achintha444)! - Fix alignment issue in sub0org invited user list page
+
+* [#4576](https://github.com/wso2/identity-apps/pull/4576) [`94edb8d036`](https://github.com/wso2/identity-apps/commit/94edb8d0360865c0d556487ddb4208c8a3206452) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Change invite parent user messages
+
+- [#4339](https://github.com/wso2/identity-apps/pull/4339) [`d805503037`](https://github.com/wso2/identity-apps/commit/d805503037ad9a1157143918424072c107979993) Thanks [@sandushi](https://github.com/sandushi)! - Fix duplicate loading issue in alternative login identifiers
+
+* [#4577](https://github.com/wso2/identity-apps/pull/4577) [`e74ebe77d5`](https://github.com/wso2/identity-apps/commit/e74ebe77d597ba06a2b6f0e461ae68e9dcf85edf) Thanks [@Achintha444](https://github.com/Achintha444)! - Fix misleading instruction in application registration flow
+
+* Updated dependencies [[`d6b83f8118`](https://github.com/wso2/identity-apps/commit/d6b83f8118c5ad0f25172366b93c053ead6c988a), [`94edb8d036`](https://github.com/wso2/identity-apps/commit/94edb8d0360865c0d556487ddb4208c8a3206452)]:
+  - @wso2is/theme@2.0.33
+  - @wso2is/i18n@2.0.35
+
+## 2.6.2
+
+### Patch Changes
+
+- [#4566](https://github.com/wso2/identity-apps/pull/4566) [`eede5f1732`](https://github.com/wso2/identity-apps/commit/eede5f1732eecfd72bc137136a9b13499186c000) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in role creation with application audience
+
+## 2.6.1
+
+### Patch Changes
+
+- [#4564](https://github.com/wso2/identity-apps/pull/4564) [`bc18db27a5`](https://github.com/wso2/identity-apps/commit/bc18db27a59d43ccb38f965899c0546c9816d2b7) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Fix password patterns updated via console not being reflected in My Account and reset password window
+
+* [#4518](https://github.com/wso2/identity-apps/pull/4518) [`9ae04065e4`](https://github.com/wso2/identity-apps/commit/9ae04065e429f465e5085afeb7b9a59d01a2feb1) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support for logout wreply validation in Passive STS application
+
+- [#4563](https://github.com/wso2/identity-apps/pull/4563) [`6f1de4d977`](https://github.com/wso2/identity-apps/commit/6f1de4d97706b0d92341b8087fcaf2b63e92d046) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Disable Create Role button when readonly
+
+- Updated dependencies [[`bc18db27a5`](https://github.com/wso2/identity-apps/commit/bc18db27a59d43ccb38f965899c0546c9816d2b7), [`9ae04065e4`](https://github.com/wso2/identity-apps/commit/9ae04065e429f465e5085afeb7b9a59d01a2feb1)]:
+  - @wso2is/core@2.0.12
+  - @wso2is/i18n@2.0.34
+
+## 2.6.0
+
+### Minor Changes
+
+- [#4492](https://github.com/wso2/identity-apps/pull/4492) [`cf12296f44`](https://github.com/wso2/identity-apps/commit/cf12296f447fbaad874eccdfbc0711befaacd029) Thanks [@RivinduM](https://github.com/RivinduM)! - Add support for FAPI application creation from UI
+
+### Patch Changes
+
+- [#4557](https://github.com/wso2/identity-apps/pull/4557) [`276964043e`](https://github.com/wso2/identity-apps/commit/276964043ec930295d62a63c64312a54a2cddf3f) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Allow loopback URL
+
+* [#4542](https://github.com/wso2/identity-apps/pull/4542) [`3d7e5a9a32`](https://github.com/wso2/identity-apps/commit/3d7e5a9a32c19330d96592d168213f4d1b049bee) Thanks [@dhaura](https://github.com/dhaura)! - Fix IS Console refreshing issue for the super tenant.
+
+- fix connections search issue
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.0.14
+  - @wso2is/theme@2.0.32
+
+## 2.5.31
+
+### Patch Changes
+
+- [#4532](https://github.com/wso2/identity-apps/pull/4532) [`3db28dcd8e`](https://github.com/wso2/identity-apps/commit/3db28dcd8e78f16f3573bc26f42bee0ccd3a3ca3) Thanks [@shanggeeth](https://github.com/shanggeeth)! - Change disabled dropdown style for better UX
+
+- Updated dependencies [[`3db28dcd8e`](https://github.com/wso2/identity-apps/commit/3db28dcd8e78f16f3573bc26f42bee0ccd3a3ca3)]:
+  - @wso2is/theme@2.0.31
+
+## 2.5.30
+
+### Patch Changes
+
+- [#4538](https://github.com/wso2/identity-apps/pull/4538) [`0089e68f83`](https://github.com/wso2/identity-apps/commit/0089e68f837f5f1e60f810e56b6b3791305c023a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add pagination support for organization discovery feature
+
+* [#4539](https://github.com/wso2/identity-apps/pull/4539) [`c3cb0e1b78`](https://github.com/wso2/identity-apps/commit/c3cb0e1b78255c857bd96ef651509e8f4c17b8e6) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update Classic Editor Sign-In Message for Passkey Config Toggle
+
+- [#4490](https://github.com/wso2/identity-apps/pull/4490) [`1d96405a46`](https://github.com/wso2/identity-apps/commit/1d96405a46e106c04f92a89ce958e9c19cab6fee) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Display only the permissions of allowed API resources for roles with application audience
+
+* [#4544](https://github.com/wso2/identity-apps/pull/4544) [`aa05ad36f7`](https://github.com/wso2/identity-apps/commit/aa05ad36f7546bd525120110f0bc8999000cfe52) Thanks [@Achintha444](https://github.com/Achintha444)! - Remove `Create an account` button
+
+* Updated dependencies [[`c3cb0e1b78`](https://github.com/wso2/identity-apps/commit/c3cb0e1b78255c857bd96ef651509e8f4c17b8e6)]:
+  - @wso2is/i18n@2.0.33
+
+## 2.5.29
+
+### Patch Changes
+
+- [#4528](https://github.com/wso2/identity-apps/pull/4528) [`1b74de3e5b`](https://github.com/wso2/identity-apps/commit/1b74de3e5b08c5b0b33fe224be123fe09d7bb20a) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Change wording in SMS/ Email provider.
+
+- Updated dependencies [[`1b74de3e5b`](https://github.com/wso2/identity-apps/commit/1b74de3e5b08c5b0b33fe224be123fe09d7bb20a)]:
+  - @wso2is/i18n@2.0.32
+
+## 2.5.28
+
+### Patch Changes
+
+- [#4521](https://github.com/wso2/identity-apps/pull/4521) [`130909dd12`](https://github.com/wso2/identity-apps/commit/130909dd129e866456855ea4b92a20407e8f440f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show the updated value for enable assertion encryption field
+
+* [#4512](https://github.com/wso2/identity-apps/pull/4512) [`d772b161f0`](https://github.com/wso2/identity-apps/commit/d772b161f014db9f30b12fd2eb7bac836d4727a5) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Fix issues with the user store dropdown menu visibility in Users and Groups pages.
+
+- [#4516](https://github.com/wso2/identity-apps/pull/4516) [`2fb7b58007`](https://github.com/wso2/identity-apps/commit/2fb7b58007edd8fd1ecb8a05be7a589a784e4a9c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix danger zone text taking full width in medium and large screen sizes
+
+* [#4527](https://github.com/wso2/identity-apps/pull/4527) [`f8e5b9939a`](https://github.com/wso2/identity-apps/commit/f8e5b9939ae8fb73e58557e8c8dcf9a4419d624e) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update add user dropdown text
+
+- [#4530](https://github.com/wso2/identity-apps/pull/4530) [`9cbf87c53c`](https://github.com/wso2/identity-apps/commit/9cbf87c53c9bcc56ba442accdf3575e52dab800d) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix audience type issue in roles
+
+* [#4531](https://github.com/wso2/identity-apps/pull/4531) [`5ece84dd6c`](https://github.com/wso2/identity-apps/commit/5ece84dd6c72f3c9b119de771aff6ae5c9be1527) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Fix script not appearing in the Visual Editor for templates
+
+- [#4526](https://github.com/wso2/identity-apps/pull/4526) [`352f7882bd`](https://github.com/wso2/identity-apps/commit/352f7882bd88c0b468a13df9aad3fbea08ffc455) Thanks [@Achintha444](https://github.com/Achintha444)! - Add self signup URL text to the branding.
+
+- Updated dependencies [[`2fb7b58007`](https://github.com/wso2/identity-apps/commit/2fb7b58007edd8fd1ecb8a05be7a589a784e4a9c), [`352f7882bd`](https://github.com/wso2/identity-apps/commit/352f7882bd88c0b468a13df9aad3fbea08ffc455)]:
+  - @wso2is/react-components@2.0.13
+  - @wso2is/theme@2.0.30
+  - @wso2is/i18n@2.0.31
+
+## 2.5.27
+
+### Patch Changes
+
+- [#4522](https://github.com/wso2/identity-apps/pull/4522) [`87c84d4373`](https://github.com/wso2/identity-apps/commit/87c84d4373426cc547c467607b632d9bf7f47a45) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Refactor organization type check and improve create role, group logic
+
+* [#4525](https://github.com/wso2/identity-apps/pull/4525) [`22e0966ed9`](https://github.com/wso2/identity-apps/commit/22e0966ed97af7668e702b4d3fa07cdb6bafae47) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Change role pactch path
+
+- [#4520](https://github.com/wso2/identity-apps/pull/4520) [`98832e3ab1`](https://github.com/wso2/identity-apps/commit/98832e3ab1523b436bfbe7c738511601a3ec22a2) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Fix ethereum idp connector template issue
+
 ## 2.5.26
 
 ### Patch Changes

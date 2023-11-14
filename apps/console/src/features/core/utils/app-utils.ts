@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,14 @@
  * under the License.
  */
 
-import { AppConstants } from "@wso2is/core/constants";
+import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
+import isLegacyAuthzRuntime from "../../authorization/utils/get-legacy-authz-runtime";
+import { AppConstants } from "../constants";
 import { store } from "../store";
 
 /**
@@ -125,7 +127,7 @@ export class AppUtils {
      */
     public static onChunkLoadError(): void {
 
-        dispatchEvent(new Event(AppConstants.CHUNK_LOAD_ERROR_EVENT));
+        dispatchEvent(new Event(CommonAppConstants.CHUNK_LOAD_ERROR_EVENT));
     }
 
     /**
@@ -136,11 +138,12 @@ export class AppUtils {
      * @returns If the auth callback URL belongs to another tenant.
      */
     public static isAuthCallbackURLFromAnotherTenant(authCallbackURL: string, tenantDomain: string): boolean {
-        const tenantName: string = window["AppUtils"].getConfig().superTenant === tenantDomain ? "" : tenantDomain;
+        const tenantName: string = (isLegacyAuthzRuntime() && 
+                AppConstants.getSuperTenant() === tenantDomain) ? "" : tenantDomain;
         const tenantRegex: RegExp = new RegExp("t/([^/]+)/");
         const matches: RegExpExecArray = tenantRegex.exec(authCallbackURL);
 
-        const tenantFromURL: string = matches?.[ 1 ] ?? "";
+        const tenantFromURL: string = matches?.[ 1 ] ?? (isLegacyAuthzRuntime() ? "" : AppConstants.getSuperTenant());
 
         if (tenantFromURL === tenantName) {
             return false;

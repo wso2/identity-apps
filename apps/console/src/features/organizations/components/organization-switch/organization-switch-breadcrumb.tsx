@@ -65,7 +65,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
 
     const { legacyAuthzRuntime }  = useAuthorization();
 
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetOrganizationType();
 
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const tenantDomain: string = useSelector(
@@ -88,12 +88,12 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         }
 
         return (
-            orgType === OrganizationType.SUPER_ORGANIZATION ||
-            orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
-            orgType === OrganizationType.SUBORGANIZATION ||
+            organizationType === OrganizationType.SUPER_ORGANIZATION ||
+            organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
+            organizationType === OrganizationType.SUBORGANIZATION ||
             tenantDomain === AppConstants.getSuperTenant()
         );
-    }, [ isFirstLevelOrg, orgType, tenantDomain ]);
+    }, [ isFirstLevelOrg, organizationType, tenantDomain ]);
 
     const {
         data: breadcrumbList,

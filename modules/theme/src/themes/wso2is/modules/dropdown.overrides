@@ -16,9 +16,9 @@
 
     &.disabled {
         opacity: 1;
-
+        background-color: @DisabledDropdownBgColor !important;
         >.text {
-            opacity: 0.45;
+            opacity: 1;
         }
 
         .dropdown.icon {

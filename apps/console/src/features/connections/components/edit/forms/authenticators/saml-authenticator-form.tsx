@@ -109,6 +109,7 @@ export interface SamlPropertiesInterface {
     isEnableAssertionSigning?: boolean,   
     attributeConsumingServiceIndex?: string;
     AuthnContextComparisonLevel?: string;
+    IsAssertionEncrypted?: boolean;
 }
 
 const FORM_ID: string = "saml-authenticator-form";
@@ -227,6 +228,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             ISAuthnReqSigned: findPropVal<boolean>({ defaultValue: false, key: "ISAuthnReqSigned" }),
             IdPEntityId: findPropVal<string>({ defaultValue: "", key: "IdPEntityId" }),
             IncludeProtocolBinding: findPropVal<boolean>({ defaultValue: false, key: "IncludeProtocolBinding" }),
+            IsAssertionEncrypted: findPropVal<boolean>({ defaultValue: false, key: "IsAssertionEncrypted" }),
             /**
              * `IsAuthnRespSigned` is by default set to true when creating the SAML IdP so,
              * always the value will be true. Keeping this here to indicate for the user and
@@ -254,6 +256,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
              * https://github.com/wso2/product-is/issues/17004
              */
             isEnableAssertionSigning: findPropVal<boolean>({ defaultValue: false, key: "isEnableAssertionSigning" })
+
         } as SamlPropertiesInterface;
 
     }, []);
@@ -270,6 +273,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
         setIsArtifactBindingEnabled(initialFormValues.ISArtifactBindingEnabled);
         setFormValues({ ...initialFormValues });
+        setIsEnableAssetionEncryption(initialFormValues.IsAssertionEncrypted);
     }, [ initialFormValues ]);
 
     useEffect(() => {

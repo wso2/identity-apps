@@ -25,8 +25,8 @@ import useRequest, {
     RequestResultInterface
 } from "../../core/hooks/use-request";
 import { store } from "../../core/store";
-import { APIResourceInterface, APIResourcePermissionInterface, APIResourcesListInterface, 
-    UpdatedAPIResourceInterface } from "../models";
+import { APIResourceInterface, APIResourcePermissionInterface, APIResourcesListInterface, UpdatedAPIResourceInterface }
+    from "../models";
 
 /**
  * Get an axios instance.
@@ -37,7 +37,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 /**
  * Get API resources for the identifier validation.
  * Only to be used for the identifier validation.
- * 
+ *
  * @param filter - filter.
  * @returns `Promise<APIResourcesListInterface | IdentityAppsApiException>`
  */
@@ -122,7 +122,7 @@ export const useAPIResources = <Data = APIResourcesListInterface, Error = Reques
 };
 
 /**
- * 
+ *
  * @param apiResourceId - id of the API resource
  * @returns `Promise<APIResourceInterface>`
  * @throws `IdentityAppsApiException`
@@ -157,7 +157,7 @@ export const useAPIResourceDetails = <Data = APIResourceInterface, Error = Reque
 /**
  * Get permissions of an API resource for the permission validation.
  * Only to be used for the permission validation.
- * 
+ *
  * @param filter - filter.
  * @returns `Promise<APIResourcePermissionInterface[]>`
  * @throws `IdentityAppsApiException`
@@ -244,13 +244,13 @@ export const deleteAPIResource = (apiResourceId: string): Promise<null | Identit
 
 /**
  * Update an API resource.
- * 
+ *
  * @param apiResourceId - UUID of the API resource that needed to be updated.
  * @param updateAPIResourceBody - Body of the API resource that needed to be updated.
  * @returns `Promise<null | IdentityAppsApiException>`
  */
 export const updateAPIResource = (
-    apiResourceId: string, 
+    apiResourceId: string,
     updateAPIResourceBody: UpdatedAPIResourceInterface
 ): Promise<null | IdentityAppsApiException> => {
 
@@ -277,7 +277,7 @@ export const updateAPIResource = (
 
 /**
  * Create an API resource.
- * 
+ *
  * @param apiResourceBody - Body of the API resource that needed to be created.
  * @returns `Promise<null | IdentityAppsApiException>`
  */
@@ -308,13 +308,13 @@ export const createAPIResource = (
 
 /**
  * Delete a scope from an API resource.
- * 
+ *
  * @param apiResourceId - UUID of the API resource.
  * @param deleteScopeName - Name of the scope that needs to be deleted.
  * @returns `Promise<null | IdentityAppsApiException>`
  */
 export const deleteScopeFromAPIResource = (
-    apiResourceId: string, 
+    apiResourceId: string,
     deletingScopeName: string
 ): Promise<null | IdentityAppsApiException> => {
 

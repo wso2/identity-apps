@@ -860,6 +860,14 @@ export interface ConsoleNS {
                                                 heading: string;
                                                 info: string;
                                             },
+                                            passkey: {
+                                                description: string;
+                                                heading: string;
+                                                info: {
+                                                    progressiveEnrollmentEnabled: string;
+                                                    progressiveEnrollmentDisabled: string;
+                                                }
+                                            }
                                             magicLink: {
                                                 description: string;
                                                 heading: string;
@@ -985,6 +993,7 @@ export interface ConsoleNS {
                             accessUrl: FormAttributes;
                             isSharingEnabled: FormAttributes;
                             isManagementApp: FormAttributes;
+                            isFapiApp: FormAttributes;
                         };
                         managementAppBanner: string;
 
@@ -1198,6 +1207,7 @@ export interface ConsoleNS {
                         fields: {
                             realm: FormAttributes;
                             replyTo: FormAttributes;
+                            replyToLogout: FormAttributes;
                         };
                     };
                     inboundWSTrust: {
@@ -5862,6 +5872,7 @@ export interface ConsoleNS {
                         title: string;
                         subTitle: string;
                         wizardSummary: {
+                            inviteEmailInfo: string;
                             successCount: string;
                             failedCount: string;
                             totalUserCreationCount: string;
@@ -5897,6 +5908,9 @@ export interface ConsoleNS {
                             };
                             disabledSecondaryStoreInfo: string;
                             manualCreation: {
+                                alerts: {
+                                    creationSuccess: NotificationItem;
+                                };
                                 hint: string;
                                 emailsLabel: string;
                                 emailsPlaceholder: string;

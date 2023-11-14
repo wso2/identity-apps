@@ -1,5 +1,29 @@
 # @wso2is/theme
 
+## 2.0.33
+
+### Patch Changes
+
+- [#4572](https://github.com/wso2/identity-apps/pull/4572) [`d6b83f8118`](https://github.com/wso2/identity-apps/commit/d6b83f8118c5ad0f25172366b93c053ead6c988a) Thanks [@Achintha444](https://github.com/Achintha444)! - Fix alignment issue in sub0org invited user list page
+
+## 2.0.32
+
+### Patch Changes
+
+- fix connections search issue
+
+## 2.0.31
+
+### Patch Changes
+
+- [#4532](https://github.com/wso2/identity-apps/pull/4532) [`3db28dcd8e`](https://github.com/wso2/identity-apps/commit/3db28dcd8e78f16f3573bc26f42bee0ccd3a3ca3) Thanks [@shanggeeth](https://github.com/shanggeeth)! - Change disabled dropdown style for better UX
+
+## 2.0.30
+
+### Patch Changes
+
+- [#4516](https://github.com/wso2/identity-apps/pull/4516) [`2fb7b58007`](https://github.com/wso2/identity-apps/commit/2fb7b58007edd8fd1ecb8a05be7a589a784e4a9c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix danger zone text taking full width in medium and large screen sizes
+
 ## 2.0.29
 
 ### Patch Changes

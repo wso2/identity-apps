@@ -467,9 +467,9 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         exact: true,
                         icon: { icon: <EnvelopeGearIcon fill="black" className="icon" /> },
                         id: "notification-channels",
-                        name: "Notification Channels",
+                        name: "Channels",
                         order: 15,
-                        path: `${ AppConstants.getDeveloperViewBasePath() }/notification-channels`,
+                        path: `${ AppConstants.getDeveloperViewBasePath() }/channels`,
                         protected: true,
                         showOnSidePanel: true
                     },

@@ -291,6 +291,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                         urls: {
                             cookiePolicyURL: brandingPreference.urls?.cookiePolicyURL,
                             privacyPolicyURL: brandingPreference.urls?.privacyPolicyURL,
+                            selfSignUpURL: brandingPreference.urls?.selfSignUpURL,
                             termsOfUseURL: brandingPreference.urls?.termsOfUseURL
                         }
                     } }

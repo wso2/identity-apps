@@ -17,6 +17,7 @@
  */
 
 import {
+    AlertTitle,
     Autocomplete,
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
@@ -44,6 +45,7 @@ import {
     Heading,
     Hint,
     LinkButton,
+    Message,
     PickerResult,
     PrimaryButton,
     useWizardAlert
@@ -1473,6 +1475,21 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     };
 
     /**
+     * Check if the manual invite button should be disabled.
+     * @returns true if the manual invite button should be disabled.
+     */
+    const isManualInviteButtonDisabled = (): boolean => {
+        return isLoading
+            || isSubmitting
+            || hasError
+            || isAllRolesListLoading
+            || !emailData
+            || emailData?.length === 0
+            || !rolesData
+            || rolesData?.length === 0;
+    };
+
+    /**
      * Render Multiple Users configuration section.
      */
     const resolveMultipleUsersConfiguration = (): ReactElement => {
@@ -1506,10 +1523,17 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }> 
                                             <Form.Field required={ true }>
-                                                <label className="pb-2">
+                                                <InputLabel
+                                                    htmlFor="tags-filled"
+                                                    disableAnimation
+                                                    shrink={ false }
+                                                    margin="dense"
+                                                    className="spacing-bottom"
+                                                    data-componentid={ `${componentId}-userstore-label` }
+                                                >
                                                     { t("console:manage.features.user.forms.addUserForm."+
-                                                    "inputs.domain.placeholder") }
-                                                </label>
+                                                    "inputs.domain.label") }
+                                                </InputLabel>
                                                 <Dropdown
                                                     className="mt-2"
                                                     fluid
@@ -1747,6 +1771,23 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         hasError={ hasError }
                                         responseList={ manualInviteResponse }
                                         bulkResponseSummary={ manualInviteResponseSummary }
+                                        successAlert={ (
+                                            <Alert
+                                                severity="success"
+                                                data-componentid={ `${componentId}-success-alert` }
+                                            >
+                                                <AlertTitle data-componentid={ `${componentId}-success-alert-title` }>
+                                                    {
+                                                        t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                                        "wizardSummary.manualCreation.alerts.creationSuccess.message")
+                                                    }
+                                                </AlertTitle>
+                                                {
+                                                    t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                                    "wizardSummary.manualCreation.alerts.creationSuccess.description")
+                                                }
+                                            </Alert>
+                                        ) }
                                     />
                                 </>
                             )
@@ -1782,10 +1823,17 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         <Grid.Row columns={ 1 }>
                                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }> 
                                                 <Form.Field required={ true }>
-                                                    <label className="pb-2">
+                                                    <InputLabel
+                                                        htmlFor="tags-filled"
+                                                        disableAnimation
+                                                        shrink={ false }
+                                                        margin="dense"
+                                                        className="spacing-bottom"
+                                                        data-componentid={ `${componentId}-userstore-label` }
+                                                    >
                                                         { t("console:manage.features.user.forms.addUserForm."+
-                                                            "inputs.domain.placeholder") }
-                                                    </label>
+                                                        "inputs.domain.label") }
+                                                    </InputLabel>
                                                     <Dropdown
                                                         className="mt-2"
                                                         fluid
@@ -1801,6 +1849,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                         }
                                                         name="userstore"
                                                         disabled={ true }
+                                                        readOnly={ true }
                                                         value={ selectedUserStore }
                                                         onChange={
                                                             (e: React.ChangeEvent<HTMLInputElement>,
@@ -1897,6 +1946,18 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
             <Modal.Content className="content-container" scrolling>
                 <Grid>
+                    <>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column>
+                                <Message
+                                    icon="mail"
+                                    content={ t("console:manage.features.user.modals.bulkImportUserWizard" +
+                                        ".wizardSummary.inviteEmailInfo") }
+                                    hideDefaultIcon
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </>
                     { resolveMultipleUsersModeSelection() }
                     { resolveMultipleUsersConfiguration() }
                 </Grid>
@@ -1931,12 +1992,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     floated="right"
                                                     onClick={ manualInviteMultipleUsers }
                                                     loading={ isSubmitting }
-                                                    disabled={ 
-                                                        isLoading
-                                                        ||isSubmitting
-                                                        || hasError
-                                                        || isAllRolesListLoading
-                                                    }
+                                                    disabled={ isManualInviteButtonDisabled() }
                                                 >
                                                     { t("console:manage.features.user.modals." +
                                                     "bulkImportUserWizard.wizardSummary.manualCreation.primaryButton") }

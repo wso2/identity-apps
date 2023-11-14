@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,8 +24,6 @@ export class GroupConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
 
     /* eslint-disable @typescript-eslint/no-empty-function */
@@ -33,15 +31,11 @@ export class GroupConstants {
 
     /**
      * Group edit view path.
-     * @type {string}
      */
     public static readonly GROUP_VIEW_PATH: string = "/groups/";
 
     /**
      * Set of keys used to enable/disable features.
-     * @constant
-     * @type {Map<string, string>}
-     * @default
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("GROUP_CREATE", "groups.create")
@@ -51,8 +45,8 @@ export class GroupConstants {
 
     /**
      * Set all groups option
-     * @constant
-     * @type {string}
      */
     public static ALL_GROUPS: string = "All user stores";
+
+    public static ALL_USER_STORES_OPTION_VALUE: string = "all";
 }
