@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.6.5
+
+### Patch Changes
+
+- [#4587](https://github.com/wso2/identity-apps/pull/4587) [`7bf2c2c057`](https://github.com/wso2/identity-apps/commit/7bf2c2c057a5f12fdce0b97a1c50ebf169390508) Thanks [@savindi7](https://github.com/savindi7)! - Fix user list filtering issue
+
+* [#4583](https://github.com/wso2/identity-apps/pull/4583) [`39a76d017a`](https://github.com/wso2/identity-apps/commit/39a76d017ae8b3c9f04705d37152857b9034327a) Thanks [@Achintha444](https://github.com/Achintha444)! - update `customize-steps.png` image of magic-link authenticator
+
 ## 2.6.4
 
 ### Patch Changes
