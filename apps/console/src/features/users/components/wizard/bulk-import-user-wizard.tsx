@@ -478,11 +478,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
     const hideUserStoreDropdown = (): boolean => {
         // TODO: Currently only primary userstore is supported.
-        // if(readWriteUserStoresList) {
-        //     return readWriteUserStoresList?.length === 0 || (readWriteUserStoresList?.length === 1 && 
-        //         readWriteUserStoresList[0]?.value === userstore);
-        // }
-        
         return false;
     };
 
@@ -2018,60 +2013,60 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
                 <ModalWithSidePanel.Content className="content-container">
                     <Grid>
-                    <>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column>
-                                <Message
-                                    icon="mail"
-                                    content={ t("console:manage.features.user.modals.bulkImportUserWizard" +
+                        <>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column>
+                                    <Message
+                                        icon="mail"
+                                        content={ t("console:manage.features.user.modals.bulkImportUserWizard" +
                                         ".wizardSummary.inviteEmailInfo") }
-                                    hideDefaultIcon
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                    </>
+                                        hideDefaultIcon
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                        </>
                         { resolveMultipleUsersModeSelection() }
                         { resolveMultipleUsersConfiguration() }
                     </Grid>
 
-            </ModalWithSidePanel.Content>
-            <ModalWithSidePanel.Actions>
-                <Grid>
-                    {
-                        configureMode == MultipleInviteMode.MANUAL
-                            ? (
-                                <Grid.Row column={ 1 }>
-                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                        <LinkButton
-                                            data-testid={ `${componentId}-close-button` }
-                                            data-componentid={ `${componentId}-close-button` }
-                                            floated="left"
-                                            onClick={ () => {
-                                                closeWizard();
-                                                setshowManualInviteTable(false);
-                                            } }
-                                            disabled={ isSubmitting }
-                                        >
-                                            { t("common:close") }
-                                        </LinkButton>
-                                    </Grid.Column>
-                                    { !showManualInviteTable || isSubmitting
-                                        ? (
-                                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                                <PrimaryButton
-                                                    data-testid={ `${componentId}-invite-button` }
-                                                    data-componentid={ `${componentId}-invite-button` }
-                                                    floated="right"
-                                                    onClick={ manualInviteMultipleUsers }
-                                                    loading={ isSubmitting }
-                                                    disabled={ 
-                                                        isLoading
+                </ModalWithSidePanel.Content>
+                <ModalWithSidePanel.Actions>
+                    <Grid>
+                        {
+                            configureMode == MultipleInviteMode.MANUAL
+                                ? (
+                                    <Grid.Row column={ 1 }>
+                                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                            <LinkButton
+                                                data-testid={ `${componentId}-close-button` }
+                                                data-componentid={ `${componentId}-close-button` }
+                                                floated="left"
+                                                onClick={ () => {
+                                                    closeWizard();
+                                                    setshowManualInviteTable(false);
+                                                } }
+                                                disabled={ isSubmitting }
+                                            >
+                                                { t("common:close") }
+                                            </LinkButton>
+                                        </Grid.Column>
+                                        { !showManualInviteTable || isSubmitting
+                                            ? (
+                                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                                    <PrimaryButton
+                                                        data-testid={ `${componentId}-invite-button` }
+                                                        data-componentid={ `${componentId}-invite-button` }
+                                                        floated="right"
+                                                        onClick={ manualInviteMultipleUsers }
+                                                        loading={ isSubmitting }
+                                                        disabled={ 
+                                                            isLoading
                                                         ||isSubmitting
                                                         || hasError
                                                         || isAllRolesListLoading
-                                                    }
-                                                >
-                                                    { t("console:manage.features.user.modals." +
+                                                        }
+                                                    >
+                                                        { t("console:manage.features.user.modals." +
                                                     "bulkImportUserWizard.wizardSummary.manualCreation.primaryButton") }
                                                     </PrimaryButton>
                                                 </Grid.Column>
