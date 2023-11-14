@@ -309,8 +309,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
         // Filtering falsy values before updating the state, as `.find` returns undefined when a match is not found.
         setSelectedAuthnContextClasses(initiallySelectedAuthnContextClasses?.filter(Boolean));
-
-
     }, [ initialFormValues ]);
 
     useEffect(() => {
