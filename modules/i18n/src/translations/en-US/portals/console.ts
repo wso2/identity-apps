@@ -10771,9 +10771,13 @@ export const console: ConsoleNS = {
                             message: "Updated successfully."
                         },
                         error: {
-                            genericError: {
+                            updateError: {
                                 description: "An error occurred while updating remote log publishing configuration.",
                                 message: "Something went wrong"
+                            },
+                            fetchError: {
+                                description: "An error occurred while getting the remote log publishing configuration.",
+                                message: "Couldn't get remote log publishing configuration."
                             }
                         }
                     }
