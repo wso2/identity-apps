@@ -1933,7 +1933,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                 <Alert severity="info">
                                     { 
                                         t("console:manage.features.user.modals.bulkImportUserWizard" +
-                                            ".wizardSummary.inviteEmailInfo") 
+                                            ".wizardSummary.inviteEmailInfo")
                                     }
                                 </Alert>
                             </Grid.Column>
