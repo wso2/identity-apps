@@ -476,14 +476,16 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     <Heading
                         as="h4"
                     >
-                        { "Local Account Validation" }
+                        { t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                            "sections.linkedAccounts.heading") }
                     </Heading>
                     <Divider hidden/>
                     <Field.Dropdown
                         ariaLabel="Validate local account configuration"
                         name="validateLocalAccount"
                         label={
-                            "Validate linked local account"
+                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                            "sections.linkedAccounts.fields.validateLocalAccount.label")
                         }
                         required={ false }
                         value={ getValidateLocalAccountDropdownValue() }
@@ -491,34 +493,46 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-role-attribute-dropdown` }
                         hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute }
-                        hint={"This option will decide how the linked local user account is validated with the " + 
-                        "authenticated identity."}
+                        hint={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                        "sections.linkedAccounts.fields.validateLocalAccount.hint") }
                     />
                     <Message
                         type="info"
-                        content={
-                            // <p><strong>Disabled</strong> - The linked local user account is not validated</p>
-                            (
-                                <Text className="message-info-text">
-                                    {/* <Trans
-                                        i18nKey="extensions:develop.applications.quickstart.spa.common.prerequisites.node"
-                                    > */}
-                                    <strong>Disabled</strong> - Validation of a linked local user account 
-                                        associated with the authenticated identity is disabled. The profile of 
-                                        the authenticated identity is always shared<br/><br/>
-                                    <strong>Optional</strong> - Having a linked local user account with 
-                                        the authenticated identity is not mandatory for successful authentication. 
-                                        If such a linked account exists, its profile is shared; otherwise, the 
-                                        profile of the authenticated identity is shared.<br/><br/>
-                                    <strong>Mandatory</strong> - Mandate existence of a linked local user account 
-                                        with the authenticated identity for successful authentication.  If the linked 
-                                        local user account exists, share its profile in the authentication response; 
-                                        otherwise, authentication will fail.
-                                        
-                                    {/* </Trans> */}
-                                </Text>
-                            )
-                        }
+                        content={ (
+                            <Text className="message-info-text">
+                                <Trans
+                                    i18nKey={
+                                        "console:develop.features.applications.forms.advancedAttributeSettings." +
+                                    "sections.linkedAccounts.message.disabled"
+                                    }
+                                >
+                                    <strong>Disabled</strong> - Linked local user account validation is disabled,
+                                    and the authenticated identitys profile is always shared.
+                                </Trans><br/><br/>
+                                <Trans
+                                    i18nKey={
+                                        "console:develop.features.applications.forms.advancedAttributeSettings." +
+                                    "sections.linkedAccounts.message.optional"
+                                    }
+                                >
+                                    <strong>Optional</strong> - A linked local user account with the authenticated 
+                                    identity is optional for successful authentication; if present, its profile is 
+                                    shared, otherwise, the authenticated identity&apos;s profile is shared.
+                                </Trans><br/><br/>
+                                <Trans
+                                    i18nKey={
+                                        "console:develop.features.applications.forms.advancedAttributeSettings." +
+                                    "sections.linkedAccounts.message.mandatory"
+                                    }
+                                >
+                                    <strong>Mandatory</strong> - Mandate a linked local user account for successful
+                                    authentication. If it exists, share its profile in the response; otherwise,
+                                    authentication will fail.
+                                </Trans>
+                                
+                                    
+                            </Text>
+                        ) }
                     />
                     <Divider />
 

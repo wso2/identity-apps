@@ -937,6 +937,17 @@ export interface ConsoleNS {
                 forms: {
                     advancedAttributeSettings: {
                         sections: {
+                            linkedAccounts: {
+                                heading: string;
+                                fields: {
+                                    validateLocalAccount: FormAttributes;
+                                }
+                                message: {
+                                    disabled: string;
+                                    optional: string;
+                                    mandatory: string;
+                                }
+                            }
                             subject: {
                                 fields: {
                                     subjectAttribute: FormAttributes;
