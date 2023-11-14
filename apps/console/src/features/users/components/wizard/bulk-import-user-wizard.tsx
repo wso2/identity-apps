@@ -44,6 +44,7 @@ import {
     Heading,
     Hint,
     LinkButton,
+    Message,
     PickerResult,
     PrimaryButton,
     useWizardAlert
@@ -1930,12 +1931,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     <>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column>
-                                <Alert severity="info">
-                                    { 
-                                        t("console:manage.features.user.modals.bulkImportUserWizard" +
-                                            ".wizardSummary.inviteEmailInfo")
-                                    }
-                                </Alert>
+                                <Message
+                                    icon="mail"
+                                    content={ t("console:manage.features.user.modals.bulkImportUserWizard" +
+                                        ".wizardSummary.inviteEmailInfo") }
+                                    hideDefaultIcon
+                                />
                             </Grid.Column>
                         </Grid.Row>
                     </>
