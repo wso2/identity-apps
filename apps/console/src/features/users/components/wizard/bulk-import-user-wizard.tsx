@@ -281,7 +281,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             return newGroups;
         } catch (error) {
             setHasError(true);
-            throw error;
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:manage.features.users.notifications.bulkImportUser.submit.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.users.notifications.bulkImportUser.submit.genericError.message")
+                })
+            );
         }
     };
 
