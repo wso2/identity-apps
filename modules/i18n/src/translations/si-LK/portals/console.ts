@@ -9170,9 +9170,10 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "බහු පරිශීලකයින්ට ආරාධනා කරන්න​",
-                        subTitle: "සංවිධානයට බහු පරිශීලකයින්ට ආරාධනා කරන්න.",
+                        title: "බහු පරිශීලකයින් එකතු කරන්න",
+                        subTitle: "බහු පරිශීලකයින් අතින් හෝ CSV ගොනුවක් භාවිතා කිරීම.",
                         wizardSummary: {
+                            inviteEmailInfo: "තහවුරු කිරීමේ සබැඳියක් සහිත ඊ-තැපෑලක් පරිශීලකයා තමන්ගේ මුරපදයක් සැකසීමට සපයා ඇති විද්යුත් තැපැල් ලිපිනයට යවනු ලැබේ.",
                             successCount: "සාර්ථකත්ව ගණන",
                             failedCount: "අසාර්ථක වූ ගණන",
                             totalUserCreationCount: "සම්පූර්ණ පරිශීලක නිර්මාණ ගණන",
@@ -9216,7 +9217,13 @@ export const console: ConsoleNS = {
                             disabledSecondaryStoreInfo: "බාහිර පරිශීලක වෙළඳසැල් වෙත පරිශීලක තොග ආනයනය මේ මොහොතේ ලබා " +
                                 "දිය නොහැක.",
                             manualCreation: {
-                                hint: "ඊමේල් එකතු කරන්න සහ බහු පරිශීලකයින්ට ආරාධනා යවන්න.",
+                                alerts: {
+                                    creationSuccess: {
+                                        description: "පරිශීලක ගිණුම් සාර්ථකව නිර්මාණය කරන ලදි.",
+                                        message: "පරිශීලක නිර්මාණය සාර්ථකයි"
+                                    }
+                                },
+                                hint: "ඔබට ආරාධනා කිරීමට අවශ්ය පරිශීලකයාගේ විද්යුත් තැපැල් ලිපිනය එක් කරන්න සහ Enter ඔබන්න.",
                                 emailsLabel: "ඊමේල්",
                                 emailsPlaceholder: "ඊමේල් ලිපින ඇතුලත් කරන්න",
                                 disabledHint: "ඔබගේ සංවිධානයේ අක්ෂරාංක පරිශීලක නාම භාවිතය හේතුවෙන් අතින් විකල්පය අබල කර ඇත.",
@@ -9224,7 +9231,7 @@ export const console: ConsoleNS = {
                                     buttonText: "CSV ගොනුව උඩුගත කරන්න",
                                     description: "CSV ගොනුවක් මෙතැනට ඇද දමන්න."
                                 },
-                                primaryButton: "ආරාධනා කරන්න",
+                                primaryButton: "එකතු කරන්න",
                                 rolesLabel: "භූමිකාවන්",
                                 rolesPlaceholder: "භූමිකාවන් ඇතුළත් කරන්න",
                                 warningMessage: "හස්තීය ආරාධනා බහු පරිශීලක විශේෂාංගය භාවිතා කළ හැක්කේ ඊමේල් ලිපිනය පරිශීලක නාමය ලෙස වින්‍යාස කර ඇති විට පමණි."

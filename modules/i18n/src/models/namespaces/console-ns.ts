@@ -5872,6 +5872,7 @@ export interface ConsoleNS {
                         title: string;
                         subTitle: string;
                         wizardSummary: {
+                            inviteEmailInfo: string;
                             successCount: string;
                             failedCount: string;
                             totalUserCreationCount: string;
@@ -5907,6 +5908,9 @@ export interface ConsoleNS {
                             };
                             disabledSecondaryStoreInfo: string;
                             manualCreation: {
+                                alerts: {
+                                    creationSuccess: NotificationItem;
+                                };
                                 hint: string;
                                 emailsLabel: string;
                                 emailsPlaceholder: string;

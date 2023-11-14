@@ -9380,9 +9380,10 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Inviter plusieurs utilisateurs",
-                        subTitle: "Invitez plusieurs utilisateurs dans l’organisation.",
+                        title: "Ajouter plusieurs utilisateurs",
+                        subTitle: "Ajoutez plusieurs utilisateurs manuellement ou en utilisant un fichier CSV.",
                         wizardSummary: {
+                            inviteEmailInfo: "Un e-mail avec un lien de confirmation sera envoyé à l'adresse e-mail fournie à l'utilisateur afin de définir son propre mot de passe.",
                             successCount: "Nombre de réussites",
                             failedCount: "Nombre d'échecs",
                             totalUserCreationCount: "Nombre total de créations d'utilisateurs",
@@ -9432,7 +9433,13 @@ export const console: ConsoleNS = {
                             disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
                                 "externes n’est pas disponible pour le moment.",
                             manualCreation: {
-                                hint: "Ajoutez des e-mails et envoyez des invitations à plusieurs utilisateurs.",
+                                alerts: {
+                                    creationSuccess: {
+                                        description: "Les comptes d'utilisateurs ont été créés avec succès.",
+                                        message: "Création d'utilisateurs réussie"
+                                    }
+                                },
+                                hint: "Ajoutez l'adresse e-mail de l'utilisateur que vous souhaitez inviter et appuyez sur Entrée.",
                                 emailsLabel: "E-mails",
                                 emailsPlaceholder: "Entrez les adresses e-mail",
                                 disabledHint: "TL'option manuelle est désactivée en raison de l'utilisation de noms d'utilisateur alphanumériques dans votre organisation.",
@@ -9440,7 +9447,7 @@ export const console: ConsoleNS = {
                                     buttonText: "Télécharger le fichier CSV",
                                     description: "Faites glisser et déposez un fichier CSV ici."
                                 },
-                                primaryButton: "Inviter",
+                                primaryButton: "Ajouter",
                                 rolesLabel: "Les rôles",
                                 rolesPlaceholder: "Entrez les rôles",
                                 warningMessage: "La fonctionnalité d'invitation manuelle de plusieurs utilisateurs ne peut être utilisée que lorsque l'adresse e-mail est configurée comme nom d'utilisateur."
