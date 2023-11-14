@@ -1765,6 +1765,7 @@ export const myAccount: MyAccountNS = {
     sections: {
         accountRecovery: {
             description: "Gérer les informations de récupération que nous pouvons utiliser pour vous aider à récupérer votre mot de passe",
+            emptyPlaceholderText: "Aucune option de récupération de compte disponible",
             heading: "Récupération de votre compte"
         },
         changePassword: {
