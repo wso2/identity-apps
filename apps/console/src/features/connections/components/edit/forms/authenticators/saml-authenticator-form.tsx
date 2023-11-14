@@ -328,7 +328,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             "IsLogoutReqSigned": isLogoutReqSigned,
             "IsSLORequestAccepted": isSLORequestAccepted,
             "IsUserIdInClaims": isUserIdInClaims
-        };        
+        };
 
         const manualOverrideKeys: Set<string> = new Set<string>(Object.keys(manualOverride));
         const authn: FederatedAuthenticatorInterface = ({
