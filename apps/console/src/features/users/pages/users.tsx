@@ -139,7 +139,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ userStore, setUserStore ] = useState<string>(null);
+    const [ userStore, setUserStore ] = useState<string>("primary");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
@@ -442,11 +442,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const getUserStores = () => {
         const storeOptions: UserStoreItem[] = [
             {
-                key: -2,
-                text: t("console:manage.features.users.userstores.userstoreOptions.all"),
-                value: "all"
-            },
-            {
                 key: -1,
                 text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
                 value: "primary"
@@ -558,7 +553,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const handleSearchQueryClear = (): void => {
         setTriggerClearQuery(!triggerClearQuery);
         setSearchQuery("");
-        getList(listItemLimit, listOffset, null, null, null);
+        getList(listItemLimit, listOffset, null, null, userStore);
     };
 
     /**
@@ -763,7 +758,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                     selection
                                     options={ userStoreOptions && userStoreOptions }
                                     onChange={ handleDomainChange }
-                                    defaultValue="all"
+                                    defaultValue="primary"
                                 />
                             </RootOnlyComponent>
                         </>
