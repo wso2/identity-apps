@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.2.15
+
+### Patch Changes
+
+- [#4572](https://github.com/wso2/identity-apps/pull/4572) [`d6b83f8118`](https://github.com/wso2/identity-apps/commit/d6b83f8118c5ad0f25172366b93c053ead6c988a) Thanks [@Achintha444](https://github.com/Achintha444)! - Fix alignment issue in sub0org invited user list page
+
+- Updated dependencies [[`d6b83f8118`](https://github.com/wso2/identity-apps/commit/d6b83f8118c5ad0f25172366b93c053ead6c988a), [`94edb8d036`](https://github.com/wso2/identity-apps/commit/94edb8d0360865c0d556487ddb4208c8a3206452)]:
+  - @wso2is/theme@2.0.33
+  - @wso2is/i18n@2.0.35
+
 ## 2.2.14
 
 ### Patch Changes
