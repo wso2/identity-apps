@@ -907,6 +907,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     history.push(UsersConstants.getPaths().get("CUSTOMER_USER_EDIT_PATH")
                         .replace(":id", id));
                 } }
+                defaultUserTypeSelection={ selectedAddUserType }
                 userTypeSelection={ userType }
                 listOffset={ listOffset }
                 listItemLimit={ listItemLimit }
