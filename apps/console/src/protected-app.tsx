@@ -79,7 +79,7 @@ import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { commonConfig, serverConfigurationConfig } from "./extensions";
-import { useTenantTier } from "./extensions/components/subscription/api/subscription";
+import useTenantTier from "./extensions/components/subscription/api/subscription";
 import { TenantTier } from "./extensions/components/subscription/models/subscription";
 import { SubscriptionProvider } from "./extensions/components/subscription/providers/subscription-provider";
 import {
