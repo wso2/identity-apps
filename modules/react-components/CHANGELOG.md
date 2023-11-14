@@ -1,5 +1,11 @@
 # @wso2is/react-components
 
+## 2.0.15
+
+### Patch Changes
+
+- [#4581](https://github.com/wso2/identity-apps/pull/4581) [`e81a728ec2`](https://github.com/wso2/identity-apps/commit/e81a728ec287cf93a90882cff112f3a64bb1ab6e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update Message component to support hiding the default icon
+
 ## 2.0.14
 
 ### Patch Changes
