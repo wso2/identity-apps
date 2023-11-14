@@ -74,14 +74,15 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
 
     const [ activePage, setActivePage ] = useState<number>(1);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isListUpdated, setListUpdated ] = useState<boolean>(false);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ apiResourcesList, setAPIResourcesList ] = useState<APIResourceInterface[]>([]);
     const [ after, setAfter ] = useState<string>(undefined);
     const [ before, setBefore ] = useState<string>(undefined);
     const [ nextAfter, setNextAfter ] = useState<string>(undefined);
     const [ nextBefore, setNextBefore ] = useState<string>(undefined);
+    const [ filter, setFilter ] = useState<string>(`type eq ${ APIResourcesConstants.BUSINESS }`);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -90,7 +91,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
         isLoading: isAPIResourcesListLoading,
         error: apiResourcesFetchRequestError,
         mutate: mutateAPIResourcesFetchRequest
-    } = useAPIResources(after, before);
+    } = useAPIResources(after, before, filter);
 
     /**
      * Update the API resources list.
@@ -163,6 +164,19 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     }, [ isListUpdated ]);
 
     /**
+     * The following useEffect is used to update the filter value
+     */
+    useEffect(() => {
+        const typeFilter: string = `type eq ${ APIResourcesConstants.BUSINESS }`;
+
+        if (searchQuery) {
+            setFilter(`${ searchQuery } and ${ typeFilter }`);
+        } else {
+            setFilter(typeFilter);
+        }
+    }, [ searchQuery ]);
+
+    /**
      * edit the API resources list once a API resource is deleted
      */
     const onAPIResourceDelete = (): void => {
@@ -208,7 +222,14 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
      */
     const handleApiFilter = (query: string): void => {
         setSearchQuery(query);
-        // setListOffset(0);
+    };
+
+    /**
+     * Handles the `onSearchQueryClear` callback action.
+     */
+    const handleSearchQueryClear = (): void => {
+        setSearchQuery("");
+        setTriggerClearQuery(!triggerClearQuery);
     };
 
     return (
@@ -236,8 +257,8 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                     </DocumentationLink>
                 </>
             ) }
-            data-componentid={ `${componentId}-page-layout` }
-            data-testid={ `${componentId}-page-layout` }
+            data-componentid={ `${ componentId }-page-layout` }
+            data-testid={ `${ componentId }-page-layout` }
             headingColumnWidth="11"
             actionColumnWidth="5"
         >
@@ -353,9 +374,6 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                         style={ { minWidth: "425px" } }
                         defaultSearchAttribute="name"
                         defaultSearchOperator="co"
-                        predefinedDefaultSearchStrategy={
-                            "name co %search-value% or clientId co %search-value% or issuer co %search-value%"
-                        }
                         triggerClearQuery={ triggerClearQuery }
                         data-componentid={ `${ componentId }-list-advanced-search` }
                     />
@@ -389,7 +407,8 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                             isAPIResourcesListLoading={ isAPIResourcesListLoading }
                             featureConfig={ featureConfig }
                             onAPIResourceDelete={ onAPIResourceDelete }
-                            setShowAddAPIWizard={ setShowWizard }
+                            onSearchQueryClear={ handleSearchQueryClear }
+                            searchQuery={ searchQuery }
                             categoryId="custom"
                         />)
 

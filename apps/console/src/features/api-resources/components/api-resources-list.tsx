@@ -24,7 +24,7 @@ import {
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
-    PrimaryButton,
+    LinkButton,
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
@@ -32,7 +32,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useS
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
+import { Header, Label, SemanticICONS } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../core";
 import { deleteAPIResource } from "../api";
 import { APIResourcesConstants } from "../constants";
@@ -52,10 +52,6 @@ interface APIResourcesListProps extends SBACInterface<FeatureConfigInterface>, I
      */
     isAPIResourcesListLoading: boolean;
     /**
-     * Show add API wizard.
-     */
-    setShowAddAPIWizard: (show: boolean) => void;
-    /**
      * On API resource delete callback.
      */
     onAPIResourceDelete?: () => void;
@@ -71,6 +67,14 @@ interface APIResourcesListProps extends SBACInterface<FeatureConfigInterface>, I
      * API Category
      */
     categoryId: string
+    /**
+     * Search query for the list.
+     */
+    searchQuery?: string;
+    /**
+     * Callback for the search query clear action.
+     */
+    onSearchQueryClear?: () => void;
 }
 
 /**
@@ -85,9 +89,10 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
         categoryId,
         featureConfig,
         isAPIResourcesListLoading,
-        setShowAddAPIWizard,
         onAPIResourceDelete,
         onListItemClick,
+        onSearchQueryClear,
+        searchQuery,
         showListItemActions,
         ["data-componentid"]: componentId
     } = props;
@@ -265,22 +270,34 @@ export const APIResourcesList: FunctionComponent<APIResourcesListProps> = (
      * @returns React element.
      */
     const showPlaceholders = (): ReactElement => {
+        // When the search returns empty.
+        if (searchQuery && (apiResourcesList && apiResourcesList.length === 0)) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ onSearchQueryClear }>
+                            { t("console:develop.placeholders.emptySearchResult.action") }
+                        </LinkButton>
+                    ) }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
+                    imageSize="tiny"
+                    title={ t("console:develop.placeholders.emptySearchResult.title") }
+                    subtitle={ [
+                        t("console:develop.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
+                        t("console:develop.placeholders.emptySearchResult.subtitles.1")
+                    ] }
+                    data-testid={ `${ componentId }-empty-search-placeholder-icon` }
+                />
+            );
+        }
+
         if ((!apiResourcesList) || (apiResourcesList && apiResourcesList.length === 0)) {
             return (
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().emptyList }
-                    action={ (
-                        <PrimaryButton
-                            data-testid={ `${ componentId }-empty-placeholder-add-api-resource-button` }
-                            onClick={ () => setShowAddAPIWizard(true) }
-                        >
-                            <Icon name="add" />
-                            { t("extensions:develop.apiResource.addApiResourceButton") }
-                        </PrimaryButton>
-                    ) }
                     imageSize="tiny"
                     subtitle={ [ t("extensions:develop.apiResource.empty") ] }
-                    data-testid={ `${componentId}-empty-search-placeholder-icon` }
+                    data-testid={ `${ componentId }-empty-search-placeholder-icon` }
                 />
             );
         }

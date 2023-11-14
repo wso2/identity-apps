@@ -41,6 +41,7 @@ export class APIResourcesConstants {
     public static readonly SYSTEM: string = "SYSTEM";
     public static readonly SYSTEM_ORG: string = "SYSTEM_ORG";
     public static readonly SYSTEM_FEATURE: string = "SYSTEM_FEATURE";
+    public static readonly BUSINESS: string = "BUSINESS";
 
     /**
      * Get the API resource paths as a map.

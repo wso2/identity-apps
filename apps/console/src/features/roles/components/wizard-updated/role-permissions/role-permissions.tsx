@@ -242,9 +242,13 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             if(roleAudience === RoleAudienceTypes.ORGANIZATION) {
                 setSelectedAPIResourceId(data?.value?.toString());
             } else {
-                const selectedAPIResource: AuthorizedAPIListItemInterface = authorizedAPIListForApplication.find(
+                const selectedAPIResource: AuthorizedAPIListItemInterface = authorizedAPIListForApplication?.find(
                     (api: AuthorizedAPIListItemInterface) => api?.id === data?.value?.toString()
                 );
+
+                if (!selectedAPIResource) {
+                    return;
+                }
 
                 setSelectedAPIResources([ 
                     {
@@ -315,7 +319,6 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                 }
                 <Grid xs={ 12 }>
                     <Autocomplete
-                        disableCloseOnSelect
                         fullWidth
                         aria-label="API resource selection"
                         componentsProps={ {

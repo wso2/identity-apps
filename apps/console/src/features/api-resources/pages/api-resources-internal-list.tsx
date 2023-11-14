@@ -60,30 +60,32 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
         ["data-componentid"]: componentId
     } = props;
 
+    const path: string[] = history.location.pathname.split("/");
+    const categoryId: string = path[path.length - 1];
+
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ activePage, setActivePage ] = useState<number>(1);
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isListUpdated, setListUpdated ] = useState<boolean>(false);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ apiResourcesList, setAPIResourcesList ] = useState<APIResourceInterface[]>([]);
     const [ after, setAfter ] = useState<string>(undefined);
     const [ before, setBefore ] = useState<string>(undefined);
     const [ nextAfter, setNextAfter ] = useState<string>(undefined);
     const [ nextBefore, setNextBefore ] = useState<string>(undefined);
-
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
-    const path: string[] = history.location.pathname.split("/");
-    const categoryId: string = path[path.length - 1];
+    const [ filter, setFilter ] = useState<string>(categoryId === APIResourceType.MANAGEMENT 
+        ? `type eq ${ APIResourcesConstants.SYSTEM }`
+        : `type eq ${ APIResourcesConstants.SYSTEM_ORG }`);
 
     const {
         data: apiResourcesListData,
         isLoading: isAPIResourcesListLoading,
         error: apiResourcesFetchRequestError,
         mutate: mutateAPIResourcesFetchRequest
-    } = useAPIResources(after, before);
+    } = useAPIResources(after, before, filter);
 
     /**
      * Update the API resources list.
@@ -156,6 +158,21 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     }, [ isListUpdated ]);
 
     /**
+     * The following useEffect is used to update the filter value
+     */
+    useEffect(() => {
+        const typeFilter: string = categoryId === APIResourceType.MANAGEMENT
+            ? `type eq ${ APIResourcesConstants.SYSTEM }`
+            : `type eq ${ APIResourcesConstants.SYSTEM_ORG }`;
+
+        if (searchQuery) {
+            setFilter(`${ searchQuery } and ${ typeFilter }`);
+        } else {
+            setFilter(typeFilter);
+        }
+    }, [ searchQuery ]);
+
+    /**
      * set the after and before values needed for the `mutateAPIResourcesFetchRequest`
      * 
      * @param afterValue - after value
@@ -192,9 +209,16 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
      *
      * @param query - Search query.
      */
-    const handleApiFilter = (query: string): void => {
+    const handleApiFilter = (query: string): void => {        
         setSearchQuery(query);
-        // setListOffset(0);
+    };
+
+    /**
+     * Handles the `onSearchQueryClear` callback action.
+     */
+    const handleSearchQueryClear = (): void => {
+        setSearchQuery("");
+        setTriggerClearQuery(!triggerClearQuery);
     };
 
     /**
@@ -225,7 +249,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
             backButton={ {
                 "data-testid": `${componentId}-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("extensions:develop.apiResource.tabs.backButton")
+                text: t("console:manage.pages.rolesEdit.backButton", { type: "APIs" })
             } }
         >
             <ListLayout
@@ -255,9 +279,6 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                         style={ { minWidth: "425px" } }
                         defaultSearchAttribute="name"
                         defaultSearchOperator="co"
-                        predefinedDefaultSearchStrategy={
-                            "name co %search-value% or clientId co %search-value% or issuer co %search-value%"
-                        }
                         triggerClearQuery={ triggerClearQuery }
                         data-componentid={ `${ componentId }-list-advanced-search` }
                     />
@@ -291,7 +312,8 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                             isAPIResourcesListLoading={ isAPIResourcesListLoading }
                             featureConfig={ featureConfig }
                             onAPIResourceDelete={ null }
-                            setShowAddAPIWizard={ null }
+                            onSearchQueryClear={ handleSearchQueryClear }
+                            searchQuery={ searchQuery }
                             categoryId={ categoryId }
                         />)
 
