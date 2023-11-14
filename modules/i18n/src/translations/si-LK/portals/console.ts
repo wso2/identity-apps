@@ -2459,6 +2459,15 @@ export const console: ConsoleNS = {
                                     empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි.",
                                     invalid: "මෙය වලංගු URL එකක් නොවේ"
                                 }
+                            },
+                            replyToLogout: {
+                                hint: "පිටවීමේදී ප්‍රතිචාරය හසුරුවන මෘදුකාංගයේ අවසාන ලක්ෂ්‍ය URL ඇතුල් කරන්න.",
+                                label: "පිටවීමේදී පිළිතුරු URL",
+                                placeholder: "පිටවීමේදී පිළිතුරු URL ඇතුලත් කරන්න",
+                                validations: {
+                                    empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි.",
+                                    invalid: "මෙය වලංගු URL එකක් නොවේ"
+                                }
                             }
                         }
                     },

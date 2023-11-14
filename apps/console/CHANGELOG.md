@@ -1,5 +1,25 @@
 # @wso2is/console
 
+## 2.6.2
+
+### Patch Changes
+
+- [#4566](https://github.com/wso2/identity-apps/pull/4566) [`eede5f1732`](https://github.com/wso2/identity-apps/commit/eede5f1732eecfd72bc137136a9b13499186c000) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in role creation with application audience
+
+## 2.6.1
+
+### Patch Changes
+
+- [#4564](https://github.com/wso2/identity-apps/pull/4564) [`bc18db27a5`](https://github.com/wso2/identity-apps/commit/bc18db27a59d43ccb38f965899c0546c9816d2b7) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Fix password patterns updated via console not being reflected in My Account and reset password window
+
+* [#4518](https://github.com/wso2/identity-apps/pull/4518) [`9ae04065e4`](https://github.com/wso2/identity-apps/commit/9ae04065e429f465e5085afeb7b9a59d01a2feb1) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support for logout wreply validation in Passive STS application
+
+- [#4563](https://github.com/wso2/identity-apps/pull/4563) [`6f1de4d977`](https://github.com/wso2/identity-apps/commit/6f1de4d97706b0d92341b8087fcaf2b63e92d046) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Disable Create Role button when readonly
+
+- Updated dependencies [[`bc18db27a5`](https://github.com/wso2/identity-apps/commit/bc18db27a59d43ccb38f965899c0546c9816d2b7), [`9ae04065e4`](https://github.com/wso2/identity-apps/commit/9ae04065e429f465e5085afeb7b9a59d01a2feb1)]:
+  - @wso2is/core@2.0.12
+  - @wso2is/i18n@2.0.34
+
 ## 2.6.0
 
 ### Minor Changes

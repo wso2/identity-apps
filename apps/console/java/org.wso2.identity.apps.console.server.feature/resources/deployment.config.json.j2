@@ -1578,6 +1578,11 @@
         {% if console.ui.is_saas_deployment is defined %}
         "isSAASDeployment": {{ console.ui.saas_deployment }},
         {% endif %}
+        {% if event.default_listener.validation.enable is defined %}
+        "isPasswordInputValidationEnabled": {{ event.default_listener.validation.enable }},
+        {% else %}
+        "isPasswordInputValidationEnabled": true,
+        {% endif %}
         "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
         "listAllAttributeDialects": {{ console.list_all_attribute_dialects }},
         "privacyPolicyConfigs": {

@@ -107,6 +107,7 @@
             }
         },
         "isCookieConsentBannerEnabled": true,
+        "isPasswordInputValidationEnabled": true,
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "isHeaderAvatarLabelAllowed": false,
         "i18nConfigs": {

@@ -98,21 +98,23 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
                 )) || [];
     
             const roleData: CreateRoleInterface = {
-                displayName: stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ].roleName,
-                permissions: selectedPermissionsList,
-                schemas: []
-            };
-
-            // If the organization is a super or first level organization, no need to send the audience.
-            if (!isRootOrganization) {
-                roleData.audience = roleAudience === RoleAudienceTypes.ORGANIZATION
+                audience: roleAudience === RoleAudienceTypes.ORGANIZATION
                     ? {
                         type: roleAudience,
                         value: organizationId
                     } : {
                         type: roleAudience,
                         value: stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ].assignedApplicationId
-                    };
+                    },
+                displayName: stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ].roleName,
+                permissions: selectedPermissionsList,
+                schemas: []
+            };
+
+            // If the organization is super or a first level organization,
+            // no need to send the audience for Organization audience.
+            if (isRootOrganization && roleAudience === RoleAudienceTypes.ORGANIZATION) {
+                delete roleData.audience;
             }
     
             // Create Role API Call.
