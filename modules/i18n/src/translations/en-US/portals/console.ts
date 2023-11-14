@@ -1586,6 +1586,26 @@ export const console: ConsoleNS = {
                 forms: {
                     advancedAttributeSettings: {
                         sections: {
+                            linkedAccounts: {
+                                heading: "Linked Accounts",
+                                fields: {
+                                    validateLocalAccount: {
+                                        label: "Validate linked local account",
+                                        hint: "This option will decide how the linked local user account is validated with the " + 
+                                        "authenticated identity."
+                                    }
+                                },
+                                message: {
+                                    disabled: "<strong>Disabled</strong> - Linked local user account validation is disabled, " +
+                                    "and the authenticated identity's profile is always shared.",
+                                    optional: "<strong>Optional</strong> - A linked local user account with the authenticated " +
+                                    "identity is optional for successful authentication; if present, its profile is " +
+                                    "shared, otherwise, the authenticated identity's profile is shared.",
+                                    mandatory: "<strong>Mandatory</strong> - Mandate a linked local user account for successful " +
+                                    "authentication. If it exists, share its profile in the response; otherwise, " +
+                                    "authentication will fail."
+                                }    
+                            },
                             role: {
                                 fields: {
                                     role: {
