@@ -1060,6 +1060,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     },
                     includeTenantDomain: advanceSettingValues?.subject.includeTenantDomain,
                     includeUserDomain: advanceSettingValues?.subject.includeUserDomain,
+                    mappedLocalSubjectMandatory: advanceSettingValues?.subject.mappedLocalSubjectMandatory,
                     useMappedLocalSubject: advanceSettingValues?.subject.useMappedLocalSubject
                 }
             }

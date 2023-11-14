@@ -44,6 +44,12 @@ export interface ApplicationBasicInterface {
     associatedRoles?: AssociatedRolesInterface;
 }
 
+export enum ApplicationValidateLocalAccountTypes {
+    DISABLED = "Disabled",
+    OPTIONAL = "Optional",
+    MANDATORY = "Mandatory"
+}
+
 export enum ApplicationAccessTypes {
     READ = "READ",
     WRITE = "WRITE"
@@ -160,6 +166,7 @@ export interface SubjectInterface {
     includeUserDomain: boolean;
     includeTenantDomain: boolean;
     useMappedLocalSubject: boolean;
+    mappedLocalSubjectMandatory: boolean;
 }
 
 export interface RoleInterface {
@@ -189,6 +196,7 @@ export interface SubjectConfigInterface {
     includeUserDomain?: boolean;
     includeTenantDomain?: boolean;
     useMappedLocalSubject?: boolean;
+    mappedLocalSubjectMandatory?: boolean;
 }
 
 /**
