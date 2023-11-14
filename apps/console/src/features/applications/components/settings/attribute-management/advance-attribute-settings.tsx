@@ -233,8 +233,6 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     };
 
     const submitValues = (values: Record<string, any>) => {
-        console.log(initialSubject);
-
         const [ useMappedLocalSubject, mappedLocalSubjectMandatory ] = resolveValidateLocalAccountConfig(values);
 
         const settingValues: {
