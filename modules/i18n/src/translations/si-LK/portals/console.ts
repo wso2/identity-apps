@@ -7149,12 +7149,18 @@ export const console: ConsoleNS = {
                         }
                     },
                     roles: {
+                        placeHolders: {
+                            emptyListPlaceholder: {
+                                subtitles: "මේ මොහොතේ මෙම කණ්ඩායමට කිසිදු භූමිකාවන් පවරා නොමැත.",
+                                title: "කිසිදු භූමිකාවක් පවරා නොමැත"
+                            }
+                        },
+                        heading: "පවරා ඇති භූමිකාවන්",
                         addRolesModal: {
                             heading: "කණ්ඩායම් භූමිකාවන් යාවත්කාලීන කරන්න",
                             subHeading: "නව භූමිකාවන් එක් කරන්න හෝ කණ්ඩායමට පවරා ඇති භූමිකාවන් ඉවත් කරන්න."
                         },
-                        subHeading: "මෙම කණ්ඩායම විසින් පවරා ඇති භූමිකාවන් එකතු කිරීම හෝ ඉවත් කිරීම සහ " +
-                            "මෙය ඇතැම් කාර්යයන් ඉටු කිරීමට බලපානු ඇති බව සලකන්න."
+                        subHeading: "කණ්ඩායම සඳහා පවරා ඇති භූමිකාවන් බලන්න."
                     }
                 },
                 list: {
@@ -9603,6 +9609,12 @@ export const console: ConsoleNS = {
                                 header: "ඔබට විශ්වාසද?",
                                 message: "මෙම ක්‍රියාව මෙම පරිශීලකයාගේ භූමිකාව වෙනස් කරයි."
                             },
+                            placeholders: {
+                                emptyPlaceholder: {
+                                    title: "කිසිදු භූමිකාවක් පවරා නොමැත",
+                                    subtitles: "මේ මොහොතේ පරිශීලකයාට කිසිදු භූමිකාවන් නොමැත."
+                                }
+                            },
                             heading: "පවරා ඇති භූමිකාවන්",
                             popups: {
                                 viewPermissions: "අවසර බලන්න"
@@ -9622,8 +9634,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             searchPlaceholder: "සෙවුම් භූමිකාවන්",
-                            subHeading: "මෙම පරිශීලකයාට පවරා ඇති භූමිකාවන් එකතු කිරීම හෝ ඉවත් කිරීම සහ " +
-                                "මෙය ඇතැම් කාර්යයන් ඉටු කිරීමට බලපානු ඇති බව සලකන්න."
+                            subHeading: "පරිශීලකයා සඳහා පවරා ඇති භූමිකාවන් බලන්න."
                         },
                         notifications: {
                             addUserRoles: {

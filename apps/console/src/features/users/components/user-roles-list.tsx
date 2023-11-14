@@ -76,9 +76,9 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
                 // TODO: Need to replace the i18N with the correct one.
                 <EmptyPlaceholder
                     subtitle={ 
-                        [ t("console:manage.features.roles.edit.groups.placeholders.emptyPlaceholder.subtitles.0") ]
+                        [ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.subtitles") ]
                     }
-                    title={ t("console:manage.features.roles.edit.groups.placeholders.emptyPlaceholder.title") }
+                    title={ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.title") }
                     image={ getEmptyPlaceholderIllustrations().emptyList }
                     imageSize="tiny"
                 />
@@ -92,7 +92,6 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
                 { t("console:manage.features.user.updateUser.roles.editRoles.heading") }
             </Heading>
             <Heading subHeading ellipsis as="h6">
-                { /* TODO: Need to replace this with "View assigned roles for the user." */ }
                 { t("console:manage.features.user.updateUser.roles.editRoles.subHeading") }
             </Heading>
             {
