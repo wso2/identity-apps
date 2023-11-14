@@ -1913,54 +1913,52 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
                     <Suspense fallback={ <ContentLoader /> }>
-                        <>
-                            <Heading as="h5">
-                                { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel.manual") }
-                            </Heading>
-                            <p>
-                                { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
+                        <Heading as="h5">
+                            { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel.manual") }
+                        </Heading>
+                        <p>
+                            { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
                                         ".manualCreation.hint" ) }
-                            </p>
-                            <Divider />
-                            <Heading as="h5">
-                                { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel.fileBased") }
-                            </Heading>
-                            <p>
-                                { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
+                        </p>
+                        <Divider />
+                        <Heading as="h5">
+                            { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel.fileBased") }
+                        </Heading>
+                        <p>
+                            { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
                                         ".fileBased.hint" ) }
-                            </p>
-                            <Heading as="h6">
-                                { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
+                        </p>
+                        <Heading as="h6">
+                            { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
                                     "fileFormatTitle") }
-                            </Heading>
-                            <p>
-                                <Trans
-                                    i18nKey={
-                                        "console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
+                        </Heading>
+                        <p>
+                            <Trans
+                                i18nKey={
+                                    "console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
                                     "fileFormatContent"
-                                    }
-                                >
+                                }
+                            >
                                     Headers of the CSV file should be user attributes that are mapped to
-                                    local <Link onClick={ navigateToSCIMAttributes }>attribute names</Link>.
-                                </Trans>
-                            </p>
-                            <p> { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
+                                    local <Link onClick={ navigateToSCIMAttributesPage }>attribute names</Link>.
+                            </Trans>
+                        </p>
+                        <p> { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
                                     "fileFormatSampleHeading") }</p>
-                            <p>
-                                <code>userName,givenname,emailaddress<br/>
+                        <p>
+                            <code>userName,givenname,emailaddress<br/>
                                     user1,john,john@test.com<br/>
                                     user2,jake,jake@test.com<br/>
                                     user3,jane,jane@test.com<br/>
-                                </code>
-                            </p>
-                        </>
+                            </code>
+                        </p>
                     </Suspense>
                 </ModalWithSidePanel.Content>
             </ModalWithSidePanel.SidePanel>
         );
     };
 
-    const navigateToSCIMAttributes = () => history.push(AppConstants.getPaths()
+    const navigateToSCIMAttributesPage = () => history.push(AppConstants.getPaths()
         .get("ATTRIBUTE_MAPPINGS")
         .replace(":type", ClaimManagementConstants.SCIM));
 
