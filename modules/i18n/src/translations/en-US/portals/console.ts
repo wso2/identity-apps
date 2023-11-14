@@ -4051,7 +4051,7 @@ export const console: ConsoleNS = {
                                 ariaLabel: "SAML request additional query parameters",
                                 label: "Additional query parameters"
                             },
-                            isAssertionSigned:  {
+                            isAssertionSigned: {
                                 ariaLabel: "Enable assertion signing",
                                 hint: "Specify if SAMLAssertion element is signed",
                                 label: "Enable assertion signing"
