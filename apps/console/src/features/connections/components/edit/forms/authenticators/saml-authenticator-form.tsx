@@ -899,7 +899,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             } }
                             getOptionLabel={ (role: DropdownChild) => role?.text as string }
                             renderInput={ (params: AutocompleteRenderInputParams) => {
-
                                 params.inputProps.className = "forms-wrapped-autocomplete-render-input";
 
                                 return (
