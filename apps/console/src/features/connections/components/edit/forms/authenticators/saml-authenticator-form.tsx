@@ -304,7 +304,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                 (contextClass: string) => 
                     authenticationContextClassOptions.find(
                         (classOption: DropdownChild) => classOption.value === contextClass
-                    )            
+                    )
             );
 
         // Filtering falsy values before updating the state, as `.find` returns undefined when a match is not found.
