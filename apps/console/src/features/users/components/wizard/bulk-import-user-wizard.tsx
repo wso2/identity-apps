@@ -1473,6 +1473,21 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     };
 
     /**
+     * Check if the manual invite button should be disabled.
+     * @returns true if the manual invite button should be disabled.
+     */
+    const isManualInviteButtonDisabled = (): boolean => {
+        return isLoading
+            || isSubmitting
+            || hasError
+            || isAllRolesListLoading
+            || !emailData
+            || emailData?.length === 0
+            || !rolesData
+            || rolesData?.length === 0;
+    };
+
+    /**
      * Render Multiple Users configuration section.
      */
     const resolveMultipleUsersConfiguration = (): ReactElement => {
@@ -1912,6 +1927,18 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
             <Modal.Content className="content-container" scrolling>
                 <Grid>
+                    <>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column>
+                                <Alert severity="info">
+                                    { 
+                                        t("console:manage.features.user.modals.bulkImportUserWizard" +
+                                            ".wizardSummary.inviteEmailInfo") 
+                                    }
+                                </Alert>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </>
                     { resolveMultipleUsersModeSelection() }
                     { resolveMultipleUsersConfiguration() }
                 </Grid>
@@ -1946,12 +1973,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     floated="right"
                                                     onClick={ manualInviteMultipleUsers }
                                                     loading={ isSubmitting }
-                                                    disabled={ 
-                                                        isLoading
-                                                        ||isSubmitting
-                                                        || hasError
-                                                        || isAllRolesListLoading
-                                                    }
+                                                    disabled={ isManualInviteButtonDisabled() }
                                                 >
                                                     { t("console:manage.features.user.modals." +
                                                     "bulkImportUserWizard.wizardSummary.manualCreation.primaryButton") }
