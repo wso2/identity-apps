@@ -236,11 +236,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     },[ template ]);
 
     /**
-     * Check whether the application is an M2M Application
+     * Check whether the application is an M2M Application.
      */
     useEffect(() => {
 
-        if (template?.id == ApplicationTemplateIdTypes.M2M_APPLICATION) {
+        if (template?.id === ApplicationTemplateIdTypes.M2M_APPLICATION) {
             setM2MApplication(true);
         }
     }, [ template ]);
