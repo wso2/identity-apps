@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.35
+
+### Patch Changes
+
+- [#4623](https://github.com/wso2/identity-apps/pull/4623) [`826163ef8a`](https://github.com/wso2/identity-apps/commit/826163ef8a87118577b5e093b9f95185c244ac21) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) enable custom user store managers
+
 ## 2.0.34
 
 ### Patch Changes
