@@ -139,7 +139,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ userStore, setUserStore ] = useState<string>("primary");
+    const [ userStore, setUserStore ] = useState<string>(PRIMARY_USERSTORE.toLocaleLowerCase());
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
@@ -758,7 +758,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                     selection
                                     options={ userStoreOptions && userStoreOptions }
                                     onChange={ handleDomainChange }
-                                    defaultValue="primary"
+                                    defaultValue={ PRIMARY_USERSTORE.toLocaleLowerCase() }
                                 />
                             </RootOnlyComponent>
                         </>
