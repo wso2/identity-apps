@@ -45,10 +45,6 @@ const AdaptiveScriptResetConfirmationModal: FunctionComponent<AdaptiveScriptRese
         onConditionalAuthenticationToggle
     } = useAuthenticationFlow();
 
-    /**
-     * This will reset the adaptive script to the default one
-     * when the user gives their consent for reseting script editor.
-     */
     const resetAdaptiveScriptTemplateToDefaultHandler = () => {
         onConditionalAuthenticationToggle(false);
         onClose(null, null);
