@@ -896,7 +896,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             size="small"
                             options={ authenticationContextClassOptions }
                             value={ selectedAuthnContextClasses }
-                            onChange={ (_event: React.SyntheticEvent,classes: DropdownChild[]) => {
+                            onChange={ (_event: React.SyntheticEvent, classes: DropdownChild[]) => {
                                 setSelectedAuthnContextClasses(classes);
                             } }
                             getOptionLabel={ (role: DropdownChild) => role?.text as string }
