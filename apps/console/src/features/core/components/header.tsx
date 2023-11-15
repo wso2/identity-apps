@@ -53,7 +53,6 @@ import { organizationConfigs } from "../../../extensions";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
 import { SubscriptionContext } from "../../../extensions/components/subscription/contexts/subscription-context";
 import { ReactComponent as LogoutIcon } from "../../../themes/default/assets/images/icons/logout-icon.svg";
-import { ReactComponent as MyAccountIcon } from "../../../themes/default/assets/images/icons/user-icon.svg";
 import { ReactComponent as AskHelpIcon } from "../../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
 import { ReactComponent as CommunityIcon } from "../../../themes/wso2is/assets/images/icons/community-icon.svg";
 import {
@@ -70,7 +69,7 @@ import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
-import { CommonUtils, EventPublisher } from "../utils";
+import { CommonUtils } from "../utils";
 
 /**
  * Dashboard layout Prop types.
@@ -99,21 +98,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const config: ConfigReducerStateInterface = useSelector(
         (state: AppState) => state.config
     );
-    const showAppSwitchButton: boolean = useSelector(
-        (state: AppState) => state.config.ui.showAppSwitchButton
-    );
-    const accountAppURL: string = useSelector(
-        (state: AppState) => state.config.deployment.accountApp.path
-    );
     const tenantDomain: string = useSelector(
         (state: AppState) => state?.auth?.tenantDomain
     );
     const associatedTenants: any[] = useSelector(
         (state: AppState) => state?.auth?.tenants
-    );
-    const privilegedUserAccountURL: string = useSelector(
-        (state: AppState) =>
-            state.config.deployment.accountApp.tenantQualifiedPath
     );
     const isPrivilegedUser: boolean = useSelector(
         (state: AppState) => state.auth.isPrivilegedUser
@@ -124,8 +113,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const scopes: string = useSelector(
         (state: AppState) => state.auth.allowedScopes
     );
-    const userOrganizationID: string = useSelector((state: AppState) =>
-        state?.organization?.userOrganizationId);
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
     const { tierName }: TenantTierRequestResponse = useContext(SubscriptionContext);
@@ -148,8 +135,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     const [ billingPortalURL, setBillingPortalURL ] = useState<string>(undefined);
     const [ upgradeButtonURL, setUpgradeButtonURL ] = useState<string>(undefined);
-
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
         if (saasFeatureStatus === FeatureStatus.DISABLED) {
@@ -383,21 +368,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         ];
     };
 
-    const isShowAppSwitchButton = (): boolean => {
-        if (!showAppSwitchButton) {
-            return false;
-        }
-
-        // Show the app switch button only if the user is logged in to the
-        // user resident organization.
-        if (!legacyAuthzRuntime) {
-            return (!userOrganizationID
-                || userOrganizationID === window[ "AppUtils" ].getConfig().organizationName);
-        }
-        
-        return true;
-    };
-
     return (
         <OxygenHeader
             className="is-header"
@@ -517,34 +487,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 </ListItemText>
                             </MenuItem>
                         </Show>
-                    ),
-                    isShowAppSwitchButton() ? (
-                        <MenuItem
-                            color="inherit"
-                            key={ t(
-                                "myAccount:components.header.appSwitch.console.name"
-                            ) }
-                            onClick={ () => {
-                                eventPublisher.publish(
-                                    "console-click-visit-my-account"
-                                );
-                                window.open(
-                                    isPrivilegedUser
-                                        ? privilegedUserAccountURL
-                                        : accountAppURL,
-                                    "_blank",
-                                    "noopener"
-                                );
-                            } }
-                        >
-                            <ListItemIcon>
-                                <MyAccountIcon />
-                            </ListItemIcon>
-                            <ListItemText>
-                                { t("console:common.header.appSwitch.myAccount.name") }
-                            </ListItemText>
-                        </MenuItem>
-                    ) : null
+                    )
                 ],
                 onActionClick: () =>
                     history.push(AppConstants.getAppLogoutPath()),
