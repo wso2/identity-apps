@@ -120,9 +120,6 @@
                         return "*";
                     }
                 }).join("");
-                $('#sent-email').html(
-                    $('#sent-email').html().replace('your email', username.join("@"))
-                );
             }
         });
     </script>
