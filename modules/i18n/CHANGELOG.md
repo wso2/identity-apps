@@ -1,5 +1,23 @@
 # @wso2is/i18n
 
+## 2.0.38
+
+### Patch Changes
+
+- [#4596](https://github.com/wso2/identity-apps/pull/4596) [`f61b7ad629`](https://github.com/wso2/identity-apps/commit/f61b7ad62974d7be55aa96bb0b2e2cdd5c80002c) Thanks [@savindi7](https://github.com/savindi7)! - Fix inconsistency in email validation
+
+* [#4594](https://github.com/wso2/identity-apps/pull/4594) [`3e305e7929`](https://github.com/wso2/identity-apps/commit/3e305e7929ea3c91a0dbf0b6dcd14f9940876ecd) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Remove the userstore dropdown from multiple user creation wizard
+
+## 2.0.37
+
+### Patch Changes
+
+- [#4549](https://github.com/wso2/identity-apps/pull/4549) [`67b884e836`](https://github.com/wso2/identity-apps/commit/67b884e836e2a55d6147c43b0b4df72bc020f7ad) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix invalid error message in remote logging page
+
+* [#4593](https://github.com/wso2/identity-apps/pull/4593) [`772196ccd8`](https://github.com/wso2/identity-apps/commit/772196ccd8815d73b8688dde15706732112fdb1a) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Fix content of roles tabs in users and groups to convey that this tab is read only
+
+- [#4598](https://github.com/wso2/identity-apps/pull/4598) [`60e9da3933`](https://github.com/wso2/identity-apps/commit/60e9da39331b754ed296130e4ffa9f06dc8f9743) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) add missing localization text in the account recovery panel in my account
+
 ## 2.0.36
 
 ### Patch Changes

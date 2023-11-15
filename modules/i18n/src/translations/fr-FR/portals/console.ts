@@ -9287,7 +9287,9 @@ export const console: ConsoleNS = {
                                 placeholder: "Veuillez saisir une adresse e-mail",
                                 validations: {
                                     empty: "L'adresse e-mail est obligatoire",
-                                    invalid: "L'adresse e-mail est invalide"
+                                    invalid: "S'il vous plaît, mettez une adresse email valide.Vous pouvez utiliser alphanumérique "+
+                                        "Caractères, caractères Unicode, soulignements (_), tirets (-), périodes (.)," +
+                                        "Et un signe AT (@)."
                                 }
                             },
                             firstName: {
@@ -9463,8 +9465,7 @@ export const console: ConsoleNS = {
                                 },
                                 primaryButton: "Ajouter",
                                 rolesLabel: "Les rôles",
-                                rolesPlaceholder: "Entrez les rôles",
-                                warningMessage: "La fonctionnalité d'invitation manuelle de plusieurs utilisateurs ne peut être utilisée que lorsque l'adresse e-mail est configurée comme nom d'utilisateur."
+                                rolesPlaceholder: "Entrez les rôles"
                             },
                             fileBased: {
                                 hint: "Invitez plusieurs utilisateurs en masse à l’aide d’un fichier CSV."
@@ -9472,7 +9473,8 @@ export const console: ConsoleNS = {
                             responseOperationType: {
                                 userCreation: "Création d'utilisateur",
                                 roleAssignment: "Affectation de rôle/groupe"
-                            }
+                            },
+                            userstoreMessage: "Les utilisateurs créés seront ajoutés au magasin d'utilisateurs <1>{{ userstore }></1>."
                         },
                         buttons: {
                             import: "Importer"

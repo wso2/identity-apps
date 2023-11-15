@@ -1,5 +1,39 @@
 # @wso2is/console
 
+## 2.6.8
+
+### Patch Changes
+
+- [#4596](https://github.com/wso2/identity-apps/pull/4596) [`f61b7ad629`](https://github.com/wso2/identity-apps/commit/f61b7ad62974d7be55aa96bb0b2e2cdd5c80002c) Thanks [@savindi7](https://github.com/savindi7)! - Fix inconsistency in email validation
+
+* [#4594](https://github.com/wso2/identity-apps/pull/4594) [`3e305e7929`](https://github.com/wso2/identity-apps/commit/3e305e7929ea3c91a0dbf0b6dcd14f9940876ecd) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Remove the userstore dropdown from multiple user creation wizard
+
+* Updated dependencies [[`f61b7ad629`](https://github.com/wso2/identity-apps/commit/f61b7ad62974d7be55aa96bb0b2e2cdd5c80002c), [`3e305e7929`](https://github.com/wso2/identity-apps/commit/3e305e7929ea3c91a0dbf0b6dcd14f9940876ecd)]:
+  - @wso2is/i18n@2.0.38
+
+## 2.6.7
+
+### Patch Changes
+
+- [#4591](https://github.com/wso2/identity-apps/pull/4591) [`6c773e441f`](https://github.com/wso2/identity-apps/commit/6c773e441f6fc6eb9299a25460c8c461879ce3fe) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Configuration flow for email magic link not redirecting propoerly
+
+* [#4549](https://github.com/wso2/identity-apps/pull/4549) [`67b884e836`](https://github.com/wso2/identity-apps/commit/67b884e836e2a55d6147c43b0b4df72bc020f7ad) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix invalid error message in remote logging page
+
+- [#4593](https://github.com/wso2/identity-apps/pull/4593) [`772196ccd8`](https://github.com/wso2/identity-apps/commit/772196ccd8815d73b8688dde15706732112fdb1a) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Fix content of roles tabs in users and groups to convey that this tab is read only
+
+* [#4598](https://github.com/wso2/identity-apps/pull/4598) [`60e9da3933`](https://github.com/wso2/identity-apps/commit/60e9da39331b754ed296130e4ffa9f06dc8f9743) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) add missing localization text in the account recovery panel in my account
+
+- [#4597](https://github.com/wso2/identity-apps/pull/4597) [`9fb6764c78`](https://github.com/wso2/identity-apps/commit/9fb6764c78a117169d0180526ca0fece3ed9fc22) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Enable `roles` tab for SAML applications.
+
+* [#4588](https://github.com/wso2/identity-apps/pull/4588) [`7f8babce4c`](https://github.com/wso2/identity-apps/commit/7f8babce4c63ea7ee4772dbb1a1cc44ba8874017) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Move the Manage Attribute Mapping button to Manage Attribute Mappng section
+
+- [#4589](https://github.com/wso2/identity-apps/pull/4589) [`f13a83e65d`](https://github.com/wso2/identity-apps/commit/f13a83e65d9fc03c95948fb171b41eaff10f9f33) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Make claim configuration update request and OIDC protocol update request sequential when updating the user attributes in a application to mitigate possible race conditions.
+
+* [#4552](https://github.com/wso2/identity-apps/pull/4552) [`0345009d4d`](https://github.com/wso2/identity-apps/commit/0345009d4dea0881bfefd3a9e60aab82c7fa2795) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add IWA-NTLM grant type to standard app template
+
+* Updated dependencies [[`67b884e836`](https://github.com/wso2/identity-apps/commit/67b884e836e2a55d6147c43b0b4df72bc020f7ad), [`772196ccd8`](https://github.com/wso2/identity-apps/commit/772196ccd8815d73b8688dde15706732112fdb1a), [`60e9da3933`](https://github.com/wso2/identity-apps/commit/60e9da39331b754ed296130e4ffa9f06dc8f9743)]:
+  - @wso2is/i18n@2.0.37
+
 ## 2.6.6
 
 ### Patch Changes

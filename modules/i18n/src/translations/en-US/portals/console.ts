@@ -11030,7 +11030,9 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter the email address",
                                 validations: {
                                     empty: "Email address cannot be empty",
-                                    invalid: "Please enter a valid email address"
+                                    invalid: "Please enter a valid email address. You can use alphanumeric " +
+                                        "characters, unicode characters, underscores (_), dashes (-), periods (.), " +
+                                        "and an at sign (@)."
                                 }
                             },
                             firstName: {
@@ -11197,8 +11199,7 @@ export const console: ConsoleNS = {
                                 },
                                 primaryButton: "Add",
                                 rolesLabel: "Roles",
-                                rolesPlaceholder: "Enter roles",
-                                warningMessage: "Manual invite multiple users feature can only be used when email address is configured as the username."
+                                rolesPlaceholder: "Enter roles"
                             },
                             fileBased: {
                                 hint: "Bulk invite multiple users using a CSV file."
@@ -11206,7 +11207,8 @@ export const console: ConsoleNS = {
                             responseOperationType: {
                                 userCreation: "User Creation",
                                 roleAssignment: "Role/Group Assignment"
-                            }
+                            },
+                            userstoreMessage: "The created users will be added to the <1>{{ userstore }}</1> user store."
                         },
                         buttons: {
                             import: "Import"
