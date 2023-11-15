@@ -1,5 +1,23 @@
 # @wso2is/console
 
+## 2.6.10
+
+### Patch Changes
+
+- [#4595](https://github.com/wso2/identity-apps/pull/4595) [`3ad6045aef`](https://github.com/wso2/identity-apps/commit/3ad6045aefbf19870adad11a6c7b63f6727d2dbd) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove "All user stores" filter option in resource listing pages
+
+* [#4555](https://github.com/wso2/identity-apps/pull/4555) [`0535f1f945`](https://github.com/wso2/identity-apps/commit/0535f1f945600db877cf040796ce99d2f51a5d6f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix UI issues in saml IDP settings tab
+
+- [#4603](https://github.com/wso2/identity-apps/pull/4603) [`c09d1b0a96`](https://github.com/wso2/identity-apps/commit/c09d1b0a967014e953a619d99e89b27ae6580117) Thanks [@Achintha444](https://github.com/Achintha444)! - (improvement) Remove `my account` from the header dropdown.
+
+* [#4551](https://github.com/wso2/identity-apps/pull/4551) [`d13bfaf30a`](https://github.com/wso2/identity-apps/commit/d13bfaf30a85a551975188bce14cd966e5832691) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Reposition the adaptive script editor to the bottom section of the visual editor
+
+- [#4617](https://github.com/wso2/identity-apps/pull/4617) [`009e4d7547`](https://github.com/wso2/identity-apps/commit/009e4d75470572b4ede1ce90f053bcf0b35335de) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add missing arguement in application.ts
+
+- Updated dependencies [[`0535f1f945`](https://github.com/wso2/identity-apps/commit/0535f1f945600db877cf040796ce99d2f51a5d6f)]:
+  - @wso2is/theme@2.0.34
+  - @wso2is/i18n@2.0.39
+
 ## 2.6.9
 
 ### Patch Changes

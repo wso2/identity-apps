@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.34
+
+### Patch Changes
+
+- [#4555](https://github.com/wso2/identity-apps/pull/4555) [`0535f1f945`](https://github.com/wso2/identity-apps/commit/0535f1f945600db877cf040796ce99d2f51a5d6f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix UI issues in saml IDP settings tab
+
 ## 2.0.33
 
 ### Patch Changes
