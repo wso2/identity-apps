@@ -1560,6 +1560,7 @@
         {% if console.ui.is_dialect_adding_enabled is defined %}
         "isDialectAddingEnabled": {{ console.ui.is_dialect_adding_enabled }},
         {% endif %}
+        "isFAPIAppCreationEnabled": true,
         "isGroupAndRoleSeparationEnabled": {{ authorization_manager.properties.GroupAndRoleSeparationEnabled }},
         {% if console.ui.is_header_avatar_label_allowed is defined %}
         "isHeaderAvatarLabelAllowed": {{ console.ui.is_header_avatar_label_allowed }},
@@ -1586,7 +1587,7 @@
             {% endfor %}
             {% endif %}
         },
-        "productName": "{{ console.ui.product_name }}",
+        "productName": "{{ console.ui.product_name }}**",
         "productVersionConfig": {
             {% if console.product_version.configs.items() is defined %}
             {% for key, value in console.product_version.configs.items() %}

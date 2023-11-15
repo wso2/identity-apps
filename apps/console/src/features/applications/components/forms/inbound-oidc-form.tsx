@@ -76,6 +76,7 @@ import {
     ApplicationInterface,
     ApplicationTemplateIdTypes,
     ApplicationTemplateListItemInterface,
+    ApplicationTemplateNames,
     CertificateInterface,
     CertificateTypeInterface,
     GrantTypeInterface,
@@ -1785,7 +1786,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             { /* Client Authentication*/ }
-            { !isPublicClient &&
+            { !isPublicClient && ApplicationTemplateNames.STANDARD_BASED_APPLICATION === template?.name &&
                 (
                     <>
                         <Grid.Row columns={ 2 }>
@@ -1906,160 +1907,166 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             { /* Pushed Authorization Requests*/ }
-            <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Divider />
-                    <Divider hidden />
-                </Grid.Column>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Heading as="h4">
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".pushedAuthorization.heading") }
-                    </Heading>
-                    <Field
-                        ref={ requirePushedAuthorizationRequests }
-                        name={ "requirePushAuthorizationRequest" }
-                        label=""
-                        required={ false }
-                        type="checkbox"
-                        value={ initialValues?.pushAuthorizationRequest?.requirePushAuthorizationRequest
-                            ? [ "requirePushAuthorizationRequest" ]
-                            : [] }
-                        children={ [
-                            {
-                                label: t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                    ".pushedAuthorization.fields.requirePushAuthorizationRequest.label"),
-                                value: "requirePushAuthorizationRequest"
-                            }
-                        ] }
-                        readOnly={ readOnly }
-                    />
-                    <Hint>
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                            ".pushedAuthorization.fields.requirePushAuthorizationRequest.hint") }
-                    </Hint>
-                </Grid.Column>
-            </Grid.Row>
+            { ApplicationTemplateNames.STANDARD_BASED_APPLICATION === template?.name && (
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <Divider />
+                        <Divider hidden />
+                    </Grid.Column>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <Heading as="h4">
+                            { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".pushedAuthorization.heading") }
+                        </Heading>
+                        <Field
+                            ref={ requirePushedAuthorizationRequests }
+                            name={ "requirePushAuthorizationRequest" }
+                            label=""
+                            required={ false }
+                            type="checkbox"
+                            value={ initialValues?.pushAuthorizationRequest?.requirePushAuthorizationRequest
+                                ? [ "requirePushAuthorizationRequest" ]
+                                : [] }
+                            children={ [
+                                {
+                                    label: t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                        ".pushedAuthorization.fields.requirePushAuthorizationRequest.label"),
+                                    value: "requirePushAuthorizationRequest"
+                                }
+                            ] }
+                            readOnly={ readOnly }
+                        />
+                        <Hint>
+                            { t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                ".pushedAuthorization.fields.requirePushAuthorizationRequest.hint") }
+                        </Hint>
+                    </Grid.Column>
+                </Grid.Row>
+            )}
 
             { /* Request Object*/ }
-            <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Divider />
-                    <Divider hidden />
-                </Grid.Column>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Heading as="h4">
-                        { t("console:develop.features.applications.forms.inboundOIDC.sections.requestObject.heading") }
-                    </Heading>
-                    <Field
-                        ref={ requestObjectSigningAlg }
-                        name="requestObjectSigningAlg"
-                        label={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".requestObject.fields.requestObjectSigningAlg.label")
-                        }
-                        required={ false }
-                        type="dropdown"
-                        disabled={ false }
-                        default={
-                            initialValues?.requestObject?.requestObjectSigningAlg ?
-                                initialValues.requestObject.requestObjectSigningAlg : null
-                        }
-                        placeholder={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".requestObject.fields.requestObjectSigningAlg.placeholder")
-                        }
-                        children={ isFAPIApplication ? getAllowedList(metadata.fapiMetadata.allowedSignatureAlgorithms)
-                            : getAllowedList(metadata.requestObjectSignatureAlgorithm) }
-                        readOnly={ readOnly }
-                    />
-                    <Hint>
-                        <Trans
-                            i18nKey={
-                                "console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".requestObject.fields.requestObjectSigningAlg.hint"
+            { ApplicationTemplateNames.STANDARD_BASED_APPLICATION === template?.name && (
+            <>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <Divider />
+                        <Divider hidden />
+                    </Grid.Column>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <Heading as="h4">
+                            { t("console:develop.features.applications.forms.inboundOIDC.sections.requestObject.heading") }
+                        </Heading>
+                        <Field
+                            ref={ requestObjectSigningAlg }
+                            name="requestObjectSigningAlg"
+                            label={
+                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".requestObject.fields.requestObjectSigningAlg.label")
                             }
-                        >
-                            The dropdown contains the supported <Code withBackground>request object</Code> signing
-                            algorithms.
-                        </Trans>
-                    </Hint>
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Field
-                        ref={ requestObjectEncryptionAlgorithm }
-                        name="requestObjectEncryptionAlgorithm"
-                        label={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".requestObject.fields.requestObjectEncryptionAlgorithm.label")
-                        }
-                        required={ false }
-                        type="dropdown"
-                        disabled={ false }
-                        default={
-                            initialValues?.requestObject?.encryption?.algorithm ?
-                                initialValues.requestObject.encryption.algorithm : null
-                        }
-                        placeholder={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".requestObject.fields.requestObjectEncryptionAlgorithm.placeholder")
-                        }
-                        children={ isFAPIApplication ?
-                            getAllowedList(metadata.fapiMetadata.allowedEncryptionAlgorithms) :
-                            getAllowedList(metadata.requestObjectEncryptionAlgorithm) }
-                        readOnly={ readOnly }
-                    />
-                    <Hint>
-                        <Trans
-                            i18nKey={
-                                "console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".requestObject.fields.requestObjectEncryptionAlgorithm.hint"
+                            required={ false }
+                            type="dropdown"
+                            disabled={ false }
+                            default={
+                                initialValues?.requestObject?.requestObjectSigningAlg ?
+                                    initialValues.requestObject.requestObjectSigningAlg : null
                             }
-                        >
-                            The dropdown contains the supported <Code withBackground>request object</Code> encryption
-                            algorithms.
-                        </Trans>
-                    </Hint>
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Field
-                        ref={ requestObjectEncryptionMethod }
-                        name="requestObjectEncryptionMethod"
-                        label={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".requestObject.fields.requestObjectEncryptionMethod.label")
-                        }
-                        required={ false }
-                        type="dropdown"
-                        disabled={ false }
-                        default={
-                            initialValues?.requestObject?.encryption?.method
-                                ? initialValues.requestObject.encryption.method : null
-                        }
-                        placeholder={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".requestObject.fields.requestObjectEncryptionMethod.placeholder")
-                        }
-                        children={ getAllowedList(metadata.requestObjectEncryptionMethod) }
-                        readOnly={ readOnly }
-                    />
-                    <Hint>
-                        <Trans
-                            i18nKey={
-                                "console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".requestObject.fields.requestObjectEncryptionMethod.hint"
+                            placeholder={
+                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".requestObject.fields.requestObjectSigningAlg.placeholder")
                             }
-                        >
-                            The dropdown contains the supported <Code withBackground>request object</Code> encryption
-                            methods.
-                        </Trans>
-                    </Hint>
-                </Grid.Column>
-            </Grid.Row>
+                            children={ isFAPIApplication ? getAllowedList(metadata.fapiMetadata.allowedSignatureAlgorithms)
+                                : getAllowedList(metadata.requestObjectSignatureAlgorithm) }
+                            readOnly={ readOnly }
+                        />
+                        <Hint>
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".requestObject.fields.requestObjectSigningAlg.hint"
+                                }
+                            >
+                                The dropdown contains the supported <Code withBackground>request object</Code> signing
+                                algorithms.
+                            </Trans>
+                        </Hint>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <Field
+                            ref={ requestObjectEncryptionAlgorithm }
+                            name="requestObjectEncryptionAlgorithm"
+                            label={
+                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".requestObject.fields.requestObjectEncryptionAlgorithm.label")
+                            }
+                            required={ false }
+                            type="dropdown"
+                            disabled={ false }
+                            default={
+                                initialValues?.requestObject?.encryption?.algorithm ?
+                                    initialValues.requestObject.encryption.algorithm : null
+                            }
+                            placeholder={
+                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".requestObject.fields.requestObjectEncryptionAlgorithm.placeholder")
+                            }
+                            children={ isFAPIApplication ?
+                                getAllowedList(metadata.fapiMetadata.allowedEncryptionAlgorithms) :
+                                getAllowedList(metadata.requestObjectEncryptionAlgorithm) }
+                            readOnly={ readOnly }
+                        />
+                        <Hint>
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".requestObject.fields.requestObjectEncryptionAlgorithm.hint"
+                                }
+                            >
+                                The dropdown contains the supported <Code withBackground>request object</Code> encryption
+                                algorithms.
+                            </Trans>
+                        </Hint>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <Field
+                            ref={ requestObjectEncryptionMethod }
+                            name="requestObjectEncryptionMethod"
+                            label={
+                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".requestObject.fields.requestObjectEncryptionMethod.label")
+                            }
+                            required={ false }
+                            type="dropdown"
+                            disabled={ false }
+                            default={
+                                initialValues?.requestObject?.encryption?.method
+                                    ? initialValues.requestObject.encryption.method : null
+                            }
+                            placeholder={
+                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".requestObject.fields.requestObjectEncryptionMethod.placeholder")
+                            }
+                            children={ getAllowedList(metadata.requestObjectEncryptionMethod) }
+                            readOnly={ readOnly }
+                        />
+                        <Hint>
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".requestObject.fields.requestObjectEncryptionMethod.hint"
+                                }
+                            >
+                                The dropdown contains the supported <Code withBackground>request object</Code> encryption
+                                methods.
+                            </Trans>
+                        </Hint>
+                    </Grid.Column>
+                </Grid.Row>
+            </>
+            )}
 
             { /* Access Token */ }
             <Grid.Row columns={ 2 }>
@@ -2755,43 +2762,45 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </>
                 )
             }
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                    <Field
-                        ref={ idTokenSignedResponseAlg }
-                        name="idTokenSignedResponseAlg"
-                        label={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
-                                ".fields.signing.label")
-                        }
-                        required={ false }
-                        type="dropdown"
-                        disabled={ false }
-                        default={
-                            initialValues?.idToken ? initialValues.idToken.idTokenSignedResponseAlg : null
-                        }
-                        placeholder={
-                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                ".idToken.fields.signing.placeholder")
-                        }
-                        children={ isFAPIApplication ?
-                            getAllowedList(metadata.fapiMetadata.allowedSignatureAlgorithms) :
-                            getAllowedList(metadata.idTokenSignatureAlgorithm) }
-                        readOnly={ readOnly }
-                    />
-                    <Hint disabled={ !isEncryptionEnabled || !isCertAvailableForEncrypt }>
-                        <Trans
-                            i18nKey={
-                                "console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
-                                ".fields.algorithm.hint"
+            { ApplicationTemplateNames.STANDARD_BASED_APPLICATION === template?.name && (
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <Field
+                            ref={ idTokenSignedResponseAlg }
+                            name="idTokenSignedResponseAlg"
+                            label={
+                                t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
+                                    ".fields.signing.label")
                             }
-                        >
-                            The dropdown contains the supported <Code withBackground>id_token</Code>
-                            encryption algorithms.
-                        </Trans>
-                    </Hint>
-                </Grid.Column>
-            </Grid.Row>
+                            required={ false }
+                            type="dropdown"
+                            disabled={ false }
+                            default={
+                                initialValues?.idToken ? initialValues.idToken.idTokenSignedResponseAlg : null
+                            }
+                            placeholder={
+                                t("console:develop.features.applications.forms.inboundOIDC.sections" +
+                                    ".idToken.fields.signing.placeholder")
+                            }
+                            children={ isFAPIApplication ?
+                                getAllowedList(metadata.fapiMetadata.allowedSignatureAlgorithms) :
+                                getAllowedList(metadata.idTokenSignatureAlgorithm) }
+                            readOnly={ readOnly }
+                        />
+                        <Hint disabled={ !isEncryptionEnabled || !isCertAvailableForEncrypt }>
+                            <Trans
+                                i18nKey={
+                                    "console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
+                                    ".fields.algorithm.hint"
+                                }
+                            >
+                                The dropdown contains the supported <Code withBackground>id_token</Code>
+                                encryption algorithms.
+                            </Trans>
+                        </Hint>
+                    </Grid.Column>
+                </Grid.Row>
+            )}
             {
                 !isM2MApplication && (
                     <Grid.Row columns={ 1 }>
