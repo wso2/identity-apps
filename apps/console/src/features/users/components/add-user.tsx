@@ -15,15 +15,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { UserstoreConstants } from "@wso2is/core/constants";
+
+import { ProfileConstants, UserstoreConstants } from "@wso2is/core/constants";
+import { ProfileSchemaInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import { AxiosResponse } from "axios";
 import React, { ReactElement, Suspense, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import PasswordStrengthBar from "react-password-strength-bar";
+import { useSelector } from "react-redux";
 import { DropdownItemProps, Grid, Message } from "semantic-ui-react";
+import { AppState } from "../../core/store";
 import { SharedUserStoreUtils } from "../../core/utils";
 import { RootOnlyComponent } from "../../organizations/components";
 import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
@@ -80,6 +83,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const [ isUsernameRegExLoading, setUsernameRegExLoading ] = useState<boolean>(false);
     const [ password, setPassword ] = useState<string>("");
     const confirmPasswordRef: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
+    const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
 
     const { t } = useTranslation();
 
@@ -134,6 +138,17 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             value: "ask-password"
         }
     ];
+
+    /**
+     * Get the email validation regex from the profile schema.
+     * 
+     * @returns The email validation regex.
+     */
+    const getEmailValidationRegex = (): string => {
+        return profileSchemas?.find((schema: ProfileSchemaInterface) => (
+            schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY
+                .get("EMAILS"))).regEx;
+    };
 
     /**
      * The following function handles the change of the userstore.
@@ -558,7 +573,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             "console:manage.features.user.forms.addUserForm.inputs.email.validations.empty"
                         ) }
                         validation={ (value: string, validation: Validation) => {
-                            if (!FormValidation.email(value)) {
+                            if (!RegExp(getEmailValidationRegex()).test(value)) {
                                 validation.isValid = false;
                                 validation.errorMessages.push(
                                     t(
