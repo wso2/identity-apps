@@ -86,10 +86,6 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
         onConditionalAuthenticationToggle(false);
     }, [ authenticationSequence.script ]);
 
-    /**
-     * This function will handle the on and off
-     * actions of the switch component.
-     */
     const handleSwitchChange = () => {
         if (isConditionalAuthenticationEnabled) {
             setShowScriptResetWarning(true);
