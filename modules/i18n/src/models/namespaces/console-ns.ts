@@ -5915,10 +5915,6 @@ export interface ConsoleNS {
                                 searchByRoleOrGroup: string;
                                 roleGroupFilterAttributePlaceHolder: string;
                             };
-                            disabledSecondaryStoreInfo: {
-                                local: string;
-                                remote: string;
-                            };
                             manualCreation: {
                                 alerts: {
                                     creationSuccess: NotificationItem;

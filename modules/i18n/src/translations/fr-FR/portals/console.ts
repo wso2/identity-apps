@@ -9442,12 +9442,6 @@ export const console: ConsoleNS = {
                                 searchByRoleOrGroup: "Recherche par nom de rôle/groupe",
                                 roleGroupFilterAttributePlaceHolder: "Nom du rôle/groupe"
                             },
-                            disabledSecondaryStoreInfo: {
-                                local: "L'importation groupée n'est disponible que pour le magasin de l'utilisateur " +
-                                    "principal pour le moment.",
-                                remote: "L'importation groupée n'est disponible que pour le magasin d'utilisateurs " +
-                                    "par défaut pour le moment."
-                            },
                             manualCreation: {
                                 alerts: {
                                     creationSuccess: {

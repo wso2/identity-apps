@@ -9226,10 +9226,6 @@ export const console: ConsoleNS = {
                                 searchByRoleOrGroup: "භූමිකාව/කණ්ඩායම් නම අනුව සොයන්න",
                                 roleGroupFilterAttributePlaceHolder: "භූමිකාව/කණ්ඩායම් නම"
                             },
-                            disabledSecondaryStoreInfo: {
-                                local: "තොග ආනයනය මේ මොහොතේ ප්‍රාථමික පරිශීලක ගබඩාව සඳහා පමණක් ලබා ගත හැක.",
-                                remote: "තොග ආයාත ලබා ගත හැක්කේ මේ මොහොතේ පෙරනිමි පරිශීලක ගබඩාව සඳහා පමණි."
-                            },
                             manualCreation: {
                                 alerts: {
                                     creationSuccess: {

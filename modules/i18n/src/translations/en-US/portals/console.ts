@@ -11178,10 +11178,6 @@ export const console: ConsoleNS = {
                                 searchByRoleOrGroup: "Search by Role/Group",
                                 roleGroupFilterAttributePlaceHolder: "Role/Group Name"
                             },
-                            disabledSecondaryStoreInfo: {
-                                local: "Bulk import is only available for primary user store at the moment.",
-                                remote: "Bulk import is only available for default user store at the moment."
-                            },
                             manualCreation: {
                                 alerts: {
                                     creationSuccess: {
