@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import Typography from "@mui/material/Typography";
-import { Autocomplete, AutocompleteRenderInputParams, TextField } from "@oxygen-ui/react";
+import { Autocomplete, AutocompleteRenderInputParams, TextField, Typography } from "@oxygen-ui/react";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, Field, Form } from "@wso2is/form";
 import { Code, FormInputLabel, FormSection } from "@wso2is/react-components";
