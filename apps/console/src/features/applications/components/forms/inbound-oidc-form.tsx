@@ -1987,8 +1987,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         ".requestObject.fields.requestObjectSigningAlg.hint"
                                     }
                                 >
-                                    The dropdown contains the supported <Code withBackground>request object</Code> signing
-                                    algorithms.
+                                    The dropdown contains the supported <Code withBackground>request object</Code>
+                                    signing algorithms.
                                 </Trans>
                             </Hint>
                         </Grid.Column>
