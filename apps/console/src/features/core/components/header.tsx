@@ -384,7 +384,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     };
 
     const isShowAppSwitchButton = (): boolean => {
-        console.log(showAppSwitchButton);
         if (!showAppSwitchButton) {
             return false;
         }
