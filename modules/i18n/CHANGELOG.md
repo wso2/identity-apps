@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.0.38
+
+### Patch Changes
+
+- [#4596](https://github.com/wso2/identity-apps/pull/4596) [`f61b7ad629`](https://github.com/wso2/identity-apps/commit/f61b7ad62974d7be55aa96bb0b2e2cdd5c80002c) Thanks [@savindi7](https://github.com/savindi7)! - Fix inconsistency in email validation
+
+* [#4594](https://github.com/wso2/identity-apps/pull/4594) [`3e305e7929`](https://github.com/wso2/identity-apps/commit/3e305e7929ea3c91a0dbf0b6dcd14f9940876ecd) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Remove the userstore dropdown from multiple user creation wizard
+
 ## 2.0.37
 
 ### Patch Changes
