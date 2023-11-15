@@ -372,9 +372,7 @@
                 }
             },
             "applications": {
-                "disabledFeatures": [
-                    "applications.loginFlow.legacyEditor"
-                ],
+                "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
                     "feature": [

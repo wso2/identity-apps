@@ -431,7 +431,6 @@ export const applicationConfig: ApplicationConfig = {
                         render: () => (
                             <ResourceTab.Pane controlledSegmentation>
                                 <ApplicationRoles 
-                                    application={ application }
                                     onUpdate={ onApplicationUpdate }
                                 />
                             </ResourceTab.Pane>
