@@ -56,6 +56,7 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
         fullWidth = true,
         FormControlProps = {},
         helperText,
+        required,
         ...rest
     } = props;
 
@@ -71,6 +72,7 @@ const TextFieldAdapter: FunctionComponent<TextFieldAdapterPropsInterface> = (
                 { ...FormControlProps }
                 { ...input }
                 { ...rest }
+                InputLabelProps={ { required: required } }
             />
             { isError && <FormHelperText error>{ meta.error || meta.submitError }</FormHelperText> }
             { helperText && <FormHelperText>{ helperText }</FormHelperText> }
