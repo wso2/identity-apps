@@ -749,6 +749,15 @@ export enum ApplicationTemplateIdTypes {
 }
 
 /**
+ * Enum for application template names.
+ *
+ * @readonly
+ */
+export enum ApplicationTemplateNames {
+    STANDARD_BASED_APPLICATION = "Standard-Based Application"
+}
+
+/**
  * Enum for default application template group ids.
  *
  * @readonly

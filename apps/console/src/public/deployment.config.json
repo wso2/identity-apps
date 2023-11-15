@@ -924,6 +924,11 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {}
+            },
+            "fapiApplicationCreation": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {}
             }
         },
         "gravatarConfig": {

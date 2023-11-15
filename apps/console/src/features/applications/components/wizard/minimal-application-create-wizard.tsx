@@ -82,6 +82,7 @@ import {
     ApplicationTemplateIdTypes,
     ApplicationTemplateInterface,
     ApplicationTemplateLoadingStrategies,
+    ApplicationTemplateNames,
     MainApplicationInterface,
     SAMLConfigModes,
     SupportedAuthProtocolTypes,
@@ -165,7 +166,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         state.config.ui.isClientSecretHashEnabled);
     const orgType: OrganizationType = useSelector((state: AppState) =>
         state?.organization?.organizationType);
-
+    const isFAPIAppCreationEnabled: boolean = useSelector((state: AppState) =>
+        state.config.ui.features.fapiApplicationCreation.enabled);
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
@@ -1067,11 +1069,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     {
                         // The Management App checkbox is only present in OIDC Standard-Based apps
                         customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC &&
-                        (selectedTemplate?.templateId === "custom-application" ||
-                        selectedTemplate?.templateId === ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION) &&
+                        selectedTemplate?.name === ApplicationTemplateNames.STANDARD_BASED_APPLICATION &&
+                        isFAPIAppCreationEnabled &&
                         (
                             <div className="pt-0 mt-0">
-                                <div>customApplicationProtocol { customApplicationProtocol }</div>
                                 <Field
                                     data-componentid={ `${ testId }-fapi-app-checkbox` }
                                     name={ "isFAPIApp" }
