@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.6.9
+
+### Patch Changes
+
+- [#4601](https://github.com/wso2/identity-apps/pull/4601) [`9853c5ed73`](https://github.com/wso2/identity-apps/commit/9853c5ed73afe9901942ed01e863ed0173a8fa8f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix connection create issue
+
 ## 2.6.8
 
 ### Patch Changes
