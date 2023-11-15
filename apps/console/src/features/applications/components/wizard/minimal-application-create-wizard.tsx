@@ -1067,7 +1067,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         )
                     }
                     {
-                        // The Management App checkbox is only present in OIDC Standard-Based apps
+                        // The FAPI App creation checkbox is only present in OIDC Standard-Based apps
                         customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC &&
                         selectedTemplate?.name === ApplicationTemplateNames.STANDARD_BASED_APPLICATION &&
                         isFAPIAppCreationEnabled &&
