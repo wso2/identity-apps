@@ -225,7 +225,7 @@
         "enableCustomEmailTemplates": true,
         "appFaviconPath": "/assets/images/branding/favicon.ico",
         "isGOTEnabledForSuperTenantOnly": true,
-        "showAppSwitchButton": true,
+        "showAppSwitchButton": false,
         "features": {
             "administrators": {
                 "disabledFeatures": [],
