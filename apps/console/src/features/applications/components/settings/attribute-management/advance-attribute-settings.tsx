@@ -447,19 +447,17 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                                 ariaLabel={ `Subject type ${subjectType}` }
                                                 name={ "subjectType" }
                                                 value={ subjectType }
-                                                label={ subjectType }
+                                                label={ t("console:develop.features.applications.forms" +
+                                                     ".advancedAttributeSettings.sections.subject.fields" +
+                                                     ".subjectType." + subjectType + ".label") }
+                                                hint={ subjectType === SubjectTypes.PAIRWISE &&
+                                                        t("console:develop.features.applications.forms" +
+                                                       ".advancedAttributeSettings.sections.subject.fields" +
+                                                       ".subjectType." + subjectType + ".hint") }
                                                 checked={ selectedSubjectType === subjectType }
                                                 listen={ () => {
                                                     setSelectedSubjectType(subjectType);
                                                 } }
-                                            />
-                                            <Message
-                                                type="info"
-                                                content={
-                                                    t("console:develop.features.applications.forms" +
-                                                        ".advancedAttributeSettings.sections.subject.fields" +
-                                                        ".subjectType." + subjectType + ".hint")
-                                                }
                                             />
                                         </>
                                     );
