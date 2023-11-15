@@ -599,6 +599,7 @@
     <div class="buttons mt-2">
         <% if (isRecoveryEPAvailable && (isUsernameRecoveryEnabledInTenant || isPasswordRecoveryEnabledInTenant)) { %>
         <div class="field external-link-container text-small">
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
             <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isUsernameRecoveryEnabledInTenant) { %>
             <a
                 id="usernameRecoverLink"
@@ -624,10 +625,10 @@
                     target="_blank" rel="noopener noreferrer"
                 <% } %>
             >
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>?
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
             </a>
             <% } %>
+            ?
         </div>
         <% } %>
     </div>
