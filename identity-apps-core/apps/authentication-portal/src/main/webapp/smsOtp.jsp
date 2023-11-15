@@ -364,7 +364,9 @@
                             console.warn("Prevented a possible double submit event");
                         } else {
                             var code = document.getElementById("OTPCode").value;
-                            if (code == "") {
+                            var resendFlagElement = document.getElementById("resendCode");
+                            var isResend = resendFlagElement.value;
+                            if (code == "" && isResend == "false") {
                                 e.preventDefault();
                                 document.getElementById('alertDiv').innerHTML
                                     = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.code")%></div>'
