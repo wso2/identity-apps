@@ -16,10 +16,11 @@
  * under the License.
  */
 
+import Grid from "@oxygen-ui/react/Grid";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactElement, ReactNode } from "react";
-import { Button, Card, CardProps, Icon, Label } from "semantic-ui-react";
+import { Button, Card, CardProps, Icon, Item, Label } from "semantic-ui-react";
 import { LinkButton } from "../button";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 import { Popup } from "../popup";
@@ -38,6 +39,10 @@ export interface InfoCardPropsInterface extends CardProps, IdentifiableComponent
      * Is card disabled.
      */
     disabled?: boolean;
+    /**
+     * Status of the feature.
+     */
+    featureStatus?: ReactElement;
     /**
      * Side of the image.
      */
@@ -135,6 +140,7 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
         className,
         description,
         disabled,
+        featureStatus,
         fluid,
         githubRepoCard,
         githubRepoMetaInfo,
@@ -197,23 +203,32 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                         )
                     }
                     {
-                        image && (
-                            <GenericIcon
-                                square
-                                transparent
-                                data-componentid={ `${ componentId }-image` }
-                                data-testid={ `${ testId }-image` }
-                                className="card-image"
-                                size={
-                                    fluid && !imageSize
-                                        ? "tiny"
-                                        : imageSize
-                                }
-                                icon={ image }
-                                floated="left"
-                                { ...imageOptions }
-                            />
-                        )
+                        <Grid container justifyContent="space-between">
+                            <Item>
+                                { image && (
+                                    <GenericIcon
+                                        square
+                                        transparent
+                                        data-componentid={ `${ componentId }-image` }
+                                        data-testid={ `${ testId }-image` }
+                                        className="card-image"
+                                        size={
+                                            fluid && !imageSize
+                                                ? "tiny"
+                                                : imageSize
+                                        }
+                                        icon={ image }
+                                        floated="left"
+                                        { ...imageOptions }
+                                    />
+                                ) }
+                            </Item>
+                            { featureStatus && (
+                                <Item>
+                                    { featureStatus }
+                                </Item>
+                            ) }
+                        </Grid>
                     }
 
                     <div className="card-header-section">
