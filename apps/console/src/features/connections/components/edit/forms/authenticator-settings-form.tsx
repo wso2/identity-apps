@@ -16,7 +16,15 @@
  * under the License.
  */
 
+import Grid from "@oxygen-ui/react/Grid";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import {
+    DynamicField,
+    DynamicFieldInputTypes,
+    DynamicForm,
+    FieldInputPropsInterface,
+    FieldInputTypes
+} from "@wso2is/dynamic-forms";
 import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FC, ReactNode, useEffect, useState } from "react";
@@ -30,8 +38,7 @@ import {
     CommonAuthenticatorFormMetaInterface,
     CommonAuthenticatorFormPropertyInterface
 } from "../../../models/authenticators";
-import { DynamicForm, DynamicField, FieldInputPropsInterface } from "@wso2is/dynamic-forms";
-import Grid from "@oxygen-ui/react/Grid";
+import "./authenticator-settings-form.scss";
 
 /**
  * Interface for Google Authenticator Form props.
@@ -98,6 +105,20 @@ interface ScopeMetaInterface {
     icon: SemanticICONS
 }
 
+/**
+ * Dynamic input elements of the authenticator settings form.
+ */
+interface DynamicInputElementsInterface {
+    /**
+     * The displaying order of the input element.
+     */
+    displayOrder: number;
+    /**
+     * Dyanamic input element.
+     */
+    element: React.ReactElement;
+}
+
 const FORM_ID: string = "authenticator-settings-form";
 
 /**
@@ -113,10 +134,10 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
     const {
         connectorSettings,
         metadata,
-        mode,
+        mode: _mode,
         initialValues: originalInitialValues,
         onSubmit,
-        readOnly,
+        readOnly: _readOnly,
         isSubmitting,
         [ "data-testid" ]: testId
     } = props;
@@ -141,7 +162,7 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
 
         originalInitialValues.properties.map((value: CommonAuthenticatorFormPropertyInterface) => {
             const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties?.find(
-                (meta) => meta.key === value.key);
+                (meta: CommonAuthenticatorFormFieldMetaInterface) => meta.key === value.key);
 
             /**
             * Parsing string  to boolean only for Google One Tap value
@@ -189,9 +210,11 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
      */
     const resolveScopeMetadata = (scope: string) => {
 
-        const foundScope = settings?.edit?.tabs?.settings?.scopes?.find((connectorScope) => {
-            return connectorScope?.displayName === scope;
-        });
+        const foundScope: ScopeMetaInterface = settings?.edit?.tabs?.settings?.scopes?.find(
+            (connectorScope: ScopeMetaInterface) => {
+                return connectorScope?.displayName === scope;
+            }
+        );
     
         if (foundScope) {
             return {
@@ -213,7 +236,7 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
      *
      * @returns Sanitized form values.
      */
-    const getUpdatedConfigurations = (values): CommonAuthenticatorFormInitialValuesInterface => {
+    const getUpdatedConfigurations = (values: Record<string, any>): CommonAuthenticatorFormInitialValuesInterface => {
 
         const properties: any[] = [];
 
@@ -263,30 +286,83 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
      * @returns Form fields.
      */
     const renderFormFields = () => {
-        return (
-            settings?.edit?.tabs?.settings?.fields?.map((connectorField: FieldInputPropsInterface, index: number) => {
-                    return (
-                        <DynamicField.Input
-                            key={ index }
-                            name={ connectorField.name }
-                            label={ connectorField.label }
-                            inputType={ connectorField.inputType }
-                            { ...connectorField }
-                        />
-                    )
+        if (settings) {
+            return (
+                settings?.edit?.tabs?.settings?.fields?.map(
+                    (connectorField: FieldInputPropsInterface, index: number) => {
+                        return (
+                            <DynamicField.Input
+                                key={ index }
+                                name={ connectorField.name }
+                                label={ connectorField.label }
+                                inputType={ connectorField.inputType }
+                                { ...connectorField }
+                            />
+                        );
+                    })
+            );  
+        } else if (formFields) {
+            const fields: DynamicInputElementsInterface[] = [];
+            
+            for (const key in formFields) {
+                if (key === "AdditionalQueryParameters") {
+                    continue;
                 }
-            )
-        );
-    }
+
+                const value: any = formFields[key];
+
+                fields.push(
+                    {
+                        displayOrder: value?.meta?.displayOrder,
+                        element: (
+                            <DynamicField.Input
+                                key={ key }
+                                name={ key }
+                                label={ value?.meta?.displayName }
+                                inputType={ getInputTypeFromVarType(value?.meta?.type, value?.meta?.isConfidential) }
+                                required={ value?.meta?.isMandatory }
+                                placeholder={ value?.meta?.description }
+                                initialValue={ value?.value }
+                                className="authenticator-settings-dynamic-input-field"
+                            />
+                        )
+                    }
+                );
+            }
+
+            const sorted_fields: DynamicInputElementsInterface[] = fields.sort(
+                (firstValue: DynamicInputElementsInterface, secondValue: DynamicInputElementsInterface) => 
+                    firstValue.displayOrder - secondValue.displayOrder
+            );
+
+            return sorted_fields.map((el: DynamicInputElementsInterface) => el.element);
+        }
+    };
+
+    const getInputTypeFromVarType = (type: string, isConfidential: boolean): DynamicFieldInputTypes => {
+        switch(type) {
+            case "STRING":
+                if (isConfidential) {
+                    return FieldInputTypes.INPUT_PASSWORD;
+                } else {
+                    return FieldInputTypes.INPUT_TEXT;
+                }
+            case "INTEGER":
+                return FieldInputTypes.INPUT_NUMBER;
+            default:
+                return FieldInputTypes.INPUT_TEXT;
+        }
+    };
 
     return (
         <Grid container spacing={ 2 } columns={ 16 }>
-            <Grid xs={ 8 }>
+            <Grid sm={ 16 } lg={ 12 }>
                 <DynamicForm
                     uncontrolledForm={ false }
-                    id={ FORM_ID }
-                    onSubmit={ (values: Record<string, any>) => onSubmit(getUpdatedConfigurations(values as any)) } 
+                    id={ `${FORM_ID}-${originalInitialValues?.authenticatorId}` }
+                    onSubmit={ (values: Record<string, any>) => onSubmit(getUpdatedConfigurations(values)) } 
                     initialValues={ initialValues }
+                    data-testid={ `${ testId }-dynamic-form` }
                 >
                     { renderFormFields() }
                     {
@@ -361,7 +437,7 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
                     }
                     <DynamicField.Button
                         index={ 1 }
-                        form={ FORM_ID }
+                        form={ `${FORM_ID}-${originalInitialValues?.authenticatorId}` }
                         ariaLabel="Update General Details"
                         size="small"
                         buttonType="primary_btn"
