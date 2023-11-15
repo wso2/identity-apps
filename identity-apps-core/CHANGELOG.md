@@ -1,5 +1,18 @@
 # @wso2is/identity-apps-core
 
+## 2.0.50
+
+### Patch Changes
+
+- [#4620](https://github.com/wso2/identity-apps/pull/4620) [`0b3b68241c`](https://github.com/wso2/identity-apps/commit/0b3b68241cba6d56ee62cc01560c4232aca8030d) Thanks [@thanujalk](https://github.com/thanujalk)! - Fix app sharing issue
+
+* [#4609](https://github.com/wso2/identity-apps/pull/4609) [`f4b757e76d`](https://github.com/wso2/identity-apps/commit/f4b757e76d7b10f41ceac35decc55ebe1afebc55) Thanks [@thanujalk](https://github.com/thanujalk)! - Allow to update system apps on set of scenarioes
+
+- [#4607](https://github.com/wso2/identity-apps/pull/4607) [`d000ebab65`](https://github.com/wso2/identity-apps/commit/d000ebab65b4eb2a701ab7c882e78b513110a20c) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Improve UX of forgot password or username
+
+- Updated dependencies [[`0535f1f945`](https://github.com/wso2/identity-apps/commit/0535f1f945600db877cf040796ce99d2f51a5d6f)]:
+  - @wso2is/theme@2.0.34
+
 ## 2.0.49
 
 ### Patch Changes

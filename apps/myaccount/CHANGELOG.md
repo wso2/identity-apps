@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.2.19
+
+### Patch Changes
+
+- [#4555](https://github.com/wso2/identity-apps/pull/4555) [`0535f1f945`](https://github.com/wso2/identity-apps/commit/0535f1f945600db877cf040796ce99d2f51a5d6f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix UI issues in saml IDP settings tab
+
+* [#4611](https://github.com/wso2/identity-apps/pull/4611) [`ce60d2efb1`](https://github.com/wso2/identity-apps/commit/ce60d2efb105b5558e802363fb123a02e80d2698) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) admin username not getting displaying properly in myaccount.
+
+* Updated dependencies [[`0535f1f945`](https://github.com/wso2/identity-apps/commit/0535f1f945600db877cf040796ce99d2f51a5d6f)]:
+  - @wso2is/theme@2.0.34
+  - @wso2is/i18n@2.0.39
+
 ## 2.2.18
 
 ### Patch Changes
