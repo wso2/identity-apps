@@ -98,8 +98,8 @@ export interface ApplicationConfig {
         getStrongAuthenticationFlowTabIndex: (
             clientId: string,
             tenantDomain: string,
-            _templateId: string,
-            _customApplicationTemplateId: string
+            templateId?: string,
+            customApplicationTemplateId?: string
         ) => number
     };
     inboundOIDCForm: {
