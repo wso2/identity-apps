@@ -548,8 +548,8 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                                                 // modal is implemented.
                                                                 // style={{display:'none'}}
                                                                 data-testid={ 
-                                                                    `tenant-dropdown-link-
-                                                                        ${ name.replace(" ", "-") }` 
+                                                                    `tenant-dropdown-link-${ 
+                                                                        name.replace(" ", "-") }` 
                                                                 }
                                                             >
                                                                 {
