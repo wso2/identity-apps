@@ -140,8 +140,8 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
                                         description={ "Manage Notifications Sending Internally" }
                                         icon={ <ArrowLoopRightUserIcon className="icon" /> }
                                         header={ "Manage Notifications Sending Internally" }
-                                        onPrimaryActionClick={
-                                            null
+                                        onPrimaryActionClick={ () =>
+                                            history.push(AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING"))
                                         }
                                         primaryAction={ t("common:configure") }
                                     />

@@ -909,11 +909,25 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 ),
                                 exact: true,
                                 icon: {
-                                    icon: getSidePanelIcons().remoteLogging
+                                    icon: getSidePanelIcons().childIcon
                                 },
-                                id: "remoteLogging",
+                                id: "remote-logging",
                                 name: "Remote Logging",
                                 path: AppConstants.getPaths().get("REMOTE_LOGGING"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import("../../server/pages/internal-notification-sending-page")
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "internal-notification-sending",
+                                name: "Internal Notification Sending",
+                                path: AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING"),
                                 protected: true,
                                 showOnSidePanel: false
                             }

@@ -383,7 +383,9 @@ export class AppConstants {
             [ "WSFED_CONFIGURATION",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/wsfed-configuration` ],
             [ "SERVER",
-                `${AppConstants.getAdminViewBasePath()}/server` ]
+                `${AppConstants.getAdminViewBasePath()}/server` ],
+            [ "INTERNAL_NOTIFICATION_SENDING",
+                `${AppConstants.getAdminViewBasePath()}/server/internal-notification-sending` ]
         ]);
 
         return paths;

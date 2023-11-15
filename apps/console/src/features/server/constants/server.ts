@@ -200,6 +200,9 @@ export class ServerConstants {
 	public static readonly SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED: string =
 		"SelfRegistration.Notification.InternallyManage";
 
+	public static readonly USER_EMAIL_VERIFICATION_NOTIFICATIONS_INTERNALLY_MANAGED: string =
+		"EmailVerification.Notification.InternallyManage";
+
 	public static readonly ACCOUNT_CONFIRMATION: string = "SelfRegistration.SendConfirmationOnCreation";
 	public static readonly RE_CAPTCHA: string = "SelfRegistration.ReCaptcha";
 	public static readonly VERIFICATION_CODE_EXPIRY_TIME: string = "SelfRegistration.VerificationCode.ExpiryTime";
@@ -229,6 +232,12 @@ export class ServerConstants {
 
 	public static readonly ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED: string =
 		"Recovery.Notification.InternallyManage";
+
+	public static readonly ACCOUNT_LOCKING_NOTIFICATIONS_INTERNALLY_MANAGED: string =
+		"account.lock.handler.notification.manageInternally";
+	
+	public static readonly ACCOUNT_DISABLING_NOTIFICATIONS_INTERNALLY_MANAGED: string =
+		"account.disable.handler.notification.manageInternally";
 
 	public static readonly NOTIFY_RECOVERY_START: string = "Recovery.Question.Password.NotifyStart";
 	public static readonly NOTIFY_SUCCESS: string = "Recovery.NotifySuccess";
