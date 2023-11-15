@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -294,6 +294,49 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                         level: AlertLevels.ERROR,
                         message: t("console:manage.features.users.notifications.deleteUser.genericError" +
                             ".message")
+                    }));
+                }).finally(() => {
+                    setLoading(false);
+                    setShowDeleteConfirmationModal(false);
+                    setDeletingUser(undefined);
+                });
+        } else if (accountType === UserAccountTypes.CUSTOMER && "id" in user) {
+
+            const roleData: PatchRoleDataInterface = {
+                Operations: [
+                    {
+                        op: "remove",
+                        path: `users[value eq ${user.id}]`,
+                        value: {}
+                    }
+                ],
+                schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+            };
+
+            return updateRoleDetails(adminRoleId, roleData)
+                .then(() => {
+                    dispatch(addAlert({
+                        description: t("console:manage.features.users.notifications.revokeAdmin.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("console:manage.features.users.notifications.revokeAdmin.success.message")
+                    }));
+                    onUserDelete();
+                })
+                .catch((error: IdentityAppsApiException) => {
+                    if (error.response && error.response.data && error.response.data.description) {
+                        dispatch(addAlert({
+                            description: error.response.data.description,
+                            level: AlertLevels.ERROR,
+                            message: t("console:manage.features.users.notifications.revokeAdmin.error.message")
+                        }));
+
+                        return;
+                    }
+                    dispatch(addAlert({
+                        description: t("console:manage.features.users.notifications.revokeAdmin." +
+                            "genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.users.notifications.revokeAdmin.genericError.message")
                     }));
                 }).finally(() => {
                     setLoading(false);
