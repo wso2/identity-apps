@@ -187,11 +187,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const getUserStores = () => {
         const storeOptions: DropdownItemProps[] = [
             {
-                key: -2,
-                text: "All user stores",
-                value: GroupConstants.ALL_USER_STORES_OPTION_VALUE
-            },
-            {
                 key: -1,
                 text: "Primary",
                 value: "primary"
@@ -436,7 +431,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                             options={ userStoreOptions && userStoreOptions }
                             placeholder={ t("console:manage.features.groups.list.storeOptions") }
                             onChange={ handleDomainChange }
-                            defaultValue={ GroupConstants.ALL_USER_STORES_OPTION_VALUE }
+                            defaultValue={ GroupConstants.PRIMARY_USER_STORE_OPTION_VALUE }
                         />
                     </RootOnlyComponent> 
                 ) }
