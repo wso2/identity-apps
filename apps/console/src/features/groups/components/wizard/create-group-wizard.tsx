@@ -92,7 +92,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { isRootOrganization } = useGetOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetOrganizationType();
 
     const [ currentStep, setCurrentWizardStep ] = useState<number>(initStep);
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
@@ -144,7 +144,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
     useEffect(() => {
         if (roleList.length < 1) {
-            if (isRootOrganization) {
+            if (isSuperOrganization() || isFirstLevelOrganization()) {
                 getRolesList(null)
                     .then((response: AxiosResponse<RolesV2ResponseInterface>) => {
                         setRoleList(response?.data?.Resources);
@@ -479,7 +479,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
         title: t("console:manage.features.roles.addRoleWizard.wizardSteps.3")
     } ];
 
-    const WIZARD_STEPS: WizardStepInterface[] = OrganizationUtils.isCurrentOrganizationRoot()
+    const WIZARD_STEPS: WizardStepInterface[] = isSuperOrganization
         ? [ ...ALL_WIZARD_STEPS ]
         : [ ...ALL_WIZARD_STEPS.slice(0, 1), ...ALL_WIZARD_STEPS.slice(2) ];
 
@@ -493,7 +493,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
                 break;
             case 1:
-                OrganizationUtils.isCurrentOrganizationRoot()
+                isSuperOrganization
                     ? setSubmitRoleList()
                     : setFinishSubmit();
 

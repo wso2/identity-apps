@@ -38,16 +38,6 @@ export class OrganizationUtils {
     }
 
     /**
-     * Returns true if the current organization is the root organization.
-     *
-     * @returns if the current organization is the root organization.
-     */
-    public static isCurrentOrganizationRoot(): boolean {
-        return store.getState().organization?.organization?.id
-            === OrganizationManagementConstants.ROOT_ORGANIZATION_ID;
-    }
-
-    /**
      * Get the type of the current organization.
      *
      * @returns The type of the current organization.

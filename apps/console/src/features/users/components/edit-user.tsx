@@ -39,6 +39,7 @@ import { GenericOrganization } from "../../organizations/models/organizations";
 import { OrganizationUtils } from "../../organizations/utils";
 import { ConnectorPropertyInterface } from "../../server-configurations/models";
 import { UserManagementConstants } from "../constants";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 
 interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
@@ -88,6 +89,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { isSuperOrganization } = useGetOrganizationType();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
@@ -134,7 +136,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     }, [ user, readOnlyUserStores ]);
 
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (!isSuperOrganization()) {
             return;
         }
 
@@ -243,7 +245,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             )
         } : null,
-        OrganizationUtils.isCurrentOrganizationRoot() && {
+        isSuperOrganization && {
             menuItem: t("console:manage.features.users.editUser.tab.menuItems.3"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>

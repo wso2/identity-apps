@@ -67,6 +67,7 @@ import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../.
 import { getUserDetails, updateUserInfo } from "../api";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
+import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 
 /**
  * Prop types for the basic details component.
@@ -153,6 +154,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const dispatch: Dispatch = useDispatch();
 
+    const { isSuperOrganization } = useGetOrganizationType();
+
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
@@ -187,7 +190,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const modifiedDate: string = user?.meta?.lastModified;
 
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (!isSuperOrganization()) {
             return;
         }
 

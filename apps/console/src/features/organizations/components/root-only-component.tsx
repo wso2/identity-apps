@@ -29,7 +29,7 @@ export const RootOnlyComponent = (props: PropsWithChildren<Record<string, unknow
 
     const { children } = props;
 
-    const { isRootOrganization } = useGetOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetOrganizationType();
 
-    return <>{ isRootOrganization ? children : null }</>;
+    return <>{ isSuperOrganization() || isFirstLevelOrganization() ? children : null }</>;
 };

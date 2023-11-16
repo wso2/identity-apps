@@ -91,6 +91,7 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { ApplicationShareModal } from "../modals/application-share-modal";
+import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
@@ -152,7 +153,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-
+    const { isSuperOrganization } = useGetOrganizationType();
     const dispatch: Dispatch = useDispatch();
 
     const tenantName: string = store.getState().config.deployment.tenant;
@@ -212,7 +213,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         // Stop fetching CORS origins if the selected template is `Expert Mode`.
         if (!selectedTemplate
             || selectedTemplate.id === CustomApplicationTemplate.id
-            || !OrganizationUtils.isCurrentOrganizationRoot()) {
+            || !isSuperOrganization()) {
             return;
         }
 

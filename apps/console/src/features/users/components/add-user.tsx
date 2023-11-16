@@ -95,7 +95,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
     const { t } = useTranslation();
 
-    const { isRootOrganization } = useGetOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetOrganizationType();
 
     // Username input validation error messages.
     const USER_ALREADY_EXIST_ERROR_MESSAGE: string = t("console:manage.features.user.forms.addUserForm.inputs." +
@@ -248,7 +248,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
         setUserStore(storeOptions[ 0 ].value as string);
 
-        if (isRootOrganization) {
+        if (isSuperOrganization() || isFirstLevelOrganization()) {
             getUserStoreList()
                 .then((response: AxiosResponse) => {
                     if (storeOptions.length === 0) {

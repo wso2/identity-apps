@@ -43,10 +43,6 @@ interface UseGetOrganizationTypeInterface {
      * @returns True if the organization is a sub organization.
      */
     isSubOrganization: () => boolean;
-    /**
-     * If the organization is a super organization or a first level organization.
-     */
-    isRootOrganization: boolean;
 }
 
 /**
@@ -88,7 +84,6 @@ export const useGetOrganizationType = (): UseGetOrganizationTypeInterface => {
 
     return {
         isFirstLevelOrganization,
-        isRootOrganization: isSuperOrganization() || isFirstLevelOrganization(),
         isSubOrganization,
         isSuperOrganization,
         organizationType: orgType

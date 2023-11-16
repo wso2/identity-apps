@@ -100,7 +100,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
 
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(GROUPS_SORTING_OPTIONS[ 0 ]);
 
-    const { isRootOrganization } = useGetOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetOrganizationType();
 
     useEffect(() => {
         if(searchQuery == "") {
@@ -122,7 +122,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     }, [ userStore ]);
 
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (!isSuperOrganization()) {
             return;
         }
 
@@ -199,7 +199,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             value: ""
         };
 
-        if (isRootOrganization) {
+        if (isSuperOrganization() || isFirstLevelOrganization()) {
             getUserStoreList()
                 .then((response: AxiosResponse<UserstoreListResponseInterface[]>) => {
                     if (storeOptions.length === 0) {

@@ -70,7 +70,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
     const [ basicDetails, setBasicDetails ] = useState<any>(null);
     const [ userList, setUserList ] = useState<any>(null);
 
-    const { isRootOrganization } = useGetOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetOrganizationType();
 
     const groupName: React.MutableRefObject<HTMLDivElement | undefined> = useRef<HTMLDivElement>();
 
@@ -158,7 +158,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
         setUserStore(storeOptions[ 0 ].value as string);
 
-        if (isRootOrganization) {
+        if (isSuperOrganization() || isFirstLevelOrganization()) {
             getUserStoreList()
                 .then((response: UserstoreListResponseInterface[] | any) => {
                     if (storeOptions.length === 0) {

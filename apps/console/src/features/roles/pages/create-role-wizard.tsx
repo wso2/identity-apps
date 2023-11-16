@@ -60,7 +60,7 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { isRootOrganization } = useGetOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetOrganizationType();
 
     const [ stepperState, setStepperState ] = useState<CreateRoleStateInterface>(undefined);
     const [ isBasicDetailsNextButtonDisabled, setIsBasicDetailsNextButtonDisabled ] = useState<boolean>(true);
@@ -113,7 +113,7 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
 
             // If the organization is super or a first level organization,
             // no need to send the audience for Organization audience.
-            if (isRootOrganization && roleAudience === RoleAudienceTypes.ORGANIZATION) {
+            if ((isSuperOrganization() || isFirstLevelOrganization()) && roleAudience === RoleAudienceTypes.ORGANIZATION) {
                 delete roleData.audience;
             }
     
