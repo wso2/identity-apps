@@ -172,12 +172,14 @@
                 if ($('#pin_form').data("submitted") === true) {
                     console.warn("Prevented a possible double submit event");
                 } else {
-                    var OTPcode = document.getElementById("OTPcode").value;
+                    var OTPcode = document.getElementById("OTPcode").value.trim();
                     if (OTPcode == "") {
                         document.getElementById('alertDiv').innerHTML
                             = '<div id="error-msg" class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "please.enter.code")%></div><div class="ui divider hidden"></div>';
                     } else {
                         $('#pin_form').data("submitted", true);
+                        // trim value before submission
+                        $('#OTPcode').val($('#OTPcode').val().trim());
                         $('#pin_form').submit();
                     }
                 }
