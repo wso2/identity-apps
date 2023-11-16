@@ -402,7 +402,7 @@ export class RouteUtils {
                 id: "email-and-sms",
                 selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
                     history.location.pathname === AppConstants.getPaths().get("SMS_PROVIDER") ||
-                    history.location.pathname === `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms`
+                    history.location.pathname === AppConstants.getPaths().get("EMAIL_AND_SMS")
             },
             {
                 category: settings,

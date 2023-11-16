@@ -428,11 +428,11 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
     };
 
     const handleBackButtonClick = () => {
-        history.push(`${ AppConstants.getDeveloperViewBasePath() }/email-and-sms`);
+        history.push(`${AppConstants.getPaths().get("EMAIL_AND_SMS")}`);
     };
 
     const goToEmailTemplates = () => {
-        history.push(`${AppConstants.getDeveloperViewBasePath() }/email-management`);
+        history.push(`${AppConstants.getPaths().get("EMAIL_MANAGEMENT")}`);
     };
 
     return (

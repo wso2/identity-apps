@@ -2147,7 +2147,7 @@ export const extensions: Extensions = {
             info: "Vous pouvez personnaliser le contenu du SMS à l'aide des <1>Modèles de SMS</1>.",
             updateButton: "Mise à jour",
             sendTestSMSButton: "Envoyer un SMS test",
-            goBack: "RRevenir à E-mail et SMS",
+            goBack: "Revenir à E-mail et SMS",
             confirmationModal: {
                 assertionHint: "Veuillez confirmer votre action.",
                 content: "Si vous supprimez cette configuration, vous ne recevrez pas de SMS." +
