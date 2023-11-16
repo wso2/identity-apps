@@ -19,7 +19,14 @@
 import { Divider, Grid, Switch, Typography } from "@oxygen-ui/react";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
-import { ConfirmationModal, DangerZone, PrimaryButton } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    DangerZone,
+    DangerZoneGroup,
+    EmphasizedSegment,
+    Heading,
+    PrimaryButton
+} from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import startCase from "lodash-es/startCase";
 import toLower from "lodash-es/toLower";
@@ -28,7 +35,6 @@ import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Form } from "semantic-ui-react";
 import { 
     restoreRemoteLogPublishingConfigurationByLogType,
     updateRemoteLogPublishingConfigurationByLogType
@@ -131,166 +137,136 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
 
     return (
         <>
-            <Grid
-                container
-                sx={ {
-                    backgroundColor: "white",
-                    borderRadius: "8px",
-                    p: 2,
-                    pb: 3,
-                    pl: 3,
-                    pr: 3
-                } }
-            >
-                <Grid xs={ 12 } md={ 12 } lg={ 6 } xl={ 4 }>
-                    <Forms onSubmit={ handleRemoteLoggingConfigUpdate } resetState={ resetForm }>
-                        <Field
-                            label={ "Destination URL" }
-                            name={ "remoteUrl" }
-                            required
-                            requiredErrorMessage={ "Remote logging destination endpoint URL is missing" }
-                            type="text"
-                            value={ logConfig?.remoteUrl }
-                            data-componentid={ componentId + "-url-value-input" }
-                        />
-
-                        <Typography variant="subtitle1" style={ { marginBottom: "1em" } }>
-                            <b>
-                                { t(
+            <EmphasizedSegment padded="very">
+                <div className="form-container with-max-width">
+                    <Grid xs={ 12 } md={ 8 } lg={ 4 }>
+                        <Forms onSubmit={ handleRemoteLoggingConfigUpdate } resetState={ resetForm }>
+                            <Field
+                                label={ "Destination URL" }
+                                name={ "remoteUrl" }
+                                required
+                                requiredErrorMessage={ "Remote logging destination endpoint URL is missing" }
+                                type="text"
+                                value={ logConfig?.remoteUrl }
+                                data-componentid={ componentId + "-url-value-input" }
+                            />
+                            <Divider className="mt-6 mb-6"/>
+                            <Heading as="h4">
+                                { t("console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
+                                    "title") }
+                            </Heading>
+                            <Field
+                                label={ t(
                                     "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-                                        "title"
+                                        "connectionTimeout.label"
                                 ) }
-                            </b>
-                        </Typography>
-
-                        <Field
-                            label={ t(
-                                "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-                                    "connectionTimeout.label"
-                            ) }
-                            name={ "connectTimeoutMillis" }
-                            type="number"
-                            value={ logConfig?.connectTimeoutMillis }
-                            data-componentid={ componentId + "-connection-timeout-input" }
-                        />
-
-                        <Grid container style={ { marginBottom: "1em" } }>
-                            <Grid xs={ 12 } sm={ 6 } md={ 6 } lg={ 6 } xl={ 6 } display="flex" alignItems="center">
-                                <Typography variant="body1">
-                                    { t(
-                                        "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-                                            "verifyHostname.label"
-                                    ) }
-                                </Typography>
+                                name={ "connectTimeoutMillis" }
+                                type="number"
+                                value={ logConfig?.connectTimeoutMillis }
+                                data-componentid={ componentId + "-connection-timeout-input" }
+                            />
+                            <Grid container style={ { marginBottom: "1em" } }>
+                                <Grid xs={ 12 } sm={ 6 } md={ 6 } lg={ 6 } xl={ 6 } display="flex" alignItems="center">
+                                    <Typography variant="body1">
+                                        { t(
+                                            "console:manage.features.serverConfigs.remoteLogPublishing." +
+                                                "fields.advanced.verifyHostname.label"
+                                        ) }
+                                    </Typography>
+                                </Grid>
+                                <Grid
+                                    xs={ 12 }
+                                    sm={ 6 }
+                                    display="flex" 
+                                    justifyContent={ "flex-end" }
+                                >    
+                                    <Switch
+                                        checked={ logConfig?.verifyHostname }
+                                        onChange={ (_event: React.SyntheticEvent, checked: boolean) => {
+                                            setVerifyHostnameEnabled(checked);
+                                        } }
+                                        inputProps={ { "aria-label": "controlled" } }
+                                    />
+                                </Grid>
                             </Grid>
-                            <Grid
-                                xs={ 12 }
-                                sm={ 6 }
-                                md={ 6 }
-                                lg={ 6 }
-                                xl={ 6 }
-                                display="flex" 
-                                justifyContent={ "flex-end" }
-                            >    
-                                <Switch
-                                    checked={ logConfig?.verifyHostname }
-                                    onChange={ (_event: React.SyntheticEvent, checked: boolean) => {
-                                        setVerifyHostnameEnabled(checked);
-                                    } }
-                                    inputProps={ { "aria-label": "controlled" } }
-                                />
-                            </Grid>
-                        </Grid>
-
-                        <Typography variant="subtitle1" style={ { marginBottom: "1em" } }>
-                            { t(
-                                "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-                                    "basicAuthConfig.title"
-                            ) }
-                        </Typography>
-
-                        <Field
-                            label={ t(
-                                "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-                                    "basicAuthConfig.serverUsername.label"
-                            ) }
-                            name={ "username" }
-                            type="text"
-                            value={ logConfig?.username }
-                            data-componentid={ componentId + "-url-value-input" }
-                        />
-
-                        <Field
-                            label={ t(
-                                "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-                                    "basicAuthConfig.serverPassword.label"
-                            ) }
-                            name={ "password" }
-                            hidePassword={ t("common:hidePassword") }
-                            showPassword={ t("common:showPassword") }
-                            type="password"
-                            value={ logConfig?.password }
-                            data-componentid={ componentId + "-url-value-input" }
-                        />
-
-                        <Typography variant="subtitle1" style={ { marginBottom: "1em" } }>
-                            { t(
-                                "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-                                    "sslConfig.title"
-                            ) }
-                        </Typography>
-
-                        <Field
-                            label={ t(
-                                "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-                                    "sslConfig.keystorePath.label"
-                            ) }
-                            name={ "keystoreLocation" }
-                            type="text"
-                            value={ logConfig?.keystoreLocation }
-                            data-componentid={ componentId + "-url-value-input" }
-                        />
-
-                        <Field
-                            label={ t(
-                                "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-                                    "sslConfig.keystorePassword.label"
-                            ) }
-                            name={ "keystorePassword" }
-                            hidePassword={ t("common:hidePassword") }
-                            showPassword={ t("common:showPassword") }
-                            type="password"
-                            value={ logConfig?.keystorePassword }
-                            data-componentid={ componentId + "-url-value-input" }
-                        />
-
-                        <Field
-                            label={ t(
-                                "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-                                    "sslConfig.truststorePath.label"
-                            ) }
-                            name={ "truststoreLocation" }
-                            type="text"
-                            value={ logConfig?.truststoreLocation }
-                            data-componentid={ componentId + "-url-value-input" }
-                        />
-
-                        <Field
-                            label={ t(
-                                "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
-                                    "sslConfig.truststorePassword.label"
-                            ) }
-                            name={ "truststorePassword" }
-                            hidePassword={ t("common:hidePassword") }
-                            showPassword={ t("common:showPassword") }
-                            type="password"
-                            value={ logConfig?.truststorePassword }
-                            data-componentid={ componentId + "-url-value-input" }
-                        />
-
-                        <Divider hidden />
-                        <Form.Group inline>
+                            <Divider className="mt-6 mb-6"/>
+                            <Heading as="h4">
+                                { t("console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
+                                        "basicAuthConfig.title") }
+                            </Heading>
+                            <Field
+                                label={ t(
+                                    "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
+                                        "basicAuthConfig.serverUsername.label"
+                                ) }
+                                name={ "username" }
+                                type="text"
+                                value={ logConfig?.username }
+                                data-componentid={ componentId + "-url-value-input" }
+                            />
+                            <Field
+                                label={ t(
+                                    "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
+                                        "basicAuthConfig.serverPassword.label"
+                                ) }
+                                name={ "password" }
+                                hidePassword={ t("common:hidePassword") }
+                                showPassword={ t("common:showPassword") }
+                                type="password"
+                                value={ logConfig?.password }
+                                data-componentid={ componentId + "-url-value-input" }
+                            />
+                            <Divider className="mt-6 mb-6"/>
+                            <Heading as="h4">
+                                { t("console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
+                                        "sslConfig.title") }
+                            </Heading>
+                            <Field
+                                label={ t(
+                                    "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
+                                        "sslConfig.keystorePath.label"
+                                ) }
+                                name={ "keystoreLocation" }
+                                type="text"
+                                value={ logConfig?.keystoreLocation }
+                                data-componentid={ componentId + "-url-value-input" }
+                            />
+                            <Field
+                                label={ t(
+                                    "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
+                                        "sslConfig.keystorePassword.label"
+                                ) }
+                                name={ "keystorePassword" }
+                                hidePassword={ t("common:hidePassword") }
+                                showPassword={ t("common:showPassword") }
+                                type="password"
+                                value={ logConfig?.keystorePassword }
+                                data-componentid={ componentId + "-url-value-input" }
+                            />
+                            <Field
+                                label={ t(
+                                    "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
+                                        "sslConfig.truststorePath.label"
+                                ) }
+                                name={ "truststoreLocation" }
+                                type="text"
+                                value={ logConfig?.truststoreLocation }
+                                data-componentid={ componentId + "-url-value-input" }
+                            />
+                            <Field
+                                label={ t(
+                                    "console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
+                                        "sslConfig.truststorePassword.label"
+                                ) }
+                                name={ "truststorePassword" }
+                                hidePassword={ t("common:hidePassword") }
+                                showPassword={ t("common:showPassword") }
+                                type="password"
+                                value={ logConfig?.truststorePassword }
+                                data-componentid={ componentId + "-url-value-input" }
+                            />
                             <PrimaryButton
+                                className="mt-5"
                                 size="small"
                                 type="submit"
                                 data-testid={ "remote-logging-submit-button" }
@@ -298,82 +274,80 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
                             >
                                 { t("common:update") }
                             </PrimaryButton>
-                        </Form.Group>
-                    </Forms> 
-                </Grid>
-                <Grid  xs={ 12 } md={ 12 } lg={ 12 } xl={ 12 }>
-                    <Typography variant="title1">
-                        <b>{ t("common:dangerZone") }</b>
-                    </Typography>
-                    <DangerZone
-                        isButtonDisabled={ !logConfig || Object.keys(logConfig).length === 0 }
-                        data-componentid={ componentId + "-danger-zone" }
-                        actionTitle={ t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone.title", {
-                            logType: startCase(toLower(logType))
-                        }) }
-                        header={ t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone.header", {
-                            logType: startCase(toLower(logType))
-                        }) }
-                        subheader={ 
-                            t(
-                                "console:manage.features.serverConfigs.remoteLogPublishing.dangerZone.subheader",  {
-                                    logType: toLower(logType)
-                                }
-                            ) 
+                        </Forms> 
+                    </Grid>
+                </div>
+            </EmphasizedSegment>
+            <Divider hidden />
+            <DangerZoneGroup
+                sectionHeader={ t("console:develop.features.applications.dangerZoneGroup.header") }
+            >
+                <DangerZone
+                    isButtonDisabled={ !logConfig || Object.keys(logConfig).length === 0 }
+                    data-componentid={ componentId + "-danger-zone" }
+                    actionTitle={ t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone.title", {
+                        logType: startCase(toLower(logType))
+                    }) }
+                    header={ t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone.header", {
+                        logType: startCase(toLower(logType))
+                    }) }
+                    subheader={ 
+                        t(
+                            "console:manage.features.serverConfigs.remoteLogPublishing.dangerZone.subheader",  {
+                                logType: toLower(logType)
+                            }
+                        ) 
+                    }
+                    onActionClick={ (): void => {
+                        setShowDeleteConfirmationModal(true);
+                    } }
+                />
+            </DangerZoneGroup>
+            <ConfirmationModal
+                onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                type="negative"
+                open={ showDeleteConfirmationModal }
+                assertionHint={ t(
+                    "console:manage.features.serverConfigs.remoteLogPublishing.dangerZone." + 
+                    "confirmation.hint"
+                ) }
+                assertionType="checkbox"
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ (): void => {
+                    setShowDeleteConfirmationModal(false);
+                } }
+                onPrimaryActionClick={ (): void => restoreDefaultRemoteLoggingConfiguration() }
+                data-testid={ "remote-logging-delete-confirmation-modal" }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header data-testid={ "remote-logging-delete-confirmation-modal-header" }>
+                    { t(
+                        "console:manage.features.serverConfigs.remoteLogPublishing.dangerZone." +
+                        "confirmation.header"
+                    ) }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message
+                    attached
+                    negative
+                    data-testid={ "remote-logging-delete-confirmation-modal-message" }
+                >
+                    { t(
+                        "console:manage.features.serverConfigs.remoteLogPublishing.dangerZone." +
+                        "confirmation.message",  {
+                            logType: toLower(logType)
                         }
-                        onActionClick={ (): void => {
-                            setShowDeleteConfirmationModal(true);
-                        } }
-                    />
-                    <ConfirmationModal
-                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="negative"
-                        open={ showDeleteConfirmationModal }
-                        assertionHint={ t(
-                            "console:manage.features.serverConfigs.remoteLogPublishing.dangerZone." + 
-                            "confirmation.hint"
-                        ) }
-                        assertionType="checkbox"
-                        primaryAction={ t("common:confirm") }
-                        secondaryAction={ t("common:cancel") }
-                        onSecondaryActionClick={ (): void => {
-                            setShowDeleteConfirmationModal(false);
-                        } }
-                        onPrimaryActionClick={ (): void => restoreDefaultRemoteLoggingConfiguration() }
-                        data-testid={ "remote-logging-delete-confirmation-modal" }
-                        closeOnDimmerClick={ false }
-                    >
-                        <ConfirmationModal.Header data-testid={ "remote-logging-delete-confirmation-modal-header" }>
-                            { t(
-                                "console:manage.features.serverConfigs.remoteLogPublishing.dangerZone." +
-                                "confirmation.header"
-                            ) }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message
-                            attached
-                            negative
-                            data-testid={ "remote-logging-delete-confirmation-modal-message" }
-                        >
-                            { t(
-                                "console:manage.features.serverConfigs.remoteLogPublishing.dangerZone." +
-                                "confirmation.message",  {
-                                    logType: toLower(logType)
-                                }
-                            ) }
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content data-testid={ "remote-logging-delete-confirmation-modal-content" }>
-                            { t(
-                                "console:manage.features.serverConfigs.remoteLogPublishing.dangerZone." +
-                                "confirmation.content",  {
-                                    logType: toLower(logType)
-                                }
-                            ) }
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>
-            
-                </Grid>
-            </Grid>
-            
+                    ) }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content data-testid={ "remote-logging-delete-confirmation-modal-content" }>
+                    { t(
+                        "console:manage.features.serverConfigs.remoteLogPublishing.dangerZone." +
+                        "confirmation.content",  {
+                            logType: toLower(logType)
+                        }
+                    ) }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
         </>
     );
 };

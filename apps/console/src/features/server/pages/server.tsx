@@ -54,18 +54,17 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
 
     return (
         <PageLayout
-            pageTitle={ t("console:manage.features.server.title") }
-            title={ t("console:manage.features.server.title") }
-            description={ t("console:manage.features.server.description") }
+            pageTitle={ t("console:manage.features.serverConfigs.server.title") }
+            title={ t("console:manage.features.serverConfigs.server.title") }
+            description={ t("console:manage.features.serverConfigs.server.description") }
             data-componentid={ `${ componentId }-page-layout` }
         >
             <Ref innerRef={ pageContextRef }>
                 <Grid container rowSpacing={ 2 } columnSpacing={ 3 }>
-                    <Grid xs={ 4 }>
+                    <Grid xs={ 12 } md={ 6 } lg={ 4 }>
                         <Card
                             key="admin-advisory-page-section" 
                             data-componentid="admin-advisory-page-section"
-                            className="server-configuration"
                             onClick={ () => history.push(AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT")) }
                         >
                             <CardContent className="server-configuration-header">
@@ -77,12 +76,10 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
                                         shape={ "square" }
                                     />
                                 </div>
-                                <div>
-                                    <Typography variant="h6">
-                                        { t("console:manage.features.serverConfigs.adminAdvisory." +
-                                            "configurationSection.heading") }
-                                    </Typography>
-                                </div>
+                                <Typography variant="h6">
+                                    { t("console:manage.features.serverConfigs.adminAdvisory." +
+                                        "configurationSection.heading") }
+                                </Typography>
                             </CardContent>
                             <CardContent>
                                 <Typography variant="body2" color="text.secondary">
@@ -92,7 +89,7 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
                             </CardContent>
                         </Card>
                     </Grid>
-                    <Grid xs={ 4 }>
+                    <Grid xs={ 12 } md={ 6 } lg={ 4 }>
                         <Card
                             key="remote-logging-page-section" 
                             data-componentid="remote-logging-page-section"
@@ -123,7 +120,7 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
                             </CardContent>
                         </Card>
                     </Grid>
-                    <Grid xs={ 4 }>
+                    <Grid xs={ 12 } md={ 6 } lg={ 4 }>
                         <Card
                             key="manage-notifications-sending-page-section" 
                             data-componentid="manage-notifications-sending-page-section"

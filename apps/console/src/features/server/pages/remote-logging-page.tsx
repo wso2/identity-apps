@@ -18,12 +18,11 @@
 
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { PageLayout } from "@wso2is/react-components";
+import { PageLayout, ResourceTab } from "@wso2is/react-components";
 import React, { FC, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Tab } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
 import {
     useRemoteLogPublishingConfigs
@@ -48,7 +47,6 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-
     useEffect(() => {
         if (remoteLogPublishingConfigRetrievalError && !isRemoteLogPublishingConfigsLoading) {
             dispatch(
@@ -62,7 +60,6 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
             );
         }
     }, [ ]);
-
 
     /**
      * Handles the back button click event.
@@ -109,14 +106,12 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
             } }
             isLoading={ isRemoteLogPublishingConfigsLoading }
         >
-            
-            <Tab
+            <ResourceTab
                 className="tabs resource-tabs"
                 menu={ { pointing: true, secondary: true } }
                 panes={ panes }
                 renderActiveOnly
             />
-           
         </PageLayout>
     );
 };
