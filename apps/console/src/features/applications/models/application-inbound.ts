@@ -483,7 +483,8 @@ export interface OIDCEndpointsInterface {
  * @readonly
  */
 export enum SupportedAccessTokenBindingTypes {
-    NONE = "None"
+    NONE = "None",
+    CERTIFICATE = "certificate"
 }
 
 /**
