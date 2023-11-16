@@ -130,7 +130,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
 
             if (
                 breadcrumbList && breadcrumbList.length > 0 &&
-                OrganizationUtils.isRootOrganization(breadcrumbList[ 0 ]) &&
+                OrganizationUtils.isSuperOrganization(breadcrumbList[ 0 ]) &&
                 breadcrumbList[ 1 ]?.id === organization.id &&
                 organizationConfigs.showSwitcherInTenants
             ) {
@@ -139,7 +139,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                     organization.name +
                     "/" +
                     window[ "AppUtils" ].getConfig().appBase;
-            } else if (OrganizationUtils.isRootOrganization(organization)) {
+            } else if (OrganizationUtils.isSuperOrganization(organization)) {
                 newOrgPath = `/${ window[ "AppUtils" ].getConfig().appBase }`;
             } else {
                 newOrgPath =
@@ -187,7 +187,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     const generateSuperBreadcrumbItem = (
         item?: BreadcrumbItem
     ): ReactElement => {
-        return OrganizationUtils.isRootOrganization(item) ? (
+        return OrganizationUtils.isSuperOrganization(item) ? (
             <>
                 <Breadcrumb.Section
                     onClick={

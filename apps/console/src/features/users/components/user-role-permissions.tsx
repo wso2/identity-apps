@@ -67,8 +67,8 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
 
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization);
-    const isRootOrganization: boolean = useMemo(() =>
-        OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
+    const isSuperOrganization: boolean = useMemo(() =>
+        OrganizationUtils.isSuperOrganization(currentOrganization), [ currentOrganization ]);
 
     /**
      * The following useEffect is triggered when the passed
@@ -80,7 +80,7 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
         }
 
         if (roleId) {
-            if (isRootOrganization) {
+            if (isSuperOrganization) {
                 getRoleById(roleId)
                     .then((response: AxiosResponse) => {
                         setRoleCheck(false);

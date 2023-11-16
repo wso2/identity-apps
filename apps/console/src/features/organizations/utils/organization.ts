@@ -33,7 +33,7 @@ export class OrganizationUtils {
      *
      * @returns if selected organization is the Super organization
      */
-    public static isRootOrganization(organization: GenericOrganization): boolean {
+    public static isSuperOrganization(organization: GenericOrganization): boolean {
         return !organization || organization.id === OrganizationManagementConstants.SUPER_ORGANIZATION_ID;
     }
 

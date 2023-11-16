@@ -295,7 +295,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
             if (
                 breadcrumbList && breadcrumbList.length > 0 &&
-                OrganizationUtils.isRootOrganization(breadcrumbList[ 0 ]) &&
+                OrganizationUtils.isSuperOrganization(breadcrumbList[ 0 ]) &&
                 breadcrumbList[ 1 ]?.id === organization.id &&
                 organizationConfigs.showSwitcherInTenants
             ) {
@@ -304,7 +304,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     organization.name +
                     "/" +
                     window[ "AppUtils" ].getConfig().appBase;
-            } else if (OrganizationUtils.isRootOrganization(organization)) {
+            } else if (OrganizationUtils.isSuperOrganization(organization)) {
                 newOrgPath = `/${ window[ "AppUtils" ].getConfig().appBase }`;
             } else {
                 newOrgPath =

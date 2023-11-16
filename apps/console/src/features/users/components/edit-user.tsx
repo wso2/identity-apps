@@ -104,10 +104,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const [ user, setUser ] = useState<ProfileInfoInterface>(selectedUser);
     const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
 
-    const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
-    const isRootOrganization: boolean = useMemo(() =>
-        OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
-
     useEffect(() => {
         //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to
         //see if they are the same values. If they are the same values we do not do anything.
@@ -237,7 +233,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             )
         },
         // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
-        isRootOrganization ? {
+        isSuperOrganization ? {
             menuItem: t("console:manage.features.users.editUser.tab.menuItems.2"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
