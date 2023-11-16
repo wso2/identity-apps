@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.6.13
+
+### Patch Changes
+
+- [#4635](https://github.com/wso2/identity-apps/pull/4635) [`992a1572df`](https://github.com/wso2/identity-apps/commit/992a1572dfea2109610af7530ff1d161ce31d79e) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Fix etherium issue
+
 ## 2.6.12
 
 ### Patch Changes
