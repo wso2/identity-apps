@@ -1463,6 +1463,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 && (
                     selectedGrantTypes?.includes(ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
                     || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
+                    || selectedGrantTypes?.includes(ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)
                 ) && (
                     <>
                         <Grid.Row columns={ 1 }>

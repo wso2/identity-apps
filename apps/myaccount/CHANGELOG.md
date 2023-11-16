@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.2.21
+
+### Patch Changes
+
+- [#4629](https://github.com/wso2/identity-apps/pull/4629) [`9f35177e00`](https://github.com/wso2/identity-apps/commit/9f35177e00033796d44c97050402f8f8f88f94fd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the overlay issue on the login page timeout error message
+
+* [#4559](https://github.com/wso2/identity-apps/pull/4559) [`17462364ba`](https://github.com/wso2/identity-apps/commit/17462364ba5f03e7c7aba1ef78df94812ca8ffc4) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove delete action of the `everyone` role
+
+* Updated dependencies [[`9f35177e00`](https://github.com/wso2/identity-apps/commit/9f35177e00033796d44c97050402f8f8f88f94fd), [`17462364ba`](https://github.com/wso2/identity-apps/commit/17462364ba5f03e7c7aba1ef78df94812ca8ffc4)]:
+  - @wso2is/theme@2.0.36
+  - @wso2is/core@2.0.13
+
 ## 2.2.20
 
 ### Patch Changes

@@ -931,11 +931,7 @@
         },
         "hiddenAuthenticators": [],
         "hiddenConnectionTemplates": [],
-        "hiddenUserStores": [
-            "ASGARDEO-USER",
-            "LITE-USER",
-            "DEFAULT"
-        ],
+        "hiddenUserStores": [],
         "i18nConfigs": {
             "showLanguageSwitcher": false,
             "langAutoDetectEnabled": false

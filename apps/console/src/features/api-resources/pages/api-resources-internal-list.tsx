@@ -16,26 +16,19 @@
  * under the License.
  */
 
-import { BuildingGearIcon, ChevronRightIcon, HierarchyIcon } from "@oxygen-ui/react-icons";
-import Grid from "@oxygen-ui/react/Grid";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { 
-    DocumentationLink, 
-    EmphasizedSegment, 
+import {
     EmptyPlaceholder, 
-    GenericIcon, 
     ListLayout, 
-    PageLayout, 
-    PrimaryButton, 
-    useDocumentation 
+    PageLayout 
 } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Icon, List, PaginationProps } from "semantic-ui-react";
+import { PaginationProps } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -45,7 +38,6 @@ import {
 } from "../../core";
 import { useAPIResources } from "../api";
 import { APIResourcesList } from "../components";
-import { AddAPIResource } from "../components/wizard";
 import { APIResourceType, APIResourcesConstants } from "../constants";
 import { APIResourceInterface } from "../models";
 
@@ -68,12 +60,14 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
         ["data-componentid"]: componentId
     } = props;
 
+    const path: string[] = history.location.pathname.split("/");
+    const categoryId: string = path[path.length - 1];
+
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { getLink } = useDocumentation();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ activePage, setActivePage ] = useState<number>(1);
-    const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isListUpdated, setListUpdated ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
@@ -82,9 +76,9 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     const [ before, setBefore ] = useState<string>(undefined);
     const [ nextAfter, setNextAfter ] = useState<string>(undefined);
     const [ nextBefore, setNextBefore ] = useState<string>(undefined);
-    const [ filter, setFilter ] = useState<string>(`type eq ${ APIResourcesConstants.BUSINESS }`);
-
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const [ filter, setFilter ] = useState<string>(categoryId === APIResourceType.MANAGEMENT 
+        ? `type eq ${ APIResourcesConstants.SYSTEM }`
+        : `type eq ${ APIResourcesConstants.SYSTEM_ORG }`);
 
     const {
         data: apiResourcesListData,
@@ -167,7 +161,9 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
      * The following useEffect is used to update the filter value
      */
     useEffect(() => {
-        const typeFilter: string = `type eq ${ APIResourcesConstants.BUSINESS }`;
+        const typeFilter: string = categoryId === APIResourceType.MANAGEMENT
+            ? `type eq ${ APIResourcesConstants.SYSTEM }`
+            : `type eq ${ APIResourcesConstants.SYSTEM_ORG }`;
 
         if (searchQuery) {
             setFilter(`${ searchQuery } and ${ typeFilter }`);
@@ -175,13 +171,6 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
             setFilter(typeFilter);
         }
     }, [ searchQuery ]);
-
-    /**
-     * edit the API resources list once a API resource is deleted
-     */
-    const onAPIResourceDelete = (): void => {
-        setMutateAPIResourcesList();
-    };
 
     /**
      * set the after and before values needed for the `mutateAPIResourcesFetchRequest`
@@ -220,7 +209,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
      *
      * @param query - Search query.
      */
-    const handleApiFilter = (query: string): void => {
+    const handleApiFilter = (query: string): void => {        
         setSearchQuery(query);
     };
 
@@ -232,121 +221,37 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
         setTriggerClearQuery(!triggerClearQuery);
     };
 
+    /**
+     * go back to API resources list section
+     */
+    const handleBackButtonClick = () => {
+        history.push(APIResourcesConstants.getPaths().get("API_RESOURCES"));
+    };
+
     return (
         <PageLayout
-            action={
-                (
-                    <PrimaryButton
-                        data-testid= { `${componentId}-add-api-resources-button` }
-                        onClick={ () => setShowWizard(true) }
-                    >
-                        <Icon name="add" />
-                        { t("extensions:develop.apiResource.addApiResourceButton") }
-                    </PrimaryButton>
-                )
+            pageTitle={ categoryId === APIResourceType.MANAGEMENT 
+                ? t("extensions:develop.apiResource.managementAPI.header")
+                : t("extensions:develop.apiResource.organizationAPI.header")
             }
-            pageTitle={ t("extensions:develop.apiResource.pageHeader.title") }
-            title={ t("extensions:develop.apiResource.pageHeader.title") }
-            description={ (
-                <>
-                    { t("extensions:develop.apiResource.pageHeader.description") }
-                    <DocumentationLink
-                        link={ getLink("develop.apiResources.learnMore") }
-                    >
-                        { t("extensions:common.learnMore") }
-                    </DocumentationLink>
-                </>
-            ) }
-            data-componentid={ `${ componentId }-page-layout` }
-            data-testid={ `${ componentId }-page-layout` }
+            title={ categoryId === APIResourceType.MANAGEMENT 
+                ? t("extensions:develop.apiResource.managementAPI.header")
+                : t("extensions:develop.apiResource.organizationAPI.header")
+            }
+            data-componentid={ `${componentId}-page-layout` }
+            data-testid={ `${componentId}-page-layout` }
             headingColumnWidth="11"
             actionColumnWidth="5"
+            loadingStateOptions={ {
+                count: 5,
+                imageType: "circular"
+            } }
+            backButton={ {
+                "data-testid": `${componentId}-back-button`,
+                onClick: handleBackButtonClick,
+                text: t("console:manage.pages.rolesEdit.backButton", { type: "APIs" })
+            } }
         >
-            <EmphasizedSegment
-                onClick={ () => {
-                    history.push(APIResourcesConstants.getPaths().get("API_RESOURCES_CATEGORY")
-                        .replace(":categoryId", APIResourceType.MANAGEMENT));
-                } }
-                className="clickable"
-                data-componentid={ `${ componentId }-management-api-container` }
-            >
-                <List>
-                    <List.Item>
-                        <Grid container direction="row" xs={ 12 } alignItems="center">
-                            <Grid xs={ 10 } alignContent="center">
-                                <GenericIcon
-                                    verticalAlign="middle"
-                                    fill="primary"
-                                    transparent
-                                    icon={ <BuildingGearIcon size="medium" /> }
-                                    spaced="right"
-                                    floated="left"
-                                    className="mt-1"
-                                />
-                                <List.Header>
-                                    { t("extensions:develop.apiResource.managementAPI.header") }
-                                </List.Header>
-                                <List.Description>
-                                    { t("extensions:develop.apiResource.managementAPI.description") }
-                                </List.Description>
-                            </Grid>
-                            <Grid xs={ 2 }>
-                                <GenericIcon
-                                    verticalAlign="middle"
-                                    fill="primary"
-                                    transparent
-                                    icon={ <ChevronRightIcon /> }
-                                    spaced="right"
-                                    floated="right"
-                                />
-                            </Grid>
-                        </Grid>
-                    </List.Item>
-                </List>
-            </EmphasizedSegment>
-            <EmphasizedSegment
-                onClick={ () => {
-                    history.push(APIResourcesConstants.getPaths().get("API_RESOURCES_CATEGORY")
-                        .replace(":categoryId", APIResourceType.ORGANIZATION));
-                } }
-                className="clickable"
-                data-componentid={ `${ componentId }-organization-api-container` }
-            >
-                <List>
-                    <List.Item>
-                        <Grid container direction="row" xs={ 12 } alignItems="center">
-                            <Grid xs={ 10 } alignContent="center">
-                                <GenericIcon
-                                    verticalAlign="middle"
-                                    fill="primary"
-                                    transparent
-                                    icon={ <HierarchyIcon size="medium" /> }
-                                    spaced="right"
-                                    floated="left"
-                                    className="mt-1"
-                                />
-                                <List.Header>
-                                    { t("extensions:develop.apiResource.organizationAPI.header") }
-                                </List.Header>
-                                <List.Description>
-                                    { t("extensions:develop.apiResource.organizationAPI.description") }
-                                </List.Description>
-                            </Grid>
-                            <Grid xs={ 2 }>
-                                <GenericIcon
-                                    verticalAlign="middle"
-                                    fill="primary"
-                                    transparent
-                                    icon={ <ChevronRightIcon /> }
-                                    spaced="right"
-                                    floated="right"
-                                />
-                            </Grid>
-                        </Grid>
-                    </List.Item>
-                </List>
-            </EmphasizedSegment>
-            <Divider hidden/>
             <ListLayout
                 advancedSearch={ (
                     <AdvancedSearchWithBasicFilters
@@ -406,22 +311,14 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                             apiResourcesList={ apiResourcesList }
                             isAPIResourcesListLoading={ isAPIResourcesListLoading }
                             featureConfig={ featureConfig }
-                            onAPIResourceDelete={ onAPIResourceDelete }
+                            onAPIResourceDelete={ null }
                             onSearchQueryClear={ handleSearchQueryClear }
                             searchQuery={ searchQuery }
-                            categoryId="custom"
+                            categoryId={ categoryId }
                         />)
 
                 }
             </ListLayout>
-            {
-                showWizard && (
-                    <AddAPIResource
-                        data-testid= { `${componentId}-add-api-resource-wizard-modal` }
-                        closeWizard={ () => setShowWizard(false) }
-                    />
-                )
-            }
         </PageLayout>
     );
 };
@@ -430,12 +327,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
  * Default props for the component.
  */
 APIResourcesPage.defaultProps = {
-    "data-componentid": "api-resources"
+    "data-componentid": "api-resources-internal-list"
 };
 
-/**
- * A default export was added to support React.lazy.
- * TODO: Change this to a named export once react starts supporting named exports for code splitting.
- * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
- */
 export default APIResourcesPage;

@@ -1,5 +1,29 @@
 # @wso2is/console
 
+## 2.6.12
+
+### Patch Changes
+
+- [#4627](https://github.com/wso2/identity-apps/pull/4627) [`d21994ddad`](https://github.com/wso2/identity-apps/commit/d21994ddadf037e9dd032fd57c3767d2eb418559) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add public client option for token exchange grant
+
+* [#4629](https://github.com/wso2/identity-apps/pull/4629) [`9f35177e00`](https://github.com/wso2/identity-apps/commit/9f35177e00033796d44c97050402f8f8f88f94fd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the overlay issue on the login page timeout error message
+
+- [#4622](https://github.com/wso2/identity-apps/pull/4622) [`654c517d32`](https://github.com/wso2/identity-apps/commit/654c517d32369b57bf5ecabb311f3ce75b4fa339) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Implement admin permissions revocation of users via list admin page.
+
+* [#4501](https://github.com/wso2/identity-apps/pull/4501) [`33ba588505`](https://github.com/wso2/identity-apps/commit/33ba588505726ff1f2fe404cf0728269e91ec722) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove the Request Path Authentication section from the application Sign In Method tab
+
+- [#4558](https://github.com/wso2/identity-apps/pull/4558) [`af05ce42d9`](https://github.com/wso2/identity-apps/commit/af05ce42d94460dbaa68e201d58dd319feae2def) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the inconsistency in Add Users Modal Between Super Organization and Other Tenants
+
+* [#4575](https://github.com/wso2/identity-apps/pull/4575) [`97d22aa2b5`](https://github.com/wso2/identity-apps/commit/97d22aa2b5a8c3d8e923e84bc342102ee5e0c95d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix for the issue of creating a SCIM claim even when removing the Claim Mapping from UI
+
+- [#4559](https://github.com/wso2/identity-apps/pull/4559) [`17462364ba`](https://github.com/wso2/identity-apps/commit/17462364ba5f03e7c7aba1ef78df94812ca8ffc4) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove delete action of the `everyone` role
+
+* [#4619](https://github.com/wso2/identity-apps/pull/4619) [`fca836f88d`](https://github.com/wso2/identity-apps/commit/fca836f88d4f51aa5d77d6a21f63770c99a8e272) Thanks [@savindi7](https://github.com/savindi7)! - Fix connector icon rendering issue
+
+* Updated dependencies [[`9f35177e00`](https://github.com/wso2/identity-apps/commit/9f35177e00033796d44c97050402f8f8f88f94fd), [`17462364ba`](https://github.com/wso2/identity-apps/commit/17462364ba5f03e7c7aba1ef78df94812ca8ffc4)]:
+  - @wso2is/theme@2.0.36
+  - @wso2is/core@2.0.13
+
 ## 2.6.11
 
 ### Patch Changes

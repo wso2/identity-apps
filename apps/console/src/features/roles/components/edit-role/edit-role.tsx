@@ -76,6 +76,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
+    const [ isEveryoneRole, setIsEveryoneRole ] = useState<boolean>(false);
 
     const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
 
@@ -86,6 +87,8 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         if(roleObject) {
             setIsAdminRole(roleObject.displayName === RoleConstants.ADMIN_ROLE ||
                 roleObject.displayName === RoleConstants.ADMIN_GROUP);
+            setIsEveryoneRole(roleObject.displayName === RoleConstants.EVERYONE_ROLE ||
+                roleObject.displayName === RoleConstants.EVERYONE_GROUP);
         }
     }, [ roleObject ]);
 
@@ -96,7 +99,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <BasicRoleDetails
-                            isReadOnly={ isSubOrg || isAdminRole
+                            isReadOnly={ isSubOrg || isAdminRole || isEveryoneRole
                                 || !hasRequiredScopes(
                                     featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes) }
                             role={ roleObject }

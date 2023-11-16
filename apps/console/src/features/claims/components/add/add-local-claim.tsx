@@ -1,37 +1,41 @@
 /**
-* Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
-*
-* WSO2 LLC. licenses this file to you under the Apache License,
-* Version 2.0 (the 'License'); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ProfileSchemaInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
+import { ClaimDialect } from "modules/core/src/models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { UserStoreListItem } from "../../../userstores/models";
 import { attributeConfig } from "../../../../extensions";
 import { AppState, EventPublisher } from "../../../core";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
 import { getProfileSchemas } from "../../../users/api";
+import { WizardStepInterface } from "../../../users/models";
+import { UserStoreListItem } from "../../../userstores/models";
 import { addDialect, addExternalClaim, addLocalClaim } from "../../api";
 import { getAddLocalClaimWizardStepIcons } from "../../configs";
 import { ClaimManagementConstants } from "../../constants";
@@ -60,11 +64,11 @@ interface AddLocalClaimsPropsInterface extends TestableComponentInterface {
 }
 
 /**
- * A component that lets you add a local claim
+ * A component that lets you add a local claim.
  *
- * @param {AddLocalClaimsPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Local claims adding component.
  */
 export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     props: AddLocalClaimsPropsInterface
@@ -89,13 +93,14 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const [ scimMapping, setScimMapping ] = useState<boolean>(false);
     const [ oidcMapping, setOidcMapping ] = useState<boolean>(false);
     const [ createdClaim, setCreatedClaim ] = useState<string>(null);
+    const [ skipSCIM, setSkipScim ] = useState<boolean>(false);
 
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
 
     const [ firstStep, setFirstStep ] = useTrigger();
     const [ secondStep, setSecondStep ] = useTrigger();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -113,7 +118,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
         let userStoresEnabled: boolean = false;
 
         if ( hiddenUserStores && hiddenUserStores.length > 0) {
-            attributeConfig.localAttributes.isUserStoresHidden(hiddenUserStores).then(state => {
+            attributeConfig.localAttributes.isUserStoresHidden(hiddenUserStores).then((state: UserStoreListItem[]) => {
                 state.map((store: UserStoreListItem) => {
                     if(store.enabled){
                         userStoresEnabled = true;
@@ -149,11 +154,11 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     /**
      * Submit handler that sends the API request to add the local claim
      */
-    const handleSubmit = async (data, customMappings?, skipSCIM?) => {
+    const handleSubmit = async (data: Claim, customMappings?: Map<string, string>, skipSCIM?: boolean) => {
 
         if ( attributeConfig.localAttributes.createCustomDialect ) {
 
-            await attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then(available => {
+            await attributeConfig.localAttributes.isSCIMCustomDialectAvailable().then((available: string) => {
                 if (available === "") {
                     addDialect(attributeConfig.localAttributes.customDialectURI);
                 }
@@ -163,7 +168,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
         setIsSubmitting(true);
         addLocalClaim(data)
-            .then((response) => {
+            .then((response: AxiosResponse) => {
                 eventPublisher.publish("manage-attribute-add-new-attribute");
 
                 dispatch(addAlert(
@@ -193,7 +198,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     }
 
                     attributeConfig.localAttributes.getDialect(ClaimManagementConstants.OIDC_MAPPING[ 0 ]).then(
-                        response => {
+                        (response: Claim | ClaimDialect) => {
                             addExternalClaim(response.id, {
                                 claimURI: `${ customMappings.get("oidc") }`,
                                 mappedLocalClaimURI: data.claimURI
@@ -207,8 +212,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                 // The created resource's id is sent as a location header.
                 // If that's available, navigate to the edit page.
                 if (!isEmpty(response.headers.location)) {
-                    const location = response.headers.location;
-                    const createdClaim = location.substring(location.lastIndexOf("/") + 1);
+                    const location: string = response.headers.location;
+                    const createdClaim: string = location.substring(location.lastIndexOf("/") + 1);
 
                     setCreatedClaim(createdClaim);
 
@@ -221,7 +226,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                     update();
                     setIsSubmitting(false);
                 }
-            }).catch((error) => {
+            }).catch((error: any) => {
                 setIsSubmitting(false);
                 setAlert(
                     {
@@ -274,14 +279,13 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     };
 
     /**
-     * Handler that is called when the `Basic Details` wizard step is completed
-     * @param {Claim} dataFromForm
-     * @param {Map<string, FormValue>} values
+     * Handler that is called when the `Basic Details` wizard step is completed.
+     * @param dataFromForm - Data from the form input fields.
+     * @param values - Data related to the custom mappings.
      */
     const onSubmitBasicDetails = (dataFromForm: Claim, values: Map<string, FormValue>) => {
-        const tempData = { ...data, ...dataFromForm };
+        const tempData: Claim = { ...data, ...dataFromForm };
         const customMappings: Map<string, string> = new Map();
-        let skipSCIM = false;
 
         setData(tempData);
         setBasicDetailsData(values);
@@ -289,7 +293,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
         if (values.has("scim") ) {
             customMappings.set("scim", values.get("scim").toString());
         } else {
-            skipSCIM = true;
+            setSkipScim(true);
         }
 
         if (values.has("oidc") ) {
@@ -328,11 +332,11 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
     /**
      * Handler that is called when the `Mapped Attributes` step of the wizard is completed
-     * @param {Claim} dataFromForm
-     * @param {KeyValue[]} values
+     * @param dataFromForm - Data from the form input fields.
+     * @param values - Data related to the user store attribute mappings.
      */
     const onSubmitMappedAttributes = (dataFromForm: Claim, values: Map<string, FormValue>) => {
-        const tempData = { ...data, ...dataFromForm };
+        const tempData: Claim = { ...data, ...dataFromForm };
 
         setData(tempData);
         setMappedAttributesData(values);
@@ -345,7 +349,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
         }
 
         if (!attributeConfig.localAttributes.createWizard.showSummary) {
-            handleSubmit(tempData, mappedCustomAttribues);
+            handleSubmit(tempData, mappedCustomAttribues, skipSCIM);
         } else {
             setCurrentWizardStep(2);
         }
@@ -354,7 +358,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     /**
      * An array of objects that contains data of each step of the wizard
      */
-    const STEPS = [
+    const STEPS: WizardStepInterface[] = [
         {
             content: (
                 <BasicDetailsLocalClaims
@@ -400,7 +404,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                 }
                 : undefined
         )
-    ].filter(el => el !== undefined);
+    ].filter((el: WizardStepInterface) => el !== undefined);
 
     /**
      * Moves the wizard to the next step
@@ -434,7 +438,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
                 break;
             case 2:
-                handleSubmit(data);
+                handleSubmit(data, mappedCustomAttribues, skipSCIM);
 
                 break;
         }
@@ -471,7 +475,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                         <Steps.Group
                             current={ currentWizardStep }
                         >
-                            { STEPS.map((step, index) => (
+                            { STEPS.map((step: WizardStepInterface, index: number) => (
                                 <Steps.Step
                                     key={ index }
                                     icon={ step.icon }

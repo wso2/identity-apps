@@ -37,12 +37,12 @@ import values from "lodash-es/values";
 import React, { FunctionComponent, lazy } from "react";
 import { getSidePanelIcons } from "./ui";
 import { identityProviderConfig, userstoresConfig } from "../../../extensions";
-import { APIResourcesConstants } from "../../../extensions/components/api-resources/constants";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
 import { RemoteUserStoreConstants } from "../../../extensions/components/user-stores/constants";
 import { UsersConstants } from "../../../extensions/components/users/constants";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
 import { AppView, FullScreenView } from "../../../views";
+import { APIResourcesConstants } from "../../api-resources/constants";
 import { ServerConfigurationsConstants } from "../../server-configurations";
 import { AppConstants } from "../constants";
 
@@ -1358,6 +1358,17 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         id: "apiResources-edit",
                         name: "extensions:develop.sidePanel.apiResources",
                         path: APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() =>
+                            import("../../api-resources/pages/api-resources-internal-list")
+                        ),
+                        exact: true,
+                        id: "apiResources-list",
+                        name: "extensions:develop.sidePanel.apiResources",
+                        path: APIResourcesConstants.getPaths().get("API_RESOURCES_CATEGORY"),
                         protected: true,
                         showOnSidePanel: false
                     }

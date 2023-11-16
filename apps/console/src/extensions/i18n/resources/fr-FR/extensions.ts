@@ -460,6 +460,10 @@ export const extensions: Extensions = {
                         "Veuillez procéder avec prudence."
                 }
             },
+            managementAPI: {
+                header: "API de gestion",
+                description: "API pour gérer les ressources dans votre auto-organisation"
+            },
             notifications: {
                 deleteAPIResource: {
                     unauthorizedError: {
@@ -551,6 +555,10 @@ export const extensions: Extensions = {
                         message: "Ressource API créée"
                     }
                 }
+            },
+            organizationAPI: {
+                header: "API d'organisation",
+                description: "API pour gérer les ressources de vos autres organisations"
             },
             table: {
                 name: {

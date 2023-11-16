@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.0.13
+
+### Patch Changes
+
+- [#4559](https://github.com/wso2/identity-apps/pull/4559) [`17462364ba`](https://github.com/wso2/identity-apps/commit/17462364ba5f03e7c7aba1ef78df94812ca8ffc4) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove delete action of the `everyone` role
+
 ## 2.0.12
 
 ### Patch Changes
