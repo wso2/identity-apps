@@ -368,7 +368,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                 hoverable={ false }
                                 icon={ OrganizationIcon }
                             />
-                            { organization.id === OrganizationManagementConstants.ROOT_ORGANIZATION_ID
+                            { organization.id === OrganizationManagementConstants.SUPER_ORGANIZATION_ID
                                && (< Header.Content >
                                    <Icon
                                        className="mr-2 ml-0 vertical-aligned-baseline"
