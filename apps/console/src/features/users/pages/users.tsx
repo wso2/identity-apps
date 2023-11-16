@@ -591,7 +591,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * @param query - Search query.
      */
     const handleUserFilter = (query: string): void => {
-        const attributes: string = generateAttributesString(userListMetaContent.values());
+        const attributes: string = generateAttributesString(userListMetaContent?.values());
 
         if (query === "userName sw ") {
             getList(listItemLimit, listOffset, null, attributes, userStore);
