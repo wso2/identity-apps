@@ -104,6 +104,7 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
                 onClick: handleBackButtonClick,
                 text: t("console:manage.pages.rolesEdit.backButton", { type: "Server" })
             } }
+            bottomMargin={ false }
             isLoading={ isRemoteLogPublishingConfigsLoading }
         >
             <ResourceTab

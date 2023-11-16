@@ -150,7 +150,7 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
                                 value={ logConfig?.remoteUrl }
                                 data-componentid={ componentId + "-url-value-input" }
                             />
-                            <Divider className="mt-6 mb-6"/>
+                            <Divider className="mt-6 mb-4"/>
                             <Heading as="h4">
                                 { t("console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
                                     "title") }
@@ -189,7 +189,7 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
                                     />
                                 </Grid>
                             </Grid>
-                            <Divider className="mt-6 mb-6"/>
+                            <Divider className="mt-6 mb-4"/>
                             <Heading as="h4">
                                 { t("console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
                                         "basicAuthConfig.title") }
@@ -216,7 +216,7 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
                                 value={ logConfig?.password }
                                 data-componentid={ componentId + "-url-value-input" }
                             />
-                            <Divider className="mt-6 mb-6"/>
+                            <Divider className="mt-6 mb-4"/>
                             <Heading as="h4">
                                 { t("console:manage.features.serverConfigs.remoteLogPublishing.fields.advanced." +
                                         "sslConfig.title") }
@@ -266,7 +266,7 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
                                 data-componentid={ componentId + "-url-value-input" }
                             />
                             <PrimaryButton
-                                className="mt-5"
+                                className="mt-6"
                                 size="small"
                                 type="submit"
                                 data-testid={ "remote-logging-submit-button" }
