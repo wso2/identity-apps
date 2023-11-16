@@ -330,15 +330,24 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
                 );
             }
 
-            const sorted_fields: DynamicInputElementsInterface[] = fields.sort(
+            const sortedFields: DynamicInputElementsInterface[] = fields.sort(
                 (firstValue: DynamicInputElementsInterface, secondValue: DynamicInputElementsInterface) => 
                     firstValue.displayOrder - secondValue.displayOrder
             );
 
-            return sorted_fields.map((el: DynamicInputElementsInterface) => el.element);
+            return sortedFields.map((el: DynamicInputElementsInterface) => el.element);
         }
     };
 
+    /**
+     * Return the input field type according to
+     * the given value type and properties.
+     *
+     * @param type - Value type.
+     * @param isConfidential - Whether the value is confidential or not.
+     *
+     * @returns Input field type.
+     */
     const getInputTypeFromVarType = (type: string, isConfidential: boolean): DynamicFieldInputTypes => {
         switch(type) {
             case "STRING":
