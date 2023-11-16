@@ -543,6 +543,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             return;
         }
 
+        // Show the validate option for FAPI apps.
+        if (isFAPIApplication) {
+            setIsTokenBindingTypeSelected(true);
+
+            return;
+        }
+        
         // When bindingType is set to none, back-end doesn't send the `bindingType` attr. So default to `None`.
         if (!initialValues?.accessToken?.bindingType) {
             setIsTokenBindingTypeSelected(false);
@@ -2114,12 +2121,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 default={
                                     initialValues?.accessToken?.bindingType
                                         ? initialValues.accessToken.bindingType
-                                        : metadata?.accessTokenBindingType?.defaultValue
+                                        : isFAPIApplication ? SupportedAccessTokenBindingTypes.CERTIFICATE
+                                            : metadata?.accessTokenBindingType?.defaultValue
                                         ?? SupportedAccessTokenBindingTypes.NONE
                                 }
                                 type="radio"
                                 children={ getAllowedListForAccessToken(metadata.accessTokenBindingType, true) }
-                                readOnly={ readOnly }
+                                readOnly={ readOnly || isFAPIApplication }
                                 data-testid={ `${ testId }-access-token-type-radio-group` }
                                 listen={ (values: Map<string, FormValue>) => {
                                     setIsTokenBindingTypeSelected(
@@ -2165,7 +2173,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     value={
                                         initialValues?.accessToken?.validateTokenBinding
                                             ? [ "validateTokenBinding" ]
-                                            : []
+                                            : isFAPIApplication ? [ "validateTokenBinding" ] : []
                                     }
                                     children={ [
                                         {
@@ -2174,7 +2182,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             value: "validateTokenBinding"
                                         }
                                     ] }
-                                    readOnly={ readOnly }
+                                    readOnly={ readOnly || isFAPIApplication }
                                     data-testid={ `${ testId }-access-token-validate-binding-checkbox` }
                                 />
                                 <Hint>
