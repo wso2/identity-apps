@@ -265,8 +265,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         && handleRoleEdit(role?.id),
                 popupText: (): string =>
                     hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
-                        ? t("console:manage.features.roles.list.popups.edit",
-                            { type: "Role" })
+                        ? t("common:edit")
                         : t("common:view"),
                 renderer: "semantic-icon"
             },
