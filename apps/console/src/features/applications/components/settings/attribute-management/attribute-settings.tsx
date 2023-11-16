@@ -1079,16 +1079,26 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         if (applicationConfig.excludeSubjectClaim && onlyOIDCConfigured) {
             delete submitValue.claimConfiguration.subject;
         }
-        
-        const isProtocolOAuth: boolean = !!technology?.find((protocol: InboundProtocolListItemInterface) => 
-            protocol.type === SupportedAuthProtocolTypes.OAUTH2);
-        
-        Promise.all([
-            updateClaimConfiguration(appId, submitValue),
-            isProtocolOAuth 
-                ? updateAuthProtocolConfig<OIDCDataInterface>(appId, oidcSubmitValue, SupportedAuthProtocolTypes.OIDC) 
-                : Promise.resolve()
-        ]).then(() => {
+
+        /**
+         * Handles the error scenario of the claim configuration update by displaying a generic claim configuration
+         * update failure alert.
+         */
+        const onClaimConfigUpdateError = () => {
+            dispatch(addAlert({
+                description: t("console:develop.features.applications.notifications.updateClaimConfig" +
+                    ".genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.applications.notifications.updateClaimConfig.genericError" +
+                    ".message")
+            }));
+        };
+
+        /**
+         * Handles the successful claim configuration update scenario by executing the `onUpdate` callback and 
+         * displaying a success alert.
+         */
+        const onSuccessfulClaimConfigUpdate = () => {
             onUpdate(appId);
             dispatch(addAlert({
                 description: t("console:develop.features.applications.notifications.updateClaimConfig.success" +
@@ -1096,16 +1106,22 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                 level: AlertLevels.SUCCESS,
                 message: t("console:develop.features.applications.notifications.updateClaimConfig.success.message")
             }));
-        })
-            .catch(() => {
-                dispatch(addAlert({
-                    description: t("console:develop.features.applications.notifications.updateClaimConfig" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.applications.notifications.updateClaimConfig.genericError" +
-                        ".message")
-                }));
-            });
+        };
+        
+        const isProtocolOAuth: boolean = !!technology?.find((protocol: InboundProtocolListItemInterface) => 
+            protocol.type === SupportedAuthProtocolTypes.OAUTH2);
+
+        updateClaimConfiguration(appId, submitValue)
+            .then(() => {
+                if (isProtocolOAuth) {
+                    updateAuthProtocolConfig<OIDCDataInterface>(appId, oidcSubmitValue, SupportedAuthProtocolTypes.OIDC)
+                        .then(onSuccessfulClaimConfigUpdate)
+                        .catch(onClaimConfigUpdateError);
+                } else {
+                    onSuccessfulClaimConfigUpdate();
+                }
+            })
+            .catch(onClaimConfigUpdateError);
     };
 
     /**

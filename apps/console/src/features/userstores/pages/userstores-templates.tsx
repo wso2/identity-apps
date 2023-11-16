@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -91,14 +92,13 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
     useEffect(() => {
         getUserstoreTypes().then(async (response: TypeResponse[]) => {
             setIsLoading(true);
-            const typeRequests: Promise<any>[] = response.map((type: TypeResponse) => {
+            const typeRequests: Promise<UserstoreType>[] = response.map((type: TypeResponse) => {
                 return getAType(type.typeId, null);
             });
-            const results: UserstoreType[] = await Promise.all(
-                typeRequests.map(response => response.catch(error => {
+            const results: (void | UserstoreType)[] = await Promise.all(
+                typeRequests.map((response: Promise<UserstoreType>) => response.catch((error: AxiosError) => {
                     dispatch(addAlert({
-                        description: error?.description
-                            || t("console:manage.features.userstores.notifications." +
+                        description: t("console:manage.features.userstores.notifications." +
                                 "fetchUserstoreTemplates.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
@@ -140,9 +140,9 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
             });
             setUserstoreTypes(uniqueUserstoreTypes.concat(userstoreTypes));
             setRawUserstoreTypes(rawUserstoreTypes);
-        }).catch(error => {
+        }).catch((error: AxiosError) => {
             dispatch(addAlert({
-                description: error?.description || t("console:manage.features.userstores.notifications." +
+                description: t("console:manage.features.userstores.notifications." +
                     "fetchUserstoreTypes.genericError.description"),
                 level: AlertLevels.ERROR,
                 message: error?.message || t("console:manage.features.userstores.notifications." +
@@ -193,7 +193,8 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                                 type="userstore"
                                 templates={ userstoreTypes }
                                 onTemplateSelect={ (e: SyntheticEvent, { id }: { id: string }) => {
-                                    setSelectedType(rawUserstoreTypes.find((type) => type.typeId === id));
+                                    setSelectedType(rawUserstoreTypes.find(
+                                        (type: UserstoreType) => type.typeId === id));
                                 } }
                                 templateIcons={ getUserstoreTemplateIllustrations() as any }
                                 templateIconOptions={ {
@@ -201,7 +202,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                                 } }
                                 templateIconSize="tiny"
                                 paginate={ true }
-                                paginationLimit={ 4 }
+                                paginationLimit={ userstoreTypes?.length ? userstoreTypes.length : 0 }
                                 paginationOptions={ {
                                     showLessButtonLabel: t("common:showLess"),
                                     showMoreButtonLabel: t("common:showMore")

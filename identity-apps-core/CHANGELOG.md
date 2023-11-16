@@ -1,5 +1,33 @@
 # @wso2is/identity-apps-core
 
+## 2.0.51
+
+### Patch Changes
+
+- [#4623](https://github.com/wso2/identity-apps/pull/4623) [`826163ef8a`](https://github.com/wso2/identity-apps/commit/826163ef8a87118577b5e093b9f95185c244ac21) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) enable custom user store managers
+
+- Updated dependencies [[`826163ef8a`](https://github.com/wso2/identity-apps/commit/826163ef8a87118577b5e093b9f95185c244ac21)]:
+  - @wso2is/theme@2.0.35
+
+## 2.0.50
+
+### Patch Changes
+
+- [#4620](https://github.com/wso2/identity-apps/pull/4620) [`0b3b68241c`](https://github.com/wso2/identity-apps/commit/0b3b68241cba6d56ee62cc01560c4232aca8030d) Thanks [@thanujalk](https://github.com/thanujalk)! - Fix app sharing issue
+
+* [#4609](https://github.com/wso2/identity-apps/pull/4609) [`f4b757e76d`](https://github.com/wso2/identity-apps/commit/f4b757e76d7b10f41ceac35decc55ebe1afebc55) Thanks [@thanujalk](https://github.com/thanujalk)! - Allow to update system apps on set of scenarioes
+
+- [#4607](https://github.com/wso2/identity-apps/pull/4607) [`d000ebab65`](https://github.com/wso2/identity-apps/commit/d000ebab65b4eb2a701ab7c882e78b513110a20c) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Improve UX of forgot password or username
+
+- Updated dependencies [[`0535f1f945`](https://github.com/wso2/identity-apps/commit/0535f1f945600db877cf040796ce99d2f51a5d6f)]:
+  - @wso2is/theme@2.0.34
+
+## 2.0.49
+
+### Patch Changes
+
+- [#4593](https://github.com/wso2/identity-apps/pull/4593) [`772196ccd8`](https://github.com/wso2/identity-apps/commit/772196ccd8815d73b8688dde15706732112fdb1a) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Fix content of roles tabs in users and groups to convey that this tab is read only
+
 ## 2.0.48
 
 ### Patch Changes

@@ -177,7 +177,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
      */
     useEffect(()=> {
 
-        if (application?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION){
+        if (application?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION) {
             setM2MApplication(true);
         }
 

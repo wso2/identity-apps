@@ -9087,7 +9087,9 @@ export const console: ConsoleNS = {
                                 placeholder: "ඊමේල් ලිපිනය ඇතුළත් කරන්න",
                                 validations: {
                                     empty: "විද්‍යුත් තැපැල් ලිපිනය හිස් විය නොහැක",
-                                    invalid: "කරණාකර වලංගු ඊතැපැල් ලිපිනයක් ඇතුළු කරන්න"
+                                    invalid: "කරණාකර වලංගු ඊතැපැල් ලිපිනයක් ඇතුළු කරන්න. ඔබට අක්ෂරාංක " +
+                                    "භාවිතා කළ හැකි අක්ෂර, යුනිකෝඩ් අක්ෂර, යටි ඉරි (_), ඉරි (-), කාල පරිච්ඡේද (.), " +
+                                    "සහ ලකුණක් (@)."
                                 }
                             },
                             firstName: {
@@ -9251,8 +9253,7 @@ export const console: ConsoleNS = {
                                 },
                                 primaryButton: "එකතු කරන්න",
                                 rolesLabel: "භූමිකාවන්",
-                                rolesPlaceholder: "භූමිකාවන් ඇතුළත් කරන්න",
-                                warningMessage: "හස්තීය ආරාධනා බහු පරිශීලක විශේෂාංගය භාවිතා කළ හැක්කේ ඊමේල් ලිපිනය පරිශීලක නාමය ලෙස වින්‍යාස කර ඇති විට පමණි."
+                                rolesPlaceholder: "භූමිකාවන් ඇතුළත් කරන්න"
                             },
                             fileBased: {
                                 hint: "CSV ගොනුවක් භාවිතයෙන් බහු පරිශීලකයින්ට තොග වශයෙන් ආරාධනා කරන්න."
@@ -9260,7 +9261,8 @@ export const console: ConsoleNS = {
                             responseOperationType: {
                                 userCreation: "පරිශීලක නිර්මාණය",
                                 roleAssignment: "භූමිකාව/කණ්ඩායම් පැවරුම"
-                            }
+                            },
+                            userstoreMessage: "සාදන ලද පරිශීලකයින් <1>{{ userstore }}</1> පරිශීලක ගබඩාවට එක් කරනු ලැබේ."
                         },
                         buttons: {
                             import: "ආනයනය කරන්න"

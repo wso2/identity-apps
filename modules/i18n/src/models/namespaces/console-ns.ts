@@ -1750,12 +1750,13 @@ export interface ConsoleNS {
                             IsUserIdInClaims: FormAttributes;
                             commonAuthQueryParams: FormAttributes;
 
-                            isEnableAssertionSigning: FormAttributes;
+                            isAssertionSigned: FormAttributes;
                             includeCert: FormAttributes;
                             includeNameIDPolicy: FormAttributes;
                             isEnableAssertionEncryption: FormAttributes;
 
                             authenticationContextClass: FormAttributes;
+                            customAuthenticationContextClass: FormAttributes;
                             attributeConsumingServiceIndex: FormAttributes;
 
                             isArtifactBindingEnabled: FormAttributes;
@@ -5938,7 +5939,6 @@ export interface ConsoleNS {
                                 primaryButton: string;
                                 rolesLabel: string;
                                 rolesPlaceholder: string;
-                                warningMessage: string;
                             };
                             fileBased: {
                                 hint: string;
@@ -5946,7 +5946,8 @@ export interface ConsoleNS {
                             responseOperationType: {
                                 userCreation: string;
                                 roleAssignment: string;
-                            }
+                            };
+                            userstoreMessage: string;
                         };
                         buttons: {
                             import: string;

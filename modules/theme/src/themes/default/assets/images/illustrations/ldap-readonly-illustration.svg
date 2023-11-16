@@ -18,7 +18,7 @@
  * under the License.
 -->
 
-<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg class="icon" width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M18 55.5V79.5C18 81.7091 19.7909 83.5 22 83.5H26.5" stroke="#67777E" />
     <path d="M82 55.5V79.5C82 81.7091 80.2091 83.5 78 83.5H73.5" stroke="#67777E" />
     <path d="M50 33.5V66.5" stroke="#67777E" />

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Autocomplete, AutocompleteRenderInputParams, TextField, Typography } from "@oxygen-ui/react";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, Field, Form } from "@wso2is/form";
 import { Code, FormInputLabel, FormSection } from "@wso2is/react-components";
@@ -90,6 +91,7 @@ export interface SamlPropertiesInterface {
     SSOUrl?: string;
     SignatureAlgorithm?: string;
     commonAuthQueryParams?: string;
+    customAuthnContextClassRef?: string;
     ISAuthnReqSigned?: boolean;
     IncludeProtocolBinding?: boolean;
     IsAuthnRespSigned?: boolean;
@@ -106,10 +108,11 @@ export interface SamlPropertiesInterface {
     ISArtifactResolveReqSigned?: string, 
     ISArtifactResponseSigned?: string,
     
-    isEnableAssertionSigning?: boolean,   
+    isAssertionSigned?: boolean,
     attributeConsumingServiceIndex?: string;
     AuthnContextComparisonLevel?: string;
     IsAssertionEncrypted?: boolean;
+    AuthnContextClassRef?: string;
 }
 
 const FORM_ID: string = "saml-authenticator-form";
@@ -146,6 +149,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
     const [ includeNameIDPolicy, setIncludeNameIDPolicy ] = useState<boolean>(false);
     const [ isEnableAssetionEncryption, setIsEnableAssetionEncryption ] = useState<boolean>(false);
     const [ isArtifactBindingEnabled, setIsArtifactBindingEnabled ] = useState<boolean>(false);
+    const [ selectedAuthnContextClasses, setSelectedAuthnContextClasses ] = useState<DropdownChild[]>([]);
 
     const getIncludeAuthenticationContextOptions = (): DropdownChild[] => {
         return [
@@ -180,16 +184,35 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         ];
     };
 
-    const getSaml2WebSSOUserIdLocationOptions = () => {
-        return [ {
-            text: "User ID found in 'Name Identifier'",
-            value: 0
-        },
-        {
-            text: "User ID found among claims",
-            value: 1
-        } ];
-    };
+    const authenticationContextClassOptions: DropdownChild[] = [
+        { key: 0, text: "Internet Protocol", value: "Internet Protocol" },
+        { key: 1, text: "Internet Protocol Password", value: "Internet Protocol Password" },
+        { key: 2, text: "Kerberos", value: "Kerberos" },
+        { key: 3, text: "Mobile One Factor Unregistered", value: "Mobile One Factor Unregistered" },
+        { key: 4, text: "Mobile Two Factor Unregistered", value: "Mobile Two Factor Unregistered" },
+        { key: 5, text: "Mobile One Factor Contract", value: "Mobile One Factor Contract" },
+        { key: 6, text: "Mobile Two Factor Contract", value: "Mobile Two Factor Contract" },
+        { key: 7, text: "Password", value: "Password" },
+        { key: 8, text: "Password Protected Transport", value: "Password Protected Transport (selected option)" },
+        { key: 9, text: "Previous Session", value: "Previous Session" },
+        { key: 10, text: "Public Key - X.509", value: "Public Key - X.509" },
+        { key: 11, text: "Public Key - PGP", value: "Public Key - PGP" },
+        { key: 12, text: "Public Key - SPKI", value: "Public Key - SPKI" },
+        { key: 13, text: "Public Key - XML Digital Signature", value: "Public Key - XML Digital Signature" },
+        { key: 14, text: "Smartcard", value: "Smartcard" },
+        { key: 15, text: "Smartcard PKI", value: "Smartcard PKI" },
+        { key: 16, text: "Software PKI", value: "Software PKI" },
+        { key: 17, text: "Telephony", value: "Telephony" },
+        { key: 18, text: "Telephony (Nomadic)", value: "Telephony (Nomadic)" },
+        { key: 19, text: "Telephony (Personalized)", value: "Telephony (Personalized)" },
+        { key: 20, text: "Telephony (Authenticated)", value: "Telephony (Authenticated)" },
+        { key: 21, text: "Secure Remote Password", value: "Secure Remote Password" },
+        { key: 22, text: "SSL/TLS Certificate-Based Client Authentication",
+            value: "SSL/TLS Certificate-Based Client Authentication" },
+        { key: 23, text: "Time Sync Token", value: "Time Sync Token" },
+        { key: 24, text: "Unspecified", value: "Unspecified" },
+        { key: 25, text: "Custom Authentication Context Class", value: "Custom Authentication Context Class" }
+    ];
 
     const authorizedRedirectURL: string = config?.deployment?.customServerHost + "/commonauth" ;
 
@@ -214,6 +237,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         return {
             ArtifactResolveUrl: findPropVal<string>({ defaultValue: "", key: "ArtifactResolveUrl" }),
             AuthRedirectUrl: findPropVal<string>({ defaultValue: authorizedRedirectURL, key: "AuthRedirectUrl" }),
+            AuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "AuthnContextClassRef" }),
             AuthnContextComparisonLevel: findPropVal<string>({ defaultValue: "", key: "AuthnContextComparisonLevel" }),
             DigestAlgorithm: findPropVal<string>({ defaultValue: "SHA256", key: "DigestAlgorithm" }),
             ISArtifactBindingEnabled:  findPropVal<boolean>({ defaultValue: false, key: "ISArtifactBindingEnabled" }),
@@ -252,16 +276,15 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             SSOUrl: findPropVal<string>({ defaultValue: "", key: "SSOUrl" }),
             SignatureAlgorithm: findPropVal<string>({ defaultValue: "RSA with SHA256", key: "SignatureAlgorithm" }),
             commonAuthQueryParams: findPropVal<string>({ defaultValue: "", key: "commonAuthQueryParams" }),
+            customAuthnContextClassRef: findPropVal<string>({ defaultValue: "", key: "CustomAuthnContextClassRef" }),
             /**
              * https://github.com/wso2/product-is/issues/17004
              */
-            isEnableAssertionSigning: findPropVal<boolean>({ defaultValue: false, key: "isEnableAssertionSigning" })
+            isAssertionSigned: findPropVal<boolean>({ defaultValue: false, key: "isAssertionSigned" })
 
         } as SamlPropertiesInterface;
 
     }, []);
-
-   
 
     useEffect(() => {
         setIsSLORequestAccepted(initialFormValues.IsSLORequestAccepted);
@@ -274,6 +297,17 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         setIsArtifactBindingEnabled(initialFormValues.ISArtifactBindingEnabled);
         setFormValues({ ...initialFormValues });
         setIsEnableAssetionEncryption(initialFormValues.IsAssertionEncrypted);
+
+        const initiallySelectedAuthnContextClasses: DropdownChild[] = initialFormValues.AuthnContextClassRef?.split(",")
+            .map(
+                (contextClass: string) => 
+                    authenticationContextClassOptions.find(
+                        (classOption: DropdownChild) => classOption.value === contextClass
+                    )
+            );
+
+        // Filtering falsy values before updating the state, as `.find` returns undefined when a match is not found.
+        setSelectedAuthnContextClasses(initiallySelectedAuthnContextClasses?.filter(Boolean));
     }, [ initialFormValues ]);
 
     useEffect(() => {
@@ -283,7 +317,10 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
     }, [ isLogoutReqSigned, isAuthnReqSigned ]);
 
     const onFormSubmit = (values: { [ key: string ]: any }): void => {
-        const manualOverride: { [key: string]: boolean } = {
+        const manualOverride: { [key: string]: boolean | string | string[] } = {
+            "AuthnContextClassRef": selectedAuthnContextClasses?.map(
+                (authnContextClass: DropdownChild) => authnContextClass.value
+            ).join(","),
             "ISAuthnReqSigned": isAuthnReqSigned,
             "IncludeProtocolBinding": includeProtocolBinding,
             "IsLogoutEnabled": isLogoutEnabled,
@@ -291,6 +328,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             "IsSLORequestAccepted": isSLORequestAccepted,
             "IsUserIdInClaims": isUserIdInClaims
         };
+
         const manualOverrideKeys: Set<string> = new Set<string>(Object.keys(manualOverride));
         const authn: FederatedAuthenticatorInterface = ({
             ...authenticator.data,
@@ -672,16 +710,16 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         <SectionRow>
                             <Field.Checkbox
                                 required={ false }
-                                name="isEnableAssertionSigning"
-                                defaultValue={ Boolean(initialFormValues.isEnableAssertionSigning) }
+                                name="isAssertionSigned"
+                                defaultValue={ Boolean(initialFormValues.isAssertionSigned) }
                                 ariaLabel={ "Enable Assertion Signing" }
-                                data-testid={ `${ testId }-isEnableAssertionSigning-field` }
+                                data-testid={ `${ testId }-isAssertionSigned-field` }
                                 label={ (
-                                    <FormInputLabel htmlFor="isEnableAssertionSigning">
-                                        { t(`${ I18N_TARGET_KEY }.isEnableAssertionSigning.label`) }
+                                    <FormInputLabel htmlFor="isAssertionSigned">
+                                        { t(`${ I18N_TARGET_KEY }.isAssertionSigned.label`) }
                                     </FormInputLabel>
                                 ) }
-                                hint={ t(`${ I18N_TARGET_KEY }.isEnableAssertionSigning.hint`) }
+                                hint={ t(`${ I18N_TARGET_KEY }.isAssertionSigned.hint`) }
                                 readOnly={ readOnly }
                             />
                         </SectionRow>
@@ -691,7 +729,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         <SectionRow>
                             <Field.Checkbox
                                 required={ false }
-                                name="includeCert"
+                                name="IncludeCert"
                                 initialValue={ includeCert }
                                 ariaLabel={ "Include public certificate" }
                                 data-testid={ `${ testId }-includeCert-field` }
@@ -707,7 +745,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         </SectionRow>
                     ) }
                 
-                    { /* Include Name ID policy */ }
                     { identityProviderConfig?.extendedSamlConfig?.includeNameIDPolicyEnabled && (
                         <SectionRow>
                             <Field.Checkbox
@@ -767,7 +804,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         </SectionRow>
                     ) }
 
-
                     { identityProviderConfig.extendedSamlConfig.forceAuthenticationEnabled && (
                         <SectionRow>
                             { /* ForceAuthentication */ }
@@ -819,34 +855,12 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                         { t(`${ I18N_TARGET_KEY }.authContextComparisonLevel.label`) }
                                     </FormInputLabel>
                                 ) }
-                                validate={ required }
                                 hint={ t(`${ I18N_TARGET_KEY }.authContextComparisonLevel.hint`) }
                                 readOnly={ readOnly }
                             /> 
                         </SectionRow>
                     ) }
 
-                    
-                    { identityProviderConfig.extendedSamlConfig.saml2WebSSOUserIdLocationEnabled && (
-                        <SectionRow>
-                            <p>SAML 2 Web SSO User ID location</p>
-                            { getSaml2WebSSOUserIdLocationOptions().map((option: {
-                                text: string;
-                                value: number;
-                            },index: number) => (
-                                <Field.Radio
-                                    key={ index }
-                                    ariaLabel={ `${option.value} layout swatch` }
-                                    name={ "saml2_sso_user_id_location" }
-                                    label={
-                                        option.text
-                                    }
-                                    required={ false }
-                                    value={ option.value }
-                                />
-                            )) }
-                        </SectionRow>
-                    ) }
                     { identityProviderConfig.extendedSamlConfig.attributeConsumingServiceIndexEnabled && (
                         <SectionRow>
                             <Field.Input
@@ -867,9 +881,56 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                 readOnly={ readOnly }
                             />
                         </SectionRow>
-                    ) }   
+                    ) }
 
-                   
+                    <SectionRow>
+                        <Typography variant="body1">
+                            { t(`${ I18N_TARGET_KEY }.authenticationContextClass.label`) }
+                        </Typography>
+                        
+                        <Autocomplete
+                            multiple
+                            className="forms-wrapped-autocomplete"
+                            disableCloseOnSelect
+                            size="small"
+                            options={ authenticationContextClassOptions }
+                            value={ selectedAuthnContextClasses }
+                            onChange={ (_event: React.SyntheticEvent, classes: DropdownChild[]) => {
+                                setSelectedAuthnContextClasses(classes);
+                            } }
+                            getOptionLabel={ (role: DropdownChild) => role?.text as string }
+                            renderInput={ (params: AutocompleteRenderInputParams) => {
+                                params.inputProps.className = "forms-wrapped-autocomplete-render-input";
+
+                                return (
+                                    <TextField
+                                        { ...params }
+                                        size="small"
+                                        placeholder={ t(`${ I18N_TARGET_KEY }.authenticationContextClass.placeholder`) }
+                                    />
+                                );
+                            } }
+                        />
+                    </SectionRow>
+
+                    <SectionRow>
+                        <Field.Input
+                            label={ (
+                                <FormInputLabel htmlFor="CustomAuthnContextClassRef">
+                                    { t(`${ I18N_TARGET_KEY }.customAuthenticationContextClass.label`) }
+                                </FormInputLabel>
+                            ) }
+                            name="CustomAuthnContextClassRef"
+                            maxLength={ 100 }
+                            minLength={ 0 }
+                            value={ initialFormValues.customAuthnContextClassRef }
+                            inputType="default"
+                            placeholder={ t(`${ I18N_TARGET_KEY }.customAuthenticationContextClass.placeholder`) }
+                            ariaLabel={ t(`${ I18N_TARGET_KEY }.customAuthenticationContextClass.ariaLabel`) }
+                            data-testid={ `${ testId }-customAuthenticationContextClass-field` }
+                        />
+                    </SectionRow>
+                    
                     <SectionRow>
                         <Field.QueryParams
                             value={ formValues?.commonAuthQueryParams }

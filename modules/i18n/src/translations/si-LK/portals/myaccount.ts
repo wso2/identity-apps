@@ -1715,9 +1715,9 @@ export const myAccount: MyAccountNS = {
     },
     sections: {
         accountRecovery: {
-            description:
-                "ඔබගේ පරිශීලක මුරපදය නැවත ලබා ගැනීමට ඔබට උදව් කිරීමට අපට භාවිතා කළ හැකි ප්‍රතිසාධන තොරතුරු " +
+            description: "ඔබගේ පරිශීලක මුරපදය නැවත ලබා ගැනීමට ඔබට උදව් කිරීමට අපට භාවිතා කළ හැකි ප්‍රතිසාධන තොරතුරු " +
                 "කළමනාකරණය කරන්න",
+            emptyPlaceholderText: "ගිණුම් ප්රතිසාධන විකල්ප නොමැත",
             heading: "ගිණුම් ප්‍රතිසාධනය"
         },
         changePassword: {

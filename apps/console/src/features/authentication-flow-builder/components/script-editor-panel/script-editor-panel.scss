@@ -16,15 +16,11 @@
  * under the License.
  */
 
-.script-editor-side-panel {
+.script-editor-panel {
     height: 100%;
-
-    .predefined-flows-side-panel-content {
-        border-left: 1px solid var(--oxygen-palette-divider);
-    }
+    width: calc(100% - 16px);
 
     .toolbar-container {
-        border-bottom: 1px solid var(--oxygen-palette-divider);
 
         .oxygen-toolbar {
             display: flex;
@@ -33,6 +29,8 @@
             align-content: center;
             flex-wrap: nowrap;
             flex-direction: row;
+            padding-left: 0;
+            padding-right: 0;
 
             .actions {
                 display: flex;
@@ -53,6 +51,7 @@
     }
 
     .script-editor {
-        border-left: 1px solid var(--oxygen-palette-divider);
+        border: 1px solid var(--oxygen-palette-divider);
+        height: 500px;
     }
 }

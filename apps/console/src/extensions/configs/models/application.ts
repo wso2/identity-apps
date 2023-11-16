@@ -97,7 +97,9 @@ export interface ApplicationConfig {
         showApplicationShare: boolean;
         getStrongAuthenticationFlowTabIndex: (
             clientId: string,
-            tenantDomain: string
+            tenantDomain: string,
+            templateId?: string,
+            customApplicationTemplateId?: string
         ) => number
     };
     inboundOIDCForm: {

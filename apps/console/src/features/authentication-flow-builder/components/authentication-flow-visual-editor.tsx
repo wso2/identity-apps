@@ -120,6 +120,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
         defaultAuthenticationSequence,
         isAdaptiveAuthAvailable,
         isValidAuthenticationFlow,
+        isConditionalAuthenticationEnabled,
         refetchApplication,
         removeSignInOption,
         removeSignInStep,
@@ -314,12 +315,10 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                 : AuthenticationSequenceType.USER_DEFINED
         };
 
-        if (!isAdaptiveAuthAvailable) {
-            sequence.script = "";
-        } else if (AdaptiveScriptUtils.isEmptyScript(authenticationSequence.script)) {
-            sequence.script = AdaptiveScriptUtils.generateScript(authenticationSequence.steps.length + 1).join(
-                "\n"
-            );
+        if (!isAdaptiveAuthAvailable
+                || !isConditionalAuthenticationEnabled
+                || AdaptiveScriptUtils.isEmptyScript(authenticationSequence.script)) {
+            sequence.script = AdaptiveScriptUtils.generateScript(authenticationSequence?.steps?.length + 1).join("\n");
         }
 
         // Update the modified script state in the context.
