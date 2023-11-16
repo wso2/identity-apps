@@ -47,7 +47,7 @@ import { GroupsInterface } from "../../../groups";
 import { getGroupList, updateGroupDetails } from "../../../groups/api";
 import { getOrganizationRoles } from "../../../organizations/api";
 import { OrganizationRoleManagementConstants, OrganizationType } from "../../../organizations/constants";
-import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { OrganizationResponseInterface, OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface } from "../../../organizations/models";
 import { getRolesList, updateRoleDetails } from "../../../roles/api";
@@ -135,7 +135,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitRoleList, setSubmitRoleList ] = useTrigger();

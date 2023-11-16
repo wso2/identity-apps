@@ -31,7 +31,7 @@ import { deleteEmailTemplateType, getEmailTemplateTypes } from "../api";
 import { AddEmailTemplateTypeWizard, EmailTemplateTypeList } from "../components";
 import { EmailTemplateType } from "../models";
 import { EmailTemplateUtils } from "../utils/email-template-utils";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 
 /**
  * Props for the Email Templates Types page.
@@ -57,7 +57,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
 
     const { t } = useTranslation();
 
-    const { isSuperOrganization } = useGetOrganizationType();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     /**
      * Sets the attributes by which the list can be sorted.

@@ -35,7 +35,7 @@ import { getRolesList } from "../../../../../roles/api/roles";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import { ConnectionRoleMappingInterface } from "../../../../models/connection";
 import { handleGetRoleListError } from "../../../../utils/connection-utils";
-import { useGetOrganizationType } from "apps/console/src/features/organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "apps/console/src/features/organizations/hooks/use-get-organization-type";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -85,7 +85,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     } = props;
 
     const { t } = useTranslation();
-    const { isSuperOrganization } = useGetOrganizationType();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     /**
      * Filter out Application related and Internal roles

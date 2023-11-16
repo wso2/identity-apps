@@ -72,7 +72,7 @@ import {
     URLFragmentTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 
 /**
  * Proptypes for the applications edit component.
@@ -147,7 +147,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     } = props;
 
     const { t } = useTranslation();
-    const { isSuperOrganization } = useGetOrganizationType();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =

@@ -39,7 +39,7 @@ import { GenericOrganization } from "../../organizations/models/organizations";
 import { OrganizationUtils } from "../../organizations/utils";
 import { ConnectorPropertyInterface } from "../../server-configurations/models";
 import { UserManagementConstants } from "../constants";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 
 interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
@@ -89,7 +89,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { isSuperOrganization } = useGetOrganizationType();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 

@@ -31,7 +31,7 @@ import { CreateGroupSummary } from "./group-summary";
 import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "../../../core";
 import { getOrganizationRoles } from "../../../organizations/api";
 import { OrganizationRoleManagementConstants } from "../../../organizations/constants/organization-constants";
-import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import {
     GenericOrganization,
     OrganizationRoleListItemInterface,
@@ -92,7 +92,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { isSuperOrganization, isFirstLevelOrganization } = useGetOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     const [ currentStep, setCurrentWizardStep ] = useState<number>(initStep);
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);

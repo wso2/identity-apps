@@ -59,7 +59,7 @@ import { ApplicationInterface } from "../../applications/models";
 import {
     history
 } from "../../core";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getApplicationRolesByAudience } from "../api/roles";
 import { RoleAudienceTypes } from "../constants/role-constants";
 import {
@@ -96,7 +96,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const { t } = useTranslation();
     const dispatch: Dispatch<any> = useDispatch();
     const { getLink } = useDocumentation();
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
     const { data: application } = useGetApplication(appId, !!appId);
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);

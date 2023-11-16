@@ -29,7 +29,7 @@ import { getUserStoreList } from "../../../userstores/api";
 import { updateJITProvisioningConfigs } from "../../api";
 import { JITProvisioningResponseInterface } from "../../models";
 import { JITProvisioningConfigurationsForm } from "../forms";
-import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 
 /**
  * Proptypes for the identity provider general details component.
@@ -84,7 +84,7 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
 
     const { t } = useTranslation();
 
-    const { isSuperOrganization } = useGetOrganizationType();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     const [ userStore, setUserStore ] = useState<SimpleUserStoreListItemInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);

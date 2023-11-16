@@ -41,7 +41,7 @@ import { AppConstants, AppState } from "../../../core";
 import { history } from "../../../core/helpers/history";
 import TenantDropdown from "../../../tenants/components/dropdown/tenant-dropdown";
 import { useGetOrganizationBreadCrumb } from "../../api";
-import { useGetOrganizationType } from "../../hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../hooks/use-get-organization-type";
 import useOrganizationSwitch from "../../hooks/use-organization-switch";
 import {
     BreadcrumbItem,
@@ -65,7 +65,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
 
     const { legacyAuthzRuntime }  = useAuthorization();
 
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const tenantDomain: string = useSelector(

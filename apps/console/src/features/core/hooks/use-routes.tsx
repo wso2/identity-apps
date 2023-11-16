@@ -41,7 +41,7 @@ import { history } from "../helpers/history";
 import { FeatureConfigInterface } from "../models/config";
 import { AppState, setDeveloperVisibility, setFilteredDevelopRoutes, setSanitizedDevelopRoutes } from "../store";
 import { AppUtils } from "../utils/app-utils";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 
 /**
  * Props interface of {@link useOrganizations}
@@ -62,7 +62,7 @@ const useRoutes = (): useRoutesInterface => {
     const dispatch: Dispatch = useDispatch();
 
     const { legacyAuthzRuntime }  = useAuthorization();
-    const { isSuperOrganization } = useGetOrganizationType();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const loggedUserName: string = useSelector((state: AppState) => state.profile.profileInfo.userName);

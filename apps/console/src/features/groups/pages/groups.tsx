@@ -42,7 +42,7 @@ import {
     getEmptyPlaceholderIllustrations
 } from "../../core";
 import { RootOnlyComponent } from "../../organizations/components";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { OrganizationUtils } from "../../organizations/utils";
 import { getUserStoreList } from "../../userstores/api";
 import { UserStorePostData } from "../../userstores/models/user-stores";
@@ -100,7 +100,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
 
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(GROUPS_SORTING_OPTIONS[ 0 ]);
 
-    const { isSuperOrganization, isFirstLevelOrganization } = useGetOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     useEffect(() => {
         if(searchQuery == "") {

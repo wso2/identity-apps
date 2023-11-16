@@ -30,7 +30,7 @@ import { getUserStoreList } from "../../../../userstores/api";
 import { updateApplicationConfigurations } from "../../../api";
 import { ProvisioningConfigurationInterface, SimpleUserStoreListItemInterface } from "../../../models";
 import { ProvisioningConfigurationsForm } from "../../forms";
-import { useGetOrganizationType } from "apps/console/src/features/organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "apps/console/src/features/organizations/hooks/use-get-organization-type";
 
 /**
  *  Inbound Provisioning Configurations for the Application.
@@ -81,7 +81,7 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
     } = props;
 
     const { t } = useTranslation();
-    const { isSuperOrganization } = useGetOrganizationType();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
     const dispatch = useDispatch();
 
     const [ userStore, setUserStore ] = useState<SimpleUserStoreListItemInterface[]>([]);

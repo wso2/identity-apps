@@ -91,7 +91,7 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { ApplicationShareModal } from "../modals/application-share-modal";
-import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
@@ -153,7 +153,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-    const { isSuperOrganization } = useGetOrganizationType();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
 
     const tenantName: string = store.getState().config.deployment.tenant;

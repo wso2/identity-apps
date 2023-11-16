@@ -29,7 +29,7 @@ import { Dispatch } from "redux";
 import { AppConstants } from "../../core/constants";
 import { history } from "../../core/helpers";
 import { store } from "../../core/store";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { createRole } from "../api/roles";
 import { RoleBasics } from "../components/wizard-updated/role-basics";
 import { RolePermissionsList } from "../components/wizard-updated/role-permissions/role-permissions";
@@ -60,7 +60,7 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { isSuperOrganization, isFirstLevelOrganization } = useGetOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     const [ stepperState, setStepperState ] = useState<CreateRoleStateInterface>(undefined);
     const [ isBasicDetailsNextButtonDisabled, setIsBasicDetailsNextButtonDisabled ] = useState<boolean>(true);

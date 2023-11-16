@@ -21,7 +21,7 @@ import { AppState } from "../../core";
 import { OrganizationType } from "../constants";
 
 /**
- * Interface for the useGetOrganizationType hook.
+ * Interface for the useGetCurrentOrganizationType hook.
  */
 interface UseGetOrganizationTypeInterface {
     /**
@@ -50,7 +50,7 @@ interface UseGetOrganizationTypeInterface {
  *
  * @returns An object containing the organization type and helper methods.
  */
-export const useGetOrganizationType = (): UseGetOrganizationTypeInterface => {
+export const useGetCurrentOrganizationType = (): UseGetOrganizationTypeInterface => {
     const orgType: OrganizationType = useSelector(
         (state: AppState) => state.organization.organizationType
     );
