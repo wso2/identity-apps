@@ -7288,7 +7288,8 @@ export const console: ConsoleNS = {
                     noExpiredInvitations: "මේ මොහොතේ කල් ඉකුත් වූ ආරාධනා ඇත.",
                     noInvitations: "දැනට ආරාධනා නැහැ.",
                     noCollaboratorUserInvitations: "මේ මොහොතේ කල් ඉකුත් වූ ආරාධනා සහිත සහකාරක පරිශීලකයන් නොමැත."
-                }
+                },
+                invitedUserLabel: "මව් සංවිධානය විසින් කළමනාකරණය කරනු ලැබේ"
             },
             oidcScopes: {
                 viewAttributes: "ගුණාංග පෙන්වන්න",

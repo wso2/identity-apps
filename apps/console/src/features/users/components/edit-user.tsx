@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -104,6 +104,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
     const isRootOrganization: boolean = useMemo(() =>
         OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
+    const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
 
     useEffect(() => {
         //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to
@@ -125,6 +126,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             || readOnlyUserStores?.includes(userStore?.toString())
             || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
             || user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
+            || user[ SCIMConfigs.scim.enterpriseSchema ]?.managedOrg 
         ) {
             setReadOnly(true);
         }
@@ -137,6 +139,12 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         }
 
         checkIsSuperAdmin();
+    }, [ user ]);
+
+    useEffect(() => {
+        if (user[ SCIMConfigs.scim.enterpriseSchema ]?.managedOrg) {
+            setIsUserManagedByParentOrg(true);
+        }
     }, [ user ]);
 
     const handleAlerts = (alert: AlertInterface) => {
@@ -208,6 +216,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         isReadOnly={ isReadOnly }
                         connectorProperties={ connectorProperties }
                         isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
+                        isUserManagedByParentOrg={ isUserManagedByParentOrg }
                     />
                 </ResourceTab.Pane>
             )
