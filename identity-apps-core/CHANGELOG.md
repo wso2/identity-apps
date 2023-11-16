@@ -1,5 +1,16 @@
 # @wso2is/identity-apps-core
 
+## 2.0.52
+
+### Patch Changes
+
+- [#4629](https://github.com/wso2/identity-apps/pull/4629) [`9f35177e00`](https://github.com/wso2/identity-apps/commit/9f35177e00033796d44c97050402f8f8f88f94fd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the overlay issue on the login page timeout error message
+
+* [#4621](https://github.com/wso2/identity-apps/pull/4621) [`3ea2ebc6a3`](https://github.com/wso2/identity-apps/commit/3ea2ebc6a3810cc18038c7f49855b7fd7f444cdf) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the sms otp resend issue
+
+* Updated dependencies [[`9f35177e00`](https://github.com/wso2/identity-apps/commit/9f35177e00033796d44c97050402f8f8f88f94fd)]:
+  - @wso2is/theme@2.0.36
+
 ## 2.0.51
 
 ### Patch Changes

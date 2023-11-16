@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.36
+
+### Patch Changes
+
+- [#4629](https://github.com/wso2/identity-apps/pull/4629) [`9f35177e00`](https://github.com/wso2/identity-apps/commit/9f35177e00033796d44c97050402f8f8f88f94fd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the overlay issue on the login page timeout error message
+
 ## 2.0.35
 
 ### Patch Changes
