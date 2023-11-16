@@ -939,7 +939,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ),
                         exact: true,
                         icon: {
-                            icon: <LinearNodesIcon fill="black" className="icon" />
+                            icon: getSidePanelIcons().userStore
                         },
                         id: "server",
                         name: "Server",

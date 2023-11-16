@@ -16,20 +16,21 @@
  * under the License.
  */
 
+import CardContent from "@mui/material/CardContent";
 import { 
-    ArrowLoopRightUserIcon
+    ArrowLoopRightUserIcon, UserBannerIcon
 } from "@oxygen-ui/react-icons";
+import Card from "@oxygen-ui/react/Card";
 import Grid from "@oxygen-ui/react/Grid";
+import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { PageLayout } from "@wso2is/react-components";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useRef, useState } from "react";
+import { GenericIcon, PageLayout } from "@wso2is/react-components";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { Placeholder, Ref } from "semantic-ui-react";
+import { Ref } from "semantic-ui-react";
 import RemoteLoggingIcon from "../../../themes/default/assets/images/icons/outline-icons/remote-logging.svg";
 import { AppConstants, history } from "../../core";
-import AdminAdvisoryBannerSection from "../components/admin-advisory-banner-section";
-import { SettingsSection } from "../components/settings-section";
-
+import "./server.scss";
 
 /**
  * Props for the Server Configurations page.
@@ -51,104 +52,109 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
 
     const { t } = useTranslation();
 
-    const [ isLoading, setIsLoading ] = useState<boolean>(false);
-
-    /**
-     * This function returns loading placeholders.
-     */
-    const renderLoadingPlaceholder = (): ReactElement => {
-        const placeholders: ReactElement[] = [];
-
-        for (let loadedPlaceholders: number = 0; loadedPlaceholders <= 1; loadedPlaceholders++) {
-            placeholders.push(
-                <Grid xs={ 12 } lg={ 6 } key={ loadedPlaceholders }>
-                    <div
-                        className="ui card fluid settings-card"
-                        data-testid={ `${ componentId }-loading-card` }
-                    >
-                        <div className="content no-padding">
-                            <div className="header-section placeholder">
-                                <Placeholder>
-                                    <Placeholder.Header>
-                                        <Placeholder.Line length="medium" />
-                                        <Placeholder.Line length="full" />
-                                    </Placeholder.Header>
-                                </Placeholder>
-                            </div>
-                        </div>
-                        <div className="content extra extra-content">
-                            <div className="action-button">
-                                <Placeholder>
-                                    <Placeholder.Line length="very short" />
-                                </Placeholder>
-                            </div>
-                        </div>
-                    </div>
-                </Grid>
-            );
-        }
-
-        return (
-            <Grid container rowSpacing={ 2 } columnSpacing={ { md: 3, sm: 2, xs: 1 } }>
-                { placeholders }
-            </Grid>
-        );
-    };
-
     return (
         <PageLayout
-            pageTitle={ "Server" }
-            title={ "Server" }
-            description={ "Configure server settings" }
+            pageTitle={ t("console:manage.features.server.title") }
+            title={ t("console:manage.features.server.title") }
+            description={ t("console:manage.features.server.description") }
             data-componentid={ `${ componentId }-page-layout` }
         >
             <Ref innerRef={ pageContextRef }>
-                {
-                    isLoading
-                        ? renderLoadingPlaceholder()
-                        : (
-                            <Grid container rowSpacing={ 2 } columnSpacing={ 3 }>
-                                <Grid xs={ 12 }>
-                                    <AdminAdvisoryBannerSection />
-                                </Grid>
-                                <Grid xs={ 12 }>
-                                    <SettingsSection
-                                        data-componentid={ "remote-logging-page-section" }
-                                        data-testid={ "remote-logging-page-section" }
-                                        description={ 
-                                            t("console:manage.features.serverConfigs.remoteLogPublishing.description") 
-                                        }
+                <Grid container rowSpacing={ 2 } columnSpacing={ 3 }>
+                    <Grid xs={ 4 }>
+                        <Card
+                            key="admin-advisory-page-section" 
+                            data-componentid="admin-advisory-page-section"
+                            className="server-configuration"
+                            onClick={ () => history.push(AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT")) }
+                        >
+                            <CardContent className="server-configuration-header">
+                                <div className="server-configuration-image-container">
+                                    <GenericIcon
+                                        size="micro"
+                                        icon={ <UserBannerIcon className="icon" /> }
+                                        transparent
+                                        shape={ "square" }
+                                    />
+                                </div>
+                                <div>
+                                    <Typography variant="h6">
+                                        { t("console:manage.features.serverConfigs.adminAdvisory." +
+                                            "configurationSection.heading") }
+                                    </Typography>
+                                </div>
+                            </CardContent>
+                            <CardContent>
+                                <Typography variant="body2" color="text.secondary">
+                                    {  t("console:manage.features.serverConfigs.adminAdvisory." +
+                                        "configurationSection.description") }
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid xs={ 4 }>
+                        <Card
+                            key="remote-logging-page-section" 
+                            data-componentid="remote-logging-page-section"
+                            className="server-configuration"
+                            onClick={ () => history.push(AppConstants.getPaths().get("REMOTE_LOGGING")) }
+                        >
+                            <CardContent className="server-configuration-header">
+                                <div className="server-configuration-image-container">
+                                    <GenericIcon
+                                        size="micro"
                                         icon={ RemoteLoggingIcon }
-                                        header={ 
-                                            t("console:manage.features.serverConfigs.remoteLogPublishing.title") 
-                                        }
-                                        onPrimaryActionClick={ () => 
-                                            history.push(AppConstants.getPaths().get("REMOTE_LOGGING")) }
-                                        primaryAction={ t("common:configure") }
+                                        transparent
+                                        shape={ "square" }
                                     />
-                                </Grid>
-                                <Grid xs={ 12 }>
-                                    <SettingsSection
-                                        data-componentid={
-                                            "manage-notifications-sending-" +
-                                            "internally-section"
-                                        }
-                                        data-testid={
-                                            "manage-notifications-sending-" +
-                                            "internally-section"
-                                        }
-                                        description={ "Manage Notifications Sending Internally" }
+                                </div>
+                                <div>
+                                    <Typography variant="h6">
+                                        { t("console:manage.features.serverConfigs.remoteLogPublishing" +
+                                            ".title")  }
+                                    </Typography>
+                                </div>
+                            </CardContent>
+                            <CardContent>
+                                <Typography variant="body2" color="text.secondary">
+                                    { t("console:manage.features.serverConfigs.remoteLogPublishing" +
+                                        ".description")  }
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid xs={ 4 }>
+                        <Card
+                            key="manage-notifications-sending-page-section" 
+                            data-componentid="manage-notifications-sending-page-section"
+                            className="server-configuration"
+                            onClick={ () => history.push(AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING")) }
+                        >
+                            <CardContent className="server-configuration-header">
+                                <div className="server-configuration-image-container">
+                                    <GenericIcon
+                                        size="micro"
                                         icon={ <ArrowLoopRightUserIcon className="icon" /> }
-                                        header={ "Manage Notifications Sending Internally" }
-                                        onPrimaryActionClick={ () =>
-                                            history.push(AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING"))
-                                        }
-                                        primaryAction={ t("common:configure") }
+                                        transparent
+                                        shape={ "square" }
                                     />
-                                </Grid>
-                            </Grid>
-                        )
-                }
+                                </div>
+                                <div>
+                                    <Typography variant="h6">
+                                        { t("console:manage.features.serverConfigs." +
+                                            "manageNotificationSendingInternally.title")  }
+                                    </Typography>
+                                </div>
+                            </CardContent>
+                            <CardContent>
+                                <Typography variant="body2" color="text.secondary">
+                                    { t("console:manage.features.serverConfigs." +
+                                        "manageNotificationSendingInternally.description")  }
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                </Grid>
             </Ref>
         </PageLayout>
     );
@@ -158,7 +164,7 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
  * Default props for the component.
  */
 ServerSettingsListingPage.defaultProps = {
-    "data-componentid": "governance-connectors-listing-page"
+    "data-componentid": "server-settings-listing-page"
 };
 
 export default ServerSettingsListingPage;

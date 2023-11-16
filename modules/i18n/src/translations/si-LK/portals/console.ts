@@ -8758,6 +8758,10 @@ export const console: ConsoleNS = {
                     pageHeading: "පරිපාලක උපදේශන බැනරය",
                     pageSubheading: "පිවිසුම් පිටුවේ පෙන්වීමට පරිපාලක උපදේශන බැනරය වින්‍යාස කරන්න."
                 },
+                manageNotificationSendingInternally: {
+                    title: "අභ්යන්තර දැනුම්දීම යැවීම",
+                    description: "දැනුම්දීම කළමනාකරණය කිරීම අභ්යන්තරව යවයි."
+                },
                 remoteLogPublishing: {
                     title: "දුරස්ථ ලොග් ප්‍රකාශනය",
                     pageTitle: "දුරස්ථ ලොග් ප්‍රකාශනය",
@@ -8906,6 +8910,10 @@ export const console: ConsoleNS = {
                             }
                         }
                     }
+                },
+                server: {
+                    title: "සේවාදායකය",
+                    description: "සේවාදායක සැකසුම් වින්යාස කරන්න."
                 }
             },
             sidePanel: {

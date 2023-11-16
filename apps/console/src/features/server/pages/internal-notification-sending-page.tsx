@@ -28,7 +28,11 @@ import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
 import { getConnectorDetails, updateGovernanceConnector } from "../../server-configurations/api";
-import { ConnectorPropertyInterface, GovernanceConnectorInterface, UpdateGovernanceConnectorConfigInterface } from "../../server-configurations/models";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface,
+    UpdateGovernanceConnectorConfigInterface
+} from "../../server-configurations/models";
 import { ServerConstants } from "../constants/server";
 
 /**
@@ -91,8 +95,6 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
             )
         ])
             .then((response: boolean[]) => {
-                console.log("getNotificationInternallyManaged", response);
-                
                 let summationOfResponse: boolean = false;
 
                 response.forEach((value: boolean | AxiosError) => {
@@ -142,41 +144,42 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
             });
     };
 
-    const updateNotificationInternallyManaged = (value: boolean): void => {
-        console.log("updateNotificationInternallyManaged", value);
-        Promise.all([
-            updateConnectorNotificationInternallyManaged(
+    const updateNotificationInternallyManaged = async (value: boolean): Promise<void> => {
+        try {
+            const selfSignUpResult: boolean = await updateConnectorNotificationInternallyManaged(
                 ServerConstants.USER_ONBOARDING_CONNECTOR_ID,
                 ServerConstants.SELF_SIGN_UP_CONNECTOR_ID,
                 ServerConstants.SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED,
                 value
-            ),
-            updateConnectorNotificationInternallyManaged(
+            );
+            const emailVerificationResult: boolean = await updateConnectorNotificationInternallyManaged(
                 ServerConstants.USER_ONBOARDING_CONNECTOR_ID,
                 ServerConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID,
                 ServerConstants.USER_EMAIL_VERIFICATION_NOTIFICATIONS_INTERNALLY_MANAGED,
                 value
-            ),
-            updateConnectorNotificationInternallyManaged(
+            );
+            const accountLockingResult: boolean = await updateConnectorNotificationInternallyManaged(
                 ServerConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID,
                 ServerConstants.ACCOUNT_LOCKING_CONNECTOR_ID,
                 ServerConstants.ACCOUNT_LOCKING_NOTIFICATIONS_INTERNALLY_MANAGED,
                 value
-            ),
-            updateConnectorNotificationInternallyManaged(
+            );
+            const accountDisablingResult: boolean = await updateConnectorNotificationInternallyManaged(
                 ServerConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
                 ServerConstants.ACCOUNT_DISABLING_CONNECTOR_ID,
                 ServerConstants.ACCOUNT_DISABLING_NOTIFICATIONS_INTERNALLY_MANAGED,
                 value
-            ),
-            updateConnectorNotificationInternallyManaged(
+            );
+            const accountRecoveryResult: boolean = await updateConnectorNotificationInternallyManaged(
                 ServerConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
                 ServerConstants.ACCOUNT_RECOVERY_CONNECTOR_ID,
                 ServerConstants.ACCOUNT_RECOVERY_NOTIFICATIONS_INTERNALLY_MANAGED,
                 value
-            )
-        ])
-            .then(() => {
+            );
+
+            // All the updates are successful.
+            if (selfSignUpResult && emailVerificationResult && accountLockingResult &&
+                accountDisablingResult && accountRecoveryResult) {
                 dispatch(
                     addAlert({
                         description: t(
@@ -190,42 +193,40 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
                         )
                     })
                 );
-            })
-            .catch((error: AxiosError) => {
-                if (error?.response?.data?.detail) {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
-                                "getConnector.error.description",
-                                { description: error.response.data.description }
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
-                                "getConnector.error.message"
-                            )
-                        })
-                    );
-                } else {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "console:manage.features.governanceConnectors.notifications." +
-                                "getConnector.genericError.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:manage.features.governanceConnectors.notifications." +
-                                "getConnector.genericError.message"
-                            )
-                        })
-                    );
-                }
-            })
-            .finally(() => {
                 setIsNotificationInternallyManaged(value);
-            });
+            }
+        } catch (error) {
+            if (error?.response?.data?.detail) {
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:manage.features.governanceConnectors.notifications." +
+                            "getConnector.error.description",
+                            { description: error.response.data.description }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.features.governanceConnectors.notifications." +
+                            "getConnector.error.message"
+                        )
+                    })
+                );
+            } else {
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "console:manage.features.governanceConnectors.notifications." +
+                            "getConnector.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "console:manage.features.governanceConnectors.notifications." +
+                            "getConnector.genericError.message"
+                        )
+                    })
+                );
+            }
+        }
     };
 
     /**
@@ -298,7 +299,7 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
             properties: [
                 {
                     "name": propertyName,
-                    "value": value.toString()
+                    "value": value
                 }
             ]
         };
@@ -356,7 +357,6 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
      * @param value - Checkbox values.
      */
     const handleCheckboxToggle = (value: CheckboxProps): void => {
-        console.log(value?.checked);
         updateNotificationInternallyManaged(value?.checked);
     };
 

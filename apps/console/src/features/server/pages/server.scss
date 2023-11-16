@@ -1,0 +1,62 @@
+/**
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.server-configuration {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
+    cursor: pointer;
+    height: 100%;
+
+    &:hover {
+        box-shadow: 0px 4px 8px rgba(230, 169, 169, 0.3); // box-shadow on hover
+    }
+
+    .server-configuration-header {
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+        align-content: center;
+        align-items: center;
+        padding: 10px 14px;
+
+        .server-configuration-image-container {
+            height: 45px;
+            width: 45px;
+            justify-content: center;
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+            border-radius: 4px;
+            background: linear-gradient(90deg,#fff2e8 50%,#fef8ed 100%);
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px;
+            overflow: hidden;
+            height: 40px;
+            width: 40px;
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            justify-content: center;
+            flex: 0 0 auto;
+        }
+    }
+}

@@ -10709,6 +10709,10 @@ export const console: ConsoleNS = {
                     pageHeading: "Admin Advisory Banner",
                     pageSubheading: "Configure the admin advisory banner to be displayed on the login page."
                 },
+                manageNotificationSendingInternally: {
+                    title: "Internal Notification Sending",
+                    description: "Manage notification sending internally."
+                },
                 remoteLogPublishing: {
                     title: "Remote Log Publishing",
                     pageTitle: "Remote Log Publishing",
@@ -10760,8 +10764,8 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
-                        title: "Restore Default Configuration for {{logType}} Logs",
-                        header: "Restore Default Configuration for {{logType}} Logs",
+                        title: "Restore Default Configuration",
+                        header: "Restore Default Configuration",
                         subheader: "This action will delete the existing configuration for {{logType}} logs. Please be certain before you proceed.",
                         confirmation: {
                             hint: "Please confirm your action.",
@@ -10857,6 +10861,10 @@ export const console: ConsoleNS = {
                             }
                         }
                     }
+                },
+                server: {
+                    title: "Server",
+                    description: "Configure server settings."
                 }
             },
             sidePanel: {
