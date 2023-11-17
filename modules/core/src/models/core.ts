@@ -209,3 +209,11 @@ export interface SVGRLoadedInterface {
      */
     default: string;
 }
+
+export interface ClassicFeaturesInterface {
+    isRequestPathAuthenticationEnabled: boolean;
+    isApplicationLevelRoleMappingEnabled: boolean;
+    isXacmlAuthorizationEnabled: boolean;
+    isIncludeOrgNameInSubjectEnabled: boolean;
+    isUseMappedLocalSubjectEnabled: boolean;
+}

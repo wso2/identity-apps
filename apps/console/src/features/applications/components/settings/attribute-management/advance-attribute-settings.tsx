@@ -36,6 +36,7 @@ import {
     SubjectInterface,
     SubjectTypes
 } from "../../../models";
+import useUIConfig from "modules/common/src/hooks/use-ui-configs";
 
 interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterface {
     dropDownOptions: any;
@@ -88,6 +89,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     } = props;
 
     const { t } = useTranslation();
+    const { UIConfig } = useUIConfig();
 
     const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
     const [ selectedSubjectValueLocalClaim, setSelectedSubjectValueLocalClaim ] =
@@ -394,7 +396,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         data-testid={ `${ testId }-subject-include-tenant-domain-checkbox` }
                         hidden={
                             !applicationConfig.attributeSettings.advancedAttributeSettings
-                                .showIncludeTenantDomain
+                                .showIncludeTenantDomain || !UIConfig?.classicFeatures?.isIncludeOrgNameInSubjectEnabled
                         }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
@@ -418,7 +420,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         data-testid={ `${ testId }-subject-use-mapped-local-subject-checkbox` }
                         hidden={
                             !applicationConfig.attributeSettings.advancedAttributeSettings
-                                .showUseMappedLocalSubject
+                                .showUseMappedLocalSubject || !UIConfig?.classicFeatures?.isUseMappedLocalSubjectEnabled
                         }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings." +

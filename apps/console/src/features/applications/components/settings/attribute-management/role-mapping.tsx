@@ -20,13 +20,16 @@ import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterf
 import { addAlert } from "@wso2is/core/store";
 import { DynamicField, Heading, KeyValue } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
+import { ConfigReducerStateInterface } from "modules/common/src/models/reducer-state";
+import { AppState } from "modules/common/src/store";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { getRolesList } from "../../../../roles/api";
 import { RoleMappingInterface } from "../../../models";
+import useUIConfig from "modules/common/src/hooks/use-ui-configs";
 
 interface RoleMappingPropsInterface extends TestableComponentInterface {
     /**
@@ -74,7 +77,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-
+    const { UIConfig } = useUIConfig();
     const dispatch: Dispatch = useDispatch();
 
     const [ roleList, setRoleList ] = useState<RolesInterface[]>();
@@ -116,63 +119,67 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
 
     return (
         <>
-            <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                    <Divider />
-                    <Heading as="h4">
-                        { t("console:develop.features.applications.edit.sections.attributes.roleMapping.heading") }
-                    </Heading>
-                    <DynamicField
-                        data={
-                            initialMappings ?
-                                initialMappings.map((mapping: RoleMappingInterface) => {
-                                    return {
-                                        key: mapping.localRole.includes("/") 
-                                            ? mapping.localRole.split("/")[1] 
-                                            : mapping.localRole,
-                                        value: mapping.applicationRole
-                                    };
-                                }) : []
-                        }
-                        keyType="dropdown"
-                        keyData={ roleList ? getFilteredRoles() : [] }
-                        keyName={
-                            t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
-                                ".localRole.label")
-                        }
-                        valueName={
-                            t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
-                                ".applicationRole.label")
-                        }
-                        keyRequiredMessage={
-                            t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
-                                ".localRole.validations.empty")
-                        }
-                        valueRequiredErrorMessage={
-                            t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
-                                ".applicationRole.validations.empty")
-                        }
-                        duplicateKeyErrorMsg={
-                            t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
-                                ".applicationRole.validations.duplicate")
-                        }
-                        readOnly={ readOnly }
-                        data-testid={ `${ testId }-dynamic-field` } 
-                        listen={ (data: KeyValue[]) => {
-                            if (onChange) {
-                                const finalData: RoleMappingInterface[] = data?.map((mapping: KeyValue) => {
-                                    return {
-                                        applicationRole: mapping.value,
-                                        localRole: mapping.key.includes("/") ? mapping.key : "Internal/" + mapping.key
-                                    };
-                                }) ?? [];
-    
-                                onChange(finalData);
-                            }
-                        } }
-                    />
-                </Grid.Column>
-            </Grid.Row>
+            { UIConfig?.classicFeatures?.isApplicationLevelRoleMappingEnabled 
+                ? (
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Divider />
+                            <Heading as="h4">
+                                { t("console:develop.features.applications.edit.sections.attributes.roleMapping." + 
+                                    "heading") }
+                            </Heading>
+                            <DynamicField
+                                data={
+                                    initialMappings ?
+                                        initialMappings.map((mapping: RoleMappingInterface) => {
+                                            return {
+                                                key: mapping.localRole.includes("/") 
+                                                    ? mapping.localRole.split("/")[1] 
+                                                    : mapping.localRole,
+                                                value: mapping.applicationRole
+                                            };
+                                        }) : []
+                                }
+                                keyType="dropdown"
+                                keyData={ roleList ? getFilteredRoles() : [] }
+                                keyName={
+                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
+                            ".localRole.label")
+                                }
+                                valueName={
+                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
+                            ".applicationRole.label")
+                                }
+                                keyRequiredMessage={
+                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
+                            ".localRole.validations.empty")
+                                }
+                                valueRequiredErrorMessage={
+                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
+                            ".applicationRole.validations.empty")
+                                }
+                                duplicateKeyErrorMsg={
+                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
+                            ".applicationRole.validations.duplicate")
+                                }
+                                readOnly={ readOnly }
+                                data-testid={ `${ testId }-dynamic-field` } 
+                                listen={ (data: KeyValue[]) => {
+                                    if (onChange) {
+                                        const finalData: RoleMappingInterface[] = data?.map((mapping: KeyValue) => {
+                                            return {
+                                                applicationRole: mapping.value,
+                                                localRole: mapping.key.includes("/") ? mapping.key : "Internal/" + mapping.key
+                                            };
+                                        }) ?? [];
+
+                                        onChange(finalData);
+                                    }
+                                } }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>) 
+                : null }
         </>
     );
 };
