@@ -147,7 +147,7 @@
                         <% if (isOrgDiscoveryEnabled) { %>
                             <div class="ui horizontal divider"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%></div>
                             <div class="social-login blurring social-dimmer">
-                                <input type="submit" id="discoveryButton" onclick="promptDiscovery();" class="ui fluid button"
+                                <input type="submit" id="discoveryButton" onclick="promptDiscovery();" class="ui primary basic button link-button"
                                     value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.email.address")%>">
                             </div>
                         <% } %>
