@@ -41,10 +41,12 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    CookieStorageUtils,
     StringUtils
 } from "@wso2is/core/utils";
-import { I18n, LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
+import { I18n, LanguageChangeException, LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
 import isEmpty from "lodash-es/isEmpty";
+import moment from "moment";
 import React, {
     FunctionComponent,
     MouseEvent,
@@ -135,6 +137,14 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const { theme } = useBrandingPreference();
 
     useEffect(() => {
+        const localeCookie: string = CookieStorageUtils.getItem("ui_lang");
+
+        if (localeCookie) {
+            handleLanguageSwitch(localeCookie.replace("_", "-"));
+        }
+    }, []);
+
+    useEffect(() => {
         if (isEmpty(profileInfo)) {
             dispatch((getProfileInformation() as unknown) as AnyAction);
         }
@@ -166,6 +176,55 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             setUserstore(userstore);
         }
     }, [ profileDetails?.profileInfo ]);
+
+    /**
+     * Handles language switch action.
+     * @param language - Selected language.
+     */
+    const handleLanguageSwitch = (language: string): void => {
+        moment.locale(language ?? "en");
+        I18n.instance.changeLanguage(language).catch((error: string | Record<string, unknown>) => {
+            throw new LanguageChangeException(language, error);
+        });
+
+        const cookieSupportedLanguage: string = language.replace("-", "_");
+        const domain: string = ";domain=" + extractDomainFromHost();
+        const cookieExpiryTime: number = 30;
+        const expires: string = "; expires=" + new Date().setTime(cookieExpiryTime * 24 * 60 * 60 * 1000);
+        const cookieString: string = "ui_lang=" + (cookieSupportedLanguage || "") + expires + domain + "; path=/";
+
+        CookieStorageUtils.setItem(cookieString);
+    };
+
+    /**
+     * Extracts the domain from the hostname.
+     * If parsing fails, undefined will be returned.
+     *
+     * @returns current domain
+     */
+    const extractDomainFromHost = (): string => {
+        let domain: string = undefined;
+
+        /**
+         * Extract the domain from the hostname.
+         * Ex: If console.wso2-is.com is parsed, `wso2-is.com` will be set as the domain.
+         * If hostname has no periods, then entire hostname is taken as domain. Ex: localhost
+         */
+        try {
+            const hostnameTokens: string[] = window.location.hostname.split(".");
+
+            if (hostnameTokens.length == 1){
+                domain = hostnameTokens[0];
+            } else if (hostnameTokens.length > 1) {
+                domain = hostnameTokens.slice(hostnameTokens.length - 2, hostnameTokens.length).join(".");
+            }
+        } catch (e) {
+            // Couldn't parse the hostname. Log the error in debug mode.
+            // Tracked here https://github.com/wso2/product-is/issues/11650.
+        }
+
+        return domain;
+    };
 
     /**
      * Handles the account switch click event.
@@ -370,9 +429,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                     <MenuItem
                                         key={ key }
                                         onClick={ () => {
-                                            I18n.instance?.changeLanguage(
-                                                value.code
-                                            );
+                                            handleLanguageSwitch(value.code);
                                             setOpenLanguageSwitcher(false);
                                         } }
                                     >
