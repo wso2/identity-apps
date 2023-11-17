@@ -509,6 +509,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     };
 
+    /**
+     * Check whether to enable validate token bindings.  
+     */
+    const isValidateTokenBindingEnabled = (): boolean => {
+
+        return initialValues?.accessToken?.validateTokenBinding || isFAPIApplication;
+
+    };
+
     useEffect(() => {
         if (selectedGrantTypes !== undefined) {
             return;
@@ -2171,9 +2180,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     requiredErrorMessage=""
                                     type="checkbox"
                                     value={
-                                        initialValues?.accessToken?.validateTokenBinding
-                                            ? [ "validateTokenBinding" ]
-                                            : isFAPIApplication ? [ "validateTokenBinding" ] : []
+                                        isValidateTokenBindingEnabled ? [ "validateTokenBinding" ] : []
                                     }
                                     children={ [
                                         {
