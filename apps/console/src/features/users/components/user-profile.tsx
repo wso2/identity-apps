@@ -55,6 +55,7 @@ import { GUEST_ADMIN_ASSOCIATION_TYPE } from "../../../extensions/components/use
 import { administratorConfig } from "../../../extensions/configs/administrator";
 import { AccessControlConstants } from "../../access-control/constants/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { OrganizationType } from "../../organizations/constants";
 import { OrganizationUtils } from "../../organizations/utils";
 import { searchRoleList, updateRoleDetails } from "../../roles/api/roles";
 import {
@@ -67,7 +68,6 @@ import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../.
 import { getUserDetails, updateUserInfo } from "../api";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
-import { OrganizationType } from "../../organizations/constants";
 
 /**
  * Prop types for the basic details component.
