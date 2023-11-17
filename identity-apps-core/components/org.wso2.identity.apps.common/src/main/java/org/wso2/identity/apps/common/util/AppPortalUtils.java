@@ -48,6 +48,8 @@ import org.wso2.carbon.identity.role.v2.mgt.core.model.Permission;
 import org.wso2.carbon.stratos.common.beans.TenantInfoBean;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
+import org.wso2.carbon.user.core.UserStoreManager;
+import org.wso2.carbon.user.core.common.AbstractUserStoreManager;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.identity.apps.common.internal.AppsCommonDataHolder;
 
@@ -224,10 +226,7 @@ public class AppPortalUtils {
             .createApplication(serviceProvider, tenantDomain, appOwner);
 
         if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
-            if (StringUtils.equalsIgnoreCase(CONSOLE_APP, appName)) {
-                addAdministratorRole(appOwner, tenantDomain, appId);
-            }
-            shareApplication(tenantDomain, tenantId, appId);
+            shareApplication(tenantDomain, tenantId, appId, appName, appOwner);
         }
     }
 
@@ -239,9 +238,7 @@ public class AppPortalUtils {
      * @throws IdentityApplicationManagementException      IdentityApplicationManagementException.
      * @throws IdentityOAuthAdminException                 IdentityOAuthAdminException.
      * @throws org.wso2.carbon.user.api.UserStoreException UserStoreException.
-     * @deprecated use {@link #initiatePortals(TenantInfoBean)} instead.
      */
-    @Deprecated
     public static void initiatePortals(String tenantDomain, int tenantId)
         throws IdentityApplicationManagementException, IdentityOAuthAdminException,
         UserStoreException {
@@ -252,6 +249,7 @@ public class AppPortalUtils {
         UserRealm userRealm = (UserRealm) PrivilegedCarbonContext.getThreadLocalCarbonContext().getUserRealm();
         String adminUsername = userRealm.getRealmConfiguration().getAdminUserName();
         tenantInfoBean.setAdmin(adminUsername);
+        initiatePortals(tenantInfoBean);
     }
 
     /**
@@ -342,7 +340,8 @@ public class AppPortalUtils {
         }
     }
 
-    private static void shareApplication(String tenantDomain, int tenantId, String appId)
+    private static void shareApplication(String tenantDomain, int tenantId, String appId, String appName,
+                                         String appOwner)
         throws IdentityApplicationManagementException {
 
         RealmService realmService = AppsCommonDataHolder.getInstance().getRealmService();
@@ -367,6 +366,9 @@ public class AppPortalUtils {
             AppsCommonDataHolder.getInstance().getOrgApplicationManager()
                 .shareOrganizationApplication(organizationId, appId, true,
                     Collections.emptyList());
+            if (StringUtils.equalsIgnoreCase(CONSOLE_APP, appName)) {
+                addAdministratorRole(appOwner, appId, tenantId, tenantDomain);
+            }
         } catch (OrganizationManagementException e) {
             throw new IdentityApplicationManagementException("Failed to share system application.", e);
         } finally {
@@ -375,17 +377,28 @@ public class AppPortalUtils {
         }
     }
 
-    private static void addAdministratorRole(String appOwner, String tenantDomain, String appId)
+    private static void addAdministratorRole(String appOwner, String appId, int tenantId, String tenantDomain)
         throws IdentityApplicationManagementException {
 
         try {
+            String userID = getUserId(appOwner, tenantId);
             AppsCommonDataHolder.getInstance().getRoleManagementServiceV2().addRole(ADMINISTRATOR,
-                Collections.singletonList(appOwner), Collections.emptyList(), getAllPermissions(tenantDomain),
+                Collections.singletonList(userID), Collections.emptyList(), getAllPermissions(tenantDomain),
                 APPLICATION, appId, tenantDomain);
         } catch (IdentityRoleManagementException e) {
             throw new IdentityApplicationManagementException("Failed to add Administrator role for the " +
                 "console", e);
+        } catch (org.wso2.carbon.user.api.UserStoreException e) {
+            throw new RuntimeException(e);
         }
+    }
+
+    private static String getUserId(String appOwner, int tenantId) throws org.wso2.carbon.user.api.UserStoreException {
+
+        UserRealm userRealm =
+            (UserRealm) AppsCommonDataHolder.getInstance().getRealmService().getTenantUserRealm(tenantId);
+        UserStoreManager userStoreManager = userRealm.getUserStoreManager();
+        return ((AbstractUserStoreManager) userStoreManager).getUserIDFromUserName(appOwner);
     }
 
     private static void updateClaimConfigs(ServiceProvider serviceProvider) {

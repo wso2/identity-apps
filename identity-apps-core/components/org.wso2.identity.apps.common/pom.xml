@@ -130,7 +130,7 @@
             org.wso2.carbon.identity.role.v2.mgt.core.*; version="${carbon.identity.framework.imp.pkg.version.range}",
             org.wso2.carbon.identity.organization.management.service.*; version="${identity.org.mgt.core.version.range}",
             org.wso2.carbon.identity.organization.management.application.*; version="${identity.org.mgt.application.version.range}",
-            org.wso2.carbon.identity.api.resource.mgt.*; version="${carbon.identity.framework.imp.pkg.version.range}",
+            org.wso2.carbon.identity.api.resource.mgt.*; version="${carbon.identity.framework.imp.pkg.version.range}"
         </import.package>
         <dsannotations>*</dsannotations>
     </properties>
