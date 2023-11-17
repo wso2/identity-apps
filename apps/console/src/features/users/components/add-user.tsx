@@ -19,7 +19,7 @@
 import { ProfileConstants, UserstoreConstants } from "@wso2is/core/constants";
 import { ProfileSchemaInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { PrimaryButton } from "@wso2is/react-components";
+import { PasswordValidation, PrimaryButton } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { ReactElement, Suspense, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -37,9 +37,10 @@ import {
     USERSTORE_REGEX_PROPERTIES
 } from "../../userstores/constants/user-store-constants";
 import { UserStoreListItem } from "../../userstores/models/user-stores";
+import { ValidationDataInterface, ValidationFormInterface } from "../../validation/models";
 import { getUsersList } from "../api";
 import { BasicUserDetailsInterface, UserListInterface } from "../models";
-import { generatePassword } from "../utils";
+import { generatePassword, getConfiguration } from "../utils";
 
 /**
  * import pass strength bat dynamically.
@@ -54,6 +55,7 @@ interface AddUserProps {
     initialValues: any;
     triggerSubmit: boolean;
     emailVerificationEnabled: boolean;
+    validationConfig?: ValidationDataInterface[];
     onSubmit: (values: any) => void;
 }
 
@@ -68,8 +70,12 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         initialValues,
         triggerSubmit,
         emailVerificationEnabled,
-        onSubmit
+        onSubmit,
+        validationConfig
     } = props;
+
+    const showPasswordValidation: boolean = useSelector((state: AppState) =>
+        state?.config?.ui?.isPasswordInputValidationEnabled);
 
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ passwordOption, setPasswordOption ] = useState(initialValues?.passwordOption ?? "create-password");
@@ -84,6 +90,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const [ password, setPassword ] = useState<string>("");
     const confirmPasswordRef: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
+    const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
+    const [ isValidPassword, setIsValidPassword ] = useState<boolean>(true);
 
     const { t } = useTranslation();
 
@@ -96,6 +104,23 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         "username.validations.regExViolation");
     const USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE: string = t("console:manage.features.user.forms.addUserForm." +
         "inputs.username.validations.invalidCharacters");
+
+    useEffect(() => {
+
+        if (showPasswordValidation) {
+            setPasswordConfig(getConfiguration(validationConfig));
+        }
+    }, [ validationConfig ]);
+    
+    /**
+         * Callback function to validate password.
+         *
+         * @param valid - validation status.
+         */
+    const onPasswordValidate = (valid: boolean): void => {
+    
+        setIsValidPassword(valid);
+    };
 
     /**
      * The following useEffect is triggered when a random password is generated.
@@ -314,6 +339,16 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
                                     let passwordRegex: string = "";
 
+                                    if (passwordConfig) {
+                                        if(!isValidPassword) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push( t(
+                                                "extensions:manage.features.user.addUser.validation." +
+                                                "error.passwordValidation"
+                                            ) );
+                                        }
+                                    }
+
                                     if (userStore !== UserstoreConstants.PRIMARY_USER_STORE.toLocaleLowerCase()) {
                                         // Set the username regEx of the secondary user store.
                                         passwordRegex
@@ -334,7 +369,56 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 enableReinitialize={ true }
                                 listen = { handlePasswordChange }
                             />
-                            <Suspense fallback={ null } >
+                            { passwordConfig && (
+                                <PasswordValidation
+                                    password={ password }
+                                    minLength={ Number(passwordConfig.minLength) }
+                                    maxLength={ Number(passwordConfig.maxLength) }
+                                    minNumbers={ Number(passwordConfig.minNumbers) }
+                                    minUpperCase={ Number(passwordConfig.minUpperCaseCharacters) }
+                                    minLowerCase={ Number(passwordConfig.minLowerCaseCharacters) }
+                                    minSpecialChr={ Number(passwordConfig.minSpecialCharacters) }
+                                    minUniqueChr={ Number(passwordConfig.minUniqueCharacters) }
+                                    maxConsecutiveChr={ Number(passwordConfig.maxConsecutiveCharacters) }
+                                    onPasswordValidate={ onPasswordValidate }
+                                    translations={ {
+                                        case: (Number(passwordConfig?.minUpperCaseCharacters) > 0 &&
+                                        Number(passwordConfig?.minLowerCaseCharacters) > 0) ?
+                                            t("extensions:manage.features.user.addUser.validation.passwordCase", {
+                                                minLowerCase: passwordConfig.minLowerCaseCharacters,
+                                                minUpperCase: passwordConfig.minUpperCaseCharacters
+                                            }) : (
+                                                Number(passwordConfig?.minUpperCaseCharacters) > 0 ?
+                                                    t("extensions:manage.features.user.addUser.validation.upperCase", {
+                                                        minUpperCase: passwordConfig.minUpperCaseCharacters
+                                                    }) : t("extensions:manage.features.user.addUser.validation" +
+                                                    ".lowerCase", {
+                                                        minLowerCase: passwordConfig.minLowerCaseCharacters
+                                                    })
+                                            ),
+                                        consecutiveChr: 
+                                        t("extensions:manage.features.user.addUser.validation.consecutiveCharacters", {
+                                            repeatedChr: passwordConfig.maxConsecutiveCharacters
+                                        }),
+                                        length: t("extensions:manage.features.user.addUser.validation.passwordLength", {
+                                            max: passwordConfig.maxLength, min: passwordConfig.minLength
+                                        }),
+                                        numbers: 
+                                        t("extensions:manage.features.user.addUser.validation.passwordNumeric", {
+                                            min: passwordConfig.minNumbers
+                                        }),
+                                        specialChr: 
+                                        t("extensions:manage.features.user.addUser.validation.specialCharacter", {
+                                            specialChr: passwordConfig.minSpecialCharacters
+                                        }),
+                                        uniqueChr: 
+                                        t("extensions:manage.features.user.addUser.validation.uniqueCharacters", {
+                                            uniqueChr: passwordConfig.minUniqueCharacters
+                                        })
+                                    } }
+                                />
+                            ) }
+                            { !showPasswordValidation && (<Suspense fallback={ null } >
                                 <PasswordMeter
                                     password={ password }
                                     scoreWords={ [
@@ -346,7 +430,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                     ] }
                                     shortScoreWord={ t("common:tooShort") }
                                 />
-                            </Suspense>
+                            </Suspense>) }
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <PrimaryButton
