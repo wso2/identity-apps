@@ -70,14 +70,14 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     } = props;
 
     const { t } = useTranslation();
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetOrganizationType();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
 
-    const isSubOrg: boolean = orgType === OrganizationType.SUBORGANIZATION;
+    const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
 
     /**
      * Set the if the role is `Internal/admin`.

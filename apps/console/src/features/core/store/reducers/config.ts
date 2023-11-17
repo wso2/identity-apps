@@ -182,6 +182,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 defaultLogoUrl: "",
                 defaultWhiteLogoUrl: ""
             },
+            enableCustomEmailTemplates: undefined,
             features: {
                 applications: null,
                 approvals: null,
@@ -241,6 +242,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isHeaderAvatarLabelAllowed: undefined,
             isLeftNavigationCategorized: undefined,
             isMarketingConsentBannerEnabled: undefined,
+            isPasswordInputValidationEnabled: undefined,
             isRequestPathAuthenticationEnabled: undefined,
             isSAASDeployment: undefined,
             isSignatureValidationCertificateAliasEnabled: undefined,

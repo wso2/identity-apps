@@ -1420,6 +1420,20 @@ export const console: ConsoleNS = {
                                                     "pour les clés d'accès prises en charge par FIDO2 et les autres utilisateurs " +
                                                     "souhaitant enregistrer plusieurs clés d'accès doivent le faire via Mon compte."
                                             },
+                                            passkey: {
+                                                description: "Permettez aux utilisateurs de se connecter à l'aide d'un mot " +
+                                                "de passe, d'une clé de sécurité FIDO ou de données biométriques.",
+                                                heading: "Ajouter une connexion par mot de passe",
+                                                info: {
+                                                    progressiveEnrollmentEnabled: "L1inscription progressive par mot de passe " +
+                                                    "est activée. Les utilisateurs peuvent enregistrer des clés d'accès à " +
+                                                    "la volée. S’ils souhaitent enregistrer plusieurs mots de passe, ils " +
+                                                    "doivent le faire via Mon compte.",
+                                                    progressiveEnrollmentDisabled: "L'inscription du mot de passe à la volée " +
+                                                    "est désactivée. Les utilisateurs doivent enregistrer leurs clés d'accès " +
+                                                    "via MyAccount pour utiliser la connexion sans mot de passe."
+                                                }
+                                            },
                                             emailOTP: {
                                                 description: "Activez une couche supplémentaire d'authentification avec OTP basé sur Email.",
                                                 heading: "Ajouter Email OTP comme deuxième facteur"
@@ -1474,6 +1488,13 @@ export const console: ConsoleNS = {
                         },
                         apiAuthorization: {
                             m2mPolicyMessage: "Toutes les étendues autorisées d'une ressource API sont disponibles pour une application M2M malgré la politique d'autorisation spécifiée pour la ressource."
+                        },
+                        roles: {
+                            createApplicationRoleWizard: {
+                                title: "Créer un rôle d'application",
+                                subTitle: "Créez un nouveau rôle d'application dans le système.",
+                                button: "Créer un rôle"
+                            }
                         }
                     }
                 },
@@ -2507,6 +2528,15 @@ export const console: ConsoleNS = {
                                 hint: "Saisir l'URL du RP qui gère la réponse.",
                                 label: "URL de la réponse",
                                 placeholder: "Saisir l'URL de la réponse",
+                                validations: {
+                                    empty: "C'est un champ obligatoire.",
+                                    invalid: "Ce n'est pas une URL valide"
+                                }
+                            },
+                            replyToLogout: {
+                                hint: "Saisir l'URL du RP qui gère la réponse à la déconnexion.",
+                                label: "URL de la réponse à la déconnexion.",
+                                placeholder: "Saisir l'URL de la réponse à la déconnexion.",
                                 validations: {
                                     empty: "C'est un champ obligatoire.",
                                     invalid: "Ce n'est pas une URL valide"
@@ -7711,7 +7741,7 @@ export const console: ConsoleNS = {
                             emailDomains: {
                                 label : "Domaines de messagerie",
                                 placeholder: "Entrez les domaines de messagerie",
-                                hint: "Tapez et entrez pour ajouter des domaines de messagerie qui doivent être mappés à l'organisation. (Par exemple, gmail.com, etc.)",
+                                hint: "Tapez et entrez les domaines de messagerie à mapper à l'organisation. (Par exemple, gmail.com, etc.)",
                                 validations: {
                                     invalid: {
                                         0: "Veuillez saisir un domaine de messagerie valide.",
@@ -7748,7 +7778,7 @@ export const console: ConsoleNS = {
                             emailDomains: {
                                 label : "Domaines de messagerie",
                                 placeholder: "Entrez les domaines de messagerie",
-                                hint: "Tapez et entrez pour ajouter des domaines de messagerie qui doivent être mappés à l'organisation. (Par exemple, gmail.com, etc.)",
+                                hint: "Tapez et entrez les domaines de messagerie à mapper à l'organisation. (Par exemple, gmail.com, etc.)",
                                 validations: {
                                     invalid: {
                                         0: "Veuillez saisir un domaine de messagerie valide.",
@@ -7761,8 +7791,7 @@ export const console: ConsoleNS = {
                                 hint: "Entrez le nom de l'organisation que vous souhaitez ajouter la cartographie du domaine."
                             }
                         },
-                        message: "Si vous modifiez les mappages de domaines de messagerie, les utilisateurs déjà enregistrés dans votre organisation risquent de ne " +
-                        "pas pouvoir se connecter. Par conséquent, soyez prudent lorsque vous mettez à jour les domaines de messagerie."
+                        message: "La modification des mappages de domaines de messagerie peut empêcher les utilisateurs existants de se connecter."
                     }
                 },
                 message: "La fonctionnalité de découverte de domaine de messagerie ne peut être utilisée que lorsque l'adresse e-mail est configurée comme nom d'utilisateur.",
@@ -7775,6 +7804,12 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Domaines de messagerie ajoutés avec succès.",
                             message: "Ajouté avec succès"
+                        }
+                    },
+                    checkEmailDomain: {
+                        error: {
+                            description: "La validation de l'existence du domaine de messagerie a échoué.",
+                            message: "Validation échouée"
                         }
                     },
                     disableEmailDomainDiscovery: {
@@ -8420,12 +8455,14 @@ export const console: ConsoleNS = {
                                 label: "Application attribuée",
                                 placeholder: "Sélectionnez l'application pour attribuer le rôle",
                                 applicationSubTitle: {
-                                    application: "Prise en charge des rôles à application. ",
-                                    organization: "Rôles de soutien à l'organisation"
+                                    application: "Prise en charge des rôles à application.",
+                                    organization: "Rôles de soutien à l'organisation. ",
+                                    changeAudience: "Changer le public"
                                 },
                                 validations: {
                                     empty: "L'application attribuée est nécessaire pour créer un rôle à application."
-                                }
+                                },
+                                note: "Notez que l'application attribuée pour ce rôle ne peut pas être modifiée après la création du rôle."
                             }
                         },
                         rolePermission: {
@@ -9405,7 +9442,9 @@ export const console: ConsoleNS = {
                                     description: "Faites glisser et déposez un fichier CSV ici."
                                 },
                                 primaryButton: "Inviter",
-                                warningMessage: "The manual option to invite multiple users is available only when email as username is enabled."
+                                rolesLabel: "Les rôles",
+                                rolesPlaceholder: "Entrez les rôles",
+                                warningMessage: "La fonctionnalité d'invitation manuelle de plusieurs utilisateurs ne peut être utilisée que lorsque l'adresse e-mail est configurée comme nom d'utilisateur."
                             },
                             fileBased: {
                                 hint: "Invitez plusieurs utilisateurs en masse à l’aide d’un fichier CSV."

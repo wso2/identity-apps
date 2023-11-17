@@ -860,6 +860,14 @@ export interface ConsoleNS {
                                                 heading: string;
                                                 info: string;
                                             },
+                                            passkey: {
+                                                description: string;
+                                                heading: string;
+                                                info: {
+                                                    progressiveEnrollmentEnabled: string;
+                                                    progressiveEnrollmentDisabled: string;
+                                                }
+                                            }
                                             magicLink: {
                                                 description: string;
                                                 heading: string;
@@ -916,6 +924,13 @@ export interface ConsoleNS {
                         };
                         apiAuthorization: {
                             m2mPolicyMessage: string;
+                        };
+                        roles: {
+                            createApplicationRoleWizard: {
+                                title: string;
+                                subTitle: string;
+                                button: string;
+                            };
                         }
                     };
                 };
@@ -1192,6 +1207,7 @@ export interface ConsoleNS {
                         fields: {
                             realm: FormAttributes;
                             replyTo: FormAttributes;
+                            replyToLogout: FormAttributes;
                         };
                     };
                     inboundWSTrust: {
@@ -3375,6 +3391,12 @@ export interface ConsoleNS {
                         success: {
                             message: string;
                             description: string;
+                        };
+                    };
+                    checkEmailDomain: {
+                        error: {
+                            description: string;
+                            message: string;
                         };
                     };
                     disableEmailDomainDiscovery: {
@@ -5894,6 +5916,8 @@ export interface ConsoleNS {
                                     description: string;
                                 };
                                 primaryButton: string;
+                                rolesLabel: string;
+                                rolesPlaceholder: string;
                                 warningMessage: string;
                             };
                             fileBased: {

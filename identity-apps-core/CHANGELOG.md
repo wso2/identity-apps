@@ -1,5 +1,80 @@
 # @wso2is/identity-apps-core
 
+## 2.0.47
+
+### Patch Changes
+
+- [#4564](https://github.com/wso2/identity-apps/pull/4564) [`bc18db27a5`](https://github.com/wso2/identity-apps/commit/bc18db27a59d43ccb38f965899c0546c9816d2b7) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Fix password patterns updated via console not being reflected in My Account and reset password window
+
+## 2.0.46
+
+### Patch Changes
+
+- fix connections search issue
+
+- Updated dependencies []:
+  - @wso2is/theme@2.0.32
+
+## 2.0.45
+
+### Patch Changes
+
+- [#4532](https://github.com/wso2/identity-apps/pull/4532) [`3db28dcd8e`](https://github.com/wso2/identity-apps/commit/3db28dcd8e78f16f3573bc26f42bee0ccd3a3ca3) Thanks [@shanggeeth](https://github.com/shanggeeth)! - Change disabled dropdown style for better UX
+
+- Updated dependencies [[`3db28dcd8e`](https://github.com/wso2/identity-apps/commit/3db28dcd8e78f16f3573bc26f42bee0ccd3a3ca3)]:
+  - @wso2is/theme@2.0.31
+
+## 2.0.44
+
+### Patch Changes
+
+- [#4534](https://github.com/wso2/identity-apps/pull/4534) [`d4f77b595f`](https://github.com/wso2/identity-apps/commit/d4f77b595f4e4fbf013040d7274dff9d7df33991) Thanks [@savindi7](https://github.com/savindi7)! - Hide action to choose another authentication option when multi auth is unavailable
+
+* [#4544](https://github.com/wso2/identity-apps/pull/4544) [`aa05ad36f7`](https://github.com/wso2/identity-apps/commit/aa05ad36f7546bd525120110f0bc8999000cfe52) Thanks [@Achintha444](https://github.com/Achintha444)! - Remove `Create an account` button
+
+## 2.0.43
+
+### Patch Changes
+
+- [#4514](https://github.com/wso2/identity-apps/pull/4514) [`20c2f0ea15`](https://github.com/wso2/identity-apps/commit/20c2f0ea15e188cff13873889d74fbcd2b05c8df) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable resolved username identifier for super tenant
+
+## 2.0.42
+
+### Patch Changes
+
+- [#4516](https://github.com/wso2/identity-apps/pull/4516) [`2fb7b58007`](https://github.com/wso2/identity-apps/commit/2fb7b58007edd8fd1ecb8a05be7a589a784e4a9c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix danger zone text taking full width in medium and large screen sizes
+
+* [#4526](https://github.com/wso2/identity-apps/pull/4526) [`352f7882bd`](https://github.com/wso2/identity-apps/commit/352f7882bd88c0b468a13df9aad3fbea08ffc455) Thanks [@Achintha444](https://github.com/Achintha444)! - Add self signup URL text to the branding.
+
+* Updated dependencies [[`2fb7b58007`](https://github.com/wso2/identity-apps/commit/2fb7b58007edd8fd1ecb8a05be7a589a784e4a9c)]:
+  - @wso2is/theme@2.0.30
+
+## 2.0.41
+
+### Patch Changes
+
+- [#4511](https://github.com/wso2/identity-apps/pull/4511) [`71556d2bf5`](https://github.com/wso2/identity-apps/commit/71556d2bf529f2dda13d60bba2426d7a931c8d73) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Temporarily fix IDP image issue in the sub org level
+
+* [#4499](https://github.com/wso2/identity-apps/pull/4499) [`92f29f6105`](https://github.com/wso2/identity-apps/commit/92f29f61051309c211178f03697e0c29ff164584) Thanks [@Rashmini](https://github.com/Rashmini)! - dd validation for email domain availability in organization discovery feature
+
+## 2.0.40
+
+### Patch Changes
+
+- [#4502](https://github.com/wso2/identity-apps/pull/4502) [`71a96f34c4`](https://github.com/wso2/identity-apps/commit/71a96f34c4e7c978fbe304bdef29a1a3638f4e0c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Directly Redirect to Email OTP Page when it is the sole second factor configured
+
+- Updated dependencies [[`d94af75927`](https://github.com/wso2/identity-apps/commit/d94af7592757363f360147c78d54673d92d86a51)]:
+  - @wso2is/theme@2.0.29
+
+## 2.0.39
+
+### Patch Changes
+
+- [#4482](https://github.com/wso2/identity-apps/pull/4482) [`6a46abddbb`](https://github.com/wso2/identity-apps/commit/6a46abddbbd3d54c8c05f0ed32b787c1af4deeb0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix danger zone subheader taking full width in medium and large screen sizes
+
+- Updated dependencies [[`6a46abddbb`](https://github.com/wso2/identity-apps/commit/6a46abddbbd3d54c8c05f0ed32b787c1af4deeb0)]:
+  - @wso2is/theme@2.0.27
+
 ## 2.0.38
 
 ### Patch Changes

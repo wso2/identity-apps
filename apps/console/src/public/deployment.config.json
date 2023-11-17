@@ -91,6 +91,7 @@
                 "disabled_features": []
             }
         },
+        "subscriptionApiPath": "",
         "applicationInsightsProxyEndpoint": "",
         "applicationInsightsInstrumentationKey": "",
         "applicationInsightsEnabled": false,
@@ -221,6 +222,7 @@
             "defaultLogoUrl": "/libs/themes/default/assets/images/branding/logo.svg",
             "defaultWhiteLogoUrl": "/libs/themes/default/assets/images/branding/logo-white.svg"
         },
+        "enableCustomEmailTemplates": true,
         "appFaviconPath": "/assets/images/branding/favicon.ico",
         "isGOTEnabledForSuperTenantOnly": true,
         "showAppSwitchButton": true,
@@ -957,7 +959,7 @@
             }
         },
         "connectionResourcesUrl": "",
-        "isFeatureGateEnabled": true,
+        "isFeatureGateEnabled": false,
         "isCookieConsentBannerEnabled": true,
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "isMarketingConsentBannerEnabled": false,
@@ -969,6 +971,7 @@
         "isRequestPathAuthenticationEnabled": false,
         "isLeftNavigationCategorized": true,
         "isSAASDeployment": false,
+        "isPasswordInputValidationEnabled": true,
         "isSignatureValidationCertificateAliasEnabled": false,
         "listAllAttributeDialects": true,
         "privacyPolicyConfigs": {},

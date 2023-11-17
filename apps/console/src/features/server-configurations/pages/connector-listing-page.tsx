@@ -85,6 +85,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const isPasswordInputValidationEnabled: boolean = useSelector((state: AppState) => 
+        state?.config?.ui?.isPasswordInputValidationEnabled);
 
     const [ connectorCategories, setConnectorCategories ] = useState<GovernanceConnectorCategoryInterface[]>([]);
     const [ connectors, setConnectors ] = useState<GovernanceConnectorWithRef[]>([]);
@@ -134,6 +136,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 }
 
                 connectorCategoryArray.push(...response?.filter((category: GovernanceConnectorCategoryInterface) => {
+
+                    if (category.id === ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID) {
+                        return !isPasswordInputValidationEnabled;
+                    }
+
                     return serverConfigurationConfig.connectorCategoriesToShow.includes(category.id); 
                 }));
 
@@ -326,7 +333,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     };
 
     /**
-     * Remove this once the response name is fixed from the backend.
+     * TODO: Remove this once the response name is fixed from the backend.
      */
     const resolveConnectorCategoryTitle = (connectorCategory : GovernanceConnectorCategoryInterface): string => {
         switch (connectorCategory.id) {
@@ -467,6 +474,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                                                 <Grid xs={ 12 } lg={ 6 }>
                                                     <AdminAdvisoryBannerSection />
                                                 </Grid>
+                                                { isPasswordInputValidationEnabled && (
+                                                    <Grid xs={ 12 } lg={ 6 }>
+                                                        <ValidationConfigPage/>
+                                                    </Grid>
+                                                ) }
                                             </>
                                         ) : (
                                             <>

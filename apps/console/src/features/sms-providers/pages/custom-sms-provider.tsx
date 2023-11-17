@@ -70,7 +70,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             label={ t("extensions:develop.smsProviders.form.custom.providerName.label") }
                             placeholder={ t("extensions:develop.smsProviders.form.custom" +
                                 ".providerName.placeholder") }
-                            helperText={ (<Hint>
+                            helperText={ (<Hint compact>
                                 { t("extensions:develop.smsProviders.form.custom.providerName.hint") }
                             </Hint>) }
                             component={ TextFieldAdapter }
@@ -99,7 +99,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             label={ t("extensions:develop.smsProviders.form.custom.providerUrl.label") }
                             placeholder={ t("extensions:develop.smsProviders.form.custom.providerUrl.placeholder") }
                             helperText={ (
-                                <Hint>
+                                <Hint compact>
                                     { t("extensions:develop.smsProviders.form.custom.providerUrl.hint") }
                                 </Hint>
                             ) }
@@ -132,7 +132,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             label={ t("extensions:develop.smsProviders.form.custom.key.label") }
                             placeholder={ t("extensions:develop.smsProviders.form.custom.key.placeholder") }
                             helperText={ (
-                                <Hint>
+                                <Hint compact>
                                     { t("extensions:develop.smsProviders.form.custom.key.hint") }
                                 </Hint>
                             ) }
@@ -162,7 +162,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             label={ t("extensions:develop.smsProviders.form.custom.secret.label") }
                             placeholder={ t("extensions:develop.smsProviders.form.custom.secret.placeholder") }
                             helperText={ (
-                                <Hint>
+                                <Hint compact>
                                     { t("extensions:develop.smsProviders.form.custom.secret.hint") }
                                 </Hint>
                             ) }
@@ -194,7 +194,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             label={ t("extensions:develop.smsProviders.form.custom.sender.label") }
                             placeholder={ t("extensions:develop.smsProviders.form.custom.sender.placeholder") }
                             helperText={ (
-                                <Hint>
+                                <Hint compact>
                                     { t("extensions:develop.smsProviders.form.custom.sender.hint") }
                                 </Hint>
                             ) }
@@ -224,7 +224,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             label={ t("extensions:develop.smsProviders.form.custom.contentType.label") }
                             placeholder={ t("extensions:develop.smsProviders.form.custom.contentType.placeholder") }
                             helperText={ (
-                                <Hint>
+                                <Hint compact>
                                     { t("extensions:develop.smsProviders.form.custom.contentType.hint") }
                                 </Hint>
                             ) }
@@ -256,7 +256,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             label={ t("extensions:develop.smsProviders.form.custom.headers.label") }
                             placeholder={ t("extensions:develop.smsProviders.form.custom.headers.placeholder") }
                             helperText={ (
-                                <Hint>
+                                <Hint compact>
                                     { t("extensions:develop.smsProviders.form.custom.headers.hint") }
                                 </Hint>
                             ) }
@@ -286,7 +286,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             label={ t("extensions:develop.smsProviders.form.custom.httpMethod.label") }
                             placeholder={ t("extensions:develop.smsProviders.form.custom.httpMethod.placeholder") }
                             helperText={ (
-                                <Hint>
+                                <Hint compact>
                                     { t("extensions:develop.smsProviders.form.custom.httpMethod.hint") }
                                 </Hint>
                             ) }
@@ -318,7 +318,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             label={ t("extensions:develop.smsProviders.form.custom.payload.label") }
                             placeholder={ t("extensions:develop.smsProviders.form.custom.payload.placeholder") }
                             helperText={ (
-                                <Hint>
+                                <Hint compact>
                                     { t("extensions:develop.smsProviders.form.custom.payload.hint") }
                                 </Hint>
                             ) }
@@ -334,7 +334,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                     </Grid.Column>
                 </Grid.Row>
                 <Divider hidden />
-                <Grid.Row columns={ 1 } className="mt-6">
+                <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <PrimaryButton
                             size="small"

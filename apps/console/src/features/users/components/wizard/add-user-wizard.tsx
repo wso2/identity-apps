@@ -136,7 +136,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const orgType: OrganizationType = useGetOrganizationType();
+    const { organizationType } = useGetOrganizationType();
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitRoleList, setSubmitRoleList ] = useTrigger();
@@ -298,8 +298,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      */
     useEffect(() => {
         if (initialRoleList.length === 0) {
-            if (orgType === OrganizationType.SUPER_ORGANIZATION
-                || orgType === OrganizationType.FIRST_LEVEL_ORGANIZATION) {
+            if (organizationType === OrganizationType.SUPER_ORGANIZATION
+                || organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION) {
                 // Get Roles from the SCIM API
                 getRolesList(null)
                     .then((response: AxiosResponse) => {

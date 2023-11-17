@@ -1396,6 +1396,18 @@ export const console: ConsoleNS = {
                                                 "for FIDO2 supported passkeys and further users wishing to enroll " +
                                                 "multiple passkeys, they must do so via MyAccount."
                                             },
+                                            passkey: {
+                                                description: "Enable users to log in using a passkey, FIDO security key or " +
+                                                "biometrics.",
+                                                heading: "Add Passkey Login",
+                                                info: {
+                                                    progressiveEnrollmentEnabled: "Passkey progressive enrollment is enabled. " +
+                                                    "Users can enroll passkeys on-the-fly. If they wish to enroll multiple passkeys " +
+                                                    "they should do so via MyAccount.",
+                                                    progressiveEnrollmentDisabled: "On-the-fly passkey enrollment is disabled. " + 
+                                                    "Users must enroll their passkeys through MyAccount to use passwordless sign-in."
+                                                }
+                                            },
                                             emailOTP: {
                                                 description: "Enable additional authentication layer with Email based OTP.",
                                                 heading: "Add Email OTP as a second factor"
@@ -1449,6 +1461,13 @@ export const console: ConsoleNS = {
                         },
                         apiAuthorization: {
                             m2mPolicyMessage: "All the authorized scopes of an API resource are available for an M2M application despite the authorization policy specified for the resource."
+                        },
+                        roles: {
+                            createApplicationRoleWizard: {
+                                title: "Create Application Role",
+                                subTitle: "Create a new application role in the system.",
+                                button: "Create Role"
+                            }
                         }
                     }
                 },
@@ -2472,6 +2491,15 @@ export const console: ConsoleNS = {
                                 hint: "Enter RP endpoint URL that handles the response.",
                                 label: "Reply URL",
                                 placeholder: "Enter Reply URL",
+                                validations: {
+                                    empty: "This is a required field.",
+                                    invalid: "Enter a valid URL"
+                                }
+                            },
+                            replyToLogout: {
+                                hint: "Enter RP endpoint URL that handles the response at logout.",
+                                label: "Reply Logout URL",
+                                placeholder: "Enter Reply Logout URL",
                                 validations: {
                                     empty: "This is a required field.",
                                     invalid: "Enter a valid URL"
@@ -9491,7 +9519,7 @@ export const console: ConsoleNS = {
                             emailDomains: {
                                 label : "Email Domains",
                                 placeholder: "Enter email domains",
-                                hint: "Type and enter to add email domains which should be mapped to the organization. (E.g. gmail.com etc.)",
+                                hint: "Type and enter email domains to map to the organization. (E.g. gmail.com etc.)",
                                 validations: {
                                     invalid: {
                                         0: "Please enter a valid email domain.",
@@ -9528,7 +9556,7 @@ export const console: ConsoleNS = {
                             emailDomains: {
                                 label : "Email Domains",
                                 placeholder: "Enter email domains",
-                                hint: "Type and enter to add email domains which should be mapped to the organization. (E.g. gmail.com etc.).",
+                                hint: "Type and enter email domains to map to the organization. (E.g. gmail.com etc.)",
                                 validations: {
                                     invalid: {
                                         0: "Please enter a valid email domain.",
@@ -9541,8 +9569,7 @@ export const console: ConsoleNS = {
                                 hint: "The name of the organization to which the domain mappings are added."
                             }
                         },
-                        message: "If you change the email domain mappings, users who are already registered in your organization might " +
-                        "not be able to log in. Therefore, please be conscious when you update the email domains."
+                        message: "Changing email domain mappings may result in existing users being unable to log in."
                     }
                 },
                 message: "Email domain discovery feature can only be used when email address is configured as the username.",
@@ -9555,6 +9582,12 @@ export const console: ConsoleNS = {
                         success: {
                             description: "Email domains added successfully.",
                             message: "Added successfully"
+                        }
+                    },
+                    checkEmailDomain: {
+                        error: {
+                            description: "Validating the email domain existence was unsuccessful.",
+                            message: "Validating unsuccessful"
                         }
                     },
                     disableEmailDomainDiscovery: {
@@ -10189,12 +10222,14 @@ export const console: ConsoleNS = {
                                 label: "Assigned application",
                                 placeholder: "Select application to assign the role",
                                 applicationSubTitle: {
-                                    application: "Support application-scoped roles. ",
-                                    organization: "Support organization-scoped roles"
+                                    application: "Support application-scoped roles.",
+                                    organization: "Support organization-scoped role. ",
+                                    changeAudience: "Change the audience"
                                 },
                                 validations: {
                                     empty: "Assigned application is required to create an application-scoped role."
-                                }
+                                },
+                                note: "Note that assigned application for this role cannot be edited after the role is created."
                             }
                         },
                         rolePermission: {
@@ -11142,7 +11177,9 @@ export const console: ConsoleNS = {
                                     description: "Drag and drop a CSV file here."
                                 },
                                 primaryButton: "Invite",
-                                warningMessage: "The manual option to invite multiple users is available only when email as username is enabled."
+                                rolesLabel: "Roles",
+                                rolesPlaceholder: "Enter roles",
+                                warningMessage: "Manual invite multiple users feature can only be used when email address is configured as the username."
                             },
                             fileBased: {
                                 hint: "Bulk invite multiple users using a CSV file."

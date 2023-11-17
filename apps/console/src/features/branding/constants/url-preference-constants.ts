@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,16 @@
  * under the License.
  */
 
-import { PasswordValidationConfig } from "./models/password-validation";
-  
-export const passwordValidationConfig: PasswordValidationConfig = {
-    showPasswordValidation: true
-};
+/**
+ * Class containing Branding URL Preferences constants.
+ */
+export class BrandingURLPreferenceConstants {
+    /**
+     * Private constructor to avoid object instantiation from outside the class.
+     */
+    private constructor() {}
+
+    public static readonly LANGUAGE_PLACEHOLDER: string = "{{lang}}";
+    public static readonly COUNTRY_PLACEHOLDER: string = "{{country}}";
+    public static readonly LOCALE_PLACEHOLDER: string = "{{locale}}";
+}

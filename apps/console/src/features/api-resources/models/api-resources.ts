@@ -48,11 +48,11 @@ export interface APIResourceInterface {
     /**
      * Display name of the API resource.
      */
-    name: string;
+    name?: string;
     /**
      * Identifier of the API resource. [Usually this is an API endpoint]
      */
-    identifier: string;
+    identifier?: string;
     /**
      * Required authorization.
      */
@@ -257,4 +257,25 @@ export interface APIResourceEndpointsInterface {
      * Scopes endpoint.
      */
     scopes: string;
+}
+
+/**
+ * Interface to contain scope information
+ */
+export interface ScopeInterface {
+    id: string;
+    displayName?: string;
+    name?: string;
+    description?: string;
+}
+
+/**
+ * Interface to store authorized API list item.
+ */
+export interface AuthorizedAPIListItemInterface {
+    id: string,
+    identifier: string,
+    displayName: string,
+    policyId: string,
+    authorizedScopes: ScopeInterface[]
 }

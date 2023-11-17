@@ -1,5 +1,88 @@
 # @wso2is/myaccount
 
+## 2.2.14
+
+### Patch Changes
+
+- [#4564](https://github.com/wso2/identity-apps/pull/4564) [`bc18db27a5`](https://github.com/wso2/identity-apps/commit/bc18db27a59d43ccb38f965899c0546c9816d2b7) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Fix password patterns updated via console not being reflected in My Account and reset password window
+
+* [#4560](https://github.com/wso2/identity-apps/pull/4560) [`7cff1f63fb`](https://github.com/wso2/identity-apps/commit/7cff1f63fb4c0caf14a6505c13490c4820a233b1) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Make Backup Codes enabled by default
+
+* Updated dependencies [[`bc18db27a5`](https://github.com/wso2/identity-apps/commit/bc18db27a59d43ccb38f965899c0546c9816d2b7), [`9ae04065e4`](https://github.com/wso2/identity-apps/commit/9ae04065e429f465e5085afeb7b9a59d01a2feb1)]:
+  - @wso2is/core@2.0.12
+  - @wso2is/i18n@2.0.34
+
+## 2.2.13
+
+### Patch Changes
+
+- fix connections search issue
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.0.14
+  - @wso2is/theme@2.0.32
+
+## 2.2.12
+
+### Patch Changes
+
+- [#4532](https://github.com/wso2/identity-apps/pull/4532) [`3db28dcd8e`](https://github.com/wso2/identity-apps/commit/3db28dcd8e78f16f3573bc26f42bee0ccd3a3ca3) Thanks [@shanggeeth](https://github.com/shanggeeth)! - Change disabled dropdown style for better UX
+
+- Updated dependencies [[`3db28dcd8e`](https://github.com/wso2/identity-apps/commit/3db28dcd8e78f16f3573bc26f42bee0ccd3a3ca3)]:
+  - @wso2is/theme@2.0.31
+
+## 2.2.11
+
+### Patch Changes
+
+- [#4528](https://github.com/wso2/identity-apps/pull/4528) [`1b74de3e5b`](https://github.com/wso2/identity-apps/commit/1b74de3e5b08c5b0b33fe224be123fe09d7bb20a) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Change wording in SMS/ Email provider.
+
+- Updated dependencies [[`1b74de3e5b`](https://github.com/wso2/identity-apps/commit/1b74de3e5b08c5b0b33fe224be123fe09d7bb20a)]:
+  - @wso2is/i18n@2.0.32
+
+## 2.2.10
+
+### Patch Changes
+
+- [#4516](https://github.com/wso2/identity-apps/pull/4516) [`2fb7b58007`](https://github.com/wso2/identity-apps/commit/2fb7b58007edd8fd1ecb8a05be7a589a784e4a9c) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix danger zone text taking full width in medium and large screen sizes
+
+* [#4526](https://github.com/wso2/identity-apps/pull/4526) [`352f7882bd`](https://github.com/wso2/identity-apps/commit/352f7882bd88c0b468a13df9aad3fbea08ffc455) Thanks [@Achintha444](https://github.com/Achintha444)! - Add self signup URL text to the branding.
+
+* Updated dependencies [[`2fb7b58007`](https://github.com/wso2/identity-apps/commit/2fb7b58007edd8fd1ecb8a05be7a589a784e4a9c), [`352f7882bd`](https://github.com/wso2/identity-apps/commit/352f7882bd88c0b468a13df9aad3fbea08ffc455)]:
+  - @wso2is/react-components@2.0.13
+  - @wso2is/theme@2.0.30
+  - @wso2is/i18n@2.0.31
+
+## 2.2.9
+
+### Patch Changes
+
+- [#4507](https://github.com/wso2/identity-apps/pull/4507) [`b81948fe05`](https://github.com/wso2/identity-apps/commit/b81948fe050d5be8a8476090f30a791fd4b6b87d) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Fix typo
+
+* [#4499](https://github.com/wso2/identity-apps/pull/4499) [`92f29f6105`](https://github.com/wso2/identity-apps/commit/92f29f61051309c211178f03697e0c29ff164584) Thanks [@Rashmini](https://github.com/Rashmini)! - dd validation for email domain availability in organization discovery feature
+
+* Updated dependencies [[`53764bfbe4`](https://github.com/wso2/identity-apps/commit/53764bfbe44a04e317fc6bc0c5e737366f5c7003), [`b81948fe05`](https://github.com/wso2/identity-apps/commit/b81948fe050d5be8a8476090f30a791fd4b6b87d), [`92f29f6105`](https://github.com/wso2/identity-apps/commit/92f29f61051309c211178f03697e0c29ff164584), [`1ed2c49041`](https://github.com/wso2/identity-apps/commit/1ed2c4904159252c6966202501b0943268a8586a)]:
+  - @wso2is/i18n@2.0.30
+
+## 2.2.8
+
+### Patch Changes
+
+- [#4493](https://github.com/wso2/identity-apps/pull/4493) [`216054b7ae`](https://github.com/wso2/identity-apps/commit/216054b7aebcaf52247eff618a7ed4f69d98d4ac) Thanks [@Achintha444](https://github.com/Achintha444)! - More details popover handled on hover
+
+- Updated dependencies [[`216054b7ae`](https://github.com/wso2/identity-apps/commit/216054b7aebcaf52247eff618a7ed4f69d98d4ac)]:
+  - @wso2is/core@2.0.11
+  - @wso2is/theme@2.0.28
+
+## 2.2.7
+
+### Patch Changes
+
+- [#4482](https://github.com/wso2/identity-apps/pull/4482) [`6a46abddbb`](https://github.com/wso2/identity-apps/commit/6a46abddbbd3d54c8c05f0ed32b787c1af4deeb0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix danger zone subheader taking full width in medium and large screen sizes
+
+- Updated dependencies [[`6a46abddbb`](https://github.com/wso2/identity-apps/commit/6a46abddbbd3d54c8c05f0ed32b787c1af4deeb0)]:
+  - @wso2is/theme@2.0.27
+
 ## 2.2.6
 
 ### Patch Changes

@@ -17,6 +17,7 @@
  */
 
 import { CardContent, Paper, Popover } from "@oxygen-ui/react";
+import Card from "@oxygen-ui/react/Card";
 import Grid from "@oxygen-ui/react/Grid";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -55,10 +56,10 @@ export const ChipMoreDetails: FunctionComponent<ChipMoreDetailsInterface> = (
 
     return (
         <Popover
+            className="role-chip-popover"
             open={ !!popoverAnchorEl }
             anchorEl={ popoverAnchorEl }
-            onClose={ () => onPopoverClose() }
-            onMouseDown={ () => onPopoverClose() }
+            onClose={ onPopoverClose }
             anchorOrigin={ {
                 horizontal: "left",
                 vertical: "bottom"
@@ -70,29 +71,31 @@ export const ChipMoreDetails: FunctionComponent<ChipMoreDetailsInterface> = (
             elevation={ 0 }
         >
             <Paper>
-                <CardContent>
-                    <Grid container alignItems="center" columnSpacing={ 2 }>
-                        <Grid container alignItems="center" justifyContent="flex-start">
-                            <Grid>
-                                <AppAvatar
-                                    image={ (
-                                        <AnimatedAvatar
-                                            name={ primaryText }
-                                            size="mini"
-                                        />
-                                    ) }
-                                    size="mini"
-                                />
-                            </Grid>
-                            <Grid>
-                                <ListItemText
-                                    primary={ primaryText }
-                                    secondary={ secondaryText }
-                                />
+                <Card className="role-chip-more-details">
+                    <CardContent>
+                        <Grid container alignItems="center" columnSpacing={ 2 }>
+                            <Grid container alignItems="center" justifyContent="flex-start">
+                                <Grid>
+                                    <AppAvatar
+                                        image={ (
+                                            <AnimatedAvatar
+                                                name={ primaryText }
+                                                size="mini"
+                                            />
+                                        ) }
+                                        size="mini"
+                                    />
+                                </Grid>
+                                <Grid>
+                                    <ListItemText
+                                        primary={ primaryText }
+                                        secondary={ secondaryText }
+                                    />
+                                </Grid>
                             </Grid>
                         </Grid>
-                    </Grid>
-                </CardContent>
+                    </CardContent>
+                </Card>
             </Paper>
         </Popover>
     );

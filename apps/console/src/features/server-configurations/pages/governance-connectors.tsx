@@ -22,7 +22,6 @@ import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
 import { EmphasizedSegment, PageLayout, useUIElementSizes } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import camelCase from "lodash-es/camelCase";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -142,12 +141,30 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
         history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
     };
 
+    /**
+     * TODO: Remove this once the response name is fixed from the backend.
+     */
+    const resolveConnectorCategoryTitle = (connectorCategory : GovernanceConnectorCategoryInterface): string => {
+
+        if (!connectorCategory?.connectors) {
+            return;
+        }
+
+        switch (connectorCategory.connectors[0].categoryId) {
+            case ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID:
+                return (
+                    t("console:manage.features.governanceConnectors.connectorCategories.multiFactorAuthenticators." +
+                    "friendlyName")
+                );
+            default:
+                return connectorCategory.name;
+        }
+    };
+
     return (
         <PageLayout
-            title={ (serverConfigurationConfig.showPageHeading && connectorCategory?.name) &&
-                t("console:manage.features.governanceConnectors.connectorCategories."
-                    + camelCase(connectorCategory?.name) + ".name") }
-            pageTitle={ serverConfigurationConfig.showPageHeading && connectorCategory?.name }
+            title={ serverConfigurationConfig.showPageHeading && resolveConnectorCategoryTitle(connectorCategory) }
+            pageTitle={ serverConfigurationConfig.showPageHeading && resolveConnectorCategoryTitle(connectorCategory) }
             description={
                 serverConfigurationConfig.showPageHeading && (connectorCategory?.description
                     ? connectorCategory.description
