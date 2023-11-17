@@ -122,6 +122,11 @@
                     <input type="submit" id="submitButton" onclick="submitDiscovery(); return false;"
                         value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "submit")%>"
                         class="ui primary large fluid button" />
+                   <div class="mt-1 align-center">
+                       <a href="javascript:navigateBackToLoginPage()" class="ui button secondary large fluid">
+                           <%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>
+                       </a>
+                   </div>
                     <div class="ui horizontal divider">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
                     </div>
@@ -166,6 +171,11 @@
          function enterOrgName() {
             document.getElementById("orgDiscovery").disabled = true;
             document.getElementById("org_form").submit();
+         }
+
+         function navigateBackToLoginPage() {
+             // login page is always 2 steps back from the current page.
+             window.history.go(-2);
          }
 
          function submitDiscovery() {
