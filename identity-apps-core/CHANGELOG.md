@@ -1,5 +1,53 @@
 # @wso2is/identity-apps-core
 
+## 2.0.52
+
+### Patch Changes
+
+- [#4629](https://github.com/wso2/identity-apps/pull/4629) [`9f35177e00`](https://github.com/wso2/identity-apps/commit/9f35177e00033796d44c97050402f8f8f88f94fd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the overlay issue on the login page timeout error message
+
+* [#4621](https://github.com/wso2/identity-apps/pull/4621) [`3ea2ebc6a3`](https://github.com/wso2/identity-apps/commit/3ea2ebc6a3810cc18038c7f49855b7fd7f444cdf) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the sms otp resend issue
+
+* Updated dependencies [[`9f35177e00`](https://github.com/wso2/identity-apps/commit/9f35177e00033796d44c97050402f8f8f88f94fd)]:
+  - @wso2is/theme@2.0.36
+
+## 2.0.51
+
+### Patch Changes
+
+- [#4623](https://github.com/wso2/identity-apps/pull/4623) [`826163ef8a`](https://github.com/wso2/identity-apps/commit/826163ef8a87118577b5e093b9f95185c244ac21) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) enable custom user store managers
+
+- Updated dependencies [[`826163ef8a`](https://github.com/wso2/identity-apps/commit/826163ef8a87118577b5e093b9f95185c244ac21)]:
+  - @wso2is/theme@2.0.35
+
+## 2.0.50
+
+### Patch Changes
+
+- [#4620](https://github.com/wso2/identity-apps/pull/4620) [`0b3b68241c`](https://github.com/wso2/identity-apps/commit/0b3b68241cba6d56ee62cc01560c4232aca8030d) Thanks [@thanujalk](https://github.com/thanujalk)! - Fix app sharing issue
+
+* [#4609](https://github.com/wso2/identity-apps/pull/4609) [`f4b757e76d`](https://github.com/wso2/identity-apps/commit/f4b757e76d7b10f41ceac35decc55ebe1afebc55) Thanks [@thanujalk](https://github.com/thanujalk)! - Allow to update system apps on set of scenarioes
+
+- [#4607](https://github.com/wso2/identity-apps/pull/4607) [`d000ebab65`](https://github.com/wso2/identity-apps/commit/d000ebab65b4eb2a701ab7c882e78b513110a20c) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Improve UX of forgot password or username
+
+- Updated dependencies [[`0535f1f945`](https://github.com/wso2/identity-apps/commit/0535f1f945600db877cf040796ce99d2f51a5d6f)]:
+  - @wso2is/theme@2.0.34
+
+## 2.0.49
+
+### Patch Changes
+
+- [#4593](https://github.com/wso2/identity-apps/pull/4593) [`772196ccd8`](https://github.com/wso2/identity-apps/commit/772196ccd8815d73b8688dde15706732112fdb1a) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Fix content of roles tabs in users and groups to convey that this tab is read only
+
+## 2.0.48
+
+### Patch Changes
+
+- [#4569](https://github.com/wso2/identity-apps/pull/4569) [`ceed0e1893`](https://github.com/wso2/identity-apps/commit/ceed0e189380a8f105638813f2ce50b1c36d26d8) Thanks [@brionmario](https://github.com/brionmario)! - Add `zh` to the lang map
+
+- Updated dependencies [[`d6b83f8118`](https://github.com/wso2/identity-apps/commit/d6b83f8118c5ad0f25172366b93c053ead6c988a)]:
+  - @wso2is/theme@2.0.33
+
 ## 2.0.47
 
 ### Patch Changes

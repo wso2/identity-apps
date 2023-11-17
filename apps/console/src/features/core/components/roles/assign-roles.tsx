@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -41,7 +41,7 @@ interface AssignRoleProps {
 /**
  * Assign Role component.
  *
- * @return {JSX.Element}
+ * @returns Assign Roles component.
  */
 export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRoleProps): ReactElement => {
 
@@ -93,14 +93,17 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
         setIsSelectAssignedAllRolesChecked(!isSelectAssignedAllRolesChecked);
     };
 
-    const handleUnselectedListSearch = (e, { value }) => {
-        let isMatch = false;
-        const filteredRoleList = [];
+    const handleUnselectedListSearch = (
+        e: React.FormEvent<HTMLInputElement>,
+        { value }: { value: string;}
+    ) => {
+        let isMatch: boolean = false;
+        const filteredRoleList: RolesInterface[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            initialValues.roleList && initialValues.roleList.map((role) => {
+            initialValues.roleList && initialValues.roleList.map((role: RolesInterface) => {
                 isMatch = re.test(role.displayName);
                 if (isMatch) {
                     filteredRoleList.push(role);
@@ -112,14 +115,17 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
         }
     };
 
-    const handleSelectedListSearch = (e, { value }) => {
-        let isMatch = false;
-        const filteredRoleList = [];
+    const handleSelectedListSearch = (
+        e: React.FormEvent<HTMLInputElement>,
+        { value }: { value: string;}
+    ) => {
+        let isMatch: boolean = false;
+        const filteredRoleList: RolesInterface[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            initialValues.tempRoleList && initialValues.tempRoleList.map((role) => {
+            initialValues.tempRoleList && initialValues.tempRoleList.map((role: RolesInterface) => {
                 isMatch = re.test(role.displayName);
                 if (isMatch) {
                     filteredRoleList.push(role);
@@ -132,10 +138,10 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
     };
 
     const addRoles = () => {
-        const addedRoles = [ ...initialValues.tempRoleList ];
+        const addedRoles: RolesInterface[] = [ ...initialValues.tempRoleList ];
 
         if (checkedUnassignedListItems?.length > 0) {
-            checkedUnassignedListItems.map((role) => {
+            checkedUnassignedListItems.map((role: RolesInterface) => {
                 if (!(initialValues?.tempRoleList?.includes(role))) {
                     addedRoles.push(role);
                 }
@@ -143,16 +149,16 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
         }
         handleTempListChange(addedRoles);
         handleInitialTempListChange(addedRoles);
-        handleRoleListChange(initialValues?.roleList.filter(x => !addedRoles?.includes(x)));
-        handleInitialRoleListChange(initialValues?.roleList.filter(x => !addedRoles?.includes(x)));
+        handleRoleListChange(initialValues?.roleList.filter((x: RolesInterface) => !addedRoles?.includes(x)));
+        handleInitialRoleListChange(initialValues?.roleList.filter((x: RolesInterface) => !addedRoles?.includes(x)));
         setIsSelectUnassignedAllRolesChecked(false);
     };
 
     const removeRoles = () => {
-        const removedRoles = [ ...initialValues?.roleList ];
+        const removedRoles: RolesInterface[] = [ ...initialValues?.roleList ];
 
         if (checkedAssignedListItems?.length > 0) {
-            checkedAssignedListItems.map((role) => {
+            checkedAssignedListItems.map((role: RolesInterface) => {
                 if (!(initialValues?.roleList?.includes(role))) {
                     removedRoles.push(role);
                 }
@@ -160,14 +166,15 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
         }
         handleRoleListChange(removedRoles);
         handleInitialRoleListChange(removedRoles);
-        handleTempListChange(initialValues?.tempRoleList?.filter(x => !removedRoles?.includes(x)));
-        handleInitialTempListChange(initialValues?.tempRoleList?.filter(x => !removedRoles?.includes(x)));
+        handleTempListChange(initialValues?.tempRoleList?.filter((x: RolesInterface) => !removedRoles?.includes(x)));
+        handleInitialTempListChange(initialValues?.tempRoleList?.filter((
+            x: RolesInterface) => !removedRoles?.includes(x)));
         setCheckedUnassignedListItems([]);
         setIsSelectAssignedAllRolesChecked(false);
     };
 
-    const handleUnassignedItemCheckboxChange = (role) => {
-        const checkedRoles = [ ...checkedUnassignedListItems ];
+    const handleUnassignedItemCheckboxChange = (role: RolesInterface) => {
+        const checkedRoles: RolesInterface[] = [ ...checkedUnassignedListItems ];
 
         if (checkedRoles.includes(role)) {
             checkedRoles.splice(checkedRoles.indexOf(role), 1);
@@ -178,8 +185,8 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
         }
     };
 
-    const handleAssignedItemCheckboxChange = (role) => {
-        const checkedRoles = [ ...checkedAssignedListItems ];
+    const handleAssignedItemCheckboxChange = (role: RolesInterface) => {
+        const checkedRoles: RolesInterface[] = [ ...checkedAssignedListItems ];
 
         if (checkedRoles.includes(role)) {
             checkedRoles.splice(checkedRoles.indexOf(role), 1);
@@ -193,10 +200,10 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
     /**
      * The following method handles creating a label for the list item.
      *
-     * @param roleName: string
+     * @param roleName - string
      */
     const createItemLabel = (roleName: string) => {
-        const role = roleName.split("/");
+        const role: string[] = roleName.split("/");
 
         if (role.length > 0) {
             if (role[0] == "Application") {
@@ -240,8 +247,8 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
                             + "emptyPlaceholders.default") }
                     >
                         {
-                            initialValues?.roleList?.map((role, index)=> {
-                                const roleName = role?.displayName?.split("/");
+                            initialValues?.roleList?.map((role: RolesInterface, index: number)=> {
+                                const roleName: string[] = role?.displayName?.split("/");
 
                                 return (
                                     <TransferListItem
@@ -252,7 +259,7 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
                                         listItemIndex={ index }
                                         listItemTypeLabel={ createItemLabel(role?.displayName) }
                                         isItemChecked={ checkedUnassignedListItems.includes(role) }
-                                        showSecondaryActions={ true }
+                                        showSecondaryActions={ false }
                                         handleOpenPermissionModal={ () => handleSetRoleId(role.id) }
                                         data-testid="user-mgt-add-user-wizard-modal-unselected-roles"
                                     />
@@ -276,8 +283,8 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
                             + "emptyPlaceholders.default") }
                     >
                         {
-                            initialValues?.tempRoleList?.map((role, index)=> {
-                                const roleName = role.displayName.split("/");
+                            initialValues?.tempRoleList?.map((role: RolesInterface, index: number)=> {
+                                const roleName: string[] = role.displayName.split("/");
 
                                 return (
                                     <TransferListItem

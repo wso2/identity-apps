@@ -31,6 +31,7 @@ import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRe
 import org.wso2.carbon.identity.application.common.model.LocalAndOutboundAuthenticationConfig;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
 import org.wso2.carbon.identity.application.common.model.ServiceProviderProperty;
+import org.wso2.carbon.identity.application.common.util.IdentityApplicationManagementUtil;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
@@ -270,12 +271,14 @@ public class AppPortalUtils {
                 PrivilegedCarbonContext privilegedCarbonContext = PrivilegedCarbonContext.getThreadLocalCarbonContext();
                 privilegedCarbonContext.setTenantId(tenantId);
                 privilegedCarbonContext.setTenantDomain(tenantDomain);
+                IdentityApplicationManagementUtil.setAllowUpdateSystemApplicationThreadLocal(true);
                 AppsCommonDataHolder.getInstance().getOrgApplicationManager()
                     .shareOrganizationApplication(organizationId, consoleAppId, true,
                         Collections.emptyList());
             } catch (OrganizationManagementException e) {
                 throw new IdentityApplicationManagementException("Failed to share system application.", e);
             } finally {
+                IdentityApplicationManagementUtil.removeAllowUpdateSystemApplicationThreadLocal();
                 PrivilegedCarbonContext.endTenantFlow();
             }
         }

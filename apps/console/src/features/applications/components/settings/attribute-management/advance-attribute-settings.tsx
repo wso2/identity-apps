@@ -20,6 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { Code, Heading, Hint, Text } from "@wso2is/react-components";
+import useUIConfig from "modules/common/src/hooks/use-ui-configs";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
@@ -88,6 +89,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
     } = props;
 
     const { t } = useTranslation();
+    const { UIConfig } = useUIConfig();
 
     const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
     const [ selectedSubjectValueLocalClaim, setSelectedSubjectValueLocalClaim ] =
@@ -394,7 +396,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         data-testid={ `${ testId }-subject-include-tenant-domain-checkbox` }
                         hidden={
                             !applicationConfig.attributeSettings.advancedAttributeSettings
-                                .showIncludeTenantDomain
+                                .showIncludeTenantDomain || !UIConfig?.classicFeatures?.isIncludeOrgNameInSubjectEnabled
                         }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
@@ -418,7 +420,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         data-testid={ `${ testId }-subject-use-mapped-local-subject-checkbox` }
                         hidden={
                             !applicationConfig.attributeSettings.advancedAttributeSettings
-                                .showUseMappedLocalSubject
+                                .showUseMappedLocalSubject || !UIConfig?.classicFeatures?.isUseMappedLocalSubjectEnabled
                         }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings." +

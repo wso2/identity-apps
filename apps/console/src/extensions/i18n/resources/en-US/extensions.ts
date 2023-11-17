@@ -431,8 +431,8 @@ export const extensions: Extensions = {
     develop: {
         apiResource: {
             pageHeader: {
-                description: "Create and manage the API resources used to define the API scopes/permissions that can be consumed by your applications.",
-                title: "API Resources"
+                description: "Create and manage the APIs used to define the API scopes/permissions that can be consumed by your applications.",
+                title: "APIs"
             },
             empty: "There are no API resources available at the moment.",
             managedByChoreoText: "Managed by Choreo",
@@ -443,7 +443,7 @@ export const extensions: Extensions = {
                 },
                 title: "Something went wrong"
             },
-            addApiResourceButton: "New API Resource",
+            addApiResourceButton: "New API",
             confirmations: {
                 deleteAPIResource: {
                     assertionHint: "Please confirm your action.",
@@ -459,6 +459,10 @@ export const extensions: Extensions = {
                     message: "If you remove this permission from the API resource, some functionalities may not work properly. " +
                         "Please proceed with caution."
                 }
+            },
+            managementAPI: {
+                header: "Management APIs",
+                description: "APIs to manage resources in your self organization"
             },
             notifications: {
                 deleteAPIResource: {
@@ -551,6 +555,10 @@ export const extensions: Extensions = {
                         message: "API resource created"
                     }
                 }
+            },
+            organizationAPI: {
+                header: "Organization APIs",
+                description: "APIs to manage resources your other organizations"
             },
             table: {
                 name: {
@@ -693,8 +701,8 @@ export const extensions: Extensions = {
                     nextButton: "Next",
                     previousButton: "Previous",
                     submitButton: "Finish",
-                    title: "Add API Resource",
-                    subtitle: "Create a new API resource",
+                    title: "Add API",
+                    subtitle: "Create a new API",
                     steps: {
                         basic: {
                             stepTitle: "Basic Details",

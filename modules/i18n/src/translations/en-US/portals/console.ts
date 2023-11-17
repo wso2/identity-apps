@@ -4051,8 +4051,7 @@ export const console: ConsoleNS = {
                                 ariaLabel: "SAML request additional query parameters",
                                 label: "Additional query parameters"
                             },
-                            // New additions
-                            isEnableAssertionSigning:  {
+                            isAssertionSigned: {
                                 ariaLabel: "Enable assertion signing",
                                 hint: "Specify if SAMLAssertion element is signed",
                                 label: "Enable assertion signing"
@@ -4076,7 +4075,13 @@ export const console: ConsoleNS = {
                                 ariaLabel: "Authentication context class",
                                 hint: "Authentication context class",
                                 label: "Authentication context class",
-                                placeholder: "Enter authentication context class"
+                                placeholder: "Search available authentication context classes"
+                            },
+                            customAuthenticationContextClass: {
+                                ariaLabel: "Custom Authentication context class",
+                                hint: "Specify the custom authentication context class",
+                                label: "Custom authentication context class",
+                                placeholder: "Enter custom authentication context class"
                             },
                             attributeConsumingServiceIndex: {
                                 ariaLabel: "Attribute consuming service index",
@@ -8937,12 +8942,18 @@ export const console: ConsoleNS = {
                         }
                     },
                     roles: {
+                        placeHolders: {
+                            emptyListPlaceholder: {
+                                subtitles: "There are no roles assigned to this group at the moment.",
+                                title: "No Roles Assigned"
+                            }
+                        },
+                        heading: "Assigned Roles",
                         addRolesModal: {
                             heading: "Update Group Roles",
                             subHeading: "Add new roles or remove existing roles assigned to the group."
                         },
-                        subHeading: "Add or remove the roles this group is assigned with and note that this " +
-                            "will affect performing certain tasks."
+                        subHeading: "View assigned roles for the group."
                     }
                 },
                 list: {
@@ -9181,9 +9192,9 @@ export const console: ConsoleNS = {
                 addUserWizard: {
                     heading: "Invite Parent User",
                     description: "Invite a user from the parent organization.",
-                    hint: "Invited users are managed by the <1>{{currentOrganization}}</1> organization.",
+                    hint: "Invited users are managed by the parent organization.",
                     usernameHint: "Username should belong to a user " +
-                        "from the <1>{{currentOrganization}}</1> organization."
+                        "from the parent organization."
                 },
                 tab: {
                     usersTab: "Users",
@@ -9204,7 +9215,8 @@ export const console: ConsoleNS = {
                     noExpiredInvitations: "There are expired invitations at the moment.",
                     noInvitations: "There are no invitations at the moment.",
                     noCollaboratorUserInvitations: "There are no collaborator users with expired invitations at the moment."
-                }
+                },
+                invitedUserLabel: "Managed by parent organization"
             },
             oidcScopes: {
                 viewAttributes: "View Attributes",
@@ -10771,9 +10783,13 @@ export const console: ConsoleNS = {
                             message: "Updated successfully."
                         },
                         error: {
-                            genericError: {
+                            updateError: {
                                 description: "An error occurred while updating remote log publishing configuration.",
                                 message: "Something went wrong"
+                            },
+                            fetchError: {
+                                description: "An error occurred while getting the remote log publishing configuration.",
+                                message: "Couldn't get remote log publishing configuration."
                             }
                         }
                     }
@@ -11020,7 +11036,9 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter the email address",
                                 validations: {
                                     empty: "Email address cannot be empty",
-                                    invalid: "Please enter a valid email address"
+                                    invalid: "Please enter a valid email address. You can use alphanumeric " +
+                                        "characters, unicode characters, underscores (_), dashes (-), periods (.), " +
+                                        "and an at sign (@)."
                                 }
                             },
                             firstName: {
@@ -11120,9 +11138,10 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Invite multiple users",
-                        subTitle: "Invite multiple users to the organization.",
+                        title: "Add multiple users",
+                        subTitle: "Add multiple users manually or using a CSV file.",
                         wizardSummary: {
+                            inviteEmailInfo: "An email with a confirmation link will be sent to the provided email address for the user to set their own password.",
                             successCount: "Successful Imports",
                             failedCount: "Failed Imports",
                             totalUserCreationCount: "Total user creation count",
@@ -11168,7 +11187,13 @@ export const console: ConsoleNS = {
                             disabledSecondaryStoreInfo: "Bulk import to external user stores is not available " +
                                 "at the moment.",
                             manualCreation: {
-                                hint: "Add emails and send invitations to multiple users.",
+                                alerts: {
+                                    creationSuccess: {
+                                        description: "The user accounts were created successfully.",
+                                        message: "User Creation Successful"
+                                    }
+                                },
+                                hint: "Add the email address of the user you wish to invite and press enter.",
                                 emailsLabel: "Emails",
                                 emailsPlaceholder: "Enter email addresses",
                                 disabledHint: "The manual option is disabled due to the usage of alphanumeric usernames in your organization.",
@@ -11176,10 +11201,9 @@ export const console: ConsoleNS = {
                                     buttonText: "Upload CSV File",
                                     description: "Drag and drop a CSV file here."
                                 },
-                                primaryButton: "Invite",
+                                primaryButton: "Add",
                                 rolesLabel: "Roles",
-                                rolesPlaceholder: "Enter roles",
-                                warningMessage: "Manual invite multiple users feature can only be used when email address is configured as the username."
+                                rolesPlaceholder: "Enter roles"
                             },
                             fileBased: {
                                 hint: "Bulk invite multiple users using a CSV file."
@@ -11187,7 +11211,8 @@ export const console: ConsoleNS = {
                             responseOperationType: {
                                 userCreation: "User Creation",
                                 roleAssignment: "Role/Group Assignment"
-                            }
+                            },
+                            userstoreMessage: "The created users will be added to the <1>{{ userstore }}</1> user store."
                         },
                         buttons: {
                             import: "Import"
@@ -11541,6 +11566,12 @@ export const console: ConsoleNS = {
                                 header: "Are you sure?",
                                 message: "This action will modify the role of this user."
                             },
+                            placeholders: {
+                                emptyPlaceholder: {
+                                    title: "No roles assigned",
+                                    subtitles: "There are no roles assigned to the user at the moment."
+                                }
+                            },
                             heading: "Assigned Roles",
                             popups: {
                                 viewPermissions: "View Permissions"
@@ -11560,8 +11591,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             searchPlaceholder: "Search Roles",
-                            subHeading: "Add or remove the roles this user is assigned with and note that this " +
-                                "will affect performing certain tasks."
+                            subHeading: "View assigned roles for the user."
                         },
                         notifications: {
                             addUserRoles: {

@@ -1586,6 +1586,7 @@ export const myAccount: MyAccountNS = {
     "sections": {
         "accountRecovery": {
             "description": "管理我们可以用来帮助您恢复密码的恢复信息",
+            "emptyPlaceholderText": "没有帐户恢复选项",
             "heading": "帐户恢复"
         },
         "changePassword": {

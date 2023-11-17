@@ -20,18 +20,16 @@ import { render, screen } from "@unit-testing";
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { fullPermissions } from "./__mocks__/permissions";
-import ScriptEditorSidePanel, {
-    ScriptEditorSidePanelPropsInterface
-} from "../script-editor-side-panel";
+import ScriptBasedFlowSwitch, { ScriptBasedFlowSwitchPropsInterface } from "../script-based-flow-switch";
 
-describe("ScriptEditorSidePanel", () => {
-    const defaultProps: ScriptEditorSidePanelPropsInterface = {};
+describe("ScriptBasedFlowSwitch", () => {
+    const defaultProps: ScriptBasedFlowSwitchPropsInterface = {};
 
-    it("renders the ScriptEditorSidePanel component", () => {
-        render(<ScriptEditorSidePanel { ...defaultProps } />, { allowedScopes: fullPermissions });
+    it("renders the ScriptBasedFlowSwitch component", () => {
+        render(<ScriptBasedFlowSwitch { ...defaultProps } />, { allowedScopes: fullPermissions });
 
-        const scriptEditorSidePanel: Element = screen.getByTestId("script-editor-side-panel");
+        const scriptBasedFlowSwitch: Element = screen.getByTestId("script-based-flow-switch");
 
-        expect(scriptEditorSidePanel).toBeInTheDocument();
+        expect(scriptBasedFlowSwitch).toBeInTheDocument();
     });
 });

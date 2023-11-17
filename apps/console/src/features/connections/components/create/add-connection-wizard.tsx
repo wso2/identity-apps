@@ -315,8 +315,13 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
 
         connection.name = values?.name.toString();
         connection.templateId = template.templateId;
-        connection.federatedAuthenticators.authenticators[ 0 ].properties = connection.federatedAuthenticators
-            .authenticators[ 0 ].properties.concat(updatedProperties);
+        
+        if(connection.templateId === "swe-idp") { 
+            connection.federatedAuthenticators.authenticators[ 0 ].properties = connection.federatedAuthenticators
+                .authenticators[ 0 ].properties.concat(updatedProperties);
+        } else {
+            connection.federatedAuthenticators.authenticators[ 0 ].properties = updatedProperties;
+        }   
 
         // Allow to set empty client ID and client secret but make the authenticator disabled.
         if (values?.clientId) {

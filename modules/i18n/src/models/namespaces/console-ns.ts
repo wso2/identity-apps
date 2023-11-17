@@ -1750,12 +1750,13 @@ export interface ConsoleNS {
                             IsUserIdInClaims: FormAttributes;
                             commonAuthQueryParams: FormAttributes;
 
-                            isEnableAssertionSigning: FormAttributes;
+                            isAssertionSigned: FormAttributes;
                             includeCert: FormAttributes;
                             includeNameIDPolicy: FormAttributes;
                             isEnableAssertionEncryption: FormAttributes;
 
                             authenticationContextClass: FormAttributes;
+                            customAuthenticationContextClass: FormAttributes;
                             attributeConsumingServiceIndex: FormAttributes;
 
                             isArtifactBindingEnabled: FormAttributes;
@@ -4407,7 +4408,11 @@ export interface ConsoleNS {
                             heading: string;
                             subHeading: string;
                         };
+                        heading: string;
                         subHeading: string;
+                        placeHolders: {
+                            emptyListPlaceholder: Placeholder;
+                        };
                     };
                 };
                 list: {
@@ -5614,7 +5619,11 @@ export interface ConsoleNS {
                             message: string;
                         };
                         error: {
-                            genericError: {
+                            updateError: {
+                                description: string;
+                                message: string;
+                            };
+                            fetchError: {
                                 description: string;
                                 message: string;
                             };
@@ -5872,6 +5881,7 @@ export interface ConsoleNS {
                         title: string;
                         subTitle: string;
                         wizardSummary: {
+                            inviteEmailInfo: string;
                             successCount: string;
                             failedCount: string;
                             totalUserCreationCount: string;
@@ -5907,6 +5917,9 @@ export interface ConsoleNS {
                             };
                             disabledSecondaryStoreInfo: string;
                             manualCreation: {
+                                alerts: {
+                                    creationSuccess: NotificationItem;
+                                };
                                 hint: string;
                                 emailsLabel: string;
                                 emailsPlaceholder: string;
@@ -5918,7 +5931,6 @@ export interface ConsoleNS {
                                 primaryButton: string;
                                 rolesLabel: string;
                                 rolesPlaceholder: string;
-                                warningMessage: string;
                             };
                             fileBased: {
                                 hint: string;
@@ -5926,7 +5938,8 @@ export interface ConsoleNS {
                             responseOperationType: {
                                 userCreation: string;
                                 roleAssignment: string;
-                            }
+                            };
+                            userstoreMessage: string;
                         };
                         buttons: {
                             import: string;
@@ -6104,6 +6117,9 @@ export interface ConsoleNS {
                                     0: string;
                                     1: string;
                                 };
+                            };
+                            placeholders: {
+                                emptyPlaceholder: Placeholder;
                             };
                             heading: string;
                             popups: {
@@ -6324,6 +6340,7 @@ export interface ConsoleNS {
                     noInvitations: string;
                     noCollaboratorUserInvitations: string;
                 };
+                invitedUserLabel: string;
             };
             onboarded?: {
                 notifications?: {

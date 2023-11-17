@@ -154,7 +154,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
             placeholder={
                 !isAccountRecoveryDetailsLoading &&
                 !(isQsRecoveryEnabled || isNotificationRecoveryEnabled || isUsernameRecoveryEnabled)
-                    ? "No Account Recovery options available"
+                    ? t("myAccount:sections.accountRecovery.emptyPlaceholderText")
                     : null
             }
         >

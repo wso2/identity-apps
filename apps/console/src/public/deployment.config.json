@@ -225,7 +225,7 @@
         "enableCustomEmailTemplates": true,
         "appFaviconPath": "/assets/images/branding/favicon.ico",
         "isGOTEnabledForSuperTenantOnly": true,
-        "showAppSwitchButton": true,
+        "showAppSwitchButton": false,
         "features": {
             "administrators": {
                 "disabledFeatures": [],
@@ -372,9 +372,7 @@
                 }
             },
             "applications": {
-                "disabledFeatures": [
-                    "applications.loginFlow.legacyEditor"
-                ],
+                "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
                     "feature": [
@@ -938,11 +936,7 @@
         },
         "hiddenAuthenticators": [],
         "hiddenConnectionTemplates": [],
-        "hiddenUserStores": [
-            "ASGARDEO-USER",
-            "LITE-USER",
-            "DEFAULT"
-        ],
+        "hiddenUserStores": [],
         "i18nConfigs": {
             "showLanguageSwitcher": false,
             "langAutoDetectEnabled": false
@@ -984,6 +978,13 @@
             "Console",
             "My Account"
         ],
+        "classicFeatures": {
+            "isRequestPathAuthenticationEnabled": false,
+            "isApplicationLevelRoleMappingEnabled": false,
+            "isXacmlAuthorizationEnabled": false,
+            "isIncludeOrgNameInSubjectEnabled": false,
+            "isUseMappedLocalSubjectEnabled": false
+        },
         "theme": {
             "name": "wso2is"
         }

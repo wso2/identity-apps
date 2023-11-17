@@ -87,9 +87,11 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
             .catch((_err: AxiosError) => {
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("extensions:develop.branding.notifications.fetch.genericError.message"),
+                        description: t("console:manage.features.serverConfigs.remoteLogPublishing." + 
+                        "notification.error.updateError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.serverConfigs.remoteLogPublishing.errors.genericError")
+                        message: t("console:manage.features.serverConfigs.remoteLogPublishing." + 
+                        "notification.error.updateError.message")
                     })
                 );
             });
@@ -117,9 +119,11 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
             .catch((_err: AxiosError) => {
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("extensions:develop.branding.notifications.fetch.genericError.message"),
+                        description: t("console:manage.features.serverConfigs.remoteLogPublishing." + 
+                        "notification.error.updateError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.serverConfigs.remoteLogPublishing.errors.genericError")
+                        message: t("console:manage.features.serverConfigs.remoteLogPublishing." + 
+                        "notification.error.updateError.message")
                     })
                 );
             });

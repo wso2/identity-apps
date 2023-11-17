@@ -7149,12 +7149,18 @@ export const console: ConsoleNS = {
                         }
                     },
                     roles: {
+                        placeHolders: {
+                            emptyListPlaceholder: {
+                                subtitles: "මේ මොහොතේ මෙම කණ්ඩායමට කිසිදු භූමිකාවන් පවරා නොමැත.",
+                                title: "කිසිදු භූමිකාවක් පවරා නොමැත"
+                            }
+                        },
+                        heading: "පවරා ඇති භූමිකාවන්",
                         addRolesModal: {
                             heading: "කණ්ඩායම් භූමිකාවන් යාවත්කාලීන කරන්න",
                             subHeading: "නව භූමිකාවන් එක් කරන්න හෝ කණ්ඩායමට පවරා ඇති භූමිකාවන් ඉවත් කරන්න."
                         },
-                        subHeading: "මෙම කණ්ඩායම විසින් පවරා ඇති භූමිකාවන් එකතු කිරීම හෝ ඉවත් කිරීම සහ " +
-                            "මෙය ඇතැම් කාර්යයන් ඉටු කිරීමට බලපානු ඇති බව සලකන්න."
+                        subHeading: "කණ්ඩායම සඳහා පවරා ඇති භූමිකාවන් බලන්න."
                     }
                 },
                 list: {
@@ -7260,8 +7266,8 @@ export const console: ConsoleNS = {
                 addUserWizard: {
                     heading: "මාපිය පරිශීලකයාට ආරාධනා කරන්න",
                     description: "මව් සංවිධානයෙන් පරිශීලකයෙකුට ආරාධනා කරන්න.",
-                    hint: "ආරාධිත පරිශීලකයින් කළමනාකරණය කරනු ලබන්නේ <1>{{currentOrganization}}</1> සංවිධානය විසිනි.",
-                    usernameHint: "පරිශීලක නාමය <1>{{currentOrganization}}</1> සංවිධානයේ පරිශීලකයෙකුට අයත් විය යුතුය."
+                    hint: "ආරාධිත පරිශීලකයින් මව් සංවිධානය විසින් කළමනාකරණය කරනු ලැබේ.",
+                    usernameHint: "පරිශීලක නාමය මව් සංවිධානයේ පරිශීලකයෙකුට අයත් විය යුතුය."
                 },
                 tab: {
                     usersTab: "පරිශීලකයන්",
@@ -7282,7 +7288,8 @@ export const console: ConsoleNS = {
                     noExpiredInvitations: "මේ මොහොතේ කල් ඉකුත් වූ ආරාධනා ඇත.",
                     noInvitations: "දැනට ආරාධනා නැහැ.",
                     noCollaboratorUserInvitations: "මේ මොහොතේ කල් ඉකුත් වූ ආරාධනා සහිත සහකාරක පරිශීලකයන් නොමැත."
-                }
+                },
+                invitedUserLabel: "මව් සංවිධානය විසින් කළමනාකරණය කරනු ලැබේ"
             },
             oidcScopes: {
                 viewAttributes: "ගුණාංග පෙන්වන්න",
@@ -8820,9 +8827,13 @@ export const console: ConsoleNS = {
                             message: "සාර්ථකව යාවත්කාලීන කරන ලදී."
                         },
                         error: {
-                            genericError: {
+                            updateError: {
                                 description: "දුරස්ථ ලොග් ප්‍රකාශන වින්‍යාසය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය.",
                                 message: "යම් දෝෂයක් ඇති වී ඇත"
+                            },
+                            fetchError: {
+                                description: "දුරස්ථ ලොග් ප්‍රකාශන වින්‍යාසය ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                                message: "දුරස්ථ ලොග් ප්‍රකාශන වින්‍යාසය ලබා ගැනීමට නොහැකි විය."
                             }
                         }
                     }
@@ -9069,7 +9080,9 @@ export const console: ConsoleNS = {
                                 placeholder: "ඊමේල් ලිපිනය ඇතුළත් කරන්න",
                                 validations: {
                                     empty: "විද්‍යුත් තැපැල් ලිපිනය හිස් විය නොහැක",
-                                    invalid: "කරණාකර වලංගු ඊතැපැල් ලිපිනයක් ඇතුළු කරන්න"
+                                    invalid: "කරණාකර වලංගු ඊතැපැල් ලිපිනයක් ඇතුළු කරන්න. ඔබට අක්ෂරාංක " +
+                                    "භාවිතා කළ හැකි අක්ෂර, යුනිකෝඩ් අක්ෂර, යටි ඉරි (_), ඉරි (-), කාල පරිච්ඡේද (.), " +
+                                    "සහ ලකුණක් (@)."
                                 }
                             },
                             firstName: {
@@ -9170,9 +9183,10 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "බහු පරිශීලකයින්ට ආරාධනා කරන්න​",
-                        subTitle: "සංවිධානයට බහු පරිශීලකයින්ට ආරාධනා කරන්න.",
+                        title: "බහු පරිශීලකයින් එකතු කරන්න",
+                        subTitle: "බහු පරිශීලකයින් අතින් හෝ CSV ගොනුවක් භාවිතා කිරීම.",
                         wizardSummary: {
+                            inviteEmailInfo: "තහවුරු කිරීමේ සබැඳියක් සහිත ඊ-තැපෑලක් පරිශීලකයා තමන්ගේ මුරපදයක් සැකසීමට සපයා ඇති විද්යුත් තැපැල් ලිපිනයට යවනු ලැබේ.",
                             successCount: "සාර්ථකත්ව ගණන",
                             failedCount: "අසාර්ථක වූ ගණන",
                             totalUserCreationCount: "සම්පූර්ණ පරිශීලක නිර්මාණ ගණන",
@@ -9216,7 +9230,13 @@ export const console: ConsoleNS = {
                             disabledSecondaryStoreInfo: "බාහිර පරිශීලක වෙළඳසැල් වෙත පරිශීලක තොග ආනයනය මේ මොහොතේ ලබා " +
                                 "දිය නොහැක.",
                             manualCreation: {
-                                hint: "ඊමේල් එකතු කරන්න සහ බහු පරිශීලකයින්ට ආරාධනා යවන්න.",
+                                alerts: {
+                                    creationSuccess: {
+                                        description: "පරිශීලක ගිණුම් සාර්ථකව නිර්මාණය කරන ලදි.",
+                                        message: "පරිශීලක නිර්මාණය සාර්ථකයි"
+                                    }
+                                },
+                                hint: "ඔබට ආරාධනා කිරීමට අවශ්ය පරිශීලකයාගේ විද්යුත් තැපැල් ලිපිනය එක් කරන්න සහ Enter ඔබන්න.",
                                 emailsLabel: "ඊමේල්",
                                 emailsPlaceholder: "ඊමේල් ලිපින ඇතුලත් කරන්න",
                                 disabledHint: "ඔබගේ සංවිධානයේ අක්ෂරාංක පරිශීලක නාම භාවිතය හේතුවෙන් අතින් විකල්පය අබල කර ඇත.",
@@ -9224,10 +9244,9 @@ export const console: ConsoleNS = {
                                     buttonText: "CSV ගොනුව උඩුගත කරන්න",
                                     description: "CSV ගොනුවක් මෙතැනට ඇද දමන්න."
                                 },
-                                primaryButton: "ආරාධනා කරන්න",
+                                primaryButton: "එකතු කරන්න",
                                 rolesLabel: "භූමිකාවන්",
-                                rolesPlaceholder: "භූමිකාවන් ඇතුළත් කරන්න",
-                                warningMessage: "හස්තීය ආරාධනා බහු පරිශීලක විශේෂාංගය භාවිතා කළ හැක්කේ ඊමේල් ලිපිනය පරිශීලක නාමය ලෙස වින්‍යාස කර ඇති විට පමණි."
+                                rolesPlaceholder: "භූමිකාවන් ඇතුළත් කරන්න"
                             },
                             fileBased: {
                                 hint: "CSV ගොනුවක් භාවිතයෙන් බහු පරිශීලකයින්ට තොග වශයෙන් ආරාධනා කරන්න."
@@ -9235,7 +9254,8 @@ export const console: ConsoleNS = {
                             responseOperationType: {
                                 userCreation: "පරිශීලක නිර්මාණය",
                                 roleAssignment: "භූමිකාව/කණ්ඩායම් පැවරුම"
-                            }
+                            },
+                            userstoreMessage: "සාදන ලද පරිශීලකයින් <1>{{ userstore }}</1> පරිශීලක ගබඩාවට එක් කරනු ලැබේ."
                         },
                         buttons: {
                             import: "ආනයනය කරන්න"
@@ -9592,6 +9612,12 @@ export const console: ConsoleNS = {
                                 header: "ඔබට විශ්වාසද?",
                                 message: "මෙම ක්‍රියාව මෙම පරිශීලකයාගේ භූමිකාව වෙනස් කරයි."
                             },
+                            placeholders: {
+                                emptyPlaceholder: {
+                                    title: "කිසිදු භූමිකාවක් පවරා නොමැත",
+                                    subtitles: "මේ මොහොතේ පරිශීලකයාට කිසිදු භූමිකාවන් නොමැත."
+                                }
+                            },
                             heading: "පවරා ඇති භූමිකාවන්",
                             popups: {
                                 viewPermissions: "අවසර බලන්න"
@@ -9611,8 +9637,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             searchPlaceholder: "සෙවුම් භූමිකාවන්",
-                            subHeading: "මෙම පරිශීලකයාට පවරා ඇති භූමිකාවන් එකතු කිරීම හෝ ඉවත් කිරීම සහ " +
-                                "මෙය ඇතැම් කාර්යයන් ඉටු කිරීමට බලපානු ඇති බව සලකන්න."
+                            subHeading: "පරිශීලකයා සඳහා පවරා ඇති භූමිකාවන් බලන්න."
                         },
                         notifications: {
                             addUserRoles: {

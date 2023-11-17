@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -41,7 +41,7 @@ interface AddUserRoleProps {
 /**
  * User role component.
  *
- * @return {JSX.Element}
+ * @returns Add User Role component.
  */
 export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserRoleProps): ReactElement => {
 
@@ -77,14 +77,17 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         setIsSelectUnassignedAllRolesChecked(!isSelectUnassignedRolesAllRolesChecked);
     };
 
-    const handleUnselectedListSearch = (e, { value }) => {
-        let isMatch = false;
-        const filteredRoleList = [];
+    const handleUnselectedListSearch = (
+        e: React.FormEvent<HTMLInputElement>,
+        { value }: { value: string;}
+    ) => {
+        let isMatch: boolean = false;
+        const filteredRoleList: RolesInterface[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp= new RegExp(escapeRegExp(value), "i");
 
-            initialValues.initialRoleList && initialValues.initialRoleList.map((role) => {
+            initialValues.initialRoleList && initialValues.initialRoleList.map((role: RolesInterface) => {
                 isMatch = re.test(role.displayName);
                 if (isMatch) {
                     filteredRoleList.push(role);
@@ -96,8 +99,8 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
         }
     };
 
-    const handleUnassignedItemCheckboxChange = (role) => {
-        const checkedRoles = [ ...checkedUnassignedListItems ];
+    const handleUnassignedItemCheckboxChange = (role: RolesInterface) => {
+        const checkedRoles: RolesInterface[] = [ ...checkedUnassignedListItems ];
 
         if (checkedRoles.includes(role)) {
             checkedRoles.splice(checkedRoles.indexOf(role), 1);
@@ -112,10 +115,10 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
     /**
      * The following method handles creating a label for the list item.
      *
-     * @param roleName: string
+     * @param roleName - string
      */
     const createItemLabel = (roleName: string) => {
-        const role = roleName.split("/");
+        const role: string[] = roleName.split("/");
 
         if (role.length > 0) {
             if (role[0] == "Application") {
@@ -158,8 +161,8 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                             + "emptyPlaceholders.default") }
                     >
                         {
-                            initialValues?.roleList?.map((role, index)=> {
-                                const roleName = role?.displayName?.split("/");
+                            initialValues?.roleList?.map((role: RolesInterface, index: number)=> {
+                                const roleName: string[] = role?.displayName?.split("/");
 
                                 return (
                                     <TransferListItem
@@ -170,7 +173,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                                         listItemIndex={ index }
                                         listItemTypeLabel={ createItemLabel(role?.displayName) }
                                         isItemChecked={ checkedUnassignedListItems.includes(role) }
-                                        showSecondaryActions={ true }
+                                        showSecondaryActions={ false }
                                         handleOpenPermissionModal={ () => handleSetRoleId(role.id) }
                                         data-testid="user-mgt-add-user-wizard-modal-unselected-roles"
                                     />

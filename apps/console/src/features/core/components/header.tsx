@@ -518,33 +518,34 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             </MenuItem>
                         </Show>
                     ),
-                    isShowAppSwitchButton() ? (
-                        <MenuItem
-                            color="inherit"
-                            key={ t(
-                                "myAccount:components.header.appSwitch.console.name"
-                            ) }
-                            onClick={ () => {
-                                eventPublisher.publish(
-                                    "console-click-visit-my-account"
-                                );
-                                window.open(
-                                    isPrivilegedUser
-                                        ? privilegedUserAccountURL
-                                        : accountAppURL,
-                                    "_blank",
-                                    "noopener"
-                                );
-                            } }
-                        >
-                            <ListItemIcon>
-                                <MyAccountIcon />
-                            </ListItemIcon>
-                            <ListItemText>
-                                { t("console:common.header.appSwitch.myAccount.name") }
-                            </ListItemText>
-                        </MenuItem>
-                    ) : null
+                    isShowAppSwitchButton() 
+                        ? (
+                            <MenuItem
+                                color="inherit"
+                                key={ t(
+                                    "myAccount:components.header.appSwitch.console.name"
+                                ) }
+                                onClick={ () => {
+                                    eventPublisher.publish(
+                                        "console-click-visit-my-account"
+                                    );
+                                    window.open(
+                                        isPrivilegedUser
+                                            ? privilegedUserAccountURL
+                                            : accountAppURL,
+                                        "_blank",
+                                        "noopener"
+                                    );
+                                } }
+                            >
+                                <ListItemIcon>
+                                    <MyAccountIcon />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    { t("console:common.header.appSwitch.myAccount.name") }
+                                </ListItemText>
+                            </MenuItem>
+                        ) : null
                 ],
                 onActionClick: () =>
                     history.push(AppConstants.getAppLogoutPath()),

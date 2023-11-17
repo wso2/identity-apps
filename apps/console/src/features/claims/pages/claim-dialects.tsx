@@ -224,22 +224,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
             ) }
             <PageLayout
                 pageTitle="Attributes"
-                action={
-                    attributeConfig.addAttributeMapping && (
-                        <Show when={ AccessControlConstants.ATTRIBUTE_WRITE }>
-                            <PrimaryButton
-                                disabled={ isLoading }
-                                loading={ isLoading }
-                                onClick={ () => {
-                                    setAddEditClaim(true);
-                                } }
-                                data-testid={ `${ testId }-list-layout-add-button` }
-                            >
-                                <Icon name="add" />
-                                { t("console:manage.features.claims.dialects.pageLayout.list.primaryAction") }
-                            </PrimaryButton>
-                        </Show>
-                    ) }
                 title={ t("console:manage.features.claims.dialects.pageLayout.list.title") }
                 description={ t("console:manage.features.claims.dialects.pageLayout.list.description") }
                 data-testid={ `${ testId }-page-layout` }
@@ -349,19 +333,54 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     <Divider hidden />
                     <Divider />
                     <Divider hidden />
-                    { 
-                        isLoading 
-                            ? (
-                                renderHeaderPlaceholder()
-                            ) : (
-                                <Header as="h4">
-                                    { t(
-                                        "console:manage.features.claims.dialects." + 
-                                        "sections.manageAttributeMappings.heading"
-                                    ) }
-                                </Header>
-                            )
-                    }
+                    <Grid>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column
+                                width={ 12 }
+                                verticalAlign="middle"
+                            >
+                                { 
+                                    isLoading 
+                                        ? (
+                                            renderHeaderPlaceholder()
+                                        ) : (
+                                            <Header as="h4">
+                                                { t(
+                                                    "console:manage.features.claims.dialects." + 
+                                                    "sections.manageAttributeMappings.heading"
+                                                ) }
+                                            </Header>
+                                        )
+                                }                       
+                            </Grid.Column>
+                            <Grid.Column
+                                width={ 4 }
+                                verticalAlign="middle"
+                                textAlign="right"
+                            >
+                                {
+                                    attributeConfig.addAttributeMapping && (
+                                        <Show when={ AccessControlConstants.ATTRIBUTE_WRITE }>
+                                            <PrimaryButton
+                                                disabled={ isLoading }
+                                                loading={ isLoading }
+                                                onClick={ () => {
+                                                    setAddEditClaim(true);
+                                                } }
+                                                data-testid={ `${ testId }-list-layout-add-button` }
+                                            >
+                                                <Icon name="add" />
+                                                {
+                                                    t("console:manage.features.claims.dialects." +
+                                                    "pageLayout.list.primaryAction")
+                                                }
+                                            </PrimaryButton>
+                                        </Show>
+                                    )
+                                }        
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
                     <Divider hidden />
                     {
                         isLoading 

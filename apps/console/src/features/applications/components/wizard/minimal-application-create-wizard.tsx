@@ -364,7 +364,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             application.inboundProtocolConfiguration = {
                 oidc: {
                     grantTypes: [
-                        "client_credentials"
+                        ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
                     ]
                 }
             };

@@ -80,7 +80,7 @@ import {
 import { getUserStoreList } from "../../userstores/api";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../userstores/constants/user-store-constants";
 import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../userstores/models/user-stores";
-import { getUsersList, useUsersList } from "../api";
+import { getUsersList } from "../api";
 import { UserInviteInterface } from "../components/guests/models/invite";
 import { GuestUsersList } from "../components/guests/pages/guest-users-list";
 import { useGetParentOrgUserInvites } from "../components/guests/pages/use-get-parent-org-user-invites";
@@ -139,7 +139,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ userStore, setUserStore ] = useState<string>(null);
+    const [ userStore, setUserStore ] = useState<string>(PRIMARY_USERSTORE.toLocaleLowerCase());
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
@@ -169,9 +169,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const modifiedLimit: number = listItemLimit + TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET;
-    const excludedAttributes: string = UsersConstants.GROUPS_AND_ROLES_ATTRIBUTE;
-
     const invitationStatusOptions: DropdownItemProps[] = [
         {
             key: 2,
@@ -184,18 +181,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             value: "Expired"
         }
     ];
-
-    const {
-        isLoading: isUserListFetchRequestLoading,
-        mutate: mutateUserListFetchRequest
-    } = useUsersList(
-        modifiedLimit,
-        listOffset,
-        searchQuery === "" ? null : searchQuery,
-        null,
-        selectedUserStore,
-        excludedAttributes
-    );
 
     const {
         data: parentOrgUserInviteList,
@@ -348,6 +333,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         });
     };
 
+    //TODO: Use the useUsersList SWR hook to fetch the user data.
     const getList = (limit: number, offset: number, filter: string, attribute: string, domain: string) => {
         setUserListRequestLoading(true);
 
@@ -455,11 +441,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      */
     const getUserStores = () => {
         const storeOptions: UserStoreItem[] = [
-            {
-                key: -2,
-                text: t("console:manage.features.users.userstores.userstoreOptions.all"),
-                value: "all"
-            },
             {
                 key: -1,
                 text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
@@ -572,7 +553,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const handleSearchQueryClear = (): void => {
         setTriggerClearQuery(!triggerClearQuery);
         setSearchQuery("");
-        getList(listItemLimit, listOffset, null, null, null);
+        getList(listItemLimit, listOffset, null, null, userStore);
     };
 
     /**
@@ -603,14 +584,24 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         setListUpdated(true);
     };
 
+    /**
+     * Handles the `onFilter` callback action from the
+     * users search component.
+     *
+     * @param query - Search query.
+     */
     const handleUserFilter = (query: string): void => {
+        const attributes: string = generateAttributesString(userListMetaContent?.values());
+
         if (query === "userName sw ") {
-            mutateUserListFetchRequest();
+            getList(listItemLimit, listOffset, null, attributes, userStore);
 
             return;
         }
 
         setSearchQuery(query);
+        setListOffset(0);
+        getList(listItemLimit, listOffset, query, attributes, userStore);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
@@ -726,7 +717,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         return (
             <ListLayout
                 // TODO add sorting functionality.
-                className="mt-5"
+                className="sub-org-users-list"
                 advancedSearch={ advancedSearchFilter() }
                 currentListSize={ usersList.itemsPerPage }
                 listItemLimit={ listItemLimit }
@@ -767,7 +758,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                     selection
                                     options={ userStoreOptions && userStoreOptions }
                                     onChange={ handleDomainChange }
-                                    defaultValue="all"
+                                    defaultValue={ PRIMARY_USERSTORE.toLocaleLowerCase() }
                                 />
                             </RootOnlyComponent>
                         </>
@@ -926,17 +917,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     
         panes.push({
             componentId: "users",
-            menuItem: {
-                content: t("console:manage.features.parentOrgInvitations.tab.usersTab")
-            },
+            menuItem: t("console:manage.features.parentOrgInvitations.tab.usersTab"),
             render: renderUsersList
         });
     
         panes.push({
             componentId: "invitations",
-            menuItem: {
-                content: t("console:manage.features.parentOrgInvitations.tab.invitationsTab")
-            },
+            menuItem: t("console:manage.features.parentOrgInvitations.tab.invitationsTab"),
             render: renderInvitationsList
         });
     
@@ -946,6 +933,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const renderInvitationsList = (): ReactElement => {
         return (
             <ListLayout
+                className="sub-org-users-list"
                 advancedSearch={ advancedSearchFilter() }
                 currentListSize={ usersList?.itemsPerPage }
                 listItemLimit={ listItemLimit }
@@ -957,7 +945,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 totalPages={ resolveTotalPages() }
                 totalListSize={ usersList?.totalResults }
                 isLoading={
-                    isUserListFetchRequestLoading
+                    isUserListRequestLoading
                     || isParentOrgUserInviteFetchRequestLoading
                 }
                 paginationOptions={ {
@@ -1034,7 +1022,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     return (
         <PageLayout
             action={
-                !isUserListFetchRequestLoading
+                !isUserListRequestLoading
                 && !isParentOrgUserInviteFetchRequestLoading
                 && (
                     <Show when={ AccessControlConstants.USER_WRITE }>

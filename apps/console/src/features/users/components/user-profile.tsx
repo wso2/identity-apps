@@ -116,6 +116,10 @@ interface UserProfilePropsInterface extends TestableComponentInterface, SBACInte
      * Admin user type
      */
     adminUserType?: string;
+    /**
+     * Is user managed by parent organization.
+     */
+    isUserManagedByParentOrg?: boolean;
 }
 
 /**
@@ -141,6 +145,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         tenantAdmin,
         editUserDisclaimerMessage,
         adminUserType,
+        isUserManagedByParentOrg,
         [ "data-testid" ]: testId
     } = props;
 
@@ -1064,7 +1069,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         return (
             <>
                 {
-                    ((!isReadOnly || allowDeleteOnly)
+                    ((!isReadOnly || allowDeleteOnly || isUserManagedByParentOrg)
                     && ((adminUserType === AdminAccountTypes.INTERNAL && !isPrivilegedUser)
                         || (!(resolveUsernameOrDefaultEmail(user, false) === tenantAdmin ||
                                     resolveUsernameOrDefaultEmail(user, false) === "admin")
@@ -1075,18 +1080,22 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             <DangerZoneGroup
                                 sectionHeader={ t("console:manage.features.user.editUser.dangerZoneGroup.header") }
                             >
-                                <Show when={ AccessControlConstants.USER_EDIT }>
-                                    <DangerZone
-                                        data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
-                                        actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                            "passwordResetZone.actionTitle") }
-                                        header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                            "passwordResetZone.header") }
-                                        subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                            "passwordResetZone.subheader") }
-                                        onActionClick={ () => setOpenChangePasswordModal(true) }
-                                    />
-                                </Show> 
+                                {
+                                    !isUserManagedByParentOrg && (
+                                        <Show when={ AccessControlConstants.USER_EDIT }>
+                                            <DangerZone
+                                                data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
+                                                actionTitle={ t("console:manage.features.user.editUser." +
+                                                    "dangerZoneGroup.passwordResetZone.actionTitle") }
+                                                header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                                    "passwordResetZone.header") }
+                                                subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                                    "passwordResetZone.subheader") }
+                                                onActionClick={ () => setOpenChangePasswordModal(true) }
+                                            />
+                                        </Show>
+                                    )
+                                }
                                 {
                                     !allowDeleteOnly && configSettings?.accountDisable === "true" && (
                                         <DangerZone

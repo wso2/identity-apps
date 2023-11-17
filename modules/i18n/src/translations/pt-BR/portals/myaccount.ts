@@ -1708,6 +1708,7 @@ export const myAccount: MyAccountNS = {
     sections: {
         accountRecovery: {
             description: "Gerenciar informações de recuperação que podemos usar para ajudá -lo a recuperar sua senha",
+            emptyPlaceholderText: "Sem opções de recuperação de conta disponíveis",
             heading: "Recuperação de Conta"
         },
         changePassword: {

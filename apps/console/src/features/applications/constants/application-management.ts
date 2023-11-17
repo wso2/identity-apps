@@ -461,6 +461,16 @@ export class ApplicationManagementConstants {
      * Application state param to be sent in the routing.
      */
     public static readonly APPLICATION_STATE: string = "application";
+    
+    /**
+     * Sign in step of the try it application.
+     */
+    public static readonly TRY_IT_SIGNIN_TAB: number = 2;
+    
+    /**
+     * Sign in step of other applications.
+     */
+    public static readonly APPLICATION_SIGNIN_TAB: number = 3;
 }
 
 export enum ShareWithOrgStatus {

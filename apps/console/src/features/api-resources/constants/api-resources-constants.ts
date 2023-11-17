@@ -41,6 +41,7 @@ export class APIResourcesConstants {
     public static readonly SYSTEM: string = "SYSTEM";
     public static readonly SYSTEM_ORG: string = "SYSTEM_ORG";
     public static readonly SYSTEM_FEATURE: string = "SYSTEM_FEATURE";
+    public static readonly BUSINESS: string = "BUSINESS";
 
     /**
      * Get the API resource paths as a map.
@@ -51,7 +52,10 @@ export class APIResourcesConstants {
 
         return new Map<string, string>()
             .set("API_RESOURCES", `${ AppConstants.getDeveloperViewBasePath() }/` + `${this.API_RESOURCE_DIR}`)
-            .set("API_RESOURCE_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/${this.API_RESOURCE_DIR}/:id`);
+            .set("API_RESOURCES_CATEGORY",
+                `${ AppConstants.getDeveloperViewBasePath() }/${this.API_RESOURCE_DIR}/:categoryId`)
+            .set("API_RESOURCE_EDIT",
+                `${ AppConstants.getDeveloperViewBasePath() }/${this.API_RESOURCE_DIR}/:categoryId/:id`);
     }
 
     /**
@@ -61,4 +65,13 @@ export class APIResourcesConstants {
      * @returns boolean - true if the value is a valid permission identifier
      */
     public static checkValidPermissionIdentifier = (value: string): boolean => value.match(/\s/) === null;
+}
+
+/*
+* The types of API Resources.
+*/
+export enum APIResourceType {
+    MANAGEMENT = "management",
+    ORGANIZATION = "organization",
+    CUSTOM = "custom"
 }

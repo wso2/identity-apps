@@ -265,14 +265,14 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         && handleRoleEdit(role?.id),
                 popupText: (): string =>
                     hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes)
-                        ? t("console:manage.features.roles.list.popups.edit",
-                            { type: "Role" })
+                        ? t("common:edit")
                         : t("common:view"),
                 renderer: "semantic-icon"
             },
             {
                 hidden: (role: RolesInterface) => isSubOrg || (role?.displayName === RoleConstants.ADMIN_ROLE ||
-                    role?.displayName === RoleConstants.ADMIN_GROUP)
+                    role?.displayName === RoleConstants.ADMIN_GROUP) || (role?.displayName === 
+                        RoleConstants.EVERYONE_ROLE || role?.displayName === RoleConstants.EVERYONE_GROUP)
                     || !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.delete, allowedScopes),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
