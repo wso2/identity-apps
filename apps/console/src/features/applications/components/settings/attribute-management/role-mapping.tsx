@@ -20,16 +20,14 @@ import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterf
 import { addAlert } from "@wso2is/core/store";
 import { DynamicField, Heading, KeyValue } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
-import { ConfigReducerStateInterface } from "modules/common/src/models/reducer-state";
-import { AppState } from "modules/common/src/store";
+import useUIConfig from "modules/common/src/hooks/use-ui-configs";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { getRolesList } from "../../../../roles/api";
 import { RoleMappingInterface } from "../../../models";
-import useUIConfig from "modules/common/src/hooks/use-ui-configs";
 
 interface RoleMappingPropsInterface extends TestableComponentInterface {
     /**
@@ -143,24 +141,24 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                                 keyType="dropdown"
                                 keyData={ roleList ? getFilteredRoles() : [] }
                                 keyName={
-                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
-                            ".localRole.label")
+                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields." + 
+                                    "dynamic.localRole.label")
                                 }
                                 valueName={
-                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
-                            ".applicationRole.label")
+                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields." + 
+                                    "dynamic.applicationRole.label")
                                 }
                                 keyRequiredMessage={
-                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
-                            ".localRole.validations.empty")
+                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields." + 
+                                    "dynamic.localRole.validations.empty")
                                 }
                                 valueRequiredErrorMessage={
-                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
-                            ".applicationRole.validations.empty")
+                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields." + 
+                                    "dynamic.applicationRole.validations.empty")
                                 }
                                 duplicateKeyErrorMsg={
-                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
-                            ".applicationRole.validations.duplicate")
+                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields." + 
+                                    "dynamic.applicationRole.validations.duplicate")
                                 }
                                 readOnly={ readOnly }
                                 data-testid={ `${ testId }-dynamic-field` } 
@@ -169,7 +167,9 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                                         const finalData: RoleMappingInterface[] = data?.map((mapping: KeyValue) => {
                                             return {
                                                 applicationRole: mapping.value,
-                                                localRole: mapping.key.includes("/") ? mapping.key : "Internal/" + mapping.key
+                                                localRole: mapping.key.includes("/") 
+                                                    ? mapping.key 
+                                                    : "Internal/" + mapping.key
                                             };
                                         }) ?? [];
 
