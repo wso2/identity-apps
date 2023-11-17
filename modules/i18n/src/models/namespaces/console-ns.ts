@@ -5701,6 +5701,7 @@ export interface ConsoleNS {
                     headers: {
                         0: string;
                         1: string;
+                        2: string;
                     };
                     emptyPlaceholders: {
                         default: string;

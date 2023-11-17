@@ -115,16 +115,16 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
     /**
      * The following method handles creating a label for the list item.
      *
-     * @param roleName - string
+     * @param roleType - string
      */
-    const createItemLabel = (roleName: string) => {
-        const role: string[] = roleName.split("/");
+    const createItemLabel = (roleType: string, application: string) => {
+        const role: string[] = roleType.split("/");
 
         if (role.length > 0) {
-            if (role[0] == "Application") {
-                return { labelColor: null, labelText: "Application", name: "application-label" };
+            if (role[0] == "application") {
+                return { labelColor: null, labelText: "Application", name: "audience-label", subLabel: application };
             } else {
-                return { labelColor: null, labelText: "Internal", name: "internal-label" };
+                return { labelColor: null, labelText: "Organization", name: "audience-label" };
             }
         }
     };
@@ -148,8 +148,8 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                         isListEmpty={ !(initialValues?.roleList?.length > 0) }
                         listType="unselected"
                         listHeaders={ [
-                            t("console:manage.features.transferList.list.headers.0"),
-                            t("console:manage.features.transferList.list.headers.1"), ""
+                            t("console:manage.features.transferList.list.headers.1"),
+                            t("console:manage.features.transferList.list.headers.2"), ""
                         ] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
@@ -171,10 +171,14 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                                         listItem={ roleName?.length > 1 ? roleName[1] : role?.displayName }
                                         listItemId={ role.id }
                                         listItemIndex={ index }
-                                        listItemTypeLabel={ createItemLabel(role?.displayName) }
+                                        listItemTypeLabel={ 
+                                            createItemLabel(role?.audience?.type, role?.audience?.display) 
+                                        }
                                         isItemChecked={ checkedUnassignedListItems.includes(role) }
                                         showSecondaryActions={ false }
                                         handleOpenPermissionModal={ () => handleSetRoleId(role.id) }
+                                        reOrderLabel={ true }
+                                        showSubLabel={ true }
                                         data-testid="user-mgt-add-user-wizard-modal-unselected-roles"
                                     />
                                 );
