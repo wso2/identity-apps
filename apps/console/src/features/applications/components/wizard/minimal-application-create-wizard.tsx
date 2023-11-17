@@ -167,7 +167,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const orgType: OrganizationType = useSelector((state: AppState) =>
         state?.organization?.organizationType);
     const isFAPIAppCreationEnabled: boolean = useSelector((state: AppState) =>
-        state.config.ui.features.fapiApplicationCreation.enabled);
+        state.config.ui.features?.fapiApplicationCreation?.enabled);
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
@@ -1068,10 +1068,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     }
                     {
                         // The FAPI App creation checkbox is only present in OIDC Standard-Based apps
-                        customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC &&
-                        selectedTemplate?.name === ApplicationTemplateNames.STANDARD_BASED_APPLICATION &&
-                        isFAPIAppCreationEnabled &&
-                        (
+                        customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                        && selectedTemplate?.name === ApplicationTemplateNames.STANDARD_BASED_APPLICATION
+                        && isFAPIAppCreationEnabled
+                        && (
                             <div className="pt-0 mt-0">
                                 <Field
                                     data-componentid={ `${ testId }-fapi-app-checkbox` }

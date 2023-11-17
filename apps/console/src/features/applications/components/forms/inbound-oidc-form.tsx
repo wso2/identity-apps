@@ -1937,7 +1937,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Field
                             ref={ requirePushedAuthorizationRequests }
                             name={ "requirePushAuthorizationRequest" }
-                            label=""
                             required={ false }
                             type="checkbox"
                             value={ initialValues?.pushAuthorizationRequest?.requirePushAuthorizationRequest
