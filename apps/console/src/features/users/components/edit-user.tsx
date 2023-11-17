@@ -100,11 +100,11 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     ] = useState<boolean>(false);
     const [ hideTermination, setHideTermination ] = useState<boolean>(false);
     const [ user, setUser ] = useState<ProfileInfoInterface>(selectedUser);
+    const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
 
     const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
     const isRootOrganization: boolean = useMemo(() =>
         OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
-    const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
 
     useEffect(() => {
         //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to
@@ -126,7 +126,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             || readOnlyUserStores?.includes(userStore?.toString())
             || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
             || user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
-            || user[ SCIMConfigs.scim.enterpriseSchema ]?.managedOrg 
+            || user[ SCIMConfigs.scim.enterpriseSchema ]?.managedOrg
         ) {
             setReadOnly(true);
         }

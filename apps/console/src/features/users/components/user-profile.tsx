@@ -1093,7 +1093,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                     "passwordResetZone.subheader") }
                                                 onActionClick={ () => setOpenChangePasswordModal(true) }
                                             />
-                                        </Show> 
+                                        </Show>
                                     )
                                 }
                                 {
