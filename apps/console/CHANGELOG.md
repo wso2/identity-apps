@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.6.18
+
+### Patch Changes
+
+- [#4654](https://github.com/wso2/identity-apps/pull/4654) [`7fdfcbf457`](https://github.com/wso2/identity-apps/commit/7fdfcbf4579486b295d438572c7278bb2754d4ef) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Show the option to add the authorized redirect urls when registering the applications selectively
+
 ## 2.6.17
 
 ### Patch Changes
