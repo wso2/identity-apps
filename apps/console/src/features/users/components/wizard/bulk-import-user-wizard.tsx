@@ -1835,10 +1835,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         <p> { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
                                     "fileFormatSampleHeading") }</p>
                         <p>
-                            <code>userName,givenname,emailaddress<br/>
-                                    user1,john,john@test.com<br/>
-                                    user2,jake,jake@test.com<br/>
-                                    user3,jane,jane@test.com<br/>
+                            <code>username,givenname,emailaddress,roles<br/>
+                                    user1,john,john@test.com,role1|role2<br/>
+                                    user2,jake,jake@test.com,role2<br/>
+                                    user3,jane,jane@test.com,role1<br/>
                             </code>
                         </p>
                     </Suspense>
