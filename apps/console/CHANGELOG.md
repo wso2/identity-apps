@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.6.14
+
+### Patch Changes
+
+- [#4632](https://github.com/wso2/identity-apps/pull/4632) [`27a3a64433`](https://github.com/wso2/identity-apps/commit/27a3a6443316b9798617bcb1e6bff0c0c82a6ddf) Thanks [@shanggeeth](https://github.com/shanggeeth)! - Change the role edit popup text in role list view to match other edit texts
+
 ## 2.6.13
 
 ### Patch Changes
