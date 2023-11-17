@@ -265,7 +265,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                                     className={ "customIcon" }
                                     data-testid={ `${ testId }-tree` }
                                     disabled={ isReadOnly }
-                                    checkedKeys={ checkedPermission.map( (permission: TreeNode) => permission.key ) }
+                                    checkedKeys={ checkedPermission?.map( (permission: TreeNode) => permission?.key ) }
                                     defaultExpandedKeys={ defaultExpandedKeys }
                                     showLine
                                     showIcon={ false }
