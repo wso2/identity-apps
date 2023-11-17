@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.53
+
+### Patch Changes
+
+- [#4640](https://github.com/wso2/identity-apps/pull/4640) [`010607a1fc`](https://github.com/wso2/identity-apps/commit/010607a1fc55cc006f3ce8181c68efb42e6a3ff4) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Implement functionality to navigate back to the login page from Sign In with SSO pages.
+
 ## 2.0.52
 
 ### Patch Changes
