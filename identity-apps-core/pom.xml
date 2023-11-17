@@ -390,6 +390,11 @@
                 <version>${carbon.identity.framework.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.identity.api.resource.mgt</artifactId>
+                <version>${carbon.identity.framework.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.wso2.carbon.identity.governance</groupId>
                 <artifactId>org.wso2.carbon.identity.captcha</artifactId>
                 <version>${identity.governance.version}</version>
@@ -672,6 +677,7 @@
         <carbon.identity.version>5.0.7</carbon.identity.version>
         <carbon.kernel.version>4.9.16</carbon.kernel.version>
         <carbon.kernel.imp.pkg.version.range>[4.9.16, 5.0.0)</carbon.kernel.imp.pkg.version.range>
+        <carbon.commons.imp.pkg.version>[4.7.2, 5.0.0)</carbon.commons.imp.pkg.version>
         <carbon.user.api.imp.pkg.version.range>[1.0.1, 2.0.0)</carbon.user.api.imp.pkg.version.range>
         <carbon.commons.version>4.7.22</carbon.commons.version>
         <carbon.commons.imp.pkg.version.range>[4.7.0, 5.0.0)</carbon.commons.imp.pkg.version.range>
@@ -683,7 +689,7 @@
         <carbon.extension.identity.authenticator.version>3.0.0</carbon.extension.identity.authenticator.version>
         <org.wso2.carbon.identity.association.account>5.1.5</org.wso2.carbon.identity.association.account>
         <identity.extension.utils>1.0.8</identity.extension.utils>
-        <carbon.identity.framework.version>5.25.506</carbon.identity.framework.version>
+        <carbon.identity.framework.version>5.25.523</carbon.identity.framework.version>
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 7.0.0]</carbon.identity.framework.imp.pkg.version.range>
         <identity.organization.management.core.service.version>1.0.77
         </identity.organization.management.core.service.version>
