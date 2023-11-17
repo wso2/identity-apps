@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.6.15
+
+### Patch Changes
+
+- [#4631](https://github.com/wso2/identity-apps/pull/4631) [`befacfb6c1`](https://github.com/wso2/identity-apps/commit/befacfb6c1ccce99d5535bd83f3ed239701b517f) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Remove invited user update option in suborganization
+
+- Updated dependencies [[`befacfb6c1`](https://github.com/wso2/identity-apps/commit/befacfb6c1ccce99d5535bd83f3ed239701b517f)]:
+  - @wso2is/i18n@2.0.40
+
 ## 2.6.14
 
 ### Patch Changes
