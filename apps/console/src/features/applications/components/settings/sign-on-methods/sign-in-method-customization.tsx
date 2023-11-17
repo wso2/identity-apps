@@ -798,8 +798,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 )
             }
             {
-                (config?.ui?.isRequestPathAuthenticationEnabled)
-                    ? requestPathAuthenticators && showRequestPathAuthenticators
+                (config?.ui?.classicFeatures?.isRequestPathAuthenticationEnabled && requestPathAuthenticators)
+                    ? showRequestPathAuthenticators
                     : null
             }
             { renderUpdateButton() }
