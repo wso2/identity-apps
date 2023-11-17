@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.6.16
+
+### Patch Changes
+
+- [#4638](https://github.com/wso2/identity-apps/pull/4638) [`2294e329af`](https://github.com/wso2/identity-apps/commit/2294e329af259b0d377e39a768d5d773ff897c91) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Prevent showing an error alert when the marketing consent fetch failed
+
 ## 2.6.15
 
 ### Patch Changes
