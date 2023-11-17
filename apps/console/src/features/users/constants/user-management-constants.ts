@@ -119,6 +119,13 @@ export class UserManagementConstants {
     public static readonly SCIM_USER_PATH: string = "/Users";
     public static readonly SCIM_GROUP_PATH: string = "/Groups";
     public static readonly SCIM_V2_ROLE_PATH: string = "/v2/Roles";
+
+    // Regular expression to validate having alphanumeric characters.
+    public static readonly USERNAME_VALIDATION_REGEX: string = "^(?=.*[a-zA-Z])[a-zA-Z0-9]+$";
+    // Error message when API call returns a status code !== 200
+    public static readonly INVALID_STATUS_CODE_ERROR: string = "Invalid Status Code. Expected Code 200.";
+    // Error message text for resources not found.
+    public static readonly RESOURCE_NOT_FOUND_ERROR_MESSAGE: string = "Resource not found.";
 }
 
 /**

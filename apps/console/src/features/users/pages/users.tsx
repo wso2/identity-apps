@@ -1046,7 +1046,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 : renderUsersList()
             }
             {
-                showWizard && ( showUserWizard())
+                showWizard && showUserWizard()
             } 
             {
                 showBulkImportWizard && (
