@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.54
+
+### Patch Changes
+
+- [#4659](https://github.com/wso2/identity-apps/pull/4659) [`1e5bfe2d49`](https://github.com/wso2/identity-apps/commit/1e5bfe2d4902fad61398e81696b04969dd60584b) Thanks [@thanujalk](https://github.com/thanujalk)! - Introduce application roles for console
+
 ## 2.0.53
 
 ### Patch Changes
