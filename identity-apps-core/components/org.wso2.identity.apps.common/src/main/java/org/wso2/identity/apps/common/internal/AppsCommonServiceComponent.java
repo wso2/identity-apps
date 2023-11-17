@@ -1,17 +1,19 @@
 /*
- *  Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019-2023, WSO2 LLC. (http://www.wso2.com).
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 package org.wso2.identity.apps.common.internal;
@@ -27,6 +29,7 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.wso2.carbon.CarbonConstants;
 import org.wso2.carbon.core.ServerStartupObserver;
+import org.wso2.carbon.identity.api.resource.mgt.APIResourceManager;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
@@ -37,6 +40,7 @@ import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 import org.wso2.carbon.identity.oauth.listener.OAuthApplicationMgtListener;
 import org.wso2.carbon.identity.organization.management.application.OrgApplicationManager;
 import org.wso2.carbon.identity.organization.management.service.OrganizationManagementInitialize;
+import org.wso2.carbon.identity.role.v2.mgt.core.RoleManagementService;
 import org.wso2.carbon.stratos.common.listeners.TenantMgtListener;
 import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.identity.apps.common.listner.AppPortalApplicationMgtListener;
@@ -218,6 +222,38 @@ public class AppsCommonServiceComponent {
     protected void unsetRealmService(RealmService realmService) {
 
         AppsCommonDataHolder.getInstance().setRealmService(null);
+    }
+
+    @Reference(
+        name = "role.management.service.v2",
+        service = RoleManagementService.class,
+        cardinality = ReferenceCardinality.MANDATORY,
+        policy = ReferencePolicy.DYNAMIC,
+        unbind = "unsetRoleManagementServiceV2")
+    protected void setRoleManagementServiceV2(RoleManagementService roleManagementService) {
+
+        AppsCommonDataHolder.getInstance().setRoleManagementServiceV2(roleManagementService);
+    }
+
+    protected void unsetRoleManagementServiceV2(RoleManagementService roleManagementService) {
+
+        AppsCommonDataHolder.getInstance().setRoleManagementServiceV2(null);
+    }
+
+    @Reference(
+        name = "api.resource.mgt.service",
+        service = APIResourceManager.class,
+        cardinality = ReferenceCardinality.MANDATORY,
+        policy = ReferencePolicy.DYNAMIC,
+        unbind = "unsetAPIResourceManager")
+    protected void setAPIResourceManager(APIResourceManager apiResourceManager) {
+
+        AppsCommonDataHolder.getInstance().setAPIResourceManager(apiResourceManager);
+    }
+
+    protected void unsetAPIResourceManager(APIResourceManager apiResourceManager) {
+
+        AppsCommonDataHolder.getInstance().setAPIResourceManager(null);
     }
 
     private boolean skipPortalInitialization() {
