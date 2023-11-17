@@ -9459,7 +9459,9 @@ export const console: ConsoleNS = {
                                 },
                                 primaryButton: "Ajouter",
                                 rolesLabel: "Les rôles",
-                                rolesPlaceholder: "Entrez les rôles"
+                                rolesPlaceholder: "Entrez les rôles",
+                                warningMessage: "Cette option ne peut être utilisée que lorsque l'adresse e-mail " +
+                                    "est configurée comme nom d'utilisateur."
                             },
                             fileBased: {
                                 hint: "Invitez plusieurs utilisateurs en masse à l’aide d’un fichier CSV."

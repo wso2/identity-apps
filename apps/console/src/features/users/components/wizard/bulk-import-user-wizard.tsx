@@ -333,14 +333,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         error?.response?.data?.description ||
                         t(
                             "console:manage.features.claims.dialects.notifications.fetchDialects" +
-                                ".genericError.description"
+                            ".genericError.description"
                         ),
                     level: AlertLevels.ERROR,
                     message:
                         error?.response?.data?.message ||
                         t(
                             "console:manage.features.claims.dialects.notifications.fetchDialects" +
-                                ".genericError.message"
+                            ".genericError.message"
                         )
                 })
             );
@@ -1801,13 +1801,17 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     </div>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
-                    <Suspense fallback={ <ContentLoader /> }>
+                    <Suspense fallback={ <ContentLoader/> }>
                         <Heading as="h5">
                             { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel.manual") }
                         </Heading>
                         <p>
                             { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
-                                        ".manualCreation.hint" ) }
+                                ".manualCreation.hint" ) }
+                        </p>
+                        <p>
+                            { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
+                                ".manualCreation.warningMessage" ) }
                         </p>
                         <Divider />
                         <Heading as="h5">
@@ -1815,11 +1819,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         </Heading>
                         <p>
                             { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
-                                        ".fileBased.hint" ) }
+                                ".fileBased.hint" ) }
                         </p>
                         <Heading as="h6">
                             { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
-                                    "fileFormatTitle") }
+                                "fileFormatTitle") }
                         </Heading>
                         <p>
                             <Trans
@@ -1828,17 +1832,18 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     "fileFormatContent"
                                 }
                             >
-                                    Headers of the CSV file should be user attributes that are mapped to
-                                    local <Link onClick={ navigateToSCIMAttributesPage }>attribute names</Link>.
+                                Headers of the CSV file should be user attributes that are mapped to
+                                local <Link onClick={ navigateToSCIMAttributesPage }>attribute names</Link>.
                             </Trans>
                         </p>
                         <p> { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
-                                    "fileFormatSampleHeading") }</p>
+                                "fileFormatSampleHeading") }</p>
                         <p>
-                            <code>username,givenname,emailaddress,roles<br/>
-                                    user1,john,john@test.com,role1|role2<br/>
-                                    user2,jake,jake@test.com,role2<br/>
-                                    user3,jane,jane@test.com,role1<br/>
+                            <code>
+                                username,givenname,emailaddress,roles<br />
+                                user1,john,john@test.com,role1|role2<br/>
+                                user2,jake,jake@test.com,role2<br/>
+                                user3,jane,jane@test.com,role1<br/>
                             </code>
                         </p>
                     </Suspense>

@@ -5930,6 +5930,7 @@ export interface ConsoleNS {
                                 primaryButton: string;
                                 rolesLabel: string;
                                 rolesPlaceholder: string;
+                                warningMessage: string;
                             };
                             fileBased: {
                                 hint: string;

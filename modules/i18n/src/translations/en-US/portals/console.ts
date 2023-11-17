@@ -11195,7 +11195,9 @@ export const console: ConsoleNS = {
                                 },
                                 primaryButton: "Add",
                                 rolesLabel: "Roles",
-                                rolesPlaceholder: "Enter roles"
+                                rolesPlaceholder: "Enter roles",
+                                warningMessage: "This option can only be used when email address is configured " +
+                                    "as the username."
                             },
                             fileBased: {
                                 hint: "Bulk invite multiple users using a CSV file."

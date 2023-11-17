@@ -9243,7 +9243,8 @@ export const console: ConsoleNS = {
                                 },
                                 primaryButton: "එකතු කරන්න",
                                 rolesLabel: "භූමිකාවන්",
-                                rolesPlaceholder: "භූමිකාවන් ඇතුළත් කරන්න"
+                                rolesPlaceholder: "භූමිකාවන් ඇතුළත් කරන්න",
+                                warningMessage: "මෙම විකල්පය භාවිතා කළ හැක්කේ ඊමේල් ලිපිනය පරිශීලක නාමය ලෙස වින්‍යාස කර ඇති විට පමණි."
                             },
                             fileBased: {
                                 hint: "CSV ගොනුවක් භාවිතයෙන් බහු පරිශීලකයින්ට තොග වශයෙන් ආරාධනා කරන්න."

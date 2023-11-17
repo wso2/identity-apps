@@ -287,8 +287,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     }, [ isListUpdated ]);
     
     useEffect(() => {
-        setShowMultipleInviteConfirmationModal(showBulkImportWizard && !connectorConfigLoading
-            && !emailVerificationEnabled);
+        setShowMultipleInviteConfirmationModal(
+            showBulkImportWizard
+            && !connectorConfigLoading
+            && !emailVerificationEnabled
+        );
     }, [ showBulkImportWizard, connectorConfigLoading ]);
 
     /**
@@ -1079,7 +1082,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 showWizard && ( showUserWizard())
             } 
             {
-                showBulkImportWizard && !connectorConfigLoading && emailVerificationEnabled  && (
+                showBulkImportWizard
+                && !connectorConfigLoading
+                && emailVerificationEnabled
+                && (
                     <BulkImportUserWizard
                         data-componentid="user-mgt-bulk-import-user-wizard-modal"
                         closeWizard={ handleBulkImportWizardClose }
