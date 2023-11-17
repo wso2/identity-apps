@@ -6340,6 +6340,7 @@ export interface ConsoleNS {
                     noInvitations: string;
                     noCollaboratorUserInvitations: string;
                 };
+                invitedUserLabel: string;
             };
             onboarded?: {
                 notifications?: {

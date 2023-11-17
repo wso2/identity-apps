@@ -7457,7 +7457,8 @@ export const console: ConsoleNS = {
                     noExpiredInvitations: "Il y a des invitations expirées pour le moment.",
                     noInvitations: "Il n'y a aucune invitation pour le moment.",
                     noCollaboratorUserInvitations: "Il n’y a actuellement aucun utilisateur collaborateur dont les invitations ont expiré."
-                }
+                },
+                invitedUserLabel: "Géré par l'organisation mère"
             },
             oidcScopes: {
                 viewAttributes: "Afficher les attributs",
