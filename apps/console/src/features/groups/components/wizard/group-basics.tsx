@@ -32,7 +32,6 @@ import { SharedUserStoreUtils } from "../../../core/utils";
 // TODO: Remove this once the api is updated.
 import { RootOnlyComponent } from "../../../organizations/components";
 import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
-import { OrganizationUtils } from "../../../organizations/utils";
 import { getUserStoreList } from "../../../userstores/api";
 import { UserStoreProperty } from "../../../userstores/models";
 import { searchGroupList } from "../../api";
