@@ -401,6 +401,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 setWizardSteps(filterSteps([
                     WizardStepsFormTypes.BASIC_DETAILS,
                     WizardStepsFormTypes.GROUP_LIST,
+                    WizardStepsFormTypes.ROLE_LIST,
                     WizardStepsFormTypes.USER_SUMMARY
                 ]));
                 setIsStepsUpdated(true);
@@ -411,7 +412,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             setWizardSteps(filterSteps([
                 // TODO: Enable temporarily disabled  USER_TYPE step.
                 WizardStepsFormTypes.BASIC_DETAILS,
-                WizardStepsFormTypes.GROUP_LIST
+                WizardStepsFormTypes.GROUP_LIST,
+                WizardStepsFormTypes.ROLE_LIST
                 // TODO: Enable temporarily disabled summary step.
             ]));
             setIsStepsUpdated(true);
@@ -603,7 +605,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      * @returns Filtered steps.
      */
     const filterSteps = (steps: WizardStepsFormTypes[]): WizardStepInterface[] => {
-
         const getStepContent = (stepsToFilter: WizardStepsFormTypes[] | string[]) => {
 
             const filteredSteps: any[] = [];
@@ -615,6 +616,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     filteredSteps.push(resolveBasicDetailsStep());
                 } else if (step === WizardStepsFormTypes.GROUP_LIST) {
                     filteredSteps.push(getUserGroupsWizardStep());
+                } else if (step === WizardStepsFormTypes.ROLE_LIST) {
+                    filteredSteps.push(getUserRoleWizardStep());
                 } else if (step === WizardStepsFormTypes.SUMMARY) {
                     filteredSteps.push(getSummaryWizardStep());
                 } else if (step === WizardStepsFormTypes.USER_SUMMARY) {
@@ -1365,6 +1368,48 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     };
 
     /**
+     * User role wizard step.
+     * @returns Role wizard step.
+     */
+    const getUserRoleWizardStep = (): WizardStepInterface => {
+        return {
+            content: (
+                viewRolePermissions
+                    ? (<RolePermissions
+                        data-testid={ `${ testId }-role-permission` }
+                        handleNavigateBack={ handleViewRolePermission }
+                        handleViewNextButton={ handleViewNextButton }
+                        roleId={ selectedRoleId }
+                    />)
+                    : (<AddUserRole
+                        triggerSubmit={ submitRoleList }
+                        onSubmit={ (values: AddUserWizardStateInterface) =>
+                            handleWizardFormSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
+                        initialValues={
+                            {
+                                initialRoleList: initialRoleList,
+                                initialTempRoleList: initialTempRoleList,
+                                roleList: roleList,
+                                tempRoleList: tempRoleList
+                            }
+                        }
+                        handleRoleListChange={ (roles: RolesInterface[] |
+                             OrganizationRoleListItemInterface[]) => handleRoleListChange(roles) }
+                        handleTempListChange={ (roles: RolesInterface[] |
+                             OrganizationRoleListItemInterface[]) => handleAddedListChange(roles) }
+                        handleInitialTempListChange={ (roles: RolesInterface[] |
+                             OrganizationRoleListItemInterface[]) => handleAddedRoleInitialListChange(roles) }
+                        handleInitialRoleListChange={ (roles: RolesInterface[] |
+                             OrganizationRoleListItemInterface[]) => handleInitialRoleListChange(roles) }
+                        handleSetRoleId={ (roleId: string) => handleRoleIdSet(roleId) }
+                    />)
+            ),
+            icon: getUserWizardStepIcons().roles,
+            title: t("console:manage.features.user.modals.addUserWizard.steps.roles")
+        };
+    };
+
+    /**
      * Summary wizard step.
      * @returns Summary wizard step.
      */
@@ -1606,8 +1651,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                         Finish</PrimaryButton>
                             ) }
                             { (wizardSteps?.length > 1 && currentWizardStep > 0 && 
-                                    (wizardSteps[ currentWizardStep ]?.name !== WizardStepsFormTypes.USER_SUMMARY ||
-                                        wizardSteps[ currentWizardStep ]?.name !== WizardStepsFormTypes.SUMMARY)) && (
+                                    (wizardSteps[ currentWizardStep ]?.name !== WizardStepsFormTypes.USER_SUMMARY)) && (
                                 <LinkButton
                                     data-testid={ `${ testId }-previous-button` }
                                     floated="right"

@@ -740,9 +740,46 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                                 validation.errorMessages.push(
                                                     USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE);
                                             }
+
+                                            try {
+                                                // Check for the existence of users in the userstore by the username.
+                                                // Some characters disallowed by username
+                                                // -regex cause failure in below request.
+                                                // Therefore, existence of duplicates is
+                                                // -checked only post regex validation success.
+                                                if (value && validation.isValid === true) {
+                                                    const usersList: UserListInterface
+                                                    = await getUsersList(null, null,
+                                                        "userName eq " + value, null,
+                                                        userstore);
+
+                                                    if (usersList?.totalResults > 0) {
+                                                        validation.isValid = false;
+                                                        validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
+                                                        scrollToInValidField("email");
+                                                    }
+
+                                                    setBasicDetailsLoading(false);
+                                                }
+                                            } catch (error) {
+                                                // Some non ascii characters are not accepted by DBs
+                                                // with certain charsets.
+                                                // Hence, the API sends a `500` status code.
+                                                // see below issue for more context.
+                                                // https://github.com/wso2/product-is/issues/
+                                                // 10190#issuecomment-719760318
+                                                if (error?.response?.status === 500) {
+                                                    validation.isValid = false;
+                                                    validation.errorMessages.push(
+                                                        USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
+                                                    scrollToInValidField("email");
+                                                }
+
+                                                setBasicDetailsLoading(false);
+                                            }
                                         } }
                                         type="text"
-                                        value={ initialValues && initialValues.username }
+                                        value={ initialValues && initialValues.userName }
                                         tabIndex={ 1 }
                                         maxLength={ 60 }
                                     />
