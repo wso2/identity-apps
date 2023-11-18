@@ -106,19 +106,17 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         "inputs.username.validations.invalidCharacters");
 
     useEffect(() => {
-
         if (showPasswordValidation) {
             setPasswordConfig(getConfiguration(validationConfig));
         }
     }, [ validationConfig ]);
     
     /**
-         * Callback function to validate password.
-         *
-         * @param valid - validation status.
-         */
+     * Callback function to validate password.
+     *
+     * @param valid - validation status.
+     */
     const onPasswordValidate = (valid: boolean): void => {
-    
         setIsValidPassword(valid);
     };
 
@@ -339,14 +337,12 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
                                     let passwordRegex: string = "";
 
-                                    if (passwordConfig) {
-                                        if(!isValidPassword) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push( t(
-                                                "extensions:manage.features.user.addUser.validation." +
-                                                "error.passwordValidation"
-                                            ) );
-                                        }
+                                    if (passwordConfig && !isValidPassword) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push( t(
+                                            "extensions:manage.features.user.addUser.validation." +
+                                            "error.passwordValidation"
+                                        ) );
                                     }
 
                                     if (userStore !== UserstoreConstants.PRIMARY_USER_STORE.toLocaleLowerCase()) {
