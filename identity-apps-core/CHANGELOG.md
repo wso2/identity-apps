@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.0.57
+
+### Patch Changes
+
+- [#4644](https://github.com/wso2/identity-apps/pull/4644) [`19c22b7683`](https://github.com/wso2/identity-apps/commit/19c22b7683975e79228fc8f55c5fc6a8426f47de) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the footer alignment issue
+
+* [#4682](https://github.com/wso2/identity-apps/pull/4682) [`0e1b40e341`](https://github.com/wso2/identity-apps/commit/0e1b40e34121a51dec0d9d132d44ae16282711f0) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Handle user not found error in sms otp
+
 ## 2.0.56
 
 ### Patch Changes

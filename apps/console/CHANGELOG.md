@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.6.21
+
+### Patch Changes
+
+- [#4679](https://github.com/wso2/identity-apps/pull/4679) [`db84bceb54`](https://github.com/wso2/identity-apps/commit/db84bceb54912c4ff1d7e4a6b70cc60d310b2691) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enable my account link in console
+
+* [#4663](https://github.com/wso2/identity-apps/pull/4663) [`2a7e5eacea`](https://github.com/wso2/identity-apps/commit/2a7e5eacead319aa55188469832b440b011dcb5b) Thanks [@Sachin-Mamoru](https://github.com/Sachin-Mamoru)! - Fixed role update issue
+
 ## 2.6.20
 
 ### Patch Changes
