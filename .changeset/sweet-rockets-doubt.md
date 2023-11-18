@@ -2,4 +2,4 @@
 "@wso2is/identity-apps-core": patch
 ---
 
-Add default app configuration
+Handle user not found error in sms otp

@@ -43,7 +43,7 @@
   width: 100%;
 }
 
-.login-portal.layout.policy-page-layout .footer .ui.menu:not(.vertical) .right.item, .ui.menu:not(.vertical) .right.menu {
+.login-portal.layout.policy-page-layout .footer .ui.menu:not(.vertical) .right.item, .login-portal.layout.policy-page-layout .footer .ui.menu:not(.vertical) .right.menu {
   justify-content: right;
 }
 

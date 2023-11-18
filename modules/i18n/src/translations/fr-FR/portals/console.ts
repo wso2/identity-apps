@@ -9444,8 +9444,6 @@ export const console: ConsoleNS = {
                                 searchByRoleOrGroup: "Recherche par nom de rôle/groupe",
                                 roleGroupFilterAttributePlaceHolder: "Nom du rôle/groupe"
                             },
-                            disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
-                                "externes n’est pas disponible pour le moment.",
                             manualCreation: {
                                 alerts: {
                                     creationSuccess: {
@@ -9463,7 +9461,9 @@ export const console: ConsoleNS = {
                                 },
                                 primaryButton: "Ajouter",
                                 rolesLabel: "Les rôles",
-                                rolesPlaceholder: "Entrez les rôles"
+                                rolesPlaceholder: "Entrez les rôles",
+                                warningMessage: "Cette option ne peut être utilisée que lorsque l'adresse e-mail " +
+                                    "est configurée comme nom d'utilisateur."
                             },
                             fileBased: {
                                 hint: "Invitez plusieurs utilisateurs en masse à l’aide d’un fichier CSV."
@@ -9476,6 +9476,14 @@ export const console: ConsoleNS = {
                         },
                         buttons: {
                             import: "Importer"
+                        },
+                        sidePanel: {
+                            manual: "Manuel",
+                            fileBased: "Basé sur un fichier",
+                            fileFormatTitle: "Format de fichier CSV",
+                            fileFormatContent: "Les en-têtes du fichier CSV doivent être des attributs utilisateur " +
+                                "mappés aux <1>attributs locaux</1>.",
+                            fileFormatSampleHeading: "Exemple de format de fichier CSV:"
                         }
                     },
                     changePasswordModal: {
@@ -10003,6 +10011,13 @@ export const console: ConsoleNS = {
                             "procéder avec prudence.",
                         header: "Êtes-vous sûr?",
                         message: "Cette action est irréversible et mettra fin définitivement à la session."
+                    },
+                    addMultipleUser: {
+                        header: "Avant de continuer",
+                        message: "L'option Inviter des utilisateurs est désactivée",
+                        content: "L’option Inviter des utilisateurs doit être activée pour ajouter plusieurs " +
+                            "utilisateurs. Veuillez l'activer et réessayer.",
+                        assertionHint: "Veuillez confirmer votre action."
                     }
                 },
                 consumerUsers: {
@@ -10853,6 +10868,11 @@ export const console: ConsoleNS = {
                 backButton: "Revenir aux {{type}}",
                 subTitle: null,
                 title: "Modifier le rôle"
+            },
+            groupsEdit: {
+                backButton: "Revenir aux {{type}}",
+                subTitle: null,
+                title: "Modifier le groupe"
             },
             serverConfigurations: {
                 subTitle: "Gérer la configuration générale du serveur.",
