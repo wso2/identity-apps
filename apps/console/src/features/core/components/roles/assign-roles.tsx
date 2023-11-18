@@ -207,9 +207,20 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
         
         if (role.length > 0) {
             if (role[0] == "application") {
-                return { labelColor: null, labelText: "Application", name: "audience-label", subLabel: application };
+                return {
+                    labelColor: null,
+                    labelText: t("console:manage.features.roles.addRoleWizard." + 
+                        "forms.roleBasicDetails.roleAudience.values.application"),
+                    name: "audience-label",
+                    subLabel: application
+                };
             } else {
-                return { labelColor: null, labelText: "Organization", name: "audience-label" };
+                return { 
+                    labelColor: null, 
+                    labelText: t("console:manage.features.roles.addRoleWizard." + 
+                        "forms.roleBasicDetails.roleAudience.values.organization"), 
+                    name: "audience-label" 
+                };
             }
         }
     };
