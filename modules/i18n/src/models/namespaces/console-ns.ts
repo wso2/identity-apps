@@ -3607,6 +3607,7 @@ export interface ConsoleNS {
                 confirmations: {
                     terminateAllSessions: Confirmation;
                     terminateSession: Confirmation;
+                    addMultipleUser: Confirmation
                 };
                 editUser: {
                     tab: {
@@ -5916,7 +5917,6 @@ export interface ConsoleNS {
                                 searchByRoleOrGroup: string;
                                 roleGroupFilterAttributePlaceHolder: string;
                             };
-                            disabledSecondaryStoreInfo: string;
                             manualCreation: {
                                 alerts: {
                                     creationSuccess: NotificationItem;
@@ -5932,6 +5932,7 @@ export interface ConsoleNS {
                                 primaryButton: string;
                                 rolesLabel: string;
                                 rolesPlaceholder: string;
+                                warningMessage: string;
                             };
                             fileBased: {
                                 hint: string;
@@ -5944,6 +5945,13 @@ export interface ConsoleNS {
                         };
                         buttons: {
                             import: string;
+                        },
+                        sidePanel: {
+                            manual: string;
+                            fileBased: string;
+                            fileFormatTitle: string;
+                            fileFormatContent: string;
+                            fileFormatSampleHeading: string;
                         }
                     };
                     changePasswordModal: {
