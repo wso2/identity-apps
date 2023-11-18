@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,6 +28,7 @@ export interface ItemTypeLabelPropsInterface extends LabelProps {
     labelText: string;
     labelColor: SemanticCOLORS;
     name?: string;
+    subLabel?: string;
 }
 
 /**
@@ -49,6 +50,8 @@ interface TransferListItemPropsInterface extends TableRowProps, IdentifiableComp
     listSubItem?: ReactNode;
     readOnly?: boolean;
     disabled?: boolean;
+    reOrderLabel?: boolean;
+    showSubLabel?: boolean;
 }
 
 /**
@@ -84,6 +87,8 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
         listSubItem,
         readOnly,
         disabled,
+        showSubLabel,
+        reOrderLabel,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
@@ -102,8 +107,50 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
             : listItemValue;
     };
 
+    const renderLabel = () => {
+
+        return (
+            <>
+                {
+                    listItemTypeLabel && showSubLabel ?  (
+                        <Table.Cell
+                            collapsing
+                            key={ listItemIndex }
+                        >
+                            { listItemTypeLabel.labelText } { " " }
+                            {
+                                listItemTypeLabel.subLabel && (
+                                    <Label
+                                        color={ listItemTypeLabel.labelColor }
+                                        content={ listItemTypeLabel.subLabel }
+                                        size="mini"
+                                        className={ listItemTypeLabel.name }
+                                    />
+                                ) 
+                            }
+                        </Table.Cell>
+                    ) : (
+                        listItemTypeLabel && (
+                            <Table.Cell
+                                collapsing
+                                key={ listItemIndex }
+                            >
+                                <Label
+                                    color={ listItemTypeLabel.labelColor }
+                                    content={ listItemTypeLabel.labelText }
+                                    size="mini"
+                                    className={ listItemTypeLabel.name }
+                                />
+                            </Table.Cell>
+                        )
+                    )
+                }
+            </>
+        );
+    };
+
     return (
-        <Table.Row key={ listItemIndex }>
+        <Table.Row key={ listItemIndex } >
             <Table.Cell id={ listItemId } collapsing>
                 <Checkbox
                     data-componentid={ `${ componentId }-${ resolveDataTestID() }-checkbox` }
@@ -116,24 +163,12 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
                 />
             </Table.Cell>
             {
-                listItemTypeLabel && (
-                    <Table.Cell
-                        collapsing
-                        key={ listItemIndex }
-                    >
-                        <Label
-                            color={ listItemTypeLabel.labelColor }
-                            content={ listItemTypeLabel.labelText }
-                            size="mini"
-                            className={ listItemTypeLabel.name }
-                        />
-                    </Table.Cell>
-                )
+                !reOrderLabel && renderLabel()
             }
             {
                 showListSubItem
                     ? (
-                        <Table.Cell id={ listItemId }>
+                        <Table.Cell id={ listItemId } >
                             {
                                 typeof listItem === "string"
                                     ? <div>{ listItem }</div>
@@ -151,6 +186,9 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
                             }
                         </Table.Cell>
                     )
+            }
+            {
+                reOrderLabel && renderLabel()
             }
             {
                 showSecondaryActions && (

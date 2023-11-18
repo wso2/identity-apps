@@ -8974,7 +8974,8 @@ export const console: ConsoleNS = {
                     },
                     headers: {
                         0: "වසම්",
-                        1: "නම"
+                        1: "නම",
+                        2: "ප්‍රේක්ෂකයෝ"
                     }
                 },
                 searchPlaceholder: "සොයන්න {{type}}"

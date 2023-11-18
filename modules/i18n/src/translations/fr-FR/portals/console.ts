@@ -9178,7 +9178,8 @@ export const console: ConsoleNS = {
                     },
                     headers: {
                         0: "Domaine",
-                        1: "Nom"
+                        1: "Nom",
+                        2: "Audience"
                     }
                 },
                 searchPlaceholder: "Rechercher un {{type}}"

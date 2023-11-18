@@ -10930,7 +10930,8 @@ export const console: ConsoleNS = {
                     },
                     headers: {
                         0: "Domain",
-                        1: "Name"
+                        1: "Name",
+                        2: "Audience"
                     }
                 },
                 searchPlaceholder: "Search {{type}}"
