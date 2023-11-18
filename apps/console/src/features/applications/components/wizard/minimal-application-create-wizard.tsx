@@ -1035,35 +1035,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             { resolveMinimalProtocolFormFields() }
                         </Grid.Column>
                     </Grid.Row>
-                    {
-                        // The Management App checkbox is only present in OIDC Standard-Based apps
-                        (customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC && 
-                            (selectedTemplate?.templateId === "custom-application" || 
-                            selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)
-                        ) && (
-                            <div className="pt-0 mt-0">
-                                <Field
-                                    data-testid={ `${ testId }-management-app-checkbox` }
-                                    name={ "isManagementApp" }
-                                    required={ false }
-                                    requiredErrorMessage={ "is required" }
-                                    type="checkbox"
-                                    value={ [ "isManagementApp" ] }
-                                    children={ [
-                                        {
-                                            label: t("console:develop.features.applications.forms.generalDetails" +
-                                                ".fields.isManagementApp.label" ),
-                                            value: "manageApp"
-                                        }
-                                    ] }
-                                />
-                                <Hint compact>
-                                    { t("console:develop.features.applications.forms.generalDetails.fields" +
-                                            ".isManagementApp.hint" ) }
-                                </Hint>
-                            </div>
-                        )
-                    }
                     <div className="pt-0 mt-0">
                         <Field
                             data-componentid={ `${ testId }-fapi-app-checkbox` }
