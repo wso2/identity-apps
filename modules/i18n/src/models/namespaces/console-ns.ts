@@ -6533,6 +6533,7 @@ export interface ConsoleNS {
             oidcScopesEdit: EditPage;
             roles: Page;
             rolesEdit: EditPage;
+            groupsEdit: EditPage;
             serverConfigurations: Page;
             users: Page;
             usersEdit: EditPage;

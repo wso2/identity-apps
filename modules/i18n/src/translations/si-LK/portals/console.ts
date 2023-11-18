@@ -10605,6 +10605,11 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: "භූමිකාව සංස්කරණය කරන්න"
             },
+            groupsEdit: {
+                backButton: "{{Type} වෙත ආපසු යන්න",
+                subTitle: null,
+                title: "කණ්ඩායම සංස්කරණය කරන්න"
+            },
             serverConfigurations: {
                 subTitle: "සේවාදායකයේ සාමාන්‍ය වින්‍යාසයන් කළමනාකරණය කරන්න.",
                 title: "සාමාන්‍ය වින්‍යාසයන්"

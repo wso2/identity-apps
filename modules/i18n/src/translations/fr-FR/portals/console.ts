@@ -10854,6 +10854,11 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: "Modifier le rôle"
             },
+            groupsEdit: {
+                backButton: "Revenir aux {{type}}",
+                subTitle: null,
+                title: "Modifier le groupe"
+            },
             serverConfigurations: {
                 subTitle: "Gérer la configuration générale du serveur.",
                 title: "Configurations générales"
