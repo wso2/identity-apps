@@ -74,6 +74,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state?.organization?.isFirstLevelOrganization
     );
+    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -251,7 +252,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                 <>
                     { breadcrumbList?.map(
                         (breadcrumb: BreadcrumbItem, index: number) => {
-                            if (index === 0) {
+                            if (index === 0 && !isSAASDeployment ) {
                                 return (
                                     <>
                                         { generateSuperBreadcrumbItem(breadcrumb) }
