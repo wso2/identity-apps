@@ -535,7 +535,7 @@
                         </div>
                     </div>
                     <br>
-                    <% } else if (!StringUtils.equals(type,SSO_AUTHENTICATOR)) {
+                    <% } else if (!StringUtils.equals(type, SSO_AUTHENTICATOR)) {
 
                         String logoPath = imageURL;
                         if (!imageURL.isEmpty() && imageURL.contains("/")) {
