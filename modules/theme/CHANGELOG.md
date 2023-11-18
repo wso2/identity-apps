@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.37
+
+### Patch Changes
+
+- [#4500](https://github.com/wso2/identity-apps/pull/4500) [`9ecc95eebd`](https://github.com/wso2/identity-apps/commit/9ecc95eebd43807e022f675075740cc7bf38c09a) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issues in the header logo section of My Account and Console
+
 ## 2.0.36
 
 ### Patch Changes
