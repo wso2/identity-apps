@@ -78,6 +78,10 @@ public class AppsCommonServiceComponent {
                     log.debug("Portal application initialization is skipped.");
                 }
             } else {
+                Set<String> defaultApplications = getDefaultApplications();
+                if (!defaultApplications.isEmpty()) {
+                    AppsCommonDataHolder.getInstance().setDefaultApplications(defaultApplications);
+                }
                 // Initialize portal applications.
                 AppPortalUtils.initiatePortals(SUPER_TENANT_DOMAIN_NAME, SUPER_TENANT_ID);
             }
@@ -93,18 +97,18 @@ public class AppsCommonServiceComponent {
 
                 OAuthApplicationMgtListener oAuthApplicationMgtListener = new AppPortalOAuthAppMgtListener(true);
                 bundleContext.registerService(OAuthApplicationMgtListener.class.getName(), oAuthApplicationMgtListener,
-                        null);
+                    null);
                 log.debug("AppPortalOAuthAppMgtListener registered successfully.");
 
                 ApplicationMgtListener applicationMgtListener = new AppPortalApplicationMgtListener(true);
                 bundleContext.registerService(ApplicationMgtListener.class.getName(), applicationMgtListener, null);
                 log.debug("AppPortalApplicationMgtListener registered successfully.");
+            }
 
-                if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
-                    TenantMgtListener tenantManagementListener = new AppPortalTenantMgtListener();
-                    bundleContext.registerService(TenantMgtListener.class.getName(), tenantManagementListener, null);
-                    log.debug("AppPortalTenantMgtListener registered successfully.");
-                }
+            if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+                TenantMgtListener tenantManagementListener = new AppPortalTenantMgtListener();
+                bundleContext.registerService(TenantMgtListener.class.getName(), tenantManagementListener, null);
+                log.debug("AppPortalTenantMgtListener registered successfully.");
             }
 
             // AppsCommonServiceStartupObserver will wait until server startup is completed
@@ -264,6 +268,11 @@ public class AppsCommonServiceComponent {
     private Set<String> getSystemApplications() {
 
         return AppsCommonDataHolder.getInstance().getApplicationManagementService().getSystemApplications();
+    }
+
+    private Set<String> getDefaultApplications() {
+
+        return AppsCommonDataHolder.getInstance().getApplicationManagementService().getDefaultApplications();
     }
 
     private Set<String> getSystemAppConsumerKeys(Set<String> systemApplications)
