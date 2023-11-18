@@ -17,11 +17,11 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Section } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { AppConstants, history } from "../../core";
 import { getSettingsSectionIcons } from "../../server-configurations";
+import { SettingsSection } from "../../server-configurations/settings/settings-section";
 import { useTokenReuseConfigData } from "../api";
 
 /**
@@ -61,7 +61,7 @@ export const PrivateKeyJWTConfig: FunctionComponent<PrivateKeyJWTConfigPageInter
 
     return ( tokenReuseData
         ? (
-            <Section
+            <SettingsSection
                 data-componentid={ `${componentId}-settings-section` }
                 description={ t("console:manage.features.jwtPrivateKeyConfiguration.description") }
                 icon={ getSettingsSectionIcons().jwtPrivateKeyValidation }
