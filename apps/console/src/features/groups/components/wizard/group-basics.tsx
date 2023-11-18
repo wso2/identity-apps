@@ -108,9 +108,6 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
      * The following function validates role name against the user store regEx.
      */
     const validateGroupNamePattern = async (): Promise<string> => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
-            return Promise.resolve(".*");
-        }
 
         let userStoreRegEx: string = "";
 
