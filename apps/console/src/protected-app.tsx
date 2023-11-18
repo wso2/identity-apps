@@ -225,7 +225,12 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     ? idToken?.amr[ 0 ] === "EnterpriseIDPAuthenticator"
                     : false;
 
-            if (has(idToken, "associated_tenants") || isPrivilegedUser) {
+            let isOrgSwitch: boolean = false;
+
+            if (has(idToken, "org_id") && has(idToken, "user_org")) {
+                isOrgSwitch = (idToken?.org_id !== idToken?.user_org);
+            }
+            if (has(idToken, "associated_tenants") || isPrivilegedUser || isOrgSwitch) {
                 // If there is an association, the user should be redirected to console landing page.
                 const location: string =
                     !AuthenticationCallbackUrl ||
