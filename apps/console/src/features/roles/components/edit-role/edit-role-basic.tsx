@@ -107,7 +107,6 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             setIsUpdateButtonDisabled(true);
         }
         else if (values.roleName?.toString().trim().length >= RoleConstants.ROLE_NAME_MIN_LENGTH) {
-
             setIsUpdateButtonDisabled(false);
             setRoleNameSearchQuery(`displayName eq ${values.roleName?.toString().trim()}`);
 
