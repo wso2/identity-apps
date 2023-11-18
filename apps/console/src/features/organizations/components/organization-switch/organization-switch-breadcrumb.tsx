@@ -252,7 +252,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                 <>
                     { breadcrumbList?.map(
                         (breadcrumb: BreadcrumbItem, index: number) => {
-                            if (index === 0 && !isSAASDeployment ) {
+                            if (index === 0 && !isSAASDeployment) {
                                 return (
                                     <>
                                         { generateSuperBreadcrumbItem(breadcrumb) }
