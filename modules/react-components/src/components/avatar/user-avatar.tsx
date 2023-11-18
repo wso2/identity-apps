@@ -178,9 +178,9 @@ export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
             trigger={ (
                 <AppAvatar
                     className={ classes }
-                    image={ resolveAvatarImage() 
-                        ? resolveAvatarImage() 
-                        : (
+                    image={ 
+                        resolveAvatarImage() 
+                        ?? (
                             <AnimatedAvatar
                                 name={ profileInfo ? resolveUserDisplayName(profileInfo, authState) : name || "" }
                                 size={ 
