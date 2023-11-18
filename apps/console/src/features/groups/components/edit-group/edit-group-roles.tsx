@@ -118,7 +118,10 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
                                 <RenderChip 
                                     { ...getTagProps({ index }) }
                                     key={ index }
-                                    primaryText={ option.display }
+                                    primaryText={ "" }
+                                    displayName={ option.display }
+                                    audienceType={ option.audienceType }
+                                    audienceDisplay={ option.audienceDisplay }
                                     option={ option }
                                     activeOption={ activeOption }
                                     setActiveOption={ setActiveOption }
