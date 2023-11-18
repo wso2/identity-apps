@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,7 @@
 
 import { TabPageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { AxiosResponse } from "axios";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
@@ -39,8 +40,8 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
      * Get Group data from URL id
      */
     useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const roleId = path[ path.length - 1 ];
+        const path: string[] = history.location.pathname.split("/");
+        const roleId: string = path[ path.length - 1 ];
 
         setGroupId(roleId);
         getGroupDetails(roleId);
@@ -50,7 +51,7 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
         setIsGroupDetailsRequestLoading(true);
 
         getGroupById(roleId)
-            .then(response => {
+            .then((response: AxiosResponse<GroupsInterface>) => {
                 if (response.status === 200) {
                     setGroup(response.data);
                 }
