@@ -152,6 +152,14 @@ const UserEditPage = (): ReactElement => {
         }
     };
 
+    const getBackButtonText = (): string => {
+        if (window.location.href.includes(AppConstants.getPaths().get("ADMINISTRATORS"))) {
+            return t("console:manage.pages.usersEdit.backButton", { type: "Administrators" });
+        } else {
+            return t("console:manage.pages.usersEdit.backButton", { type: "Users" });
+        }
+    };
+
     /**
      * Handles edit avatar modal submit action.
      *
@@ -316,7 +324,7 @@ const UserEditPage = (): ReactElement => {
             backButton={ {
                 "data-testid": "user-mgt-edit-user-back-button",
                 onClick: handleBackButtonClick,
-                text: t("console:manage.pages.usersEdit.backButton")
+                text: getBackButtonText()
             } }
             titleTextAlign="left"
             bottomMargin={ false }
