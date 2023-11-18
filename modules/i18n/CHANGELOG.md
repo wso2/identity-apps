@@ -1,5 +1,16 @@
 # @wso2is/i18n
 
+## 2.0.41
+
+### Patch Changes
+
+- [#4574](https://github.com/wso2/identity-apps/pull/4574) [`9260cecd00`](https://github.com/wso2/identity-apps/commit/9260cecd008a26d5d15596e943bf5a919a1d0c97) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Change portugese-brazil to portugese-portugal in language dropdown
+
+* [#4641](https://github.com/wso2/identity-apps/pull/4641) [`640820b3c6`](https://github.com/wso2/identity-apps/commit/640820b3c6daeefa415c76e5aa0fd37a3680b9f0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add deployment configs to conditionally enable/disable classic features
+
+* Updated dependencies [[`640820b3c6`](https://github.com/wso2/identity-apps/commit/640820b3c6daeefa415c76e5aa0fd37a3680b9f0)]:
+  - @wso2is/core@2.0.14
+
 ## 2.0.40
 
 ### Patch Changes

@@ -1,5 +1,35 @@
 # @wso2is/console
 
+## 2.6.18
+
+### Patch Changes
+
+- [#4654](https://github.com/wso2/identity-apps/pull/4654) [`7fdfcbf457`](https://github.com/wso2/identity-apps/commit/7fdfcbf4579486b295d438572c7278bb2754d4ef) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Show the option to add the authorized redirect urls when registering the applications selectively
+
+## 2.6.17
+
+### Patch Changes
+
+- [#4574](https://github.com/wso2/identity-apps/pull/4574) [`9260cecd00`](https://github.com/wso2/identity-apps/commit/9260cecd008a26d5d15596e943bf5a919a1d0c97) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Change portugese-brazil to portugese-portugal in language dropdown
+
+* [#4648](https://github.com/wso2/identity-apps/pull/4648) [`9781f6c64f`](https://github.com/wso2/identity-apps/commit/9781f6c64f46d24043dd931a8dfbe7d325188aee) Thanks [@shanggeeth](https://github.com/shanggeeth)! - Set application audience as default in role creation
+
+- [#4641](https://github.com/wso2/identity-apps/pull/4641) [`640820b3c6`](https://github.com/wso2/identity-apps/commit/640820b3c6daeefa415c76e5aa0fd37a3680b9f0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add deployment configs to conditionally enable/disable classic features
+
+* [#4649](https://github.com/wso2/identity-apps/pull/4649) [`e40b98a456`](https://github.com/wso2/identity-apps/commit/e40b98a456fd0800ce472896d782aaae66cbf786) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) In the Sing-in flow config section, the `predefined flows` panel can only be opened using the icons
+
+- [#4646](https://github.com/wso2/identity-apps/pull/4646) [`a450ec426b`](https://github.com/wso2/identity-apps/commit/a450ec426bd7ee1be776547340810c8f04b27389) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Remove view permissions button from user/group create wizard
+
+- Updated dependencies [[`9260cecd00`](https://github.com/wso2/identity-apps/commit/9260cecd008a26d5d15596e943bf5a919a1d0c97), [`640820b3c6`](https://github.com/wso2/identity-apps/commit/640820b3c6daeefa415c76e5aa0fd37a3680b9f0)]:
+  - @wso2is/i18n@2.0.41
+  - @wso2is/core@2.0.14
+  - @wso2is/access-control@2.0.4
+  - @wso2is/common@2.0.7
+  - @wso2is/dynamic-forms@2.0.10
+  - @wso2is/form@2.0.9
+  - @wso2is/forms@2.0.1
+  - @wso2is/react-components@2.0.16
+
 ## 2.6.16
 
 ### Patch Changes
