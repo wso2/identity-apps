@@ -10013,7 +10013,7 @@ export const console: ConsoleNS = {
                     addMultipleUser: {
                         header: "Avant de continuer",
                         message: "L'option Inviter des utilisateurs est désactivée",
-                        content: "L’option Inviter des utilisateurs doit être activée pour inviter plusieurs " + 
+                        content: "L’option Inviter des utilisateurs doit être activée pour ajouter plusieurs " +
                             "utilisateurs. Veuillez l'activer et réessayer.",
                         assertionHint: "Veuillez confirmer votre action."
                     }

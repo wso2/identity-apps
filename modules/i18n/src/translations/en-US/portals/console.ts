@@ -11715,7 +11715,7 @@ export const console: ConsoleNS = {
                     addMultipleUser: {
                         header: "Before you proceed",
                         message: "Invite users option is disabled",
-                        content: "Invite users option should be enabled to invite multiple users. Please enable it and " +
+                        content: "Invite users option should be enabled to add multiple users. Please enable it and " +
                             "try again.",
                         assertionHint: "Please confirm your action."
                     }
