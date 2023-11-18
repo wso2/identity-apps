@@ -150,7 +150,7 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
     };
 
     return (
-        <Table.Row key={ listItemIndex }>
+        <Table.Row key={ listItemIndex } >
             <Table.Cell id={ listItemId } collapsing>
                 <Checkbox
                     data-componentid={ `${ componentId }-${ resolveDataTestID() }-checkbox` }

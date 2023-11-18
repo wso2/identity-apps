@@ -263,8 +263,8 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
                                         isItemChecked={ checkedUnassignedListItems.includes(role) }
                                         showSecondaryActions={ false }
                                         handleOpenPermissionModal={ () => handleSetRoleId(role.id) }
-                                        reOrderLabel={ true }
-                                        showSubLabel={ true }
+                                        reOrderLabel
+                                        showSubLabel
                                         data-testid="user-mgt-add-user-wizard-modal-unselected-roles"
                                     />
                                 );
@@ -302,8 +302,8 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
                                         }
                                         isItemChecked={ checkedAssignedListItems.includes(role) }
                                         showSecondaryActions={ false }
-                                        reOrderLabel={ true }
-                                        showSubLabel={ true }
+                                        reOrderLabel
+                                        showSubLabel
                                         data-testid="user-mgt-add-user-wizard-modal-selected-roles"
                                     />
                                 );

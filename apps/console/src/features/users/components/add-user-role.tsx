@@ -177,8 +177,8 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                                         isItemChecked={ checkedUnassignedListItems.includes(role) }
                                         showSecondaryActions={ false }
                                         handleOpenPermissionModal={ () => handleSetRoleId(role.id) }
-                                        reOrderLabel={ true }
-                                        showSubLabel={ true }
+                                        reOrderLabel
+                                        showSubLabel
                                         data-testid="user-mgt-add-user-wizard-modal-unselected-roles"
                                     />
                                 );
