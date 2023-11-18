@@ -69,8 +69,8 @@ module.exports = () => {
         "advancedConfigurations": {
             "saas": false,
             "discoverableByEndUsers": false,
-            "skipLoginConsent": false,
-            "skipLogoutConsent": false,
+            "skipLoginConsent": true,
+            "skipLogoutConsent": true,
             "returnAuthenticatedIdpList": false,
             "enableAuthorization": false
         },
