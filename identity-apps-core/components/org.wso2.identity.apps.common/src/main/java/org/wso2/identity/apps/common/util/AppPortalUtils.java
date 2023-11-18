@@ -267,6 +267,12 @@ public class AppPortalUtils {
             .getApplicationManagementService();
 
         for (AppPortalConstants.AppPortal appPortal : AppPortalConstants.AppPortal.values()) {
+            // Skip if the portal is not Console and not included as a default application.
+            if (!StringUtils.equalsIgnoreCase(CONSOLE_APP, appPortal.getName()) &&
+                !AppsCommonDataHolder.getInstance().getDefaultApplications().contains(appPortal.getName())) {
+                continue;
+            }
+
             if (applicationMgtService.getApplicationExcludingFileBasedSPs(appPortal.getName(),
                 tenantInfoBean.getTenantDomain()) == null) {
                 // Initiate portal
