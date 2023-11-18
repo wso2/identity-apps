@@ -10614,7 +10614,7 @@ export const console: ConsoleNS = {
                 title: "පරිශීලකයින්"
             },
             usersEdit: {
-                backButton: "නැවත පරිශීලකයින් වෙත යන්න",
+                backButton: "{{type}} වෙත ආපසු යන්න",
                 subTitle: "{{name}}",
                 title: "{{email}}"
             }

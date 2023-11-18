@@ -12572,7 +12572,7 @@ export const console: ConsoleNS = {
                 title: "Users"
             },
             usersEdit: {
-                backButton: "Go back to Users",
+                backButton: "Go back to {{type}}",
                 subTitle: "{{name}}",
                 title: "{{email}}"
             }
