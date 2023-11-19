@@ -56,7 +56,7 @@ import { GUEST_ADMIN_ASSOCIATION_TYPE } from "../../../extensions/components/use
 import { administratorConfig } from "../../../extensions/configs/administrator";
 import { AccessControlConstants } from "../../access-control/constants/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
-import { OrganizationUtils } from "../../organizations/utils";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { searchRoleList, updateRoleDetails } from "../../roles/api/roles";
 import {
     OperationValueInterface,
@@ -68,7 +68,6 @@ import { ConnectorPropertyInterface, ServerConfigurationsConstants  } from "../.
 import { getUserDetails, updateUserInfo } from "../api";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";
 import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValueInterface } from "../models";
-import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 
 /**
  * Prop types for the basic details component.
@@ -1259,10 +1258,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     label={ fieldName }
                     required={ schema?.required }
                     requiredErrorMessage={
-                        t("console:manage.features.user.forms.profile.generic.inputs.validations.empty", { fieldName })
+                        t("console:manage.features.user.profile.forms.generic.inputs.validations.empty", { fieldName })
                     }
                     placeholder={
-                        t("console:manage.features.user.forms.profile.generic.inputs.dropdownPlaceholder",
+                        t("console:manage.features.user.profile.forms.generic.inputs.dropdownPlaceholder",
                             { fieldName })
                     }
                     type="dropdown"
@@ -1270,7 +1269,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     children={ [ {
                         "data-testid": `${ testId }-profile-form-locale-dropdown-empty` as string,
                         key: "empty-locale" as string,
-                        text: t("console:manage.features.user.forms.profile.generic.inputs.dropdownPlaceholder",
+                        text: t("console:manage.features.user.profile.forms.generic.inputs.dropdownPlaceholder",
                             { fieldName }) as string,
                         value: "" as string
                     } ].concat(
