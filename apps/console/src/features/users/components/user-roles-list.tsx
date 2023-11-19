@@ -73,12 +73,13 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
     const getPlaceholders = () => {
         if (showEmptyRolesListPlaceholder) {
             return (
-                // TODO: Need to replace the i18N with the correct one.
                 <EmptyPlaceholder
                     subtitle={ 
-                        [ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.subtitles") ]
+                        [ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.emptyPlaceholder" + 
+                            ".subtitles") ]
                     }
-                    title={ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.title") }
+                    title={ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.emptyPlaceholder" + 
+                        ".title") }
                     image={ getEmptyPlaceholderIllustrations().emptyList }
                     imageSize="tiny"
                 />
