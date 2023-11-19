@@ -296,7 +296,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         if (!isEmpty(profileSchema) && !isEmpty(userInfo)) {
             const tempProfileInfo: Map<string, string> = new Map<string, string>();
 
-            if (adminUserType === "internal") {
+            if (adminUserType === AdminAccountTypes.INTERNAL) {
                 proSchema.forEach((schema: ProfileSchemaInterface) => {
                     const schemaNames: string[] = schema.name.split(".");
 
