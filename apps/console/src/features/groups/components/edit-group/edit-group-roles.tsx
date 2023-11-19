@@ -34,7 +34,7 @@ import { useTranslation } from "react-i18next";
 import { getEmptyPlaceholderIllustrations } from "../../../core/configs/ui";
 import { GroupsInterface } from "../../models/groups";
 import { AutoCompleteRenderOption } from "../group-common-components/auto-complete-render-option";
-import { RenderChip } from "../group-common-components/render-chip";
+import { RenderChipRolesInGroups } from "../group-common-components/render-chip";
 
 interface EditGroupRolesPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -115,10 +115,9 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
                                 value: RolesMemberInterface[], 
                                 getTagProps: AutocompleteRenderGetTagProps
                             ) => value.map((option: RolesMemberInterface, index: number) => (
-                                <RenderChip 
+                                <RenderChipRolesInGroups 
                                     { ...getTagProps({ index }) }
                                     key={ index }
-                                    primaryText={ "" }
                                     displayName={ option.display }
                                     audienceType={ option.audienceType }
                                     audienceDisplay={ option.audienceDisplay }

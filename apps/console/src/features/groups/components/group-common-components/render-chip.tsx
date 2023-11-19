@@ -47,7 +47,7 @@ interface RenderChipInterface extends IdentifiableComponentInterface, ChipProps 
     option: RolesMemberInterface;
 }
 
-export const RenderChip: FunctionComponent<RenderChipInterface> = (
+export const RenderChipRolesInGroups: FunctionComponent<RenderChipInterface> = (
     props: RenderChipInterface
 ): ReactElement => {
 
@@ -60,7 +60,6 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
         option
     } = props;
 
-    const [ , setPopoverAnchorEl ] = useState<Element>(null);
 
     /**
      * Handles the mouse enter event of the chip.
@@ -70,7 +69,6 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
      */
     const handleChipMouseEnter = (event: SyntheticEvent) => {
         event.stopPropagation();
-        setPopoverAnchorEl(event.currentTarget);
         setActiveOption(option);
     };
     
@@ -78,7 +76,6 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
      * Handles the mouse leave event of the chip.
      */
     const handleChipMouseLeave = () => {
-        setPopoverAnchorEl(null);
         setActiveOption(null);
     };
 
