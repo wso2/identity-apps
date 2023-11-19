@@ -54,14 +54,14 @@ export const NotificationChannelPage: FunctionComponent<NotificationChannelPageI
     /**
      * Check if the email provider is enabled for the tenant.
      */
-    const isEmailProviderEnabled: boolean = featureConfig.emailProviders?.enabled
+    const isEmailProviderEnabled: boolean = featureConfig?.emailProviders?.enabled
         && !(featureConfig?.emailProviders?.disabledFeatures?.includes("superTenantProvider")
         && organizationType === OrganizationType.SUPER_ORGANIZATION);
 
     /**
      * Check if the SMS provider is enabled for the tenant.
      */
-    const isSMSProviderEnabled: boolean = featureConfig.smsProviders?.enabled;
+    const isSMSProviderEnabled: boolean = featureConfig?.smsProviders?.enabled;
 
     /**
      * Handle connector advance setting selection.
