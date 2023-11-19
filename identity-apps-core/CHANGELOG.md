@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.58
+
+### Patch Changes
+
+- [#4653](https://github.com/wso2/identity-apps/pull/4653) [`e9c227d1fb`](https://github.com/wso2/identity-apps/commit/e9c227d1fbb07d569cc51ae6384bb7db12880014) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix inconsistency issue in choose other option button in sms otp and email otp pages
+
 ## 2.0.57
 
 ### Patch Changes
