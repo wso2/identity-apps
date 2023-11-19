@@ -31,6 +31,7 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
     ConfirmationModal,
     ContentLoader,
@@ -55,7 +56,7 @@ import { GUEST_ADMIN_ASSOCIATION_TYPE } from "../../../extensions/components/use
 import { administratorConfig } from "../../../extensions/configs/administrator";
 import { AccessControlConstants } from "../../access-control/constants/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
-import { OrganizationUtils } from "../../organizations/utils";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { searchRoleList, updateRoleDetails } from "../../roles/api/roles";
 import {
     OperationValueInterface,
@@ -153,12 +154,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const dispatch: Dispatch = useDispatch();
 
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
+
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const currentOrganization: string =  useSelector((state: AppState) => state?.config?.deployment?.tenant);
     const authUserTenants: TenantInfo[] = useSelector((state: AppState) => state?.auth?.tenants);
+    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state.global.supportedI18nLanguages
+    );
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
@@ -187,7 +193,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const modifiedDate: string = user?.meta?.lastModified;
 
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (!isSuperOrganization()) {
             return;
         }
 
@@ -1239,6 +1245,52 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     disabled={ false }
                     readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
                     clearable={ !schema.required }
+                    search
+                    selection
+                    fluid
+                />
+            );
+        } else if (schema?.name === "locale") {
+            return (
+                <Field
+                    data-testid={ `${ testId }-profile-form-${ schema?.name }-input` }
+                    name={ schema?.name }
+                    label={ fieldName }
+                    required={ schema?.required }
+                    requiredErrorMessage={
+                        t("console:manage.features.user.profile.forms.generic.inputs.validations.empty", { fieldName })
+                    }
+                    placeholder={
+                        t("console:manage.features.user.profile.forms.generic.inputs.dropdownPlaceholder",
+                            { fieldName })
+                    }
+                    type="dropdown"
+                    value={ profileInfo.get(schema?.name) }
+                    children={ [ {
+                        "data-testid": `${ testId }-profile-form-locale-dropdown-empty` as string,
+                        key: "empty-locale" as string,
+                        text: t("console:manage.features.user.profile.forms.generic.inputs.dropdownPlaceholder",
+                            { fieldName }) as string,
+                        value: "" as string
+                    } ].concat(
+                        supportedI18nLanguages
+                            ? Object.keys(supportedI18nLanguages).map((key: string) => {
+                                return {
+                                    "data-testid": `${ testId }-profile-form-locale-dropdown-`
+                                        +  supportedI18nLanguages[key].code as string,
+                                    flag: supportedI18nLanguages[key].flag,
+                                    key: supportedI18nLanguages[key].code as string,
+                                    text: `${supportedI18nLanguages[key].name as string}, 
+                                                ${supportedI18nLanguages[key].code as string}`,
+                                    value: supportedI18nLanguages[key].code as string
+                                };
+                            })
+                            : []
+                    ) }
+                    key={ key }
+                    disabled={ false }
+                    readOnly={ isReadOnly || schema?.mutability === ProfileConstants.READONLY_SCHEMA }
+                    clearable={ !schema?.required }
                     search
                     selection
                     fluid

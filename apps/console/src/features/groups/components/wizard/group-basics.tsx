@@ -31,7 +31,7 @@ import { SharedUserStoreConstants } from "../../../core/constants";
 import { SharedUserStoreUtils } from "../../../core/utils";
 // TODO: Remove this once the api is updated.
 import { RootOnlyComponent } from "../../../organizations/components";
-import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { getUserStoreList } from "../../../userstores/api";
 import { UserStoreProperty } from "../../../userstores/models";
 import { searchGroupList } from "../../api";
@@ -70,7 +70,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
     const [ basicDetails, setBasicDetails ] = useState<any>(null);
     const [ userList, setUserList ] = useState<any>(null);
 
-    const { isRootOrganization } = useGetOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     const groupName: React.MutableRefObject<HTMLDivElement | undefined> = useRef<HTMLDivElement>();
 
@@ -158,7 +158,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
         setUserStore(storeOptions[ 0 ].value as string);
 
-        if (isRootOrganization) {
+        if (isSuperOrganization() || isFirstLevelOrganization()) {
             getUserStoreList()
                 .then((response: UserstoreListResponseInterface[] | any) => {
                     if (storeOptions.length === 0) {

@@ -45,7 +45,7 @@ import { Dispatch } from "redux";
 import { ExtendedFeatureConfigInterface } from "../../../extensions/configs/models";
 import { EventPublisher } from "../../core";
 import { AppState } from "../../core/store";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { OrganizationResponseInterface } from "../../organizations/models/organizations";
 import { deleteBrandingPreference, updateBrandingPreference } from "../api";
 import useGetBrandingPreferenceResolve from "../api/use-get-branding-preference-resolve";
@@ -90,7 +90,7 @@ const BrandingPage: FunctionComponent<BrandingPageInterface> = (
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
     const { isGreaterThanComputerViewport } = useMediaContext();
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const productName: string = useSelector((state: AppState) => state.config.ui.productName);

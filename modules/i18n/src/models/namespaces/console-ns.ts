@@ -5525,6 +5525,10 @@ export interface ConsoleNS {
                 };
             };
             serverConfigs: {
+                server: {
+                    title: string;
+                    description: string;
+                };
                 adminAdvisory: {
                     configurationEditSection: {
                         backButtonLabel: string;
@@ -5552,6 +5556,10 @@ export interface ConsoleNS {
                     };
                     pageHeading: string;
                     pageSubheading: string;
+                };
+                manageNotificationSendingInternally: {
+                    title: string;
+                    description: string;
                 };
                 remoteLogPublishing: {
                     title: string;
@@ -5989,6 +5997,7 @@ export interface ConsoleNS {
                         generic: {
                             inputs: {
                                 placeholder: string;
+                                dropdownPlaceholder: string;
                                 validations: {
                                     empty: string;
                                     invalidFormat: string;

@@ -39,6 +39,7 @@ import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../../
 import { getUserDetails, updateUserInfo } from "../api";
 import { EditUser } from "../components/edit-user";
 import { UserManagementUtils } from "../utils";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 
 /**
  * User Edit page.
@@ -50,6 +51,8 @@ const UserEditPage = (): ReactElement => {
     const { t } = useTranslation();
 
     const dispatch: Dispatch<any> = useDispatch();
+
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -64,7 +67,7 @@ const UserEditPage = (): ReactElement => {
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (!isSuperOrganization()) {
             return;
         }
 
@@ -107,7 +110,7 @@ const UserEditPage = (): ReactElement => {
     }, []);
 
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (!isSuperOrganization) {
             return;
         }
 

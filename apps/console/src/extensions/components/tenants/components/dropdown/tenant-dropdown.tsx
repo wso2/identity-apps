@@ -52,7 +52,7 @@ import { AppConstants } from "../../../../../features/core/constants";
 import { history } from "../../../../../features/core/helpers/history";
 import { AppState } from "../../../../../features/core/store";
 import { OrganizationType } from "../../../../../features/organizations/constants";
-import { useGetOrganizationType } from "../../../../../features/organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../../../features/organizations/hooks/use-get-organization-type";
 import { FeatureGateConstants } from "../../../feature-gate/constants/feature-gate";
 import { getAssociatedTenants, makeTenantDefault } from "../../api";
 import { TenantInfo, TenantRequestResponse, TriggerPropTypesInterface } from "../../models";
@@ -115,7 +115,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     const [ organizationName, setOrganizationName ] = useState<string>("");
     const [ isCopying, setIsCopying ] = useState<boolean>(false);
 
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 

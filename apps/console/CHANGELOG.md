@@ -1,5 +1,25 @@
 # @wso2is/console
 
+## 2.6.23
+
+### Patch Changes
+
+- [#4628](https://github.com/wso2/identity-apps/pull/4628) [`da205b298b`](https://github.com/wso2/identity-apps/commit/da205b298bcb98ac2a264d550c3f4025d61d64dd) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix root organization selection inconsistency
+
+* [#4695](https://github.com/wso2/identity-apps/pull/4695) [`96dd848813`](https://github.com/wso2/identity-apps/commit/96dd84881370cfaf099f691c808241d4d8b1cc4a) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Fix empty placeholder text in `Roles` section in the edit user.
+
+- [#4647](https://github.com/wso2/identity-apps/pull/4647) [`58cc4420bc`](https://github.com/wso2/identity-apps/commit/58cc4420bc81759ccfc94354ee1a8fcc2938abd0) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a dropdown for the local property in user profile edit
+
+* [#4658](https://github.com/wso2/identity-apps/pull/4658) [`e3909f8f1d`](https://github.com/wso2/identity-apps/commit/e3909f8f1d2e5883290bc45253f39d4d426deb9e) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Improve the UX of the role creation flow.
+
+- [#4615](https://github.com/wso2/identity-apps/pull/4615) [`298029a00c`](https://github.com/wso2/identity-apps/commit/298029a00c162855be33d7334ad8a176fe02df79) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue related to the UI is not loading when we enable email OTP federated authenticator through management console.
+
+* [#4687](https://github.com/wso2/identity-apps/pull/4687) [`24eb66f570`](https://github.com/wso2/identity-apps/commit/24eb66f57020805ba81456e8d68ab7b49415ef7b) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Fix groups edit page title and add audience to role assign view
+
+* Updated dependencies [[`24eb66f570`](https://github.com/wso2/identity-apps/commit/24eb66f57020805ba81456e8d68ab7b49415ef7b)]:
+  - @wso2is/i18n@2.0.44
+  - @wso2is/react-components@2.0.19
+
 ## 2.6.22
 
 ### Patch Changes

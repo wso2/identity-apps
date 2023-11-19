@@ -32,14 +32,14 @@ export class OrganizationManagementConstants {
     /**
      * Super organization id as per alpha pack 2
      */
-    public static readonly ROOT_ORGANIZATION_ID: string = "10084a8d-113f-4211-a0d5-efe36b082211";
+    public static readonly SUPER_ORGANIZATION_ID: string = "10084a8d-113f-4211-a0d5-efe36b082211";
 
     /**
      * Super organization object.
      *
      */
     public static readonly ROOT_ORGANIZATION: OrganizationInterface = {
-        id: this.ROOT_ORGANIZATION_ID,
+        id: this.SUPER_ORGANIZATION_ID,
         name: "Super",
         ref: "",
         status: "ACTIVE"

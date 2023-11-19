@@ -3,7 +3,6 @@
 "@wso2is/myaccount": patch
 "@wso2is/identity-apps-core": patch
 "@wso2is/i18n": patch
-"@wso2is/react-components": patch
 ---
 
-Fix groups edit page title and add audience to role assign view
+(fix) Change page title of `channels` to be changed based on the enabled providers.

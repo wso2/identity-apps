@@ -32,6 +32,7 @@ import { getRolesList } from "../../../../../roles/api";
 import { updateConnectionRoleMappings } from "../../../../api/connections";
 import { ConnectionRolesInterface } from "../../../../models/connection";
 import { handleGetRoleListError, handleUpdateIDPRoleMappingsError } from "../../../../utils/connection-utils";
+import { useGetCurrentOrganizationType } from "apps/console/src/features/organizations/hooks/use-get-organization-type";
 
 interface OutboundProvisioningRolesPropsInterface extends TestableComponentInterface {
     idpId: string;
@@ -57,7 +58,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
-
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
     const { t } = useTranslation();
 
     const handleRoleAdd = (event) => {
@@ -79,7 +80,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
     };
 
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (!isSuperOrganization()) {
             return;
         }
 

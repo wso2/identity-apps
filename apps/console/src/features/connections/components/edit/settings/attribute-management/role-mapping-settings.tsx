@@ -35,6 +35,7 @@ import { getRolesList } from "../../../../../roles/api/roles";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import { ConnectionRoleMappingInterface } from "../../../../models/connection";
 import { handleGetRoleListError } from "../../../../utils/connection-utils";
+import { useGetCurrentOrganizationType } from "apps/console/src/features/organizations/hooks/use-get-organization-type";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -84,6 +85,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     } = props;
 
     const { t } = useTranslation();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     /**
      * Filter out Application related and Internal roles
@@ -103,7 +105,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     };
 
     useEffect(() => {
-        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (isSuperOrganization()) {
             getRolesList(null)
                 .then((response: AxiosResponse) => {
                     if (response.status === 200) {
