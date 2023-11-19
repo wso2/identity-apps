@@ -667,7 +667,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     <FormContent />
                 ) : (
                     <ContentLoader />
-                )}
+                ) }
             </EmphasizedSegment>
         </PageLayout>
     );
