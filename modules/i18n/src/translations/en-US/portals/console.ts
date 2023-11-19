@@ -10409,7 +10409,9 @@ export const console: ConsoleNS = {
                                 description: "We were unable to fetch the groups assigned to the role."
                             }
                         },
+                        externalGroupsHeading: "External Groups",
                         heading: "Assigned Groups",
+                        localGroupsHeading: "Local Groups",
                         subHeading: "Add or remove the groups assigned to this role. Note that this "
                             + "will affect performing certain tasks.",
                         actions: {

@@ -264,7 +264,9 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             <Heading subHeading ellipsis as="h6">
                 { t("console:manage.features.roles.edit.groups.subHeading") }
             </Heading>
-            <Heading as="h5">Local Groups</Heading>
+            <Heading as="h5">
+                { t("console:manage.features.roles.edit.groups.localGroupsHeading") }
+            </Heading>
             {
                 <EditRoleLocalGroupsAccordion
                     key={ "role-group-accordion-local" }
@@ -280,7 +282,9 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                     <>
                         <Divider hidden />
                         <Divider />
-                        <Heading as="h5">External Groups</Heading>
+                        <Heading as="h5">
+                            { t("console:manage.features.roles.edit.groups.externalGroupsHeading") }
+                        </Heading>
                     </>
                 )
             }

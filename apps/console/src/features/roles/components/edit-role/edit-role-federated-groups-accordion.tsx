@@ -250,7 +250,6 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                             { identityProvider.name }
                         </Typography>
                     </>
-                    
                 </AccordionSummary>
                 <AccordionDetails>
                     <>
@@ -262,20 +261,20 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                                         disableCloseOnSelect
                                         options={ selectedGroupsOptions ? selectedGroupsOptions : [] }
                                         value={ selectedGroupsOptions ? selectedGroupsOptions : [] }
-                                        getOptionLabel={ (group: IdentityProviderGroupInterface) => 
+                                        getOptionLabel={ (group: IdentityProviderGroupInterface) =>
                                             group.name }
                                         renderInput={ (params: AutocompleteRenderInputParams) => (
                                             <TextField
                                                 { ...params }
-                                                placeholder= { t("console:manage.features.roles.edit.groups" + 
-                                                        ".actions.search.placeholder") }
+                                                placeholder= { t("console:manage.features.roles.edit.groups" +
+                                                    ".actions.search.placeholder") }
                                             />
                                         ) }
                                         renderTags={ (
-                                            value: IdentityProviderGroupInterface[], 
+                                            value: IdentityProviderGroupInterface[],
                                             getTagProps: AutocompleteRenderGetTagProps
                                         ) => value.map((option: IdentityProviderGroupInterface, index: number) => (
-                                            <RenderChip 
+                                            <RenderChip
                                                 { ...getTagProps({ index }) }
                                                 key={ index }
                                                 primaryText={ option.name }
@@ -307,7 +306,7 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                                             <TextField
                                                 { ...params }
                                                 placeholder= { t("console:manage.features.roles.edit.groups" + 
-                                                        ".actions.assign.placeholder") }
+                                                    ".actions.assign.placeholder") }
                                             />
                                         ) }
                                         onChange={ (
@@ -382,9 +381,9 @@ export const EditRoleFederatedGroupsAccordion: FunctionComponent<EditRoleFederat
                                             <TextField
                                                 { ...params }
                                                 placeholder={ t("console:manage.features.roles.edit.groups" + 
-                                                        ".actions.remove.placeholder") }
+                                                    ".actions.remove.placeholder") }
                                                 label={ t("console:manage.features.roles.edit.groups" + 
-                                                        ".actions.remove.label") }
+                                                    ".actions.remove.label") }
                                                 margin="dense"
                                             />
                                         ) }

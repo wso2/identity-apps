@@ -5415,6 +5415,8 @@ export interface ConsoleNS {
                             fetchError: NotificationItem;
                         };
                         heading: string;
+                        localGroupsHeading: string;
+                        externalGroupsHeading: string;
                         subHeading: string;
                         actions: {
                             search: {

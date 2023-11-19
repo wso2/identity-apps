@@ -198,8 +198,8 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                 renderInput={ (params: AutocompleteRenderInputParams) => (
                                     <TextField
                                         { ...params }
-                                        placeholder= { t("console:manage.features.roles.edit.groups" + 
-                                                        ".actions.search.placeholder") }
+                                        placeholder= { t("console:manage.features.roles.edit.groups" +
+                                            ".actions.search.placeholder") }
                                     />
                                 ) }
                                 renderTags={ (
@@ -239,8 +239,8 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                 renderInput={ (params: AutocompleteRenderInputParams) => (
                                     <TextField
                                         { ...params }
-                                        placeholder= { t("console:manage.features.roles.edit.groups" + 
-                                                        ".actions.assign.placeholder") }
+                                        placeholder= { t("console:manage.features.roles.edit.groups" +
+                                            ".actions.assign.placeholder") }
                                     />
                                 ) }
                                 onChange={ (event: SyntheticEvent, groups: IdentityProviderGroupInterface[]) => {
@@ -314,10 +314,10 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
                                 renderInput={ (params: AutocompleteRenderInputParams) => (
                                     <TextField
                                         { ...params }
-                                        placeholder={ t("console:manage.features.roles.edit.groups" + 
-                                                        ".actions.remove.placeholder") }
-                                        label={ t("console:manage.features.roles.edit.groups" + 
-                                                        ".actions.remove.label") }
+                                        placeholder={ t("console:manage.features.roles.edit.groups" +
+                                            ".actions.remove.placeholder") }
+                                        label={ t("console:manage.features.roles.edit.groups" +
+                                            ".actions.remove.label") }
                                         margin="dense"
                                     />
                                 ) }
