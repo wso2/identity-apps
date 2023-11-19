@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.61
+
+### Patch Changes
+
+- [#4674](https://github.com/wso2/identity-apps/pull/4674) [`eb5515c08c`](https://github.com/wso2/identity-apps/commit/eb5515c08c8ad7453356f30f653b0e176f2e3a72) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Improve user management section
+
 ## 2.0.60
 
 ### Patch Changes
