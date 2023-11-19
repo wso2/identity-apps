@@ -34,8 +34,8 @@ importers:
         specifier: ^2.2.6
         version: 2.3.1
       crypto-js:
-        specifier: ^3.1.9-1
-        version: 3.3.0
+        specifier: ^4.2.0
+        version: 4.2.0
       final-form:
         specifier: ^4.20.2
         version: 4.20.7
@@ -1293,8 +1293,8 @@ importers:
         specifier: ^0.1.7
         version: 0.1.7
       crypto-js:
-        specifier: ^3.1.9-1
-        version: 3.3.0
+        specifier: ^4.2.0
+        version: 4.2.0
       file-saver:
         specifier: ^2.0.5
         version: 2.0.5
@@ -17064,8 +17064,8 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  /crypto-js@3.3.0:
-    resolution: {integrity: sha512-DIT51nX0dCfKltpRiXV+/TVZq+Qq2NgF4644+K7Ttnla7zEzqc+kjJyiB96BHNyUTBxyjzRcZYpUdZa+QAqi6Q==}
+  /crypto-js@4.2.0:
+    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
     dev: false
 
   /crypto-random-string@2.0.0:
