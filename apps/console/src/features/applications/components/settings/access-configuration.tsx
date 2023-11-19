@@ -24,9 +24,11 @@ import {
     ContentLoader,
     DocumentationLink,
     EmphasizedSegment,
+    EmptyPlaceholder,
     GenericIcon,
     Message,
     Popup,
+    PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
@@ -36,10 +38,10 @@ import React, { Fragment, FunctionComponent, MutableRefObject, ReactElement, use
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Grid, Header, Button as SemButton } from "semantic-ui-react";
+import { Divider, Grid, Header, Icon, Button as SemButton } from "semantic-ui-react";
 import { SAMLSelectionLanding } from "./protocols";
 import { applicationConfig } from "../../../../extensions";
-import { AppState, FeatureConfigInterface, store } from "../../../core";
+import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations, store } from "../../../core";
 import {
     deleteProtocol,
     getAuthProtocolMetadata,
@@ -1000,11 +1002,45 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     <Grid>
                         <>
                             { loadSupportedProtocols() }
-                            <Grid.Row>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    { resolveInboundProtocolSettingsForm() }
-                                </Grid.Column>
-                            </Grid.Row>
+                            {
+                                template && (
+                                    <Grid.Row>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            { resolveInboundProtocolSettingsForm() }
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
+                            {
+                                !template && (
+                                    <Grid.Row>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            <EmphasizedSegment
+                                                className="protocol-settings-section form-wrapper"
+                                                padded="very"
+                                                ref={ emphasizedSegmentRef }
+                                            >
+                                                <EmptyPlaceholder
+                                                    title={ t("console:develop.features.applications.edit" +
+                                                        ".sections.protocol.title") }
+                                                    subtitle={ [
+                                                        t("console:develop.features.applications.edit" +
+                                                            ".sections.protocol.subtitle")
+                                                    ] }
+                                                    action={ (
+                                                        <PrimaryButton onClick={ () => setShowWizard(true) }>
+                                                            { t("console:develop.features.applications.edit" +
+                                                                ".sections.protocol.button") }
+                                                        </PrimaryButton>
+                                                    ) }
+                                                    image={ getEmptyPlaceholderIllustrations().emptyList }
+                                                    imageSize="tiny"
+                                                />
+                                            </EmphasizedSegment>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
                             {
                                 showWizard && (
                                     <ApplicationCreateWizard
