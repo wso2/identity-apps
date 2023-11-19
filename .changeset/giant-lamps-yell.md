@@ -5,4 +5,4 @@
 "@wso2is/identity-apps-core": patch
 ---
 
-Add server configurations feature
+Improve user management section
