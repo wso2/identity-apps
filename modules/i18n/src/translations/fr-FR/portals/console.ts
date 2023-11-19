@@ -7466,6 +7466,7 @@ export const console: ConsoleNS = {
                 invitedUserLabel: "Géré par l'organisation mère"
             },
             oidcScopes: {
+                back: "Revenir aux mappages d’attributs OpenID Connect",
                 viewAttributes: "Afficher les attributs",
                 manageAttributes: "Gérer les attributs",
                 addAttributes: {

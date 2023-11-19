@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, Input } from "semantic-ui-react";
 import { AccessControlConstants } from "../../access-control/constants/access-control";
-import { AppState, FeatureConfigInterface, UIConstants, sortList } from "../../core";
+import { ClaimManagementConstants } from "../../claims/constants";
+import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history, sortList } from "../../core";
 import { useOIDCScopesList } from "../api";
 import { OIDCScopeCreateWizard, OIDCScopeList } from "../components";
 import { OIDCScopesListInterface } from "../models";
@@ -193,6 +194,15 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
             title={ t("console:manage.pages.oidcScopes.title") }
             description={ t("console:manage.pages.oidcScopes.subTitle") }
             data-testid={ `${ testId }-page-layout` }
+            backButton={ {
+                onClick: () => {
+                    history.push(AppConstants.getPaths().get("ATTRIBUTE_MAPPINGS")
+                        .replace(":type", ClaimManagementConstants.OIDC)
+                        .replace(":customAttributeMappingID", "")
+                    );
+                },
+                text: t("console:manage.features.claims.local.pageLayout.local.back")
+            } }
         >
             <ListLayout
                 showTopActionPanel={ (!isScopeListFetchRequestLoading && !(scopeList?.length == 0)) }

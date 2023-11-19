@@ -158,7 +158,7 @@ export class ServerConfigurationsConstants {
 	public static readonly USER_EMAIL_VERIFICATION_CONNECTOR_ID: string = "dXNlci1lbWFpbC12ZXJpZmljYXRpb24";
 
 	/**
-	 * UUID of the Other Sttings governance connector category.
+	 * UUID of the Other Settings governance connector category.
 	 */
 	public static readonly OTHER_SETTINGS_CONNECTOR_CATEGORY_ID: string = "T3RoZXIgU2V0dGluZ3M";
 

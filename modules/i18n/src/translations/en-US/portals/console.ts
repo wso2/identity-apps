@@ -9224,6 +9224,7 @@ export const console: ConsoleNS = {
                 invitedUserLabel: "Managed by parent organization"
             },
             oidcScopes: {
+                back: "Go back to OpenID Connect Attrbute Mappings",
                 viewAttributes: "View Attributes",
                 manageAttributes: "Manage Attributes",
                 addAttributes: {

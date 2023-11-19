@@ -272,6 +272,9 @@ export class AppConstants {
             [ "APPROVALS", `${ AppConstants.getAdminViewBasePath() }/approvals` ],
             [ "CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates` ],
             [ "CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/attributes-and-mappings` ],
+            [ "CLAIM_VERIFICATION_SETTINGS",
+                `${ AppConstants.getAdminViewBasePath() }/attribute-verification-settings`
+            ],
             [ "CONNECTIONS", `${ AppConstants.getDeveloperViewBasePath() }/connections` ],
             [ "CONNECTION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/connections/templates` ],
             [ "CONNECTION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/connections/:id` ],
