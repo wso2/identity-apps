@@ -82,7 +82,7 @@ export const NotificationChannelPage: FunctionComponent<NotificationChannelPageI
         pageTitle: string;
         title: string;
     } => {
-        if (isEmailProviderEnabled === isSMSProviderEnabled) {
+        if ((isEmailProviderEnabled && isSMSProviderEnabled) || (!isEmailProviderEnabled && !isSMSProviderEnabled)) {
             return {
                 description: t("extensions:develop.notificationChannel.description.description"),
                 pageTitle: t("extensions:develop.notificationChannel.heading.heading"),
