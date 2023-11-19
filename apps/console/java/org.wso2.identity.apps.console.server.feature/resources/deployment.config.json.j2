@@ -773,6 +773,20 @@
             {% endif %}
             {% if console.governance_connectors is defined %}
             "governanceConnectors": {
+                "deprecatedFeaturesToShow": [
+                    {% if console.governance_connectors.disabled_features is defined %}
+                    {% for feature in deprecated_features_to_show %}
+                    {
+                        "name": "{{ feature.name }}",
+                        "deprecatedProperties": [
+                            {% for property in feature.deprecated_properties %}
+                            "{{ property }}"{% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        ]
+                    }{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                    {% endif %}
+                ],
                 "disabledFeatures": [
                     {% if console.governance_connectors.disabled_features is defined %}
                     {% for feature in console.governance_connectors.disabled_features %}

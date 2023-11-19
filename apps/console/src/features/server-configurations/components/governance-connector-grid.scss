@@ -1,0 +1,52 @@
+.governance-connector-list-grid-wrapper {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 40px;
+
+    .governance-connector-list-grid {
+        flex-grow: 1;
+        gap: 25px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+        .governance-connector {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid #e8e8e8;
+            border-radius: 10px;
+            transition: box-shadow 0.3s ease;
+            cursor: pointer;
+
+            .governance-connector-header {
+                display: flex;
+                flex-direction: row;
+                gap: 15px;
+                align-content: center;
+                align-items: center;
+                padding: 10px 14px;
+
+                .governance-connector-image-container {
+                    height: 45px;
+                    width: 45px;
+                    justify-content: center;
+                    display: flex;
+                    flex-direction: row;
+                    overflow: hidden;
+                    border-radius: 4px;
+                    background: linear-gradient(90deg,#fff2e8 50%,#fef8ed 100%);
+                    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px;
+                    overflow: hidden;
+                    height: 40px;
+                    width: 40px;
+                    display: flex;
+                    -webkit-box-align: center;
+                    align-items: center;
+                    -webkit-box-pack: center;
+                    justify-content: center;
+                    flex: 0 0 auto;
+                }
+            }
+        }
+    }
+}

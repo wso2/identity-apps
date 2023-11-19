@@ -115,6 +115,50 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 path: AppConstants.getPaths().get("WSFED_CONFIGURATION"),
                                 protected: true,
                                 showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import(
+                                        "../../../features/server-configurations/" +
+                                        "pages/connector-edit-page"
+                                    )
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "multi-attribute-login",
+                                name: "Multi Attribute Login",
+                                path: AppConstants.getPaths()
+                                    .get("GOVERNANCE_CONNECTOR_EDIT")
+                                    .replace(":categoryId", 
+                                        ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID)
+                                    .replace(":connectorId", 
+                                        ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import(
+                                        "../../../features/server-configurations/" +
+                                        "pages/connector-edit-page"
+                                    )
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "admin-forced-password-reset",
+                                name: "Admin Forced Password Reset",
+                                path: AppConstants.getPaths()
+                                    .get("GOVERNANCE_CONNECTOR_EDIT")
+                                    .replace(":categoryId", 
+                                        ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID)
+                                    .replace(":connectorId", 
+                                        ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET),
+                                protected: true,
+                                showOnSidePanel: false
                             }
                         ],
                         component: lazy(() =>
@@ -590,7 +634,49 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                     .replace(":connectorId", ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID),
                                 protected: true,
                                 showOnSidePanel: false
-                            }
+                            },
+                            {
+                                component: lazy(() =>
+                                    import(
+                                        "../../../features/server-configurations/" +
+                                        "pages/connector-edit-page"
+                                    )
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "organization-self-service",
+                                name: "Organization Self Service",
+                                path: AppConstants.getPaths()
+                                    .get("GOVERNANCE_CONNECTOR_EDIT")
+                                    .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+                                    .replace(":connectorId", 
+                                        ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_CONNECTOR_ID),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import(
+                                        "../../../features/server-configurations/" +
+                                        "pages/connector-edit-page"
+                                    )
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "user-email-verification",
+                                name: "Invite User to Set Password",
+                                path: AppConstants.getPaths()
+                                    .get("GOVERNANCE_CONNECTOR_EDIT")
+                                    .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+                                    .replace(":connectorId", 
+                                        ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID),
+                                protected: true,
+                                showOnSidePanel: false
+                            }   
                         ],
                         component: lazy(() =>
                             import(
@@ -681,6 +767,35 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 name: "Password Recovery",
                                 path: AppConstants.getPaths()
                                     .get("GOVERNANCE_CONNECTOR_EDIT")
+                                    .replace(
+                                        ":categoryId",
+                                        ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID
+                                    )
+                                    .replace(
+                                        ":connectorId",
+                                        ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID
+                                    ),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import(
+                                        "../../../features/server-configurations/pages/connector-edit-page"
+                                    )
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "username-recovery",
+                                name: "Username Recovery",
+                                path: AppConstants.getPaths()
+                                    .get("USERNAME_RECOVERY_CONNECTOR_EDIT")
+                                    .replace(
+                                        ":type",
+                                        "username"
+                                    )
                                     .replace(
                                         ":categoryId",
                                         ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID

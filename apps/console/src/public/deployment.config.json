@@ -508,6 +508,7 @@
                 }
             },
             "governanceConnectors": {
+                "deprecatedFeaturesToShow": [],
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
