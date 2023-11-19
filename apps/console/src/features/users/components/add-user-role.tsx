@@ -118,9 +118,9 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
      * @param roleType - string
      */
     const createItemLabel = (roleType: string, application: string) => {
-        const role: string[] = roleType.split("/");
+        const role: string[] = roleType?.split("/");
 
-        if (role.length > 0) {
+        if (role?.length > 0) {
             if (role[0] == "application") {
                 return { 
                     labelColor: null, 
