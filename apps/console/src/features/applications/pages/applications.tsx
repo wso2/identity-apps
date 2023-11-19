@@ -31,6 +31,7 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
+import cloneDeep from "lodash-es/cloneDeep";
 import find from "lodash-es/find";
 import React, {
     FunctionComponent,
@@ -139,6 +140,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
     // Note: If we are providing strong auth for applications use this state to handle it.
     const [ strongAuth, _setStrongAuth ] = useState<boolean>(undefined);
+    const [ filteredApplicationList, setFilteredApplicationList ] = useState<ApplicationListInterface>(null);
 
     const { organizationType } = useGetCurrentOrganizationType();
 
@@ -242,6 +244,26 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 ".genericError.message")
         }));
     }, [ myAccountStatusFetchRequestError ]);
+
+    /**
+     * Filter out the system apps from the application list.
+     * TODO: This implementation is a temporary one. This filtering should be
+     * done from the backend side and should have a seperate endpoint to
+     * access the system apps details.
+     */
+    useEffect(() => {
+        if (applicationList?.applications) {
+            const appList: ApplicationListInterface = cloneDeep(applicationList);
+
+            appList.applications = appList.applications.filter((item: ApplicationListItemInterface) => 
+                !ApplicationManagementConstants.SYSTEM_APPS.includes(item.clientId)
+            );
+            appList.totalResults = applicationList.totalResults - 
+                (applicationList.applications.length - appList.applications.length);
+
+            setFilteredApplicationList(appList);
+        }
+    }, [ applicationList ]);
 
     /**
      * Sets the list sorting strategy.
@@ -478,7 +500,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     return (
         <PageLayout
             pageTitle="Applications"
-            action={ (organizationType !== OrganizationType.SUBORGANIZATION && applicationList?.totalResults > 0) && (
+            action={ (organizationType !== OrganizationType.SUBORGANIZATION && 
+                filteredApplicationList?.totalResults > 0) && (
                 <Show when={ AccessControlConstants.APPLICATION_WRITE }>
                     <PrimaryButton
                         onClick={ (): void => {
@@ -563,7 +586,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         data-testid={ `${ testId }-list-advanced-search` }
                     />
                 ) }
-                currentListSize={ applicationList?.count }
+                currentListSize={ filteredApplicationList?.count }
                 isLoading={ isApplicationListFetchRequestLoading }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
@@ -572,13 +595,13 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 showPagination={ true }
                 showTopActionPanel={
                     isApplicationListFetchRequestLoading
-                    || !(!searchQuery && applicationList?.totalResults <= 0) }
+                    || !(!searchQuery && filteredApplicationList?.totalResults <= 0) }
                 sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
                 sortStrategy={ listSortingStrategy }
-                totalPages={ Math.ceil(applicationList?.totalResults / listItemLimit) }
-                totalListSize={ applicationList?.totalResults }
+                totalPages={ Math.ceil(filteredApplicationList?.totalResults / listItemLimit) }
+                totalListSize={ filteredApplicationList?.totalResults }
                 paginationOptions={ {
-                    disableNextButton: !shouldShowNextPageNavigation(applicationList)
+                    disableNextButton: !shouldShowNextPageNavigation(filteredApplicationList)
                 } }
                 data-testid={ `${ testId }-list-layout` }
             >
@@ -632,7 +655,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     featureConfig={ featureConfig }
                     isSetStrongerAuth={ strongAuth }
                     isLoading={ isApplicationListFetchRequestLoading }
-                    list={ applicationList }
+                    list={ filteredApplicationList }
                     onApplicationDelete={ handleApplicationDelete }
                     onEmptyListPlaceholderActionClick={
                         () => {
