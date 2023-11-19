@@ -20,10 +20,11 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
+import { serverConfigurationConfig } from "../../../extensions";
 import { AppConstants, EventPublisher } from "../../core";
 import "./governance-connector-grid.scss";
-import { getSettingsSectionIcons } from "../configs/ui";
 import { history } from "../../core";
+import { getSettingsSectionIcons } from "../configs/ui";
 import { 
     ArrowLoopRightUserIcon,
     BuildingGearIcon, 
@@ -41,7 +42,6 @@ import {
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import Card from "@oxygen-ui/react/Card";
 import { CardContent } from "@oxygen-ui/react";
-import { serverConfigurationConfig } from "apps/console/src/extensions";
 
 /**
  * Props for the Governance connector configuration categories page.
@@ -78,7 +78,7 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
-     * Handles template selection.
+     * Handles connector selection.
      *
      * @param e - Click event.
      * @param id - Id of the template.
@@ -216,8 +216,7 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                     </CardContent>
                                                 </Card>
                                             );
-                                        }
-                                        
+                                        }                                    
                                     })
                                 }
                             </div>
@@ -280,6 +279,5 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
 GovernanceConnectorCategoriesGrid.defaultProps = {
     "data-componentid": "governance-connector-category-grid"
 };
-
 
 export default GovernanceConnectorCategoriesGrid;

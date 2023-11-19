@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form, FormValue } from "@wso2is/form";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -37,6 +37,7 @@ interface AdminForcedPasswordResetFormPropsInterface extends IdentifiableCompone
     initialValues: GovernanceConnectorInterface;
     /**
      * Callback for form submit.
+     * 
      * @param values - Resolved Form Values.
      */
     onSubmit: (values) => void;
@@ -80,13 +81,12 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
     const [ initialConnectorValues, setInitialConnectorValues ]
         = useState<Map<string, ConnectorPropertyInterface>>(undefined);
     const [ initialFormValues, setInitialFormValues ]
-        = useState<any>(undefined);
+        = useState<Map<string,FormValue>>(undefined);
 
     /**
      * Flattens and resolved form initial values and field metadata.
      */
     useEffect(() => {
-
         if (isEmpty(initialValues?.properties)) {
             return;
         }
@@ -137,7 +137,7 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
     return (
         <Form
             id={ FORM_ID }
-            uncontrolledForm={ true }
+            uncontrolledForm
             initialValues={ initialFormValues }
             onSubmit={ (values: Record<string, unknown>) => 
                 onSubmit(getUpdatedConfigurations(values)) 
