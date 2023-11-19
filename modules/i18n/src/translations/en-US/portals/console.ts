@@ -1051,6 +1051,11 @@ export const console: ConsoleNS = {
                                 "configure authentication for your application using WS-Federation.",
                             tabName: "Info"
                         },
+                        protocol: {
+                            title: "Protocol Configuration",
+                            subtitle: "Configure the protocol for your application.",
+                            button: "Configure Protocol"
+                        },
                         provisioning: {
                             inbound: {
                                 heading: "Inbound Provisioning",

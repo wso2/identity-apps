@@ -1049,6 +1049,11 @@ export const console: ConsoleNS = {
                                 "Configurer l'authentification pour votre application à l'aide de WS-Federation.",
                             tabName: "Info"
                         },
+                        protocol: {
+                            title: "Configuration du protocole",
+                            subtitle: "Configurez le protocole pour votre application.",
+                            button: "Configurer le protocole"
+                        },
                         provisioning: {
                             inbound: {
                                 heading: "Provisionnement entrant",

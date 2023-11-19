@@ -679,6 +679,11 @@ export interface ConsoleNS {
                         general: {
                             tabName: string;
                         };
+                        protocol: {
+                            title: string;
+                            subtitle: string;
+                            button: string;
+                        };
                         provisioning: {
                             tabName: string;
                             inbound: {
