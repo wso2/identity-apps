@@ -18,8 +18,7 @@
 
 import Chip, { ChipProps } from "@oxygen-ui/react/Chip";
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
-import { ChipMoreDetails } from "./chip-more-details";
+import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
 
 interface RenderChipInterface extends IdentifiableComponentInterface, ChipProps {
     /**
@@ -31,32 +30,36 @@ interface RenderChipInterface extends IdentifiableComponentInterface, ChipProps 
      */
     setActiveOption: (option: RolesMemberInterface) => void;
     /**
-     * Primary text of the chip.
+     * Display name of the role
      */
-    primaryText: string;
+    displayName?: string;
+    /**
+     * Audience type of the role
+     */
+    audienceType?: string;
+    /**
+     * Audience display of the role
+     */
+    audienceDisplay?: string;
     /**
      * Option object.
      */
     option: RolesMemberInterface;
-    /**
-     * Active option object.
-     */
-    activeOption: RolesMemberInterface;
 }
 
-export const RenderChip: FunctionComponent<RenderChipInterface> = (
+export const RenderChipRolesInGroups: FunctionComponent<RenderChipInterface> = (
     props: RenderChipInterface
 ): ReactElement => {
 
     const {
         key,
         setActiveOption,
-        primaryText,
-        option,
-        activeOption
+        displayName,
+        audienceType,
+        audienceDisplay,
+        option
     } = props;
 
-    const [ popoverAnchorEl, setPopoverAnchorEl ] = useState<Element>(null);
 
     /**
      * Handles the mouse enter event of the chip.
@@ -66,7 +69,6 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
      */
     const handleChipMouseEnter = (event: SyntheticEvent) => {
         event.stopPropagation();
-        setPopoverAnchorEl(event.currentTarget);
         setActiveOption(option);
     };
     
@@ -74,7 +76,6 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
      * Handles the mouse leave event of the chip.
      */
     const handleChipMouseLeave = () => {
-        setPopoverAnchorEl(null);
         setActiveOption(null);
     };
 
@@ -83,21 +84,17 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
             <Chip
                 { ...props }
                 key={ key }
-                label={ primaryText }
+                label={ 
+                    (<>
+                        <i> { audienceType } </i> 
+                        <i> { audienceType === "application" && ( " : " + audienceDisplay ) } </i>
+                        { " | " }
+                        <strong> { displayName } </strong>
+                    </>)
+                }
                 onMouseEnter={ handleChipMouseEnter }
                 onMouseLeave={ handleChipMouseLeave }
             />
-            {
-                activeOption?.value === option.value
-                    ? (
-                        <ChipMoreDetails 
-                            popoverAnchorEl={ popoverAnchorEl } 
-                            onPopoverClose={ handleChipMouseLeave } 
-                            primaryText={ primaryText } 
-                        />
-                    )
-                    : null
-            }
         </>
     );
 };
