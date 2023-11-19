@@ -285,6 +285,10 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return;
         }
 
+        if (!connector.templateId) {
+            connector.templateId = ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID;
+        }
+
         let template: ConnectionTemplateInterface = {};
         let templateId: string = connector.templateId;
 
