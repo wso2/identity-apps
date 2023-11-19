@@ -52,7 +52,7 @@ import {
     setActiveView
 } from "../../../../features/core";
 import { OrganizationType } from "../../../../features/organizations/constants";
-import { useGetOrganizationType } from "../../../../features/organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../../features/organizations/hooks/use-get-organization-type";
 import { AppViewExtensionTypes } from "../../../configs";
 import { TryItApplicationConstants } from "../../application/constants";
 import { getTryItClientId } from "../../application/utils/try-it-utils";
@@ -109,7 +109,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
         setIsTryItApplicationSearchRequestLoading
     ] = useState<boolean>(false);
 
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 

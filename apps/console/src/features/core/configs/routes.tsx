@@ -37,6 +37,9 @@ import values from "lodash-es/values";
 import React, { FunctionComponent, lazy } from "react";
 import { getSidePanelIcons } from "./ui";
 import { identityProviderConfig, userstoresConfig } from "../../../extensions";
+import { 
+    APIResourcesConstants as APIResourcesExtensionConstants
+}from "../../../extensions/components/api-resources/constants";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
 import { RemoteUserStoreConstants } from "../../../extensions/components/user-stores/constants";
 import { UsersConstants } from "../../../extensions/components/users/constants";
@@ -1044,7 +1047,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         exact: true,
                         id: "apiResources-edit",
                         name: "extensions:develop.sidePanel.apiResources",
-                        path: APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT"),
+                        path: APIResourcesExtensionConstants.getPaths().get("API_RESOURCE_EDIT"),
                         protected: true,
                         showOnSidePanel: false
                     }

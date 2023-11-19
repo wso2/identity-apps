@@ -16,20 +16,12 @@
  * under the License.
  */
 
-import React, { PropsWithChildren, ReactElement } from "react";
-import { useGetCurrentOrganizationType } from "../hooks/use-get-organization-type";
+.authenticator-settings-dynamic-input-field {
+    input {
+        background-color: white;
+    }
 
-/**
- * Renders the child component only in the root organization.
- *
- * @param props - Children passed as props.
- * @returns Root Only Component.
- */
-export const RootOnlyComponent = (props: PropsWithChildren<Record<string, unknown>>): ReactElement => {
-
-    const { children } = props;
-
-    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
-
-    return <>{ isSuperOrganization() || isFirstLevelOrganization() ? children : null }</>;
-};
+    .MuiFormControl-root.MuiTextField-root {
+        margin-top: 5px;
+    }
+}

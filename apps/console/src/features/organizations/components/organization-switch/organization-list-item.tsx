@@ -120,7 +120,7 @@ const OrganizationListItem = (
                     />
                 </Grid.Column>
             ) }
-            { !OrganizationUtils.isRootOrganization(organization) && showEdit && (
+            { !OrganizationUtils.isSuperOrganization(organization) && showEdit && (
                 <Show when={ AccessControlConstants.ORGANIZATION_EDIT }>
                     <Grid.Column
                         width={ 2 }
