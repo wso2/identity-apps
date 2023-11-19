@@ -1806,6 +1806,18 @@
 
                 return false;
             }
+            if (element.type === 'text' && element.value != null && !element.checkValidity()) {
+                $("#" + error_msg_txt).text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                    "Please.enter.valid.input")%>");
+                $("#" + error_msg_element).show();
+                $("#" + element_field).addClass("error");
+                var error_msg_txt_element = document.getElementById(error_msg_txt);
+                if (error_msg_txt_element) {
+                    $("html, body").animate({scrollTop: $("#" + error_msg_txt).offset().top}, 'slow');
+                }
+
+                return false;
+            }
 
             return true;
         }
