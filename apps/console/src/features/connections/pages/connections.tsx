@@ -389,12 +389,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
 
         setSelectedFilterTags(filterTags);
         setFilter(ConnectionsManagementUtils.buildAuthenticatorsFilterQuery(query, filterTags));
-
-        if (filterTags && filterTags.length > 0) {
-            setFilterAuthenticatorsOnly(true);
-        } else {
-            setFilterAuthenticatorsOnly(false);
-        }
+        setFilterAuthenticatorsOnly(filterTags && filterTags.length > 0);
 
         if (isEmpty(query) && isEmpty(filterTags)) {
             setShowFilteredList(false);
