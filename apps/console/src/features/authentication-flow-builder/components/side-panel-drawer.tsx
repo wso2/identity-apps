@@ -18,7 +18,6 @@
 
 import Box from "@oxygen-ui/react/Box";
 import Drawer, { DrawerProps } from "@oxygen-ui/react/Drawer";
-import IconButton from "@oxygen-ui/react/IconButton";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
@@ -84,7 +83,7 @@ const SidePanelDrawer = (props: PropsWithChildren<SidePanelDrawerPropsInterface>
      *
      * @param event - Click event.
      */
-    const handleDrawerOpen = (event: MouseEvent<HTMLButtonElement>): void => {
+    const handleDrawerOpen = (event: MouseEvent<HTMLDivElement>): void => {
         if (!isDrawerOpen) {
             setIsDrawerOpen(true);
 
@@ -119,11 +118,9 @@ const SidePanelDrawer = (props: PropsWithChildren<SidePanelDrawerPropsInterface>
                     { ...rest }
                 >
                     <div className="side-panel-drawer-panel">
-                        <div className="side-panel-drawer-panel-controls">
+                        <div className="side-panel-drawer-panel-controls" onClick={ handleDrawerOpen }>
                             <div className="side-panel-drawer-panel-controls-chevron">
-                                <IconButton onClick={ handleDrawerOpen } aria-label="nav item icon">
-                                    { drawerIcon || <ChevronsLeft height={ 16 } width={ 16 } /> }
-                                </IconButton>
+                                { drawerIcon || <ChevronsLeft height={ 16 } width={ 16 } /> }
                             </div>
                             { panelControlsLabel && (
                                 <div className="side-panel-drawer-panel-controls-label">

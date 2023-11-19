@@ -139,10 +139,15 @@
                         <input type="submit" id="submitButton" onclick="submitOrgName(); return false;"
                             value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "submit")%>"
                             class="ui primary large fluid button" />
+                        <div class="mt-1 align-center">
+                            <a href="javascript:goBack()" class="ui button secondary large fluid">
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>
+                            </a>
+                        </div>
                         <% if (isOrgDiscoveryEnabled) { %>
                             <div class="ui horizontal divider"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%></div>
                             <div class="social-login blurring social-dimmer">
-                                <input type="submit" id="discoveryButton" onclick="promptDiscovery();" class="ui fluid button"
+                                <input type="submit" id="discoveryButton" onclick="promptDiscovery();" class="ui primary basic button link-button"
                                     value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.email.address")%>">
                             </div>
                         <% } %>
@@ -184,6 +189,11 @@
             }
         %>
         <script type="text/javascript">
+
+            function goBack() {
+                window.history.back();
+            }
+            
             function promptDiscovery() {
                 document.getElementById("ORG_NAME").disabled = true;
                 document.getElementById("pin_form").submit();

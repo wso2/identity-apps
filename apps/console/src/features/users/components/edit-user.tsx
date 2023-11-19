@@ -39,6 +39,7 @@ import { GenericOrganization } from "../../organizations/models/organizations";
 import { OrganizationUtils } from "../../organizations/utils";
 import { ConnectorPropertyInterface } from "../../server-configurations/models";
 import { UserManagementConstants } from "../constants";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 
 interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
@@ -88,6 +89,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
@@ -101,10 +103,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const [ hideTermination, setHideTermination ] = useState<boolean>(false);
     const [ user, setUser ] = useState<ProfileInfoInterface>(selectedUser);
     const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
-
-    const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
-    const isRootOrganization: boolean = useMemo(() =>
-        OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
 
     useEffect(() => {
         //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to
@@ -134,7 +132,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     }, [ user, readOnlyUserStores ]);
 
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (!isSuperOrganization()) {
             return;
         }
 
@@ -235,7 +233,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             )
         },
         // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
-        isRootOrganization ? {
+        isSuperOrganization ? {
             menuItem: t("console:manage.features.users.editUser.tab.menuItems.2"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -243,7 +241,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             )
         } : null,
-        OrganizationUtils.isCurrentOrganizationRoot() && {
+        isSuperOrganization && {
             menuItem: t("console:manage.features.users.editUser.tab.menuItems.3"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>

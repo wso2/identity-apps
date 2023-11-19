@@ -1,5 +1,39 @@
 # @wso2is/react-components
 
+## 2.0.19
+
+### Patch Changes
+
+- [#4687](https://github.com/wso2/identity-apps/pull/4687) [`24eb66f570`](https://github.com/wso2/identity-apps/commit/24eb66f57020805ba81456e8d68ab7b49415ef7b) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Fix groups edit page title and add audience to role assign view
+
+## 2.0.18
+
+### Patch Changes
+
+- [#4681](https://github.com/wso2/identity-apps/pull/4681) [`a8073bb7aa`](https://github.com/wso2/identity-apps/commit/a8073bb7aab05c8b04930ed751e75637f0eee24e) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Fix groups edit page title and add audience to role assign view
+
+- Updated dependencies [[`a8073bb7aa`](https://github.com/wso2/identity-apps/commit/a8073bb7aab05c8b04930ed751e75637f0eee24e)]:
+  - @wso2is/theme@2.0.38
+
+## 2.0.17
+
+### Patch Changes
+
+- [#4666](https://github.com/wso2/identity-apps/pull/4666) [`5d602f7397`](https://github.com/wso2/identity-apps/commit/5d602f739726fa887340096a98cd838407c517c0) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Fix the user avatar default shape to square
+
+- Updated dependencies [[`9ecc95eebd`](https://github.com/wso2/identity-apps/commit/9ecc95eebd43807e022f675075740cc7bf38c09a)]:
+  - @wso2is/theme@2.0.37
+
+## 2.0.16
+
+### Patch Changes
+
+- [#4641](https://github.com/wso2/identity-apps/pull/4641) [`640820b3c6`](https://github.com/wso2/identity-apps/commit/640820b3c6daeefa415c76e5aa0fd37a3680b9f0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add deployment configs to conditionally enable/disable classic features
+
+- Updated dependencies [[`640820b3c6`](https://github.com/wso2/identity-apps/commit/640820b3c6daeefa415c76e5aa0fd37a3680b9f0)]:
+  - @wso2is/core@2.0.14
+  - @wso2is/forms@2.0.1
+
 ## 2.0.15
 
 ### Patch Changes

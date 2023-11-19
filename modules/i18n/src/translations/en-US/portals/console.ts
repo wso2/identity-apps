@@ -10930,7 +10930,8 @@ export const console: ConsoleNS = {
                     },
                     headers: {
                         0: "Domain",
-                        1: "Name"
+                        1: "Name",
+                        2: "Audience"
                     }
                 },
                 searchPlaceholder: "Search {{type}}"
@@ -11184,8 +11185,6 @@ export const console: ConsoleNS = {
                                 searchByRoleOrGroup: "Search by Role/Group",
                                 roleGroupFilterAttributePlaceHolder: "Role/Group Name"
                             },
-                            disabledSecondaryStoreInfo: "Bulk import to external user stores is not available " +
-                                "at the moment.",
                             manualCreation: {
                                 alerts: {
                                     creationSuccess: {
@@ -11203,7 +11202,9 @@ export const console: ConsoleNS = {
                                 },
                                 primaryButton: "Add",
                                 rolesLabel: "Roles",
-                                rolesPlaceholder: "Enter roles"
+                                rolesPlaceholder: "Enter roles",
+                                warningMessage: "This option can only be used when email address is configured " +
+                                    "as the username."
                             },
                             fileBased: {
                                 hint: "Bulk invite multiple users using a CSV file."
@@ -11216,6 +11217,14 @@ export const console: ConsoleNS = {
                         },
                         buttons: {
                             import: "Import"
+                        },
+                        sidePanel: {
+                            manual: "Manual",
+                            fileBased: "File Based",
+                            fileFormatTitle: "CSV File Format",
+                            fileFormatContent: "Headers of the CSV file should be user attributes that are " +
+                                    "mapped to <1>local attributes</1>.",
+                            fileFormatSampleHeading: "Sample CSV file format:"
                         }
                     },
                     changePasswordModal: {
@@ -11710,6 +11719,13 @@ export const console: ConsoleNS = {
                             "session. They will loose the progress of any ongoing tasks. Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently terminate the session."
+                    },
+                    addMultipleUser: {
+                        header: "Before you proceed",
+                        message: "Invite users option is disabled",
+                        content: "Invite users option should be enabled to add multiple users. Please enable it and " +
+                            "try again.",
+                        assertionHint: "Please confirm your action."
                     }
                 },
                 consumerUsers: {
@@ -12563,6 +12579,11 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: "Edit Role"
             },
+            groupsEdit: {
+                backButton: "Go back to {{type}}",
+                subTitle: null,
+                title: "Edit Group"
+            },
             serverConfigurations: {
                 subTitle: "Manage general configurations of the server.",
                 title: "General Configurations"
@@ -12572,7 +12593,7 @@ export const console: ConsoleNS = {
                 title: "Users"
             },
             usersEdit: {
-                backButton: "Go back to Users",
+                backButton: "Go back to {{type}}",
                 subTitle: "{{name}}",
                 title: "{{email}}"
             }

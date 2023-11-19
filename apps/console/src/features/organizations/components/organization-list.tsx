@@ -295,7 +295,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
             if (
                 breadcrumbList && breadcrumbList.length > 0 &&
-                OrganizationUtils.isRootOrganization(breadcrumbList[ 0 ]) &&
+                OrganizationUtils.isSuperOrganization(breadcrumbList[ 0 ]) &&
                 breadcrumbList[ 1 ]?.id === organization.id &&
                 organizationConfigs.showSwitcherInTenants
             ) {
@@ -304,7 +304,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                     organization.name +
                     "/" +
                     window[ "AppUtils" ].getConfig().appBase;
-            } else if (OrganizationUtils.isRootOrganization(organization)) {
+            } else if (OrganizationUtils.isSuperOrganization(organization)) {
                 newOrgPath = `/${ window[ "AppUtils" ].getConfig().appBase }`;
             } else {
                 newOrgPath =
@@ -368,7 +368,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                                 hoverable={ false }
                                 icon={ OrganizationIcon }
                             />
-                            { organization.id === OrganizationManagementConstants.ROOT_ORGANIZATION_ID
+                            { organization.id === OrganizationManagementConstants.SUPER_ORGANIZATION_ID
                                && (< Header.Content >
                                    <Icon
                                        className="mr-2 ml-0 vertical-aligned-baseline"

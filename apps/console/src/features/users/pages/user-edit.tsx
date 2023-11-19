@@ -39,6 +39,7 @@ import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../../
 import { getUserDetails, updateUserInfo } from "../api";
 import { EditUser } from "../components/edit-user";
 import { UserManagementUtils } from "../utils";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 
 /**
  * User Edit page.
@@ -50,6 +51,8 @@ const UserEditPage = (): ReactElement => {
     const { t } = useTranslation();
 
     const dispatch: Dispatch<any> = useDispatch();
+
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -64,7 +67,7 @@ const UserEditPage = (): ReactElement => {
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (!isSuperOrganization()) {
             return;
         }
 
@@ -107,7 +110,7 @@ const UserEditPage = (): ReactElement => {
     }, []);
 
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (!isSuperOrganization) {
             return;
         }
 
@@ -149,6 +152,14 @@ const UserEditPage = (): ReactElement => {
             history.push(AppConstants.getPaths().get("ADMINISTRATORS"));
         } else {
             history.push(AppConstants.getPaths().get("USERS"));
+        }
+    };
+
+    const getBackButtonText = (): string => {
+        if (window.location.href.includes(AppConstants.getPaths().get("ADMINISTRATORS"))) {
+            return t("console:manage.pages.usersEdit.backButton", { type: "Administrators" });
+        } else {
+            return t("console:manage.pages.usersEdit.backButton", { type: "Users" });
         }
     };
 
@@ -316,7 +327,7 @@ const UserEditPage = (): ReactElement => {
             backButton={ {
                 "data-testid": "user-mgt-edit-user-back-button",
                 onClick: handleBackButtonClick,
-                text: t("console:manage.pages.usersEdit.backButton")
+                text: getBackButtonText()
             } }
             titleTextAlign="left"
             bottomMargin={ false }

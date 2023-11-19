@@ -41,6 +41,7 @@ import { history } from "../helpers/history";
 import { FeatureConfigInterface } from "../models/config";
 import { AppState, setDeveloperVisibility, setFilteredDevelopRoutes, setSanitizedDevelopRoutes } from "../store";
 import { AppUtils } from "../utils/app-utils";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 
 /**
  * Props interface of {@link useOrganizations}
@@ -61,6 +62,7 @@ const useRoutes = (): useRoutesInterface => {
     const dispatch: Dispatch = useDispatch();
 
     const { legacyAuthzRuntime }  = useAuthorization();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const loggedUserName: string = useSelector((state: AppState) => state.profile.profileInfo.userName);
@@ -103,7 +105,7 @@ const useRoutes = (): useRoutesInterface => {
                 }
 
                 const isCurrentOrgRootAndSuperTenant: boolean =
-                    OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.getSuperTenant() === tenantDomain;
+                    isSuperOrganization() && AppConstants.getSuperTenant() === tenantDomain;
 
                 if (legacyAuthzRuntime) {
                     if (isCurrentOrgRootAndSuperTenant || isFirstLevelOrg) {
@@ -161,7 +163,7 @@ const useRoutes = (): useRoutesInterface => {
             : undefined;
             
         if (legacyAuthzRuntime) {
-            allowedRoutes = !OrganizationUtils.isCurrentOrganizationRoot()
+            allowedRoutes = !isSuperOrganization()
                 && !isFirstLevelOrg
                 && AppConstants.ORGANIZATION_ENABLED_ROUTES;
         }

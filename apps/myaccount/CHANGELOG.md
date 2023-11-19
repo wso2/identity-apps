@@ -1,5 +1,58 @@
 # @wso2is/myaccount
 
+## 2.2.25
+
+### Patch Changes
+
+- [#4687](https://github.com/wso2/identity-apps/pull/4687) [`24eb66f570`](https://github.com/wso2/identity-apps/commit/24eb66f57020805ba81456e8d68ab7b49415ef7b) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Fix groups edit page title and add audience to role assign view
+
+- Updated dependencies [[`24eb66f570`](https://github.com/wso2/identity-apps/commit/24eb66f57020805ba81456e8d68ab7b49415ef7b)]:
+  - @wso2is/i18n@2.0.44
+  - @wso2is/react-components@2.0.19
+
+## 2.2.24
+
+### Patch Changes
+
+- [#4681](https://github.com/wso2/identity-apps/pull/4681) [`a8073bb7aa`](https://github.com/wso2/identity-apps/commit/a8073bb7aab05c8b04930ed751e75637f0eee24e) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Fix groups edit page title and add audience to role assign view
+
+- Updated dependencies [[`a8073bb7aa`](https://github.com/wso2/identity-apps/commit/a8073bb7aab05c8b04930ed751e75637f0eee24e)]:
+  - @wso2is/i18n@2.0.43
+  - @wso2is/react-components@2.0.18
+  - @wso2is/theme@2.0.38
+
+## 2.2.23
+
+### Patch Changes
+
+- [#4666](https://github.com/wso2/identity-apps/pull/4666) [`5d602f7397`](https://github.com/wso2/identity-apps/commit/5d602f739726fa887340096a98cd838407c517c0) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Fix the user avatar default shape to square
+
+* [#4562](https://github.com/wso2/identity-apps/pull/4562) [`d2d53420be`](https://github.com/wso2/identity-apps/commit/d2d53420beb05e7ea9ab134ad7f506021da8c86e) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add bulk user import helper panel
+
+- [#4669](https://github.com/wso2/identity-apps/pull/4669) [`49e6a466b1`](https://github.com/wso2/identity-apps/commit/49e6a466b17f41cb3bd9d99a1997c40bb0936c1b) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Fix label for back button on administrator user page
+
+* [#4500](https://github.com/wso2/identity-apps/pull/4500) [`9ecc95eebd`](https://github.com/wso2/identity-apps/commit/9ecc95eebd43807e022f675075740cc7bf38c09a) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issues in the header logo section of My Account and Console
+
+* Updated dependencies [[`5d602f7397`](https://github.com/wso2/identity-apps/commit/5d602f739726fa887340096a98cd838407c517c0), [`d2d53420be`](https://github.com/wso2/identity-apps/commit/d2d53420beb05e7ea9ab134ad7f506021da8c86e), [`49e6a466b1`](https://github.com/wso2/identity-apps/commit/49e6a466b17f41cb3bd9d99a1997c40bb0936c1b), [`9ecc95eebd`](https://github.com/wso2/identity-apps/commit/9ecc95eebd43807e022f675075740cc7bf38c09a)]:
+  - @wso2is/react-components@2.0.17
+  - @wso2is/i18n@2.0.42
+  - @wso2is/theme@2.0.37
+
+## 2.2.22
+
+### Patch Changes
+
+- [#4574](https://github.com/wso2/identity-apps/pull/4574) [`9260cecd00`](https://github.com/wso2/identity-apps/commit/9260cecd008a26d5d15596e943bf5a919a1d0c97) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Change portugese-brazil to portugese-portugal in language dropdown
+
+* [#4641](https://github.com/wso2/identity-apps/pull/4641) [`640820b3c6`](https://github.com/wso2/identity-apps/commit/640820b3c6daeefa415c76e5aa0fd37a3680b9f0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add deployment configs to conditionally enable/disable classic features
+
+* Updated dependencies [[`9260cecd00`](https://github.com/wso2/identity-apps/commit/9260cecd008a26d5d15596e943bf5a919a1d0c97), [`640820b3c6`](https://github.com/wso2/identity-apps/commit/640820b3c6daeefa415c76e5aa0fd37a3680b9f0)]:
+  - @wso2is/i18n@2.0.41
+  - @wso2is/core@2.0.14
+  - @wso2is/access-control@2.0.4
+  - @wso2is/forms@2.0.1
+  - @wso2is/react-components@2.0.16
+
 ## 2.2.21
 
 ### Patch Changes

@@ -31,7 +31,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AppState } from "../../core/store";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { OrganizationResponseInterface } from "../../organizations/models/organizations";
 import deleteCustomTextPreference from "../api/delete-custom-text-preference";
 import updateCustomTextPreference from "../api/update-custom-text-preference";
@@ -77,7 +77,7 @@ const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderPr
     const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(

@@ -55,6 +55,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isUpdateButtonDisabled, setIsUpdateButtonDisabled ] = useState<boolean>(true);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
     
     const {
@@ -102,8 +103,11 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             roleName: undefined
         };
 
-        if (values.roleName?.toString().trim().length >= RoleConstants.ROLE_NAME_MIN_LENGTH) {
-
+        if (role.displayName === values.roleName?.toString().trim()) {
+            setIsUpdateButtonDisabled(true);
+        }
+        else if (values.roleName?.toString().trim().length >= RoleConstants.ROLE_NAME_MIN_LENGTH) {
+            setIsUpdateButtonDisabled(false);
             setRoleNameSearchQuery(`displayName eq ${values.roleName?.toString().trim()}`);
 
             if (!isRolesListLoading || !isRolesListValidating) {
@@ -144,9 +148,9 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                 });
             }).catch(() => {
                 handleAlerts({
-                    description: t("console:manage.features.roles.notifications.updateRole.error.description"),
+                    description: t("console:manage.features.roles.notifications.updateRole.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.notifications.updateRole.error.message")
+                    message: t("console:manage.features.roles.notifications.updateRole.genericError.message")
                 });
             }).finally(() => {
                 setIsSubmitting(false);
@@ -184,7 +188,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                         ariaLabel="Update button"
                         name="update-button"
                         hidden={ isReadOnly }
-                        disabled={ isSubmitting }
+                        disabled={ isSubmitting || isUpdateButtonDisabled }
                         loading={ isSubmitting }
                         data-componentid={ `${ componentid }-role-update-button` }
                         label={ t("extensions:develop.apiResource.tabs.general.form.updateButton") }

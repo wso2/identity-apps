@@ -33,18 +33,8 @@ export class OrganizationUtils {
      *
      * @returns if selected organization is the Super organization
      */
-    public static isRootOrganization(organization: GenericOrganization): boolean {
-        return !organization || organization.id === OrganizationManagementConstants.ROOT_ORGANIZATION_ID;
-    }
-
-    /**
-     * Returns true if the current organization is the root organization.
-     *
-     * @returns if the current organization is the root organization.
-     */
-    public static isCurrentOrganizationRoot(): boolean {
-        return store.getState().organization?.organization?.id
-            === OrganizationManagementConstants.ROOT_ORGANIZATION_ID;
+    public static isSuperOrganization(organization: GenericOrganization): boolean {
+        return !organization || organization.id === OrganizationManagementConstants.SUPER_ORGANIZATION_ID;
     }
 
     /**
