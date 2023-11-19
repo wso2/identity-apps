@@ -1,5 +1,17 @@
 # @wso2is/i18n
 
+## 2.0.45
+
+### Patch Changes
+
+- [#4600](https://github.com/wso2/identity-apps/pull/4600) [`b78719fff3`](https://github.com/wso2/identity-apps/commit/b78719fff3358a15b621623c5a09872713b634d1) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add server configurations feature
+
+* [#4600](https://github.com/wso2/identity-apps/pull/4600) [`466fe513fb`](https://github.com/wso2/identity-apps/commit/466fe513fbca5ed9dc13f15d2633888895fb948b) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - pnpm changeset
+
+- [#4697](https://github.com/wso2/identity-apps/pull/4697) [`77354238c5`](https://github.com/wso2/identity-apps/commit/77354238c545e24c0efecebc19a907e2fe16a939) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Change page title of `channels` to be changed based on the enabled providers.
+
+* [#4700](https://github.com/wso2/identity-apps/pull/4700) [`c36581e863`](https://github.com/wso2/identity-apps/commit/c36581e863622eb5ab25272d2b4af35234b0d03a) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add local dropdown for user profile
+
 ## 2.0.44
 
 ### Patch Changes

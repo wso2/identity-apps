@@ -1,5 +1,26 @@
 # @wso2is/console
 
+## 2.7.0
+
+### Minor Changes
+
+- [#4600](https://github.com/wso2/identity-apps/pull/4600) [`b78719fff3`](https://github.com/wso2/identity-apps/commit/b78719fff3358a15b621623c5a09872713b634d1) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add server configurations feature
+
+### Patch Changes
+
+- [#4600](https://github.com/wso2/identity-apps/pull/4600) [`466fe513fb`](https://github.com/wso2/identity-apps/commit/466fe513fbca5ed9dc13f15d2633888895fb948b) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - pnpm changeset
+
+* [#4701](https://github.com/wso2/identity-apps/pull/4701) [`018384baba`](https://github.com/wso2/identity-apps/commit/018384babab1ae391550cee92c9052af1d6e6a26) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Enable adding a regex to attributes
+
+- [#4697](https://github.com/wso2/identity-apps/pull/4697) [`77354238c5`](https://github.com/wso2/identity-apps/commit/77354238c545e24c0efecebc19a907e2fe16a939) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Change page title of `channels` to be changed based on the enabled providers.
+
+* [#4700](https://github.com/wso2/identity-apps/pull/4700) [`c36581e863`](https://github.com/wso2/identity-apps/commit/c36581e863622eb5ab25272d2b4af35234b0d03a) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add local dropdown for user profile
+
+- [#4676](https://github.com/wso2/identity-apps/pull/4676) [`4f3eb236a6`](https://github.com/wso2/identity-apps/commit/4f3eb236a6dfb6ada0f0e689d9fa04a37e3b5ef0) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Remove "Managed by" coloumn in administrators page if saas is not enabled
+
+- Updated dependencies [[`b78719fff3`](https://github.com/wso2/identity-apps/commit/b78719fff3358a15b621623c5a09872713b634d1), [`466fe513fb`](https://github.com/wso2/identity-apps/commit/466fe513fbca5ed9dc13f15d2633888895fb948b), [`77354238c5`](https://github.com/wso2/identity-apps/commit/77354238c545e24c0efecebc19a907e2fe16a939), [`c36581e863`](https://github.com/wso2/identity-apps/commit/c36581e863622eb5ab25272d2b4af35234b0d03a)]:
+  - @wso2is/i18n@2.0.45
+
 ## 2.6.23
 
 ### Patch Changes
