@@ -155,7 +155,7 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
     };
 
     const onBackButtonClick = (): void => {
-        history.push(AppConstants.getPaths().get("SSO_SETTINGS"));
+        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
     };
 
     /**

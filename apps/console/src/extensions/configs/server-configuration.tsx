@@ -78,7 +78,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     connectorsToShow: [ 
         "account-recovery", 
         "self-sign-up",
-        "user-email-verification",
+        "user-email-verification"
     ],
     customConnectors: [
         ServerConfigurationsConstants.SAML2_SSO_CONNECTOR_ID,

@@ -169,7 +169,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
     return (
         <Form
             id={ FORM_ID }
-            uncontrolledForm={ true }
+            uncontrolledForm={ false }
             initialValues={ initialFormValues }
             onSubmit={ (values: Record<string, unknown>) => 
                 onSubmit(getUpdatedConfigurations(values)) 

@@ -153,13 +153,6 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const isReadOnly: boolean = useMemo(() => (
-        !hasRequiredScopes(
-            featureConfig?.governanceConnectors, featureConfig?.governanceConnectors?.scopes?.update, allowedScopes)
-    ), [ featureConfig, allowedScopes ]);
-
     const {
         data: validationData
     } = useValidationConfigData();
