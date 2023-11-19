@@ -179,6 +179,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     /**
      * Handles language switch action.
+
      * @param language - Selected language.
      */
     const handleLanguageSwitch = (language: string): void => {
