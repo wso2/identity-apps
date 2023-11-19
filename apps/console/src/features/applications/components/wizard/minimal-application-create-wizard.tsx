@@ -160,7 +160,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     const [ submit, setSubmit ] = useTrigger();
     const [ submitProtocolForm, setSubmitProtocolForm ] = useTrigger();
-    const { legacyAuthzRuntime }  = useAuthorization();
+    const { legacyAuthzRuntime } = useAuthorization();
 
     const reservedAppPattern: string = useSelector((state: AppState) => {
         return state.config?.deployment?.extensions?.asgardeoReservedAppRegex as string;
