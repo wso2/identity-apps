@@ -154,7 +154,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const dispatch: Dispatch = useDispatch();
 
-    const { isSuperOrganization } = useGetCurrentOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -193,7 +193,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const modifiedDate: string = user?.meta?.lastModified;
 
     useEffect(() => {
-        if (!isSuperOrganization()) {
+        if (!isSuperOrganization() && !isFirstLevelOrganization()) {
             return;
         }
 

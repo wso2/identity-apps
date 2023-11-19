@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { hasRequiredScopes, resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
 import {
     AlertInterface,
@@ -51,7 +52,7 @@ const UserEditPage = (): ReactElement => {
 
     const dispatch: Dispatch<any> = useDispatch();
 
-    const { isSuperOrganization } = useGetCurrentOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -66,7 +67,7 @@ const UserEditPage = (): ReactElement => {
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
-        if (!isSuperOrganization()) {
+        if (!isSuperOrganization() && !isFirstLevelOrganization()) {
             return;
         }
 
