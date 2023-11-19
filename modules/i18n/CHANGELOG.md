@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.46
+
+### Patch Changes
+
+- [#4705](https://github.com/wso2/identity-apps/pull/4705) [`e85986248f`](https://github.com/wso2/identity-apps/commit/e85986248f67b729887a353e379f499489edc1f4) Thanks [@Avarjana](https://github.com/Avarjana)! - Add interface to configure protocol in Console.
+
 ## 2.0.45
 
 ### Patch Changes

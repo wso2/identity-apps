@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.7.2
+
+### Patch Changes
+
+- [#4705](https://github.com/wso2/identity-apps/pull/4705) [`e85986248f`](https://github.com/wso2/identity-apps/commit/e85986248f67b729887a353e379f499489edc1f4) Thanks [@Avarjana](https://github.com/Avarjana)! - Add interface to configure protocol in Console.
+
+* [#4704](https://github.com/wso2/identity-apps/pull/4704) [`bd20d49ce9`](https://github.com/wso2/identity-apps/commit/bd20d49ce927c72f62145c376eade26491ca85c2) Thanks [@sandushi](https://github.com/sandushi)! - Fix the custom attribute data doesn't populate issue
+
+* Updated dependencies [[`e85986248f`](https://github.com/wso2/identity-apps/commit/e85986248f67b729887a353e379f499489edc1f4)]:
+  - @wso2is/i18n@2.0.46
+
 ## 2.7.1
 
 ### Patch Changes
