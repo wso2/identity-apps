@@ -23,7 +23,7 @@ import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEqual from "lodash-es/isEqual";
-import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -35,11 +35,9 @@ import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { ServerConfigurationsInterface, getServerConfigs } from "../../../features/server-configurations";
 import { FeatureConfigInterface } from "../../core/models";
 import { AppState, store } from "../../core/store";
-import { GenericOrganization } from "../../organizations/models/organizations";
-import { OrganizationUtils } from "../../organizations/utils";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { ConnectorPropertyInterface } from "../../server-configurations/models";
 import { AdminAccountTypes, UserManagementConstants } from "../constants";
-import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 
 interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
