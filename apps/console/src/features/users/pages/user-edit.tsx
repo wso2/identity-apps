@@ -32,14 +32,13 @@ import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import { getProfileInformation } from "../../authentication/store";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
-import { OrganizationUtils } from "../../organizations/utils";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getGovernanceConnectors } from "../../server-configurations/api";
 import { ServerConfigurationsConstants } from "../../server-configurations/constants";
 import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../../server-configurations/models";
 import { getUserDetails, updateUserInfo } from "../api";
 import { EditUser } from "../components/edit-user";
 import { UserManagementUtils } from "../utils";
-import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 
 /**
  * User Edit page.
