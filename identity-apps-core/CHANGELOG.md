@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.0.60
+
+### Patch Changes
+
+- [#4600](https://github.com/wso2/identity-apps/pull/4600) [`466fe513fb`](https://github.com/wso2/identity-apps/commit/466fe513fbca5ed9dc13f15d2633888895fb948b) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - pnpm changeset
+
+* [#4697](https://github.com/wso2/identity-apps/pull/4697) [`77354238c5`](https://github.com/wso2/identity-apps/commit/77354238c545e24c0efecebc19a907e2fe16a939) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Change page title of `channels` to be changed based on the enabled providers.
+
 ## 2.0.59
 
 ### Patch Changes
