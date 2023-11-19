@@ -407,7 +407,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
         ];
 
         if (saasFeatureStatus === FeatureStatus.ENABLED) {
-            const saasColumn: TableColumnInterface = {
+            const managedByColumn: TableColumnInterface = {
                 allowToggleVisibility: false,
                 dataIndex: "idpType",
                 id: "idpType",
@@ -446,7 +446,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 )
             };
 
-            defaultColumns.push(saasColumn);
+            defaultColumns.push(managedByColumn);
         }
 
         defaultColumns.push({
@@ -688,7 +688,6 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 } }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
-                // Show headers only if saas feature status is true
                 showHeader={ saasFeatureStatus === FeatureStatus.ENABLED }
                 transparent={ !isLoading && (showPlaceholders() !== null) }
                 data-componentid={ componentId }
