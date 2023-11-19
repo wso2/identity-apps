@@ -2063,9 +2063,21 @@ export const extensions: Extensions = {
             }
         },
         notificationChannel: {
-            heading: "SMS / ඊමේල් සපයන්නන්",
-            title: "SMS / ඊමේල් සපයන්නන්",
-            description: "ඔබේ සංවිධානය සඳහා SMS සහ විද්‍යුත් තැපැල් සපයන්නන් වින්‍යාස කරන්න."
+            heading: {
+                heading: "කෙටි පණිවුඩ / ඊමේල් සැපයුම්කරුවන්",
+                onlySMSProvider: "කෙටි පණිවුඩ සැපයුම්කරු",
+                onlyEmailProvider: "විද්යුත් තැපැල් සැපයුම්කරු"
+            },
+            title: {
+                heading: "කෙටි පණිවුඩ / ඊමේල් සැපයුම්කරුවන්",
+                onlySMSProvider: "කෙටි පණිවුඩ සැපයුම්කරු",
+                onlyEmailProvider: "විද්යුත් තැපැල් සැපයුම්කරු"
+            },
+            description: {
+                description: "ඔබේ සංවිධානය සඳහා කෙටි පණිවුඩ සහ විද්යුත් තැපැල් සපයන්නන් වින්‍යාස කරන්න.",
+                onlySMSProvider: "ඔබේ සංවිධානය සඳහා කෙටි පණිවුඩ සැපයුම්කරු වින්‍යාස කරන්න.",
+                onlyEmailProvider: "ඔබේ සංවිධානය සඳහා විද්යුත් තැපැල් සැපයුම්කරු වින්‍යාස කරන්න."
+            }
         },
         smsProviders: {
             heading: "අභිරුචි කෙටි පණිවුඩ සපයන්නා",

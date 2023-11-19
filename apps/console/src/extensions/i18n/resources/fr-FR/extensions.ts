@@ -2124,9 +2124,21 @@ export const extensions: Extensions = {
             }
         },
         notificationChannel: {
-            heading: "Fournisseurs SMS/e-mail",
-            title: "Fournisseurs SMS/e-mail",
-            description: "Configurez les fournisseurs SMS et Email pour votre organisation."
+            heading: {
+                heading: "SMS / fournisseurs de courriels",
+                onlySMSProvider: "Fournisseur de SMS",
+                onlyEmailProvider: "Fournisseur de messagerie"
+            },
+            title: {
+                heading: "SMS / fournisseurs de courriels",
+                onlySMSProvider: "Fournisseur de SMS",
+                onlyEmailProvider: "Fournisseur de messagerie"
+            },
+            description: {
+                description: "Configurez les SMS et les fournisseurs de messagerie pour votre organisation.",
+                onlySMSProvider: "Configurez le fournisseur SMS pour votre organisation.",
+                onlyEmailProvider: "Configurez le fournisseur de messagerie pour votre organisation."
+            }
         },
         smsProviders: {
             heading: "Fournisseur de SMS personnalisé",
