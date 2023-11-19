@@ -5852,6 +5852,11 @@ export interface ConsoleNS {
                     addUserWizard: {
                         title: string;
                         subTitle: string;
+                        askPassword: {
+                            emailVerificationDisabled: string;
+                            emailInvalid: string;
+                            alphanumericUsernameEnabled: string;
+                        };
                         steps: {
                             basicDetails: string;
                             roles: string;

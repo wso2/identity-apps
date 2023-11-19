@@ -11109,6 +11109,14 @@ export const console: ConsoleNS = {
                             "wish to assign roles to this user please click on the button below."
                     },
                     addUserWizard: {
+                        askPassword: {
+                            alphanumericUsernameEnabled: "To use the password reset feature, disable " +
+                                "alphanumeric username feature.",
+                            emailInvalid: "To use the password reset feature, please use a valid email address as " +
+                                "the username.",
+                            emailVerificationDisabled: "To use the password reset feature, enable email verification by " +
+                                "configuring an email provider."
+                        },
                         buttons: {
                             next: "Next",
                             previous: "Previous"

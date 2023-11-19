@@ -9363,6 +9363,14 @@ export const console: ConsoleNS = {
                             "vous souhaitez lui en attribuer, veuillez cliquer sur le bouton ci-dessous."
                     },
                     addUserWizard: {
+                        askPassword: {
+                            alphanumericUsernameEnabled: "Pour utiliser la fonction de réinitialisation du mot de passe, désactiver " +
+                                "Fonction de nom d'utilisateur alphanumérique.",
+                            emailInvalid: "Pour utiliser la fonction de réinitialisation du mot de passe, veuillez utiliser une adresse e-mail valide comme "+
+                                "l'identifiant.",
+                            emailVerificationDisabled: "Pour utiliser la fonction de réinitialisation du mot de passe, activez la vérification par e-mail par "+
+                                "Configuration d'un fournisseur de messagerie."
+                        },
                         buttons: {
                             next: "Suivant",
                             previous: "Précédent"
