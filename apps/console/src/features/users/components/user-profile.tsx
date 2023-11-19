@@ -1279,7 +1279,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     flag: supportedI18nLanguages[key].flag,
                                     key: supportedI18nLanguages[key].code as string,
                                     text: `${supportedI18nLanguages[key].name as string}, 
-                                        ${supportedI18nLanguages[key].code as string}`,
+                                                ${supportedI18nLanguages[key].code as string}`,
                                     value: supportedI18nLanguages[key].code as string
                                 };
                             })
