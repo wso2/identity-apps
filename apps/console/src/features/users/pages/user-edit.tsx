@@ -110,9 +110,6 @@ const UserEditPage = (): ReactElement => {
     }, []);
 
     useEffect(() => {
-        if (!isSuperOrganization) {
-            return;
-        }
 
         setReadOnlyUserStoresLoading(true);
         SharedUserStoreUtils.getReadOnlyUserStores()
