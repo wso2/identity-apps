@@ -38,7 +38,7 @@ import React, { Fragment, FunctionComponent, MutableRefObject, ReactElement, use
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Grid, Header, Icon, Button as SemButton } from "semantic-ui-react";
+import { Divider, Grid, Header, Button as SemButton } from "semantic-ui-react";
 import { SAMLSelectionLanding } from "./protocols";
 import { applicationConfig } from "../../../../extensions";
 import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations, store } from "../../../core";
