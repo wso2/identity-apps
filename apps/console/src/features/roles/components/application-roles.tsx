@@ -139,8 +139,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     useEffect(() => {
 
         /**
-         * This if block prevents the roles being updated unless shouldUpdateRoleAudience is specifically set to true.
-         * It prevents the roles from being updated in unwanted scenarios such as in the initial render of the
+         * This prevents the roles from being updated in unwanted scenarios such as in the initial render of the
          * component.
          */
         if (!shouldUpdateRoleAudience) {
@@ -148,9 +147,9 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
         }
 
         /**
-         * When the roleAudience is not allowed for the application, the selectedRoles list should be cleared.
-         * However, due to the asynchronous nature of setSelectedRoles(), the selectedRoles list is not cleared
-         * immediately. This if block prevents the roles from being updated with stale data in such cases.
+         * Ideally, the selectedRoles list should be cleared immediately when the current roleAudience is not allowed 
+         * for the application. This does not happen in some cases due to the asynchronous nature of the 
+         * setSelectedRoles() method. This if block prevents the roles from being updated with stale data in such cases.
          */
         if (roleAudience !== application?.associatedRoles?.allowedAudience && selectedRoles?.length !== 0) {
             return;
