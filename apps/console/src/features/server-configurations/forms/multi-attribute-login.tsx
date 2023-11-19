@@ -1,0 +1,227 @@
+/**
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import { hasRequiredScopes } from "@wso2is/core/helpers";
+import { 
+    DeprecatedFeatureInterface, 
+    FeatureAccessConfigInterface, 
+    IdentifiableComponentInterface 
+} from "@wso2is/core/models";
+import { Field, Form, FormFieldMessage } from "@wso2is/form";
+import { ConfirmationModal, Hint, Text } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
+import { AppState } from "apps/console/src/features/core";
+import { getUsernameConfiguration } from "apps/console/src/features/users/utils/user-management-utils";
+import { useValidationConfigData } from "apps/console/src/features/validation/api";
+import camelCase from "lodash-es/camelCase";
+import get from "lodash-es/get";
+import isEmpty from "lodash-es/isEmpty";
+import { FeatureConfigInterface } from "modules/common/src/models/config";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { Grid, Label } from "semantic-ui-react";
+import { serverConfigurationConfig } from "../../../extensions/configs";
+import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface } from "../models/governance-connectors";
+import { GovernanceConnectorUtils } from "../utils";
+
+/**
+ * Interface for multi attribute login form props.
+ */
+interface MultiAttributeLoginFormPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Connector's initial values.
+     */
+    initialValues: GovernanceConnectorInterface;
+    /**
+     * Callback for form submit.
+     * @param values - Resolved Form Values.
+     */
+    onSubmit: (values) => void;
+    /**
+     * Is readonly.
+     */
+    readOnly?: boolean;
+    /**
+     * Whether the connector is enabled using the toggle button.
+     */
+    isConnectorEnabled?: boolean;
+    /**
+     * Specifies if the form is submitting
+     */
+    isSubmitting?: boolean;
+}
+
+const FORM_ID: string = "governance-connectors-multi-attribute-login-form";
+
+/**
+ * Multi Attribute Login Form.
+ *
+ * @param props - Props injected to the component.
+ * @returns Multi Attribute Login Form component.
+ */
+export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormPropsInterface> = (
+    props: MultiAttributeLoginFormPropsInterface
+): ReactElement => {
+
+    const {
+        initialValues,
+        onSubmit,
+        readOnly,
+        isConnectorEnabled,
+        isSubmitting,
+        ["data-componentid"]: testId
+    } = props;
+
+    const { t } = useTranslation();
+
+    const [ initialConnectorValues, setInitialConnectorValues ]
+        = useState<Map<string, ConnectorPropertyInterface>>(undefined);
+    const [ initialFormValues, setInitialFormValues ]
+        = useState<any>(undefined);
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const isReadOnly: boolean = useMemo(() => (
+        !hasRequiredScopes(
+            featureConfig?.governanceConnectors, featureConfig?.governanceConnectors?.scopes?.update, allowedScopes)
+    ), [ featureConfig, allowedScopes ]);
+    
+    const gonvernanConnectorsConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.governanceConnectors);
+    const passwordPatternConnector: DeprecatedFeatureInterface = gonvernanConnectorsConfig.deprecatedFeaturesToShow.find((feature) => {
+        return feature?.name === "passwordPolicy";
+    });
+
+
+    /**
+     * Flattens and resolved form initial values and field metadata.
+     */
+    useEffect(() => {
+
+        if (isEmpty(initialValues?.properties)) {
+            return;
+        }
+
+        const resolvedInitialValues: Map<string, ConnectorPropertyInterface>
+            = new Map<string, ConnectorPropertyInterface>();
+        let resolvedInitialFormValues: any
+            = null;
+
+        initialValues.properties.map((property: ConnectorPropertyInterface) => {
+
+            resolvedInitialValues.set(property.name, property);
+            resolvedInitialFormValues = {
+                ...resolvedInitialFormValues,
+                [ property.name ]: property.value
+            };
+        });
+
+        setInitialConnectorValues(resolvedInitialValues);
+        setInitialFormValues(resolvedInitialFormValues);
+    }, [ initialValues ]);
+
+    /**
+     * Prepare form values for submitting.
+     *
+     * @param values - Form values.
+     * @returns Sanitized form values.
+     */
+    const getUpdatedConfigurations = (values: Record<string, unknown>) => {
+        let data = {};
+
+        for (const key in values) {
+            if (Object.prototype.hasOwnProperty.call(values, key) 
+            && key !== ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE) {
+                data = {
+                    ...data,
+                    [ GovernanceConnectorUtils.decodeConnectorPropertyName(key) ]: values[ key ]
+                };
+            }
+        }
+
+        return data;
+    };   
+   
+    if (!initialConnectorValues) {
+        return null;
+    }
+
+    return (
+        <Form
+            id={ FORM_ID }
+            uncontrolledForm={ true }
+            initialValues={ initialFormValues }
+            onSubmit={ (values: Record<string, unknown>) => 
+                onSubmit(getUpdatedConfigurations(values)) 
+            }
+        >
+            <Field.Input
+                ariaLabel="account.multiattributelogin.handler.allowedattributes"
+                inputType="text"
+                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                    "account.multiattributelogin.handler.allowedattributes"
+                ) }
+                type="text"
+                width={ 16 }
+                required={ true }
+                placeholder={ "Enter allowed attribute list" }
+                labelPosition="top"
+                minLength={ 3 }
+                maxLength={ 100 }
+                readOnly={ readOnly }
+                initialValue={ initialFormValues?.[ "account.multiattributelogin.handler.allowedattributes" ] }
+                data-testid={ `${ testId }-otp-length` }
+                label={ GovernanceConnectorUtils.resolveFieldLabel(
+                    "Account Management",
+                    "account.multiattributelogin.handler.allowedattributes", 
+                    "Allowed Attribute List") 
+                }
+                disabled={ !isConnectorEnabled }
+                hint={ GovernanceConnectorUtils.resolveFieldHint(
+                    "Account Management",
+                    "account.multiattributelogin.handler.allowedattributes", 
+                    "Allowed claim list separated by commas.") 
+                }
+            />
+            <Field.Button
+                form={ FORM_ID }
+                size="small"
+                buttonType="primary_btn"
+                ariaLabel="Self registration update button"
+                name="update-button"
+                data-testid={ `${testId}-submit-button` }
+                disabled={ !isConnectorEnabled || isSubmitting }
+                loading={ isSubmitting }
+                label={ t("common:update") }
+                hidden={ !isConnectorEnabled || readOnly }
+            />
+        </Form>
+    );
+};
+
+/**
+ * Default props for the component.
+ */
+MultiAttributeLoginForm.defaultProps = {
+    "data-componentid": "multi-attribute-login-form"
+};
