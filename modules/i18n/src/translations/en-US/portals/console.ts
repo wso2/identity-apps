@@ -1051,6 +1051,11 @@ export const console: ConsoleNS = {
                                 "configure authentication for your application using WS-Federation.",
                             tabName: "Info"
                         },
+                        protocol: {
+                            title: "Protocol Configuration",
+                            subtitle: "Configure the protocol for your application.",
+                            button: "Configure Protocol"
+                        },
                         provisioning: {
                             inbound: {
                                 heading: "Inbound Provisioning",
@@ -4051,8 +4056,7 @@ export const console: ConsoleNS = {
                                 ariaLabel: "SAML request additional query parameters",
                                 label: "Additional query parameters"
                             },
-                            // New additions
-                            isEnableAssertionSigning:  {
+                            isAssertionSigned: {
                                 ariaLabel: "Enable assertion signing",
                                 hint: "Specify if SAMLAssertion element is signed",
                                 label: "Enable assertion signing"
@@ -4076,7 +4080,13 @@ export const console: ConsoleNS = {
                                 ariaLabel: "Authentication context class",
                                 hint: "Authentication context class",
                                 label: "Authentication context class",
-                                placeholder: "Enter authentication context class"
+                                placeholder: "Search available authentication context classes"
+                            },
+                            customAuthenticationContextClass: {
+                                ariaLabel: "Custom Authentication context class",
+                                hint: "Specify the custom authentication context class",
+                                label: "Custom authentication context class",
+                                placeholder: "Enter custom authentication context class"
                             },
                             attributeConsumingServiceIndex: {
                                 ariaLabel: "Attribute consuming service index",
@@ -8937,12 +8947,18 @@ export const console: ConsoleNS = {
                         }
                     },
                     roles: {
+                        placeHolders: {
+                            emptyListPlaceholder: {
+                                subtitles: "There are no roles assigned to this group at the moment.",
+                                title: "No Roles Assigned"
+                            }
+                        },
+                        heading: "Assigned Roles",
                         addRolesModal: {
                             heading: "Update Group Roles",
                             subHeading: "Add new roles or remove existing roles assigned to the group."
                         },
-                        subHeading: "Add or remove the roles this group is assigned with and note that this " +
-                            "will affect performing certain tasks."
+                        subHeading: "View assigned roles for the group."
                     }
                 },
                 list: {
@@ -9181,9 +9197,9 @@ export const console: ConsoleNS = {
                 addUserWizard: {
                     heading: "Invite Parent User",
                     description: "Invite a user from the parent organization.",
-                    hint: "Invited users are managed by the <1>{{currentOrganization}}</1> organization.",
+                    hint: "Invited users are managed by the parent organization.",
                     usernameHint: "Username should belong to a user " +
-                        "from the <1>{{currentOrganization}}</1> organization."
+                        "from the parent organization."
                 },
                 tab: {
                     usersTab: "Users",
@@ -9204,7 +9220,8 @@ export const console: ConsoleNS = {
                     noExpiredInvitations: "There are expired invitations at the moment.",
                     noInvitations: "There are no invitations at the moment.",
                     noCollaboratorUserInvitations: "There are no collaborator users with expired invitations at the moment."
-                }
+                },
+                invitedUserLabel: "Managed by parent organization"
             },
             oidcScopes: {
                 viewAttributes: "View Attributes",
@@ -10703,6 +10720,10 @@ export const console: ConsoleNS = {
                     pageHeading: "Admin Advisory Banner",
                     pageSubheading: "Configure the admin advisory banner to be displayed on the login page."
                 },
+                manageNotificationSendingInternally: {
+                    title: "Internal Notification Sending",
+                    description: "Manage notification sending internally."
+                },
                 remoteLogPublishing: {
                     title: "Remote Log Publishing",
                     pageTitle: "Remote Log Publishing",
@@ -10754,8 +10775,8 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
-                        title: "Restore Default Configuration for {{logType}} Logs",
-                        header: "Restore Default Configuration for {{logType}} Logs",
+                        title: "Restore Default Configuration",
+                        header: "Restore Default Configuration",
                         subheader: "This action will delete the existing configuration for {{logType}} logs. Please be certain before you proceed.",
                         confirmation: {
                             hint: "Please confirm your action.",
@@ -10771,9 +10792,13 @@ export const console: ConsoleNS = {
                             message: "Updated successfully."
                         },
                         error: {
-                            genericError: {
+                            updateError: {
                                 description: "An error occurred while updating remote log publishing configuration.",
                                 message: "Something went wrong"
+                            },
+                            fetchError: {
+                                description: "An error occurred while getting the remote log publishing configuration.",
+                                message: "Couldn't get remote log publishing configuration."
                             }
                         }
                     }
@@ -10847,6 +10872,10 @@ export const console: ConsoleNS = {
                             }
                         }
                     }
+                },
+                server: {
+                    title: "Server",
+                    description: "Configure server settings."
                 }
             },
             sidePanel: {
@@ -10914,7 +10943,8 @@ export const console: ConsoleNS = {
                     },
                     headers: {
                         0: "Domain",
-                        1: "Name"
+                        1: "Name",
+                        2: "Audience"
                     }
                 },
                 searchPlaceholder: "Search {{type}}"
@@ -11020,7 +11050,9 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter the email address",
                                 validations: {
                                     empty: "Email address cannot be empty",
-                                    invalid: "Please enter a valid email address"
+                                    invalid: "Please enter a valid email address. You can use alphanumeric " +
+                                        "characters, unicode characters, underscores (_), dashes (-), periods (.), " +
+                                        "and an at sign (@)."
                                 }
                             },
                             firstName: {
@@ -11092,6 +11124,14 @@ export const console: ConsoleNS = {
                             "wish to assign roles to this user please click on the button below."
                     },
                     addUserWizard: {
+                        askPassword: {
+                            alphanumericUsernameEnabled: "To use the password reset feature, disable " +
+                                "alphanumeric username feature.",
+                            emailInvalid: "To use the password reset feature, please use a valid email address as " +
+                                "the username.",
+                            emailVerificationDisabled: "To use the password reset feature, enable email verification by " +
+                                "configuring an email provider."
+                        },
                         buttons: {
                             next: "Next",
                             previous: "Previous"
@@ -11120,9 +11160,10 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Invite multiple users",
-                        subTitle: "Invite multiple users to the organization.",
+                        title: "Add multiple users",
+                        subTitle: "Add multiple users manually or using a CSV file.",
                         wizardSummary: {
+                            inviteEmailInfo: "An email with a confirmation link will be sent to the provided email address for the user to set their own password.",
                             successCount: "Successful Imports",
                             failedCount: "Failed Imports",
                             totalUserCreationCount: "Total user creation count",
@@ -11165,10 +11206,14 @@ export const console: ConsoleNS = {
                                 searchByRoleOrGroup: "Search by Role/Group",
                                 roleGroupFilterAttributePlaceHolder: "Role/Group Name"
                             },
-                            disabledSecondaryStoreInfo: "Bulk import to external user stores is not available " +
-                                "at the moment.",
                             manualCreation: {
-                                hint: "Add emails and send invitations to multiple users.",
+                                alerts: {
+                                    creationSuccess: {
+                                        description: "The user accounts were created successfully.",
+                                        message: "User Creation Successful"
+                                    }
+                                },
+                                hint: "Add the email address of the user you wish to invite and press enter.",
                                 emailsLabel: "Emails",
                                 emailsPlaceholder: "Enter email addresses",
                                 disabledHint: "The manual option is disabled due to the usage of alphanumeric usernames in your organization.",
@@ -11176,10 +11221,11 @@ export const console: ConsoleNS = {
                                     buttonText: "Upload CSV File",
                                     description: "Drag and drop a CSV file here."
                                 },
-                                primaryButton: "Invite",
+                                primaryButton: "Add",
                                 rolesLabel: "Roles",
                                 rolesPlaceholder: "Enter roles",
-                                warningMessage: "Manual invite multiple users feature can only be used when email address is configured as the username."
+                                warningMessage: "This option can only be used when email address is configured " +
+                                    "as the username."
                             },
                             fileBased: {
                                 hint: "Bulk invite multiple users using a CSV file."
@@ -11187,10 +11233,19 @@ export const console: ConsoleNS = {
                             responseOperationType: {
                                 userCreation: "User Creation",
                                 roleAssignment: "Role/Group Assignment"
-                            }
+                            },
+                            userstoreMessage: "The created users will be added to the <1>{{ userstore }}</1> user store."
                         },
                         buttons: {
                             import: "Import"
+                        },
+                        sidePanel: {
+                            manual: "Manual",
+                            fileBased: "File Based",
+                            fileFormatTitle: "CSV File Format",
+                            fileFormatContent: "Headers of the CSV file should be user attributes that are " +
+                                    "mapped to <1>local attributes</1>.",
+                            fileFormatSampleHeading: "Sample CSV file format:"
                         }
                     },
                     changePasswordModal: {
@@ -11245,6 +11300,7 @@ export const console: ConsoleNS = {
                         generic: {
                             inputs: {
                                 placeholder: "Enter your {{fieldName}}",
+                                dropdownPlaceholder: "Select your {{fieldName}}",
                                 validations: {
                                     empty: "{{fieldName}} is a required field",
                                     invalidFormat: "The {{fieldName}} is not of the correct format"
@@ -11541,6 +11597,12 @@ export const console: ConsoleNS = {
                                 header: "Are you sure?",
                                 message: "This action will modify the role of this user."
                             },
+                            placeholders: {
+                                emptyPlaceholder: {
+                                    title: "No roles assigned",
+                                    subtitles: "There are no roles assigned to the user at the moment."
+                                }
+                            },
                             heading: "Assigned Roles",
                             popups: {
                                 viewPermissions: "View Permissions"
@@ -11560,8 +11622,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             searchPlaceholder: "Search Roles",
-                            subHeading: "Add or remove the roles this user is assigned with and note that this " +
-                                "will affect performing certain tasks."
+                            subHeading: "View assigned roles for the user."
                         },
                         notifications: {
                             addUserRoles: {
@@ -11679,6 +11740,13 @@ export const console: ConsoleNS = {
                             "session. They will loose the progress of any ongoing tasks. Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently terminate the session."
+                    },
+                    addMultipleUser: {
+                        header: "Before you proceed",
+                        message: "Invite users option is disabled",
+                        content: "Invite users option should be enabled to add multiple users. Please enable it and " +
+                            "try again.",
+                        assertionHint: "Please confirm your action."
                     }
                 },
                 consumerUsers: {
@@ -12532,6 +12600,11 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: "Edit Role"
             },
+            groupsEdit: {
+                backButton: "Go back to {{type}}",
+                subTitle: null,
+                title: "Edit Group"
+            },
             serverConfigurations: {
                 subTitle: "Manage general configurations of the server.",
                 title: "General Configurations"
@@ -12541,7 +12614,7 @@ export const console: ConsoleNS = {
                 title: "Users"
             },
             usersEdit: {
-                backButton: "Go back to Users",
+                backButton: "Go back to {{type}}",
                 subTitle: "{{name}}",
                 title: "{{email}}"
             }

@@ -66,7 +66,7 @@ import {
     history
 } from "../../core";
 import { OrganizationType } from "../../organizations/constants";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { useApplicationList, useMyAccountStatus } from "../api";
 import { ApplicationList } from "../components/application-list";
 import { MinimalAppCreateWizard } from "../components/wizard/minimal-application-create-wizard";
@@ -138,7 +138,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
 
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 

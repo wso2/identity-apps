@@ -37,12 +37,15 @@ import values from "lodash-es/values";
 import React, { FunctionComponent, lazy } from "react";
 import { getSidePanelIcons } from "./ui";
 import { identityProviderConfig, userstoresConfig } from "../../../extensions";
-import { APIResourcesConstants } from "../../../extensions/components/api-resources/constants";
+import { 
+    APIResourcesConstants as APIResourcesExtensionConstants
+}from "../../../extensions/components/api-resources/constants";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
 import { RemoteUserStoreConstants } from "../../../extensions/components/user-stores/constants";
 import { UsersConstants } from "../../../extensions/components/users/constants";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
 import { AppView, FullScreenView } from "../../../views";
+import { APIResourcesConstants } from "../../api-resources/constants";
 import { ServerConfigurationsConstants } from "../../server-configurations";
 import { AppConstants } from "../constants";
 
@@ -110,6 +113,50 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 id: "wsFedConfiguration",
                                 name: "console:wsFederationConfig.title",
                                 path: AppConstants.getPaths().get("WSFED_CONFIGURATION"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import(
+                                        "../../../features/server-configurations/" +
+                                        "pages/connector-edit-page"
+                                    )
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "multi-attribute-login",
+                                name: "Multi Attribute Login",
+                                path: AppConstants.getPaths()
+                                    .get("GOVERNANCE_CONNECTOR_EDIT")
+                                    .replace(":categoryId", 
+                                        ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID)
+                                    .replace(":connectorId", 
+                                        ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import(
+                                        "../../../features/server-configurations/" +
+                                        "pages/connector-edit-page"
+                                    )
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "admin-forced-password-reset",
+                                name: "Admin Forced Password Reset",
+                                path: AppConstants.getPaths()
+                                    .get("GOVERNANCE_CONNECTOR_EDIT")
+                                    .replace(":categoryId", 
+                                        ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID)
+                                    .replace(":connectorId", 
+                                        ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET),
                                 protected: true,
                                 showOnSidePanel: false
                             }
@@ -587,7 +634,49 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                     .replace(":connectorId", ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID),
                                 protected: true,
                                 showOnSidePanel: false
-                            }
+                            },
+                            {
+                                component: lazy(() =>
+                                    import(
+                                        "../../../features/server-configurations/" +
+                                        "pages/connector-edit-page"
+                                    )
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "organization-self-service",
+                                name: "Organization Self Service",
+                                path: AppConstants.getPaths()
+                                    .get("GOVERNANCE_CONNECTOR_EDIT")
+                                    .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+                                    .replace(":connectorId", 
+                                        ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_CONNECTOR_ID),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import(
+                                        "../../../features/server-configurations/" +
+                                        "pages/connector-edit-page"
+                                    )
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "user-email-verification",
+                                name: "Invite User to Set Password",
+                                path: AppConstants.getPaths()
+                                    .get("GOVERNANCE_CONNECTOR_EDIT")
+                                    .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+                                    .replace(":connectorId", 
+                                        ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID),
+                                protected: true,
+                                showOnSidePanel: false
+                            }   
                         ],
                         component: lazy(() =>
                             import(
@@ -678,6 +767,35 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 name: "Password Recovery",
                                 path: AppConstants.getPaths()
                                     .get("GOVERNANCE_CONNECTOR_EDIT")
+                                    .replace(
+                                        ":categoryId",
+                                        ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID
+                                    )
+                                    .replace(
+                                        ":connectorId",
+                                        ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID
+                                    ),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import(
+                                        "../../../features/server-configurations/pages/connector-edit-page"
+                                    )
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "username-recovery",
+                                name: "Username Recovery",
+                                path: AppConstants.getPaths()
+                                    .get("USERNAME_RECOVERY_CONNECTOR_EDIT")
+                                    .replace(
+                                        ":type",
+                                        "username"
+                                    )
                                     .replace(
                                         ":categoryId",
                                         ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID
@@ -814,54 +932,6 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: false
                     },
                     {
-                        category: "extensions:manage.sidePanel.categories.AccountManagement",
-                        children: [
-                            {
-                                component: lazy(() =>
-                                    import("../../server-configurations/pages/admin-session-advisory-banner-edit-page")
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "admin-session-advisory-banner-edit",
-                                name: "Admin Session Advisory Banner",
-                                path: AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT"),
-                                protected: true,
-                                showOnSidePanel: false
-                            }
-                        ],
-                        component: lazy(() =>
-                            import("../../server-configurations/pages/connector-listing-page")
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().adminAdvisoryBanner
-                        },
-                        id: "adminAdvisoryBanner",
-                        name: "console:manage.features.serverConfigs.adminAdvisory.pageHeading",
-                        order: 22,
-                        path: AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER"),
-                        protected: true,
-                        showOnSidePanel: false
-                    },
-                    {
-                        category: "extensions:develop.sidePanel.categories.AccountManagement",
-                        component: lazy(() =>
-                            import("../../server-configurations/pages/remote-logging")
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().remoteLogging
-                        },
-                        id: "remoteLogging",
-                        name: "Remote Logging",
-                        order: 22,
-                        path: AppConstants.getPaths().get("REMOTE_LOGGING"),
-                        protected: true,
-                        showOnSidePanel: true
-                    },
-                    {
                         category: "extensions:develop.sidePanel.categories.monitor",
                         component: lazy(() => import("../../../extensions/components/logs/pages/logs")),
                         exact: true,
@@ -931,6 +1001,68 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 ":connectorId",
                                 ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
                             ),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
+                        category: "extensions:manage.sidePanel.categories.settings",
+                        children: [
+                            {
+                                component: lazy(() =>
+                                    import("../../server/pages/admin-session-advisory-banner-page")
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "admin-session-advisory-banner-edit",
+                                name: "Admin Session Advisory Banner",
+                                path: AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import("../../server/pages/remote-logging-page")
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "remote-logging",
+                                name: "Remote Logging",
+                                path: AppConstants.getPaths().get("REMOTE_LOGGING"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import("../../server/pages/internal-notification-sending-page")
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "internal-notification-sending",
+                                name: "Internal Notification Sending",
+                                path: AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING"),
+                                protected: true,
+                                showOnSidePanel: false
+                            }
+                        ],
+                        component: lazy(() =>
+                            import(
+                                "../../../features/server/pages/server"
+                            )
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().userStore
+                        },
+                        id: "server",
+                        name: "Server",
+                        order: 25,
+                        path: AppConstants.getPaths().get("SERVER"),
                         protected: true,
                         showOnSidePanel: true
                     },
@@ -1044,7 +1176,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         exact: true,
                         id: "apiResources-edit",
                         name: "extensions:develop.sidePanel.apiResources",
-                        path: APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT"),
+                        path: APIResourcesExtensionConstants.getPaths().get("API_RESOURCE_EDIT"),
                         protected: true,
                         showOnSidePanel: false
                     }
@@ -1344,6 +1476,17 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         id: "apiResources-edit",
                         name: "extensions:develop.sidePanel.apiResources",
                         path: APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    },
+                    {
+                        component: lazy(() =>
+                            import("../../api-resources/pages/api-resources-internal-list")
+                        ),
+                        exact: true,
+                        id: "apiResources-list",
+                        name: "extensions:develop.sidePanel.apiResources",
+                        path: APIResourcesConstants.getPaths().get("API_RESOURCES_CATEGORY"),
                         protected: true,
                         showOnSidePanel: false
                     }

@@ -437,7 +437,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     }, [ template ]);
 
     /**
-     * Check whether the application is an M2M Application
+     * Check whether the application is an M2M Application.
      */
     useEffect(() => {
         if (!template || !M2MApplicationTemplate) {
@@ -446,7 +446,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             return;
         }
 
-        if (template.id == M2MApplicationTemplate.id) {
+        if (template.id === M2MApplicationTemplate.id) {
             setM2MApplication(true);
         }
         setIsLoading(false);
@@ -861,8 +861,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                  */
                 const grant: CheckboxChildWithIndex = {
                     label: modifyGrantTypeLabels(name, displayName),
-                    readOnly: (isM2MApplication && name === ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT)
-                        ? true : false,
+                    readOnly: isM2MApplication && name === ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
                     value: name
                 };
 
@@ -1464,6 +1463,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 && (
                     selectedGrantTypes?.includes(ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
                     || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
+                    || selectedGrantTypes?.includes(ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)
                 ) && (
                     <>
                         <Grid.Row columns={ 1 }>

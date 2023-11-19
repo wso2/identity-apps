@@ -1765,6 +1765,7 @@ export const myAccount: MyAccountNS = {
     sections: {
         accountRecovery: {
             description: "உங்கள் கடவுச்சொல்லை மீட்டெடுக்க உதவ நாங்கள் பயன்படுத்தக்கூடிய மீட்பு தகவல்களை நிர்வகிக்கவும்",
+            emptyPlaceholderText: "கணக்கு மீட்பு விருப்பங்கள் எதுவும் கிடைக்கவில்லை",
             heading: "கணக்கு மீட்பு"
         },
         changePassword: {

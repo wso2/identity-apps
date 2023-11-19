@@ -33,8 +33,7 @@ import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import { getProfileInformation } from "../../authentication/store";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
-import { OrganizationType } from "../../organizations/constants";
-import { OrganizationUtils } from "../../organizations/utils";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getGovernanceConnectors } from "../../server-configurations/api";
 import { ServerConfigurationsConstants } from "../../server-configurations/constants";
 import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../../server-configurations/models";
@@ -53,6 +52,8 @@ const UserEditPage = (): ReactElement => {
 
     const dispatch: Dispatch<any> = useDispatch();
 
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
+
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
@@ -66,8 +67,7 @@ const UserEditPage = (): ReactElement => {
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
-        if (OrganizationUtils.getOrganizationType() !== OrganizationType.SUPER_ORGANIZATION &&
-            OrganizationUtils.getOrganizationType() !== OrganizationType.FIRST_LEVEL_ORGANIZATION) {
+        if (!isSuperOrganization() && !isFirstLevelOrganization()) {
             return;
         }
 
@@ -110,9 +110,6 @@ const UserEditPage = (): ReactElement => {
     }, []);
 
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
-            return;
-        }
 
         setReadOnlyUserStoresLoading(true);
         SharedUserStoreUtils.getReadOnlyUserStores()
@@ -152,6 +149,14 @@ const UserEditPage = (): ReactElement => {
             history.push(AppConstants.getPaths().get("ADMINISTRATORS"));
         } else {
             history.push(AppConstants.getPaths().get("USERS"));
+        }
+    };
+
+    const getBackButtonText = (): string => {
+        if (window.location.href.includes(AppConstants.getPaths().get("ADMINISTRATORS"))) {
+            return t("console:manage.pages.usersEdit.backButton", { type: "Administrators" });
+        } else {
+            return t("console:manage.pages.usersEdit.backButton", { type: "Users" });
         }
     };
 
@@ -319,7 +324,7 @@ const UserEditPage = (): ReactElement => {
             backButton={ {
                 "data-testid": "user-mgt-edit-user-back-button",
                 onClick: handleBackButtonClick,
-                text: t("console:manage.pages.usersEdit.backButton")
+                text: getBackButtonText()
             } }
             titleTextAlign="left"
             bottomMargin={ false }

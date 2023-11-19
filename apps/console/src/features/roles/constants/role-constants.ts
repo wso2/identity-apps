@@ -71,7 +71,7 @@ export class RoleConstants {
     /**
      * Default role audience.
      */
-    public static readonly DEFAULT_ROLE_AUDIENCE: string = RoleAudienceTypes.ORGANIZATION;
+    public static readonly DEFAULT_ROLE_AUDIENCE: string = RoleAudienceTypes.APPLICATION;
 
     /**
      * Read only applications client ids.

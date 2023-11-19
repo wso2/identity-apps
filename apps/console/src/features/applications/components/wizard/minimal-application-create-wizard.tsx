@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -53,6 +54,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Card, Checkbox, CheckboxProps, Dimmer, Divider, Grid } from "semantic-ui-react";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
+import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
 import { applicationConfig } from "../../../../extensions";
 import { AccessControlConstants } from "../../../access-control/constants/access-control";
@@ -89,6 +91,7 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { ApplicationShareModal } from "../modals/application-share-modal";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
@@ -150,7 +153,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
 
     const tenantName: string = store.getState().config.deployment.tenant;
@@ -210,7 +213,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         // Stop fetching CORS origins if the selected template is `Expert Mode`.
         if (!selectedTemplate
             || selectedTemplate.id === CustomApplicationTemplate.id
-            || !OrganizationUtils.isCurrentOrganizationRoot()) {
+            || !isSuperOrganization()) {
             return;
         }
 
@@ -258,6 +261,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     useEffect(() => {
 
         handleError("all", false);
+
+        if (selectedTemplate.id === CustomApplicationTemplate.id &&
+            customApplicationProtocol === SupportedAuthProtocolTypes.WS_FEDERATION) {
+            return;
+        }
 
         // If both `protocolFormValues` & `generalFormValues` are undefined, return.
         if (!protocolFormValues && !generalFormValues) {
@@ -351,9 +359,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         }
                     );
                 }
-
-            } else if (customApplicationProtocol === SupportedAuthProtocolTypes.WS_FEDERATION) {
-                application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS;
             }
         }
 
@@ -362,14 +367,36 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             application.inboundProtocolConfiguration = {
                 oidc: {
                     grantTypes: [
-                        "client_credentials"
+                        ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
                     ]
                 }
             };
         }
 
         setIsSubmitting(true);
+        createApp(application);
 
+    }, [ generalFormValues, protocolFormValues ]);
+
+    useEffect(() => {
+        if (!protocolFormValues) {
+            return;
+        }
+
+        const application: MainApplicationInterface = cloneDeep({
+            ...templateSettings?.application,
+            ...protocolFormValues,
+            name: generalFormValues.get("name").toString(),
+            templateId:  ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+        });
+
+        if (customApplicationProtocol === SupportedAuthProtocolTypes.WS_FEDERATION && protocolFormValues) {
+            createApp(application);
+        }
+
+    }, [ protocolFormValues ]);
+
+    const createApp = (application: MainApplicationInterface): void => {
         createApplication(application)
             .then((response: AxiosResponse) => {
                 eventPublisher.compute(() => {
@@ -410,8 +437,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             .catch((error: AxiosError) => {
 
                 if (error?.response?.status === 403 &&
-                    error?.response?.data?.code ===
-                    ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
+                error?.response?.data?.code ===
+                ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
                     setOpenLimitReachedModal(true);
 
                     return;
@@ -481,7 +508,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 handleProtocolValueChange(false);
                 handleError("all", false);
             });
-    }, [ generalFormValues, protocolFormValues ]);
+    };
 
     const handleAppCreationComplete = (createdAppID: string): void => {
         // The created resource's id is sent as a location header.
@@ -715,6 +742,16 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     data-testid={ `${ testId }-saml-protocol-settings-form` }
                 />
             );
+        } else if (selectedProtocol === SupportedAuthProtocolTypes.WS_FEDERATION) {
+            return (
+                <PassiveStsProtocolSettingsWizardForm
+                    triggerSubmit={ submitProtocolForm }
+                    initialValues={ null }
+                    templateValues={ templateSettings }
+                    onSubmit={ (values: Record<string, any>): void => setProtocolFormValues(values) }
+                    data-testid={ `${ testId }-passive-sts-protocol-settings-form` }
+                />
+            );
         }
     };
 
@@ -728,7 +765,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     };
 
     const scrollToNotification = () => {
-        document.getElementById("notification-div").scrollIntoView({ behavior: "smooth" });
+        document.getElementById("notification-div")?.scrollIntoView({ behavior: "smooth" });
     };
 
     /**

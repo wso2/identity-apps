@@ -31,6 +31,7 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { CommonUtils, ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
+import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
     ConfirmationModal,
     ContentLoader,
@@ -55,8 +56,7 @@ import { GUEST_ADMIN_ASSOCIATION_TYPE } from "../../../extensions/components/use
 import { administratorConfig } from "../../../extensions/configs/administrator";
 import { AccessControlConstants } from "../../access-control/constants/access-control";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
-import { OrganizationType } from "../../organizations/constants";
-import { OrganizationUtils } from "../../organizations/utils";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { searchRoleList, updateRoleDetails } from "../../roles/api/roles";
 import {
     OperationValueInterface,
@@ -117,6 +117,10 @@ interface UserProfilePropsInterface extends TestableComponentInterface, SBACInte
      * Admin user type
      */
     adminUserType?: string;
+    /**
+     * Is user managed by parent organization.
+     */
+    isUserManagedByParentOrg?: boolean;
 }
 
 /**
@@ -142,6 +146,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         tenantAdmin,
         editUserDisclaimerMessage,
         adminUserType,
+        isUserManagedByParentOrg,
         [ "data-testid" ]: testId
     } = props;
 
@@ -149,12 +154,17 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
     const dispatch: Dispatch = useDispatch();
 
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
+
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
     const currentOrganization: string =  useSelector((state: AppState) => state?.config?.deployment?.tenant);
     const authUserTenants: TenantInfo[] = useSelector((state: AppState) => state?.auth?.tenants);
+    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state.global.supportedI18nLanguages
+    );
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
@@ -183,8 +193,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const modifiedDate: string = user?.meta?.lastModified;
 
     useEffect(() => {
-        if (OrganizationUtils.getOrganizationType() !== OrganizationType.SUPER_ORGANIZATION &&
-            OrganizationUtils.getOrganizationType() !== OrganizationType.FIRST_LEVEL_ORGANIZATION) {
+        if (!isSuperOrganization() && !isFirstLevelOrganization()) {
             return;
         }
 
@@ -287,7 +296,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         if (!isEmpty(profileSchema) && !isEmpty(userInfo)) {
             const tempProfileInfo: Map<string, string> = new Map<string, string>();
 
-            if (adminUserType === "internal") {
+            if (adminUserType === AdminAccountTypes.INTERNAL) {
                 proSchema.forEach((schema: ProfileSchemaInterface) => {
                     const schemaNames: string[] = schema.name.split(".");
 
@@ -1066,7 +1075,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         return (
             <>
                 {
-                    ((!isReadOnly || allowDeleteOnly)
+                    ((!isReadOnly || allowDeleteOnly || isUserManagedByParentOrg)
                     && ((adminUserType === AdminAccountTypes.INTERNAL && !isPrivilegedUser)
                         || (!(resolveUsernameOrDefaultEmail(user, false) === tenantAdmin ||
                                     resolveUsernameOrDefaultEmail(user, false) === "admin")
@@ -1077,18 +1086,22 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             <DangerZoneGroup
                                 sectionHeader={ t("console:manage.features.user.editUser.dangerZoneGroup.header") }
                             >
-                                <Show when={ AccessControlConstants.USER_EDIT }>
-                                    <DangerZone
-                                        data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
-                                        actionTitle={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                            "passwordResetZone.actionTitle") }
-                                        header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                            "passwordResetZone.header") }
-                                        subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
-                                            "passwordResetZone.subheader") }
-                                        onActionClick={ () => setOpenChangePasswordModal(true) }
-                                    />
-                                </Show> 
+                                {
+                                    !isUserManagedByParentOrg && (
+                                        <Show when={ AccessControlConstants.USER_EDIT }>
+                                            <DangerZone
+                                                data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
+                                                actionTitle={ t("console:manage.features.user.editUser." +
+                                                    "dangerZoneGroup.passwordResetZone.actionTitle") }
+                                                header={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                                    "passwordResetZone.header") }
+                                                subheader={ t("console:manage.features.user.editUser.dangerZoneGroup." +
+                                                    "passwordResetZone.subheader") }
+                                                onActionClick={ () => setOpenChangePasswordModal(true) }
+                                            />
+                                        </Show>
+                                    )
+                                }
                                 {
                                     !allowDeleteOnly && configSettings?.accountDisable === "true" && (
                                         <DangerZone
@@ -1232,6 +1245,52 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     disabled={ false }
                     readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
                     clearable={ !schema.required }
+                    search
+                    selection
+                    fluid
+                />
+            );
+        } else if (schema?.name === "locale") {
+            return (
+                <Field
+                    data-testid={ `${ testId }-profile-form-${ schema?.name }-input` }
+                    name={ schema?.name }
+                    label={ fieldName }
+                    required={ schema?.required }
+                    requiredErrorMessage={
+                        t("console:manage.features.user.profile.forms.generic.inputs.validations.empty", { fieldName })
+                    }
+                    placeholder={
+                        t("console:manage.features.user.profile.forms.generic.inputs.dropdownPlaceholder",
+                            { fieldName })
+                    }
+                    type="dropdown"
+                    value={ profileInfo.get(schema?.name) }
+                    children={ [ {
+                        "data-testid": `${ testId }-profile-form-locale-dropdown-empty` as string,
+                        key: "empty-locale" as string,
+                        text: t("console:manage.features.user.profile.forms.generic.inputs.dropdownPlaceholder",
+                            { fieldName }) as string,
+                        value: "" as string
+                    } ].concat(
+                        supportedI18nLanguages
+                            ? Object.keys(supportedI18nLanguages).map((key: string) => {
+                                return {
+                                    "data-testid": `${ testId }-profile-form-locale-dropdown-`
+                                        +  supportedI18nLanguages[key].code as string,
+                                    flag: supportedI18nLanguages[key].flag,
+                                    key: supportedI18nLanguages[key].code as string,
+                                    text: `${supportedI18nLanguages[key].name as string}, 
+                                                ${supportedI18nLanguages[key].code as string}`,
+                                    value: supportedI18nLanguages[key].code as string
+                                };
+                            })
+                            : []
+                    ) }
+                    key={ key }
+                    disabled={ false }
+                    readOnly={ isReadOnly || schema?.mutability === ProfileConstants.READONLY_SCHEMA }
+                    clearable={ !schema?.required }
                     search
                     selection
                     fluid

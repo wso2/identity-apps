@@ -1,5 +1,23 @@
 # @wso2is/core
 
+## 2.0.15
+
+### Patch Changes
+
+- [#4702](https://github.com/wso2/identity-apps/pull/4702) [`2d93945d78`](https://github.com/wso2/identity-apps/commit/2d93945d780ac25ea20acc4af42d23863d080e90) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Revamp login and registration page
+
+## 2.0.14
+
+### Patch Changes
+
+- [#4641](https://github.com/wso2/identity-apps/pull/4641) [`640820b3c6`](https://github.com/wso2/identity-apps/commit/640820b3c6daeefa415c76e5aa0fd37a3680b9f0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add deployment configs to conditionally enable/disable classic features
+
+## 2.0.13
+
+### Patch Changes
+
+- [#4559](https://github.com/wso2/identity-apps/pull/4559) [`17462364ba`](https://github.com/wso2/identity-apps/commit/17462364ba5f03e7c7aba1ef78df94812ca8ffc4) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove delete action of the `everyone` role
+
 ## 2.0.12
 
 ### Patch Changes

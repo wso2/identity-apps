@@ -87,8 +87,8 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
 
     const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
-    const isRootOrganization: boolean = useMemo(() =>
-        OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
+    const isSuperOrganization: boolean = useMemo(() =>
+        OrganizationUtils.isSuperOrganization(currentOrganization), [ currentOrganization ]);
 
     useEffect(() => {
 
@@ -198,7 +198,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                 )
             },
             // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
-            isRootOrganization ? {
+            isSuperOrganization ? {
                 menuItem: t("console:manage.features.roles.edit.menuItems.roles"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>

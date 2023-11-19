@@ -267,7 +267,14 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         }
 
         if (profileInfo?.userName) {
-            return profileInfo.userName.split("/")[ 1 ];
+            const userName: string = profileInfo.userName.split("/")[ 1 ];
+
+            // If the username is in TENANT/USERNAME format, return the USERNAME.
+            if (userName) {
+                return userName;
+            }
+
+            return profileInfo.userName;
         }
 
         return "";

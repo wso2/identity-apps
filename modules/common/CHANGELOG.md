@@ -1,5 +1,28 @@
 # @wso2is/common
 
+## 2.0.7
+
+### Patch Changes
+
+- [#4641](https://github.com/wso2/identity-apps/pull/4641) [`640820b3c6`](https://github.com/wso2/identity-apps/commit/640820b3c6daeefa415c76e5aa0fd37a3680b9f0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add deployment configs to conditionally enable/disable classic features
+
+- Updated dependencies [[`9260cecd00`](https://github.com/wso2/identity-apps/commit/9260cecd008a26d5d15596e943bf5a919a1d0c97), [`640820b3c6`](https://github.com/wso2/identity-apps/commit/640820b3c6daeefa415c76e5aa0fd37a3680b9f0)]:
+  - @wso2is/i18n@2.0.41
+  - @wso2is/core@2.0.14
+  - @wso2is/access-control@2.0.4
+  - @wso2is/forms@2.0.1
+  - @wso2is/react-components@2.0.16
+
+## 2.0.6
+
+### Patch Changes
+
+- [#4581](https://github.com/wso2/identity-apps/pull/4581) [`e0c4bf346f`](https://github.com/wso2/identity-apps/commit/e0c4bf346fd2c6ad6a63ba2196098d6ee8696a12) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bump i18n module version
+
+- Updated dependencies [[`e81a728ec2`](https://github.com/wso2/identity-apps/commit/e81a728ec287cf93a90882cff112f3a64bb1ab6e), [`e0c4bf346f`](https://github.com/wso2/identity-apps/commit/e0c4bf346fd2c6ad6a63ba2196098d6ee8696a12)]:
+  - @wso2is/react-components@2.0.15
+  - @wso2is/i18n@2.0.36
+
 ## 2.0.5
 
 ### Patch Changes

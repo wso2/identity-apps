@@ -60,6 +60,8 @@
 @TransferComponentSegmentInternalLabelBackgroundColor: #8DC1D4;
 @TransferComponentSegmentInternalLabelBorderColor: #7CB5CA;
 @TransferComponentSegmentApplicationAttributeSecondaryColor: #f99467;
+@TransferComponentSegmentAudienceLabelBackgroundColor: #dcf0fa;
+@TransferComponentSegmentAudienceLabelTextColor: #0082c3;
 @TransferListSegmentHeight: 210px;
 
 /*************************************

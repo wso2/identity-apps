@@ -55,6 +55,8 @@ export interface RolesMetaInterface {
  */
 export interface RolesMemberInterface {
     display: string;
+    audienceType?: string;
+    audienceDisplay?: string
     value: string;
     orgId: string;
     orgName: string;

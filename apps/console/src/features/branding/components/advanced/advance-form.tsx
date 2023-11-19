@@ -286,6 +286,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 listen={ (value: string) =>  setSelfSignUpURL(value) }
                 width={ 16 }
                 data-testid={ `${ componentId }-self-signup-url` }
+                validation={ validateTemplatableURLs }
             />
         </Form>
     );

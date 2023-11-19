@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -54,6 +54,10 @@ export interface MessagePropsInterface extends MessageProps, IdentifiableCompone
      * Change the visibility of the message.
      * */
     visible?: boolean;
+    /**
+     * Hide the default icon.
+     * */
+    hideDefaultIcon?: boolean;
 
 }
 
@@ -71,6 +75,7 @@ export const Message: FunctionComponent<MessagePropsInterface> = (props: Message
         header,
         content,
         visible,
+        hideDefaultIcon,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
@@ -123,10 +128,9 @@ export const Message: FunctionComponent<MessagePropsInterface> = (props: Message
                         <div>
                             { content }
                         </div>
-                    )
-                    : (
+                    ) : (
                         <div>
-                            { resolveMessageIcon() }
+                            { !hideDefaultIcon && resolveMessageIcon() }
                             { content }
                         </div>
                     )
@@ -148,5 +152,6 @@ export const Message: FunctionComponent<MessagePropsInterface> = (props: Message
 Message.defaultProps = {
     "data-componentid": "message-info",
     "data-testid": "message-info",
+    hideDefaultIcon: false,
     visible: true
 };

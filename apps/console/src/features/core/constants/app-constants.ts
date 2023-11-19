@@ -251,7 +251,7 @@ export class AppConstants {
             [ "GETTING_STARTED", `${ AppConstants.getDeveloperViewBasePath() }/getting-started` ],
             [ "ADMIN_OVERVIEW", `${ AppConstants.getAdminViewBasePath() }/overview` ],
             [ "ADMIN_ADVISORY_BANNER", `${ AppConstants.getAdminViewBasePath() }/admin-advisory` ],
-            [ "ADMIN_ADVISORY_BANNER_EDIT", `${ AppConstants.getAdminViewBasePath() }/admin-advisory-banner-edit` ],
+            [ "ADMIN_ADVISORY_BANNER_EDIT", `${ AppConstants.getAdminViewBasePath() }/server/admin-advisory` ],
             [
                 "ANALYTICS",
                 `${AppConstants.getAdminViewBasePath()}/analytics/:categoryId/:connectorId`
@@ -349,8 +349,13 @@ export class AppConstants {
                 "GOVERNANCE_CONNECTOR_EDIT",
                 `${AppConstants.getAdminViewBasePath()}/connector/:categoryId/:connectorId`
             ],
+            [
+                "USERNAME_RECOVERY_CONNECTOR_EDIT",
+                `${AppConstants.getAdminViewBasePath()}/connector/:type/:categoryId/:connectorId`
+            ],
             [ "SECRETS", `${AppConstants.getDeveloperViewBasePath()}/secrets` ],
             [ "SECRET_EDIT", `${AppConstants.getDeveloperViewBasePath()}/secrets/:type/:name` ],
+            [ "SERVER_CONFIG_CATEGORY", `${AppConstants.getAdminViewBasePath()}/login-and-registration/:id` ],
             [
                 "ATTRIBUTE_MAPPINGS",
                 `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type/:customAttributeMappingID?`
@@ -375,13 +380,17 @@ export class AppConstants {
                 `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration`
             ],
             [ "INSIGHTS", `${AppConstants.getAdminViewBasePath()}/insights` ],
-            [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/logs` ],
+            [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/server/logs` ],
             [ "SESSION_MANAGEMENT",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/session-management` ],
             [ "SAML2_CONFIGURATION",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/saml2-configuration` ],
             [ "WSFED_CONFIGURATION",
-                `${AppConstants.getAdminViewBasePath()}/login-and-registration/wsfed-configuration` ]
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/wsfed-configuration` ],
+            [ "SERVER",
+                `${AppConstants.getAdminViewBasePath()}/server` ],
+            [ "INTERNAL_NOTIFICATION_SENDING",
+                `${AppConstants.getAdminViewBasePath()}/server/internal-notification-sending` ]
         ]);
 
         return paths;

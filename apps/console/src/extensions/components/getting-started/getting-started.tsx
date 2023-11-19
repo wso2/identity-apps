@@ -38,7 +38,7 @@ import {
 } from "../../../features/core";
 import { setActiveView } from "../../../features/core/store";
 import { OrganizationType } from "../../../features/organizations/constants";
-import { useGetOrganizationType } from "../../../features/organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../features/organizations/hooks/use-get-organization-type";
 import { AppViewExtensionTypes } from "../../configs/models";
 
 /**
@@ -66,7 +66,7 @@ const GettingStartedPage: FunctionComponent<GettingStartedPageInterface> = (
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const activeView: string = useSelector((state: AppState) => state.global.activeView);
     
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 

@@ -54,11 +54,12 @@ import { Grid } from "semantic-ui-react";
 import { AutoCompleteRenderOption } from "./auto-complete-render-option";
 import { ApplicationRoleWizard } from "./wizard-updated/application-role-wizard";
 import { updateApplicationDetails } from "../../applications/api";
+import { useGetApplication } from "../../applications/api/use-get-application";
 import { ApplicationInterface } from "../../applications/models";
 import {
     history
 } from "../../core";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getApplicationRolesByAudience } from "../api/roles";
 import { RoleAudienceTypes } from "../constants/role-constants";
 import {
@@ -69,10 +70,6 @@ import {
 
 
 interface ApplicationRolesSettingsInterface extends IdentifiableComponentInterface {
-    /**
-     * Application.
-     */
-    application?: ApplicationInterface
     /**
      * on application update callback
      */
@@ -89,18 +86,22 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 ): ReactElement => {
 
     const {
-        application,
         onUpdate,
         [ "data-componentid" ]: componentId
     } = props;
 
+    const path: string[] = history.location.pathname.split("/");
+    const appId: string = path[path.length - 1].split("#")[0];
+
     const { t } = useTranslation();
     const dispatch: Dispatch<any> = useDispatch();
     const { getLink } = useDocumentation();
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
+    const { data: application } = useGetApplication(appId, !!appId);
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ shouldUpdateRoleAudience, setShouldUpdateRoleAudience ] = useState<boolean>(false);
     const [ showSwitchAudienceWarning, setShowSwitchAudienceWarning ] = useState<boolean>(false);
     const [ roleAudience, setRoleAudience ] =
         useState<RoleAudienceTypes>(application?.associatedRoles?.allowedAudience ?? RoleAudienceTypes.ORGANIZATION);
@@ -114,9 +115,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
         useState<BasicRoleInterface[]>(application?.associatedRoles?.roles ?? []);
     const [ activeOption, setActiveOption ] = useState<BasicRoleInterface>(undefined);
     const [ removedRolesOptions, setRemovedRolesOptions ] = useState<BasicRoleInterface[]>(undefined);
-
-    const path: string[] = history.location.pathname.split("/");
-    const appId: string = path[path.length - 1].split("#")[0];
 
     const isReadOnly: boolean = organizationType === OrganizationType.SUBORGANIZATION;
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -134,6 +132,26 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             setInitialSelectedRoles([]);
         }
     }, [ roleAudience ]);
+
+    /**
+     * Send a request to update roles when one of the role audience radio buttons is selected. 
+     */
+    useEffect(() => {
+
+        if (!shouldUpdateRoleAudience) {
+            return;
+        }
+
+        /**
+         * Ideally, the selectedRoles list should be cleared immediately when the current roleAudience is not allowed 
+         * for the application. This does not happen in some cases due to the asynchronous nature of the 
+         * setSelectedRoles() method. This if block prevents the roles from being updated with stale data in such cases.
+         */
+        if (roleAudience !== application?.associatedRoles?.allowedAudience && selectedRoles?.length !== 0) {
+            return;
+        }
+        updateRoles();
+    }, [ shouldUpdateRoleAudience, roleAudience, selectedRoles ]);
 
     /**
      * Set removed roles
@@ -253,6 +271,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             })
             .finally(() => {
                 setIsSubmitting(false);
+                setShouldUpdateRoleAudience(false);
             });
     };
 
@@ -520,6 +539,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 } }
                 onPrimaryActionClick={ (): void => {
                     setRoleAudience(tempRoleAudience);
+                    setShouldUpdateRoleAudience(true);
                     setShowSwitchAudienceWarning(false);
                 } }
                 data-componentid={ `${ componentId }-switch-role-audience-confirmation-modal` }

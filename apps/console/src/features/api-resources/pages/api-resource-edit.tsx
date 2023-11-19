@@ -26,7 +26,7 @@ import { Dispatch } from "redux";
 import { AppState, FeatureConfigInterface,getEmptyPlaceholderIllustrations, history } from "../../core";
 import { useAPIResourceDetails } from "../api";
 import { EditAPIResource } from "../components";
-import { APIResourcesConstants } from "../constants";
+import { APIResourceType, APIResourcesConstants } from "../constants";
 import { APIResourceUtils } from "../utils/api-resource-utils";
 
 /**
@@ -56,6 +56,9 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
     const [ apiResourceId, setAPIResourceId ] = useState<string>(null);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const path: string[] = history.location.pathname.split("/");
+    const categoryId: string = path[path.length - 2];
 
     const {
         data: apiResourceData,
@@ -112,7 +115,12 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
      * go back to API resources list section
      */
     const handleBackButtonClick = () => {
-        history.push(APIResourcesConstants.getPaths().get("API_RESOURCES"));
+        if (categoryId === APIResourceType.MANAGEMENT || categoryId === APIResourceType.ORGANIZATION) {
+            history.push(APIResourcesConstants.getPaths().get("API_RESOURCES_CATEGORY")
+                .replace(":categoryId", categoryId));
+        } else {
+            history.push(APIResourcesConstants.getPaths().get("API_RESOURCES"));
+        }
     };
 
     return (
@@ -135,7 +143,11 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
                 backButton={ {
                     "data-testid": `${componentId}-back-button`,
                     onClick: handleBackButtonClick,
-                    text: t("extensions:develop.apiResource.tabs.backButton")
+                    text: categoryId === APIResourceType.MANAGEMENT
+                        ? t("console:manage.pages.rolesEdit.backButton", { type: "Management APIs" })
+                        : categoryId === APIResourceType.ORGANIZATION 
+                            ? t("console:manage.pages.rolesEdit.backButton", { type: "Organization APIs" })
+                            : t("console:manage.pages.rolesEdit.backButton", { type: "APIs" })
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }

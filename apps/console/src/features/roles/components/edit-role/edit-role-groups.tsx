@@ -24,7 +24,7 @@ import Button from "@oxygen-ui/react/Button";
 import TextField from "@oxygen-ui/react/TextField";
 import { AlertLevels, IdentifiableComponentInterface, RoleGroupsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmphasizedSegment, EmptyPlaceholder, Heading } from "@wso2is/react-components";
+import { EmphasizedSegment, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
@@ -40,6 +40,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { Icon } from "semantic-ui-react";
 import { AutoCompleteRenderOption } from "./edit-role-common/auto-complete-render-option";
 import { RenderChip } from "./edit-role-common/render-chip";
 import { updateResources } from "../../../core/api/bulk-operations";
@@ -222,10 +223,13 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                     action={ 
                         !isReadOnly 
                             ? (
-                                <Button onClick={ () => setShowEmptyRolesListPlaceholder(false) } >
+                                <PrimaryButton
+                                    onClick={ () => setShowEmptyRolesListPlaceholder(false) }
+                                >
+                                    <Icon name="plus"/>
                                     { t("console:manage.features.roles.edit.groups.placeholders.emptyPlaceholder" + 
                                         ".action") }
-                                </Button>
+                                </PrimaryButton>
                             )
                             : null
                     }

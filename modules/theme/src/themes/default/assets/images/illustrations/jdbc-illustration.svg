@@ -18,7 +18,7 @@
  * under the License.
 -->
 
-<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg class="icon" width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
         d="M12 72.9589C12 77.9522 25.8792 84 43 84C52.9632 84 61.8287 82.1832 67.5 79.7567L67 79L66 77.5L64.5 73.3151L63.5 68.3836L68 62.2192L73.3339 60.9863L74 49.4795V24C74 25.2329 67.5 32.2192 41.5 32.2192C15 32.2192 12 24 12 24V72.9589Z"
         fill="#ECECEC" />

@@ -372,9 +372,7 @@
                 }
             },
             "applications": {
-                "disabledFeatures": [
-                    "applications.loginFlow.legacyEditor"
-                ],
+                "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
                     "feature": [
@@ -510,6 +508,7 @@
                 }
             },
             "governanceConnectors": {
+                "deprecatedFeaturesToShow": [],
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
@@ -933,11 +932,7 @@
         },
         "hiddenAuthenticators": [],
         "hiddenConnectionTemplates": [],
-        "hiddenUserStores": [
-            "ASGARDEO-USER",
-            "LITE-USER",
-            "DEFAULT"
-        ],
+        "hiddenUserStores": [],
         "i18nConfigs": {
             "showLanguageSwitcher": false,
             "langAutoDetectEnabled": false
@@ -979,6 +974,13 @@
             "Console",
             "My Account"
         ],
+        "classicFeatures": {
+            "isRequestPathAuthenticationEnabled": false,
+            "isApplicationLevelRoleMappingEnabled": false,
+            "isXacmlAuthorizationEnabled": false,
+            "isIncludeOrgNameInSubjectEnabled": false,
+            "isUseMappedLocalSubjectEnabled": false
+        },
         "theme": {
             "name": "wso2is"
         }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -123,6 +123,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     } = props;
 
     const { t } = useTranslation();
+    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const [ callBackUrls, setCallBackUrls ] = useState("");
     const [ callBackURLFromTemplate, setCallBackURLFromTemplate ] = useState("");
@@ -573,7 +574,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         showLessContent={ t("common:showLess") }
                                         showMoreContent={ t("common:showMore") }
                                     />
-                                    { (callBackURLFromTemplate) && (
+                                    { (callBackURLFromTemplate) && isSAASDeployment && (
                                         <Message
                                             type="info"
                                             content={
@@ -581,15 +582,15 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                                     {
                                                         <Trans
                                                             i18nKey={ "console:develop.features." +
-                                                             "applications.forms.inboundOIDC.fields." +
-                                                             "callBackUrls.info" }
+                                                                "applications.forms.inboundOIDC.fields." +
+                                                                "callBackUrls.info" }
                                                             tOptions={ {
                                                                 callBackURLFromTemplate: callBackURLFromTemplate
                                                             } }
                                                         >
-                                                             Don’t have an app? Try out a sample app
-                                                             using <strong>{ callBackURLFromTemplate }</strong>
-                                                             as the Authorized URL.
+                                                                Don’t have an app? Try out a sample app
+                                                                using <strong>{ callBackURLFromTemplate }</strong>
+                                                                as the Authorized URL.
                                                         </Trans>
                                                     }
                                                     {

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ProductVersionConfigInterface } from "./core";
+import { ClassicFeaturesInterface, ProductVersionConfigInterface } from "./core";
 import { DocumentationProviders, DocumentationStructureFileTypes } from "./documentation";
 import { GravatarConfig } from "./profile";
 
@@ -205,6 +205,10 @@ export interface CommonUIConfigInterface<T = Record<string, unknown>> {
      */
     productVersionConfig?: ProductVersionConfigInterface;
     /**
+     * Classic features
+     */
+    classicFeatures?: ClassicFeaturesInterface;
+    /**
      * Theme configs.
      */
     theme: AppThemeConfigInterface;
@@ -330,6 +334,10 @@ export interface FeatureAccessConfigInterface {
      */
     scopes: CRUDScopesInterface;
     /**
+     * Set of deprecated features.
+     */
+    deprecatedFeaturesToShow?: DeprecatedFeatureInterface[];
+    /**
      * Set of disabled features.
      */
     disabledFeatures?: string[];
@@ -340,7 +348,23 @@ export interface FeatureAccessConfigInterface {
     /**
      * Enable the tour option
      */
-     tryittourenabled?: boolean;
+    tryittourenabled?: boolean; 
+}
+
+interface DeprecatedFeature {
+    name: string;
+    deprecatedProperties: string[];
+}
+
+export interface DeprecatedFeatureInterface {
+    /**
+     * Name of the deprecated feature.
+     */
+    name?: string;
+    /**
+     * An array of deprecated properties.
+     */
+    deprecatedProperties?: string[];
 }
 
 /**

@@ -41,6 +41,7 @@ import { history } from "../helpers/history";
 import { FeatureConfigInterface } from "../models/config";
 import { AppState, setDeveloperVisibility, setFilteredDevelopRoutes, setSanitizedDevelopRoutes } from "../store";
 import { AppUtils } from "../utils/app-utils";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 
 /**
  * Props interface of {@link useOrganizations}
@@ -61,6 +62,7 @@ const useRoutes = (): useRoutesInterface => {
     const dispatch: Dispatch = useDispatch();
 
     const { legacyAuthzRuntime }  = useAuthorization();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const loggedUserName: string = useSelector((state: AppState) => state.profile.profileInfo.userName);
@@ -103,7 +105,7 @@ const useRoutes = (): useRoutesInterface => {
                 }
 
                 const isCurrentOrgRootAndSuperTenant: boolean =
-                    OrganizationUtils.isCurrentOrganizationRoot() && AppConstants.getSuperTenant() === tenantDomain;
+                    isSuperOrganization() && AppConstants.getSuperTenant() === tenantDomain;
 
                 if (legacyAuthzRuntime) {
                     if (isCurrentOrgRootAndSuperTenant || isFirstLevelOrg) {
@@ -136,20 +138,18 @@ const useRoutes = (): useRoutesInterface => {
                     }
                 }
 
-                if (isCurrentOrgRootAndSuperTenant && !window["AppUtils"].getConfig().organizationName) {
-                    if (loggedUserName === isSuperAdmin) {
-                        return commonHiddenRoutes;
-                    } else {
-                        return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
-                    }
-                }
-
                 if (window["AppUtils"].getConfig().organizationName) {
                     return [
                         ...AppUtils.getHiddenRoutes()
                     ];
                 } else {
-                    return [ ...commonHiddenRoutes ];
+                    if (isCurrentOrgRootAndSuperTenant && loggedUserName === isSuperAdmin) {
+                        return commonHiddenRoutes;
+                    } else if (!isCurrentOrgRootAndSuperTenant) {
+                        return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
+                    }else {
+                        return [ ...commonHiddenRoutes ];
+                    }
                 }
             }
 
@@ -163,7 +163,7 @@ const useRoutes = (): useRoutesInterface => {
             : undefined;
             
         if (legacyAuthzRuntime) {
-            allowedRoutes = !OrganizationUtils.isCurrentOrganizationRoot()
+            allowedRoutes = !isSuperOrganization()
                 && !isFirstLevelOrg
                 && AppConstants.ORGANIZATION_ENABLED_ROUTES;
         }
@@ -193,67 +193,7 @@ const useRoutes = (): useRoutesInterface => {
             appRoutes[ 0 ] = appRoutes[ 0 ].filter((route: RouteInterface) => route.id === "404");
         }
 
-        if (governanceConnectors?.length > 0) {
-            const customGovernanceConnectorRoutes: RouteInterface[] = [];
 
-            governanceConnectors.forEach((category: GovernanceCategoryForOrgsInterface) => {
-                if (!serverConfigurationConfig.connectorCategoriesToShow.includes(category.id)) {
-                    const governanceConnectorChildren: ChildRouteInterface[] = [];
-
-                    category?.connectors?.forEach((connector: GovernanceConnectorForOrgsInterface) => {
-                        governanceConnectorChildren.push({
-                            component: lazy(() =>
-                                import(
-                                    "../../server-configurations/pages/connector-edit-page"
-                                )
-                            ),
-                            exact: true,
-                            icon: {
-                                icon: getSidePanelIcons().childIcon
-                            },
-                            id: connector.id,
-                            name: connector.name,
-                            path: AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
-                                .replace(
-                                    ":categoryId",
-                                    category.id
-                                )
-                                .replace(
-                                    ":connectorId",
-                                    connector.id
-                                ),
-                            protected: true,
-                            showOnSidePanel: false
-                        });
-                    });
-
-                    customGovernanceConnectorRoutes.push(
-                        {
-                            category: category.id,
-                            children: governanceConnectorChildren,
-                            component: lazy(() =>
-                                import(
-                                    "../../server-configurations/pages/connector-listing-page"
-                                )
-                            ),
-                            exact: true,
-                            icon: {
-                                icon: <GearIcon />
-                            },
-                            id: category.id,
-                            name: category.name,
-                            path: AppConstants.getPaths().get("GOVERNANCE_CONNECTOR")
-                                .replace(":id", category.id),
-                            protected: true,
-                            showOnSidePanel: true
-                        }
-                    );
-                }
-            });
-
-            appRoutes.push(...customGovernanceConnectorRoutes);
-            sanitizedAppRoutes.push(...customGovernanceConnectorRoutes);
-        }
 
         dispatch(setFilteredDevelopRoutes(appRoutes));
         dispatch(setSanitizedDevelopRoutes(sanitizedAppRoutes));

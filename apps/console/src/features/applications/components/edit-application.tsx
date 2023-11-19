@@ -72,6 +72,7 @@ import {
     URLFragmentTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 
 /**
  * Proptypes for the applications edit component.
@@ -146,7 +147,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     } = props;
 
     const { t } = useTranslation();
-
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
@@ -228,9 +229,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             // When application selection is done through the strong authentication flow.
             const tabIndex: number = applicationConfig.editApplication.getStrongAuthenticationFlowTabIndex(
                 application.clientId,
-                tenantDomain,
-                template.id,
-                CustomApplicationTemplate.id
+                tenantDomain
             );
 
             handleActiveTabIndexChange(tabIndex);
@@ -238,11 +237,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     },[ template ]);
 
     /**
-     * Check whether the application is an M2M Application
+     * Check whether the application is an M2M Application.
      */
     useEffect(() => {
 
-        if (template?.id == ApplicationTemplateIdTypes.M2M_APPLICATION) {
+        if (template?.id === ApplicationTemplateIdTypes.M2M_APPLICATION) {
             setM2MApplication(true);
         }
     }, [ template ]);
@@ -289,7 +288,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     useEffect(() => {
         const allowedCORSOrigins: string[] = [];
 
-        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (isSuperOrganization()) {
             getCORSOrigins()
                 .then((response: CORSOriginsListInterface[]) => {
                     response.map((origin: CORSOriginsListInterface) => {

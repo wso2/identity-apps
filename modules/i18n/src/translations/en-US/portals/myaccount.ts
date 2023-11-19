@@ -1720,8 +1720,8 @@ export const myAccount: MyAccountNS = {
     },
     sections: {
         accountRecovery: {
-            description:
-            "Manage recovery information that we can use to help you recover your password",
+            description: "Manage recovery information that we can use to help you recover your password",
+            emptyPlaceholderText: "No Account Recovery options available",
             heading: "Account Recovery"
         },
         changePassword: {

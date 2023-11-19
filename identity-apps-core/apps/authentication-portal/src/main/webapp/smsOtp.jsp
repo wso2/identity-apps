@@ -249,9 +249,12 @@
                                         String multiOptionURI = request.getParameter("multiOptionURI");
                                         if (isMultiAuthAvailable(multiOptionURI)) {
                                     %>
-                                        <a class="ui fluid large button secondary mt-2" 
-                                        id="goBackLink"
-                                        href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
+                                        <div class="ui divider hidden"></div>
+                                        <a
+                                            class="ui fluid primary basic button link-button" 
+                                            id="goBackLink"
+                                            href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'
+                                        >
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
                                         </a>
                                     <% } %>
@@ -364,7 +367,9 @@
                             console.warn("Prevented a possible double submit event");
                         } else {
                             var code = document.getElementById("OTPCode").value;
-                            if (code == "") {
+                            var resendFlagElement = document.getElementById("resendCode");
+                            var isResend = resendFlagElement.value;
+                            if (code == "" && isResend == "false") {
                                 e.preventDefault();
                                 document.getElementById('alertDiv').innerHTML
                                     = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.code")%></div>'

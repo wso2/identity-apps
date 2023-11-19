@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,9 +25,11 @@ import { ApplicationsResourceEndpointsInterface } from "../models";
  * @returns The resource endpoints for the Application Management feature.
  */
 export const getApplicationsResourceEndpoints = (serverHost: string): ApplicationsResourceEndpointsInterface => {
+    const serverHostWithoutOPath: string = serverHost.replace("/o", "");
+
     return {
         applications: `${ serverHost }/api/server/v1/applications`,
-        myAccountConfigMgt: `${ serverHost }/api/identity/config-mgt/v1.0/resource/myaccount`,
+        myAccountConfigMgt: `${ serverHostWithoutOPath }/api/identity/config-mgt/v1.0/resource/myaccount`,
         requestPathAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators?type=REQUEST_PATH`
     };
 };

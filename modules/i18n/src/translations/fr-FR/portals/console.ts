@@ -1049,6 +1049,11 @@ export const console: ConsoleNS = {
                                 "Configurer l'authentification pour votre application à l'aide de WS-Federation.",
                             tabName: "Info"
                         },
+                        protocol: {
+                            title: "Configuration du protocole",
+                            subtitle: "Configurez le protocole pour votre application.",
+                            button: "Configurer le protocole"
+                        },
                         provisioning: {
                             inbound: {
                                 heading: "Provisionnement entrant",
@@ -7315,13 +7320,19 @@ export const console: ConsoleNS = {
                         }
                     },
                     roles: {
+                        placeHolders: {
+                            emptyListPlaceholder: {
+                                subtitles: "Il n'y a aucun rôle attribué à ce groupe pour le moment.",
+                                title: "Aucun rôle attribué"
+                            }
+                        },
+                        heading: "Rôles attribués",
                         addRolesModal: {
                             heading: "Mettre à jour les rôles de groupe",
                             subHeading: "Ajoutez de nouveaux rôles ou supprimez les rôles existants attribués " +
                                 "au groupe."
                         },
-                        subHeading: "Ajoutez ou supprimez les rôles auxquels ce groupe est affecté et " +
-                            "notez que cela affectera l'exécution de certaines tâches."
+                        subHeading: "Afficher les rôles attribués pour le groupe."
                     }
                 },
                 list: {
@@ -7429,9 +7440,8 @@ export const console: ConsoleNS = {
                 addUserWizard: {
                     heading: "Inviter un utilisateur parent",
                     description: "Invitez un utilisateur de l’organisation parente.",
-                    hint: "Les utilisateurs invités sont gérés par l'organisation <1>{{currentOrganization}></1>.",
-                    usernameHint: "Le nom d'utilisateur doit appartenir à un utilisateur " +
-                        "de l'organisation <1>{{currentOrganization}></1>."
+                    hint: "Les utilisateurs invités sont gérés par l'organisation parente.",
+                    usernameHint: "Le nom d'utilisateur doit appartenir à un utilisateur de l'organisation parente."
                 },
                 tab: {
                     usersTab: "Utilisateurs",
@@ -7452,7 +7462,8 @@ export const console: ConsoleNS = {
                     noExpiredInvitations: "Il y a des invitations expirées pour le moment.",
                     noInvitations: "Il n'y a aucune invitation pour le moment.",
                     noCollaboratorUserInvitations: "Il n’y a actuellement aucun utilisateur collaborateur dont les invitations ont expiré."
-                }
+                },
+                invitedUserLabel: "Géré par l'organisation mère"
             },
             oidcScopes: {
                 viewAttributes: "Afficher les attributs",
@@ -8955,6 +8966,10 @@ export const console: ConsoleNS = {
                     pageSubheading: "Configurez la bannière d'avis d'administration à afficher " +
                         "sur la page de connexion."
                 },
+                manageNotificationSendingInternally: {
+                    title: "Notification interne",
+                    description: "Gérer la notification Envoi en interne."
+                },
                 remoteLogPublishing: {
                     title: "Publication de journaux à distance",
                     pageTitle: "Publication de journaux à distance",
@@ -9023,9 +9038,13 @@ export const console: ConsoleNS = {
                             message: "Mis à jour avec succés."
                         },
                         error: {
-                            genericError: {
+                            updateError: {
                                 description: "Une erreur s'est produite lors de la mise à jour de la configuration de la publication des journaux à distance.",
                                 message: "Quelque chose s'est mal passé"
+                            },
+                            fetchError: {
+                                description: "Une erreur s'est produite lors de l'obtention de la configuration de la publication des journaux à distance.",
+                                message: "Impossible d'obtenir la configuration de la publication des journaux à distance."
                             }
                         }
                     }
@@ -9101,6 +9120,10 @@ export const console: ConsoleNS = {
                             }
                         }
                     }
+                },
+                server: {
+                    title: "Serveuse",
+                    description: "Configurer les paramètres du serveur."
                 }
             },
             sidePanel: {
@@ -9168,7 +9191,8 @@ export const console: ConsoleNS = {
                     },
                     headers: {
                         0: "Domaine",
-                        1: "Nom"
+                        1: "Nom",
+                        2: "Audience"
                     }
                 },
                 searchPlaceholder: "Rechercher un {{type}}"
@@ -9278,7 +9302,9 @@ export const console: ConsoleNS = {
                                 placeholder: "Veuillez saisir une adresse e-mail",
                                 validations: {
                                     empty: "L'adresse e-mail est obligatoire",
-                                    invalid: "L'adresse e-mail est invalide"
+                                    invalid: "S'il vous plaît, mettez une adresse email valide.Vous pouvez utiliser alphanumérique "+
+                                        "Caractères, caractères Unicode, soulignements (_), tirets (-), périodes (.)," +
+                                        "Et un signe AT (@)."
                                 }
                             },
                             firstName: {
@@ -9352,6 +9378,14 @@ export const console: ConsoleNS = {
                             "vous souhaitez lui en attribuer, veuillez cliquer sur le bouton ci-dessous."
                     },
                     addUserWizard: {
+                        askPassword: {
+                            alphanumericUsernameEnabled: "Pour utiliser la fonction de réinitialisation du mot de passe, désactiver " +
+                                "Fonction de nom d'utilisateur alphanumérique.",
+                            emailInvalid: "Pour utiliser la fonction de réinitialisation du mot de passe, veuillez utiliser une adresse e-mail valide comme "+
+                                "l'identifiant.",
+                            emailVerificationDisabled: "Pour utiliser la fonction de réinitialisation du mot de passe, activez la vérification par e-mail par "+
+                                "Configuration d'un fournisseur de messagerie."
+                        },
                         buttons: {
                             next: "Suivant",
                             previous: "Précédent"
@@ -9381,9 +9415,10 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "Inviter plusieurs utilisateurs",
-                        subTitle: "Invitez plusieurs utilisateurs dans l’organisation.",
+                        title: "Ajouter plusieurs utilisateurs",
+                        subTitle: "Ajoutez plusieurs utilisateurs manuellement ou en utilisant un fichier CSV.",
                         wizardSummary: {
+                            inviteEmailInfo: "Un e-mail avec un lien de confirmation sera envoyé à l'adresse e-mail fournie à l'utilisateur afin de définir son propre mot de passe.",
                             successCount: "Nombre de réussites",
                             failedCount: "Nombre d'échecs",
                             totalUserCreationCount: "Nombre total de créations d'utilisateurs",
@@ -9430,10 +9465,14 @@ export const console: ConsoleNS = {
                                 searchByRoleOrGroup: "Recherche par nom de rôle/groupe",
                                 roleGroupFilterAttributePlaceHolder: "Nom du rôle/groupe"
                             },
-                            disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
-                                "externes n’est pas disponible pour le moment.",
                             manualCreation: {
-                                hint: "Ajoutez des e-mails et envoyez des invitations à plusieurs utilisateurs.",
+                                alerts: {
+                                    creationSuccess: {
+                                        description: "Les comptes d'utilisateurs ont été créés avec succès.",
+                                        message: "Création d'utilisateurs réussie"
+                                    }
+                                },
+                                hint: "Ajoutez l'adresse e-mail de l'utilisateur que vous souhaitez inviter et appuyez sur Entrée.",
                                 emailsLabel: "E-mails",
                                 emailsPlaceholder: "Entrez les adresses e-mail",
                                 disabledHint: "TL'option manuelle est désactivée en raison de l'utilisation de noms d'utilisateur alphanumériques dans votre organisation.",
@@ -9441,10 +9480,11 @@ export const console: ConsoleNS = {
                                     buttonText: "Télécharger le fichier CSV",
                                     description: "Faites glisser et déposez un fichier CSV ici."
                                 },
-                                primaryButton: "Inviter",
+                                primaryButton: "Ajouter",
                                 rolesLabel: "Les rôles",
                                 rolesPlaceholder: "Entrez les rôles",
-                                warningMessage: "La fonctionnalité d'invitation manuelle de plusieurs utilisateurs ne peut être utilisée que lorsque l'adresse e-mail est configurée comme nom d'utilisateur."
+                                warningMessage: "Cette option ne peut être utilisée que lorsque l'adresse e-mail " +
+                                    "est configurée comme nom d'utilisateur."
                             },
                             fileBased: {
                                 hint: "Invitez plusieurs utilisateurs en masse à l’aide d’un fichier CSV."
@@ -9452,10 +9492,19 @@ export const console: ConsoleNS = {
                             responseOperationType: {
                                 userCreation: "Création d'utilisateur",
                                 roleAssignment: "Affectation de rôle/groupe"
-                            }
+                            },
+                            userstoreMessage: "Les utilisateurs créés seront ajoutés au magasin d'utilisateurs <1>{{ userstore }></1>."
                         },
                         buttons: {
                             import: "Importer"
+                        },
+                        sidePanel: {
+                            manual: "Manuel",
+                            fileBased: "Basé sur un fichier",
+                            fileFormatTitle: "Format de fichier CSV",
+                            fileFormatContent: "Les en-têtes du fichier CSV doivent être des attributs utilisateur " +
+                                "mappés aux <1>attributs locaux</1>.",
+                            fileFormatSampleHeading: "Exemple de format de fichier CSV:"
                         }
                     },
                     changePasswordModal: {
@@ -9513,6 +9562,7 @@ export const console: ConsoleNS = {
                         generic: {
                             inputs: {
                                 placeholder: "Entrez votre {{fieldName}}",
+                                dropdownPlaceholder: "Sélectionnez votre {{fieldName}}",
                                 validations: {
                                     empty: "L'attribut {{fieldName}} est obligatoire",
                                     invalidFormat: "Le format de l'attribut {{fieldName}} saisi est invalide"
@@ -9829,6 +9879,12 @@ export const console: ConsoleNS = {
                                 header: "Êtes-vous sûr?",
                                 message: "Cette action modifiera le rôle de cet utilisateur."
                             },
+                            placeholders: {
+                                emptyPlaceholder: {
+                                    title: "Aucun rôle attribué",
+                                    subtitles: "Il n'y a aucun rôle attribué à l'utilisateur pour le moment."
+                                }
+                            },
                             heading: "Rôles assignés",
                             popups: {
                                 viewPermissions: "Voir les permissions"
@@ -9848,8 +9904,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             searchPlaceholder: "Rechercher des rôles",
-                            subHeading: "Ajouter ou supprimer le rôle auquel l'utilisateur est affecté. Notez que " +
-                                "cela affectera également l'exécution de certaines tâches."
+                            subHeading: "Afficher les rôles attribués pour l'utilisateur."
                         },
                         notifications: {
                             addUserRoles: {
@@ -9978,6 +10033,13 @@ export const console: ConsoleNS = {
                             "procéder avec prudence.",
                         header: "Êtes-vous sûr?",
                         message: "Cette action est irréversible et mettra fin définitivement à la session."
+                    },
+                    addMultipleUser: {
+                        header: "Avant de continuer",
+                        message: "L'option Inviter des utilisateurs est désactivée",
+                        content: "L’option Inviter des utilisateurs doit être activée pour ajouter plusieurs " +
+                            "utilisateurs. Veuillez l'activer et réessayer.",
+                        assertionHint: "Veuillez confirmer votre action."
                     }
                 },
                 consumerUsers: {
@@ -10829,6 +10891,11 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: "Modifier le rôle"
             },
+            groupsEdit: {
+                backButton: "Revenir aux {{type}}",
+                subTitle: null,
+                title: "Modifier le groupe"
+            },
             serverConfigurations: {
                 subTitle: "Gérer la configuration générale du serveur.",
                 title: "Configurations générales"
@@ -10838,7 +10905,7 @@ export const console: ConsoleNS = {
                 title: "Utilisateurs"
             },
             usersEdit: {
-                backButton: "Revenir aux Utilisateurs",
+                backButton: "Revenir aux {{type}}",
                 subTitle: "{{name}}",
                 title: "{{email}}"
             }

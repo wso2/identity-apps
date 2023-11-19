@@ -263,6 +263,11 @@
                 background-color: @TransferComponentSegmentInternalLabelBackgroundColor;
                 border-color: @TransferComponentSegmentInternalLabelBorderColor;
             }
+
+            &.audience-label {
+                color: @TransferComponentSegmentAudienceLabelTextColor;
+                background-color: @TransferComponentSegmentAudienceLabelBackgroundColor;
+            }
         }
     }
 }

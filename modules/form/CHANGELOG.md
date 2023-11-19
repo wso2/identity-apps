@@ -1,5 +1,33 @@
 # @wso2is/form
 
+## 2.0.10
+
+### Patch Changes
+
+- [#4702](https://github.com/wso2/identity-apps/pull/4702) [`2d93945d78`](https://github.com/wso2/identity-apps/commit/2d93945d780ac25ea20acc4af42d23863d080e90) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Revamp login and registration page
+
+- Updated dependencies [[`2d93945d78`](https://github.com/wso2/identity-apps/commit/2d93945d780ac25ea20acc4af42d23863d080e90)]:
+  - @wso2is/core@2.0.15
+
+## 2.0.9
+
+### Patch Changes
+
+- [#4641](https://github.com/wso2/identity-apps/pull/4641) [`640820b3c6`](https://github.com/wso2/identity-apps/commit/640820b3c6daeefa415c76e5aa0fd37a3680b9f0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add deployment configs to conditionally enable/disable classic features
+
+- Updated dependencies [[`640820b3c6`](https://github.com/wso2/identity-apps/commit/640820b3c6daeefa415c76e5aa0fd37a3680b9f0)]:
+  - @wso2is/core@2.0.14
+  - @wso2is/react-components@2.0.16
+
+## 2.0.8
+
+### Patch Changes
+
+- [#4581](https://github.com/wso2/identity-apps/pull/4581) [`e81a728ec2`](https://github.com/wso2/identity-apps/commit/e81a728ec287cf93a90882cff112f3a64bb1ab6e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update Message component to support hiding the default icon
+
+- Updated dependencies [[`e81a728ec2`](https://github.com/wso2/identity-apps/commit/e81a728ec287cf93a90882cff112f3a64bb1ab6e)]:
+  - @wso2is/react-components@2.0.15
+
 ## 2.0.7
 
 ### Patch Changes
