@@ -38,7 +38,7 @@ import { AppState, store } from "../../core/store";
 import { GenericOrganization } from "../../organizations/models/organizations";
 import { OrganizationUtils } from "../../organizations/utils";
 import { ConnectorPropertyInterface } from "../../server-configurations/models";
-import { UserManagementConstants } from "../constants";
+import { AdminAccountTypes, UserManagementConstants } from "../constants";
 
 interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
@@ -217,6 +217,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         connectorProperties={ connectorProperties }
                         isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
                         isUserManagedByParentOrg={ isUserManagedByParentOrg }
+                        adminUserType={ AdminAccountTypes.INTERNAL }
                     />
                 </ResourceTab.Pane>
             )
