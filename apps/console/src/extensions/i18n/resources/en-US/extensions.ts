@@ -2090,9 +2090,21 @@ export const extensions: Extensions = {
             }
         },
         notificationChannel: {
-            heading: "SMS / Email Providers",
-            title: "SMS / Email Providers",
-            description: "Configure the SMS and Email providers for your organization."
+            heading: {
+                heading: "SMS / Email Providers",
+                onlySMSProvider: "SMS Provider",
+                onlyEmailProvider: "Email Provider"
+            },
+            title: {
+                heading: "SMS / Email Providers",
+                onlySMSProvider: "SMS Provider",
+                onlyEmailProvider: "Email Provider"
+            },
+            description: {
+                description: "Configure the SMS and Email providers for your organization.",
+                onlySMSProvider: "Configure the SMS provider for your organization.",
+                onlyEmailProvider: "Configure the Email provider for your organization."
+            }
         },
         smsProviders: {
             heading: "Custom SMS Provider",

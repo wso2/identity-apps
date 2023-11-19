@@ -1858,9 +1858,21 @@ export interface Extensions {
             };
         };
         notificationChannel: {
-            heading: string;
-            title: string;
-            description: string;
+            heading: {
+                heading: string;
+                onlySMSProvider: string;
+                onlyEmailProvider: string;
+            },
+            title: {
+                heading: string;
+                onlySMSProvider: string;
+                onlyEmailProvider: string;
+            },
+            description: {
+                description: string;
+                onlySMSProvider: string;
+                onlyEmailProvider: string;
+            }
         };
         smsProviders: {
             heading: string;

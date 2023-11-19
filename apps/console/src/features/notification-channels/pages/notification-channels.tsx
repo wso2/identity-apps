@@ -52,6 +52,18 @@ export const NotificationChannelPage: FunctionComponent<NotificationChannelPageI
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     /**
+     * Check if the email provider is enabled for the tenant.
+     */
+    const isEmailProviderEnabled: boolean = featureConfig?.emailProviders?.enabled
+        && !(featureConfig?.emailProviders?.disabledFeatures?.includes("superTenantProvider")
+        && organizationType === OrganizationType.SUPER_ORGANIZATION);
+
+    /**
+     * Check if the SMS provider is enabled for the tenant.
+     */
+    const isSMSProviderEnabled: boolean = featureConfig?.smsProviders?.enabled;
+
+    /**
      * Handle connector advance setting selection.
      */
     const handleSMSSelection = (): void => {
@@ -61,17 +73,44 @@ export const NotificationChannelPage: FunctionComponent<NotificationChannelPageI
     const handleEmailSelection = (): void => {
         history.push(AppConstants.getPaths().get("EMAIL_PROVIDER"));
     };
+    
+    /**
+     * Get the page details based on the enabled providers.
+     */
+    const getPageDetails = (): {
+        description: string;
+        pageTitle: string;
+        title: string;
+    } => {
+        if ((isEmailProviderEnabled && isSMSProviderEnabled) || (!isEmailProviderEnabled && !isSMSProviderEnabled)) {
+            return {
+                description: t("extensions:develop.notificationChannel.description.description"),
+                pageTitle: t("extensions:develop.notificationChannel.heading.heading"),
+                title: t("extensions:develop.notificationChannel.title.title")
+            };
+        } else if (isSMSProviderEnabled) {
+            return {
+                description: t("extensions:develop.notificationChannel.description.onlySMSProvider"),
+                pageTitle: t("extensions:develop.notificationChannel.heading.onlySMSProvider"),
+                title: t("extensions:develop.notificationChannel.title.onlySMSProvider")
+            };
+        } else if (isEmailProviderEnabled) {
+            return {
+                description: t("extensions:develop.notificationChannel.description.onlyEmailProvider"),
+                pageTitle: t("extensions:develop.notificationChannel.heading.onlyEmailProvider"),
+                title: t("extensions:develop.notificationChannel.title.onlyEmailProvider")
+            };
+        }
+    };
 
     return (
         <PageLayout
-            pageTitle={ t("extensions:develop.notificationChannel.heading") }
-            title={ t("extensions:develop.notificationChannel.title") }
-            description={ t("extensions:develop.notificationChannel.description") }
+            pageTitle={ getPageDetails().pageTitle }
+            title={ getPageDetails().title }
+            description={ getPageDetails().description }
             data-testid={ `${componentid}-page-layout` }
         >
-            { featureConfig.emailProviders?.enabled
-                && !(featureConfig?.emailProviders?.disabledFeatures?.includes("superTenantProvider")
-                && organizationType === OrganizationType.SUPER_ORGANIZATION) && (
+            { isEmailProviderEnabled && (
                 <>
                     <Grid xs={ 12 } lg={ 6 }>
                         <SettingsSection
@@ -87,7 +126,7 @@ export const NotificationChannelPage: FunctionComponent<NotificationChannelPageI
                     <Divider hidden/>
                 </>
             ) }
-            { featureConfig.smsProviders?.enabled && (
+            { isSMSProviderEnabled && (
                 <Grid xs={ 12 } lg={ 6 }>
                     <SettingsSection
                         data-componentid={ "account-login-page-section" }
