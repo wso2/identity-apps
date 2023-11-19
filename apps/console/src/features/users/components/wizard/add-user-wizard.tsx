@@ -62,7 +62,7 @@ import { useValidationConfigData } from "../../../validation/api";
 import { ValidationFormInterface } from "../../../validation/models";
 import { addUser } from "../../api";
 import { getUserWizardStepIcons } from "../../configs";
-import { AdminAccountTypes, UserAccountTypesMain } from "../../constants";
+import { AdminAccountTypes, HiddenFieldNames, PasswordOptionTypes, UserAccountTypesMain } from "../../constants";
 import { 
     AddUserWizardStateInterface, 
     PayloadInterface,
@@ -96,7 +96,7 @@ interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, Te
     conditionallyShowStepper?: boolean;
     requiredSteps?: WizardStepsFormTypes[] | string[];
     userStore?: string;
-    requestedPasswordOption?: "ask-password" | "create-password";
+    requestedPasswordOption?: PasswordOptionTypes;
 }
 
 /**
@@ -137,8 +137,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         isAdminUser,
         isSubOrg,
         onSuccessfulUserAddition,
-        requestedPasswordOption,
         submitStep,
+        updateList,
         userStore,
         userTypeSelection,
         requiredSteps,
@@ -193,7 +193,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>([]);
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>("PRIMARY");
     const [ hiddenFields, setHiddenFields ] =
-        useState<("userStore" |"userName" | "firstName" | "lastName" | "password" | "email")[]>([]);
+        useState<(HiddenFieldNames)[]>([]);
     const [ readWriteUserStoresList, setReadWriteUserStoresList ] = useState<DropdownItemProps[]>([]);
     const [ isUserStoreError, setUserStoreError ] = useState<boolean>(false);
     const [ isUserSummaryEnabled, setUserSummaryEnabled ] = useState(false);
@@ -471,10 +471,16 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const getUserStoreList = (): void => {
         setBasicDetailsLoading(true);
+        const userStoreArray: DropdownItemProps[] = [
+            {
+                key: -1,
+                text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
+                value: "PRIMARY"
+            }
+        ];
 
         getUserStores(null)
-            .then((response: UserStoreDetails[]) => {                      
-                const userStoreArray: DropdownItemProps[] = [];
+            .then((response: UserStoreDetails[]) => {
 
                 response?.forEach((item: UserStoreDetails, index: number) => {
                     // Set read/write enabled userstores based on the type.
@@ -533,14 +539,14 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     };
 
     const resolveNamefieldAttributes = (profileSchemas: ProfileSchemaInterface[]) => {
-        const hiddenAttributes: ("userStore" |"userName" | "firstName" | "lastName" | "password" | "email")[] = [];
+        const hiddenAttributes: (HiddenFieldNames)[] = [];
         const nameSchema: ProfileSchemaInterface = profileSchemas
             .find((schema: ProfileSchemaInterface) => schema.name === "name");
         const emailSchema: ProfileSchemaInterface = profileSchemas
             .find((schema: ProfileSchemaInterface) => (schema.name === "emails"));
 
         if (emailSchema) {
-            hiddenAttributes.push("email");
+            hiddenAttributes.push(HiddenFieldNames.EMAIL);
             setEmailRequired(emailSchema.required);
         }
 
@@ -561,21 +567,21 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             if (firstNameAttribute) {
                 // First Name attribute is available.
                 // But Last Name attribute is not available
-                hiddenAttributes.push("lastName");
+                hiddenAttributes.push(HiddenFieldNames.LASTNAME);
                 setFirstNameRequired(firstNameAttribute.required);
             }
 
             if (lastNameAttribute) {
                 // Last Name attribute is available.
                 // But First Name attribute is not available
-                hiddenAttributes.push("firstName");
+                hiddenAttributes.push(HiddenFieldNames.FIRSTNAME);
                 setLastNameRequired(lastNameAttribute.required);
             }
         } else {
             // If nameSchema is not present, firstName and lastName is set
             // to be not visible on the attributes.
             // Therefore it is hidden from the add user wizard.
-            hiddenAttributes.push( "firstName", "lastName");
+            hiddenAttributes.push(HiddenFieldNames.FIRSTNAME, HiddenFieldNames.LASTNAME);
         }
         setHiddenFields(hiddenAttributes);
     };
@@ -1095,7 +1101,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      *
      * @returns Summary of the wizard.
      */
-    const generateWizardSummary = (extension?: Record<string, unknown>) => {        
+    const generateWizardSummary = (extension?: Record<string, unknown>) => {
         if (!wizardState) {
             return;
         }
@@ -1171,7 +1177,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     onSubmit={ (values: AddUserWizardStateInterface) => 
                         handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
                     hiddenFields={ hiddenFields }
-                    requestedPasswordOption={ requestedPasswordOption }
+                    requestedPasswordOption={ wizardState &&
+                        wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.passwordOption }
                     isFirstNameRequired={ isFirstNameRequired }
                     isLastNameRequired={ isLastNameRequired }
                     isEmailRequired={ isEmailRequired }
@@ -1577,8 +1584,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     };
 
     const STEPS: WizardStepInterface[] = isAdminUser 
-        ? [ ALL_STEPS[0], ...ALL_STEPS.slice(3) ]
-        : [ ...ALL_STEPS ];
+        ? isUserSummaryEnabled ? [ ALL_STEPS[0], ...ALL_STEPS.slice(3) ] : [ ALL_STEPS[0] ]
+        : isUserSummaryEnabled ? [ ...ALL_STEPS ] : ALL_STEPS.slice(0, ALL_STEPS.length - 1);
 
     const showInternalUserWizard = (): ReactElement => {
         return (
@@ -1623,7 +1630,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             <LinkButton
                                 data-testid={ `${ testId }-cancel-button` }
                                 floated="left"
-                                onClick={ () => closeWizard() }
+                                onClick={ () => {
+                                    updateList();
+                                    closeWizard();
+                                } }
                             >
                                 { t("common:cancel") }
                             </LinkButton>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,9 +34,16 @@ import {
     getConfiguration, 
     getUsernameConfiguration
 } from "../../users/utils";
-import { PRIMARY_USERSTORE, USERSTORE_REGEX_PROPERTIES } from "../../userstores/constants/user-store-constants";
+import {
+    PRIMARY_USERSTORE,
+    USERSTORE_REGEX_PROPERTIES
+} from "../../userstores/constants/user-store-constants";
 import { ValidationDataInterface, ValidationFormInterface } from "../../validation/models";
-import { UserManagementConstants } from "../constants";
+import {
+    HiddenFieldNames,
+    PasswordOptionTypes,
+    UserManagementConstants
+} from "../constants";
 
 /**
  * Proptypes for the add user component.
@@ -46,8 +53,8 @@ export interface AddUserProps {
     triggerSubmit: boolean;
     emailVerificationEnabled: boolean;
     onSubmit: (values: BasicUserDetailsInterface) => void;
-    hiddenFields?: ("userStore" |"userName" | "firstName" | "lastName" | "password" | "email")[];
-    requestedPasswordOption?: "ask-password" | "create-password";
+    hiddenFields?: (HiddenFieldNames)[];
+    requestedPasswordOption?: PasswordOptionTypes;
     isFirstNameRequired?: boolean;
     isLastNameRequired?: boolean;
     isEmailRequired?: boolean;
@@ -93,7 +100,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         readWriteUserStoresList
     } = props;
 
-    const [ passwordOption, setPasswordOption ] = useState("create-password");
+    const [ passwordOption, setPasswordOption ] = useState<PasswordOptionTypes>(PasswordOptionTypes.CREATE_PASSWORD);
     const [ askPasswordOption ] = useState<string>("email");
     const [ password, setPassword ] = useState<string>("");
     const [ userStoreRegex, setUserStoreRegex ] = useState<string>("");
@@ -101,7 +108,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
     const [ isValidPassword, setIsValidPassword ] = useState<boolean>(true);
     const [ randomPassword, setRandomPassword ] = useState<string>(undefined);
-    const [ userstore, setUserstore ] = useState<string>(PRIMARY_USERSTORE);
+    const [ userStore, setUserStore ] = useState<string>(PRIMARY_USERSTORE);
     const [ isValidEmail, setIsValidEmail ] = useState<boolean>(false);
     const [ isEmailFilled, setIsEmailFilled ] = useState<boolean>(false);
 
@@ -109,8 +116,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const emailRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
 
     const { t } = useTranslation();
-
-    const [ , setRegExLoading ] = useState<boolean>(false);
 
     // Username input validation error messages.
     const USER_ALREADY_EXIST_ERROR_MESSAGE: string = t("console:manage.features.users.consumerUsers.fields." +
@@ -133,19 +138,21 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
      * Set the password setup option to 'create-password'.
      */
     useEffect(() => {
-        if (!passwordOption) {
-            if (!requestedPasswordOption) {
-                setPasswordOption("create-password");
+        if (!requestedPasswordOption) {
+            setPasswordOption(PasswordOptionTypes.CREATE_PASSWORD);
 
-                return;
-            }
-
-            setPasswordOption(requestedPasswordOption);
+            return;
         }
+
+        setPasswordOption(requestedPasswordOption);
     }, [ requestedPasswordOption ]);
 
+    /**
+     * 
+     * It toggles user summary, password creation prompt, offline status according to password options.
+     */
     useEffect(() => {
-        if (passwordOption === "create-password") {
+        if (passwordOption === PasswordOptionTypes.CREATE_PASSWORD) {
             setUserSummaryEnabled(true);
             setAskPasswordFromUser(true);
             setOfflineUser(false);
@@ -163,6 +170,9 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         }
     }, [ passwordOption, askPasswordOption ]);
 
+    /**
+     * This sets the username and password validation rules.
+     */
     useEffect(() => {
         if (validationConfig) {
             setPasswordConfig(getConfiguration(validationConfig));
@@ -170,24 +180,30 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         }
     }, [ validationConfig ]);
 
+    /**
+     * This checks if the entered email is valid based on alphanumeric config.
+     */
     useEffect(() => {
         if (!isAlphanumericUsernameEnabled()) {
             setIsValidEmail(true);
         } else {
             setIsValidEmail(false);
-            // setAskPasswordOption("offline");
         }
     }, [ usernameConfig ]);
+
+    /**
+     * This gets regex for each userstore.
+     */
+    useEffect(() => {
+        getUserStoreRegex();
+    }, [ userStore ]);
 
     /**
      * Check whether the alphanumeric usernames are enabled.
      *
      * @returns isAlphanumericUsernameEnabled - validation status.
      */
-    const isAlphanumericUsernameEnabled= (): boolean => {
-
-        return usernameConfig?.enableValidator === "true";
-    };
+    const isAlphanumericUsernameEnabled = (): boolean => usernameConfig?.enableValidator === "true";
 
     /**
      * Callback function to validate password.
@@ -196,7 +212,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
      * @param validationStatus - detailed validation status.
      */
     const onPasswordValidate = (valid: boolean): void => {
-
         setIsValidPassword(valid);
     };
 
@@ -204,29 +219,23 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
      * The following function gets the user store regex that validates user name.
      */
     const getUserStoreRegex = async () => {
-        setRegExLoading(true);
-        await SharedUserStoreUtils.getUserStoreRegEx(userstore,
+        await SharedUserStoreUtils.getUserStoreRegEx(userStore,
             SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.UsernameRegEx)
             .then((response: string) => {
                 setUserStoreRegex(response);
-                setRegExLoading(false);
             });
     };
-
-    useEffect(() => {
-        getUserStoreRegex();
-    }, [ userstore ]);
 
     const askPasswordOptionData: any = {
         "data-testid": "user-mgt-add-user-form-ask-password-option-radio-button",
         label: t("console:manage.features.user.forms.addUserForm.buttons.radioButton.options.askPassword"),
-        value: "ask-password"
+        value: PasswordOptionTypes.ASK_PASSWORD
     };
 
     const createPasswordOptionData: any = {
         "data-testid": "user-mgt-add-user-form-create-password-option-radio-button",
         label: t("console:manage.features.user.forms.addUserForm.buttons.radioButton.options.createPassword"),
-        value: "create-password"
+        value: PasswordOptionTypes.CREATE_PASSWORD
     };
 
     /**
@@ -246,27 +255,23 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
      * @param values - Map of form values.
      */
     const handleEmailEmpty = (values: Map<string, FormValue>): void => {
-        if (values.get("email")?.toString() === "") {
-            setIsEmailFilled(false);
-        } else {
-            setIsEmailFilled(true);
-        }
+        setIsEmailFilled(values.get("email")?.toString()?.trim() !== "");
     };
 
     const getFormValues = (values: Map<string, FormValue>): BasicUserDetailsInterface => {
         eventPublisher.publish("manage-users-customer-password-option", {
-            type: values.get("passwordOption")?.toString()
+            type: passwordOption
         });
 
         return {
-            domain: userstore,
+            domain: userStore,
             email: values.get("email")?.toString(),
             firstName: values.get("firstName")?.toString(),
             lastName: values.get("lastName")?.toString(),
             newPassword: values.get("newPassword") && values.get("newPassword") !== undefined
                 ? values.get("newPassword").toString()
                 : "",
-            passwordOption: values.get("passwordOption")?.toString(),
+            passwordOption: passwordOption,
             userName: values.get("username")?.toString()
         };
     };
@@ -300,12 +305,11 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
      * @param password - The password to validate.
      */
     const isNewPasswordValid = async (password: string) => {
-
         if (passwordConfig) {
             return isValidPassword;
         }
         const passwordRegex: string = await SharedUserStoreUtils.getUserStoreRegEx(
-            userstore,
+            userStore,
             USERSTORE_REGEX_PROPERTIES.PasswordRegEx);
 
         return SharedUserStoreUtils.validateInputAgainstRegEx(password, passwordRegex);
@@ -512,27 +516,13 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     };
 
     /**
-     * Evaluate wheter to hide the user store field or not based on the `readWriteUserStoresList`
-     * 
-     * @returns hide the user store field or not
-     */
-    const hideUserStoreFromReadWriteUserStoresList = (): boolean => {
-        if(readWriteUserStoresList) {
-            return readWriteUserStoresList?.length === 0 || (readWriteUserStoresList?.length === 1 && 
-                readWriteUserStoresList[0]?.value === PRIMARY_USERSTORE);
-        }
-        
-        return true;
-    };    
-
-    /**
      * The modal to add new user.
      */
     const addUserBasicForm = () => (
         <Forms
             data-testid="user-mgt-add-user-form"
             onSubmit={ async (values: Map<string, FormValue>) => {
-                if (passwordOption === "create-password") {
+                if (passwordOption === PasswordOptionTypes.CREATE_PASSWORD) {
                     // Check whether the new password is valid
                     if (await isNewPasswordValid(values.get("newPassword")
                         ? values.get("newPassword").toString()
@@ -548,7 +538,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         >
             <Grid>
                 {   
-                    !hiddenFields.includes("userStore") && !hideUserStoreFromReadWriteUserStoresList() && 
+                    !hiddenFields.includes(HiddenFieldNames.USERSTORE) && 
                         !isUserStoreError && (
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
@@ -563,14 +553,13 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                         selection
                                         labeled
                                         options={ readWriteUserStoresList }
-                                        loading={ isBasicDetailsLoading }
                                         data-testid="user-mgt-add-user-form-userstore-dropdown"
                                         name="userstore"
                                         disabled={ false }
-                                        value={ userstore }
+                                        value={ userStore }
                                         onChange={
                                             (e: React.ChangeEvent<HTMLInputElement>, data: DropdownProps) => {
-                                                setUserstore(data.value.toString());
+                                                setUserStore(data.value.toString());
                                                 setSelectedUserStore(data.value.toString());
                                             }
                                         }
@@ -583,7 +572,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                     )
                 }
                 {
-                    !hiddenFields.includes("userName")
+                    !hiddenFields.includes(HiddenFieldNames.USERNAME)
                     && (!isAlphanumericUsernameEnabled())
                         ? (
                             <Grid.Row>
@@ -628,7 +617,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                                     const usersList: UserListInterface
                                                     = await getUsersList(null, null,
                                                         "userName eq " + value, null,
-                                                        userstore);
+                                                        userStore);
 
                                                     if (usersList?.totalResults > 0) {
                                                         validation.isValid = false;
@@ -680,9 +669,9 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                             "validations.empty"
                                         ) }
                                         validation={ async (value: string, validation: Validation) => {
-                                            // Regular expression to validate having alphanumeric characters.
+                                            /// Regular expression to validate having alphanumeric characters.
                                             const regExpInvalidUsername: RegExp
-                                                = new RegExp(UserManagementConstants.USERNAME_VALIDATION_REGEX);
+                                            = new RegExp(UserManagementConstants.USERNAME_VALIDATION_REGEX);
 
                                             // Check username length validations.
                                             if (value.length < Number(usernameConfig.minLength)
@@ -698,6 +687,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                             }
 
                                             try {
+                                                setBasicDetailsLoading(true);
                                                 // Check for the existence of users in the userstore by the username.
                                                 // Some characters disallowed by username
                                                 // -regex cause failure in below request.
@@ -707,16 +697,16 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                                     const usersList: UserListInterface
                                                     = await getUsersList(null, null,
                                                         "userName eq " + value, null,
-                                                        userstore);
+                                                        userStore);
 
                                                     if (usersList?.totalResults > 0) {
                                                         validation.isValid = false;
                                                         validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
                                                         scrollToInValidField("email");
                                                     }
-
-                                                    setBasicDetailsLoading(false);
                                                 }
+                                                
+                                                setBasicDetailsLoading(false);
                                             } catch (error) {
                                                 // Some non ascii characters are not accepted by DBs
                                                 // with certain charsets.
@@ -746,7 +736,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                         }) }
                                     </Hint>
                                     <Field
-                                        loading={ isBasicDetailsLoading }
                                         data-testid="user-mgt-add-user-form-alphanumeric-email-input"
                                         label={ "Email" }
                                         name="email"
@@ -760,7 +749,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                             "validations.empty"
                                         ) }
                                         validation={ async (value: string, validation: Validation) => {
-                                            setBasicDetailsLoading(true);
+                                            setIsEmailFilled(value?.trim() !== "");
 
                                             // Check username validity against userstore regex.
                                             if (value && (
@@ -774,7 +763,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                             } else {
                                                 setIsValidEmail(true);
                                             }
-                                            setBasicDetailsLoading(false);
                                         } }
                                         type="email"
                                         value={ initialValues && initialValues.email }
@@ -787,7 +775,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                         )
                 }
                 {
-                    !hiddenFields.includes("firstName") && (
+                    !hiddenFields.includes(HiddenFieldNames.FIRSTNAME) && (
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <Field
@@ -822,7 +810,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                     )
                 }
                 {
-                    !hiddenFields.includes("lastName") && (
+                    !hiddenFields.includes(HiddenFieldNames.LASTNAME) && (
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <Field
@@ -857,7 +845,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                     )
                 }
                 {
-                    !hiddenFields.includes("password")
+                    !hiddenFields.includes(HiddenFieldNames.PASSWORD)
                         ? (
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
@@ -895,6 +883,16 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                                                     label={ askPasswordOptionData.label }
                                                                     data-testId={ askPasswordOptionData["data-testid"] }
                                                                     name="handlePasswordGroup"
+                                                                    value={ askPasswordOptionData.value }
+                                                                    checked={ passwordOption ===
+                                                                        askPasswordOptionData.value }
+                                                                    onChange={
+                                                                        (
+                                                                            e: React.ChangeEvent<HTMLInputElement>,
+                                                                            item: any
+                                                                        ) =>
+                                                                            setPasswordOption(item?.value)
+                                                                    }
                                                                     disabled
                                                                 />
                                                             )
@@ -943,5 +941,5 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
 
 AddUserUpdated.defaultProps = {
     hiddenFields: [],
-    requestedPasswordOption: "ask-password"
+    requestedPasswordOption: PasswordOptionTypes.ASK_PASSWORD
 };

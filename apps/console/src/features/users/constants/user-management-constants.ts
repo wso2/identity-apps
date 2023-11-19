@@ -218,3 +218,23 @@ export enum BulkImportResponseOperationTypes {
     USER_CREATION = "userCreation",
     ROLE_ASSIGNMENT = "roleAssignment",
 }
+
+/**
+ * Enum for hidden field names.
+ */
+export enum HiddenFieldNames {
+    USERSTORE = "userStore",
+    USERNAME = "userName",
+    FIRSTNAME = "firstName",
+    LASTNAME = "lastName",
+    PASSWORD = "password",
+    EMAIL = "email"
+}
+
+/**
+ * Enum for password option types.
+ */
+export enum PasswordOptionTypes {
+    ASK_PASSWORD = "ask-password",
+    CREATE_PASSWORD = "create-password"
+}
