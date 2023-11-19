@@ -817,54 +817,6 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: false
                     },
                     {
-                        category: "extensions:manage.sidePanel.categories.AccountManagement",
-                        children: [
-                            {
-                                component: lazy(() =>
-                                    import("../../server-configurations/pages/admin-session-advisory-banner-edit-page")
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "admin-session-advisory-banner-edit",
-                                name: "Admin Session Advisory Banner",
-                                path: AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT"),
-                                protected: true,
-                                showOnSidePanel: false
-                            }
-                        ],
-                        component: lazy(() =>
-                            import("../../server-configurations/pages/connector-listing-page")
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().adminAdvisoryBanner
-                        },
-                        id: "adminAdvisoryBanner",
-                        name: "console:manage.features.serverConfigs.adminAdvisory.pageHeading",
-                        order: 22,
-                        path: AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER"),
-                        protected: true,
-                        showOnSidePanel: false
-                    },
-                    {
-                        category: "extensions:develop.sidePanel.categories.AccountManagement",
-                        component: lazy(() =>
-                            import("../../server-configurations/pages/remote-logging")
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().remoteLogging
-                        },
-                        id: "remoteLogging",
-                        name: "Remote Logging",
-                        order: 22,
-                        path: AppConstants.getPaths().get("REMOTE_LOGGING"),
-                        protected: true,
-                        showOnSidePanel: true
-                    },
-                    {
                         category: "extensions:develop.sidePanel.categories.monitor",
                         component: lazy(() => import("../../../extensions/components/logs/pages/logs")),
                         exact: true,
@@ -934,6 +886,68 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 ":connectorId",
                                 ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
                             ),
+                        protected: true,
+                        showOnSidePanel: true
+                    },
+                    {
+                        category: "extensions:manage.sidePanel.categories.settings",
+                        children: [
+                            {
+                                component: lazy(() =>
+                                    import("../../server/pages/admin-session-advisory-banner-page")
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "admin-session-advisory-banner-edit",
+                                name: "Admin Session Advisory Banner",
+                                path: AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import("../../server/pages/remote-logging-page")
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "remote-logging",
+                                name: "Remote Logging",
+                                path: AppConstants.getPaths().get("REMOTE_LOGGING"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import("../../server/pages/internal-notification-sending-page")
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "internal-notification-sending",
+                                name: "Internal Notification Sending",
+                                path: AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING"),
+                                protected: true,
+                                showOnSidePanel: false
+                            }
+                        ],
+                        component: lazy(() =>
+                            import(
+                                "../../../features/server/pages/server"
+                            )
+                        ),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().userStore
+                        },
+                        id: "server",
+                        name: "Server",
+                        order: 25,
+                        path: AppConstants.getPaths().get("SERVER"),
                         protected: true,
                         showOnSidePanel: true
                     },

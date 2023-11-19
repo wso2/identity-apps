@@ -8961,6 +8961,10 @@ export const console: ConsoleNS = {
                     pageSubheading: "Configurez la bannière d'avis d'administration à afficher " +
                         "sur la page de connexion."
                 },
+                manageNotificationSendingInternally: {
+                    title: "Notification interne",
+                    description: "Gérer la notification Envoi en interne."
+                },
                 remoteLogPublishing: {
                     title: "Publication de journaux à distance",
                     pageTitle: "Publication de journaux à distance",
@@ -9111,6 +9115,10 @@ export const console: ConsoleNS = {
                             }
                         }
                     }
+                },
+                server: {
+                    title: "Serveuse",
+                    description: "Configurer les paramètres du serveur."
                 }
             },
             sidePanel: {

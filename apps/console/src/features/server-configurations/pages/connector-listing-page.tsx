@@ -53,7 +53,6 @@ import {
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorInterface
 } from "../models";
-import AdminAdvisoryBannerSection from "../settings/admin-advisory-banner-section";
 import { EditConnector } from "../settings/edit-connector";
 import { SettingsSection } from "../settings/settings-section";
 
@@ -470,9 +469,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                                                         onPrimaryActionClick={ handleMultiAttributeLoginAction }
                                                         primaryAction={ t("common:configure") }
                                                     />
-                                                </Grid>
-                                                <Grid xs={ 12 } lg={ 6 }>
-                                                    <AdminAdvisoryBannerSection />
                                                 </Grid>
                                                 { isPasswordInputValidationEnabled && (
                                                     <Grid xs={ 12 } lg={ 6 }>

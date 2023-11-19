@@ -16,22 +16,27 @@
  * under the License.
  */
 
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { PageLayout } from "@wso2is/react-components";
-import { AlertInterface, AlertLevels } from "modules/core/src/models/core";
-import React, { ReactElement, useEffect } from "react";
+import { PageLayout, ResourceTab } from "@wso2is/react-components";
+import React, { FC, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-
-import { Tab } from "semantic-ui-react";
+import { AppConstants, history } from "../../core";
 import {
     useRemoteLogPublishingConfigs
-} from "../api/server-config";
-import { RemoteLoggingConfigForm } from "../forms/remote-logging-config-form";
-import { LogType, RemoteLogPublishingConfigurationInterface } from "../models/governance-connectors";
+} from "../api/server";
+import { RemoteLoggingConfigForm } from "../components/remote-logging-config-form";
+import { LogType, RemoteLogPublishingConfigurationInterface } from "../models/server";
 
-export default function RemoteLogging(): ReactElement {
+type RemoteLoggingPageInterface = IdentifiableComponentInterface;
+
+export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
+    props: RemoteLoggingPageInterface
+): ReactElement => {
+    
+    const { [ "data-componentid" ]: componentId } = props;
 
     const {
         data: remoteLogPublishingConfigs,
@@ -41,7 +46,6 @@ export default function RemoteLogging(): ReactElement {
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
-
 
     useEffect(() => {
         if (remoteLogPublishingConfigRetrievalError && !isRemoteLogPublishingConfigsLoading) {
@@ -56,6 +60,13 @@ export default function RemoteLogging(): ReactElement {
             );
         }
     }, [ ]);
+
+    /**
+     * Handles the back button click event.
+     */
+    const handleBackButtonClick = (): void => {
+        history.push(AppConstants.getPaths().get("SERVER"));
+    };
 
     const panes: any = [
         {
@@ -87,16 +98,30 @@ export default function RemoteLogging(): ReactElement {
             title={ t("console:manage.features.serverConfigs.remoteLogPublishing.title") }
             pageTitle={ t("console:manage.features.serverConfigs.remoteLogPublishing.pageTitle") }
             description={ <>{ t("console:manage.features.serverConfigs.remoteLogPublishing.description") }</> }
+            data-componentid={ `${ componentId }-page-layout` }
+            backButton={ {
+                "data-testid": `${ componentId }-page-back-button`,
+                onClick: handleBackButtonClick,
+                text: t("console:manage.pages.rolesEdit.backButton", { type: "Server" })
+            } }
+            bottomMargin={ false }
             isLoading={ isRemoteLogPublishingConfigsLoading }
         >
-            
-            <Tab
+            <ResourceTab
                 className="tabs resource-tabs"
                 menu={ { pointing: true, secondary: true } }
                 panes={ panes }
                 renderActiveOnly
             />
-           
         </PageLayout>
     );
-}
+};
+
+/**
+ * Default props for the component.
+ */
+RemoteLoggingPage.defaultProps = {
+    "data-componentid": "remote-logging-page"
+};
+
+export default RemoteLoggingPage;

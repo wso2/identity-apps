@@ -49,7 +49,7 @@
         "@mui/material": "^5.13.0",
         "@mui/system": "^5.12.3",
         "@mui/utils": "^5.12.3",
-        "@oxygen-ui/react": "^1.7.2",
+        "@oxygen-ui/react": "^1.7.3",
         "@oxygen-ui/react-icons": "^1.7.2",
         "@wso2is/access-control": "^2.0.4",
         "@wso2is/core": "^2.0.14",
