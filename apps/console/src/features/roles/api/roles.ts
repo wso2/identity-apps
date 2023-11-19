@@ -139,7 +139,7 @@ export const getRoleById = (roleId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: (isLegacyAuthzRuntime ? 
+        url: (isLegacyAuthzRuntime() ? 
             store.getState().config.endpoints.roles : store.getState().config.endpoints.rolesV2) + "/" + roleId
     };
 
@@ -214,7 +214,7 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: (isLegacyAuthzRuntime ? 
+        url: (isLegacyAuthzRuntime() ? 
             store.getState().config.endpoints.roles : store.getState().config.endpoints.rolesV2) + "/" + roleId
     };
 
@@ -442,7 +442,6 @@ export const updateRolesBulk = (roleIds: string[], roleData: PatchRoleDataInterf
  * @param domain - User store domain.
  * @returns A promise containing the roles list.
  * @throws `IdentityAppsApiException`
- * @deprecated - Use `useRolesList` instead.
  */
 export const getRolesList = (domain: string): Promise<RoleListInterface | any> => {
 
@@ -454,7 +453,7 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
         params: {
             domain
         },
-        url: isLegacyAuthzRuntime ? 
+        url: isLegacyAuthzRuntime() ? 
             store.getState().config.endpoints.roles : store.getState().config.endpoints.rolesV2
     };
 

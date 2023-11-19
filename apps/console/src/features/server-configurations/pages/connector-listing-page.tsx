@@ -472,7 +472,9 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                                                 </Grid>
                                                 { isPasswordInputValidationEnabled && (
                                                     <Grid xs={ 12 } lg={ 6 }>
-                                                        <ValidationConfigPage/>
+                                                        <ValidationConfigPage
+                                                            data-componentid="validation-config-page"
+                                                        />
                                                     </Grid>
                                                 ) }
                                             </>
@@ -519,10 +521,14 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                                                     />
                                                 </Grid>
                                                 <Grid xs={ 12 } lg={ 6 }>
-                                                    <ValidationConfigPage/>
+                                                    <ValidationConfigPage
+                                                        data-componentid="validation-config-page"
+                                                    />
                                                 </Grid>
                                                 <Grid xs={ 12 } lg={ 6 }>
-                                                    <PrivateKeyJWTConfig/>
+                                                    <PrivateKeyJWTConfig
+                                                        data-componentid="private-key-jwt-config-page"
+                                                    />
                                                 </Grid>
                                             </>
                                         )

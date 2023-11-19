@@ -27,12 +27,10 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import {
-    Button,
     ConfirmationModal,
     EmptyPlaceholder,
     ListLayout,
     PageLayout,
-    Popup,
     PrimaryButton,
     ResourceTab,
     ResourceTabPaneInterface
@@ -64,7 +62,6 @@ import {
     history,
     store
 } from "../../core";
-import { RootOnlyComponent } from "../../organizations/components";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import {
     ConnectorPropertyInterface,
@@ -84,7 +81,6 @@ import { UserInviteInterface } from "../components/guests/models/invite";
 import { GuestUsersList } from "../components/guests/pages/guest-users-list";
 import { useGetParentOrgUserInvites } from "../components/guests/pages/use-get-parent-org-user-invites";
 import { UsersList } from "../components/users-list";
-import { UsersListOptionsComponent } from "../components/users-list-options";
 import { AddUserWizard } from "../components/wizard/add-user-wizard";
 import { BulkImportUserWizard } from "../components/wizard/bulk-import-user-wizard";
 import { UserAccountTypes, UserAccountTypesMain, UserAddOptionTypes, UserManagementConstants } from "../constants";
@@ -563,25 +559,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     /**
-     * The following method set the list of columns selected by the user to
-     * the state.
-     *
-     * @param metaColumns - string[]
-     */
-    const handleMetaColumnChange = (metaColumns: string[]) => {
-        metaColumns.push("profileUrl");
-        const tempColumns: Map<string, string> = new Map<string, string> ();
-
-        setUserMetaColumns(metaColumns);
-
-        metaColumns.map((column: string) => {
-            tempColumns.set(column, column);
-        });
-        setUserListMetaContent(tempColumns);
-        setListUpdated(true);
-    };
-
-    /**
      * Handles the `onFilter` callback action from the
      * users search component.
      *
@@ -723,42 +700,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 onPageChange={ handlePaginationChange }
                 rightActionPanel={
                     (
-                        <>
-                            <Popup
-                                className={ "list-options-popup" }
-                                flowing
-                                basic
-                                content={
-                                    (<UsersListOptionsComponent
-                                        data-testid="user-mgt-user-list-meta-columns"
-                                        handleMetaColumnChange={ handleMetaColumnChange }
-                                        userListMetaContent={ userListMetaContent }
-                                    />)
-                                }
-                                position="bottom left"
-                                on="click"
-                                pinned
-                                trigger={
-                                    (<Button
-                                        data-testid="user-mgt-user-list-meta-columns-button"
-                                        className="meta-columns-button"
-                                        basic
-                                    >
-                                        <Icon name="columns"/>
-                                        { t("console:manage.features.users.buttons.metaColumnBtn") }
-                                    </Button>)
-                                }
-                            />
-                            <RootOnlyComponent>
-                                <Dropdown
-                                    data-testid="user-mgt-user-list-userstore-dropdown"
-                                    selection
-                                    options={ userStoreOptions && userStoreOptions }
-                                    onChange={ handleDomainChange }
-                                    defaultValue={ PRIMARY_USERSTORE.toLocaleLowerCase() }
-                                />
-                            </RootOnlyComponent>
-                        </>
+                        <Dropdown
+                            data-testid="user-mgt-user-list-userstore-dropdown"
+                            selection
+                            options={ userStoreOptions && userStoreOptions }
+                            onChange={ handleDomainChange }
+                            defaultValue={ PRIMARY_USERSTORE.toLocaleLowerCase() }
+                        />
                     )
                 }
                 showPagination={ true }
@@ -1060,7 +1008,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             }
             title={ t("console:manage.pages.users.title") }
             pageTitle={ t("console:manage.pages.users.title") }
-            description={ t("console:manage.pages.users.subTitle") }
+            description={ t("extensions:manage.users.usersSubTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
             { isSubOrg ?
@@ -1074,7 +1022,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 : renderUsersList()
             }
             {
-                showWizard && ( showUserWizard())
+                showWizard && showUserWizard()
             } 
             {
                 showBulkImportWizard
