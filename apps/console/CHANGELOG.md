@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.7.1
+
+### Patch Changes
+
+- [#4664](https://github.com/wso2/identity-apps/pull/4664) [`9833e4fe3a`](https://github.com/wso2/identity-apps/commit/9833e4fe3a15bd99b0b6bf9f7419e7fb2367c94e) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Remove O path from myaccount config
+
+* [#4688](https://github.com/wso2/identity-apps/pull/4688) [`5a323060d8`](https://github.com/wso2/identity-apps/commit/5a323060d828063591ec54329c995873b9e5c216) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Fix role audience visibility of a group
+
 ## 2.7.0
 
 ### Minor Changes
