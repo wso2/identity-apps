@@ -27,7 +27,7 @@ export const addOrganizationMockResponse = {
     lastModified: "2022-01-01T00:00:00.000Z",
     name: "Organization One",
     parent: {
-        id: OrganizationManagementConstants.ROOT_ORGANIZATION_ID,
+        id: OrganizationManagementConstants.SUPER_ORGANIZATION_ID,
         ref: "root/ref"
     },
     status: "ACTIVE",

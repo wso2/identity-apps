@@ -70,7 +70,7 @@ export class Config {
      */
     public static resolveServerHost(enforceOrgPath?: boolean, skipAuthzRuntimePath?: boolean): string {
         if (isLegacyAuthzRuntime()) {
-            if ((OrganizationUtils.isRootOrganization(store.getState().organization.organization)
+            if ((OrganizationUtils.isSuperOrganization(store.getState().organization.organization)
                 || store.getState().organization.isFirstLevelOrganization) && !enforceOrgPath) {
                 return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
             } else {
@@ -95,7 +95,7 @@ export class Config {
      * @returns Server host.
      */
     public static resolveServerHostforFG(enforceOrgPath?: boolean): string {
-        if ((OrganizationUtils.isRootOrganization(store.getState().organization.organization)
+        if ((OrganizationUtils.isSuperOrganization(store.getState().organization.organization)
             || store.getState().organization.isFirstLevelOrganization) && !enforceOrgPath) {
             return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
         } else {

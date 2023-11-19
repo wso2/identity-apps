@@ -27,7 +27,7 @@ import { Divider } from "semantic-ui-react";
 import { ReactComponent as EmailIcon } from "../../../themes/default/assets/images/icons/email-icon.svg";
 import { ReactComponent as SMSIcon } from "../../../themes/default/assets/images/icons/sms-icon.svg";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { SettingsSection } from "../settings/settings-section";
 
 /**
@@ -47,7 +47,7 @@ export const NotificationChannelPage: FunctionComponent<NotificationChannelPageI
     const { ["data-componentid"]: componentid } = props;
 
     const { t } = useTranslation();
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
