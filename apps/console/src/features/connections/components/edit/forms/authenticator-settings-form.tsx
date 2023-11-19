@@ -134,10 +134,8 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
     const {
         connectorSettings,
         metadata,
-        mode: _mode,
         initialValues: originalInitialValues,
         onSubmit,
-        readOnly: _readOnly,
         isSubmitting,
         [ "data-testid" ]: testId
     } = props;
@@ -289,10 +287,10 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
         if (settings) {
             return (
                 settings?.edit?.tabs?.settings?.fields?.map(
-                    (connectorField: FieldInputPropsInterface, index: number) => {
+                    (connectorField: FieldInputPropsInterface) => {
                         return (
                             <DynamicField.Input
-                                key={ index }
+                                key={ connectorField.name }
                                 name={ connectorField.name }
                                 label={ connectorField.label }
                                 inputType={ connectorField.inputType }
