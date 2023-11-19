@@ -58,6 +58,7 @@ import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-set
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
 import { applicationConfig } from "../../../../extensions";
 import { AccessControlConstants } from "../../../access-control/constants/access-control";
+import useAuthorization from "../../../authorization/hooks/use-authorization";
 import {
     AppConstants,
     AppState,
@@ -160,6 +161,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     const [ submit, setSubmit ] = useTrigger();
     const [ submitProtocolForm, setSubmitProtocolForm ] = useTrigger();
+    const { legacyAuthzRuntime }  = useAuthorization();
 
     const reservedAppPattern: string = useSelector((state: AppState) => {
         return state.config?.deployment?.extensions?.asgardeoReservedAppRegex as string;
@@ -1074,7 +1076,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     </Grid.Row>
                     {
                         // The Management App checkbox is only present in OIDC Standard-Based apps
-                        (customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC && 
+                        (legacyAuthzRuntime && customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC && 
                             (selectedTemplate?.templateId === "custom-application" || 
                             selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)
                         ) && (
