@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.8.1
+
+### Patch Changes
+
+- [#4710](https://github.com/wso2/identity-apps/pull/4710) [`5c6162da89`](https://github.com/wso2/identity-apps/commit/5c6162da892752e97f3196ca3bfb3dcaf433d08c) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Hide management app check for legecy runtime disabled
+
+* [#4580](https://github.com/wso2/identity-apps/pull/4580) [`38c982af7f`](https://github.com/wso2/identity-apps/commit/38c982af7fa7ba43afd346f1d374949876c8e16c) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue where user-related operations are absent for tenants in the console UI.
+
 ## 2.8.0
 
 ### Minor Changes
