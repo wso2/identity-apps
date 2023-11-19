@@ -1256,10 +1256,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     label={ fieldName }
                     required={ schema?.required }
                     requiredErrorMessage={
-                        t("console:manage.features.user.forms.profile.generic.inputs.validations.empty", { fieldName })
+                        t("console:manage.features.user.profile.forms.generic.inputs.validations.empty", { fieldName })
                     }
                     placeholder={
-                        t("console:manage.features.user.forms.profile.generic.inputs.dropdownPlaceholder",
+                        t("console:manage.features.user.profile.forms.generic.inputs.dropdownPlaceholder",
                             { fieldName })
                     }
                     type="dropdown"
@@ -1267,7 +1267,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     children={ [ {
                         "data-testid": `${ testId }-profile-form-locale-dropdown-empty` as string,
                         key: "empty-locale" as string,
-                        text: t("console:manage.features.user.forms.profile.generic.inputs.dropdownPlaceholder",
+                        text: t("console:manage.features.user.profile.forms.generic.inputs.dropdownPlaceholder",
                             { fieldName }) as string,
                         value: "" as string
                     } ].concat(
