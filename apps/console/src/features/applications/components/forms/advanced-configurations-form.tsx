@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,8 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form, FormValue } from "@wso2is/form";
+import useUIConfig from "modules/common/src/hooks/use-ui-configs";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { applicationConfig } from "../../../../extensions";
@@ -68,13 +69,15 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
 
     const { t } = useTranslation();
 
+    const { UIConfig } = useUIConfig();
+
     /**
      * Update configuration.
      *
      * @param values - Form values.
      */
     const updateConfiguration = (values: any): void => {
-        const data = {
+        const data: any = {
             advancedConfigurations: {
                 enableAuthorization: !!values.enableAuthorization,
                 returnAuthenticatedIdpList: !!values.returnAuthenticatedIdpList,
@@ -97,7 +100,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
         <Form
             id={ FORM_ID }
             uncontrolledForm={ false }
-            onSubmit={ (values) => {
+            onSubmit={ (values: Map<string,FormValue>) => {
                 updateConfiguration(values);
             } }
         >
@@ -168,7 +171,9 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 value={ config?.enableAuthorization ? [ "enableAuthorization" ] : [] }
                 readOnly={ readOnly }
                 data-testid={ `${testId}-enable-authorization-checkbox` }
-                hidden={ !applicationConfig.advancedConfigurations.showEnableAuthorization }
+                hidden={ 
+                    !applicationConfig.advancedConfigurations.showEnableAuthorization 
+                    || !UIConfig?.classicFeatures?.isXacmlAuthorizationEnabled }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.enableAuthorization.hint") }
             />
             <Field.Button

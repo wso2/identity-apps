@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ProductVersionConfigInterface } from "./core";
+import { ClassicFeaturesInterface, ProductVersionConfigInterface } from "./core";
 import { DocumentationProviders, DocumentationStructureFileTypes } from "./documentation";
 import { GravatarConfig } from "./profile";
 
@@ -204,6 +204,10 @@ export interface CommonUIConfigInterface<T = Record<string, unknown>> {
      * ex: allowSnapshot, override etc.
      */
     productVersionConfig?: ProductVersionConfigInterface;
+    /**
+     * Classic features
+     */
+    classicFeatures?: ClassicFeaturesInterface;
     /**
      * Theme configs.
      */

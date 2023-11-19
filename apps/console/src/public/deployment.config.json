@@ -225,7 +225,7 @@
         "enableCustomEmailTemplates": true,
         "appFaviconPath": "/assets/images/branding/favicon.ico",
         "isGOTEnabledForSuperTenantOnly": true,
-        "showAppSwitchButton": false,
+        "showAppSwitchButton": true,
         "features": {
             "administrators": {
                 "disabledFeatures": [],
@@ -973,6 +973,13 @@
             "Console",
             "My Account"
         ],
+        "classicFeatures": {
+            "isRequestPathAuthenticationEnabled": false,
+            "isApplicationLevelRoleMappingEnabled": false,
+            "isXacmlAuthorizationEnabled": false,
+            "isIncludeOrgNameInSubjectEnabled": false,
+            "isUseMappedLocalSubjectEnabled": false
+        },
         "theme": {
             "name": "wso2is"
         }

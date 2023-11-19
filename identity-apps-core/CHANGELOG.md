@@ -1,5 +1,49 @@
 # @wso2is/identity-apps-core
 
+## 2.0.57
+
+### Patch Changes
+
+- [#4644](https://github.com/wso2/identity-apps/pull/4644) [`19c22b7683`](https://github.com/wso2/identity-apps/commit/19c22b7683975e79228fc8f55c5fc6a8426f47de) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the footer alignment issue
+
+* [#4682](https://github.com/wso2/identity-apps/pull/4682) [`0e1b40e341`](https://github.com/wso2/identity-apps/commit/0e1b40e34121a51dec0d9d132d44ae16282711f0) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Handle user not found error in sms otp
+
+## 2.0.56
+
+### Patch Changes
+
+- [#4681](https://github.com/wso2/identity-apps/pull/4681) [`a8073bb7aa`](https://github.com/wso2/identity-apps/commit/a8073bb7aab05c8b04930ed751e75637f0eee24e) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Fix groups edit page title and add audience to role assign view
+
+- Updated dependencies [[`a8073bb7aa`](https://github.com/wso2/identity-apps/commit/a8073bb7aab05c8b04930ed751e75637f0eee24e)]:
+  - @wso2is/theme@2.0.38
+
+## 2.0.55
+
+### Patch Changes
+
+- [#4562](https://github.com/wso2/identity-apps/pull/4562) [`d2d53420be`](https://github.com/wso2/identity-apps/commit/d2d53420beb05e7ea9ab134ad7f506021da8c86e) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add bulk user import helper panel
+
+* [#4669](https://github.com/wso2/identity-apps/pull/4669) [`49e6a466b1`](https://github.com/wso2/identity-apps/commit/49e6a466b17f41cb3bd9d99a1997c40bb0936c1b) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Fix label for back button on administrator user page
+
+- [#4500](https://github.com/wso2/identity-apps/pull/4500) [`9ecc95eebd`](https://github.com/wso2/identity-apps/commit/9ecc95eebd43807e022f675075740cc7bf38c09a) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issues in the header logo section of My Account and Console
+
+* [#4675](https://github.com/wso2/identity-apps/pull/4675) [`ac60874d99`](https://github.com/wso2/identity-apps/commit/ac60874d9928c787fa9dd5ab709e93de932b4384) Thanks [@thanujalk](https://github.com/thanujalk)! - Add default app configuration
+
+* Updated dependencies [[`9ecc95eebd`](https://github.com/wso2/identity-apps/commit/9ecc95eebd43807e022f675075740cc7bf38c09a)]:
+  - @wso2is/theme@2.0.37
+
+## 2.0.54
+
+### Patch Changes
+
+- [#4659](https://github.com/wso2/identity-apps/pull/4659) [`1e5bfe2d49`](https://github.com/wso2/identity-apps/commit/1e5bfe2d4902fad61398e81696b04969dd60584b) Thanks [@thanujalk](https://github.com/thanujalk)! - Introduce application roles for console
+
+## 2.0.53
+
+### Patch Changes
+
+- [#4640](https://github.com/wso2/identity-apps/pull/4640) [`010607a1fc`](https://github.com/wso2/identity-apps/commit/010607a1fc55cc006f3ce8181c68efb42e6a3ff4) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Implement functionality to navigate back to the login page from Sign In with SSO pages.
+
 ## 2.0.52
 
 ### Patch Changes

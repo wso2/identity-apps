@@ -7288,7 +7288,8 @@ export const console: ConsoleNS = {
                     noExpiredInvitations: "මේ මොහොතේ කල් ඉකුත් වූ ආරාධනා ඇත.",
                     noInvitations: "දැනට ආරාධනා නැහැ.",
                     noCollaboratorUserInvitations: "මේ මොහොතේ කල් ඉකුත් වූ ආරාධනා සහිත සහකාරක පරිශීලකයන් නොමැත."
-                }
+                },
+                invitedUserLabel: "මව් සංවිධානය විසින් කළමනාකරණය කරනු ලැබේ"
             },
             oidcScopes: {
                 viewAttributes: "ගුණාංග පෙන්වන්න",
@@ -8973,7 +8974,8 @@ export const console: ConsoleNS = {
                     },
                     headers: {
                         0: "වසම්",
-                        1: "නම"
+                        1: "නම",
+                        2: "ප්‍රේක්ෂකයෝ"
                     }
                 },
                 searchPlaceholder: "සොයන්න {{type}}"
@@ -9234,8 +9236,6 @@ export const console: ConsoleNS = {
                                 searchByRoleOrGroup: "භූමිකාව/කණ්ඩායම් නම අනුව සොයන්න",
                                 roleGroupFilterAttributePlaceHolder: "භූමිකාව/කණ්ඩායම් නම"
                             },
-                            disabledSecondaryStoreInfo: "බාහිර පරිශීලක වෙළඳසැල් වෙත පරිශීලක තොග ආනයනය මේ මොහොතේ ලබා " +
-                                "දිය නොහැක.",
                             manualCreation: {
                                 alerts: {
                                     creationSuccess: {
@@ -9253,7 +9253,8 @@ export const console: ConsoleNS = {
                                 },
                                 primaryButton: "එකතු කරන්න",
                                 rolesLabel: "භූමිකාවන්",
-                                rolesPlaceholder: "භූමිකාවන් ඇතුළත් කරන්න"
+                                rolesPlaceholder: "භූමිකාවන් ඇතුළත් කරන්න",
+                                warningMessage: "මෙම විකල්පය භාවිතා කළ හැක්කේ ඊමේල් ලිපිනය පරිශීලක නාමය ලෙස වින්‍යාස කර ඇති විට පමණි."
                             },
                             fileBased: {
                                 hint: "CSV ගොනුවක් භාවිතයෙන් බහු පරිශීලකයින්ට තොග වශයෙන් ආරාධනා කරන්න."
@@ -9266,6 +9267,13 @@ export const console: ConsoleNS = {
                         },
                         buttons: {
                             import: "ආනයනය කරන්න"
+                        },
+                        sidePanel: {
+                            manual: "අතින්",
+                            fileBased: "ගොනුව පදනම් කරගත්",
+                            fileFormatTitle: "CSV ගොනු ආකෘතිය",
+                            fileFormatContent: "CSV ගොනුවේ ශීර්ෂයන් දේශීය ගුණාංගවලට සිතියම්ගත කර ඇති <1>පරිශීලක ගුණාංග</1> විය යුතුය.",
+                            fileFormatSampleHeading: "නියැදි CSV ගොනු ආකෘතිය:"
                         }
                     },
                     changePasswordModal: {
@@ -9765,6 +9773,13 @@ export const console: ConsoleNS = {
                             "කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
                         header: "ඔබට විශ්වාසද?",
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර සැසිය ස්ථිරවම අවසන් වේ."
+                    },
+                    addMultipleUser: {
+                        header: "ඔබ ඉදිරියට යාමට පෙර",
+                        message: "පරිශීලකයින්ට ආරාධනා කිරීමේ විකල්පය අක්‍රීය​ කර ඇත",
+                        content: "පරිශීලකයින් කිහිප දෙනෙකු එක් කිරීමට ආරාධනා පරිශීලක විකල්පය සක්‍රීය කළ යුතුය. කරුණාකර එය සබල කර " +
+                            "නැවත උත්සාහ කරන්න.",
+                        assertionHint: "කරුණාකර ඔබේ ක්‍රියාව තහවුරු කරන්න."
                     }
                 },
                 consumerUsers: {
@@ -10611,6 +10626,11 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: "භූමිකාව සංස්කරණය කරන්න"
             },
+            groupsEdit: {
+                backButton: "{{Type} වෙත ආපසු යන්න",
+                subTitle: null,
+                title: "කණ්ඩායම සංස්කරණය කරන්න"
+            },
             serverConfigurations: {
                 subTitle: "සේවාදායකයේ සාමාන්‍ය වින්‍යාසයන් කළමනාකරණය කරන්න.",
                 title: "සාමාන්‍ය වින්‍යාසයන්"
@@ -10620,7 +10640,7 @@ export const console: ConsoleNS = {
                 title: "පරිශීලකයින්"
             },
             usersEdit: {
-                backButton: "නැවත පරිශීලකයින් වෙත යන්න",
+                backButton: "{{type}} වෙත ආපසු යන්න",
                 subTitle: "{{name}}",
                 title: "{{email}}"
             }

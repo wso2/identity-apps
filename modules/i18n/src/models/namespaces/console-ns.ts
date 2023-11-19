@@ -3607,6 +3607,7 @@ export interface ConsoleNS {
                 confirmations: {
                     terminateAllSessions: Confirmation;
                     terminateSession: Confirmation;
+                    addMultipleUser: Confirmation
                 };
                 editUser: {
                     tab: {
@@ -5701,6 +5702,7 @@ export interface ConsoleNS {
                     headers: {
                         0: string;
                         1: string;
+                        2: string;
                     };
                     emptyPlaceholders: {
                         default: string;
@@ -5920,7 +5922,6 @@ export interface ConsoleNS {
                                 searchByRoleOrGroup: string;
                                 roleGroupFilterAttributePlaceHolder: string;
                             };
-                            disabledSecondaryStoreInfo: string;
                             manualCreation: {
                                 alerts: {
                                     creationSuccess: NotificationItem;
@@ -5936,6 +5937,7 @@ export interface ConsoleNS {
                                 primaryButton: string;
                                 rolesLabel: string;
                                 rolesPlaceholder: string;
+                                warningMessage: string;
                             };
                             fileBased: {
                                 hint: string;
@@ -5948,6 +5950,13 @@ export interface ConsoleNS {
                         };
                         buttons: {
                             import: string;
+                        },
+                        sidePanel: {
+                            manual: string;
+                            fileBased: string;
+                            fileFormatTitle: string;
+                            fileFormatContent: string;
+                            fileFormatSampleHeading: string;
                         }
                     };
                     changePasswordModal: {
@@ -6345,6 +6354,7 @@ export interface ConsoleNS {
                     noInvitations: string;
                     noCollaboratorUserInvitations: string;
                 };
+                invitedUserLabel: string;
             };
             onboarded?: {
                 notifications?: {
@@ -6536,6 +6546,7 @@ export interface ConsoleNS {
             oidcScopesEdit: EditPage;
             roles: Page;
             rolesEdit: EditPage;
+            groupsEdit: EditPage;
             serverConfigurations: Page;
             users: Page;
             usersEdit: EditPage;

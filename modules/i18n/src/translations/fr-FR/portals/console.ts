@@ -7457,7 +7457,8 @@ export const console: ConsoleNS = {
                     noExpiredInvitations: "Il y a des invitations expirées pour le moment.",
                     noInvitations: "Il n'y a aucune invitation pour le moment.",
                     noCollaboratorUserInvitations: "Il n’y a actuellement aucun utilisateur collaborateur dont les invitations ont expiré."
-                }
+                },
+                invitedUserLabel: "Géré par l'organisation mère"
             },
             oidcScopes: {
                 viewAttributes: "Afficher les attributs",
@@ -9177,7 +9178,8 @@ export const console: ConsoleNS = {
                     },
                     headers: {
                         0: "Domaine",
-                        1: "Nom"
+                        1: "Nom",
+                        2: "Audience"
                     }
                 },
                 searchPlaceholder: "Rechercher un {{type}}"
@@ -9450,8 +9452,6 @@ export const console: ConsoleNS = {
                                 searchByRoleOrGroup: "Recherche par nom de rôle/groupe",
                                 roleGroupFilterAttributePlaceHolder: "Nom du rôle/groupe"
                             },
-                            disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
-                                "externes n’est pas disponible pour le moment.",
                             manualCreation: {
                                 alerts: {
                                     creationSuccess: {
@@ -9469,7 +9469,9 @@ export const console: ConsoleNS = {
                                 },
                                 primaryButton: "Ajouter",
                                 rolesLabel: "Les rôles",
-                                rolesPlaceholder: "Entrez les rôles"
+                                rolesPlaceholder: "Entrez les rôles",
+                                warningMessage: "Cette option ne peut être utilisée que lorsque l'adresse e-mail " +
+                                    "est configurée comme nom d'utilisateur."
                             },
                             fileBased: {
                                 hint: "Invitez plusieurs utilisateurs en masse à l’aide d’un fichier CSV."
@@ -9482,6 +9484,14 @@ export const console: ConsoleNS = {
                         },
                         buttons: {
                             import: "Importer"
+                        },
+                        sidePanel: {
+                            manual: "Manuel",
+                            fileBased: "Basé sur un fichier",
+                            fileFormatTitle: "Format de fichier CSV",
+                            fileFormatContent: "Les en-têtes du fichier CSV doivent être des attributs utilisateur " +
+                                "mappés aux <1>attributs locaux</1>.",
+                            fileFormatSampleHeading: "Exemple de format de fichier CSV:"
                         }
                     },
                     changePasswordModal: {
@@ -10009,6 +10019,13 @@ export const console: ConsoleNS = {
                             "procéder avec prudence.",
                         header: "Êtes-vous sûr?",
                         message: "Cette action est irréversible et mettra fin définitivement à la session."
+                    },
+                    addMultipleUser: {
+                        header: "Avant de continuer",
+                        message: "L'option Inviter des utilisateurs est désactivée",
+                        content: "L’option Inviter des utilisateurs doit être activée pour ajouter plusieurs " +
+                            "utilisateurs. Veuillez l'activer et réessayer.",
+                        assertionHint: "Veuillez confirmer votre action."
                     }
                 },
                 consumerUsers: {
@@ -10860,6 +10877,11 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: "Modifier le rôle"
             },
+            groupsEdit: {
+                backButton: "Revenir aux {{type}}",
+                subTitle: null,
+                title: "Modifier le groupe"
+            },
             serverConfigurations: {
                 subTitle: "Gérer la configuration générale du serveur.",
                 title: "Configurations générales"
@@ -10869,7 +10891,7 @@ export const console: ConsoleNS = {
                 title: "Utilisateurs"
             },
             usersEdit: {
-                backButton: "Revenir aux Utilisateurs",
+                backButton: "Revenir aux {{type}}",
                 subTitle: "{{name}}",
                 title: "{{email}}"
             }
