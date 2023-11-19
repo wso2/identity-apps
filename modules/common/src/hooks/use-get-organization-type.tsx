@@ -16,7 +16,7 @@ import { OrganizationType } from "../constants/organization-constants";
  *
  * @returns The type of the organization.
  */
-export const useGetOrganizationType = (): OrganizationType => {
+export const useGetCurrentOrganizationType = (): OrganizationType => {
     return useSelector(
         (state: AppState) => state.organization.organizationType
     );

@@ -62,7 +62,7 @@ import {
     history,
     store
 } from "../../core";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorCategoryInterface,
@@ -156,7 +156,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ showMultipleInviteConfirmationModal, setShowMultipleInviteConfirmationModal ] = useState<boolean>(false);
     const [ connectorConfigLoading, setConnecterConfigLoading ] = useState<boolean>(false);
 
-    const { isRootOrganization } = useGetOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     const username: string = useSelector((state: AppState) => state.auth.username);
     const tenantName: string = store.getState().config.deployment.tenant;
@@ -187,7 +187,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Fetch the list of available userstores.
      */
     useEffect(() => {
-        if (!isRootOrganization) {
+        if (!isSuperOrganization() || !isFirstLevelOrganization()) {
             return;
         }
 

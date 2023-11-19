@@ -51,7 +51,7 @@ import {
     history
 } from "../../core";
 import { OrganizationType } from "../../organizations/constants";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { useGetAuthenticatorTags, useGetAuthenticators } from "../api/authenticators";
 import { useGetConnections } from "../api/connections";
 import { AuthenticatorGrid } from "../components/authenticator-grid";
@@ -90,7 +90,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 

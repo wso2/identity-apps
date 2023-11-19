@@ -5994,6 +5994,7 @@ export interface ConsoleNS {
                         generic: {
                             inputs: {
                                 placeholder: string;
+                                dropdownPlaceholder: string;
                                 validations: {
                                     empty: string;
                                     invalidFormat: string;

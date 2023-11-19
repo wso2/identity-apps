@@ -29,7 +29,7 @@ import { DropdownItemProps, Grid, Message } from "semantic-ui-react";
 import { AppState } from "../../core/store";
 import { SharedUserStoreUtils } from "../../core/utils";
 import { RootOnlyComponent } from "../../organizations/components";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getUserStoreList } from "../../userstores/api";
 import {
     CONSUMER_USERSTORE,
@@ -95,7 +95,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
     const { t } = useTranslation();
 
-    const { isRootOrganization } = useGetOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     // Username input validation error messages.
     const USER_ALREADY_EXIST_ERROR_MESSAGE: string = t("console:manage.features.user.forms.addUserForm.inputs." +
@@ -248,7 +248,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
         setUserStore(storeOptions[ 0 ].value as string);
 
-        if (isRootOrganization) {
+        if (isSuperOrganization() || isFirstLevelOrganization()) {
             getUserStoreList()
                 .then((response: AxiosResponse) => {
                     if (storeOptions.length === 0) {

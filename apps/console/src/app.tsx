@@ -104,7 +104,7 @@ export const App: FunctionComponent<Record<string, never>> = (): ReactElement =>
 
     useEffect(() => {
         if(state.isAuthenticated) {
-            if (OrganizationUtils.isRootOrganization(store.getState().organization.organization)
+            if (OrganizationUtils.isSuperOrganization(store.getState().organization.organization)
             || store.getState().organization.isFirstLevelOrganization) {
                 getDecodedIDToken().then((response: DecodedIDTokenPayload)=>{
                     const orgName: string = response.org_name;

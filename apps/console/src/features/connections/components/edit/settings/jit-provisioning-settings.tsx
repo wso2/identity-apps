@@ -29,6 +29,7 @@ import { getUserStoreList } from "../../../../userstores/api";
 import { updateJITProvisioningConfigs } from "../../../api/connections";
 import { JITProvisioningResponseInterface } from "../../../models/connection";
 import { JITProvisioningConfigurationsForm } from "../forms";
+import { useGetCurrentOrganizationType } from "apps/console/src/features/organizations/hooks/use-get-organization-type";
 
 /**
  * Proptypes for the identity provider general details component.
@@ -80,7 +81,7 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
     } = props;
 
     const dispatch = useDispatch();
-
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
     const { t } = useTranslation();
 
     const [ userStore, setUserStore ] = useState<SimpleUserStoreListItemInterface[]>([]);
@@ -124,7 +125,7 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
             name: "PRIMARY"
         });
 
-        if (OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (isSuperOrganization()) {
             getUserStoreList().then((response) => {
                 userstore.push(...response.data);
                 setUserStore(userstore);

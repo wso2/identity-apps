@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
@@ -60,6 +61,7 @@ import {
     UserListInterface
 } from "../../../../../features/users/models";
 import { SCIMConfigs } from "../../../../configs/scim";
+import { FeatureGateConstants } from "../../../feature-gate/constants/feature-gate";
 import { deleteGuestUser } from "../../api";
 import { AdminAccountTypes, GUEST_ADMIN_ASSOCIATION_TYPE, UserAccountTypes, UsersConstants } from "../../constants";
 import { UserManagementUtils } from "../../utils";
@@ -188,6 +190,8 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+
+    const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
     /**
      * Set users list.
@@ -399,8 +403,11 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                     );
                 },
                 title: "User"
-            },
-            {
+            }
+        ];
+
+        if (saasFeatureStatus === FeatureStatus.ENABLED) {
+            const managedByColumn: TableColumnInterface = {
                 allowToggleVisibility: false,
                 dataIndex: "idpType",
                 id: "idpType",
@@ -437,16 +444,19 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                         </div>
                     </>
                 )
-            },
-            {
-                allowToggleVisibility: false,
-                dataIndex: "action",
-                id: "actions",
-                key: "actions",
-                textAlign: "right",
-                title: ""
-            }
-        ];
+            };
+
+            defaultColumns.push(managedByColumn);
+        }
+
+        defaultColumns.push({
+            allowToggleVisibility: false,
+            dataIndex: "action",
+            id: "actions",
+            key: "actions",
+            textAlign: "right",
+            title: ""
+        });
 
         const internalAdminColumns: TableColumnInterface[] = [
             {
@@ -678,7 +688,7 @@ export const OnboardedGuestUsersList: React.FunctionComponent<OnboardedGuestUser
                 } }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
-                showHeader={ true }
+                showHeader={ saasFeatureStatus === FeatureStatus.ENABLED }
                 transparent={ !isLoading && (showPlaceholders() !== null) }
                 data-componentid={ componentId }
             />
