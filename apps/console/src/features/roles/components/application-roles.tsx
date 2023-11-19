@@ -138,10 +138,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
      */
     useEffect(() => {
 
-        /**
-         * This prevents the roles from being updated in unwanted scenarios such as in the initial render of the
-         * component.
-         */
         if (!shouldUpdateRoleAudience) {
             return;
         }
