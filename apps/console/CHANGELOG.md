@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.6.22
+
+### Patch Changes
+
+- [#4691](https://github.com/wso2/identity-apps/pull/4691) [`c487b1751b`](https://github.com/wso2/identity-apps/commit/c487b1751b774f94299522bc9e295d372e321fe8) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Fix API Resource edit page issue for extensions
+
+* [#4689](https://github.com/wso2/identity-apps/pull/4689) [`15c8ce4a02`](https://github.com/wso2/identity-apps/commit/15c8ce4a02983bf88c2f7c82986d6e3b188c008e) Thanks [@savindi7](https://github.com/savindi7)! - Add missing fields to the passive sts app creation form
+
 ## 2.6.21
 
 ### Patch Changes
