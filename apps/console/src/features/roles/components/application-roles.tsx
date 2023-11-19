@@ -101,6 +101,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ shouldUpdateRoleAudience, setShouldUpdateRoleAudience ] = useState<boolean>(false);
     const [ showSwitchAudienceWarning, setShowSwitchAudienceWarning ] = useState<boolean>(false);
     const [ roleAudience, setRoleAudience ] =
         useState<RoleAudienceTypes>(application?.associatedRoles?.allowedAudience ?? RoleAudienceTypes.ORGANIZATION);
@@ -131,6 +132,26 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             setInitialSelectedRoles([]);
         }
     }, [ roleAudience ]);
+
+    /**
+     * Send a request to update roles when one of the role audience radio buttons is selected. 
+     */
+    useEffect(() => {
+
+        if (!shouldUpdateRoleAudience) {
+            return;
+        }
+
+        /**
+         * Ideally, the selectedRoles list should be cleared immediately when the current roleAudience is not allowed 
+         * for the application. This does not happen in some cases due to the asynchronous nature of the 
+         * setSelectedRoles() method. This if block prevents the roles from being updated with stale data in such cases.
+         */
+        if (roleAudience !== application?.associatedRoles?.allowedAudience && selectedRoles?.length !== 0) {
+            return;
+        }
+        updateRoles();
+    }, [ shouldUpdateRoleAudience, roleAudience, selectedRoles ]);
 
     /**
      * Set removed roles
@@ -250,6 +271,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             })
             .finally(() => {
                 setIsSubmitting(false);
+                setShouldUpdateRoleAudience(false);
             });
     };
 
@@ -517,6 +539,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 } }
                 onPrimaryActionClick={ (): void => {
                     setRoleAudience(tempRoleAudience);
+                    setShouldUpdateRoleAudience(true);
                     setShowSwitchAudienceWarning(false);
                 } }
                 data-componentid={ `${ componentId }-switch-role-audience-confirmation-modal` }
