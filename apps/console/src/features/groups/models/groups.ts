@@ -81,12 +81,12 @@ export interface PatchGroupOpInterface {
 
 export interface PatchGroupRemoveOpInterface {
     op: string;
-    path: string;
+    path?: string;
 }
 
 export interface PatchGroupAddOpInterface {
     op: string;
-    value: {
+    value?: {
         groups: { value: string }[]
     }
 }
