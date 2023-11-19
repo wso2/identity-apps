@@ -334,6 +334,10 @@ export interface FeatureAccessConfigInterface {
      */
     scopes: CRUDScopesInterface;
     /**
+     * Set of deprecated features.
+     */
+    deprecatedFeaturesToShow?: DeprecatedFeatureInterface[];
+    /**
      * Set of disabled features.
      */
     disabledFeatures?: string[];
@@ -344,7 +348,23 @@ export interface FeatureAccessConfigInterface {
     /**
      * Enable the tour option
      */
-     tryittourenabled?: boolean;
+    tryittourenabled?: boolean; 
+}
+
+interface DeprecatedFeature {
+    name: string;
+    deprecatedProperties: string[];
+}
+
+export interface DeprecatedFeatureInterface {
+    /**
+     * Name of the deprecated feature.
+     */
+    name?: string;
+    /**
+     * An array of deprecated properties.
+     */
+    deprecatedProperties?: string[];
 }
 
 /**

@@ -349,8 +349,13 @@ export class AppConstants {
                 "GOVERNANCE_CONNECTOR_EDIT",
                 `${AppConstants.getAdminViewBasePath()}/connector/:categoryId/:connectorId`
             ],
+            [
+                "USERNAME_RECOVERY_CONNECTOR_EDIT",
+                `${AppConstants.getAdminViewBasePath()}/connector/:type/:categoryId/:connectorId`
+            ],
             [ "SECRETS", `${AppConstants.getDeveloperViewBasePath()}/secrets` ],
             [ "SECRET_EDIT", `${AppConstants.getDeveloperViewBasePath()}/secrets/:type/:name` ],
+            [ "SERVER_CONFIG_CATEGORY", `${AppConstants.getAdminViewBasePath()}/login-and-registration/:id` ],
             [
                 "ATTRIBUTE_MAPPINGS",
                 `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type/:customAttributeMappingID?`

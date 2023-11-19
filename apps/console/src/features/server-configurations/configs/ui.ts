@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,20 @@
  * under the License.
  */
 
+import { 
+    CircleUserIcon, 
+    GearIcon, 
+    HexagonTwoIcon,
+    PadlockAsteriskIcon,
+    Icon, 
+    ShareNodesIcon, 
+    ShieldCheckIcon, 
+    ShieldUserPencilIcon, 
+    UserDatabaseIcon, 
+    UserPlusIcon, 
+    VerticleFilterBarsIcon 
+} from "@oxygen-ui/react-icons";
+import UsernameValidationIcon from "../../../extensions/assets/images/icons/username-validation-icon.svg";
 import {
     default as LockRecoverIcon
 } from "../../../themes/default/assets/images/icons/lock-recover-icon.svg";
@@ -90,6 +104,10 @@ interface GetSettingsSectionIconsInterface {
     [key: string]: string;
 }
 
+interface ConnectorCategoryIconsInterface {
+    [key: string]: Icon | any;
+}
+
 export const getGovernanceConnectorIllustrations = () : GetGovernanceConnectorIllustrationsInterface => {
 
     return {
@@ -120,6 +138,22 @@ export const getSettingsSectionIcons = (): GetSettingsSectionIconsInterface => {
         botDetection: RobotIcon,
         jwtPrivateKeyValidation: JWTKeyIcon,
         passwordValidation: PasswordValidationIcon,
-        selfRegistration: UserAddIcon
+        selfRegistration: UserAddIcon,
+        usernameValidation: UsernameValidationIcon
+    };
+};
+
+export const getConnectorCategoryIcon = (): ConnectorCategoryIconsInterface => {
+    return {
+        [ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID]: PadlockAsteriskIcon,
+        [ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID]: UserPlusIcon,
+        [ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID]: HexagonTwoIcon,
+        [ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID]: VerticleFilterBarsIcon,
+        [ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID]: CircleUserIcon,
+        [ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID]: ShieldCheckIcon,
+        [ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR_ID]: UserDatabaseIcon,
+        [ServerConfigurationsConstants.SSO_SETTINGS_CATEGORY_ID]: ShareNodesIcon,
+        [ServerConfigurationsConstants.LOGIN_SECURITY_SETTINGS_CATEGORY_ID]: ShieldUserPencilIcon,
+        "default": GearIcon
     };
 };

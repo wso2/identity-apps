@@ -508,6 +508,16 @@
                 }
             },
             "governanceConnectors": {
+                "deprecatedFeaturesToShow": [ 
+                    {
+                        "name": "passwordPolicy",
+                        "deprecatedProperties": [ "passwordPolicy.pattern", "passwordPolicy.errorMsg" ]
+                    },
+                    {
+                        "name": "user-email-verification",
+                        "deprecatedProperties": [ "EmailVerification.AskPassword.PasswordGenerator" ]
+                    } 
+                ],
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
