@@ -1,5 +1,14 @@
 # @wso2is/form
 
+## 2.0.10
+
+### Patch Changes
+
+- [#4702](https://github.com/wso2/identity-apps/pull/4702) [`2d93945d78`](https://github.com/wso2/identity-apps/commit/2d93945d780ac25ea20acc4af42d23863d080e90) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Revamp login and registration page
+
+- Updated dependencies [[`2d93945d78`](https://github.com/wso2/identity-apps/commit/2d93945d780ac25ea20acc4af42d23863d080e90)]:
+  - @wso2is/core@2.0.15
+
 ## 2.0.9
 
 ### Patch Changes

@@ -1,5 +1,21 @@
 # @wso2is/console
 
+## 2.8.0
+
+### Minor Changes
+
+- [#4702](https://github.com/wso2/identity-apps/pull/4702) [`2d93945d78`](https://github.com/wso2/identity-apps/commit/2d93945d780ac25ea20acc4af42d23863d080e90) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Revamp login and registration page
+
+### Patch Changes
+
+- [#4661](https://github.com/wso2/identity-apps/pull/4661) [`82c5c6541a`](https://github.com/wso2/identity-apps/commit/82c5c6541a2d1286a9476f8e183387e77fd99a47) Thanks [@madurangasiriwardena](https://github.com/madurangasiriwardena)! - Use org name if the display name is not configured in the email template preview
+
+* [#4703](https://github.com/wso2/identity-apps/pull/4703) [`2b5b243256`](https://github.com/wso2/identity-apps/commit/2b5b243256448a58e62113662922928078f42a1a) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Remove not required validation when loding readonly userstores
+
+* Updated dependencies [[`2d93945d78`](https://github.com/wso2/identity-apps/commit/2d93945d780ac25ea20acc4af42d23863d080e90)]:
+  - @wso2is/core@2.0.15
+  - @wso2is/form@2.0.10
+
 ## 2.7.3
 
 ### Patch Changes

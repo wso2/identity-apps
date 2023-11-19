@@ -524,13 +524,13 @@ importers:
         specifier: ^2.0.7
         version: link:../../modules/common
       '@wso2is/core':
-        specifier: ^2.0.14
+        specifier: ^2.0.15
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.0.10
         version: link:../../modules/dynamic-forms
       '@wso2is/form':
-        specifier: ^2.0.9
+        specifier: ^2.0.10
         version: link:../../modules/form
       '@wso2is/forms':
         specifier: ^2.0.1
@@ -1472,7 +1472,7 @@ importers:
         specifier: ^1.7.2
         version: 1.7.2(@emotion/react@11.11.0)(@emotion/styled@11.11.0)(@mui/icons-material@5.11.16)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.12.3)(@mui/utils@5.14.10)(@types/react@18.0.18)(react-dom@18.2.0)(react@18.2.0)(typescript@4.8.2)
       '@wso2is/core':
-        specifier: ^2.0.14
+        specifier: ^2.0.15
         version: link:../core
       '@wso2is/react-components':
         specifier: ^2.0.16
@@ -2396,6 +2396,21 @@ packages:
       '@babel/helper-replace-supers': 7.22.20(@babel/core@7.18.13)
       '@babel/helper-split-export-declaration': 7.22.6
 
+  /@babel/helper-create-class-features-plugin@7.18.13(@babel/core@7.23.0):
+    resolution: {integrity: sha512-hDvXp+QYxSRL+23mpAlSGxHMDyIGChm0/AwTfTAAK5Ufe40nCsyNdaYCGuK91phn/fVu9kqayImRDkvNAgdrsA==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+    dependencies:
+      '@babel/core': 7.23.0
+      '@babel/helper-annotate-as-pure': 7.22.5
+      '@babel/helper-environment-visitor': 7.22.20
+      '@babel/helper-function-name': 7.23.0
+      '@babel/helper-member-expression-to-functions': 7.23.0
+      '@babel/helper-optimise-call-expression': 7.22.5
+      '@babel/helper-replace-supers': 7.22.20(@babel/core@7.23.0)
+      '@babel/helper-split-export-declaration': 7.22.6
+
   /@babel/helper-create-class-features-plugin@7.22.15(@babel/core@7.18.13):
     resolution: {integrity: sha512-jKkwA59IXcvSaiK2UN45kKwSC9o+KuoXsBDvHvU/7BecYIp8GQ2UwrVvFgJASUT+hBnwJx6MhvMCuMzwZZ7jlg==}
     engines: {node: '>=6.9.0'}
@@ -2871,8 +2886,8 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.23.0
-      '@babel/helper-create-class-features-plugin': 7.22.15(@babel/core@7.23.0)
-      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/helper-create-class-features-plugin': 7.18.13(@babel/core@7.23.0)
+      '@babel/helper-plugin-utils': 7.18.9
 
   /@babel/plugin-proposal-class-static-block@7.18.6(@babel/core@7.18.13):
     resolution: {integrity: sha512-+I3oIiNxrCpup3Gi8n5IGMwj0gOCAjcJUSQEcotNnCCPMEnixawOQ+KeJPlgfjzx+FKQ1QSyZOWe7wmoJp7vhw==}
