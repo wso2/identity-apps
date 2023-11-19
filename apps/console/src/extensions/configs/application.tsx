@@ -97,6 +97,7 @@ const isIdentityClaim = (claim: ExtendedClaimInterface | ExtendedExternalClaimIn
 
 export const applicationConfig: ApplicationConfig = {
     advancedConfigurations: {
+        showDefaultMyAccountApplicationEditPage: true,
         showEnableAuthorization: true,
         showMyAccount: true,
         showReturnAuthenticatedIdPs: true,

@@ -34,6 +34,7 @@ export class ApplicationManagementConstants {
     public static readonly EMPTY_JSON_ARRAY: string = "[]";
 
     public static readonly SYSTEM_APPS: string[] = [ "CONSOLE","MY_ACCOUNT" ];
+    public static readonly MY_ACCOUNT_APP_CLIENT_ID: string = "MY_ACCOUNT";
 
     /**
      * Private constructor to avoid object instantiation from outside

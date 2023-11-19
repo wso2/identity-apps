@@ -31,6 +31,7 @@ export interface ApplicationConfig {
     advancedConfigurations: {
         showEnableAuthorization: boolean;
         showMyAccount: boolean;
+        showDefaultMyAccountApplicationEditPage: boolean;
         showSaaS: boolean;
         showReturnAuthenticatedIdPs: boolean;
     };

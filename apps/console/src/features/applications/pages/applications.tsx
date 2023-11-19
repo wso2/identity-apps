@@ -73,7 +73,7 @@ import { MinimalAppCreateWizard } from "../components/wizard/minimal-application
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
-import { ApplicationListInterface } from "../models";
+import { ApplicationAccessTypes, ApplicationListInterface, ApplicationListItemInterface } from "../models";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -137,6 +137,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
+    // Note: If we are providing strong auth for applications use this state to handle it.
+    const [ strongAuth, _setStrongAuth ] = useState<boolean>(undefined);
 
     const { organizationType } = useGetCurrentOrganizationType();
 
@@ -313,13 +315,50 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     };
 
     /**
+     * Extract the my account application details from application list.
+     * 
+     * @returns My account application details.
+     */
+    const getMyAccountApplicationDetails = (): ApplicationListItemInterface => {
+        if (applicationList) {
+            const accountAppDetails: ApplicationListItemInterface = applicationList?.applications.find(
+                (item: ApplicationListItemInterface) => 
+                    item.clientId === ApplicationManagementConstants.MY_ACCOUNT_APP_CLIENT_ID
+            );
+
+            return accountAppDetails;
+        }
+
+        return undefined;
+    };
+
+    /**
      * Navigate to the my account edit page.
      */
     const navigateToMyAccountSettings = (): void => {
-        history.push({
-            pathname: AppConstants.getPaths().get("MY_ACCOUNT_EDIT"),
-            state: ApplicationManagementConstants.APPLICATION_STATE
-        });
+        if (applicationConfig?.advancedConfigurations?.showDefaultMyAccountApplicationEditPage) {
+            const myaccountAppDetails: ApplicationListItemInterface = getMyAccountApplicationDetails();
+
+            if (strongAuth) {
+                history.push({
+                    pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", myaccountAppDetails.id),
+                    search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=${
+                        ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`
+                });
+            } else {
+                history.push({
+                    pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", myaccountAppDetails.id),
+                    search: myaccountAppDetails.access === ApplicationAccessTypes.READ
+                        ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
+                        : ""
+                });
+            }
+        } else {
+            history.push({
+                pathname: AppConstants.getPaths().get("MY_ACCOUNT_EDIT"),
+                state: ApplicationManagementConstants.APPLICATION_STATE
+            });
+        }
     };
 
     /**
@@ -328,8 +367,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * @returns My Account link.
      */
     const renderTenantedMyAccountLink = (): ReactElement => {
-        if (AppConstants.getTenant() === AppConstants.getSuperTenant() ||
-            !applicationConfig.advancedConfigurations.showMyAccount) {
+        if (!applicationConfig.advancedConfigurations.showMyAccount) {
             return null;
         }
 
@@ -387,7 +425,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     </DocumentationLink>
                                 </List.Description>
                             </Grid.Column>
-                            { isMyAccountEnabled || isSubOrg ? (
+                            { isMyAccountEnabled ? (
                                 <Popup
                                     trigger={ (
                                         <Grid.Column
@@ -592,6 +630,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         />
                     ) }
                     featureConfig={ featureConfig }
+                    isSetStrongerAuth={ strongAuth }
                     isLoading={ isApplicationListFetchRequestLoading }
                     list={ applicationList }
                     onApplicationDelete={ handleApplicationDelete }
