@@ -1248,21 +1248,27 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     fluid
                 />
             );
-        } else if (schema.name === "locale") {
+        } else if (schema?.name === "locale") {
             return (
                 <Field
-                    data-testid={ `${ testId }-profile-form-${ schema.name }-input` }
-                    name={ schema.name }
+                    data-testid={ `${ testId }-profile-form-${ schema?.name }-input` }
+                    name={ schema?.name }
                     label={ fieldName }
-                    required={ schema.required }
-                    requiredErrorMessage={ fieldName + " " + "is required" }
-                    placeholder={ "Select your" + " " + fieldName }
+                    required={ schema?.required }
+                    requiredErrorMessage={
+                        t("console:manage.features.user.forms.profile.generic.inputs.validations.empty", { fieldName })
+                    }
+                    placeholder={
+                        t("console:manage.features.user.forms.profile.generic.inputs.dropdownPlaceholder",
+                            { fieldName })
+                    }
                     type="dropdown"
-                    value={ profileInfo.get(schema.name) }
+                    value={ profileInfo.get(schema?.name) }
                     children={ [ {
                         "data-testid": `${ testId }-profile-form-locale-dropdown-empty` as string,
                         key: "empty-locale" as string,
-                        text: "Select your local" as string,
+                        text: t("console:manage.features.user.forms.profile.generic.inputs.dropdownPlaceholder",
+                            { fieldName }) as string,
                         value: "" as string
                     } ].concat(
                         supportedI18nLanguages
@@ -1281,8 +1287,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     ) }
                     key={ key }
                     disabled={ false }
-                    readOnly={ isReadOnly || schema.mutability === ProfileConstants.READONLY_SCHEMA }
-                    clearable={ !schema.required }
+                    readOnly={ isReadOnly || schema?.mutability === ProfileConstants.READONLY_SCHEMA }
+                    clearable={ !schema?.required }
                     search
                     selection
                     fluid

@@ -11270,6 +11270,7 @@ export const console: ConsoleNS = {
                         generic: {
                             inputs: {
                                 placeholder: "Enter your {{fieldName}}",
+                                dropdownPlaceholder: "Select your {{fieldName}}",
                                 validations: {
                                     empty: "{{fieldName}} is a required field",
                                     invalidFormat: "The {{fieldName}} is not of the correct format"

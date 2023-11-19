@@ -9314,6 +9314,7 @@ export const console: ConsoleNS = {
                         generic: {
                             inputs: {
                                 placeholder: "ඔබගේ {{fieldName}} ඇතුළත් කරන්න",
+                                dropdownPlaceholder: "ඔබගේ {{fieldName}} තෝරන්න",
                                 validations: {
                                     empty: "{{fieldName}} යනු අත්‍යවශ්‍ය ක්ෂේත්‍රයකි",
                                     invalidFormat: "{{FieldName}} නිවැරදි ආකෘතියෙන් නොවේ"
