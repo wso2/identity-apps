@@ -484,8 +484,10 @@ export class AppConstants {
      * Route ids that are enabled in only for super admins.
      */
     public static readonly SUPER_ADMIN_ONLY_ROUTES: string[] = [
-        "adminAdvisoryBanner",
-        "remoteLogging"
+        "admin-session-advisory-banner-edit",
+        "remote-logging",
+        "internal-notification-sending",
+        "server"
     ]
 
     /**

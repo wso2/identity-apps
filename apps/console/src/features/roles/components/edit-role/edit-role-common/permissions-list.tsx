@@ -105,6 +105,7 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
                 <Autocomplete
                     multiple
                     disableCloseOnSelect
+                    disablePortal
                     options={ apiResource?.scopes ? apiResource?.scopes : [] }
                     value={ selectedPermissions ? selectedPermissions : [] }
                     isOptionEqualToValue={ 

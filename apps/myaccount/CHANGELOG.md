@@ -1,5 +1,20 @@
 # @wso2is/myaccount
 
+## 2.2.32
+
+### Patch Changes
+
+- [#4728](https://github.com/wso2/identity-apps/pull/4728) [`1019609267`](https://github.com/wso2/identity-apps/commit/1019609267d9ce9e5b600a51bed3071ff0f80626) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bump theme module
+
+- Updated dependencies [[`1019609267`](https://github.com/wso2/identity-apps/commit/1019609267d9ce9e5b600a51bed3071ff0f80626)]:
+  - @wso2is/theme@2.0.39
+
+## 2.2.31
+
+### Patch Changes
+
+- [#4650](https://github.com/wso2/identity-apps/pull/4650) [`afb3d189eb`](https://github.com/wso2/identity-apps/commit/afb3d189ebcaadcf1630c1abdce64e156ccd4f2d) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Set domain cookie upon language switch in myaccount
+
 ## 2.2.30
 
 ### Patch Changes
