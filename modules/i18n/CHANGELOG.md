@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.49
+
+### Patch Changes
+
+- [#4616](https://github.com/wso2/identity-apps/pull/4616) [`e2ed10aaa3`](https://github.com/wso2/identity-apps/commit/e2ed10aaa3c1bc125cee4996a20e8ae21906bd9c) Thanks [@RivinduM](https://github.com/RivinduM)! - Restrict FAPI related configs to standard based applications.
+
 ## 2.0.48
 
 ### Patch Changes
