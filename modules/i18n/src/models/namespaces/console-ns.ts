@@ -1317,6 +1317,7 @@ export interface ConsoleNS {
                     emptyAuthenticationStep: Notification;
                     fetchAllowedCORSOrigins: Notification;
                     fetchApplication: Notification;
+                    fetchMyAccountApplication: Notification;
                     fetchApplications: Notification;
                     fetchCustomInboundProtocols: Notification;
                     fetchInboundProtocols: Notification;

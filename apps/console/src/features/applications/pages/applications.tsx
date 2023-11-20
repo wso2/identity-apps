@@ -31,6 +31,7 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
+import cloneDeep from "lodash-es/cloneDeep";
 import find from "lodash-es/find";
 import React, {
     FunctionComponent,
@@ -67,13 +68,13 @@ import {
 } from "../../core";
 import { OrganizationType } from "../../organizations/constants";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
-import { useApplicationList, useMyAccountStatus } from "../api";
+import { useApplicationList, useMyAccountApplicationData, useMyAccountStatus } from "../api";
 import { ApplicationList } from "../components/application-list";
 import { MinimalAppCreateWizard } from "../components/wizard/minimal-application-create-wizard";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
-import { ApplicationListInterface } from "../models";
+import { ApplicationAccessTypes, ApplicationListInterface, ApplicationListItemInterface } from "../models";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -137,6 +138,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const [ isMyAccountEnabled, setMyAccountStatus ] = useState<boolean>(AppConstants.DEFAULT_MY_ACCOUNT_STATUS);
+    // Note: If we are providing strong auth for applications use this state to handle it.
+    const [ strongAuth, _setStrongAuth ] = useState<boolean>(undefined);
+    const [ filteredApplicationList, setFilteredApplicationList ] = useState<ApplicationListInterface>(null);
 
     const { organizationType } = useGetCurrentOrganizationType();
 
@@ -148,6 +152,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         error: applicationListFetchRequestError,
         mutate: mutateApplicationListFetchRequest
     } = useApplicationList("advancedConfigurations,templateId,clientId,issuer", listItemLimit, listOffset, searchQuery);
+
+    const {
+        data: myAccountApplicationData,
+        isLoading: isMyAccountApplicationDataFetchRequestLoading,
+        error: myAccountApplicationDataFetchRequestError
+    } = useMyAccountApplicationData("advancedConfigurations,templateId,clientId,issuer");
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
@@ -162,7 +172,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * TODO: Remove this once the loaders are finalized.
      */
     useEffect(() => {
-        if (isApplicationListFetchRequestLoading === false && isMyAccountStatusLoading === false) {
+        if (isApplicationListFetchRequestLoading === false && isMyAccountStatusLoading === false
+            && !isMyAccountApplicationDataFetchRequestLoading) {
             let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
 
             if (myAccountStatus) {
@@ -174,7 +185,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             }
             setMyAccountStatus(status);
         }
-    }, [ isApplicationListFetchRequestLoading, isMyAccountStatusLoading ]);
+    }, [
+        isApplicationListFetchRequestLoading,
+        isMyAccountStatusLoading,
+        isMyAccountApplicationDataFetchRequestLoading
+    ]);
 
     /**
      * Handles the application list fetch request error.
@@ -206,6 +221,35 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 "fetchApplications.genericError.message")
         }));
     }, [ applicationListFetchRequestError ]);
+
+    /**
+     * Handles the my account application fetch request error.
+     */
+    useEffect(() => {
+
+        if (!myAccountApplicationDataFetchRequestError) {
+            return;
+        }
+
+        if (myAccountApplicationDataFetchRequestError?.response?.data?.description) {
+            dispatch(addAlert({
+                description: myAccountApplicationDataFetchRequestError.response.data.description,
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.applications.notifications." +
+                    "fetchMyAccountApplication.error.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("console:develop.features.applications.notifications.fetchMyAccountApplication" +
+                ".genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("console:develop.features.applications.notifications." +
+                "fetchMyAccountApplication.genericError.message")
+        }));
+    }, [ myAccountApplicationDataFetchRequestError ]);
 
     /**
      * Handles the application list fetch request error.
@@ -240,6 +284,28 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 ".genericError.message")
         }));
     }, [ myAccountStatusFetchRequestError ]);
+
+    /**
+     * Filter out the system apps from the application list.
+     * TODO: This implementation is a temporary one. This filtering should be
+     * done from the backend side and should have a seperate endpoint to
+     * access the system apps details.
+     */
+    useEffect(() => {
+
+        if (applicationList?.applications) {
+            const appList: ApplicationListInterface = cloneDeep(applicationList);
+
+            appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
+                !ApplicationManagementConstants.SYSTEM_APPS.includes(item.clientId)
+            );
+            appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
+            appList.totalResults = appList.totalResults - 
+                (applicationList.applications.length - appList.applications.length);
+
+            setFilteredApplicationList(appList);
+        }
+    }, [ applicationList ]);
 
     /**
      * Sets the list sorting strategy.
@@ -316,10 +382,31 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * Navigate to the my account edit page.
      */
     const navigateToMyAccountSettings = (): void => {
-        history.push({
-            pathname: AppConstants.getPaths().get("MY_ACCOUNT_EDIT"),
-            state: ApplicationManagementConstants.APPLICATION_STATE
-        });
+        if (applicationConfig?.advancedConfigurations?.showDefaultMyAccountApplicationEditPage) {
+            if (strongAuth) {
+                history.push({
+                    pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
+                        ":id", myAccountApplicationData?.applications[0]?.id
+                    ),
+                    search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=${
+                        ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`
+                });
+            } else {
+                history.push({
+                    pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
+                        ":id", myAccountApplicationData?.applications[0]?.id
+                    ),
+                    search: myAccountApplicationData?.applications[0]?.access === ApplicationAccessTypes.READ
+                        ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
+                        : ""
+                });
+            }
+        } else {
+            history.push({
+                pathname: AppConstants.getPaths().get("MY_ACCOUNT_EDIT"),
+                state: ApplicationManagementConstants.APPLICATION_STATE
+            });
+        }
     };
 
     /**
@@ -328,8 +415,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * @returns My Account link.
      */
     const renderTenantedMyAccountLink = (): ReactElement => {
-        if (AppConstants.getTenant() === AppConstants.getSuperTenant() ||
-            !applicationConfig.advancedConfigurations.showMyAccount) {
+        if (!applicationConfig.advancedConfigurations.showMyAccount) {
             return null;
         }
 
@@ -387,7 +473,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     </DocumentationLink>
                                 </List.Description>
                             </Grid.Column>
-                            { isMyAccountEnabled || isSubOrg ? (
+                            { isMyAccountEnabled ? (
                                 <Popup
                                     trigger={ (
                                         <Grid.Column
@@ -440,7 +526,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     return (
         <PageLayout
             pageTitle="Applications"
-            action={ (organizationType !== OrganizationType.SUBORGANIZATION && applicationList?.totalResults > 0) && (
+            action={ (organizationType !== OrganizationType.SUBORGANIZATION && 
+                filteredApplicationList?.totalResults > 0) && (
                 <Show when={ AccessControlConstants.APPLICATION_WRITE }>
                     <PrimaryButton
                         onClick={ (): void => {
@@ -525,8 +612,10 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         data-testid={ `${ testId }-list-advanced-search` }
                     />
                 ) }
-                currentListSize={ applicationList?.count }
-                isLoading={ isApplicationListFetchRequestLoading }
+                currentListSize={ filteredApplicationList?.count }
+                isLoading={ 
+                    isApplicationListFetchRequestLoading || isMyAccountApplicationDataFetchRequestLoading
+                }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
@@ -534,13 +623,14 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 showPagination={ true }
                 showTopActionPanel={
                     isApplicationListFetchRequestLoading
-                    || !(!searchQuery && applicationList?.totalResults <= 0) }
+                    || isMyAccountApplicationDataFetchRequestLoading
+                    || !(!searchQuery && filteredApplicationList?.totalResults <= 0) }
                 sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
                 sortStrategy={ listSortingStrategy }
-                totalPages={ Math.ceil(applicationList?.totalResults / listItemLimit) }
-                totalListSize={ applicationList?.totalResults }
+                totalPages={ Math.ceil(filteredApplicationList?.totalResults / listItemLimit) }
+                totalListSize={ filteredApplicationList?.totalResults }
                 paginationOptions={ {
-                    disableNextButton: !shouldShowNextPageNavigation(applicationList)
+                    disableNextButton: !shouldShowNextPageNavigation(filteredApplicationList)
                 } }
                 data-testid={ `${ testId }-list-layout` }
             >
@@ -592,8 +682,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         />
                     ) }
                     featureConfig={ featureConfig }
-                    isLoading={ isApplicationListFetchRequestLoading }
-                    list={ applicationList }
+                    isSetStrongerAuth={ strongAuth }
+                    isLoading={ 
+                        isApplicationListFetchRequestLoading || isMyAccountApplicationDataFetchRequestLoading
+                    }
+                    list={ filteredApplicationList }
                     onApplicationDelete={ handleApplicationDelete }
                     onEmptyListPlaceholderActionClick={
                         () => {

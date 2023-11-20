@@ -2877,6 +2877,20 @@ export const console: ConsoleNS = {
                             message: "නැවත ලබා ගැනීම සාර්ථකයි"
                         }
                     },
+                    fetchMyAccountApplication: {
+                        error: {
+                            description: "{{description}}",
+                            message: "නැවත ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "My Account යෙදුම් විස්තර ලබා ගැනීමට නොහැකි විය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        },
+                        success: {
+                            description: "My Account යෙදුම් විස්තර සාර්ථකව ලබා ගන්නා ලදී.",
+                            message: "නැවත ලබා ගැනීම සාර්ථකයි"
+                        }
+                    },
                     fetchApplications: {
                         error: {
                             description: "{{description}}",
