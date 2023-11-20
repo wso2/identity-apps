@@ -206,7 +206,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         isLoading: isAllRolesListLoading,
         error: allRolesListError
     } = useRolesList(
-        undefined, undefined, undefined, legacyAuthzRuntime
+        undefined, undefined, undefined, !legacyAuthzRuntime
     );
 
     const {
@@ -1462,7 +1462,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         </Grid.Column>
                                     </Grid.Row>
                                     { allRolesList
-                                    && legacyAuthzRuntime
+                                    && !legacyAuthzRuntime
                                     &&  (
                                         <Autocomplete
                                             size="small"
