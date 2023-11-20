@@ -172,10 +172,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * TODO: Remove this once the loaders are finalized.
      */
     useEffect(() => {
-        if (isApplicationListFetchRequestLoading === false &&
-            isMyAccountStatusLoading === false &&
-            !isMyAccountApplicationDataFetchRequestLoading) {
-
+        if (isApplicationListFetchRequestLoading === false && isMyAccountStatusLoading === false
+            && !isMyAccountApplicationDataFetchRequestLoading) {
             let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
 
             if (myAccountStatus) {
@@ -189,8 +187,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         }
     }, [
         isApplicationListFetchRequestLoading,
-        isMyAccountApplicationDataFetchRequestLoading,
-        isMyAccountStatusLoading
+        isMyAccountStatusLoading,
+        isMyAccountApplicationDataFetchRequestLoading
     ]);
 
     /**
@@ -294,13 +292,15 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * access the system apps details.
      */
     useEffect(() => {
+
         if (applicationList?.applications) {
             const appList: ApplicationListInterface = cloneDeep(applicationList);
 
-            appList.applications = appList.applications.filter((item: ApplicationListItemInterface) => 
+            appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
                 !ApplicationManagementConstants.SYSTEM_APPS.includes(item.clientId)
             );
-            appList.totalResults = applicationList.totalResults - 
+            appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
+            appList.totalResults = appList.totalResults - 
                 (applicationList.applications.length - appList.applications.length);
 
             setFilteredApplicationList(appList);
@@ -613,7 +613,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     />
                 ) }
                 currentListSize={ filteredApplicationList?.count }
-                isLoading={ isApplicationListFetchRequestLoading || isMyAccountApplicationDataFetchRequestLoading }
+                isLoading={ 
+                    isApplicationListFetchRequestLoading || isMyAccountApplicationDataFetchRequestLoading
+                }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
@@ -681,7 +683,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     ) }
                     featureConfig={ featureConfig }
                     isSetStrongerAuth={ strongAuth }
-                    isLoading={ isApplicationListFetchRequestLoading || isMyAccountApplicationDataFetchRequestLoading }
+                    isLoading={ 
+                        isApplicationListFetchRequestLoading || isMyAccountApplicationDataFetchRequestLoading
+                    }
                     list={ filteredApplicationList }
                     onApplicationDelete={ handleApplicationDelete }
                     onEmptyListPlaceholderActionClick={

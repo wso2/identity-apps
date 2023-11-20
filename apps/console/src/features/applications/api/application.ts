@@ -283,8 +283,8 @@ export const useMyAccountApplicationData = <Data = ApplicationListInterface, Err
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
-    const FILTERES: string = `filter=clientId+eq+${ ApplicationManagementConstants.MY_ACCOUNT_APP_CLIENT_ID }`;
-    const LIMIT: number = 10;
+    const FILTERES: string = `clientId eq ${ ApplicationManagementConstants.MY_ACCOUNT_APP_CLIENT_ID }`;
+    const LIMIT: number = 1;
     const OFFSET: number = 0;
 
     const requestConfig: AxiosRequestConfig = shouldFetch
