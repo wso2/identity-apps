@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.9.3
+
+### Patch Changes
+
+- [#4723](https://github.com/wso2/identity-apps/pull/4723) [`6c7087097e`](https://github.com/wso2/identity-apps/commit/6c7087097e9ef8231254919d7940204268f449ae) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Enable/disable role assignment in multiple user creation wizard with legacyauthruntime
+
+* [#4730](https://github.com/wso2/identity-apps/pull/4730) [`edf6f1b143`](https://github.com/wso2/identity-apps/commit/edf6f1b143d12edf19440b32c3f14af3dd1a44de) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Add null check for roles assignment in group creation
+
+- [#4728](https://github.com/wso2/identity-apps/pull/4728) [`1019609267`](https://github.com/wso2/identity-apps/commit/1019609267d9ce9e5b600a51bed3071ff0f80626) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bump theme module
+
+* [#4724](https://github.com/wso2/identity-apps/pull/4724) [`2c5d77a414`](https://github.com/wso2/identity-apps/commit/2c5d77a414061429dbc3a677f5b6c214636d555c) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix organization pagination issue
+
+* Updated dependencies [[`1019609267`](https://github.com/wso2/identity-apps/commit/1019609267d9ce9e5b600a51bed3071ff0f80626)]:
+  - @wso2is/theme@2.0.39
+
 ## 2.9.2
 
 ### Patch Changes
