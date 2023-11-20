@@ -1461,122 +1461,124 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             </Alert>
                                         </Grid.Column>
                                     </Grid.Row>
-                                    { allRolesList
-                                    && !legacyAuthzRuntime
-                                    &&  (
-                                        <Autocomplete
-                                            size="small"
-                                            multiple
-                                            fullWidth
-                                            disablePortal
-                                            id="combo-box-demo"
-                                            options={ 
-                                                allRolesList?.Resources
-                                            }
-                                            getOptionLabel={ (option: RolesInterface) => option?.displayName }
-                                            renderOption={ (
-                                                props: React.HTMLAttributes<HTMLLIElement>,
-                                                option: RolesInterface
-                                            ) => (
-                                                <Box 
-                                                    component="li"
-                                                    { ...props }
-                                                >
-                                                    <Typography
-                                                        sx={ { fontWeight: 500 } }
+                                    {
+                                        allRolesList
+                                        && !legacyAuthzRuntime
+                                        &&  (
+                                            <Autocomplete
+                                                size="small"
+                                                multiple
+                                                fullWidth
+                                                disablePortal
+                                                id="combo-box-demo"
+                                                options={ 
+                                                    allRolesList?.Resources
+                                                }
+                                                getOptionLabel={ (option: RolesInterface) => option?.displayName }
+                                                renderOption={ (
+                                                    props: React.HTMLAttributes<HTMLLIElement>,
+                                                    option: RolesInterface
+                                                ) => (
+                                                    <Box 
+                                                        component="li"
+                                                        { ...props }
                                                     >
-                                                        { option?.displayName }
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="caption"
-                                                        className="mr-2 ml-6"
-                                                    >
-                                                        { " Audience:"  }
-                                                    </Typography>
-                                                    <label>
-                                                        {
-                                                            option?.audience?.type.charAt(0).toUpperCase()
-                                                            +option?.audience?.type.slice(1)
-                                                        }
-                                                    </label>
-                                                    <Label
-                                                        pointing="left"
-                                                        size="mini"
-                                                        className={ 
-                                                            RoleAudienceTypes.ORGANIZATION
-                                                            === option?.audience?.type.toUpperCase()
-                                                                ? "issuer-label"
-                                                                : "client-id-label"
-                                                        }
-                                                    >
-                                                        { option?.audience?.display }
-                                                    </Label>
-                                                </Box>
-                                            ) }
-                                            renderInput={ (params: AutocompleteRenderInputParams) => 
-                                                (<>
-                                                    <InputLabel
-                                                        htmlFor="tags-filled"
-                                                        disableAnimation
-                                                        shrink={ false }
-                                                        margin="dense"
-                                                        className="mt-2"
-                                                        data-componentid={ `${componentId}-roles-label` }
-                                                    >
-                                                        { 
-                                                            t("console:manage.features.user.modals." +
-                                                            "bulkImportUserWizard.wizardSummary." +
-                                                            "manualCreation.rolesLabel")
-                                                        }
-                                                    </InputLabel>
-                                                    <TextField
-                                                        id="tags-filled"
-                                                        margin="normal"
-                                                        InputLabelProps= { {
-                                                            required: true
-                                                        } }
-                                                        { ...params }
-                                                        required
-                                                        variant="outlined"
-                                                        placeholder={
-                                                            t("console:manage.features.user.modals." +
-                                                            "bulkImportUserWizard.wizardSummary." +
-                                                            "manualCreation.rolesPlaceholder") 
-                                                        }
-                                                        data-componentid={ `${componentId}-roles-input` }
-                                                
-                                                    />
-                                                </>)
-                                            }
-                                            onChange={ (
-                                                event: React.SyntheticEvent<Element, Event>,
-                                                value: RolesInterface[]
-                                            ) => {
-                                                setRolesData(value);
-                                            } }
-                                            renderTags={ (
-                                                value: RolesInterface[],
-                                                getTagProps: AutocompleteRenderGetTagProps
-                                            ) =>
-                                                value.map((option: RolesInterface, index: number) => (
-                                                    <Chip 
-                                                        key={ index }
-                                                        size="small"
-                                                        className="oxygen-chip-beta"
-                                                        label={ 
-                                                            (<label>
-                                                                {
-                                                                    `${option?.displayName}:
-                                                                    ${option?.audience?.type.charAt(0).toUpperCase()}${
-                                                                    option?.audience?.type.slice(1)}`
-                                                                }
-                                                            </label>)
-                                                        }
-                                                        { ...getTagProps({ index }) } 
-                                                    />
-                                                ))
-                                            }
-                                        />)
+                                                        <Typography
+                                                            sx={ { fontWeight: 500 } }
+                                                        >
+                                                            { option?.displayName }
+                                                        </Typography>
+                                                        <Typography
+                                                            variant="caption"
+                                                            className="mr-2 ml-6"
+                                                        >
+                                                            { " Audience:"  }
+                                                        </Typography>
+                                                        <label>
+                                                            {
+                                                                option?.audience?.type.charAt(0).toUpperCase()
+                                                                +option?.audience?.type.slice(1)
+                                                            }
+                                                        </label>
+                                                        <Label
+                                                            pointing="left"
+                                                            size="mini"
+                                                            className={ 
+                                                                RoleAudienceTypes.ORGANIZATION
+                                                                === option?.audience?.type.toUpperCase()
+                                                                    ? "issuer-label"
+                                                                    : "client-id-label"
+                                                            }
+                                                        >
+                                                            { option?.audience?.display }
+                                                        </Label>
+                                                    </Box>
+                                                ) }
+                                                renderInput={ (params: AutocompleteRenderInputParams) => 
+                                                    (<>
+                                                        <InputLabel
+                                                            htmlFor="tags-filled"
+                                                            disableAnimation
+                                                            shrink={ false }
+                                                            margin="dense"
+                                                            className="mt-2"
+                                                            data-componentid={ `${componentId}-roles-label` }
+                                                        >
+                                                            { 
+                                                                t("console:manage.features.user.modals." +
+                                                                "bulkImportUserWizard.wizardSummary." +
+                                                                "manualCreation.rolesLabel")
+                                                            }
+                                                        </InputLabel>
+                                                        <TextField
+                                                            id="tags-filled"
+                                                            margin="normal"
+                                                            InputLabelProps= { {
+                                                                required: true
+                                                            } }
+                                                            { ...params }
+                                                            required
+                                                            variant="outlined"
+                                                            placeholder={
+                                                                t("console:manage.features.user.modals." +
+                                                                "bulkImportUserWizard.wizardSummary." +
+                                                                "manualCreation.rolesPlaceholder") 
+                                                            }
+                                                            data-componentid={ `${componentId}-roles-input` }
+                                                    
+                                                        />
+                                                    </>)
+                                                }
+                                                onChange={ (
+                                                    event: React.SyntheticEvent<Element, Event>,
+                                                    value: RolesInterface[]
+                                                ) => {
+                                                    setRolesData(value);
+                                                } }
+                                                renderTags={ (
+                                                    value: RolesInterface[],
+                                                    getTagProps: AutocompleteRenderGetTagProps
+                                                ) =>
+                                                    value.map((option: RolesInterface, index: number) => (
+                                                        <Chip 
+                                                            key={ index }
+                                                            size="small"
+                                                            className="oxygen-chip-beta"
+                                                            label={ 
+                                                                (<label>
+                                                                    {
+                                                                        `${option?.displayName}:
+                                                                        ${option?.audience?.type
+                                                                        .charAt(0).toUpperCase()}${
+                                                                        option?.audience?.type.slice(1)}`
+                                                                    }
+                                                                </label>)
+                                                            }
+                                                            { ...getTagProps({ index }) } 
+                                                        />
+                                                    ))
+                                                }
+                                            />)
                                     }
                                     <Autocomplete
                                         size="small"
