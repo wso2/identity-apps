@@ -15,5 +15,11 @@
         "oidc",
         "saml"
     ],
-    "application": null
+    "application": {
+        "name": "",
+        "advancedConfigurations": {
+            "skipLogoutConsent": true,
+            "skipLoginConsent": true
+        }
+    }
 }

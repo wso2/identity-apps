@@ -13,7 +13,9 @@
     "application": {
         "name": "",
         "advancedConfigurations": {
-            "discoverableByEndUsers": false
+            "discoverableByEndUsers": false,
+            "skipLogoutConsent": true,
+            "skipLoginConsent": true
         },
         "authenticationSequence": {
             "type": "DEFAULT",
