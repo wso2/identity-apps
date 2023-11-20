@@ -1,5 +1,25 @@
 # @wso2is/console
 
+## 2.9.5
+
+### Patch Changes
+
+- [#4737](https://github.com/wso2/identity-apps/pull/4737) [`31fc142c2b`](https://github.com/wso2/identity-apps/commit/31fc142c2b0ed9c74e97a8cc6f2d58e20eec709a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide default subject attribute selection dropdown for OIDC apps
+
+* [#4727](https://github.com/wso2/identity-apps/pull/4727) [`b533228182`](https://github.com/wso2/identity-apps/commit/b533228182a5092b13584912e7032c1147eacc69) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Change error msg when deleting a role
+
+- [#4738](https://github.com/wso2/identity-apps/pull/4738) [`9aeef4ce4f`](https://github.com/wso2/identity-apps/commit/9aeef4ce4f85c0e1f20126e0acc23ad61ddbf409) Thanks [@RivinduM](https://github.com/RivinduM)! - Update console j2 configurations
+
+- Updated dependencies [[`31fc142c2b`](https://github.com/wso2/identity-apps/commit/31fc142c2b0ed9c74e97a8cc6f2d58e20eec709a), [`b533228182`](https://github.com/wso2/identity-apps/commit/b533228182a5092b13584912e7032c1147eacc69)]:
+  - @wso2is/core@2.0.16
+  - @wso2is/access-control@2.0.5
+  - @wso2is/common@2.0.8
+  - @wso2is/dynamic-forms@2.0.11
+  - @wso2is/form@2.0.11
+  - @wso2is/forms@2.0.2
+  - @wso2is/i18n@2.0.51
+  - @wso2is/react-components@2.0.20
+
 ## 2.9.4
 
 ### Patch Changes
