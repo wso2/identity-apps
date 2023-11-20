@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.62
+
+### Patch Changes
+
+- [#4677](https://github.com/wso2/identity-apps/pull/4677) [`f3984d9b12`](https://github.com/wso2/identity-apps/commit/f3984d9b12ddb6463d5e5fb5bbee74e4cb7fc914) Thanks [@indeewari](https://github.com/indeewari)! - Removing SSO from self registration
+
 ## 2.0.61
 
 ### Patch Changes
