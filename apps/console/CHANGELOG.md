@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.9.2
+
+### Patch Changes
+
+- [#4720](https://github.com/wso2/identity-apps/pull/4720) [`a0ff3b2138`](https://github.com/wso2/identity-apps/commit/a0ff3b21387a5720d4d3f7d377a617119fb1d26e) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Fix custom attribute not setting/changing properly
+
 ## 2.9.1
 
 ### Patch Changes

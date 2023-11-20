@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.2.31
+
+### Patch Changes
+
+- [#4650](https://github.com/wso2/identity-apps/pull/4650) [`afb3d189eb`](https://github.com/wso2/identity-apps/commit/afb3d189ebcaadcf1630c1abdce64e156ccd4f2d) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Set domain cookie upon language switch in myaccount
+
 ## 2.2.30
 
 ### Patch Changes
