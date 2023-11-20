@@ -8601,19 +8601,19 @@ export const console: ConsoleNS = {
                         rolePermission: {
                             apiResource: {
                                 label: "Sélectionnez la ressource API",
-                                placeholder: "Sélectionnez une ressource API pour attribuer des scopes (autorisations)"
+                                placeholder: "Sélectionnez une ressource API pour attribuer des autorisations (lunettes)"
                             },
                             permissions: {
-                                label: "Sélectionnez Scopes (autorisations) dans les ressources API sélectionnées",
-                                placeholder: "Sélectionnez des lunettes (autorisations)",
+                                label: "Sélectionnez autorisations (lunettes) dans les ressources API sélectionnées",
+                                placeholder: "Sélectionnez les autorisations (lunettes)",
                                 tooltips: {
                                     noScopes: "Aucune portée disponible pour la ressource API sélectionnée",
-                                    selectAllScopes: "Sélectionnez toutes les portées (autorisations)",
+                                    selectAllScopes: "Sélectionnez toutes les autorisations (lunettes)",
                                     removeAPIResource: "Supprimer la ressource API"
                                 }
                             },
                             notes: {
-                                applicationRoles: "Seules les API et les étendues (autorisations) autorisées dans l'application sélectionnée(<1>{{applicationName}}</1>) seront répertoriées pour être sélectionnées."
+                                applicationRoles: "Seules les API et les autorisations (lunettes) autorisées dans l'application sélectionnée(<1>{{applicationName}}</1>) seront répertoriées pour être sélectionnées."
                             },
                             notifications: {
                                 fetchAPIResourceError: {

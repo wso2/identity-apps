@@ -10374,19 +10374,19 @@ export const console: ConsoleNS = {
                         rolePermission: {
                             apiResource: {
                                 label: "Select API Resource",
-                                placeholder: "Select an API resource to assign scopes(permissions)"
+                                placeholder: "Select an API resource to assign permissions(scopes)"
                             },
                             permissions: {
-                                label: "Select scopes(permissions) from the selected API resources",
-                                placeholder: "Select scopes(permissions)",
+                                label: "Select permissions(scopes) from the selected API resources",
+                                placeholder: "Select permissions(scopes)",
                                 tooltips: {
                                     noScopes: "No scopes available for the selected API resource",
-                                    selectAllScopes: "Select all scopes(permissions)",
+                                    selectAllScopes: "Select all permissions(scopes)",
                                     removeAPIResource: "Remove API resource"
                                 }
                             },
                             notes: {
-                                applicationRoles: "Only the APIs and the scopes(permissions) that are authorized in the selected application(<1>{{applicationName}}</1>) will be listed to select."
+                                applicationRoles: "Only the APIs and the permissions(scopes) that are authorized in the selected application(<1>{{applicationName}}</1>) will be listed to select."
                             },
                             notifications: {
                                 fetchAPIResourceError: {

@@ -8422,14 +8422,14 @@ export const console: ConsoleNS = {
                         rolePermission: {
                             apiResource: {
                                 label: "API සම්පත් තෝරන්න",
-                                placeholder: "විෂය පථය (අවසර) පැවරීම සඳහා API සම්පතක් තෝරන්න"
+                                placeholder: "අවසර ලබා දීම සඳහා API සම්පතක් තෝරන්න (විෂය පදක්කම්)"
                             },
                             permissions: {
-                                label: "තෝරාගත් API සම්පත් වලින් විෂයයන් (අවසර) තෝරන්න",
-                                placeholder: "විෂය පථය (අවසර) තෝරන්න",
+                                label: "තෝරාගත් API සම්පත් වලින් අවසර (විෂය පද) තෝරන්න",
+                                placeholder: "අවසර (විෂය පදක්කම්) තෝරන්න",
                                 tooltips: {
                                     noScopes: "තෝරාගත් API සම්පත සඳහා විෂය පදක් නොමැත",
-                                    selectAllScopes: "සියලුම විෂය පථය (අවසර) තෝරන්න",
+                                    selectAllScopes: "සියලුම අවසර (විෂය පද) තෝරන්න",
                                     removeAPIResource: "API සම්පත ඉවත් කරන්න"
                                 }
                             },

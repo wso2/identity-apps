@@ -309,7 +309,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                                             "rolePermission.notes.applicationRoles" }
                                         tOptions={ { applicationName: assignedApplicationName } }
                                     >
-                                        Only the APIs and the scopes(permissions) that are authorized in the selected 
+                                        Only the APIs and the permissions(scopes) that are authorized in the selected 
                                         application (<b>{ assignedApplicationName }</b>) will be listed to select
                                     </Trans>
                                     
