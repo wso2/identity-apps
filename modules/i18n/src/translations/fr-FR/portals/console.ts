@@ -1576,10 +1576,10 @@ export const console: ConsoleNS = {
                                         },
                                         pairwise: {
                                             label: "par paire",
-                                            hint: "Cette option utilisera l'identifiant de sujet par paire comme " +
-                                                "sujet. L'URI de l'identifiant de sujet et l'URI de rappel ou l'URI " +
-                                                "de l'identifiant de secteur sont utilisés dans le calcul de la " +
-                                                "valeur du sujet."
+                                            hint: "Activez par paire pour attribuer un identifiant pseudonyme unique " +
+                                                "à chaque client. L'URI de l'identifiant du sujet et l'URI de rappel " +
+                                                "ou l'URI de l'identifiant du secteur sont pris en compte dans le " +
+                                                "calcul de la valeur du sujet."
                                         }
                                     },
                                     sectorIdentifierURI: {

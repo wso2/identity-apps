@@ -1542,16 +1542,16 @@ export const console: ConsoleNS = {
                                     subjectType: {
                                         label: "Subject type",
                                         public: {
-                                            label: "public",
+                                            label: "Public",
                                             hint: "This option will use the public subject identifier as the" +
                                                 " subject. Subject identifier URI is used in subject value" +
                                                 " calculation."
                                         },
                                         pairwise: {
-                                            label: "pairwise",
-                                            hint: "This option will use the pairwise subject identifier as the" +
-                                                " subject. Subject identifier URI and callback URI or sector" +
-                                                " identifier URI is used in subject value calculation."
+                                            label: "Pairwise",
+                                            hint: "Enable pairwise to assign a unique pseudonymous ID " +
+                                                "to each client. The subject identifier URI and callback URI or " +
+                                                "sector identifier URI is considered in calculating the subject value."
                                         }
                                     },
                                     sectorIdentifierURI: {

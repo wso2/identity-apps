@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
-import { Code, Heading, Hint, Message, Text } from "@wso2is/react-components";
+import { Code, Heading, Hint, Text } from "@wso2is/react-components";
 import useUIConfig from "modules/common/src/hooks/use-ui-configs";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -449,19 +449,17 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                                 ariaLabel={ `Subject type ${subjectType}` }
                                                 name={ "subjectType" }
                                                 value={ subjectType }
-                                                label={ subjectType }
+                                                label={ t("console:develop.features.applications.forms" +
+                                                     ".advancedAttributeSettings.sections.subject.fields" +
+                                                     ".subjectType." + subjectType + ".label") }
+                                                hint={ subjectType === SubjectTypes.PAIRWISE &&
+                                                        t("console:develop.features.applications.forms" +
+                                                       ".advancedAttributeSettings.sections.subject.fields" +
+                                                       ".subjectType." + subjectType + ".hint") }
                                                 checked={ selectedSubjectType === subjectType }
                                                 listen={ () => {
                                                     setSelectedSubjectType(subjectType);
                                                 } }
-                                            />
-                                            <Message
-                                                type="info"
-                                                content={
-                                                    t("console:develop.features.applications.forms" +
-                                                        ".advancedAttributeSettings.sections.subject.fields" +
-                                                        ".subjectType." + subjectType + ".hint")
-                                                }
                                             />
                                         </>
                                     );

@@ -85,6 +85,7 @@ import {
     ApplicationTemplateIdTypes,
     ApplicationTemplateInterface,
     ApplicationTemplateLoadingStrategies,
+    ApplicationTemplateNames,
     MainApplicationInterface,
     SAMLConfigModes,
     SupportedAuthProtocolTypes,
@@ -169,7 +170,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         state.config.ui.isClientSecretHashEnabled);
     const orgType: OrganizationType = useSelector((state: AppState) =>
         state?.organization?.organizationType);
-
+    const isFAPIAppCreationEnabled: boolean = useSelector((state: AppState) =>
+        state.config.ui.features?.fapiApplicationCreation?.enabled);
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
@@ -1102,26 +1104,34 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             </div>
                         )
                     }
-                    <div className="pt-0 mt-0">
-                        <Field
-                            data-componentid={ `${ testId }-fapi-app-checkbox` }
-                            name={ "isFAPIApp" }
-                            required={ false }
-                            type="checkbox"
-                            value={ [ "isFAPIApp" ] }
-                            children={ [
-                                {
-                                    label: t("console:develop.features.applications.forms.generalDetails.fields" +
-                                        ".isFapiApp.label" ),
-                                    value: "fapiApp"
-                                }
-                            ] }
-                        />
-                        <Hint compact>
-                            { t("console:develop.features.applications.forms.generalDetails.fields" +
-                                ".isFapiApp.hint" ) }
-                        </Hint>
-                    </div>
+                    {
+                        // The FAPI App creation checkbox is only present in OIDC Standard-Based apps
+                        customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                        && selectedTemplate?.name === ApplicationTemplateNames.STANDARD_BASED_APPLICATION
+                        && isFAPIAppCreationEnabled
+                        && (
+                            <div className="pt-0 mt-0">
+                                <Field
+                                    data-componentid={ `${ testId }-fapi-app-checkbox` }
+                                    name={ "isFAPIApp" }
+                                    required={ false }
+                                    type="checkbox"
+                                    value={ [ "isFAPIApp" ] }
+                                    children={ [
+                                        {
+                                            label: t("console:develop.features.applications.forms.generalDetails" +
+                                                ".fields.isFapiApp.label" ),
+                                            value: "fapiApp"
+                                        }
+                                    ] }
+                                />
+                                <Hint compact>
+                                    { t("console:develop.features.applications.forms.generalDetails.fields" +
+                                        ".isFapiApp.hint" ) }
+                                </Hint>
+                            </div>
+                        )
+                    }
                     {
                         isOrganizationManagementEnabled
                         && applicationConfig.editApplication.showApplicationShare
