@@ -107,6 +107,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
     const [ localAuthenticatorList, setLocalAuthenticatorList ] = useState<AuthenticatorInterface[]>([]);
     const [ filteredAuthenticatorList, setFilteredAuthenticatorList ] = useState<AuthenticatorInterface[]>([]);
     const [ filter, setFilter ] = useState<string>(null);
+    const [ filterAuthenticatorsOnly, setFilterAuthenticatorsOnly ] = useState<boolean>(false);
     const [ appendConnections, setAppendConnections ] = useState<boolean>(false);
     const isPaginating: boolean = false;
 
@@ -122,7 +123,14 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         isLoading: isConnectionsFetchRequestLoading,
         error: connectionsFetchRequestError,
         mutate: mutateConnectionsFetchRequest
-    } = useGetConnections(listItemLimit, listOffset, filter, "federatedAuthenticators");
+    } = useGetConnections(
+        listItemLimit, 
+        listOffset, 
+        filter, 
+        "federatedAuthenticators", 
+        !filterAuthenticatorsOnly, 
+        filterAuthenticatorsOnly
+    );
 
     const {
         data: authenticatorTags,
@@ -381,6 +389,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
 
         setSelectedFilterTags(filterTags);
         setFilter(ConnectionsManagementUtils.buildAuthenticatorsFilterQuery(query, filterTags));
+        setFilterAuthenticatorsOnly(filterTags && filterTags.length > 0);
 
         if (isEmpty(query) && isEmpty(filterTags)) {
             setShowFilteredList(false);
