@@ -23,6 +23,7 @@ import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import useAuthorization from "../../authorization/hooks/use-authorization";
 
 /**
  * Proptypes for the application consents list component.
@@ -59,6 +60,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
 
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesInterface[]>([]);
     const [ isSelectUnassignedRolesAllRolesChecked, setIsSelectUnassignedAllRolesChecked ] = useState(false);
+    const { legacyAuthzRuntime } = useAuthorization();
 
     useEffect(() => {
         setCheckedUnassignedListItems(initialValues?.tempRoleList);
@@ -157,7 +159,9 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                     <TransferList
                         isListEmpty={ !(initialValues?.roleList?.length > 0) }
                         listType="unselected"
-                        listHeaders={ [
+                        listHeaders={ legacyAuthzRuntime ? [
+                            t("console:manage.features.transferList.list.headers.1"), ""
+                        ] : [
                             t("console:manage.features.transferList.list.headers.1"),
                             t("console:manage.features.transferList.list.headers.2"), ""
                         ] }
@@ -181,14 +185,14 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                                         listItem={ roleName?.length > 1 ? roleName[1] : role?.displayName }
                                         listItemId={ role.id }
                                         listItemIndex={ index }
-                                        listItemTypeLabel={ 
+                                        listItemTypeLabel={ !legacyAuthzRuntime && 
                                             createItemLabel(role?.audience?.type, role?.audience?.display) 
                                         }
                                         isItemChecked={ checkedUnassignedListItems.includes(role) }
                                         showSecondaryActions={ false }
                                         handleOpenPermissionModal={ () => handleSetRoleId(role.id) }
                                         reOrderLabel
-                                        showSubLabel
+                                        showSubLabel={ !legacyAuthzRuntime }
                                         data-testid="user-mgt-add-user-wizard-modal-unselected-roles"
                                     />
                                 );
