@@ -101,6 +101,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const [ organization, setOrganization ] = useState<OrganizationResponseInterface>(null);
     const [ after, setAfter ] = useState<string>("");
     const [ before, setBefore ] = useState<string>("");
+    const [ authorizedListBefore, setAuthorizedListBefore ] = useState<string>("");
+    const [ authorizedListAfter, setAuthorizedListAfter ] = useState<string>("");
     const [ activePage, setActivePage ] = useState<number>(1);
 
     const currentOrganization: OrganizationResponseInterface = useSelector(
@@ -274,7 +276,13 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         isLoading: isAuthorizedOrganizationListRequestLoading,
         error: authorizedListFetchRequestError,
         mutate: updateAuthorizedList
-    } = useAuthorizedOrganizationsList(filterQuery, listItemLimit, null, null, false);
+    } = useAuthorizedOrganizationsList(
+        filterQuery,
+        listItemLimit,
+        authorizedListAfter,
+        authorizedListBefore,
+        false
+    );
 
     /**
      * Handles the authorized list fetch request error.
@@ -360,11 +368,15 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
             data: PaginationProps
         ): void => {
             const newPage: number = parseInt(data?.activePage as string);
-
+            
             if (newPage > activePage) {
                 getOrganizationLists(listItemLimit, filterQuery, after, null);
+                setAuthorizedListAfter(after);
+                setAuthorizedListBefore(null);
             } else if (newPage < activePage) {
                 getOrganizationLists(listItemLimit, filterQuery, null, before);
+                setAuthorizedListAfter(null);
+                setAuthorizedListBefore(before);
             }
 
             setActivePage(newPage);
