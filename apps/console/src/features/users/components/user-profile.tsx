@@ -736,8 +736,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 }
                             } else {
                                 if(schema.extended) {
+                                    const schemaId: string = schema?.schemaId 
+                                        ? schema.schemaId 
+                                        : ProfileConstants.SCIM2_ENT_USER_SCHEMA;
+
                                     opValue = {
-                                        [ProfileConstants.SCIM2_WSO2_USER_SCHEMA]: {
+                                        [schemaId]: {
                                             [schemaNames[0]]: {
                                                 [schemaNames[1]]: schema.type.toUpperCase() === "BOOLEAN" ?
                                                     !!values.get(schema.name)?.includes(schema.name) :
