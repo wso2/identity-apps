@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.48
+
+### Patch Changes
+
+- [#4696](https://github.com/wso2/identity-apps/pull/4696) [`fd29c60700`](https://github.com/wso2/identity-apps/commit/fd29c6070019dd2193690e6d85fcae670bd64815) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Implement capability of assigning FIDP groups to a role.
+
 ## 2.0.47
 
 ### Patch Changes
