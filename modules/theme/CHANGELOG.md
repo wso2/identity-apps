@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.39
+
+### Patch Changes
+
+- [#4728](https://github.com/wso2/identity-apps/pull/4728) [`1019609267`](https://github.com/wso2/identity-apps/commit/1019609267d9ce9e5b600a51bed3071ff0f80626) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update the icon for SSO
+
 ## 2.0.38
 
 ### Patch Changes

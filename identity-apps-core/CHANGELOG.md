@@ -1,5 +1,14 @@
 # @wso2is/identity-apps-core
 
+## 2.0.64
+
+### Patch Changes
+
+- [#4728](https://github.com/wso2/identity-apps/pull/4728) [`1019609267`](https://github.com/wso2/identity-apps/commit/1019609267d9ce9e5b600a51bed3071ff0f80626) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update the icon for SSO
+
+- Updated dependencies [[`1019609267`](https://github.com/wso2/identity-apps/commit/1019609267d9ce9e5b600a51bed3071ff0f80626)]:
+  - @wso2is/theme@2.0.39
+
 ## 2.0.63
 
 ### Patch Changes
