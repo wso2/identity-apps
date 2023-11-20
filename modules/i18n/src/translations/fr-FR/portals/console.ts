@@ -8646,6 +8646,8 @@ export const console: ConsoleNS = {
                                 description: "Nous n'avons pas pu récupérer les groupes attribués à ce rôle."
                             }
                         },
+                        externalGroupsHeading: "Groupes externes",
+                        localGroupsHeading: "Groupes locaux",
                         heading: "Groupes attribués",
                         subHeading: "Ajoutez ou supprimez les groupes affectés au rôle. Notez que ceci"
                             + "affectera l'exécution de certaines tâches.",
