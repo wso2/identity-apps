@@ -272,8 +272,8 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
                                         listItem={ roleName?.length > 1 ? roleName[1] : role?.displayName }
                                         listItemId={ role.id }
                                         listItemIndex={ index }
-                                        listItemTypeLabel={ 
-                                            !legacyAuthzRuntime && createItemLabel(role?.audience.type, role?.audience.display) 
+                                        listItemTypeLabel={ !legacyAuthzRuntime && 
+                                            createItemLabel(role?.audience.type, role?.audience.display) 
                                         }
                                         isItemChecked={ checkedUnassignedListItems.includes(role) }
                                         showSecondaryActions={ false }
