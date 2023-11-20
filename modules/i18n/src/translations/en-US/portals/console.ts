@@ -10617,7 +10617,7 @@ export const console: ConsoleNS = {
                     deleteRole: {
                         error: {
                             description: "{{description}}",
-                            message: "Error deleting the selected role."
+                            message: "Unable to delete the selected role."
                         },
                         genericError: {
                             description: "Couldn't remove the selected role.",

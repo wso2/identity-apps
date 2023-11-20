@@ -8850,7 +8850,7 @@ export const console: ConsoleNS = {
                     deleteRole: {
                         error: {
                             description: "{{description}}",
-                            message: "Erreur de suppression du rôle sélectionné."
+                            message: "Impossible de supprimer le rôle sélectionné."
                         },
                         genericError: {
                             description: "Impossible de supprimer le rôle sélectionné.",
