@@ -20,6 +20,7 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
+import { AdminForcedPasswordResetForm } from "./admin-forced-password-reset";
 import { AnalyticsConfigurationForm } from "./analytics-form";
 import { AskPasswordForm } from "./ask-password";
 import { LoginAttemptSecurityConfigurationFrom } from "./login-attempt-security-form";
@@ -27,11 +28,10 @@ import { MultiAttributeLoginForm } from "./multi-attribute-login";
 import { OrganizationSelfServiceForm } from "./organization-self-service-form";
 import { PasswordRecoveryConfigurationForm } from "./password-recovery-form";
 import { SelfRegistrationForm } from "./self-registration-form";
-import { AppState, FeatureConfigInterface } from "../../core";
+import { UsernameRecoveryConfigurationForm } from "./username-recovery-form";
+import { AppState, FeatureConfigInterface, history } from "../../core";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { GovernanceConnectorInterface } from "../models/governance-connectors";
-import { AdminForcedPasswordResetForm } from "./admin-forced-password-reset";
-import { UsernameRecoveryConfigurationForm } from "./username-recovery-form";
 
 /**
  * Proptypes for the connector form factory component.
@@ -95,7 +95,10 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
         [ featureConfig, allowedScopes ]
     );
 
-    switch (connectorId) {
+    const path: string[] = history?.location?.pathname?.split("/");
+    const type: string = path && path[ path.length - 3 ];
+
+    switch (connectorId) {        
         case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
             return (
                 <SelfRegistrationForm
@@ -117,6 +120,18 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                 />
             );
         case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
+            if (type === "username") {
+                return (
+                    <UsernameRecoveryConfigurationForm
+                        onSubmit={ onSubmit }
+                        initialValues={ initialValues }
+                        isConnectorEnabled={ isConnectorEnabled }
+                        readOnly={ isReadOnly }
+                        isSubmitting={ isSubmitting }
+                    />
+                );
+            }
+
             return (
                 <PasswordRecoveryConfigurationForm
                     onSubmit={ onSubmit }
@@ -161,7 +176,7 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                 <MultiAttributeLoginForm
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
-                    isConnectorEnabled={ true }
+                    isConnectorEnabled={ isConnectorEnabled }
                     readOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
                 />
@@ -171,7 +186,7 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                 <AdminForcedPasswordResetForm
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
-                    isConnectorEnabled={ true }
+                    isConnectorEnabled={ isConnectorEnabled }
                     readOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
                 />
@@ -181,7 +196,7 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                 <UsernameRecoveryConfigurationForm
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
-                    isConnectorEnabled={ true }
+                    isConnectorEnabled={ isConnectorEnabled }
                     readOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
                 />

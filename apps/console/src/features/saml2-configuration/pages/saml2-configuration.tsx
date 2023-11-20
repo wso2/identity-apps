@@ -326,7 +326,7 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                         </Grid.Column>
                                                     </Grid.Row>
                                                     {
-                                                        saml2WebSSO.deprecatedProperties
+                                                        saml2WebSSO?.deprecatedProperties
                                                             .includes("destinationURLs.pattern") && (
                                                             <Grid.Row columns={ 1 } key={ 2 }>
                                                                 <Grid.Column width={ 10 } key="destinationUrl">
