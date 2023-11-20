@@ -33,8 +33,9 @@ export class ApplicationManagementConstants {
     public static readonly AUTHENTICATORS_LOCAL_STORAGE_KEY: string = btoa("Authenticators");
     public static readonly EMPTY_JSON_ARRAY: string = "[]";
 
-    public static readonly SYSTEM_APPS: string[] = [ "CONSOLE","MY_ACCOUNT" ];
-    public static readonly MY_ACCOUNT_APP_CLIENT_ID: string = "MY_ACCOUNT";
+    public static readonly SYSTEM_APPS: string[] = [ "CONSOLE" ];
+    public static readonly HIDDEN_APPS: string[] = [ "My Account", "Console" ]
+    public static readonly MY_ACCOUNT_APP_NAME: string = "My Account";
 
     /**
      * Private constructor to avoid object instantiation from outside
