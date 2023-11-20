@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.9.6
+
+### Patch Changes
+
+- [#4740](https://github.com/wso2/identity-apps/pull/4740) [`3172d7ab59`](https://github.com/wso2/identity-apps/commit/3172d7ab59fd0458b52f6e9b3a3b414e62a7d3ca) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove my account from system apps
+
+* [#4743](https://github.com/wso2/identity-apps/pull/4743) [`b95b42add0`](https://github.com/wso2/identity-apps/commit/b95b42add072a65f13310e12c3c841e840e661c3) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Change text in ask password connector
+
+- [#4741](https://github.com/wso2/identity-apps/pull/4741) [`ac7fe88f53`](https://github.com/wso2/identity-apps/commit/ac7fe88f53e516c256268622e1458917781bab7b) Thanks [@Thumimku](https://github.com/Thumimku)! - Add api based authn config
+
 ## 2.9.5
 
 ### Patch Changes

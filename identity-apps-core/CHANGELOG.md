@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.65
+
+### Patch Changes
+
+- [#4742](https://github.com/wso2/identity-apps/pull/4742) [`8cb5b06649`](https://github.com/wso2/identity-apps/commit/8cb5b0664922d1c6c33b929808e067ff76ca1880) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show product logo URL when Powered By is enabled
+
 ## 2.0.64
 
 ### Patch Changes
