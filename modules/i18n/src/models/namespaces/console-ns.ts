@@ -5059,6 +5059,7 @@ export interface ConsoleNS {
                 };
             };
             oidcScopes: {
+                back: string;
                 viewAttributes: string;
                 manageAttributes: string;
                 buttons: {

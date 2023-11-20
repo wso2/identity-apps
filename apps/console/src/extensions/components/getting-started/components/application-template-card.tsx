@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -290,7 +290,7 @@ export const ApplicationTemplateCard: FC<DynamicApplicationContextCardPropsInter
                             [ tile1, tile2, tile3, tile4 ]
                                 .map((tile: ReactElement<any, string | JSXElementConstructor<any>>, index: number) => (
                                     <Grid.Column width={ 8 } key={ `tile-${ index }` }>
-                                        <Text weight="600">{ tile }</Text>
+                                        <Text>{ tile }</Text>
                                     </Grid.Column>
                                 ))
                         }

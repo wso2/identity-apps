@@ -3725,7 +3725,7 @@ export const console: ConsoleNS = {
                             },
                             addAttributeButtonLabel: "Attribute Mapping එක් කරන්න",
                             modal: {
-                                header: "Attribute Mappings එක් කරන්න",
+                                header: "ගුණාංග සිතියම් එක් කරන්න",
                                 placeholder: {
                                     title: "ඔබ කිසිදු උපලක්ෂණයක් තෝරාගෙන නැත",
                                     subtitle: "සිතියම් ගුණාංග සහ ආරම්භ කිරීමට Add Attribute Mapping ක්ලික් කරන්න."
@@ -7297,6 +7297,7 @@ export const console: ConsoleNS = {
                 invitedUserLabel: "මව් සංවිධානය විසින් කළමනාකරණය කරනු ලැබේ"
             },
             oidcScopes: {
+                back: "OpenID Connect ගුණාංග සිතියම්ගත පිටුවට ආපසු යන්න",
                 viewAttributes: "ගුණාංග පෙන්වන්න",
                 manageAttributes: "ගුණාංග කළමනාකරණය කරන්න",
                 addAttributes: {

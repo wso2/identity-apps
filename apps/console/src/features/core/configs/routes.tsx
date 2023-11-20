@@ -358,6 +358,18 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 path: AppConstants.getPaths().get("ATTRIBUTE_MAPPINGS"),
                                 protected: true,
                                 showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() => import("../../claims/pages/attribute-verification-settings")),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "attributeVerificationSettings",
+                                name: "console.manage.features.sidePanel.attributeVerificationSettings",
+                                path: AppConstants.getPaths().get("CLAIM_VERIFICATION_SETTINGS"),
+                                protected: true,
+                                showOnSidePanel: false
                             }
                         ],
                         component: lazy(() => import("../../claims/pages/claim-dialects")),
@@ -398,7 +410,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 11,
                         path: AppConstants.getPaths().get("OIDC_SCOPES"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "console:manage.features.sidePanel.categories.organizations",
