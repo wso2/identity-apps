@@ -208,7 +208,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
                 />
             ),
             icon: getAPIResourceWizardStepIcons().permissions,
-            title: t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions.stepTitle")
+            title: t("console:apiResources.wizard.addApiResource.steps.scopes.stepTitle")
         },
         {
             addAPIResourceWizardStepsFormType: AddAPIResourceWizardStepsFormTypes.AUTHORIZATION,

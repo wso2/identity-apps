@@ -483,6 +483,113 @@ export const console: ConsoleNS = {
             }
         }
     },
+    apiResources: {
+        confirmations: {
+            deleteAPIResource: {
+                assertionHint: "Veuillez confirmer votre action.",
+                content: "Cette action est irréversible et supprimera en permanence la ressource API.",
+                header: "Es-tu sûr?",
+                message: "Si vous supprimez cette ressource API, certaines fonctionnalités peuvent ne pas fonctionner correctement. " +
+                    "Veuillez procéder avec prudence."
+            },
+            deleteAPIResourcePermission: {
+                assertionHint: "Veuillez confirmer votre action.",
+                content: "Cette action est irréversible et supprimera en permanence la portée de la ressource API.",
+                header: "Es-tu sûr?",
+                message: "Si vous supprimez cette portée de la ressource API, certaines fonctionnalités peuvent ne pas fonctionner correctement. " +
+                    "Veuillez procéder avec prudence."
+            }
+        },
+        tabs: {
+            scopes: {
+                button: "Ajouter la portée",
+                label: "Portées",
+                title: "Liste des étendues",
+                subTitle: "Liste des utilisations de lunettes par la ressource API.",
+                learnMore: "Apprendre encore plus",
+                search: "Rechercher des portées par le nom d'affichage",
+                empty: {
+                    title: "Aucune portée n'est attribuée",
+                    subTitle: "Cliquez sur l'icône + pour ajouter une nouvelle portée"
+                },
+                emptySearch: {
+                    title: "Aucun résultat trouvé",
+                    subTitle: {
+                        0: "Nous n'avons pas pu trouver la portée que vous avez recherchée.",
+                        1: "Veuillez essayer d'utiliser un autre paramètre."
+                    },
+                    viewAll: "Recherche de recherche claire"
+                },
+                copyPopupText: "Copiez l'identifiant",
+                copiedPopupText: "Copié l'identifiant",
+                removeScopePopupText: "Retirez la portée",
+                form: {
+                    button: "Ajouter la portée",
+                    cancelButton: "Annuler",
+                    submitButton: "Finition",
+                    title: "Ajouter une portée",
+                    subTitle: "Créer une nouvelle portée",
+                    fields: {
+                        displayName: {
+                            emptyValidate: "Le nom de l'affichage ne peut pas être vide",
+                            label: "Afficher un nom",
+                            placeholder: "Lire les réservations"
+                        },
+                        scope: {
+                            emptyValidate: "La portée ne peut pas être vide",
+                            label: "Portée",
+                            placeholder: "read_bookings"
+                        },
+                        description: {
+                            label: "description",
+                            placeholder: "Entrez la description"
+                        }
+                    }
+                }
+            }
+        },
+        wizard: {
+            addApiResource: {
+                steps: {
+                    scopes: {
+                        empty: {
+                            title: "Aucune portée n'est attribuée",
+                            subTitle: "Click on the + icon to add a new scope"
+                        },
+                        stepTitle: "Portées",
+                        form: {
+                            button: "Ajouter la portée",
+                            fields: {
+                                displayName: {
+                                    emptyValidate: "Le nom de l'affichage ne peut pas être vide",
+                                    label: "Afficher un nom",
+                                    placeholder: "Lire les réservations",
+                                    hint: "Fournissez un nom significatif car il sera affiché sur l'écran de consentement de l'utilisateur."
+                                },
+                                permission: {
+                                    emptyValidate: "La portée ne peut pas être vide",
+                                    uniqueValidate: "Cette portée existe déjà dans l'organisation.Veuillez en choisir un autre.",
+                                    invalid: "La portée ne peut pas contenir des espaces",
+                                    label: "Portée",
+                                    placeholder: "read_bookings",
+                                    hint: "Une valeur unique qui agit comme portée lors de la demande d'un jeton d'accès. <1>Notez que la portée ne peut pas être modifiée une fois créée.</1>"
+                                },
+                                permissionList: {
+                                    label: "Scopes ajoutées"
+                                },
+                                description: {
+                                    label: "description",
+                                    placeholder: "Entrez la description",
+                                    hint: "Fournissez une description de votre portée.Cela sera affiché sur l'écran de consentement de l'utilisateur."
+                                }
+                            }
+                        },
+                        removeScopePopupText: "Retirez la portée"
+                    }
+                }
+            }
+        }
+    },
     branding: {
         form: {
             actions: {

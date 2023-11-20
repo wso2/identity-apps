@@ -302,6 +302,111 @@ export interface ConsoleNS {
             branding: string
         };
     };
+    apiResources: {
+        confirmations: {
+            deleteAPIResource: {
+                assertionHint: string;
+                content: string;
+                header: string;
+                message: string;
+            };
+            deleteAPIResourcePermission: {
+                assertionHint: string;
+                content: string;
+                header: string;
+                message: string;
+            };
+        };
+        tabs: {
+            scopes: {
+                button: string;
+                label: string;
+                title: string;
+                subTitle: string;
+                learnMore: string;
+                search: string;
+                empty: {
+                    title: string;
+                    subTitle: string;
+                };
+                emptySearch: {
+                    title: string;
+                    subTitle: {
+                        0: string;
+                        1: string;
+                    },
+                    viewAll: string;
+                };
+                copyPopupText: string;
+                copiedPopupText: string;
+                removeScopePopupText: string;
+                form: {
+                    button: string;
+                    cancelButton: string;
+                    submitButton: string;
+                    title: string;
+                    subTitle: string;
+                    fields: {
+                        displayName: {
+                            emptyValidate: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                        scope: {
+                            emptyValidate: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                        description: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                };
+            };
+        };
+        wizard: {
+            addApiResource: {
+                steps: {
+                    scopes: {
+                        empty: {
+                            title: string;
+                            subTitle: string;
+                        };
+                        stepTitle: string;
+                        form: {
+                            button: string;
+                            fields: {
+                                displayName: {
+                                    emptyValidate: string;
+                                    label: string;
+                                    placeholder: string;
+                                    hint: string;
+                                };
+                                permission: {
+                                    emptyValidate: string;
+                                    uniqueValidate: string;
+                                    invalid: string;
+                                    label: string;
+                                    placeholder: string;
+                                    hint: string;
+                                };
+                                permissionList: {
+                                    label: string;
+                                }
+                                description: {
+                                    label: string;
+                                    placeholder: string;
+                                    hint: string;
+                                };
+                            };
+                        };
+                        removeScopePopupText: string;
+                    };
+                };
+            };
+        };
+    };
     branding: {
         form: {
             actions: {
