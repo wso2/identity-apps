@@ -8646,7 +8646,7 @@ export const console: ConsoleNS = {
                     deleteRole: {
                         error: {
                             description: "{{description}}",
-                            message: "තෝරාගත් භූමිකාව මකාදැමීමේ දෝෂයකි."
+                            message: "තෝරාගත් භූමිකාව මැකීමට නොහැකිය."
                         },
                         genericError: {
                             description: "තෝරාගත් භූමිකාව ඉවත් කිරීමට නොහැකි විය.",
