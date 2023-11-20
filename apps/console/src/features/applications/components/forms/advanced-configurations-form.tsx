@@ -16,23 +16,23 @@
  * under the License.
  */
 
-import { TestableComponentInterface,
-    AlertInterface,
-    AlertLevels, } from "@wso2is/core/models";
+import { AlertInterface,
+    AlertLevels,
+    TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form, FormValue } from "@wso2is/form";
 import useUIConfig from "modules/common/src/hooks/use-ui-configs";
 import React, { FunctionComponent,
     ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { applicationConfig } from "../../../../extensions";
-import SAMLWebApplicationTemplate
-    from "../../data/application-templates/templates/saml-web-application/saml-web-application.json";
-import { ApplicationManagementConstants } from "../../constants";
-import { AdvancedConfigurationsInterface,
-    ApplicationTemplateListItemInterface } from "../../models";
 import { Divider, Grid } from "semantic-ui-react";
 import isEmpty from "lodash-es/isEmpty";
 import { Heading } from "@wso2is/react-components";
+import { applicationConfig } from "../../../../extensions";
+import { ApplicationManagementConstants } from "../../constants";
+import SAMLWebApplicationTemplate
+    from "../../data/application-templates/templates/saml-web-application/saml-web-application.json";
+import { AdvancedConfigurationsInterface,
+    ApplicationTemplateListItemInterface } from "../../models";
 
 /**
  *  Advanced Configurations for the Application.
@@ -91,17 +91,16 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
      */
     const updateConfiguration = (values: any): void => {
 
-        let androidAttestationServiceCredentialsObject : JSON
+        let androidAttestationServiceCredentialsObject : JSON;
         try {
             if(!isEmpty(values.androidAttestationServiceCredentials)) {
                 androidAttestationServiceCredentialsObject = JSON.parse(values.androidAttestationServiceCredentials)
             }
         } catch (ex: any) {
             onAlertFired({
-                description: "error.response.data.description",
+                description: "Unable to update the application configuration",
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.user.profile.notifications.forcePasswordReset.error." +
-                    "message")
+                message: t("Improper JSON format for Android Attestation Service Credentials")
             });
             return;
         }
@@ -257,46 +256,48 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                         minLength={ 3 }
                         width={ 16 }
                     />
-                    <Field.Textarea
-                        ariaLabel="Android service account credentials"
-                        inputType="description"
-                        name="androidAttestationServiceCredentials"
-                        label={
-                            "Enter Service Account Credential"
-                        }
-                        placeholder={
-                            "Enter Service Account Credential"
-                        }
-                        value={ config?.attestationMetaData?.androidAttestationServiceCredentials ? [ JSON.stringify(config?.attestationMetaData?.androidAttestationServiceCredentials, null, 4) ] : [] }
-                        hint={
-                            "Provide the JSON key content for the Android service account credentials to access the Google Play Integrity Service."
-                        }
-                        type="text"
-                        maxLength={5000}
-                        minLength={30}
-                        width={ 30 }
-                    />
-                    <Field.Input
-                        ariaLabel="Apple App Id"
-                        inputType="default"
-                        name="appleAppId"
-                        label={
-                            "Apple applicaiton App Id"
-                        }
-                        required={ false }
-                        placeholder={
-                            "Apple applicaiton App Id"
-                        }
-                        value={ config?.attestationMetaData?.appleAppId ? config?.attestationMetaData?.appleAppId  : "" }
-                        hint={
-                            "Enter the Apple App ID, a unique identifier assigned by Apple to your app, usually starting with 'com.' or 'bundle.'"
+                        <Field.Textarea
+                            ariaLabel="Android service account credentials"
+                            inputType="description"
+                            name="androidAttestationServiceCredentials"
+                            label={
+                                "Enter Service Account Credential"
                             }
-                        maxLength={ 200 }
-                        minLength={ 3 }
-                        width={ 16 }
-                    />
+                            placeholder={
+                                "Enter Service Account Credential"
+                            }
+                            value={ config?.attestationMetaData?.androidAttestationServiceCredentials ? [ JSON.stringify(config?.attestationMetaData?.androidAttestationServiceCredentials, null, 4) ] : [] }
+                            hint={
+                                "Provide the JSON key content for the Android service account " +
+                                " credentials to access the Google Play Integrity Service."
+                            }
+                            type="text"
+                            maxLength={5000}
+                            minLength={30}
+                            width={ 30 }
+                        />
+                        <Field.Input
+                            ariaLabel="Apple App Id"
+                            inputType="default"
+                            name="appleAppId"
+                            label={
+                                "Apple applicaiton App Id"
+                            }
+                            required={ false }
+                            placeholder={
+                                "Apple applicaiton App Id"
+                            }
+                            value={ config?.attestationMetaData?.appleAppId ? config?.attestationMetaData?.appleAppId  : "" }
+                            hint={
+                                    "Enter the Apple App ID, a unique identifier assigned " +
+                                    " by Apple to your app, usually starting with 'com.' or 'bundle.'"
+                                }
+                            maxLength={ 200 }
+                            minLength={ 3 }
+                            width={ 16 }
+                        />
                     </div>
-                )}
+                ) }
             <Field.Button
                 form={ FORM_ID }
                 size="small"
