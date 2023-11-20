@@ -298,6 +298,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 
             appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
                 !ApplicationManagementConstants.SYSTEM_APPS.includes(item.clientId)
+                && !ApplicationManagementConstants.DEFAULT_APPS.includes(item.clientId)
             );
             appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
             appList.totalResults = appList.totalResults - 
