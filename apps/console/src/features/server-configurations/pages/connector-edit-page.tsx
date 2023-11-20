@@ -381,6 +381,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return "Admin Initiated Password Reset";
             case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
                 return "Multi Attribute Login";
+            case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
+                return "Invite User to Set Password";
             default:
                 return connector?.friendlyName;
         }
@@ -429,6 +431,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
                 return "Manage and configure settings related configuring " 
                     + "multiple attributes as the login identifier.";
+            case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
+                return "Allow users choose passwords in admin-initiated onboarding.";
             default:
                 return connector?.description
                     ? connector.description
