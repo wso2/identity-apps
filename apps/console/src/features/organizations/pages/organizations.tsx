@@ -101,8 +101,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const [ organization, setOrganization ] = useState<OrganizationResponseInterface>(null);
     const [ after, setAfter ] = useState<string>("");
     const [ before, setBefore ] = useState<string>("");
-    const [ authorizedListBefore, setAuthorizedListBefore ] = useState<string>("");
-    const [ authorizedListAfter, setAuthorizedListAfter ] = useState<string>("");
+    const [ authorizedListPrevCursor, setAuthorizedListPrevCursor ] = useState<string>("");
+    const [ authorizedListNextCursor, setAuthorizedListNextCursor ] = useState<string>("");
     const [ activePage, setActivePage ] = useState<number>(1);
 
     const currentOrganization: OrganizationResponseInterface = useSelector(
@@ -279,8 +279,8 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     } = useAuthorizedOrganizationsList(
         filterQuery,
         listItemLimit,
-        authorizedListAfter,
-        authorizedListBefore,
+        authorizedListNextCursor,
+        authorizedListPrevCursor,
         false
     );
 
@@ -371,12 +371,12 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
             
             if (newPage > activePage) {
                 getOrganizationLists(listItemLimit, filterQuery, after, null);
-                setAuthorizedListAfter(after);
-                setAuthorizedListBefore(null);
+                setAuthorizedListNextCursor(after);
+                setAuthorizedListPrevCursor(null);
             } else if (newPage < activePage) {
                 getOrganizationLists(listItemLimit, filterQuery, null, before);
-                setAuthorizedListAfter(null);
-                setAuthorizedListBefore(before);
+                setAuthorizedListNextCursor(null);
+                setAuthorizedListPrevCursor(before);
             }
 
             setActivePage(newPage);
