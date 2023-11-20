@@ -50,7 +50,7 @@
         "@mui/system": "^5.12.3",
         "@mui/utils": "^5.12.3",
         "@oxygen-ui/react": "^1.7.3",
-        "@oxygen-ui/react-icons": "^1.7.2",
+        "@oxygen-ui/react-icons": "^1.7.3",
         "@wso2is/access-control": "^2.0.5",
         "@wso2is/core": "^2.0.16",
         "@wso2is/form": "^2.0.11",
