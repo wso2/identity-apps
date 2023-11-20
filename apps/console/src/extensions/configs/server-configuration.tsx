@@ -58,7 +58,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     connectorCategoriesToShow: [
         ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
         ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
-        ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID,
+        ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
     ],
     connectorPropertiesToShow: [ "all" ],
     connectorStatusViewDisabledConnectorIDs: [
@@ -88,16 +88,8 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR_ID,
         ServerConfigurationsConstants.WS_FEDERATION_CONNECTOR_ID
     ],
-    extendedConnectors: [],
-    predefinedConnectorCategories: [
-        "UGFzc3dvcmQgUG9saWNpZXM",
-        "VXNlciBPbmJvYXJkaW5n",
-        "TG9naW4gQXR0ZW1wdHMgU2VjdXJpdHk",
-        "T3RoZXIgU2V0dGluZ3M",
-        "QWNjb3VudCBNYW5hZ2VtZW50",
-        "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz"
-    ],
     dynamicConnectors: true,
+    extendedConnectors: [],
     intendSettings: false,
     passwordExpiryComponent: (
         componentId: string,
@@ -125,6 +117,15 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
             t
         );
     },
+    predefinedConnectorCategories: [
+        "UGFzc3dvcmQgUG9saWNpZXM",
+        "VXNlciBPbmJvYXJkaW5n",
+        "TG9naW4gQXR0ZW1wdHMgU2VjdXJpdHk",
+        "T3RoZXIgU2V0dGluZ3M",
+        "QWNjb3VudCBNYW5hZ2VtZW50",
+        "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz"
+    ],
+    
     processInitialValues: (
         initialValues: ValidationFormInterface,
         passwordHistoryCount: GovernanceConnectorInterface,
