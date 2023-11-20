@@ -101,6 +101,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const [ hideTermination, setHideTermination ] = useState<boolean>(false);
     const [ user, setUser ] = useState<ProfileInfoInterface>(selectedUser);
     const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
+    const [ isUserProfileReadOnly, setIsUserProfileReadOnly ] = useState<boolean>(false);
 
     useEffect(() => {
         //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to
@@ -122,7 +123,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             || readOnlyUserStores?.includes(userStore?.toString())
             || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
             || user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
-            || user[ SCIMConfigs.scim.enterpriseSchema ]?.managedOrg
         ) {
             setReadOnly(true);
         }
@@ -140,6 +140,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     useEffect(() => {
         if (user[ SCIMConfigs.scim.enterpriseSchema ]?.managedOrg) {
             setIsUserManagedByParentOrg(true);
+            setIsUserProfileReadOnly(true);
         }
     }, [ user ]);
 
@@ -209,7 +210,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         onAlertFired={ handleAlerts }
                         user={ user }
                         handleUserUpdate={ handleUserUpdate }
-                        isReadOnly={ isReadOnly }
+                        isReadOnly={ isReadOnly || isUserProfileReadOnly }
                         connectorProperties={ connectorProperties }
                         isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
                         isUserManagedByParentOrg={ isUserManagedByParentOrg }
