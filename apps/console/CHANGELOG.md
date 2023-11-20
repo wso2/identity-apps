@@ -1,5 +1,22 @@
 # @wso2is/console
 
+## 2.9.4
+
+### Patch Changes
+
+- [#4732](https://github.com/wso2/identity-apps/pull/4732) [`0eaad6c355`](https://github.com/wso2/identity-apps/commit/0eaad6c3553c582ed543684d8aad9b6d3ac8fce3) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Adds disablePoral attribute to Autocomplete component in PermissionsList.
+
+* [#4715](https://github.com/wso2/identity-apps/pull/4715) [`dd1d45d009`](https://github.com/wso2/identity-apps/commit/dd1d45d00935303cc397c69f96f2aabad2f43ade) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve the application list view
+
+- [#4729](https://github.com/wso2/identity-apps/pull/4729) [`d7a206b5a8`](https://github.com/wso2/identity-apps/commit/d7a206b5a8b628639df52f297aadd4a94436ffe4) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix app creation issue
+
+* [#4734](https://github.com/wso2/identity-apps/pull/4734) [`9f98427971`](https://github.com/wso2/identity-apps/commit/9f984279711ea513d99bdab8ac8fe2a399d39ca8) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Hide audience in user and group creation view
+
+- [#4725](https://github.com/wso2/identity-apps/pull/4725) [`2698c3b795`](https://github.com/wso2/identity-apps/commit/2698c3b795203cad642b81f2e0b60e82b261e80d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable server configuration routes only for the super admin in super tenant
+
+- Updated dependencies [[`dd1d45d009`](https://github.com/wso2/identity-apps/commit/dd1d45d00935303cc397c69f96f2aabad2f43ade)]:
+  - @wso2is/i18n@2.0.50
+
 ## 2.9.3
 
 ### Patch Changes

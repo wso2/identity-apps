@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.2.33
+
+### Patch Changes
+
+- [#4715](https://github.com/wso2/identity-apps/pull/4715) [`dd1d45d009`](https://github.com/wso2/identity-apps/commit/dd1d45d00935303cc397c69f96f2aabad2f43ade) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve the application list view
+
+- Updated dependencies [[`dd1d45d009`](https://github.com/wso2/identity-apps/commit/dd1d45d00935303cc397c69f96f2aabad2f43ade)]:
+  - @wso2is/i18n@2.0.50
+
 ## 2.2.32
 
 ### Patch Changes
