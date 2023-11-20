@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.9.1
+
+### Patch Changes
+
+- [#4708](https://github.com/wso2/identity-apps/pull/4708) [`4a5f191312`](https://github.com/wso2/identity-apps/commit/4a5f191312b92fefb3032904267e465dbda806c9) Thanks [@ThaminduDilshan](https://github.com/ThaminduDilshan)! - Prevent API call with filter attribute tags for the IDP list endpoint
+
+* [#4719](https://github.com/wso2/identity-apps/pull/4719) [`f6abb6dfc8`](https://github.com/wso2/identity-apps/commit/f6abb6dfc8aa09a38a17eb136df1cdbb0c08595a) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Improve group assignment of invited users
+
+- [#4616](https://github.com/wso2/identity-apps/pull/4616) [`e2ed10aaa3`](https://github.com/wso2/identity-apps/commit/e2ed10aaa3c1bc125cee4996a20e8ae21906bd9c) Thanks [@RivinduM](https://github.com/RivinduM)! - Restrict FAPI related configs to standard based applications.
+
+- Updated dependencies [[`e2ed10aaa3`](https://github.com/wso2/identity-apps/commit/e2ed10aaa3c1bc125cee4996a20e8ae21906bd9c)]:
+  - @wso2is/i18n@2.0.49
+
 ## 2.9.0
 
 ### Minor Changes

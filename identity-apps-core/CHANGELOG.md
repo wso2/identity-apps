@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.63
+
+### Patch Changes
+
+- [#4699](https://github.com/wso2/identity-apps/pull/4699) [`768e865a41`](https://github.com/wso2/identity-apps/commit/768e865a411b2d456f3131669fe1834089adcfc8) Thanks [@sumedhe](https://github.com/sumedhe)! - Add regex validation for custom attributes in the self registration
+
 ## 2.0.62
 
 ### Patch Changes
