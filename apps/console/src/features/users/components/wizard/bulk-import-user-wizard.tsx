@@ -66,6 +66,7 @@ import { ClaimManagementConstants } from "../../../../features/claims/constants"
 import { getGroupList } from "../../../../features/groups/api";
 import { GroupsInterface } from "../../../../features/groups/models";
 import { useRolesList } from "../../../../features/roles/api";
+import useAuthorization from "../../../authorization/hooks/use-authorization";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
 import {
     AppConstants,
@@ -197,13 +198,15 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         = useWizardAlert({ "data-componentid": `${componentId}-manual-invite-alert` });
 
     const optionsArray: string[] = [];
+
+    const { legacyAuthzRuntime }  = useAuthorization();
     
     const {
         data: allRolesList,
         isLoading: isAllRolesListLoading,
         error: allRolesListError
     } = useRolesList(
-        undefined, undefined, undefined
+        undefined, undefined, undefined, legacyAuthzRuntime
     );
 
     const {
@@ -1459,6 +1462,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         </Grid.Column>
                                     </Grid.Row>
                                     { allRolesList
+                                    && legacyAuthzRuntime
                                     &&  (
                                         <Autocomplete
                                             size="small"
