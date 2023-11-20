@@ -1033,7 +1033,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const operations: SCIMBulkOperation[] = [];
         const users : { value: string; }[]= [];
         const asyncOperationID: string = uuidv4();
-        const bulkIdEmail: string = "";
 
         // Create the user record.
         emailData?.map((email: string) => {
@@ -1089,7 +1088,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             };
             
             const SCIMRolesOperation: SCIMBulkOperation = {
-                bulkId: `bulkId:${bulkIdEmail}:${asyncOperationID}`,
+                bulkId: `bulkId:${role?.displayName}:${asyncOperationID}`,
                 data: roleDetails,
                 method: HttpMethods.PATCH,
                 path: `${UserManagementConstants.SCIM_V2_ROLE_PATH}/${role?.id}`
