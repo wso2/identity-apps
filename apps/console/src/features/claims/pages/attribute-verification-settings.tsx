@@ -75,44 +75,47 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
         SEND_OTP_IN_EMAIL: "UserClaimUpdate.OTP.SendOTPInEmail"
     };
 
-    const [ connectorValues, setConnectorValues ] = useState(undefined);
+    const [ connectorDetails, setConnectorDetails ] = useState<GovernanceConnectorInterface>(undefined);
     const [ formValues, setFormValues ] = useState<any>(undefined);
     const [ formDisplayData, setFormDisplayData ] = useState<any>(undefined);
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isFormInitialized, setIsFormInitialized ] = useState<boolean>(false);
 
     // TODO: Enable connector based on the feature flag.
     const isConnectorEnabled: boolean = true;
     const readOnly: boolean = false;
 
     /**
-     * Load Attributes verification connector data on page load.
+     * Load Attributes verification connector details on page load.
      */
     useEffect(() => {
         setIsLoading(true);
-        loadConnectorDetails();
-    }, []);
+
+        if (!connectorDetails) {
+            InitializeConnectorData();
+            setIsLoading(false);
+        }
+    }, [ connectorDetails ]);
 
     /**
-     * Update form data `connectorValues` value change.
+     * Update connector on form values update.
      */
     useEffect(() => {
-        if (!connectorValues) {
-            return;
+        if (isFormInitialized) {
+            updateConnector(formValues);
         }
-
-        updateFormData();
-    }, [ connectorValues ]);
+    }, [ formValues ]);
 
     /**
      * Method to attribute verification connector data.
      */
-    const loadConnectorDetails = () => {
+    const InitializeConnectorData = () => {
         getConnectorDetails(CATEGORY_ID, CONNECTOR_ID)
             .then((response: GovernanceConnectorInterface) => {
-                setConnectorValues(response);
-                updateFormData();
+                setConnectorDetails(response);
+                updateFormDataFromConnector(response);
             })
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.detail) {
@@ -147,29 +150,28 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     );
                 }
             }).finally(() => {
+                setIsFormInitialized(true);
                 setIsLoading(false);
             });
     };
 
     /**
-     * Method to update Form Data.
+     * Method to update Form Data from connector.
+     *
+     * @param connector - Connector details.
      */
-    const updateFormData = (): void => {
-        if (isEmpty(connectorValues?.properties)) {
+    const updateFormDataFromConnector = (connector: GovernanceConnectorInterface): void => {
+        if (isEmpty(connector?.properties)) {
             return;
         }
-
-        const resolvedInitialValues: Map<string, ConnectorPropertyInterface>
-            = new Map<string, ConnectorPropertyInterface>();
 
         let resolvedFormValues: any = null;
         let resolvedFormDisplayData: any = null;
 
-        connectorValues.properties.map((property: ConnectorPropertyInterface) => {
-            resolvedInitialValues.set(property.name, property);
+        connector.properties?.map((property: ConnectorPropertyInterface) => {
             resolvedFormValues = {
                 ...resolvedFormValues,
-                [ property.name ]: property.value
+                [ property.name ]: JSON.parse(property.value)
             };
             resolvedFormDisplayData = {
                 ...resolvedFormDisplayData,
@@ -182,6 +184,15 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
 
         setFormValues(resolvedFormValues);
         setFormDisplayData(resolvedFormDisplayData);
+    };
+
+    /**
+     * Method to update form values.
+     *
+     * @param updatedValues - Updated values.
+     */
+    const updateFormData = (updatedValues: any): void => {
+        setFormValues((formValues: any) => ({ ...formValues, ...updatedValues }));
     };
 
     /**
@@ -280,8 +291,6 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
 
         updateGovernanceConnector(data, CATEGORY_ID, CONNECTOR_ID)
             .then(() => {
-                loadConnectorDetails();
-                updateFormData();
                 handleUpdateSuccess();
             })
             .catch((error: AxiosError) => {
@@ -302,7 +311,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                 uncontrolledForm
                 initialValues={ formValues }
                 onSubmit={ (values: Record<string, unknown>) => 
-                    updateConnector(getUpdatedConfigurations(values))
+                    updateFormData(getUpdatedConfigurations(values))
                 }
             >
                 <Field.Checkbox
@@ -320,7 +329,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                         formDisplayData?.[CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION]?.displayName)
                     }
                     defaultValue={ formValues?.[ 
-                        CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION ] === "true" }
+                        CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION ] == true }
                     readOnly={ readOnly }
                     disabled={ !isConnectorEnabled }
                     width={ 16 }
@@ -346,7 +355,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                         formDisplayData?.[CONNECTOR_NAMES.SEND_OTP_IN_EMAIL]?.displayName)
                     }
                     defaultValue={ formValues?.[ 
-                        CONNECTOR_NAMES.SEND_OTP_IN_EMAIL ] === "true" }
+                        CONNECTOR_NAMES.SEND_OTP_IN_EMAIL ] == true }
                     readOnly={ readOnly }
                     disabled={ !isConnectorEnabled }
                     width={ 16 }
@@ -372,7 +381,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                         formDisplayData?.[CONNECTOR_NAMES.INCLUDE_UPPERCASE_CHARACTERS_IN_OTP]?.displayName)
                     }
                     defaultValue={ formValues?.[ 
-                        CONNECTOR_NAMES.INCLUDE_UPPERCASE_CHARACTERS_IN_OTP ] === "true" }
+                        CONNECTOR_NAMES.INCLUDE_UPPERCASE_CHARACTERS_IN_OTP ] == true }
                     readOnly={ readOnly }
                     disabled={ !isConnectorEnabled }
                     width={ 16 }
@@ -398,7 +407,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                         formDisplayData?.[CONNECTOR_NAMES.INCLUDE_LOWERCASE_CHARACTERS_IN_OTP]?.displayName)
                     }
                     defaultValue={ formValues?.[ 
-                        CONNECTOR_NAMES.INCLUDE_LOWERCASE_CHARACTERS_IN_OTP ] === "true" }
+                        CONNECTOR_NAMES.INCLUDE_LOWERCASE_CHARACTERS_IN_OTP ] == true }
                     readOnly={ readOnly }
                     disabled={ !isConnectorEnabled }
                     width={ 16 }
@@ -424,7 +433,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                         formDisplayData?.[CONNECTOR_NAMES.INCLUDE_NUMBERS_IN_OTP]?.displayName)
                     }
                     defaultValue={ formValues?.[ 
-                        CONNECTOR_NAMES.INCLUDE_NUMBERS_IN_OTP ] === "true" }
+                        CONNECTOR_NAMES.INCLUDE_NUMBERS_IN_OTP ] == true }
                     readOnly={ readOnly }
                     disabled={ !isConnectorEnabled }
                     width={ 16 }
@@ -519,7 +528,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                         formDisplayData?.[CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION]?.displayName)
                     }
                     defaultValue={ formValues?.[ 
-                        CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION ] === "true" }
+                        CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION ] == true }
                     readOnly={ readOnly }
                     disabled={ !isConnectorEnabled }
                     width={ 16 }
@@ -545,7 +554,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                         formDisplayData?.[CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION]?.displayName)
                     }
                     defaultValue={ formValues?.[ 
-                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION ] === "true" }
+                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION ] == true }
                     readOnly={ readOnly }
                     disabled={ !isConnectorEnabled }
                     width={ 16 }
@@ -609,7 +618,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                             [CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS]?.displayName)
                     }
                     defaultValue={ formValues?.[ 
-                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS ] === "true" }
+                        CONNECTOR_NAMES.ENABLE_MOBILE_NUMBER_VERIFICATION_BY_PRIVILEGED_USERS ] == true }
                     readOnly={ readOnly }
                     disabled={ !isConnectorEnabled }
                     width={ 16 }
