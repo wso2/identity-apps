@@ -297,8 +297,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             const appList: ApplicationListInterface = cloneDeep(applicationList);
 
             appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
-                !ApplicationManagementConstants.SYSTEM_APPS.includes(item.clientId)
-                && !ApplicationManagementConstants.DEFAULT_APPS.includes(item.clientId)
+                !ApplicationManagementConstants.HIDDEN_APPS.includes(item.name)
             );
             appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
             appList.totalResults = appList.totalResults - 

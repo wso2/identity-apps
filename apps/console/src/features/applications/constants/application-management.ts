@@ -35,6 +35,7 @@ export class ApplicationManagementConstants {
 
     public static readonly SYSTEM_APPS: string[] = [ "CONSOLE" ];
     public static readonly DEFAULT_APPS: string[] = [ "MY_ACCOUNT" ];
+    public static readonly HIDDEN_APPS: string[] = [ "My Account", "Console" ]
     public static readonly MY_ACCOUNT_APP_CLIENT_ID: string = "MY_ACCOUNT";
 
     /**
