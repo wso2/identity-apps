@@ -68,7 +68,7 @@ import {
 } from "../../core";
 import { OrganizationType } from "../../organizations/constants";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
-import { useApplicationList, useMyAccountStatus } from "../api";
+import { useApplicationList, useMyAccountApplicationData, useMyAccountStatus } from "../api";
 import { ApplicationList } from "../components/application-list";
 import { MinimalAppCreateWizard } from "../components/wizard/minimal-application-create-wizard";
 import { ApplicationManagementConstants } from "../constants";
@@ -153,6 +153,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         mutate: mutateApplicationListFetchRequest
     } = useApplicationList("advancedConfigurations,templateId,clientId,issuer", listItemLimit, listOffset, searchQuery);
 
+    const {
+        data: myAccountApplicationData,
+        isLoading: isMyAccountApplicationDataFetchRequestLoading,
+        error: myAccountApplicationDataFetchRequestError
+    } = useMyAccountApplicationData("advancedConfigurations,templateId,clientId,issuer");
+
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
     const {
@@ -166,7 +172,10 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * TODO: Remove this once the loaders are finalized.
      */
     useEffect(() => {
-        if (isApplicationListFetchRequestLoading === false && isMyAccountStatusLoading === false) {
+        if (isApplicationListFetchRequestLoading === false &&
+            isMyAccountStatusLoading === false &&
+            !isMyAccountApplicationDataFetchRequestLoading) {
+
             let status: boolean = AppConstants.DEFAULT_MY_ACCOUNT_STATUS;
 
             if (myAccountStatus) {
@@ -178,7 +187,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             }
             setMyAccountStatus(status);
         }
-    }, [ isApplicationListFetchRequestLoading, isMyAccountStatusLoading ]);
+    }, [
+        isApplicationListFetchRequestLoading,
+        isMyAccountApplicationDataFetchRequestLoading,
+        isMyAccountStatusLoading
+    ]);
 
     /**
      * Handles the application list fetch request error.
@@ -210,6 +223,35 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 "fetchApplications.genericError.message")
         }));
     }, [ applicationListFetchRequestError ]);
+
+    /**
+     * Handles the my account application fetch request error.
+     */
+    useEffect(() => {
+
+        if (!myAccountApplicationDataFetchRequestError) {
+            return;
+        }
+
+        if (myAccountApplicationDataFetchRequestError?.response?.data?.description) {
+            dispatch(addAlert({
+                description: myAccountApplicationDataFetchRequestError.response.data.description,
+                level: AlertLevels.ERROR,
+                message: t("console:develop.features.applications.notifications." +
+                    "fetchMyAccountApplication.error.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("console:develop.features.applications.notifications.fetchMyAccountApplication" +
+                ".genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("console:develop.features.applications.notifications." +
+                "fetchMyAccountApplication.genericError.message")
+        }));
+    }, [ myAccountApplicationDataFetchRequestError ]);
 
     /**
      * Handles the application list fetch request error.
@@ -337,40 +379,24 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     };
 
     /**
-     * Extract the my account application details from application list.
-     * 
-     * @returns My account application details.
-     */
-    const getMyAccountApplicationDetails = (): ApplicationListItemInterface => {
-        if (applicationList) {
-            const accountAppDetails: ApplicationListItemInterface = applicationList?.applications.find(
-                (item: ApplicationListItemInterface) => 
-                    item.clientId === ApplicationManagementConstants.MY_ACCOUNT_APP_CLIENT_ID
-            );
-
-            return accountAppDetails;
-        }
-
-        return undefined;
-    };
-
-    /**
      * Navigate to the my account edit page.
      */
     const navigateToMyAccountSettings = (): void => {
         if (applicationConfig?.advancedConfigurations?.showDefaultMyAccountApplicationEditPage) {
-            const myaccountAppDetails: ApplicationListItemInterface = getMyAccountApplicationDetails();
-
             if (strongAuth) {
                 history.push({
-                    pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", myaccountAppDetails.id),
+                    pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
+                        ":id", myAccountApplicationData?.applications[0]?.id
+                    ),
                     search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=${
                         ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`
                 });
             } else {
                 history.push({
-                    pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", myaccountAppDetails.id),
-                    search: myaccountAppDetails.access === ApplicationAccessTypes.READ
+                    pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(
+                        ":id", myAccountApplicationData?.applications[0]?.id
+                    ),
+                    search: myAccountApplicationData?.applications[0]?.access === ApplicationAccessTypes.READ
                         ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
                         : ""
                 });
@@ -587,7 +613,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     />
                 ) }
                 currentListSize={ filteredApplicationList?.count }
-                isLoading={ isApplicationListFetchRequestLoading }
+                isLoading={ isApplicationListFetchRequestLoading || isMyAccountApplicationDataFetchRequestLoading }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
@@ -595,6 +621,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 showPagination={ true }
                 showTopActionPanel={
                     isApplicationListFetchRequestLoading
+                    || isMyAccountApplicationDataFetchRequestLoading
                     || !(!searchQuery && filteredApplicationList?.totalResults <= 0) }
                 sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
                 sortStrategy={ listSortingStrategy }
@@ -654,7 +681,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     ) }
                     featureConfig={ featureConfig }
                     isSetStrongerAuth={ strongAuth }
-                    isLoading={ isApplicationListFetchRequestLoading }
+                    isLoading={ isApplicationListFetchRequestLoading || isMyAccountApplicationDataFetchRequestLoading }
                     list={ filteredApplicationList }
                     onApplicationDelete={ handleApplicationDelete }
                     onEmptyListPlaceholderActionClick={

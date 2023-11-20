@@ -2952,6 +2952,20 @@ export const console: ConsoleNS = {
                             message: "Récupération réussie"
                         }
                     },
+                    fetchMyAccountApplication: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Impossible de récupérer les détails de l'application Mon compte.",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Récupération réussie des détails de l'application Mon compte.",
+                            message: "Récupération réussie"
+                        }
+                    },
                     fetchApplications: {
                         error: {
                             description: "{{description}}",

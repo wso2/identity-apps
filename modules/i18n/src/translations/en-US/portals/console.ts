@@ -2910,6 +2910,20 @@ export const console: ConsoleNS = {
                             message: "Retrieval successful"
                         }
                     },
+                    fetchMyAccountApplication: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Retrieval error"
+                        },
+                        genericError: {
+                            description: "Couldn't retrieve the My Account application details.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully retrieved the My Account application details.",
+                            message: "Retrieval successful"
+                        }
+                    },
                     fetchApplications: {
                         error: {
                             description: "{{description}}",
