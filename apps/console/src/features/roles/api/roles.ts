@@ -492,7 +492,8 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
 export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInterface>(
     count?: number, 
     startIndex?: number, 
-    filter?: string
+    filter?: string,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -515,7 +516,7 @@ export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInter
         isValidating,
         mutate,
         response
-    } = useRequest<Data, Error>(requestConfig);
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,
