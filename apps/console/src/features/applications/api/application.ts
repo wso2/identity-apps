@@ -944,7 +944,7 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
                 tokenEndpoint: response.data.token_endpoint,
                 tokenRevocationEndpoint: response.data.revocation_endpoint,
                 userEndpoint: response.data.userinfo_endpoint,
-                webFingerEndpoint: "",
+                webFingerEndpoint: response.data.webfinger_endpoint,
                 wellKnownEndpoint: `${ response.data.token_endpoint }/.well-known/openid-configuration`
             };
 

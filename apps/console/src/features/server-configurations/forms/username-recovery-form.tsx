@@ -126,7 +126,7 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
 
         initialValues.properties.map((property: ConnectorPropertyInterface) => {
             if (allowedConnectorFields.includes(property.name)) {
-                if (property.name === ServerConfigurationsConstants.NOTIFY_SUCCESS) {
+                if (property.name === ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE) {
                     resolvedInitialValues = {
                         ...resolvedInitialValues,
                         notifySuccess: CommonUtils.parseBoolean(property.value)
@@ -229,8 +229,7 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
                 />
                 <Hint className={ "mb-5" }>
                     {
-                        t("extensions:manage.serverConfigurations.accountRecovery." +
-                            "passwordRecovery.form.fields.notifySuccess.hint")
+                        "This specifies whether to notify the user via an email when username recovery is successful"
                     }
                 </Hint>
                 <Field.Input
@@ -271,8 +270,7 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
                 </Field.Input>
                 <Hint className={ "mb-5" }>
                     {
-                        t("extensions:manage.serverConfigurations.accountRecovery." +
-                            "passwordRecovery.form.fields.expiryTime.hint")
+                        "Username recovery link expiry time in minutes"
                     }
                 </Hint>
                 <Field.Button

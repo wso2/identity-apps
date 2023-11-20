@@ -58,7 +58,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     connectorCategoriesToShow: [
         ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
         ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
-        ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID,
+        ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
     ],
     connectorPropertiesToShow: [ "all" ],
     connectorStatusViewDisabledConnectorIDs: [
@@ -66,9 +66,12 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
     ],
     connectorToggleName: {
         "account-recovery": ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE,
+        "account-recovery-username": ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE,
+        "account.lock.handler": ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE,
+        "multiattribute.login.handler": ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE,
         "organization-self-service": ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE,
         "self-sign-up": ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
-
+        "sso.login.recaptcha": ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE
     },
     connectorsToHide: [
         ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,
@@ -85,16 +88,8 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR_ID,
         ServerConfigurationsConstants.WS_FEDERATION_CONNECTOR_ID
     ],
-    extendedConnectors: [],
-    predefinedConnectorCategories: [
-        "UGFzc3dvcmQgUG9saWNpZXM",
-        "VXNlciBPbmJvYXJkaW5n",
-        "TG9naW4gQXR0ZW1wdHMgU2VjdXJpdHk",
-        "T3RoZXIgU2V0dGluZ3M",
-        "QWNjb3VudCBNYW5hZ2VtZW50",
-        "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz"
-    ],
     dynamicConnectors: true,
+    extendedConnectors: [],
     intendSettings: false,
     passwordExpiryComponent: (
         componentId: string,
@@ -122,6 +117,15 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
             t
         );
     },
+    predefinedConnectorCategories: [
+        "UGFzc3dvcmQgUG9saWNpZXM",
+        "VXNlciBPbmJvYXJkaW5n",
+        "TG9naW4gQXR0ZW1wdHMgU2VjdXJpdHk",
+        "T3RoZXIgU2V0dGluZ3M",
+        "QWNjb3VudCBNYW5hZ2VtZW50",
+        "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz"
+    ],
+    
     processInitialValues: (
         initialValues: ValidationFormInterface,
         passwordHistoryCount: GovernanceConnectorInterface,
