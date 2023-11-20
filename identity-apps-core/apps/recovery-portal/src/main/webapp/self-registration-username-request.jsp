@@ -85,6 +85,7 @@
     String GITHUB_AUTHENTICATOR = "GithubAuthenticator";
     String FACEBOOK_AUTHENTICATOR = "FacebookAuthenticator";
     String OIDC_AUTHENTICATOR = "OpenIDConnectAuthenticator";
+    String SSO_AUTHENTICATOR = "OrganizationAuthenticator";
     String commonauthURL = "../commonauth";
 
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -534,7 +535,7 @@
                         </div>
                     </div>
                     <br>
-                    <% } else {
+                    <% } else if (!StringUtils.equals(type, SSO_AUTHENTICATOR)) {
 
                         String logoPath = imageURL;
                         if (!imageURL.isEmpty() && imageURL.contains("/")) {
