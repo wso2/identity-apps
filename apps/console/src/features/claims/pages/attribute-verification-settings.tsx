@@ -105,6 +105,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
     useEffect(() => {
         if (isFormInitialized) {
             updateConnector(formValues);
+            setIsLoading(false);
         }
     }, [ formValues ]);
 
@@ -298,6 +299,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
             })
             .finally(() => {
                 setIsSubmitting(false);
+                setIsLoading(false);
             });
     };
 
