@@ -459,7 +459,6 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     type="number"
                     width={ 16 }
                     required={ true }
-                    placeholder={ "" }
                     labelPosition="top"
                     minLength={ 3 }
                     maxLength={ 100 }
@@ -493,7 +492,6 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     type="number"
                     width={ 16 }
                     required={ true }
-                    placeholder={ "" }
                     labelPosition="top"
                     minLength={ 3 }
                     maxLength={ 100 }
@@ -581,7 +579,6 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     type="number"
                     width={ 16 }
                     required={ true }
-                    placeholder={ "" }
                     labelPosition="top"
                     minLength={ 3 }
                     maxLength={ 100 }
