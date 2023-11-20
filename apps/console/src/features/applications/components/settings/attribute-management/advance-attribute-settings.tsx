@@ -357,7 +357,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         options={ dropDownOptions }
                         hidden={
                             onlyOIDCConfigured &&
-                            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute
+                            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute ||
+                            !UIConfig?.classicFeatures?.isSubjectIdentifierEnabled
                         }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-subject-attribute-dropdown` }
