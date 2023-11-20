@@ -1468,36 +1468,6 @@
                 }
             },
             {% endif %}
-            {% if console.user_stores is defined %}
-            "userStores": {
-                "disabledFeatures": [
-                    {% if console.user_stores.disabled_features is defined %}
-                    {% for feature in console.user_stores.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
-                ],
-                "enabled": {% if console.user_stores.enabled is defined %} {{ console.user_stores.enabled }},
-                {% else %} true,
-                {% endif %}
-                "scopes": {
-                    {% if console.user_stores.scopes is defined %}
-                    {% for operation, scopes in console.user_stores.scopes.items() %}
-                    "{{ operation }}": [
-                        {% for scope in scopes %}
-                            "{{ scope }}"{{ "," if not loop.last }}
-                        {% endfor %}
-                    ]{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% else %}
-                        "create": [],
-                        "read": [],
-                        "update": [],
-                        "delete": []
-                    {% endif %}
-                }
-            },
-            {% endif %}
             {% if console.fapi_application_creation is defined %}
             "fapiApplicationCreation": {
                 "disabledFeatures": [
@@ -1513,6 +1483,36 @@
                 "scopes": {
                     {% if console.fapi_application_creation.scopes is defined %}
                     {% for operation, scopes in console.fapi_application_creation.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.user_stores is defined %}
+            "userStores": {
+                "disabledFeatures": [
+                    {% if console.user_stores.disabled_features is defined %}
+                    {% for feature in console.user_stores.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.user_stores.enabled is defined %} {{ console.user_stores.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.user_stores.scopes is defined %}
+                    {% for operation, scopes in console.user_stores.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
