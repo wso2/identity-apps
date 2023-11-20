@@ -315,11 +315,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         } else {
                             const schemaName:string = schemaNames[0];
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]) {
+                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
+                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA][schemaName]
+                                    schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
                                 );
-
+    
+                                return;
+                            }
+    
+                            if (schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]
+                                && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA][schemaNames[0]]) {
+                                tempProfileInfo.set(
+                                    schema.name, userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                                );
+    
                                 return;
                             }
                             tempProfileInfo.set(schema.name, userInfo[schemaName]);
@@ -389,11 +399,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         } else {
                             const schemaName:string = schemaNames[0];
 
-                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]) {
+                            if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
+                                && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]) {
                                 tempProfileInfo.set(
-                                    schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaName]
+                                    schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
                                 );
-
+    
+                                return;
+                            }
+    
+                            if (schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]
+                                && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA][schemaNames[0]]) {
+                                tempProfileInfo.set(
+                                    schema.name, userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
+                                );
+    
                                 return;
                             }
                             tempProfileInfo.set(schema.name, userInfo[schemaName]);
@@ -644,7 +664,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             value: {}
         };
 
-        if (adminUserType === "internal") {
+        if (adminUserType === AdminAccountTypes.INTERNAL) {
             profileSchema.forEach((schema: ProfileSchemaInterface) => {
 
                 if (schema.mutability === ProfileConstants.READONLY_SCHEMA) {
@@ -781,7 +801,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                 if (schema.name !== "roles.default") {
                     if (values.get(schema.name) !== undefined && values.get(schema.name).toString() !== undefined) {
-
                         if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
                             schemaNames[0] === "phoneNumbers") {
 
@@ -821,8 +840,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         } else {
                             if (schemaNames.length === 1) {
                                 if (schema.extended) {
+                                    const schemaId: string = schema?.schemaId 
+                                        ? schema.schemaId 
+                                        : ProfileConstants.SCIM2_ENT_USER_SCHEMA;
+                                    
                                     opValue = {
-                                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                                        [schemaId]: {
                                             [schemaNames[0]]: schema.type.toUpperCase() === "BOOLEAN" ?
                                                 !!values.get(schema.name)?.includes(schema.name) :
                                                 values.get(schemaNames[0])
@@ -836,8 +859,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 }
                             } else {
                                 if(schema.extended) {
+                                    const schemaId: string = schema?.schemaId 
+                                        ? schema.schemaId 
+                                        : ProfileConstants.SCIM2_ENT_USER_SCHEMA;
+
                                     opValue = {
-                                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                                        [schemaId]: {
                                             [schemaNames[0]]: {
                                                 [schemaNames[1]]: schema.type.toUpperCase() === "BOOLEAN" ?
                                                     !!values.get(schema.name)?.includes(schema.name) :
