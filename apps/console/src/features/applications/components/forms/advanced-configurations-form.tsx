@@ -16,15 +16,23 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { TestableComponentInterface,
+    AlertInterface,
+    AlertLevels, } from "@wso2is/core/models";
 import { Field, Form, FormValue } from "@wso2is/form";
 import useUIConfig from "modules/common/src/hooks/use-ui-configs";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent,
+    ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { applicationConfig } from "../../../../extensions";
 import SAMLWebApplicationTemplate
     from "../../data/application-templates/templates/saml-web-application/saml-web-application.json";
-import { AdvancedConfigurationsInterface, ApplicationTemplateListItemInterface } from "../../models";
+import { ApplicationManagementConstants } from "../../constants";
+import { AdvancedConfigurationsInterface,
+    ApplicationTemplateListItemInterface } from "../../models";
+import { Divider, Grid } from "semantic-ui-react";
+import isEmpty from "lodash-es/isEmpty";
+import { Heading } from "@wso2is/react-components";
 
 /**
  *  Advanced Configurations for the Application.
@@ -44,6 +52,10 @@ interface AdvancedConfigurationsFormPropsInterface extends TestableComponentInte
      * Specifies if the form is submitting
      */
     isSubmitting?: boolean;
+    /**
+     * On alert fired callback.
+     */
+    onAlertFired: (alert: AlertInterface) => void;
 }
 
 const FORM_ID: string = "application-advanced-configuration-form";
@@ -64,6 +76,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
         readOnly,
         template,
         isSubmitting,
+        onAlertFired,
         [ "data-testid" ]: testId
     } = props;
 
@@ -77,13 +90,36 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
      * @param values - Form values.
      */
     const updateConfiguration = (values: any): void => {
-        const data: any = {
+
+        let androidAttestationServiceCredentialsObject : JSON
+        try {
+            if(!isEmpty(values.androidAttestationServiceCredentials)) {
+                androidAttestationServiceCredentialsObject = JSON.parse(values.androidAttestationServiceCredentials)
+            }
+        } catch (ex: any) {
+            onAlertFired({
+                description: "error.response.data.description",
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.user.profile.notifications.forcePasswordReset.error." +
+                    "message")
+            });
+            return;
+        }
+
+        const data:any = {
             advancedConfigurations: {
                 enableAuthorization: !!values.enableAuthorization,
                 returnAuthenticatedIdpList: !!values.returnAuthenticatedIdpList,
                 saas: !!values.saas,
                 skipLoginConsent: !!values.skipConsentLogin,
-                skipLogoutConsent: !!values.skipConsentLogout
+                skipLogoutConsent: !!values.skipConsentLogout,
+                enableAPIBasedAuthentication: !!values.enableAPIBasedAuthentication,
+                attestationMetaData: {
+                    enableClientAttestation: !!values.enableClientAttestation,
+                    androidPackageName: values.androidPackageName,
+                    androidAttestationServiceCredentials: androidAttestationServiceCredentialsObject,
+                    appleAppId: values.appleAppId
+                }
             }
         };
 
@@ -99,7 +135,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
     return (
         <Form
             id={ FORM_ID }
-            uncontrolledForm={ false }
+            uncontrolledForm={ true }
             onSubmit={ (values: Map<string,FormValue>) => {
                 updateConfiguration(values);
             } }
@@ -171,11 +207,96 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 value={ config?.enableAuthorization ? [ "enableAuthorization" ] : [] }
                 readOnly={ readOnly }
                 data-testid={ `${testId}-enable-authorization-checkbox` }
-                hidden={ 
-                    !applicationConfig.advancedConfigurations.showEnableAuthorization 
+                hidden={
+                    !applicationConfig.advancedConfigurations.showEnableAuthorization
                     || !UIConfig?.classicFeatures?.isXacmlAuthorizationEnabled }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.enableAuthorization.hint") }
             />
+            {
+                (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION
+                    || template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ) &&
+                (
+                    <div>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <Divider />
+                        <Divider hidden />
+                    </Grid.Column>
+                    <Heading as="h4">
+                        { "API Based Authentication" }
+                    </Heading>
+                    <Field.CheckboxLegacy
+                        ariaLabel="Enable apiBasedAuthentication"
+                        name="enableAPIBasedAuthentication"
+                        label={ "Enable API Based Authentication" }
+                        required={ false }
+                        value={ config?.enableAPIBasedAuthentication ? [ "enableAPIBasedAuthentication" ] : [] }
+                        data-testid={ `${testId}-enable-authorization-checkbox` }
+                        hidden={ !applicationConfig.advancedConfigurations.showEnableAuthorization }
+                    />
+                    <Field.CheckboxLegacy
+                        ariaLabel="Enable attestation"
+                        name="enableClientAttestation"
+                        label={ "Enable Client Attesstation" }
+                        required={ false }
+                        value={ config?.attestationMetaData?.enableClientAttestation ? [ "enableClientAttestation" ] : [] }
+                        data-testid={ `${testId}-enable-authorization-checkbox` }
+                        hidden={ !applicationConfig.advancedConfigurations.showEnableAuthorization }
+                    />
+                    <Field.Input
+                        ariaLabel="Android package name"
+                        inputType="default"
+                        name="androidPackageName"
+                        label={ "Android application package name" }
+                        required={ false }
+                        value={ config?.attestationMetaData?.androidPackageName ? config?.attestationMetaData?.androidPackageName : "" }
+                        placeholder={ "Android application package name" }
+                        hint={
+                            "Enter the Android Package Name, a unique identifier for your Android app, typically in reverse domain format (e.g., com.example.myapp)."
+                        }
+                        maxLength={ 200 }
+                        minLength={ 3 }
+                        width={ 16 }
+                    />
+                    <Field.Textarea
+                        ariaLabel="Android service account credentials"
+                        inputType="description"
+                        name="androidAttestationServiceCredentials"
+                        label={
+                            "Enter Service Account Credential"
+                        }
+                        placeholder={
+                            "Enter Service Account Credential"
+                        }
+                        value={ config?.attestationMetaData?.androidAttestationServiceCredentials ? [ JSON.stringify(config?.attestationMetaData?.androidAttestationServiceCredentials, null, 4) ] : [] }
+                        hint={
+                            "Provide the JSON key content for the Android service account credentials to access the Google Play Integrity Service."
+                        }
+                        type="text"
+                        maxLength={5000}
+                        minLength={30}
+                        width={ 30 }
+                    />
+                    <Field.Input
+                        ariaLabel="Apple App Id"
+                        inputType="default"
+                        name="appleAppId"
+                        label={
+                            "Apple applicaiton App Id"
+                        }
+                        required={ false }
+                        placeholder={
+                            "Apple applicaiton App Id"
+                        }
+                        value={ config?.attestationMetaData?.appleAppId ? config?.attestationMetaData?.appleAppId  : "" }
+                        hint={
+                            "Enter the Apple App ID, a unique identifier assigned by Apple to your app, usually starting with 'com.' or 'bundle.'"
+                            }
+                        maxLength={ 200 }
+                        minLength={ 3 }
+                        width={ 16 }
+                    />
+                    </div>
+                )}
             <Field.Button
                 form={ FORM_ID }
                 size="small"

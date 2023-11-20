@@ -217,6 +217,32 @@ export interface CertificateInterface {
 }
 
 /**
+ *  Captures Attestation data related configuration.
+ */
+export interface AttestationMetaDataInterface {
+    enableClientAttestation?: boolean;
+    androidPackageName?: string;
+    appleAppId?: string;
+    androidAttestationServiceCredentials?: JSON;
+}
+
+/**
+ *  Captures application advanced configuration related configuration.
+ */
+export interface ApplicationAdvancedConfigurationsViewInterface {
+    saas?: boolean;
+    skipConsentLogin?: boolean;
+    skipConsentLogout?: boolean;
+    returnAuthenticatedIdpList?: boolean;
+    enableAuthorization?: boolean;
+    enableAPIBasedAuthentication?: boolean;
+    enableClientAttestation?: boolean;
+    androidPackageName?: string;
+    appleAppId?: string;
+    androidAttestationServiceCredentials?: string;
+}
+
+/**
  *  Captures application related configuration.
  */
 export interface AdvancedConfigurationsInterface {
@@ -227,6 +253,8 @@ export interface AdvancedConfigurationsInterface {
     skipLogoutConsent?: boolean;
     returnAuthenticatedIdpList?: boolean;
     enableAuthorization?: boolean;
+    enableAPIBasedAuthentication?: boolean;
+    attestationMetaData?: AttestationMetaDataInterface;
     fragment?: boolean;
     additionalSpProperties?: additionalSpProperty[]
 }
