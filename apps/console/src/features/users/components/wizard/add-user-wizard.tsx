@@ -47,6 +47,7 @@ import { AddUserWizardSummary } from "./user-wizard-summary";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { UserAccountTypes, UsersConstants } from "../../../../extensions/components/users/constants";
 import { SCIMConfigs } from "../../../../extensions/configs/scim";
+import useAuthorization from "../../../authorization/hooks/use-authorization";
 import { UserStoreDetails, UserStoreProperty } from "../../../core/models";
 import { AppState } from "../../../core/store";
 import { GroupsInterface } from "../../../groups";
@@ -198,6 +199,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ isUserStoreError, setUserStoreError ] = useState<boolean>(false);
     const [ isUserSummaryEnabled, setUserSummaryEnabled ] = useState(false);
     const [ newUserId, setNewUserId ] = useState<string>("");
+    const { legacyAuthzRuntime } = useAuthorization();
 
     const excludedAttributes: string = "members";
 
@@ -316,7 +318,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     useEffect(() => {
         if (initialRoleList.length === 0) {
             if (organizationType === OrganizationType.SUPER_ORGANIZATION
-                || organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION) {
+                || organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION
+                || !legacyAuthzRuntime
+            ) {
                 // Get Roles from the SCIM API
                 getRolesList(null)
                     .then((response: AxiosResponse) => {

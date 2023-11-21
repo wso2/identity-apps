@@ -1989,14 +1989,14 @@ export const extensions: Extensions = {
             }
         },
         emailProviders: {
-            configureEmailProvider: "Configure Email Provider",
+            configureEmailTemplates: "Configure Email Templates",
             heading: "Custom Email Provider",
             subHeading: "Configure a custom SMTP server to send emails to your users with your own email address.",
             description: "Configure the email provider settings according to your SMTP server.",
             info: "You can customize the email content using <1>Email Templates</1>.",
             updateButton: "Update",
             sendTestMailButton: "Send Test Email",
-            goBack: "Go back to Channels",
+            goBack: "Go back to Email & SMS",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
                 content: "If you delete this configuration, the emails will be sent from the Asgardeo Email Address. " +
@@ -2089,19 +2089,19 @@ export const extensions: Extensions = {
                 }
             }
         },
-        notificationChannel: {
+        emailAndSMS: {
             heading: {
-                heading: "SMS / Email Providers",
+                heading: "Email & SMS Providers",
                 onlySMSProvider: "SMS Provider",
                 onlyEmailProvider: "Email Provider"
             },
             title: {
-                heading: "SMS / Email Providers",
+                heading: "Email & SMS Providers",
                 onlySMSProvider: "SMS Provider",
                 onlyEmailProvider: "Email Provider"
             },
             description: {
-                description: "Configure the SMS and Email providers for your organization.",
+                description: "Configure the Email and SMS providers for your organization.",
                 onlySMSProvider: "Configure the SMS provider for your organization.",
                 onlyEmailProvider: "Configure the Email provider for your organization."
             }
@@ -2113,7 +2113,7 @@ export const extensions: Extensions = {
             info: "You can customize the SMS content using <1>SMS Templates</1>.",
             updateButton: "Update",
             sendTestSMSButton: "Send Test SMS",
-            goBack: "Go back to Channels",
+            goBack: "Go back to Email & SMS",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
                 content: "If you delete this configuration, you will not receive SMS." +
@@ -2706,6 +2706,38 @@ export const extensions: Extensions = {
                                 "Go to <1>Sign-in Method</1> tab and click on <3>Add Passkey Login</3> to configure " +
                                 " a basic passkey flow.",
                             heading: "Select <1>Add Passkey Login</1>"
+                        },
+                        configureParameters: {
+                            heading: "Configure passkey options",
+                            content: {
+                                parameters: {
+                                    progressiveEnrollment: {
+                                        description: "Activate this option to allow users to enroll for a " +
+                                        "passkey during login.",
+                                        label: "Progressive Passkey Enrollment:",
+                                        note: "If Passkey is set as a first factor, the following " +
+                                        "<1> adaptive script</1> should be added under " +
+                                        "the <3>Sign-In-Method</3> tab of the application. " +
+                                        "This script is added automatically with the template-based " + 
+                                        "Passkey setup and is used to verify the user's " +
+                                        "identity before enrolling passkeys. " +
+                                        "However, if you're configuring Passkey " +
+                                        "without a template, remember to add the script manually."
+                                    },
+                                    usernamelessAuthentication: {
+                                        description: "Enabling this feature allows users to log in with a passkey " +
+                                        "without entering a username, creating a more streamlined " +
+                                        "sign-in experience.",
+                                        label: "Usernameless Authentication:"
+                                    }
+                                },
+                                steps: {
+                                    info: "To configure, please follow the steps below:",
+                                    1: "Navigate to the <1>Connections</1> area.",
+                                    2: "Locate and select the <1>Passkey</1> connection.",
+                                    3: "Navigate to the <1>Settings</1> tab."
+                                }
+                            }
                         }
                     },
                     subHeading: "Follow the instructions given below to set up passkey login in your login flow."

@@ -216,4 +216,5 @@ export interface ClassicFeaturesInterface {
     isXacmlAuthorizationEnabled: boolean;
     isIncludeOrgNameInSubjectEnabled: boolean;
     isUseMappedLocalSubjectEnabled: boolean;
+    isSubjectIdentifierEnabled: boolean;
 }

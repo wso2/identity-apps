@@ -56,9 +56,7 @@ import { ApplicationRoleWizard } from "./wizard-updated/application-role-wizard"
 import { updateApplicationDetails } from "../../applications/api";
 import { useGetApplication } from "../../applications/api/use-get-application";
 import { ApplicationInterface } from "../../applications/models";
-import {
-    history
-} from "../../core";
+import { history } from "../../core/helpers/history";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getApplicationRolesByAudience } from "../api/roles";
 import { RoleAudienceTypes } from "../constants/role-constants";
@@ -175,7 +173,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     /**
      * Fetch application roles.
      */
-    const getApplicationRoles = (): void => {
+    const getApplicationRoles = (shouldUpdateSelectedRolesList?: boolean): void => {
         getApplicationRolesByAudience(roleAudience, appId, null, null, null)
             .then((response: RolesV2ResponseInterface) => {
                 const rolesArray: BasicRoleInterface[] = [];
@@ -188,6 +186,10 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 });
                 
                 setRoleList(rolesArray);
+
+                if (shouldUpdateSelectedRolesList) {
+                    setSelectedRoles(rolesArray);
+                }
             }).catch((error: AxiosError) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
@@ -305,6 +307,14 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
         setShowSwitchAudienceWarning(true);
     };
 
+    /**
+     * Handles the on role created callback.
+     */
+    const onRoleCreated = () => {
+        getApplicationRoles(true);
+        onUpdate(appId);
+    };
+
     return (
         <>
             <EmphasizedSegment
@@ -354,15 +364,20 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                         disabled={ isReadOnly }
                                         className="mr-6"
                                     />
-                                    <Button
-                                        startIcon={ <PlusIcon/> }
-                                        variant="text"
-                                        onClick={ handleAddNewRoleWizardClick }
-                                        disabled={ isReadOnly }
-                                    >
-                                        { t("console:develop.features.applications.edit." + 
-                                        "sections.roles.createApplicationRoleWizard.button") }
-                                    </Button>
+                                    {
+                                        roleAudience === RoleAudienceTypes.APPLICATION
+                                            && (
+                                                <Button
+                                                    startIcon={ <PlusIcon/> }
+                                                    variant="text"
+                                                    onClick={ handleAddNewRoleWizardClick }
+                                                    disabled={ isReadOnly }
+                                                >
+                                                    { t("console:develop.features.applications.edit." +
+                                                            "sections.roles.createApplicationRoleWizard.button") }
+                                                </Button>
+                                            )
+                                    }
                                 </Grid.Row>
                             </FormGroup>
                         </Grid.Column>
@@ -578,15 +593,20 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
-            { showWizard &&
-                (<ApplicationRoleWizard
-                    setUserListRequestLoading={ null }
-                    data-testid="user-mgt-add-user-wizard-modal"
-                    closeWizard={ () => {
-                        setShowWizard(false);
-                    } }
-                    application={ application }
-                />)
+            {
+                showWizard
+                && roleAudience === RoleAudienceTypes.APPLICATION
+                && (
+                    <ApplicationRoleWizard
+                        setUserListRequestLoading={ null }
+                        data-testid="user-mgt-add-user-wizard-modal"
+                        closeWizard={ () => {
+                            setShowWizard(false);
+                        } }
+                        application={ application }
+                        onRoleCreated={ onRoleCreated }
+                    />
+                )
             }
         </>
     );

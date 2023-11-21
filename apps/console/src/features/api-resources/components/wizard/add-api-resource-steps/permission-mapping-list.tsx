@@ -71,7 +71,7 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
                 onClick: (e: SyntheticEvent, permission: APIResourcePermissionInterface): void => {
                     removeAdddedPermission(permission);
                 },
-                popupText: (): string => t("extensions:develop.apiResource.tabs.permissions.removePermissionPopupText"),
+                popupText: (): string => t("console:apiResources.tabs.scopes.removeScopePopupText"),
                 renderer: "semantic-icon"
             }
         ];
@@ -104,7 +104,7 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
                         </Header.Content>
                     </Header>
                 ),
-                title: t("extensions:develop.apiResource.tabs.permissions.form.fields.permission.label")
+                title: t("console:apiResources.tabs.scopes.form.fields.permission.label")
             },
             {
                 allowToggleVisibility: false,
@@ -120,7 +120,7 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
                         </Header.Content>
                     </Header>
                 ),
-                title: t("extensions:develop.apiResource.tabs.permissions.form.fields.description.label")
+                title: t("console:apiResources.tabs.scopes.form.fields.description.label")
             },
             {
                 allowToggleVisibility: false,
@@ -128,7 +128,7 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("extensions:develop.apiResource.tabs.permissions.form.fields.permission.label"),
+                title: t("console:apiResources.tabs.scopes.form.fields.permission.label"),
                 width: 1
             }
         ];
@@ -145,7 +145,7 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
                 <>
                     <Divider className="mb-1"r hidden />
                     <EmptyPlaceholder
-                        subtitle={ [  t("extensions:develop.apiResource.tabs.permissions.empty.title") ] }
+                        subtitle={ [ t("console:apiResources.tabs.scopes.empty.title") ] }
                     />
                     <Divider className="mt-1" hidden />
                 </>

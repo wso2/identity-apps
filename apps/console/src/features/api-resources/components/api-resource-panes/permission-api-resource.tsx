@@ -129,10 +129,10 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
                 <Grid container className="mb-1">
                     <Grid xs={ 8 }>
                         <Heading as="h4" compact>
-                            { t("extensions:develop.apiResource.tabs.permissions.title") }
+                            { t("console:apiResources.tabs.scopes.title") }
                         </Heading>
                         <Heading as="h6" color="grey" subHeading className="mb-5">
-                            { t("extensions:develop.apiResource.tabs.permissions.subTitle") }
+                            { t("console:apiResources.tabs.scopes.subTitle") }
                         </Heading>
                     </Grid>
                     <Grid xs={ 4 } alignItems="flex-end">
@@ -145,7 +145,7 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
                                     onClick={ () => setTriggerAddAPIResourcePermissionModal() }
                                 >
                                     <Icon name="add" />
-                                    { t("extensions:develop.apiResource.tabs.permissions.button") }
+                                    { t("console:apiResources.tabs.scopes.button") }
                                 </PrimaryButton>)
                         }
                     </Grid>
@@ -165,7 +165,7 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
                                 icon="search"
                                 iconPosition="left"
                                 onChange={ searchPermission }
-                                placeholder={ t("extensions:develop.apiResource.tabs.permissions.search") }
+                                placeholder={ t("console:apiResources.tabs.scopes.search") }
                                 floated="right"
                                 size="small"
                                 value={ permissionSearchQuery }
@@ -216,7 +216,7 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
                         open={ deletingAPIResourcePermission !== null }
                         onClose={ (): void => setDeletingAPIResourcePermission(null) }
                         type="negative"
-                        assertionHint={ t("extensions:develop.apiResource.confirmations." +
+                        assertionHint={ t("console:apiResources.confirmations." +
                                     "deleteAPIResourcePermission.assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
@@ -229,7 +229,7 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
                         <ConfirmationModal.Header
                             data-testid={ `${componentId}-delete-confirmation-modal-header` }
                         >
-                            { t("extensions:develop.apiResource.confirmations.deleteAPIResourcePermission." +
+                            { t("console:apiResources.confirmations.deleteAPIResourcePermission." +
                                         "header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
@@ -237,13 +237,13 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
                             negative
                             data-testid={ `${componentId}-delete-confirmation-modal-message` }
                         >
-                            { t("extensions:develop.apiResource.confirmations.deleteAPIResourcePermission." +
+                            { t("console:apiResources.confirmations.deleteAPIResourcePermission." +
                                         "message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-testid={ `${componentId}-delete-confirmation-modal-content` }
                         >
-                            { t("extensions:develop.apiResource.confirmations.deleteAPIResourcePermission." +
+                            { t("console:apiResources.confirmations.deleteAPIResourcePermission." +
                                         "content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>

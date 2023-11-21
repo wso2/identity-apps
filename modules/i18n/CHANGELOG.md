@@ -1,5 +1,37 @@
 # @wso2is/i18n
 
+## 2.0.54
+
+### Patch Changes
+
+- [#4750](https://github.com/wso2/identity-apps/pull/4750) [`2c5e9f2847`](https://github.com/wso2/identity-apps/commit/2c5e9f2847ac4f54ec7b906f6ea93746c3728309) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update fido quick start
+
+## 2.0.53
+
+### Patch Changes
+
+- [#4747](https://github.com/wso2/identity-apps/pull/4747) [`41104e4934`](https://github.com/wso2/identity-apps/commit/41104e493424c3abb76ef5a4c84d35b2d147d369) Thanks [@brionmario](https://github.com/brionmario)! - Add Console Settings feature
+
+- Updated dependencies [[`41104e4934`](https://github.com/wso2/identity-apps/commit/41104e493424c3abb76ef5a4c84d35b2d147d369)]:
+  - @wso2is/core@2.0.17
+
+## 2.0.52
+
+### Patch Changes
+
+- [#4745](https://github.com/wso2/identity-apps/pull/4745) [`eac39db02f`](https://github.com/wso2/identity-apps/commit/eac39db02f845275e0ab4fbc03d0ab6050ba0d76) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update the wording permission to scope in API resources
+
+## 2.0.51
+
+### Patch Changes
+
+- [#4737](https://github.com/wso2/identity-apps/pull/4737) [`31fc142c2b`](https://github.com/wso2/identity-apps/commit/31fc142c2b0ed9c74e97a8cc6f2d58e20eec709a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide default subject attribute selection dropdown for OIDC apps
+
+* [#4727](https://github.com/wso2/identity-apps/pull/4727) [`b533228182`](https://github.com/wso2/identity-apps/commit/b533228182a5092b13584912e7032c1147eacc69) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Change error msg when deleting a role
+
+* Updated dependencies [[`31fc142c2b`](https://github.com/wso2/identity-apps/commit/31fc142c2b0ed9c74e97a8cc6f2d58e20eec709a)]:
+  - @wso2is/core@2.0.16
+
 ## 2.0.50
 
 ### Patch Changes

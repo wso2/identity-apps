@@ -53,7 +53,7 @@ import {
     history
 } from "../../core";
 import { OrganizationType } from "../../organizations/constants";
-import { OrganizationUtils } from "../../organizations/utils";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import CustomApplicationTemplate
@@ -72,7 +72,6 @@ import {
     URLFragmentTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils/application-management-utils";
-import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 
 /**
  * Proptypes for the applications edit component.
@@ -189,6 +188,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const isFragmentApp: boolean = application?.advancedConfigurations?.fragment || false;
+
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     /**
      * Called when an application updates.
@@ -782,7 +783,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         if (featureConfig) {
             if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))) {
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))
+                && !isSubOrganization()) {
                 if (applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
@@ -827,7 +829,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))
                 && !isFragmentApp
-                && !isM2MApplication) {
+                && !isM2MApplication
+                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.USER_ATTRIBUTES, tenantDomain) &&
@@ -869,7 +872,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 && isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))
                 && !isFragmentApp
-                && !isM2MApplication) {
+                && !isM2MApplication
+                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
                     inboundProtocolConfig?.oidc?.clientId, ApplicationTabTypes.PROVISIONING, tenantDomain) &&
@@ -882,7 +886,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))
                 && !isFragmentApp
-                && !isM2MApplication) {
+                && !isM2MApplication
+                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(

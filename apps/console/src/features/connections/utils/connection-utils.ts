@@ -241,6 +241,17 @@ export class ConnectionsManagementUtils {
     }
 }
 
+export const resolveConnectionName = (name: string): string => {
+    if (name === "Enterprise") {
+        return "Standard-Based IdP";
+    } else if (name === "Expert Mode") {
+        return "Custom Connector";
+    } else {
+        return name;
+    }
+};
+
+
 export const getIdPCapabilityIcons = (): any => {
 
     return {

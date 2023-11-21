@@ -485,6 +485,113 @@ export const console: ConsoleNS = {
             }
         }
     },
+    apiResources: {
+        confirmations: {
+            deleteAPIResource: {
+                assertionHint: "Please confirm your action.",
+                content: "This action is irreversible and will permanently delete the API resource.",
+                header: "Are you sure?",
+                message: "If you delete this API resource, some functionalities may not work properly. " +
+                    "Please proceed with caution."
+            },
+            deleteAPIResourcePermission: {
+                assertionHint: "Please confirm your action.",
+                content: "This action is irreversible and will permanently remove the scope from the API resource.",
+                header: "Are you sure?",
+                message: "If you remove this scope from the API resource, some functionalities may not work properly. " +
+                    "Please proceed with caution."
+            }
+        },
+        tabs: {
+            scopes: {
+                button: "Add Scope",
+                label: "Scopes",
+                title: "List of Scopes",
+                subTitle: "List of scopes uses by the API Resource.",
+                learnMore: "Learn More",
+                search: "Search scopes by display name",
+                empty: {
+                    title: "No scope is assigned",
+                    subTitle: "Click on the + icon to add a new scope"
+                },
+                emptySearch: {
+                    title: "No results found",
+                    subTitle: {
+                        0: "We couldn't find the scope you searched for.",
+                        1: "Please try using a different parameter."
+                    },
+                    viewAll: "Clear search query"
+                },
+                copyPopupText: "Copy the Identifier",
+                copiedPopupText: "Copied the Identifier",
+                removeScopePopupText: "Remove the scope",
+                form: {
+                    button: "Add Scope",
+                    cancelButton: "Cancel",
+                    submitButton: "Finish",
+                    title: "Add Scope",
+                    subTitle: "Create a new Scope",
+                    fields: {
+                        displayName: {
+                            emptyValidate: "Display name cannot be empty",
+                            label: "Display Name",
+                            placeholder: "Read Bookings"
+                        },
+                        scope: {
+                            emptyValidate: "Scope cannot be empty",
+                            label: "Scope",
+                            placeholder: "read_bookings"
+                        },
+                        description: {
+                            label: "Description",
+                            placeholder: "Enter the Description"
+                        }
+                    }
+                }
+            }
+        },
+        wizard: {
+            addApiResource: {
+                steps: {
+                    scopes: {
+                        empty: {
+                            title: "No scope is assigned",
+                            subTitle: "Click on the + icon to add a new scope"
+                        },
+                        stepTitle: "Scopes",
+                        form: {
+                            button: "Add Scope",
+                            fields: {
+                                displayName: {
+                                    emptyValidate: "Display name cannot be empty",
+                                    label: "Display Name",
+                                    placeholder: "Read Bookings",
+                                    hint: "Provide a meaningful name as it will be displayed on the user consent screen."
+                                },
+                                permission: {
+                                    emptyValidate: "Scope cannot be empty",
+                                    uniqueValidate: "This scope already exists in the organization. Please choose a different one.",
+                                    invalid: "Scope cannot contain spaces",
+                                    label: "Scope",
+                                    placeholder: "read_bookings",
+                                    hint: "A unique value that acts as the scope when requesting an access token. <1>Note that the scope cannot be modified once created.</1>"
+                                },
+                                permissionList: {
+                                    label: "Added Scopes"
+                                },
+                                description: {
+                                    label: "Description",
+                                    placeholder: "Enter the Description",
+                                    hint: "Provide a description for your scope. This will be displayed on the user consent screen."
+                                }
+                            }
+                        },
+                        removeScopePopupText: "Remove the scope"
+                    }
+                }
+            }
+        }
+    },
     branding: {
         form: {
             actions: {
@@ -10267,19 +10374,19 @@ export const console: ConsoleNS = {
                         rolePermission: {
                             apiResource: {
                                 label: "Select API Resource",
-                                placeholder: "Select an API resource to assign scopes(permissions)"
+                                placeholder: "Select an API resource to assign permissions(scopes)"
                             },
                             permissions: {
-                                label: "Select scopes(permissions) from the selected API resources",
-                                placeholder: "Select scopes(permissions)",
+                                label: "Select permissions(scopes) from the selected API resources",
+                                placeholder: "Select permissions(scopes)",
                                 tooltips: {
                                     noScopes: "No scopes available for the selected API resource",
-                                    selectAllScopes: "Select all scopes(permissions)",
+                                    selectAllScopes: "Select all permissions(scopes)",
                                     removeAPIResource: "Remove API resource"
                                 }
                             },
                             notes: {
-                                applicationRoles: "Only the APIs and the scopes(permissions) that are authorized in the selected application(<1>{{applicationName}}</1>) will be listed to select."
+                                applicationRoles: "Only the APIs and the permissions(scopes) that are authorized in the selected application(<1>{{applicationName}}</1>) will be listed to select."
                             },
                             notifications: {
                                 fetchAPIResourceError: {

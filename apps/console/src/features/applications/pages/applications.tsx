@@ -297,7 +297,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             const appList: ApplicationListInterface = cloneDeep(applicationList);
 
             appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
-                !ApplicationManagementConstants.SYSTEM_APPS.includes(item.clientId)
+                !ApplicationManagementConstants.HIDDEN_APPS.includes(item.name)
             );
             appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
             appList.totalResults = appList.totalResults - 
@@ -499,7 +499,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 mobile={ 16 }
                                 computer={ 1 }
                             >
-                                { !isSubOrg && (
+                                { (
                                     <Popup
                                         trigger={ (
                                             <Button
@@ -567,7 +567,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             contentTopMargin={ (AppConstants.getTenant() === AppConstants.getSuperTenant()) }
             data-testid={ `${ testId }-page-layout` }
         >
-            { organizationType !== OrganizationType.SUBORGANIZATION && renderTenantedMyAccountLink() }
+            { myAccountApplicationData?.applications?.length !== 0 && renderTenantedMyAccountLink() }
             <ListLayout
                 advancedSearch={ (
                     <AdvancedSearchWithBasicFilters

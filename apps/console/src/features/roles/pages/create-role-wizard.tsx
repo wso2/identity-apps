@@ -113,7 +113,8 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
 
             // If the organization is super or a first level organization,
             // no need to send the audience for Organization audience.
-            if ((isSuperOrganization() || isFirstLevelOrganization()) && roleAudience === RoleAudienceTypes.ORGANIZATION) {
+            if ((isSuperOrganization() || isFirstLevelOrganization()) && 
+                roleAudience === RoleAudienceTypes.ORGANIZATION) {
                 delete roleData.audience;
             }
     

@@ -20,27 +20,25 @@ import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import debounce, { DebouncedFunc } from "lodash-es/debounce";
-import isEmpty from "lodash-es/isEmpty";
 import React, {
-    ChangeEvent,
     FunctionComponent,
     ReactElement,
     SyntheticEvent,
-    useCallback,
     useEffect,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownProps } from "semantic-ui-react";
+import { DropdownItemProps, DropdownProps } from "semantic-ui-react";
 import { RoleAPIResourcesListItem } from "./components/role-api-resources-list-item";
-import { useAPIResourceDetails, useAPIResourcesList, useGetAuthorizedAPIList } from "../../../api";
-import { RoleAudienceTypes, RoleConstants } from "../../../constants/role-constants";
+import { useAPIResources } from "../../../../api-resources/api";
+import { APIResourcesConstants } from "../../../../api-resources/constants";
+import { useAPIResourceDetails, useGetAuthorizedAPIList } from "../../../api";
+import { RoleAudienceTypes } from "../../../constants/role-constants";
 import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../../models/apiResources";
 import { SelectedPermissionsInterface } from "../../../models/roles";
 
@@ -91,18 +89,19 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
         const dispatch: Dispatch = useDispatch();
 
         const [ previousRoleAudience, setPreviousRoleAudience ] = useState<RoleAudienceTypes>(undefined);
-        const [ apiResourcesListOptions, setAPIResourcesListOptions ] = useState<DropdownProps[]>([]);
         const [ selectedAPIResources, setSelectedAPIResources ] = useState<APIResourceInterface[]>([]);
-        const [ apiResourceSearchQuery, setAPIResourceSearchQuery ] = useState<string>(undefined);
         const [ selectedAPIResourceId, setSelectedAPIResourceId ] = useState<string>(undefined);
-        const [ isAPIResourcesSearching, setAPIResourcesSearching ] = useState<boolean>(false);
+        const [ isAPIResourcesListLoading, setIsAPIResourcesListLoading ] = useState<boolean>(false);
+        const [ allAPIResourcesDropdownOptions, setAllAPIResourcesDropdownOptions ] = useState<DropdownItemProps[]>([]);
+        const [ allAPIResourcesListData, setAllAPIResourcesListData ] = useState<APIResourceInterface[]>([]);
+        const [ apiCallNextAfterValue, setAPICallNextAfterValue ] = useState<string>(null);
 
         const {
-            data: apiResourcesList,
-            isLoading: isAPIResourcesListFetchRequestLoading,
-            error: apiResourcsListFetchRequestError,
-            mutate: mutateAPIResourcesListFetchRequest
-        } = useAPIResourcesList(apiResourceSearchQuery);
+            data: currentAPIResourcesListData,
+            isLoading: iscurrentAPIResourcesListLoading,
+            error: currentAPIResourcesFetchRequestError,
+            mutate: mutatecurrentAPIResourcesList
+        } = useAPIResources(apiCallNextAfterValue);
 
         const {
             data: selectedAPIResource,
@@ -133,7 +132,6 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
          */ 
         useEffect(() => {
             if ( selectedAPIResourceFetchRequestError 
-                || apiResourcsListFetchRequestError 
                 || authorizedAPIListForApplicationError ) {
                 dispatch(
                     addAlert({
@@ -148,30 +146,15 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             } else {
                 setIsPermissionStepNextButtonDisabled(false);
             }
-        }, [ selectedAPIResourceFetchRequestError, apiResourcsListFetchRequestError ]);
+        }, [ selectedAPIResourceFetchRequestError, authorizedAPIListForApplicationError ]);
 
         /**
          * API resources list options.
          */
         useEffect(() => {
-            const options: DropdownProps[] = [];
+            const options: DropdownItemProps[] = [];
 
-            if(roleAudience === RoleAudienceTypes.ORGANIZATION) {
-                // API resources list options when role audience is "organization".
-                apiResourcesList?.apiResources?.map(
-                    (apiResource: APIResourceInterface) => {
-                        if (!selectedAPIResources.find(
-                            (selectedAPIResource: APIResourceInterface) => 
-                                selectedAPIResource?.id === apiResource?.id)) {
-                            options.push({
-                                key: apiResource.id,
-                                text: apiResource.name,
-                                type: apiResource.type,
-                                value: apiResource.id
-                            });
-                        }
-                    });
-            } else {
+            if(roleAudience === RoleAudienceTypes.APPLICATION) {
                 // API resources list options when role audience is "application".
                 authorizedAPIListForApplication?.map((api: AuthorizedAPIListItemInterface) => {
                     if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) => 
@@ -183,10 +166,124 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                         });
                     }
                 });
+
+                setAllAPIResourcesDropdownOptions(options);
+            }        
+        }, [ authorizedAPIListForApplication, selectedAPIResources ]);
+
+        useEffect(() => {
+            const options: DropdownItemProps[] = [];
+
+            if(roleAudience === RoleAudienceTypes.ORGANIZATION) {
+                // API resources list options when role audience is "organization".
+                allAPIResourcesListData.map((api: APIResourceInterface) => {
+                    if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) => 
+                        selectedAPIResource?.id === api?.id)) {
+                        options.push({
+                            key: api.id,
+                            text: api.name,
+                            type: api.type,
+                            value: api.id
+                        });
+                    }
+                    
+                });
+
+                // Filter out duplicate options
+                // ToDo: Remove this once the duplicate issue is fixed.
+                const filteredOptions: DropdownItemProps[] = options.filter((
+                    option: DropdownItemProps, index: number, self: DropdownItemProps[]) =>
+                    index === self.findIndex((t: DropdownItemProps) => (
+                        t.key === option.key
+                    ))
+                );
+
+                setAllAPIResourcesDropdownOptions(filteredOptions);
+            }
+        }, [ selectedAPIResources ]);
+
+        /**
+         * Assign all the API resources to the dropdown options if the after value is not null. 
+         */
+        useEffect(() => {
+            if (!isAPIResourcesListLoading) {
+                setIsAPIResourcesListLoading(true);
             }
 
-            setAPIResourcesListOptions(options);
-        }, [ authorizedAPIListForApplication, apiResourcesList, selectedAPIResources ]);
+            let afterValue: string;
+
+            if (currentAPIResourcesListData) {
+                const filteredDropdownItemOptions: DropdownItemProps[] =
+                (currentAPIResourcesListData?.apiResources.reduce(function (filtered: DropdownItemProps[],
+                    apiResource: APIResourceInterface) {
+
+                    const isCurrentAPIResourceSubscribed: boolean = selectedAPIResources?.length === 0
+                        || !selectedAPIResources?.some(
+                            (subscribedAPIResource: AuthorizedAPIListItemInterface) =>
+                                subscribedAPIResource.identifier === apiResource.identifier);
+
+                    if (isCurrentAPIResourceSubscribed) {
+                        const isCurrentAPIResourceAlreadyAdded: boolean = allAPIResourcesDropdownOptions.length === 0
+                            || !allAPIResourcesDropdownOptions?.some(
+                                (dropdownOption: DropdownItemProps) => dropdownOption.key === apiResource.id);
+
+                        if (isCurrentAPIResourceAlreadyAdded) {
+                            filtered.push({
+                                key: apiResource.id,
+                                text: apiResource.name,
+                                type: apiResource.type,
+                                value: apiResource.id
+                            });
+                        }
+                    }
+
+                    return filtered;
+                }, []));
+
+                setAllAPIResourcesDropdownOptions([
+                    ...allAPIResourcesDropdownOptions,
+                    ...filteredDropdownItemOptions ? filteredDropdownItemOptions : []
+                ]);
+
+                // Add the current API resources to the all API resources list.
+                setAllAPIResourcesListData([ ...allAPIResourcesListData, ...currentAPIResourcesListData.apiResources ]);
+
+                // Check if there are more API resources to be fetched.
+                let isAfterValueExists: boolean = false;
+
+                currentAPIResourcesListData?.links?.forEach((value: LinkInterface) => {
+                    if (value.rel === APIResourcesConstants.NEXT_REL) {
+                        afterValue = value.href.split(`${APIResourcesConstants.AFTER}=`)[1];
+
+                        if (afterValue !== apiCallNextAfterValue) {
+                            setAPICallNextAfterValue(afterValue);
+                            isAfterValueExists = true;
+                        }
+                    }
+                });
+                
+                if (isAfterValueExists) {
+                    mutatecurrentAPIResourcesList();
+                } else {
+                    setIsAPIResourcesListLoading(false);
+                }
+            }
+        }, [ currentAPIResourcesListData ]);        
+
+        /**
+         * The following useEffect is used to handle if any error occurs while fetching API resources.
+         */
+        useEffect(() => {
+            if (currentAPIResourcesFetchRequestError) {
+                dispatch(addAlert<AlertInterface>({
+                    description: t("extensions:develop.apiResource.notifications.getAPIResources" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("extensions:develop.apiResource.notifications.getAPIResources" +
+                        ".genericError.message")
+                }));
+            }
+        }, [ currentAPIResourcesFetchRequestError ]);
 
         /**
          * Add API resource to the selected API resources list.
@@ -204,32 +301,6 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                 selectedAPIResourceId && setSelectedAPIResourceId(undefined);
             }
         }, [ selectedAPIResource ]);
-
-        /**
-         * The following function handles the search query for the groups list.
-         */
-        const searchAPIResources: DebouncedFunc<(query: string) => void> = 
-            useCallback(debounce((query: string) => {
-                setAPIResourceSearchQuery(
-                    !isEmpty(query) 
-                        ? `name co ${query}` 
-                        : null
-                );
-                mutateAPIResourcesListFetchRequest().finally(() => {
-                    setAPIResourcesSearching(false);
-                });
-            }, RoleConstants.DEBOUNCE_TIMEOUT), []);
-
-        /**
-         * Handles the change of the search query of application list.
-         */
-        const onSearchChangeAPIResources = (event: ChangeEvent<HTMLInputElement>): void => {
-            // Only search the role audience is "organization".
-            if (roleAudience === RoleAudienceTypes.ORGANIZATION) {
-                setAPIResourcesSearching(true);
-                searchAPIResources(event?.target?.value?.toString().trim());
-            }
-        };
 
         /**
          * Handles the selection of an API resource.
@@ -259,7 +330,6 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                     ...selectedAPIResources 
                 ]);
             }
-            setAPIResourceSearchQuery(undefined);
         };
 
         /**
@@ -309,7 +379,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                                             "rolePermission.notes.applicationRoles" }
                                         tOptions={ { applicationName: assignedApplicationName } }
                                     >
-                                        Only the APIs and the scopes(permissions) that are authorized in the selected 
+                                        Only the APIs and the permissions(scopes) that are authorized in the selected 
                                         application (<b>{ assignedApplicationName }</b>) will be listed to select
                                     </Trans>
                                     
@@ -338,31 +408,28 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                                 ]
                             }
                         } }
-                        getOptionLabel={ (apiResourcesListOption: DropdownProps) => apiResourcesListOption.text }
+                        getOptionLabel={ (apiResourcesListOption: DropdownProps) =>
+                            apiResourcesListOption.text }
                         groupBy={ (apiResourcesListOption: DropdownProps) => apiResourcesListOption.type }
                         isOptionEqualToValue={ 
                             (option: DropdownProps, value: DropdownProps) => 
                                 option.value === value.value 
                         }
-                        loading={ isAPIResourcesSearching }
+                        loading={ iscurrentAPIResourcesListLoading }
                         onChange={ onAPIResourceSelected }
-                        options={ !isAPIResourcesSearching ? apiResourcesListOptions
-                            .sort((a: DropdownProps, b: DropdownProps) =>
-                                -b?.type?.localeCompare(a?.type)) : [] }
-                        noOptionsText={
-                            isAPIResourcesListFetchRequestLoading
-                                ? t("common:searching")
-                                : t("common:noResultsFound")
-                        }
+                        options={ allAPIResourcesDropdownOptions
+                            .sort((a: DropdownItemProps, b: DropdownItemProps) =>
+                                -b?.type?.localeCompare(a?.type)) }
+                        noOptionsText={ t("common:noResultsFound") }
                         renderInput={ (params: AutocompleteRenderInputParams) => (
                             <TextField
                                 { ...params }
-                                label={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
-                                    "apiResource.label") }
-                                onChange={ onSearchChangeAPIResources }
-                                placeholder={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
-                                    "apiResource.placeholder") }
+                                label={ t("console:manage.features.roles.addRoleWizard.forms." +
+                                    "rolePermission.apiResource.label") }
+                                placeholder={ t("console:manage.features.roles.addRoleWizard.forms." +
+                                    "rolePermission.apiResource.placeholder") }
                                 size="small"
+                                variant="outlined"
                             />
                         ) }
                     />

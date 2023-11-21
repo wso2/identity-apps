@@ -109,13 +109,13 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                         <Field
                             type="text"
                             name="identifier"
-                            label={ t("extensions:develop.apiResource.tabs.permissions.form.fields.permission.label") }
-                            placeholder={ t("extensions:develop.apiResource.tabs.permissions.form.fields." + 
-                                "permission.placeholder") }
+                            label={ t("console:apiResources.tabs.scopes.form.fields.scope.label") }
+                            placeholder={ t("console:apiResources.tabs.scopes.form.fields." + 
+                                "scope.placeholder") }
                             required={ true }
                             tabIndex={ 1 }
-                            requiredErrorMessage={ t("extensions:develop.apiResource.wizard.addApiResource.steps." +
-                                "permissions.form.fields.permission.emptyValidate") }
+                            requiredErrorMessage={ t("console:apiResources.wizard.addApiResource.steps." +
+                                "scopes.form.fields.scope.emptyValidate") }
                             validation={ async (value: string, validation: Validation) => {
 
                                 setPermissionValidationLoading(true);
@@ -123,8 +123,8 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                                 if (value) {
                                     if (!APIResourcesConstants.checkValidPermissionIdentifier(value)) {
                                         validation.isValid = false;
-                                        validation.errorMessages.push(t("extensions:develop.apiResource.wizard." +
-                                            "addApiResource.steps.permissions.form.fields.permission.invalid"));
+                                        validation.errorMessages.push(t("console:apiResources.wizard." +
+                                            "addApiResource.steps.scopes.form.fields.scope.invalid"));
                                     } else {
                                         const filter: string = "name eq " + value;
 
@@ -133,8 +133,8 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
 
                                         if (response?.length > 0) {
                                             validation.isValid = false;
-                                            validation.errorMessages.push(t("extensions:develop.apiResource.wizard." +
-                                            "addApiResource.steps.permissions.form.fields.permission.uniqueValidate"));
+                                            validation.errorMessages.push(t("console:apiResources.wizard." +
+                                            "addApiResource.steps.scopes.form.fields.scope.uniqueValidate"));
                                         }
                                     }
 
@@ -146,10 +146,10 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                         />
                         <Hint>
                             <Trans 
-                                i18nKey= { "extensions:develop.apiResource.wizard.addApiResource.steps." +
-                                    "permissions.form.fields.permission.hint" }>
+                                i18nKey= { "console:apiResources.wizard.addApiResource.steps." +
+                                    "scopes.form.fields.scope.hint" }>
                                 A unique value that acts as the scope when requesting an access token. 
-                                <b>Note that the permission cannot be modified once created.</b>
+                                <b>Note that the scope cannot be modified once created.</b>
                             </Trans>
                         </Hint>
                     </Grid.Column>
@@ -179,15 +179,15 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                         <Field
                             type="text"
                             name="description"
-                            label={ t("extensions:develop.apiResource.tabs.permissions.form.fields.description.label") }
-                            placeholder={ t("extensions:develop.apiResource.tabs.permissions.form.fields." + 
+                            label={ t("console:apiResources.tabs.scopes.form.fields.description.label") }
+                            placeholder={ t("console:apiResources.tabs.scopes.form.fields." + 
                                 "description.placeholder") }
                             tabIndex={ 3 }
                             data-testid={ `${componentId}-description` }
                         />
                         <Hint>
-                            { t("extensions:develop.apiResource.wizard.addApiResource.steps." +
-                                "permissions.form.fields.description.hint") }
+                            { t("console:apiResources.wizard.addApiResource.steps." +
+                                "scopes.form.fields.description.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

@@ -984,7 +984,8 @@
             "isApplicationLevelRoleMappingEnabled": false,
             "isXacmlAuthorizationEnabled": false,
             "isIncludeOrgNameInSubjectEnabled": false,
-            "isUseMappedLocalSubjectEnabled": false
+            "isUseMappedLocalSubjectEnabled": false,
+            "isSubjectIdentifierEnabled": false
         },
         "theme": {
             "name": "wso2is"

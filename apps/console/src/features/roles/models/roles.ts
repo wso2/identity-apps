@@ -63,6 +63,7 @@ export interface CreateRolePermissionInterface {
 }
 
 export interface CreateRoleAudienceInterface {
+    display?: string;
     value: string;
     type: string;
 }

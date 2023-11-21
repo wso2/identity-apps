@@ -79,8 +79,8 @@ export const AddAPIResourcePermission: FunctionComponent<AddAPIResourcePermissio
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
-                { t("extensions:develop.apiResource.tabs.permissions.form.title") }
-                <Heading as="h6">{ t("extensions:develop.apiResource.tabs.permissions.form.subTitle") }</Heading>
+                { t("console:apiResources.tabs.scopes.form.title") }
+                <Heading as="h6">{ t("console:apiResources.tabs.scopes.form.subTitle") }</Heading>
             </Modal.Header>
             <Modal.Content className="content-container">
                 <AddAPIResourcePermissionForm 
@@ -100,7 +100,7 @@ export const AddAPIResourcePermission: FunctionComponent<AddAPIResourcePermissio
                                 floated="left"
                                 onClick={ () => closeWizard() }
                             >
-                                { t("extensions:develop.apiResource.tabs.permissions.form.cancelButton") }
+                                { t("console:apiResources.tabs.scopes.form.cancelButton") }
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
@@ -110,7 +110,7 @@ export const AddAPIResourcePermission: FunctionComponent<AddAPIResourcePermissio
                                 onClick={ () => setSubmitAddPermissionForm() }
                                 loading={ isSubmitting }
                             >
-                                { t("extensions:develop.apiResource.tabs.permissions.form.submitButton") }
+                                { t("console:apiResources.tabs.scopes.form.submitButton") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>

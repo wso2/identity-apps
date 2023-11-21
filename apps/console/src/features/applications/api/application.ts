@@ -283,7 +283,7 @@ export const useMyAccountApplicationData = <Data = ApplicationListInterface, Err
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
-    const FILTERES: string = `clientId eq ${ ApplicationManagementConstants.MY_ACCOUNT_APP_CLIENT_ID }`;
+    const FILTERES: string = `name eq ${ ApplicationManagementConstants.MY_ACCOUNT_APP_NAME }`;
     const LIMIT: number = 1;
     const OFFSET: number = 0;
 

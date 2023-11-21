@@ -342,26 +342,30 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     width={ 16 }
                 />
             ) }
-            <Field.Textarea
-                ariaLabel="Application description"
-                name="description"
-                label={
-                    t("console:develop.features.applications.forms.generalDetails.fields.description" +
-                        ".label")
-                }
-                required={ false }
-                placeholder={
-                    t("console:develop.features.applications.forms.generalDetails.fields.description" +
-                        ".placeholder")
-                }
-                value={ description }
-                readOnly={ readOnly }
-                validation ={ (value: string) => validateDescription(value.toString().trim()) }
-                maxLength={ 300 }
-                minLength={ 3 }
-                data-testid={ `${ testId }-application-description-textarea` }
-                width={ 16 }
-            />
+            {
+                name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME && (
+                    <Field.Textarea
+                        ariaLabel="Application description"
+                        name="description"
+                        label={
+                            t("console:develop.features.applications.forms.generalDetails.fields.description" +
+                                ".label")
+                        }
+                        required={ false }
+                        placeholder={
+                            t("console:develop.features.applications.forms.generalDetails.fields.description" +
+                                ".placeholder")
+                        }
+                        value={ description }
+                        readOnly={ readOnly }
+                        validation ={ (value: string) => validateDescription(value.toString().trim()) }
+                        maxLength={ 300 }
+                        minLength={ 3 }
+                        data-testid={ `${ testId }-application-description-textarea` }
+                        width={ 16 }
+                    />
+                )
+            }
             {
                 <Field.Input
                     ariaLabel="Application image URL"

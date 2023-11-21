@@ -23,6 +23,7 @@ import {
     EnvelopeGearIcon,
     EnvelopeIcon,
     EnvelopeMagnifyingGlassIcon,
+    GearIcon,
     LightbulbOnIcon,
     LinearNodesIcon,
     NodesIcon,
@@ -521,14 +522,14 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
                         component: lazy(() =>
-                            import("../../../features/notification-channels/" + "pages/notification-channels")
+                            import("../../../features/email-and-sms/" + "pages/email-and-sms")
                         ),
                         exact: true,
                         icon: { icon: <EnvelopeGearIcon fill="black" className="icon" /> },
-                        id: "notification-channels",
-                        name: "Channels",
+                        id: "email-and-sms",
+                        name: "Email & SMS",
                         order: 15,
-                        path: `${ AppConstants.getDeveloperViewBasePath() }/channels`,
+                        path: `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms`,
                         protected: true,
                         showOnSidePanel: true
                     },
@@ -1169,6 +1170,43 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         path: AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN"),
                         protected: true,
                         showOnSidePanel: false
+                    },
+                    {
+                        children: [
+                            {
+                                component: lazy(() => import("../../console-settings/pages/console-roles-edit-page")),
+                                exact: false,
+                                icon: { icon: getSidePanelIcons().childIcon },
+                                id: "consoleRolesEdit",
+                                name: "Console Roles Edit",
+                                path: AppConstants.getPaths().get("CONSOLE_ROLES_EDIT"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() => {
+                                    return import("../../console-settings/pages/console-administrator-edit-page");
+                                }),
+                                exact: false,
+                                icon: { icon: getSidePanelIcons().childIcon },
+                                id: "consoleAdministratorsEdit",
+                                name: "Console Administrators Edit",
+                                path: AppConstants.getPaths().get("CONSOLE_ADMINISTRATORS_EDIT"),
+                                protected: true,
+                                showOnSidePanel: false
+                            }
+                        ],
+                        component: lazy(() => import("../../console-settings/pages/console-settings-page")),
+                        exact: true,
+                        icon: {
+                            icon: <GearIcon fill="black" className="icon" />
+                        },
+                        id: "consoleSettings",
+                        name: "Console Settings",
+                        order: 999,
+                        path: AppConstants.getPaths().get("CONSOLE_SETTINGS"),
+                        protected: true,
+                        showOnSidePanel: true
                     }
                 ]),
                 "id"
@@ -1587,7 +1625,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 order: 5,
                 path: UsersConstants.getPaths().get("COLLABORATOR_USERS_PATH"),
                 protected: true,
-                showOnSidePanel: true
+                showOnSidePanel: false
             },
             {
                 category: "extensions:manage.sidePanel.categories.userManagement",
