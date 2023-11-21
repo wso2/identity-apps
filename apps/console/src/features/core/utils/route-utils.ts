@@ -398,12 +398,11 @@ export class RouteUtils {
                 parent: branding
             },
             {
-                category: build,
-                id: "notification-channels",
-                parent: branding,
+                category: settings,
+                id: "email-and-sms",
                 selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
                     history.location.pathname === AppConstants.getPaths().get("SMS_PROVIDER") ||
-                    history.location.pathname === `${ AppConstants.getDeveloperViewBasePath() }/channels`
+                    history.location.pathname === AppConstants.getPaths().get("EMAIL_AND_SMS")
             },
             {
                 category: settings,

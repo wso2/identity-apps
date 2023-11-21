@@ -33,7 +33,7 @@ import { SettingsSection } from "../settings/settings-section";
 /**
  * Props for the Server Configurations page.
  */
-type NotificationChannelPageInterface = IdentifiableComponentInterface;
+type EmailAndSMSPageInterface = IdentifiableComponentInterface;
 
 /**
  * Governance connector listing page.
@@ -41,8 +41,8 @@ type NotificationChannelPageInterface = IdentifiableComponentInterface;
  * @param props - Props injected to the component.
  * @returns Governance connector listing page component.
  */
-export const NotificationChannelPage: FunctionComponent<NotificationChannelPageInterface> = (
-    props: NotificationChannelPageInterface
+export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
+    props: EmailAndSMSPageInterface
 ): ReactElement => {
     const { ["data-componentid"]: componentid } = props;
 
@@ -73,7 +73,7 @@ export const NotificationChannelPage: FunctionComponent<NotificationChannelPageI
     const handleEmailSelection = (): void => {
         history.push(AppConstants.getPaths().get("EMAIL_PROVIDER"));
     };
-    
+
     /**
      * Get the page details based on the enabled providers.
      */
@@ -84,21 +84,21 @@ export const NotificationChannelPage: FunctionComponent<NotificationChannelPageI
     } => {
         if ((isEmailProviderEnabled && isSMSProviderEnabled) || (!isEmailProviderEnabled && !isSMSProviderEnabled)) {
             return {
-                description: t("extensions:develop.notificationChannel.description.description"),
-                pageTitle: t("extensions:develop.notificationChannel.heading.heading"),
-                title: t("extensions:develop.notificationChannel.title.title")
+                description: t("extensions:develop.emailAndSMS.description.description"),
+                pageTitle: t("extensions:develop.emailAndSMS.heading.heading"),
+                title: t("extensions:develop.emailAndSMS.title.heading")
             };
         } else if (isSMSProviderEnabled) {
             return {
-                description: t("extensions:develop.notificationChannel.description.onlySMSProvider"),
-                pageTitle: t("extensions:develop.notificationChannel.heading.onlySMSProvider"),
-                title: t("extensions:develop.notificationChannel.title.onlySMSProvider")
+                description: t("extensions:develop.emailAndSMS.description.onlySMSProvider"),
+                pageTitle: t("extensions:develop.emailAndSMS.heading.onlySMSProvider"),
+                title: t("extensions:develop.emailAndSMS.title.onlySMSProvider")
             };
         } else if (isEmailProviderEnabled) {
             return {
-                description: t("extensions:develop.notificationChannel.description.onlyEmailProvider"),
-                pageTitle: t("extensions:develop.notificationChannel.heading.onlyEmailProvider"),
-                title: t("extensions:develop.notificationChannel.title.onlyEmailProvider")
+                description: t("extensions:develop.emailAndSMS.description.onlyEmailProvider"),
+                pageTitle: t("extensions:develop.emailAndSMS.heading.onlyEmailProvider"),
+                title: t("extensions:develop.emailAndSMS.title.onlyEmailProvider")
             };
         }
     };
@@ -148,8 +148,8 @@ export const NotificationChannelPage: FunctionComponent<NotificationChannelPageI
 /**
  * Default props for the component.
  */
-NotificationChannelPage.defaultProps = {
-    "data-componentid": "notification-channel-page"
+EmailAndSMSPage.defaultProps = {
+    "data-componentid": "email-and-sms-page"
 };
 
 /**
@@ -157,4 +157,4 @@ NotificationChannelPage.defaultProps = {
  * TODO: Change this to a named export once react starts supporting named exports for code splitting.
  * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
  */
-export default NotificationChannelPage;
+export default EmailAndSMSPage;

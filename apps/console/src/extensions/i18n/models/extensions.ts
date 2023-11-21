@@ -1764,7 +1764,7 @@ export interface Extensions {
             };
         };
         emailProviders: {
-            configureEmailProvider: string;
+            configureEmailTemplates: string;
             heading: string;
             subHeading: string;
             description: string;
@@ -1857,7 +1857,7 @@ export interface Extensions {
                 }
             };
         };
-        notificationChannel: {
+        emailAndSMS: {
             heading: {
                 heading: string;
                 onlySMSProvider: string;

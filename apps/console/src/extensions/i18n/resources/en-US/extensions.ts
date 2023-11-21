@@ -1989,14 +1989,14 @@ export const extensions: Extensions = {
             }
         },
         emailProviders: {
-            configureEmailProvider: "Configure Email Provider",
+            configureEmailTemplates: "Configure Email Templates",
             heading: "Custom Email Provider",
             subHeading: "Configure a custom SMTP server to send emails to your users with your own email address.",
             description: "Configure the email provider settings according to your SMTP server.",
             info: "You can customize the email content using <1>Email Templates</1>.",
             updateButton: "Update",
             sendTestMailButton: "Send Test Email",
-            goBack: "Go back to Channels",
+            goBack: "Go back to Email & SMS",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
                 content: "If you delete this configuration, the emails will be sent from the Asgardeo Email Address. " +
@@ -2089,19 +2089,19 @@ export const extensions: Extensions = {
                 }
             }
         },
-        notificationChannel: {
+        emailAndSMS: {
             heading: {
-                heading: "SMS / Email Providers",
+                heading: "Email & SMS Providers",
                 onlySMSProvider: "SMS Provider",
                 onlyEmailProvider: "Email Provider"
             },
             title: {
-                heading: "SMS / Email Providers",
+                heading: "Email & SMS Providers",
                 onlySMSProvider: "SMS Provider",
                 onlyEmailProvider: "Email Provider"
             },
             description: {
-                description: "Configure the SMS and Email providers for your organization.",
+                description: "Configure the Email and SMS providers for your organization.",
                 onlySMSProvider: "Configure the SMS provider for your organization.",
                 onlyEmailProvider: "Configure the Email provider for your organization."
             }
@@ -2113,7 +2113,7 @@ export const extensions: Extensions = {
             info: "You can customize the SMS content using <1>SMS Templates</1>.",
             updateButton: "Update",
             sendTestSMSButton: "Send Test SMS",
-            goBack: "Go back to Channels",
+            goBack: "Go back to Email & SMS",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
                 content: "If you delete this configuration, you will not receive SMS." +

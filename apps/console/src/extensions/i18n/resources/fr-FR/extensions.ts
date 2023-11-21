@@ -2022,14 +2022,14 @@ export const extensions: Extensions = {
             }
         },
         emailProviders: {
-            configureEmailProvider: "Configurer le fournisseur de messagerie",
+            configureEmailTemplates: "Configurer les modèles d'e-mail",
             heading: "Fournisseur de messagerie personnalisé",
             subHeading: "Configurez des serveurs SMTP personnalisés pour envoyer des e-mails avec votre propre adresse e-mail.",
             description: "Configurez les paramètres du fournisseur de messagerie en fonction de votre serveur SMTP.",
             info: "Vous pouvez personnaliser le contenu des e-mails à l'aide de <1>Modèles d'e-mails</1>.",
             updateButton: "Mise à jour",
             sendTestMailButton: "Envoyer un e-mail test",
-            goBack: "Revenir aux chaînes",
+            goBack: "Revenir à E-mail et SMS",
             confirmationModal: {
                 assertionHint: "Veuillez confirmer votre action.",
                 content: "Si vous supprimez cette configuration, les e-mails seront envoyés à partir de l'adresse e-mail Asgardeo. " +
@@ -2123,21 +2123,21 @@ export const extensions: Extensions = {
                 }
             }
         },
-        notificationChannel: {
+        emailAndSMS: {
             heading: {
-                heading: "SMS / fournisseurs de courriels",
+                heading: "Fournisseurs Email & SMS",
                 onlySMSProvider: "Fournisseur de SMS",
                 onlyEmailProvider: "Fournisseur de messagerie"
             },
             title: {
-                heading: "SMS / fournisseurs de courriels",
+                heading: "Fournisseurs Email & SMS",
                 onlySMSProvider: "Fournisseur de SMS",
                 onlyEmailProvider: "Fournisseur de messagerie"
             },
             description: {
                 description: "Configurez les SMS et les fournisseurs de messagerie pour votre organisation.",
                 onlySMSProvider: "Configurez le fournisseur SMS pour votre organisation.",
-                onlyEmailProvider: "Configurez le fournisseur de messagerie pour votre organisation."
+                onlyEmailProvider: "Configurez les fournisseurs Email et SMS pour votre organisation."
             }
         },
         smsProviders: {
@@ -2147,7 +2147,7 @@ export const extensions: Extensions = {
             info: "Vous pouvez personnaliser le contenu du SMS à l'aide des <1>Modèles de SMS</1>.",
             updateButton: "Mise à jour",
             sendTestSMSButton: "Envoyer un SMS test",
-            goBack: "Revenir aux chaînes",
+            goBack: "Revenir à E-mail et SMS",
             confirmationModal: {
                 assertionHint: "Veuillez confirmer votre action.",
                 content: "Si vous supprimez cette configuration, vous ne recevrez pas de SMS." +
