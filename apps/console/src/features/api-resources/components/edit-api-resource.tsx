@@ -94,7 +94,7 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
             )
         },
         {
-            menuItem: t("extensions:develop.apiResource.tabs.permissions.label"),
+            menuItem: t("console:apiResources.tabs.scopes.label"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <PermissionAPIResource 

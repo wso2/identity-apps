@@ -491,6 +491,113 @@ export const console: ConsoleNS = {
             }
         }
     },
+    apiResources: {
+        confirmations: {
+            deleteAPIResource: {
+                assertionHint: "කරුණාකර ඔබේ ක්රියාව තහවුරු කරන්න.",
+                content: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි වන අතර ඒපීපී සම්පත ස්ථිරවම මකා දමනු ඇත.",
+                header: "ඔයාට විශ්වාස ද?",
+                message: "ඔබ මෙම API සම්පත් මකා දැමුවහොත් සමහර ක්රියාකාරීත්වයන් නිසියාකාරව ක්රියා නොකරනු ඇත. " +
+                    "කරුණාකර ප්රවේශමෙන් ඉදිරියට යන්න."
+            },
+            deleteAPIResourcePermission: {
+                assertionHint: "කරුණාකර ඔබේ ක්රියාව තහවුරු කරන්න.",
+                content: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි වන අතර ඒපීපී සම්පතෙන් විෂය පථය ස්ථිරවම ඉවත් කරනු ඇත.",
+                header: "ඔයාට විශ්වාස ද?",
+                message: "ඔබ මෙම විෂය පථය API සම්පතෙන් ඉවත් කළහොත් සමහර ක්රියාකාරීත්වයන් නිසියාකාරව ක්රියා නොකරනු ඇත. " +
+                    "කරුණාකර ප්රවේශමෙන් ඉදිරියට යන්න."
+            }
+        },
+        tabs: {
+            scopes: {
+                button: "විෂය පථය එක් කරන්න",
+                label: "විෂය පථ",
+                title: "විෂය පථ ලැයිස්තුව",
+                subTitle: "API සම්පත මඟින් භාවිතා කරන විෂය පථ ලැයිස්තුව.",
+                learnMore: "තවත් හදාරන්න",
+                search: "දර්ශන නාමය මඟින් SECIPS විෂය පථය",
+                empty: {
+                    title: "විෂය පථයක් පවරා නොමැත",
+                    subTitle: "නව විෂය පථයක් එක් කිරීමට + අයිකනය මත ක්ලික් කරන්න"
+                },
+                emptySearch: {
+                    title: "ප්රතිල හමු නොවීය",
+                    subTitle: {
+                        0: "ඔබ සෙවූ විෂය පථය අපට සොයාගත නොහැකි විය.",
+                        1: "කරුණාකර වෙනත් පරාමිතියක් භාවිතා කිරීමට උත්සාහ කරන්න."
+                    },
+                    viewAll: "සෙවුම් විමසුම හිස් කරන්න"
+                },
+                copyPopupText: "හඳුනාගැනීම පිටපත් කරන්න",
+                copiedPopupText: "හඳුනාගැනීම පිටපත් කරන ලදි",
+                removeScopePopupText: "විෂය පථය ඉවත් කරන්න",
+                form: {
+                    button: "විෂය පථය එක් කරන්න",
+                    cancelButton: "අවලංගු කරන්න",
+                    submitButton: "අවසන්",
+                    title: "විෂය පථය එක් කරන්න",
+                    subTitle: "නව විෂය පථයක් සාදන්න",
+                    fields: {
+                        displayName: {
+                            emptyValidate: "දර්ශන නාමය හිස් විය නොහැක",
+                            label: "ප්රදර්ශන නාමය",
+                            placeholder: "වෙන්කරවා ගැනීම කියවන්න"
+                        },
+                        scope: {
+                            emptyValidate: "විෂය පථය හිස් විය නොහැක",
+                            label: "විෂය පථය",
+                            placeholder: "read_bookings"
+                        },
+                        description: {
+                            label: "විස්තර",
+                            placeholder: "විස්තරය ඇතුළත් කරන්න"
+                        }
+                    }
+                }
+            }
+        },
+        wizard: {
+            addApiResource: {
+                steps: {
+                    scopes: {
+                        empty: {
+                            title: "විෂය පථයක් පවරා නොමැත",
+                            subTitle: "නව විෂය පථයක් එක් කිරීමට + අයිකනය මත ක්ලික් කරන්න"
+                        },
+                        stepTitle: "විෂය පථ",
+                        form: {
+                            button: "විෂය පථය එක් කරන්න",
+                            fields: {
+                                displayName: {
+                                    emptyValidate: "දර්ශන නාමය හිස් විය නොහැක",
+                                    label: "ප්රදර්ශන නාමය",
+                                    placeholder: "වෙන්කරවා ගැනීම කියවන්න",
+                                    hint: "පරිශීලක කැමැත්ත ප්රකාශයේ එය පෙන්වන ආකාරය අර්ථවත් නමක් සපයන්න."
+                                },
+                                permission: {
+                                    emptyValidate: "විෂය පථය හිස් විය නොහැක",
+                                    uniqueValidate: "මෙම විෂය පථය දැනටමත් ආයතනය තුළ පවතී.කරුණාකර වෙනත් එකක් තෝරන්න.",
+                                    invalid: "විෂය පථයට අවකාශයන් අඩංගු විය නොහැක",
+                                    label: "විෂය පථය",
+                                    placeholder: "read_bookings",
+                                    hint: "ප්රවේශ ටෝකනයක් ඉල්ලා සිටින විට විෂය පථය ලෙස ක්රියා කරන අද්විතීය අගයක්. <1>මැවූ විට විෂය පථය වෙනස් කළ නොහැකි බව සලකන්න.</1>"
+                                },
+                                permissionList: {
+                                    label: "විෂයයන් එකතු කරන ලදි"
+                                },
+                                description: {
+                                    label: "විස්තර",
+                                    placeholder: "විස්තරය ඇතුළත් කරන්න",
+                                    hint: "ඔබේ විෂය පථය සඳහා විස්තරයක් සපයන්න.මෙය පරිශීලක කැමැත්ත ප්රකාශයේ දර්ශනය වේ."
+                                }
+                            }
+                        },
+                        removeScopePopupText: "විෂය පථය ඉවත් කරන්න"
+                    }
+                }
+            }
+        }
+    },
     branding: {
         form: {
             actions: {
@@ -8315,14 +8422,14 @@ export const console: ConsoleNS = {
                         rolePermission: {
                             apiResource: {
                                 label: "API සම්පත් තෝරන්න",
-                                placeholder: "විෂය පථය (අවසර) පැවරීම සඳහා API සම්පතක් තෝරන්න"
+                                placeholder: "අවසර ලබා දීම සඳහා API සම්පතක් තෝරන්න (විෂය පදක්කම්)"
                             },
                             permissions: {
-                                label: "තෝරාගත් API සම්පත් වලින් විෂයයන් (අවසර) තෝරන්න",
-                                placeholder: "විෂය පථය (අවසර) තෝරන්න",
+                                label: "තෝරාගත් API සම්පත් වලින් අවසර (විෂය පද) තෝරන්න",
+                                placeholder: "අවසර (විෂය පදක්කම්) තෝරන්න",
                                 tooltips: {
                                     noScopes: "තෝරාගත් API සම්පත සඳහා විෂය පදක් නොමැත",
-                                    selectAllScopes: "සියලුම විෂය පථය (අවසර) තෝරන්න",
+                                    selectAllScopes: "සියලුම අවසර (විෂය පද) තෝරන්න",
                                     removeAPIResource: "API සම්පත ඉවත් කරන්න"
                                 }
                             },
