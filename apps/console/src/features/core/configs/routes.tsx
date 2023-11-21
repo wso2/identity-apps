@@ -1625,7 +1625,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 order: 5,
                 path: UsersConstants.getPaths().get("COLLABORATOR_USERS_PATH"),
                 protected: true,
-                showOnSidePanel: true
+                showOnSidePanel: false
             },
             {
                 category: "extensions:manage.sidePanel.categories.userManagement",
