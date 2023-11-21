@@ -319,7 +319,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             setIsSubmitting(false);
             handleUpdateSuccess();
             setExistingSMSProviders([ provider + "SMSProvider" ]);
-            
         })
             .catch(() => {
                 handleUpdateError();
