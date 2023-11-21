@@ -180,6 +180,7 @@ export const AppUtils: AppUtilsInterface = (function() {
             const tenantPath: string = _config.legacyAuthzRuntime ? this.getTenantPath(true) : this.getTenantPath();
             const resolvedTenantPath: string = tenantPath.match(this.getSuperTenant())?.length > 0 ? "" : tenantPath;
             let clientID: string = _config.clientID;
+
             if (_config.legacyAuthzRuntime) {
                 if (this.isSaas() || this.isSuperTenant()) {
                     clientID = _config.clientID;
