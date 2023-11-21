@@ -373,7 +373,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                     onClick={ handleAddNewRoleWizardClick }
                                                     disabled={ isReadOnly }
                                                 >
-                                                    { t("console:develop.features.applications.edit." + 
+                                                    { t("console:develop.features.applications.edit." +
                                                             "sections.roles.createApplicationRoleWizard.button") }
                                                 </Button>
                                             )
