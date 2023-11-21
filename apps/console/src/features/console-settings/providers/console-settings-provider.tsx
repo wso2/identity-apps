@@ -19,6 +19,7 @@
 import React, { PropsWithChildren, ReactElement, useMemo } from "react";
 import { updateApplicationConfigurations, useApplicationList } from "../../applications/api/application";
 import { useGetApplication } from "../../applications/api/use-get-application";
+import { ApplicationManagementConstants } from "../../applications/constants";
 import { AuthenticationSequenceInterface } from "../../applications/models/application";
 import ConsoleSettingsContext from "../context/console-settings-context";
 
@@ -54,7 +55,10 @@ const ConsoleSettingsProvider = (props: PropsWithChildren<ConsoleSettingsProvide
      * @returns Promise containing void.
      */
     const updateConsoleLoginFlow = (authenticationSequence: AuthenticationSequenceInterface): Promise<void> => {
-        return updateApplicationConfigurations(consoleId, { authenticationSequence });
+        return updateApplicationConfigurations(consoleId, {
+            authenticationSequence,
+            name: ApplicationManagementConstants.CONSOLE_APP_NAME
+        });
     };
 
     return (
