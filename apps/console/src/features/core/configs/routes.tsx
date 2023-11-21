@@ -23,6 +23,7 @@ import {
     EnvelopeGearIcon,
     EnvelopeIcon,
     EnvelopeMagnifyingGlassIcon,
+    GearIcon,
     LightbulbOnIcon,
     LinearNodesIcon,
     NodesIcon,
@@ -1169,6 +1170,43 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         path: AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN"),
                         protected: true,
                         showOnSidePanel: false
+                    },
+                    {
+                        children: [
+                            {
+                                component: lazy(() => import("../../console-settings/pages/console-roles-edit-page")),
+                                exact: false,
+                                icon: { icon: getSidePanelIcons().childIcon },
+                                id: "consoleRolesEdit",
+                                name: "Console Roles Edit",
+                                path: AppConstants.getPaths().get("CONSOLE_ROLES_EDIT"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() => {
+                                    return import("../../console-settings/pages/console-administrator-edit-page");
+                                }),
+                                exact: false,
+                                icon: { icon: getSidePanelIcons().childIcon },
+                                id: "consoleAdministratorsEdit",
+                                name: "Console Administrators Edit",
+                                path: AppConstants.getPaths().get("CONSOLE_ADMINISTRATORS_EDIT"),
+                                protected: true,
+                                showOnSidePanel: false
+                            }
+                        ],
+                        component: lazy(() => import("../../console-settings/pages/console-settings-page")),
+                        exact: true,
+                        icon: {
+                            icon: <GearIcon fill="black" className="icon" />
+                        },
+                        id: "consoleSettings",
+                        name: "Console Settings",
+                        order: 999,
+                        path: AppConstants.getPaths().get("CONSOLE_SETTINGS"),
+                        protected: true,
+                        showOnSidePanel: true
                     }
                 ]),
                 "id"
@@ -1587,7 +1625,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 order: 5,
                 path: UsersConstants.getPaths().get("COLLABORATOR_USERS_PATH"),
                 protected: true,
-                showOnSidePanel: true
+                showOnSidePanel: false
             },
             {
                 category: "extensions:manage.sidePanel.categories.userManagement",

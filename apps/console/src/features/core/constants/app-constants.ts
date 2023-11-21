@@ -388,6 +388,9 @@ export class AppConstants {
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/session-management` ],
             [ "SAML2_CONFIGURATION",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/saml2-configuration` ],
+            [ "CONSOLE_SETTINGS", `${AppConstants.getAdminViewBasePath()}/settings` ],
+            [ "CONSOLE_ADMINISTRATORS_EDIT", `${AppConstants.getAdminViewBasePath()}/settings/administrators/:id` ],
+            [ "CONSOLE_ROLES_EDIT", `${AppConstants.getAdminViewBasePath()}/settings/roles/:id` ],
             [ "WSFED_CONFIGURATION",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/wsfed-configuration` ],
             [ "SERVER",
@@ -461,7 +464,8 @@ export class AppConstants {
         "applications",
         "emailTemplates",
         "governanceConnectors",
-        "branding"
+        "branding",
+        "consoleSettings"
     ];
 
     /**

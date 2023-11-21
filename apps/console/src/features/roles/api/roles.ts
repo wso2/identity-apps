@@ -23,10 +23,10 @@ import { HttpMethods, RoleListInterface, RolesInterface } from "@wso2is/core/mod
 import { AxiosError, AxiosResponse } from "axios";
 import isLegacyAuthzRuntime from "../../authorization/utils/get-legacy-authz-runtime";
 import { store } from "../../core";
-import useRequest, { 
-    RequestConfigInterface, 
-    RequestErrorInterface, 
-    RequestResultInterface 
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface
 } from "../../core/hooks/use-request";
 import { RoleAudienceTypes } from "../constants/role-constants";
 import {
@@ -50,7 +50,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * @param before - Before link.
  * @param after - After link.
  * @param limit - Limit.
- * 
+ *
  * @returns A promise containing the response.
  */
 export const getApplicationRolesByAudience = (
@@ -77,7 +77,7 @@ export const getApplicationRolesByAudience = (
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {            
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response.data as RolesV2ResponseInterface);
         })
         .catch((error: AxiosError) => {
@@ -93,7 +93,7 @@ export const getApplicationRolesByAudience = (
  * @param before - Before link.
  * @param after - After link.
  * @param limit - Limit.
- * 
+ *
  * @returns A promise containing the response.
  */
 export const getRoleByName = (
@@ -118,7 +118,7 @@ export const getRoleByName = (
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {            
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response.data as RolesV2ResponseInterface);
         })
         .catch((error: AxiosError) => {
@@ -139,7 +139,7 @@ export const getRoleById = (roleId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: (isLegacyAuthzRuntime() ? 
+        url: (isLegacyAuthzRuntime() ?
             store.getState().config.endpoints.roles : store.getState().config.endpoints.rolesV2) + "/" + roleId
     };
 
@@ -188,7 +188,7 @@ export const useGetRoleById = <Data = RolesInterface, Error = RequestErrorInterf
 
 /**
  * Retrieves API resource details for the given API resource IDs.
- * 
+ *
  * @param apiResourceIds - ids of the API resources
  * @returns `Promise<APIResourceInterface[]>`
  * @throws `IdentityAppsApiException`
@@ -214,7 +214,7 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: (isLegacyAuthzRuntime() ? 
+        url: (isLegacyAuthzRuntime() ?
             store.getState().config.endpoints.roles : store.getState().config.endpoints.rolesV2) + "/" + roleId
     };
 
@@ -373,7 +373,7 @@ export const getPermissionsForRole = (roleId: string): Promise<any> => {
 
 /**
  * Retrieves API resource details for the given API resource ID.
- * 
+ *
  * @param apiResourceId - id of the API resource
  * @returns `Promise<APIResourceInterface>`
  * @throws `IdentityAppsApiException`
@@ -423,7 +423,7 @@ export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Pr
 
 /**
  * Update roles for given role IDs.
- * 
+ *
  * @param roleIds - Ids of the Roles to be updated
  * @returns `Promise<APIResourceInterface[]>`
  * @throws `IdentityAppsApiException`
@@ -453,7 +453,7 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
         params: {
             domain
         },
-        url: isLegacyAuthzRuntime() ? 
+        url: isLegacyAuthzRuntime() ?
             store.getState().config.endpoints.roles : store.getState().config.endpoints.rolesV2
     };
 
@@ -485,13 +485,15 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
 /**
  * Hook to get the retrieve the list of groups that are currently in the system.
  *
- * @param domain - User store domain.
+ * @param, count - Number of records to fetch.
+ * @param startIndex - Index of the first record to fetch.
  * @param filter - Search filter.
+ * @param shouldFetch - Should fetch the data.
  * @returns The object containing the roles list.
  */
 export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInterface>(
-    count?: number, 
-    startIndex?: number, 
+    count?: number,
+    startIndex?: number,
     filter?: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
@@ -572,7 +574,7 @@ export const useAPIResourcesList = <Data = APIResourceListInterface, Error = Req
 };
 
 /**
- * 
+ *
  * @param apiResourceId - id of the API resource
  * @returns `Promise<APIResourceInterface>`
  * @throws `IdentityAppsApiException`
@@ -611,7 +613,7 @@ export const useAPIResourceDetails = <Data = APIResourceInterface, Error = Reque
  * Get the authorized APIs of the application with authorized permissions.
  *
  * @param appId - Application ID.
- * 
+ *
  * @returns A promise containing the response.
  * @deprecated This is a temporary hook until the API resource feature moved to the features folder.
  */

@@ -1,0 +1,27 @@
+.console-login-security {
+    .console-login-security-card {
+        .console-login-security-card-header {
+            .mfa-login-avatar {
+                background-color: #ECF1FF;
+                border-radius: var(--oxygen-shape-borderRadius);
+            }
+        }
+        
+        .mfa-cards {
+            margin-top: 3rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(48%, 100%), 1fr));
+            gap: 2rem;
+
+            .factor-name {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                align-content: center;
+                align-items: center;
+                gap: 10px;
+                font-weight: 500;
+            }
+        }
+    }
+}

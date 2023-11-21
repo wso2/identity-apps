@@ -31,6 +31,7 @@ import {
 import { BrandingPreferenceResourceEndpointsInterface } from "../../branding/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "../../certificates";
 import { ClaimResourceEndpointsInterface } from "../../claims/models/endpoints";
+import { ConsoleSettingsResourceEndpointsInterface } from "../../console-settings/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "../../groups";
 import { IDPResourceEndpointsInterface } from "../../identity-providers/models/endpoints";
 import { IdentityProviderTemplateLoadingStrategies } from "../../identity-providers/models/identity-provider";
@@ -425,7 +426,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     TenantResourceEndpointsInterface,
     ValidationServiceEndpointsInterface,
     JWTAuthenticationServiceEndpointsInterface,
-    BrandingPreferenceResourceEndpointsInterface {
+    BrandingPreferenceResourceEndpointsInterface,
+    ConsoleSettingsResourceEndpointsInterface {
 
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details
