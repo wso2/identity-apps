@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.9.15
+
+### Patch Changes
+
+- [#4777](https://github.com/wso2/identity-apps/pull/4777) [`20b53aecd8`](https://github.com/wso2/identity-apps/commit/20b53aecd88023efe3fb8830db564f5319fd60ae) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Pushing latest console to nexus
+
 ## 2.9.14
 
 ### Patch Changes
