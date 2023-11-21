@@ -21,7 +21,12 @@ import Autocomplete, {
     AutocompleteRenderInputParams 
 } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
-import { IdentifiableComponentInterface, ProfileInfoInterface, RolesMemberInterface } from "@wso2is/core/models";
+import { 
+    IdentifiableComponentInterface, 
+    ProfileInfoInterface, 
+    RoleGroupsInterface, 
+    RolesMemberInterface 
+} from "@wso2is/core/models";
 import { EmphasizedSegment, EmptyPlaceholder, Heading } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
@@ -31,9 +36,12 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { AutoCompleteRenderOption } from "./user-common-components/auto-complete-render-option";
 import { RenderChip } from "./user-common-components/render-chip";
+import { AppState } from "../../core";
 import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
+import { APPLICATION_DOMAIN, DOMAIN_SEPARATOR, INTERNAL_DOMAIN } from "../../roles/constants";
 
 interface UserRoleEditPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -54,16 +62,56 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
     const [ activeOption, setActiveOption ] = useState<RolesMemberInterface>(undefined);
     const [ showEmptyRolesListPlaceholder, setShowEmptyRolesListPlaceholder ] = useState<boolean>(false);
 
+    const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) => 
+        state?.config?.ui?.isGroupAndRoleSeparationEnabled);
+
     /**
      * Set initial selected roles options
      */
     useEffect(() => {
-        if ( user?.roles?.length > 0 ) {
-            setInitialSelectedRolesOptions(user.roles);
+        let userRoles: RolesMemberInterface[];
+        
+        if (isGroupAndRoleSeparationEnabled && user?.roles?.length > 0) {
+            userRoles = user.roles;
+        } else {
+            userRoles = extractUserRolesFromGroups(user?.groups);
+        }
+
+        if ( userRoles?.length > 0 ) {
+            setInitialSelectedRolesOptions(userRoles);
         } else {
             setShowEmptyRolesListPlaceholder(true);
         }
+        
     }, [ user ]);
+
+    /**
+     * When Group and Role Separation is enabled, the groups section of the user will contain both roles and groups.
+     * This method can be used to extract roles from the groups section.
+     * 
+     * @param groups - Groups of the user
+     * @returns Roles of the user
+     */
+    const extractUserRolesFromGroups = (groups: RoleGroupsInterface[]): RolesMemberInterface[] => {
+
+        const userRoles: RolesMemberInterface[] = [];
+        
+        groups?.forEach((group: RoleGroupsInterface) => {
+            const displayName: string[] = group?.display?.split(DOMAIN_SEPARATOR);
+            
+            if (displayName?.length > 1 && [ APPLICATION_DOMAIN, INTERNAL_DOMAIN ].includes(displayName[0])) {
+                userRoles.push({
+                    $ref: group.$ref,
+                    display: displayName[1],
+                    orgId: undefined,
+                    orgName: undefined,
+                    value: group.value
+                });
+            }
+        });
+        
+        return userRoles;
+    };
 
     /**
      * Get the place holder components.
