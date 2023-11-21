@@ -2774,7 +2774,7 @@ export const extensions: Extensions = {
                                         "saisir leur nom d'utilisateur, créant ainsi une expérience " + 
                                         "de connexion plus rationalisée.",
                                         label: "Authentification sans nom d'utilisateur:"
-                                    },
+                                    }
                                 },
                                 steps: {
                                     info: "Pour configurer, veuillez suivre les étapes ci-dessous:",

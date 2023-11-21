@@ -2704,7 +2704,7 @@ export const extensions: Extensions = {
                                         "without entering their username, creating a more streamlined " +
                                         "sign-in experience.",
                                         label: "Usernameless Authentication:"
-                                    },
+                                    }
                                 },
                                 steps: {
                                     info: "To configure, please follow the steps below:",
