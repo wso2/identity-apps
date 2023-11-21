@@ -548,7 +548,11 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                             return (
                                                 <ResourceGrid.Card
                                                     key={ templateIndex }
-                                                    resourceName={ template.name }
+                                                    resourceName={ 
+                                                        template?.name === "Expert Mode"
+                                                            ? "Custom Connector"
+                                                            : template?.name
+                                                    }
                                                     isResourceComingSoon={ template.comingSoon }
                                                     disabled={ template.disabled }
                                                     comingSoonRibbonLabel={ t("common:comingSoon") }

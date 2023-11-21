@@ -329,7 +329,11 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
             case ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID:
                 return (
                     <ExpertModeAuthenticationProviderCreateWizard
-                        title={ selectedTemplateWithUniqueName?.name }
+                        title={
+                            selectedTemplateWithUniqueName?.name === "Expert Mode"
+                                ? "Custom Connector"
+                                : selectedTemplateWithUniqueName?.name
+                        }
                         subTitle={ selectedTemplateWithUniqueName?.description }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
