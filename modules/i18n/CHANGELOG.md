@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.54
+
+### Patch Changes
+
+- [#4750](https://github.com/wso2/identity-apps/pull/4750) [`2c5e9f2847`](https://github.com/wso2/identity-apps/commit/2c5e9f2847ac4f54ec7b906f6ea93746c3728309) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update fido quick start
+
 ## 2.0.53
 
 ### Patch Changes
