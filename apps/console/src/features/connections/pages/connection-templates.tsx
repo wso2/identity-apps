@@ -55,7 +55,11 @@ import {
     ConnectionTemplateItemInterface
 } from "../models/connection";
 import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
-import { ConnectionsManagementUtils, handleGetConnectionTemplateListError, resolveConnectionName } from "../utils/connection-utils";
+import {
+    ConnectionsManagementUtils,
+    handleGetConnectionTemplateListError,
+    resolveConnectionName
+} from "../utils/connection-utils";
 
 /**
  * Proptypes for the Connection template page component.
