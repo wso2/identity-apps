@@ -270,24 +270,6 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-            <Grid data-componentid={ `${ testId }-passkeys` }>
-                <div className="mt-3 mb-6">
-                    <Message
-                        type={ "info" }
-                        header={ t("extensions:develop.identityProviders.fido.quickStart.passkeys.heading") }
-                        content={ 
-                            (<>
-                                { t("extensions:develop.identityProviders.fido.quickStart.passkeys.content") }
-                                <DocumentationLink 
-                                    link={ getLink("develop.connections.edit.quickStart.fido.learnMore") }
-                                >
-                                    { t("extensions:develop.identityProviders.fido.quickStart.passkeys.docLinkText") }
-                                </DocumentationLink>
-                            </>)
-                        }
-                    />
-                </div>
-            </Grid>
             {
                 showApplicationModal && (
                     <ApplicationSelectionModal
