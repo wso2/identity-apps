@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.9.13
+
+### Patch Changes
+
+- [#4772](https://github.com/wso2/identity-apps/pull/4772) [`7e84f90156`](https://github.com/wso2/identity-apps/commit/7e84f901563afc571ccf0dafddc19477daa2c8aa) Thanks [@brionmario](https://github.com/brionmario)! - [temp] disable username validation in create wizard
+
+* [#4769](https://github.com/wso2/identity-apps/pull/4769) [`75a616ace0`](https://github.com/wso2/identity-apps/commit/75a616ace0ae458bbfe9d873400628e37d47e1e4) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Remove setup guide from connections
+
 ## 2.9.12
 
 ### Patch Changes
