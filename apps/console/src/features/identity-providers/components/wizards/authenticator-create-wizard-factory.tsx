@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -416,7 +416,11 @@ export const AuthenticatorCreateWizardFactory: FunctionComponent<AuthenticatorCr
             return (showWizard && !isEmpty(selectedTemplateWithUniqueName))
                 ? (
                     <ExpertModeAuthenticationProviderCreateWizard
-                        title={ selectedTemplateWithUniqueName?.name }
+                        title={ 
+                            selectedTemplateWithUniqueName?.name === "Expert Mode"
+                                ? "Custom Connector"
+                                : selectedTemplateWithUniqueName?.name
+                        }
                         subTitle={ selectedTemplateWithUniqueName?.description }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
