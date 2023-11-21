@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.9.9
+
+### Patch Changes
+
+- [#4755](https://github.com/wso2/identity-apps/pull/4755) [`45041111ce`](https://github.com/wso2/identity-apps/commit/45041111ce6d6e756617dc9464e1cdfcf550394d) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Show `Create Role` button based on selected role audience
+
+* [#4753](https://github.com/wso2/identity-apps/pull/4753) [`5f038079da`](https://github.com/wso2/identity-apps/commit/5f038079dabb5aea2ebbb9354c3ed19bcf2239e2) Thanks [@brionmario](https://github.com/brionmario)! - Make `APPLICATION` default audience for App Templates
+
 ## 2.9.8
 
 ### Patch Changes
