@@ -189,6 +189,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const isFragmentApp: boolean = application?.advancedConfigurations?.fragment || false;
 
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
     /**
      * Called when an application updates.
      *
@@ -781,7 +783,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         if (featureConfig) {
             if (isFeatureEnabled(featureConfig?.applications,
-                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))) {
+                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))
+                && !isSubOrganization()) {
                 if (applicationConfig.editApplication.
                     isTabEnabledForApp(
                         inboundProtocolConfig?.oidc?.clientId,
