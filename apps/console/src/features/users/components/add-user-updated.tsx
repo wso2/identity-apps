@@ -25,13 +25,13 @@ import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Message, Radio 
 import { SharedUserStoreConstants } from "../../core/constants";
 import { EventPublisher, SharedUserStoreUtils } from "../../core/utils";
 import { getUsersList } from "../../users/api/users";
-import { 
+import {
     BasicUserDetailsInterface,
     UserListInterface
 } from "../../users/models/user";
 import {
-    generatePassword, 
-    getConfiguration, 
+    generatePassword,
+    getConfiguration,
     getUsernameConfiguration
 } from "../../users/utils";
 import {
@@ -134,10 +134,10 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
-     * 
+     *
      * It toggles user summary, password creation prompt, offline status according to password options.
      */
-    useEffect(() => {        
+    useEffect(() => {
         if (passwordOption === PasswordOptionTypes.CREATE_PASSWORD) {
             setUserSummaryEnabled(true);
             setAskPasswordFromUser(true);
@@ -472,22 +472,22 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                                     minLowerCase: passwordConfig.minLowerCaseCharacters
                                                 })
                                         ),
-                                    consecutiveChr: 
+                                    consecutiveChr:
                                         t("extensions:manage.features.user.addUser.validation.consecutiveCharacters", {
                                             repeatedChr: passwordConfig.maxConsecutiveCharacters
                                         }),
                                     length: t("extensions:manage.features.user.addUser.validation.passwordLength", {
                                         max: passwordConfig.maxLength, min: passwordConfig.minLength
                                     }),
-                                    numbers: 
+                                    numbers:
                                         t("extensions:manage.features.user.addUser.validation.passwordNumeric", {
                                             min: passwordConfig.minNumbers
                                         }),
-                                    specialChr: 
+                                    specialChr:
                                         t("extensions:manage.features.user.addUser.validation.specialCharacter", {
                                             specialChr: passwordConfig.minSpecialCharacters
                                         }),
-                                    uniqueChr: 
+                                    uniqueChr:
                                         t("extensions:manage.features.user.addUser.validation.uniqueCharacters", {
                                             uniqueChr: passwordConfig.minUniqueCharacters
                                         })
@@ -523,8 +523,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
             submitState={ triggerSubmit }
         >
             <Grid>
-                {   
-                    !hiddenFields.includes(HiddenFieldNames.USERSTORE) && 
+                {
+                    !hiddenFields.includes(HiddenFieldNames.USERSTORE) &&
                         !isUserStoreError && (
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
@@ -637,7 +637,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                     />
                                 </Grid.Column>
                             </Grid.Row>
-                        ) : ( 
+                        ) : (
                             <Grid.Row>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                     <div ref={ emailRef } />
@@ -655,60 +655,62 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                             "validations.empty"
                                         ) }
                                         validation={ async (value: string, validation: Validation) => {
-                                            /// Regular expression to validate having alphanumeric characters.
-                                            const regExpInvalidUsername: RegExp
-                                            = new RegExp(UserManagementConstants.USERNAME_VALIDATION_REGEX);
+                                            // TODO: Fix the validation issues and re-enable the validation.
+                                            // Tracker: https://github.com/wso2/product-is/issues/18010
+                                            // /// Regular expression to validate having alphanumeric characters.
+                                            // const regExpInvalidUsername: RegExp
+                                            // = new RegExp(UserManagementConstants.USERNAME_VALIDATION_REGEX);
 
-                                            // Check username length validations.
-                                            if (value.length < Number(usernameConfig.minLength)
-                                                || value.length > Number(usernameConfig.maxLength)) {
-                                                validation.isValid = false;
-                                                validation.errorMessages.push(
-                                                    USERNAME_HAS_INVALID_LENGTH_ERROR_MESSAGE);
-                                            // Check username validity against userstore regex.
-                                            } else if (!regExpInvalidUsername.test(value)) {
-                                                validation.isValid = false;
-                                                validation.errorMessages.push(
-                                                    USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE);
-                                            }
+                                            // // Check username length validations.
+                                            // if (value.length < Number(usernameConfig.minLength)
+                                            //     || value.length > Number(usernameConfig.maxLength)) {
+                                            //     validation.isValid = false;
+                                            //     validation.errorMessages.push(
+                                            //         USERNAME_HAS_INVALID_LENGTH_ERROR_MESSAGE);
+                                            // // Check username validity against userstore regex.
+                                            // } else if (!regExpInvalidUsername.test(value)) {
+                                            //     validation.isValid = false;
+                                            //     validation.errorMessages.push(
+                                            //         USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE);
+                                            // }
 
-                                            try {
-                                                setBasicDetailsLoading(true);
-                                                // Check for the existence of users in the userstore by the username.
-                                                // Some characters disallowed by username
-                                                // -regex cause failure in below request.
-                                                // Therefore, existence of duplicates is
-                                                // -checked only post regex validation success.
-                                                if (value && validation.isValid === true) {
-                                                    const usersList: UserListInterface
-                                                    = await getUsersList(null, null,
-                                                        "userName eq " + value, null,
-                                                        userStore);
+                                            // try {
+                                            //     setBasicDetailsLoading(true);
+                                            //     // Check for the existence of users in the userstore by the username.
+                                            //     // Some characters disallowed by username
+                                            //     // -regex cause failure in below request.
+                                            //     // Therefore, existence of duplicates is
+                                            //     // -checked only post regex validation success.
+                                            //     if (value && validation.isValid === true) {
+                                            //         const usersList: UserListInterface
+                                            //         = await getUsersList(null, null,
+                                            //             "userName eq " + value, null,
+                                            //             userStore);
 
-                                                    if (usersList?.totalResults > 0) {
-                                                        validation.isValid = false;
-                                                        validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
-                                                        scrollToInValidField("email");
-                                                    }
-                                                }
-                                                
-                                                setBasicDetailsLoading(false);
-                                            } catch (error) {
-                                                // Some non ascii characters are not accepted by DBs
-                                                // with certain charsets.
-                                                // Hence, the API sends a `500` status code.
-                                                // see below issue for more context.
-                                                // https://github.com/wso2/product-is/issues/
-                                                // 10190#issuecomment-719760318
-                                                if (error?.response?.status === 500) {
-                                                    validation.isValid = false;
-                                                    validation.errorMessages.push(
-                                                        USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
-                                                    scrollToInValidField("email");
-                                                }
+                                            //         if (usersList?.totalResults > 0) {
+                                            //             validation.isValid = false;
+                                            //             validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
+                                            //             scrollToInValidField("email");
+                                            //         }
+                                            //     }
 
-                                                setBasicDetailsLoading(false);
-                                            }
+                                            //     setBasicDetailsLoading(false);
+                                            // } catch (error) {
+                                            //     // Some non ascii characters are not accepted by DBs
+                                            //     // with certain charsets.
+                                            //     // Hence, the API sends a `500` status code.
+                                            //     // see below issue for more context.
+                                            //     // https://github.com/wso2/product-is/issues/
+                                            //     // 10190#issuecomment-719760318
+                                            //     if (error?.response?.status === 500) {
+                                            //         validation.isValid = false;
+                                            //         validation.errorMessages.push(
+                                            //             USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
+                                            //         scrollToInValidField("email");
+                                            //     }
+
+                                            //     setBasicDetailsLoading(false);
+                                            // }
                                         } }
                                         type="text"
                                         value={ initialValues && initialValues.userName }
@@ -843,7 +845,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                                 ".buttons.radioButton.label") }
                                         </label>
                                         {
-                                            emailVerificationEnabled && 
+                                            emailVerificationEnabled &&
+                                            (isValidEmail && isEmailFilled) ||
                                             !isAlphanumericUsernameEnabled()
                                                 ? (
                                                     <Radio
