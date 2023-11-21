@@ -2701,7 +2701,7 @@ export const extensions: Extensions = {
                                     },
                                     usernamelessAuthentication: {
                                         description: "Enabling this feature allows users to log in with a passkey " +
-                                        "without entering their username, creating a more streamlined " +
+                                        "without entering a username, creating a more streamlined " +
                                         "sign-in experience.",
                                         label: "Usernameless Authentication:"
                                     }

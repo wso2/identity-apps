@@ -2769,10 +2769,10 @@ export const extensions: Extensions = {
                                         "pas d'ajouter le script manuellement."
                                     },
                                     usernamelessAuthentication: {
-                                        description: "L'activation de cette fonctionnalité permet " + 
-                                        "aux utilisateurs de se connecter avec un mot de passe sans " + 
-                                        "saisir leur nom d'utilisateur, créant ainsi une expérience " + 
-                                        "de connexion plus rationalisée.",
+                                        description: "L'activation de cette fonctionnalité permet aux " +
+                                        "utilisateurs de se connecter avec un mot de passe sans saisir " +
+                                        "de nom d'utilisateur, créant ainsi une expérience de " + 
+                                        "connexion plus rationalisée.",
                                         label: "Authentification sans nom d'utilisateur:"
                                     }
                                 },
