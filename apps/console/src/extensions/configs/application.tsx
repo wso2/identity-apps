@@ -390,6 +390,7 @@ export const applicationConfig: ApplicationConfig = {
                     || application?.templateId === SinglePageAppTemplate?.id
                     || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                 )
+                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
                 tabExtensions.push(
                     {
@@ -421,6 +422,7 @@ export const applicationConfig: ApplicationConfig = {
                     || application?.templateId === OIDCWebAppTemplate?.id
                     || application?.templateId === SinglePageAppTemplate?.id
                 )
+                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
                 tabExtensions.push(
                     {
