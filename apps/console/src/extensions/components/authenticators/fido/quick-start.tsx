@@ -21,14 +21,11 @@ import Alert from "@oxygen-ui/react/Alert";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { 
     CodeEditor,
-    DocumentationLink,
     GenericIcon,
     Heading,
     Link,
-    Message,
     PageHeader,
-    Text,
-    useDocumentation
+    Text
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -65,7 +62,6 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-    const { getLink } = useDocumentation();
 
     const [ showApplicationModal, setShowApplicationModal ] = useState<boolean>(false);
 
