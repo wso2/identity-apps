@@ -2761,10 +2761,10 @@ export const extensions: Extensions = {
                                         note: "Si la clé d'accès est définie comme premier facteur, " + 
                                         "le <1> script adaptatif</1> suivant doit être ajouté " + 
                                         "sous l'onglet <3>Méthode de connexion</3> de l'application. " + 
-                                        "Ce script est utilisé pour vérifier l'identité de " + 
-                                        "l'utilisateur avant d'enregistrer les clés d'accès " + 
-                                        "et il est automatiquement inclus dans la configuration " + 
-                                        "des clés d'accès basée sur un modèle. Toutefois, si vous " + 
+                                        "Ce script est ajouté automatiquement avec la configuration de " + 
+                                        "la clé d'accès basée sur un modèle et est utilisé pour vérifier " + 
+                                        "l'identité de l'utilisateur avant d'inscrire les " +
+                                        "clés d'accès. Toutefois, si vous " + 
                                         "configurez des mots de passe sans modèle, n'oubliez " +
                                         "pas d'ajouter le script manuellement."
                                     },

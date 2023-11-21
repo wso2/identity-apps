@@ -2693,10 +2693,10 @@ export const extensions: Extensions = {
                                         note: "If Passkey is set as a first factor, the following " +
                                         "<1> adaptive script</1> should be added under " +
                                         "the <3>Sign-In-Method</3> tab of the application. " +
-                                        "This script is used to verify the user's identity " +
-                                        "before enrolling passkeys and it is included automatically " +
-                                        "with the template-based passkey setup. " +
-                                        "However, if you're configuring passkeys " +
+                                        "This script is added automatically with the template-based " + 
+                                        "Passkey setup and is used to verify the user's " +
+                                        "identity before enrolling passkeys. " +
+                                        "However, if you're configuring Passkey " +
                                         "without a template, remember to add the script manually."
                                     },
                                     usernamelessAuthentication: {
