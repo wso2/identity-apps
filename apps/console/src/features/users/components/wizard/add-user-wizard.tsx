@@ -47,11 +47,16 @@ import { AddUserWizardSummary } from "./user-wizard-summary";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { UserAccountTypes, UsersConstants } from "../../../../extensions/components/users/constants";
 import { SCIMConfigs } from "../../../../extensions/configs/scim";
+import useAuthorization from "../../../authorization/hooks/use-authorization";
 import { UserStoreDetails, UserStoreProperty } from "../../../core/models";
 import { AppState } from "../../../core/store";
 import { GroupsInterface } from "../../../groups";
 import { getGroupList, updateGroupDetails } from "../../../groups/api";
-import { OrganizationRoleListItemInterface } from "../../../organizations/models";
+import { getOrganizationRoles } from "../../../organizations/api";
+import { OrganizationRoleManagementConstants, OrganizationType } from "../../../organizations/constants";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { OrganizationResponseInterface, OrganizationRoleListItemInterface,
+    OrganizationRoleListResponseInterface } from "../../../organizations/models";
 import { getRolesList, updateRoleDetails } from "../../../roles/api";
 import { getUserStores } from "../../../userstores/api";
 import { useValidationConfigData } from "../../../validation/api";
@@ -144,6 +149,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitRoleList, setSubmitRoleList ] = useTrigger();
@@ -151,6 +157,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
     const [ submitUserTypeSelection, setSubmitUserTypeSelection ] = useTrigger();
 
+    const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) =>
+        state.organization.organization);
     const profileSchemas: ProfileSchemaInterface[] = useSelector(
         (state: AppState) => state.profile.profileSchemas);
     
@@ -191,6 +199,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ isUserStoreError, setUserStoreError ] = useState<boolean>(false);
     const [ isUserSummaryEnabled, setUserSummaryEnabled ] = useState(false);
     const [ newUserId, setNewUserId ] = useState<string>("");
+    const { legacyAuthzRuntime } = useAuthorization();
 
     const excludedAttributes: string = "members";
 
@@ -308,11 +317,32 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      */
     useEffect(() => {
         if (initialRoleList.length === 0) {
-            getRolesList(null)
-                .then((response: AxiosResponse) => {
-                    setRoleList(response.data.Resources);
-                    setInitialRoleList(response.data.Resources);
-                });
+            if (organizationType === OrganizationType.SUPER_ORGANIZATION
+                || organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION
+                || !legacyAuthzRuntime
+            ) {
+                // Get Roles from the SCIM API
+                getRolesList(null)
+                    .then((response: AxiosResponse) => {
+                        setRoleList(response.data.Resources);
+                        setInitialRoleList(response.data.Resources);
+                    });
+            } else {
+                // Get Roles from the Organization API
+                getOrganizationRoles(currentOrganization.id, null, 100, null)
+                    .then((response: OrganizationRoleListResponseInterface) => {
+                        if (!response.Resources) {
+                            return;
+                        }
+
+                        const roles: OrganizationRoleListItemInterface[] = response.Resources
+                            .filter((role: OrganizationRoleListItemInterface) =>
+                                role.displayName !== OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME);
+
+                        setRoleList(roles);
+                        setInitialRoleList(roles);
+                    });
+            }
         }
 
         getUserStoreList();
