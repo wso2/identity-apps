@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.9.12
+
+### Patch Changes
+
+- [#4766](https://github.com/wso2/identity-apps/pull/4766) [`30e3abb1df`](https://github.com/wso2/identity-apps/commit/30e3abb1df21a5be926ab09f370d1353721a6c97) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Remove radio button option
+
 ## 2.9.11
 
 ### Patch Changes
