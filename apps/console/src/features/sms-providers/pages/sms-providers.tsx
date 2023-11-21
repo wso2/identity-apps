@@ -318,6 +318,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             setSmsProviderSettings({ ...smsProviderSettings, providerParams: updatedParams });
             setIsSubmitting(false);
             handleUpdateSuccess();
+            setExistingSMSProviders([ provider + "SMSProvider" ]);
         })
             .catch(() => {
                 handleUpdateError();
@@ -671,6 +672,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                 handleConfigurationDelete().finally(() => {
                                     setIsSubmitting(false);
                                     setOpenRevertConfigModal(false);
+                                    setExistingSMSProviders([]);
                                 });
 
                             } }
