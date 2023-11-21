@@ -35,9 +35,9 @@ import { EditRoleLocalGroupsAccordion } from "./edit-role-local-groups-accordion
 import { useGetApplication } from "../../../applications/api/use-get-application";
 import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../applications/models/application";
 import { AuthenticatorManagementConstants } from "../../../connections/constants/autheticator-constants";
-import { 
-    PatchGroupAddOpInterface, 
-    PatchGroupRemoveOpInterface 
+import {
+    PatchGroupAddOpInterface,
+    PatchGroupRemoveOpInterface
 } from "../../../groups";
 import { useIdentityProviderList } from "../../../identity-providers/api/identity-provider";
 import { IdentityProviderInterface, StrictIdentityProviderInterface } from "../../../identity-providers/models";
@@ -63,7 +63,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     const assignedGroups: Map<string, RoleGroupsInterface[]> = RoleManagementUtils
         .getRoleGroupsGroupedByIdp(role?.groups);
     const LOCAL_GROUPS_IDENTIFIER_ID: string = "LOCAL";
-    
+
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
@@ -103,22 +103,22 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             && (isApplicationRequestLoading || applicationRequestError)) {
             return;
         }
-    
-        const filteredList: StrictIdentityProviderInterface[] = idpList.identityProviders.filter(
+
+        const filteredList: StrictIdentityProviderInterface[] = idpList?.identityProviders?.filter(
             (provider: StrictIdentityProviderInterface) => {
                 return !excludedIDPs.includes(provider.federatedAuthenticators.defaultAuthenticatorId);
             }
         );
-        
+
         // If the role is an application role, filter out the IDPs that are configured for the application.
         if (roleAudience === RoleAudienceTypes.APPLICATION) {
             const applicationIDPList: StrictIdentityProviderInterface[] = [];
 
             applicationData.authenticationSequence.steps.forEach((step: AuthenticationStepInterface) => {
                 step.options.forEach((option: AuthenticatorInterface) => {
-                    const idp: StrictIdentityProviderInterface = filteredList.find(
+                    const idp: StrictIdentityProviderInterface = filteredList?.find(
                         (idp: StrictIdentityProviderInterface) => idp.name === option.idp);
-                    
+
                     if (idp) {
                         applicationIDPList.push(idp);
                     }
@@ -132,7 +132,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
 
     /**
      * Handles the change of the selected groups list.
-     * 
+     *
      * @param idpID - Identity provider ID.
      * @param selectedGroupsIDs - List of selected groups IDs.
      * @param removedGroupsIDs - List of removed groups IDs.
@@ -157,7 +157,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
 
     /**
      * Listener for the group accordion expansion.
-     * 
+     *
      * @param idpID - Identity provider ID.
      * @param isExpanded - Is the accordion expanded.
      */
@@ -175,7 +175,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     const onGroupsUpdate = (): void => {
         setIsSubmitting(true);
         const groupIDsToBeRemoved: string[] = [];
-        
+
         removedGroupsIds?.forEach((groupIDs: string[]) => {
             if (groupIDs?.length > 0) {
                 groupIDsToBeRemoved.push(...groupIDs);
@@ -185,7 +185,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         const groupIDsToBeAdded: string[] = [];
         const flattenedSelectedGroupsIds: string[][] = Array.from(selectedGroupsIds.values());
 
-        flattenedSelectedGroupsIds.forEach((groupIDs: string[]) => {            
+        flattenedSelectedGroupsIds.forEach((groupIDs: string[]) => {
             groupIDs?.forEach((groupID: string) => {
                 if (!role.groups?.find((group: RoleGroupsInterface) => group.value === groupID)) {
                     groupIDsToBeAdded.push(groupID);
@@ -233,7 +233,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 if (error.response && error.response.data.detail) {
                     dispatch(
                         addAlert({
-                            description: 
+                            description:
                                 t("console:manage.features.roles.edit.groups.notifications.error.description",
                                     { description: error.response.data.detail }),
                             level: AlertLevels.ERROR,
@@ -243,7 +243,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 } else {
                     dispatch(
                         addAlert({
-                            description: t("console:manage.features.roles.edit.groups.notifications.genericError" + 
+                            description: t("console:manage.features.roles.edit.groups.notifications.genericError" +
                                 ".description"),
                             level: AlertLevels.ERROR,
                             message: t("console:manage.features.roles.edit.groups.notifications.genericError.message")
