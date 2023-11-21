@@ -85,7 +85,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         emailVerificationEnabled,
         onSubmit,
         hiddenFields,
-        requestedPasswordOption,
         isFirstNameRequired,
         isLastNameRequired,
         isEmailRequired,
@@ -135,23 +134,10 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
-     * Set the password setup option to 'create-password'.
-     */
-    useEffect(() => {
-        if (!requestedPasswordOption) {
-            setPasswordOption(PasswordOptionTypes.CREATE_PASSWORD);
-
-            return;
-        }
-
-        setPasswordOption(requestedPasswordOption);
-    }, [ requestedPasswordOption ]);
-
-    /**
      * 
      * It toggles user summary, password creation prompt, offline status according to password options.
      */
-    useEffect(() => {
+    useEffect(() => {        
         if (passwordOption === PasswordOptionTypes.CREATE_PASSWORD) {
             setUserSummaryEnabled(true);
             setAskPasswordFromUser(true);
@@ -849,7 +835,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                         ? (
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                    <Form.Field
+                                    {/* This needs to be fixed an re-enabled in the beta-2 */}
+                                    {/* <Form.Field
                                     >
                                         <label className="mb-3">
                                             { t("console:manage.features.user.forms.addUserForm" +
@@ -857,7 +844,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                         </label>
                                         {
                                             emailVerificationEnabled && 
-                                            (isValidEmail && isEmailFilled) ||
                                             !isAlphanumericUsernameEnabled()
                                                 ? (
                                                     <Radio
@@ -900,7 +886,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                                     />
                                                 )
                                         }
-                                    </Form.Field>
+                                    </Form.Field> */}
                                     {
                                         passwordOption === askPasswordOptionData.value
                                             ? renderAskPasswordOption()
