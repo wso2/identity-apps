@@ -118,6 +118,9 @@
             {% endfor %}
         {% endif %}
     },
+    {% if legacy_authz_runtime %}
+        "legacyAuthzRuntime": {{ legacy_authz_runtime.enabled }},
+    {% endif %}
     "ui": {
         "announcements": [
             {% if myaccount.ui.announcements is defined %}
