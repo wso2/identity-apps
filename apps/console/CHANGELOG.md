@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.9.10
+
+### Patch Changes
+
+- [#4752](https://github.com/wso2/identity-apps/pull/4752) [`039610f0dd`](https://github.com/wso2/identity-apps/commit/039610f0dd046888bd8ab4ca98da9c0b96d652bd) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix state update issues in sms provider page
+
 ## 2.9.9
 
 ### Patch Changes
