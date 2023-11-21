@@ -717,12 +717,12 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                         tabIndex={ 1 }
                                         maxLength={ 60 }
                                     />
-                                    <Hint>
+                                    {/* <Hint>
                                         { t("extensions:manage.features.user.addUser.validation.usernameHint", {
                                             maxLength: usernameConfig?.maxLength,
                                             minLength: usernameConfig?.minLength
                                         }) }
-                                    </Hint>
+                                    </Hint> */}
                                     <Field
                                         data-testid="user-mgt-add-user-form-alphanumeric-email-input"
                                         label={ "Email" }
