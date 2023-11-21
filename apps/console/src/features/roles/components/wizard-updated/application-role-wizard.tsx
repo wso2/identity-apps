@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AppConstants } from "@wso2is/common";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
@@ -55,6 +54,7 @@ interface ApplicationRoleWizardPropsInterface extends IdentifiableComponentInter
     application: ApplicationInterface;
     closeWizard: () => void;
     setUserListRequestLoading: (value: boolean) => void;
+    onRoleCreated: () => void;
 }
 
 /**
@@ -68,8 +68,9 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
 
     const {
         closeWizard,
-        ["data-componentid"]: componentId,
-        application
+        application,
+        onRoleCreated,
+        ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -231,7 +232,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                         message: t("console:manage.features.roles.notifications.createRole.success.message")
                     }));
     
-                    history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", response.data.id));
+                    onRoleCreated();
                 }
             })
             .catch((error: AxiosError) => {
