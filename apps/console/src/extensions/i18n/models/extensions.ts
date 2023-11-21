@@ -2389,6 +2389,28 @@ export interface Extensions {
                             content: string;
                             heading: string;
                         };
+                        configureParameters: {
+                            heading: string;
+                            content: {
+                                parameters: {
+                                    progressiveEnrollment: {
+                                        description: string;
+                                        label: string;
+                                        note: string;
+                                    };
+                                    usernamelessAuthentication: {
+                                        description: string;
+                                        label: string;
+                                    };
+                                };
+                                steps: {
+                                    info: string;
+                                    1: string;
+                                    2: string;
+                                    3: string;
+                                }
+                            };
+                        };
                     };
                     subHeading: string;
                 };
