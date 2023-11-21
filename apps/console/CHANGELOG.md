@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.9.14
+
+### Patch Changes
+
+- [#4775](https://github.com/wso2/identity-apps/pull/4775) [`65912a8df5`](https://github.com/wso2/identity-apps/commit/65912a8df54d1d0afe363cd6f88d3b63bbecda3b) Thanks [@brionmario](https://github.com/brionmario)! - Fix app update
+
+* [#4556](https://github.com/wso2/identity-apps/pull/4556) [`dce62fba48`](https://github.com/wso2/identity-apps/commit/dce62fba48bb0daf47c899e471a704db1885a4d4) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Move Email and SMS providers to a new category called Email & SMS
+
+* Updated dependencies [[`dce62fba48`](https://github.com/wso2/identity-apps/commit/dce62fba48bb0daf47c899e471a704db1885a4d4)]:
+  - @wso2is/i18n@2.0.55
+
 ## 2.9.13
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.55
+
+### Patch Changes
+
+- [#4556](https://github.com/wso2/identity-apps/pull/4556) [`dce62fba48`](https://github.com/wso2/identity-apps/commit/dce62fba48bb0daf47c899e471a704db1885a4d4) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Move Email and SMS providers to a new category called Email & SMS
+
 ## 2.0.54
 
 ### Patch Changes
