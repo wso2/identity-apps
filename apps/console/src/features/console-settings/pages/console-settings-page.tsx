@@ -68,9 +68,7 @@ const ConsoleSettingsPage: FunctionComponent<ConsoleSettingsPageInterface> = (
                         InputProps={ {
                             endAdornment: (
                                 <Tooltip
-                                    title={
-                                        t("console:brandingCustomText.form.genericFieldResetTooltip")
-                                    }
+                                    title="Copy"
                                 >
                                     <div>
                                         <IconButton
