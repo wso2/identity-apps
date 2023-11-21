@@ -196,9 +196,9 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             });
         }
         
-
         updateGovernanceConnector(updateData, categoryId, connectorId)
             .then(() => {
+                loadConnectorDetails();
                 handleUpdateSuccess();
             })
             .catch((error: AxiosError) => {
