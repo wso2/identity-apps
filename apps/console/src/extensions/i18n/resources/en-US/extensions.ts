@@ -2706,6 +2706,38 @@ export const extensions: Extensions = {
                                 "Go to <1>Sign-in Method</1> tab and click on <3>Add Passkey Login</3> to configure " +
                                 " a basic passkey flow.",
                             heading: "Select <1>Add Passkey Login</1>"
+                        },
+                        configureParameters: {
+                            heading: "Configure passkey options",
+                            content: {
+                                parameters: {
+                                    progressiveEnrollment: {
+                                        description: "Activate this option to allow users to enroll for a " +
+                                        "passkey during login.",
+                                        label: "Progressive Passkey Enrollment:",
+                                        note: "If Passkey is set as a first factor, the following " +
+                                        "<1> adaptive script</1> should be added under " +
+                                        "the <3>Sign-In-Method</3> tab of the application. " +
+                                        "This script is added automatically with the template-based " + 
+                                        "Passkey setup and is used to verify the user's " +
+                                        "identity before enrolling passkeys. " +
+                                        "However, if you're configuring Passkey " +
+                                        "without a template, remember to add the script manually."
+                                    },
+                                    usernamelessAuthentication: {
+                                        description: "Enabling this feature allows users to log in with a passkey " +
+                                        "without entering a username, creating a more streamlined " +
+                                        "sign-in experience.",
+                                        label: "Usernameless Authentication:"
+                                    }
+                                },
+                                steps: {
+                                    info: "To configure, please follow the steps below:",
+                                    1: "Navigate to the <1>Connections</1> area.",
+                                    2: "Locate and select the <1>Passkey</1> connection.",
+                                    3: "Navigate to the <1>Settings</1> tab."
+                                }
+                            }
                         }
                     },
                     subHeading: "Follow the instructions given below to set up passkey login in your login flow."

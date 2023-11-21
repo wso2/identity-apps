@@ -2774,6 +2774,40 @@ export const extensions: Extensions = {
                                 "<3>Ajouter une connexion par clé d'accès</3> pour configurer " +
                                 " un flux de clé d'accès de base.",
                             heading: "Sélectionnez <1>Ajouter une connexion par mot de passe</1>."
+                        },
+                        configureParameters: {
+                            heading: "Configurer les options de clé d'accès",
+                            content: {
+                                parameters: {
+                                    progressiveEnrollment: {
+                                        description: "Activez cette option pour permettre aux utilisateurs " + 
+                                        "de s'inscrire pour obtenir un mot de passe lors de la connexion.",
+                                        label: "Inscription progressive du mot de passe:",
+                                        note: "Si la clé d'accès est définie comme premier facteur, " + 
+                                        "le <1> script adaptatif</1> suivant doit être ajouté " + 
+                                        "sous l'onglet <3>Méthode de connexion</3> de l'application. " + 
+                                        "Ce script est ajouté automatiquement avec la configuration de " + 
+                                        "la clé d'accès basée sur un modèle et est utilisé pour vérifier " + 
+                                        "l'identité de l'utilisateur avant d'inscrire les " +
+                                        "clés d'accès. Toutefois, si vous " + 
+                                        "configurez des mots de passe sans modèle, n'oubliez " +
+                                        "pas d'ajouter le script manuellement."
+                                    },
+                                    usernamelessAuthentication: {
+                                        description: "L'activation de cette fonctionnalité permet aux " +
+                                        "utilisateurs de se connecter avec un mot de passe sans saisir " +
+                                        "de nom d'utilisateur, créant ainsi une expérience de " + 
+                                        "connexion plus rationalisée.",
+                                        label: "Authentification sans nom d'utilisateur:"
+                                    }
+                                },
+                                steps: {
+                                    info: "Pour configurer, veuillez suivre les étapes ci-dessous:",
+                                    1: "Accédez à la zone <1>Connexions</1>.",
+                                    2: "Recherchez et sélectionnez la connexion <1>Passkey</1>.",
+                                    3: "Accédez à l'onglet <1>Paramètres</1>."
+                                }
+                            }
                         }
                     },
                     subHeading:
