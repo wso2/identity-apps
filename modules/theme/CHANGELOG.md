@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.40
+
+### Patch Changes
+
+- [#4747](https://github.com/wso2/identity-apps/pull/4747) [`41104e4934`](https://github.com/wso2/identity-apps/commit/41104e493424c3abb76ef5a4c84d35b2d147d369) Thanks [@brionmario](https://github.com/brionmario)! - Add Console Settings feature
+
 ## 2.0.39
 
 ### Patch Changes
