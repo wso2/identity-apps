@@ -73,6 +73,7 @@ import {
 import { TierLimitReachErrorModal } from "../../../core/components/tier-limit-reach-error-modal";
 import { OrganizationType } from "../../../organizations/constants";
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { RoleAudienceTypes, RoleConstants } from "../../../roles/constants/role-constants";
 import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api";
 import { getInboundProtocolLogos } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
@@ -327,11 +328,22 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         application.templateId = selectedTemplate.id;
         // If the application is a OIDC standard-based application
         if (legacyAuthzRuntime && customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
-            && (selectedTemplate?.templateId === "custom-application" 
+            && (selectedTemplate?.templateId === "custom-application"
                 || selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)) {
             application.isManagementApp = generalFormValues.get("isManagementApp").length >= 2
                 ? true
                 : false;
+        }
+
+        // Adding `APPLICATION` as the default audience for the associated roles,
+        // if a value is not set from the template.
+        if (!legacyAuthzRuntime) {
+            if (isEmpty(application.associatedRoles)) {
+                application.associatedRoles = {
+                    allowedAudience: RoleConstants.DEFAULT_ROLE_AUDIENCE as RoleAudienceTypes,
+                    roles: []
+                };
+            }
         }
 
         // If the selected template is Custom, assign the proper `template ids`.
@@ -348,7 +360,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     }
                 };
             } else if (customApplicationProtocol === SupportedAuthProtocolTypes.SAML) {
-                
+
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_SAML;
 
                 if (samlConfigureMode === SAMLConfigModes.MANUAL) {
@@ -721,12 +733,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
              *
              * @example
              * SAMLProtocolSettingsWizardForm
-             *     fields= [ "issuer", "assertionConsumerURLs" ] 
-             *     hideFieldHints= true 
-             *     triggerSubmit= submitProtocolForm 
-             *     templateValues= templateSettings?.application 
-             *     onSubmit= (values): void = setProtocolFormValues(values) 
-             *     data-testid= `${ testId }-saml-protocol-settings-form` 
+             *     fields= [ "issuer", "assertionConsumerURLs" ]
+             *     hideFieldHints= true
+             *     triggerSubmit= submitProtocolForm
+             *     templateValues= templateSettings?.application
+             *     onSubmit= (values): void = setProtocolFormValues(values)
+             *     data-testid= `${ testId }-saml-protocol-settings-form`
              * /
              */
             return (
@@ -1077,8 +1089,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     </Grid.Row>
                     {
                         // The Management App checkbox is only present in OIDC Standard-Based apps
-                        (legacyAuthzRuntime && customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC && 
-                            (selectedTemplate?.templateId === "custom-application" || 
+                        (legacyAuthzRuntime && customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC &&
+                            (selectedTemplate?.templateId === "custom-application" ||
                             selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)
                         ) && (
                             <div className="pt-0 mt-0">
@@ -1145,9 +1157,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                         <div className="pt-0 mt-0">
-                                            <Checkbox 
+                                            <Checkbox
                                                 onChange={ (
-                                                    event: React.FormEvent<HTMLInputElement>, 
+                                                    event: React.FormEvent<HTMLInputElement>,
                                                     data: CheckboxProps
                                                 ) => {
                                                     setIsAppSharingEnabled(data.checked);
