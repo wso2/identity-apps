@@ -74,6 +74,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
         config,
         onSubmit,
         readOnly,
+        featureConfig,
         template,
         isSubmitting,
         onAlertFired,
@@ -231,7 +232,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             label={ "Enable API Based Authentication" }
                             required={ false }
                             value={ config?.enableAPIBasedAuthentication ? [ "enableAPIBasedAuthentication" ] : [] }
-                            data-testid={ `${testId}-enable-authorization-checkbox` }
+                            data-testid={ `${testId}-enable-api-based-authentication` }
                             hidden={ !applicationConfig.advancedConfigurations.showEnableAuthorization }
                         />
                         <Field.CheckboxLegacy
@@ -241,7 +242,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             required={ false }
                             value={ config?.attestationMetaData?.enableClientAttestation ? 
                                 [ "enableClientAttestation" ] : [] }
-                            data-testid={ `${testId}-enable-authorization-checkbox` }
+                            data-testid={ `${testId}-enable-client-attestation` }
                             hidden={ !applicationConfig.advancedConfigurations.showEnableAuthorization }
                         />
                         <Field.Input
@@ -260,6 +261,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             maxLength={ 200 }
                             minLength={ 3 }
                             width={ 16 }
+                            data-testid={ `${testId}-client-attestation-android-package-name` }
                         />
                         <Field.Textarea
                             ariaLabel="Android service account credentials"
@@ -282,6 +284,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             maxLength={ 5000 }
                             minLength={ 30 }
                             width={ 30 }
+                            data-testid={ `${testId}-client-attestation-android-account-credentials` }
                         />
                         <Field.Input
                             ariaLabel="Apple App Id"
@@ -303,6 +306,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             maxLength={ 200 }
                             minLength={ 3 }
                             width={ 16 }
+                            data-testid={ `${testId}-client-attestation-apple=app=id` }
                         />
                     </div>
                 ) }
