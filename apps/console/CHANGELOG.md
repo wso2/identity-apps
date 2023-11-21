@@ -1,5 +1,30 @@
 # @wso2is/console
 
+## 2.9.11
+
+### Patch Changes
+
+- [#4762](https://github.com/wso2/identity-apps/pull/4762) [`62151cac39`](https://github.com/wso2/identity-apps/commit/62151cac39cb25544d3f54b18c29b499c26b6c82) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Change expert mode to custom connector
+
+* [#4765](https://github.com/wso2/identity-apps/pull/4765) [`3185c7c732`](https://github.com/wso2/identity-apps/commit/3185c7c732a7a5615c5b91c5c619ae7a46c06ccb) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Hide unwanted sections and fields in my account
+
+- [#4764](https://github.com/wso2/identity-apps/pull/4764) [`d3c153a0a2`](https://github.com/wso2/identity-apps/commit/d3c153a0a25074be57655bce082df64b97fb0d0e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix bugs in the api resource dropdown
+
+* [#4750](https://github.com/wso2/identity-apps/pull/4750) [`2c5e9f2847`](https://github.com/wso2/identity-apps/commit/2c5e9f2847ac4f54ec7b906f6ea93746c3728309) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update fido quick start
+
+- [#4762](https://github.com/wso2/identity-apps/pull/4762) [`b983fa1e3b`](https://github.com/wso2/identity-apps/commit/b983fa1e3b9186c72fadc091d73ed9c815dccc58) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Change expert mode to custom connector
+
+* [#4758](https://github.com/wso2/identity-apps/pull/4758) [`c7159ce16b`](https://github.com/wso2/identity-apps/commit/c7159ce16bb5557303e13a2059b059657bc02ded) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update api resource options
+
+- [#4764](https://github.com/wso2/identity-apps/pull/4764) [`b0f31b94f7`](https://github.com/wso2/identity-apps/commit/b0f31b94f7fa7e628ece193f26449a1bcd78b8f7) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix bug in the user creation wizard
+
+* [#4751](https://github.com/wso2/identity-apps/pull/4751) [`d12b00292d`](https://github.com/wso2/identity-apps/commit/d12b00292d510fe75ad819123a809e2a5a492e39) Thanks [@Thumimku](https://github.com/Thumimku)! - Add data test id for client attestation ui
+
+- [#4760](https://github.com/wso2/identity-apps/pull/4760) [`2eb78240ad`](https://github.com/wso2/identity-apps/commit/2eb78240ad9cdc3c87b327a304b31b3d91522e23) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix incorrect api call to list roles
+
+- Updated dependencies [[`2c5e9f2847`](https://github.com/wso2/identity-apps/commit/2c5e9f2847ac4f54ec7b906f6ea93746c3728309)]:
+  - @wso2is/i18n@2.0.54
+
 ## 2.9.10
 
 ### Patch Changes
