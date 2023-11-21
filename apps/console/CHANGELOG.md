@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.9.15
+
+### Patch Changes
+
+- [#4777](https://github.com/wso2/identity-apps/pull/4777) [`20b53aecd8`](https://github.com/wso2/identity-apps/commit/20b53aecd88023efe3fb8830db564f5319fd60ae) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Pushing latest console to nexus
+
+* [#4759](https://github.com/wso2/identity-apps/pull/4759) [`8e7cb9e8b9`](https://github.com/wso2/identity-apps/commit/8e7cb9e8b9c31f5a64ac31c22f7ed3eedfad9f15) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update connector details after connector enable status is updated
+
 ## 2.9.14
 
 ### Patch Changes
