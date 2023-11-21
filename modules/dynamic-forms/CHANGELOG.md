@@ -1,5 +1,15 @@
 # @wso2is/dynamic-forms
 
+## 2.0.12
+
+### Patch Changes
+
+- [#4747](https://github.com/wso2/identity-apps/pull/4747) [`41104e4934`](https://github.com/wso2/identity-apps/commit/41104e493424c3abb76ef5a4c84d35b2d147d369) Thanks [@brionmario](https://github.com/brionmario)! - Add Console Settings feature
+
+- Updated dependencies [[`41104e4934`](https://github.com/wso2/identity-apps/commit/41104e493424c3abb76ef5a4c84d35b2d147d369)]:
+  - @wso2is/react-components@2.0.21
+  - @wso2is/core@2.0.17
+
 ## 2.0.11
 
 ### Patch Changes

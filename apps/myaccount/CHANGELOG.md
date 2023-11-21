@@ -1,5 +1,19 @@
 # @wso2is/myaccount
 
+## 2.2.36
+
+### Patch Changes
+
+- [#4747](https://github.com/wso2/identity-apps/pull/4747) [`41104e4934`](https://github.com/wso2/identity-apps/commit/41104e493424c3abb76ef5a4c84d35b2d147d369) Thanks [@brionmario](https://github.com/brionmario)! - Add Console Settings feature
+
+- Updated dependencies [[`41104e4934`](https://github.com/wso2/identity-apps/commit/41104e493424c3abb76ef5a4c84d35b2d147d369)]:
+  - @wso2is/react-components@2.0.21
+  - @wso2is/access-control@2.0.6
+  - @wso2is/forms@2.0.3
+  - @wso2is/theme@2.0.40
+  - @wso2is/core@2.0.17
+  - @wso2is/i18n@2.0.53
+
 ## 2.2.35
 
 ### Patch Changes
