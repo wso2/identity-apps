@@ -87,7 +87,7 @@ export const SmsOTPAuthenticator: FunctionComponent<SmsOTPAuthenticatorInterface
     const isChoreoEnabledAsSMSProvider: boolean = useMemo(() => {
         const disabledFeatures: string[] = featureConfig?.disabledFeatures;
 
-        return !disabledFeatures.includes("choreoAsSMSProvider");
+        return !disabledFeatures?.includes("choreoAsSMSProvider");
     }, [ featureConfig ]);
 
     const [ isReadOnly, setIsReadOnly ] = useState<boolean>(isChoreoEnabledAsSMSProvider);
