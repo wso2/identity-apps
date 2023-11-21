@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.52
+
+### Patch Changes
+
+- [#4745](https://github.com/wso2/identity-apps/pull/4745) [`eac39db02f`](https://github.com/wso2/identity-apps/commit/eac39db02f845275e0ab4fbc03d0ab6050ba0d76) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update the wording permission to scope in API resources
+
 ## 2.0.51
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.2.35
+
+### Patch Changes
+
+- [#4745](https://github.com/wso2/identity-apps/pull/4745) [`eac39db02f`](https://github.com/wso2/identity-apps/commit/eac39db02f845275e0ab4fbc03d0ab6050ba0d76) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update the wording permission to scope in API resources
+
+- Updated dependencies [[`eac39db02f`](https://github.com/wso2/identity-apps/commit/eac39db02f845275e0ab4fbc03d0ab6050ba0d76)]:
+  - @wso2is/i18n@2.0.52
+
 ## 2.2.34
 
 ### Patch Changes
