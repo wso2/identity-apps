@@ -74,7 +74,6 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
         config,
         onSubmit,
         readOnly,
-        featureConfig,
         template,
         isSubmitting,
         onAlertFired,
