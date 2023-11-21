@@ -84,30 +84,27 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
     } => {
         if ((isEmailProviderEnabled && isSMSProviderEnabled) || (!isEmailProviderEnabled && !isSMSProviderEnabled)) {
             return {
-                description: t("extensions:develop.notificationChannel.description.description"),
-                pageTitle: t("extensions:develop.notificationChannel.heading.heading"),
-                title: t("extensions:develop.notificationChannel.title.title")
+                description: t("extensions:develop.emailAndSMS.description.description"),
+                pageTitle: t("extensions:develop.emailAndSMS.heading.heading"),
+                title: t("extensions:develop.emailAndSMS.title.heading")
             };
         } else if (isSMSProviderEnabled) {
             return {
-                description: t("extensions:develop.notificationChannel.description.onlySMSProvider"),
-                pageTitle: t("extensions:develop.notificationChannel.heading.onlySMSProvider"),
-                title: t("extensions:develop.notificationChannel.title.onlySMSProvider")
+                description: t("extensions:develop.emailAndSMS.description.onlySMSProvider"),
+                pageTitle: t("extensions:develop.emailAndSMS.heading.onlySMSProvider"),
+                title: t("extensions:develop.emailAndSMS.title.onlySMSProvider")
             };
         } else if (isEmailProviderEnabled) {
             return {
-                description: t("extensions:develop.notificationChannel.description.onlyEmailProvider"),
-                pageTitle: t("extensions:develop.notificationChannel.heading.onlyEmailProvider"),
-                title: t("extensions:develop.notificationChannel.title.onlyEmailProvider")
+                description: t("extensions:develop.emailAndSMS.description.onlyEmailProvider"),
+                pageTitle: t("extensions:develop.emailAndSMS.heading.onlyEmailProvider"),
+                title: t("extensions:develop.emailAndSMS.title.onlyEmailProvider")
             };
         }
     };
 
     return (
         <PageLayout
-            pageTitle={ t("extensions:develop.emailAndSMS.heading") }
-            title={ t("extensions:develop.emailAndSMS.title") }
-            description={ t("extensions:develop.emailAndSMS.description") }
             pageTitle={ getPageDetails().pageTitle }
             title={ getPageDetails().title }
             description={ getPageDetails().description }
