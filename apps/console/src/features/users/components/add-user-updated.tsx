@@ -887,7 +887,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                                 )
                                         }
                                     </Form.Field> */}
-                                    {
+                                    {/* {
                                         passwordOption === askPasswordOptionData.value
                                             ? renderAskPasswordOption()
                                             : null
@@ -904,7 +904,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                                     setPasswordOption(item?.value)
                                             }
                                         />
-                                    </Form.Field>
+                                    </Form.Field> */}
                                     {
                                         passwordOption === createPasswordOptionData.value
                                             ? renderCreatePasswordOption()
