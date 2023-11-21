@@ -73,6 +73,7 @@ import {
 import { TierLimitReachErrorModal } from "../../../core/components/tier-limit-reach-error-modal";
 import { OrganizationType } from "../../../organizations/constants";
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { RoleAudienceTypes, RoleConstants } from "../../../roles/constants/role-constants";
 import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api";
 import { getInboundProtocolLogos } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
@@ -93,7 +94,6 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { ApplicationShareModal } from "../modals/application-share-modal";
-import { RoleAudienceTypes, RoleConstants } from "../../../roles/constants/role-constants";
 
 /**
  * Prop types of the `MinimalAppCreateWizard` component.
