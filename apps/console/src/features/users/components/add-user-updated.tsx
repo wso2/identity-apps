@@ -846,7 +846,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                         </label>
                                         {
                                             emailVerificationEnabled &&
-                                            (isValidEmail && isEmailFilled) ||
                                             !isAlphanumericUsernameEnabled()
                                                 ? (
                                                     <Radio
