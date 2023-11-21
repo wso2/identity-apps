@@ -198,7 +198,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         patchOperations.push({
             "op": "add",
             "value": {
-                "groups": groupIDsToBeAdded.map((groupID: string) => {
+                "groups": groupIDsToBeAdded?.map((groupID: string) => {
                     return {
                         "value": groupID
                     };
@@ -288,7 +288,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                     </>
                 )
             }
-            { filteredIdpList.map((idp: IdentityProviderInterface) => {
+            { filteredIdpList?.map((idp: IdentityProviderInterface) => {
                 const initialSelectedGroupsOptions: RoleGroupsInterface[] = assignedGroups[idp.id];
 
                 return (
