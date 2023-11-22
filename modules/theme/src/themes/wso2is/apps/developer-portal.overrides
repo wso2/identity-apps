@@ -1532,7 +1532,7 @@ TODO : Move values to separate variables and cleanup styles.
 }
 
 /*-------------------------------
-    Diagnostic Logs Page
+    Monitoring Logs Page
 --------------------------------*/
 
 .diagnostic-logs {
@@ -1741,6 +1741,11 @@ TODO : Move values to separate variables and cleanup styles.
             min-height: auto;
         }
     }
+}
+
+.download-data-button {
+    color: @primaryColor !important;
+    cursor: "pointer";
 }
 
 .custom-portal-wrapper {

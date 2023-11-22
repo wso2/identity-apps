@@ -2780,23 +2780,23 @@ export const extensions: Extensions = {
                             content: {
                                 parameters: {
                                     progressiveEnrollment: {
-                                        description: "Activez cette option pour permettre aux utilisateurs " + 
+                                        description: "Activez cette option pour permettre aux utilisateurs " +
                                         "de s'inscrire pour obtenir un mot de passe lors de la connexion.",
                                         label: "Inscription progressive du mot de passe:",
-                                        note: "Si la clé d'accès est définie comme premier facteur, " + 
-                                        "le <1> script adaptatif</1> suivant doit être ajouté " + 
-                                        "sous l'onglet <3>Méthode de connexion</3> de l'application. " + 
-                                        "Ce script est ajouté automatiquement avec la configuration de " + 
-                                        "la clé d'accès basée sur un modèle et est utilisé pour vérifier " + 
+                                        note: "Si la clé d'accès est définie comme premier facteur, " +
+                                        "le <1> script adaptatif</1> suivant doit être ajouté " +
+                                        "sous l'onglet <3>Méthode de connexion</3> de l'application. " +
+                                        "Ce script est ajouté automatiquement avec la configuration de " +
+                                        "la clé d'accès basée sur un modèle et est utilisé pour vérifier " +
                                         "l'identité de l'utilisateur avant d'inscrire les " +
-                                        "clés d'accès. Toutefois, si vous " + 
+                                        "clés d'accès. Toutefois, si vous " +
                                         "configurez des mots de passe sans modèle, n'oubliez " +
                                         "pas d'ajouter le script manuellement."
                                     },
                                     usernamelessAuthentication: {
                                         description: "L'activation de cette fonctionnalité permet aux " +
                                         "utilisateurs de se connecter avec un mot de passe sans saisir " +
-                                        "de nom d'utilisateur, créant ainsi une expérience de " + 
+                                        "de nom d'utilisateur, créant ainsi une expérience de " +
                                         "connexion plus rationalisée.",
                                         label: "Authentification sans nom d'utilisateur:"
                                     }
@@ -2900,7 +2900,9 @@ export const extensions: Extensions = {
                     }
                 },
                 searchBar: {
-                    placeholder: "Rechercher des journaux par ID de suivi, ID d'action, ID client, message de résultat ou état de résultat"
+                    placeholderDiagnostic: "Rechercher des journaux par ID de suivi, ID d'action, ID client, message de résultat ou état de résultat",
+                    placeholderAudit: "Rechercher les journaux par action, ID cible, ID initiateur, ID de demande"
+
                 },
                 refreshMessage: {
                     text: "Derniers journaux récupérés à",
@@ -2911,6 +2913,9 @@ export const extensions: Extensions = {
                 },
                 queryButton: {
                     label: "Exécuter la requête"
+                },
+                downloadButton : {
+                    label : "Télécharger les données du journal"
                 },
                 delayMessage: {
                     text: "Certaines requêtes peuvent prendre plus de temps à charger."
@@ -2924,7 +2929,7 @@ export const extensions: Extensions = {
             notifications: {
                 genericError: {
                     subtitle: {
-                        0: "Impossible de récupérer les journaux de diagnostic.",
+                        0: "Impossible de récupérer les journaux.",
                         1: "Veuillez réessayer."
                     },
                     title: "Quelque chose s'est mal passé"
@@ -2954,8 +2959,8 @@ export const extensions: Extensions = {
                 }
             },
             pageHeader: {
-                description: "Interrogez vos journaux pour résoudre les problèmes d'application de production.",
-                title: "Journaux de diagnostic"
+                description: "Interrogez vos journaux pour résoudre les problèmes et surveiller les activités des ressources.",
+                title: "Journaux"
             },
             tooltips: {
                 copy: "Copier dans le presse-papier"
