@@ -20,6 +20,7 @@ export const APPLICATION_DOMAIN: string = "Application/";
 export const INTERNAL_DOMAIN: string = "Internal";
 export const PRIMARY_DOMAIN: string = "Primary";
 export const ROLE_VIEW_PATH: string = "/roles/";
+export const DOMAIN_SEPARATOR: string = "/";
 
 /**
  * Role audience interface.
