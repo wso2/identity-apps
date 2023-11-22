@@ -71,6 +71,8 @@ const useRoutes = (): useRoutesInterface => {
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state?.auth?.isPrivilegedUser);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
+    const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) => 
+        state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
     const {
         data: governanceConnectors
@@ -154,6 +156,10 @@ const useRoutes = (): useRoutesInterface => {
             }
 
             const additionalRoutes: string[] = getAdditionalRoutes();
+            
+            if (!isGroupAndRoleSeparationEnabled) {
+                additionalRoutes.push(AppConstants.CONSOLE_SETTINGS_ROUTE);
+            }
 
             return [ ...additionalRoutes ];
         };
