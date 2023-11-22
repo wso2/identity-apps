@@ -1660,6 +1660,17 @@
                 {% endfor %}
             {% endif %}
         ],
+        "classicFeatures": {
+            {% if console.ui.classic_features.items() is defined %}
+            {% for key, value in console.ui.classic_features.items() %}
+            {% if value is string %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        },
         "theme": {
             "name": "{{ console.theme }}"
         }
