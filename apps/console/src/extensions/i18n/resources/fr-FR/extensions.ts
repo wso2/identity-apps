@@ -2780,23 +2780,23 @@ export const extensions: Extensions = {
                             content: {
                                 parameters: {
                                     progressiveEnrollment: {
-                                        description: "Activez cette option pour permettre aux utilisateurs " + 
+                                        description: "Activez cette option pour permettre aux utilisateurs " +
                                         "de s'inscrire pour obtenir un mot de passe lors de la connexion.",
                                         label: "Inscription progressive du mot de passe:",
-                                        note: "Si la clé d'accès est définie comme premier facteur, " + 
-                                        "le <1> script adaptatif</1> suivant doit être ajouté " + 
-                                        "sous l'onglet <3>Méthode de connexion</3> de l'application. " + 
-                                        "Ce script est ajouté automatiquement avec la configuration de " + 
-                                        "la clé d'accès basée sur un modèle et est utilisé pour vérifier " + 
+                                        note: "Si la clé d'accès est définie comme premier facteur, " +
+                                        "le <1> script adaptatif</1> suivant doit être ajouté " +
+                                        "sous l'onglet <3>Méthode de connexion</3> de l'application. " +
+                                        "Ce script est ajouté automatiquement avec la configuration de " +
+                                        "la clé d'accès basée sur un modèle et est utilisé pour vérifier " +
                                         "l'identité de l'utilisateur avant d'inscrire les " +
-                                        "clés d'accès. Toutefois, si vous " + 
+                                        "clés d'accès. Toutefois, si vous " +
                                         "configurez des mots de passe sans modèle, n'oubliez " +
                                         "pas d'ajouter le script manuellement."
                                     },
                                     usernamelessAuthentication: {
                                         description: "L'activation de cette fonctionnalité permet aux " +
                                         "utilisateurs de se connecter avec un mot de passe sans saisir " +
-                                        "de nom d'utilisateur, créant ainsi une expérience de " + 
+                                        "de nom d'utilisateur, créant ainsi une expérience de " +
                                         "connexion plus rationalisée.",
                                         label: "Authentification sans nom d'utilisateur:"
                                     }
@@ -3394,7 +3394,7 @@ export const extensions: Extensions = {
                         },
                         usernameHint: "Doit être une chaîne alphanumérique (a-z, A-Z, 0-9) entre {{minLength}} et {{maxLength}} caractères comprenant " +
                             "au moins une lettre.",
-                        usernameSpecialCharHint: "Doit être une chaîne unique comprise entre {{minLength}} et" + 
+                        usernameSpecialCharHint: "Doit être une chaîne unique comprise entre {{minLength}} et" +
                             "{{maxLength}} caractères comprenant au moins une lettre.",
                         usernameLength: "La longueur du nom d'utilisateur doit être comprise " +
                             "entre {{minLength}} et {{maxLength}}.",

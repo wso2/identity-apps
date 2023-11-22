@@ -19,7 +19,7 @@
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { administratorConfig } from "../../../extensions/configs/administrator";
 import { UserRoleInterface } from "../../core/models";
-import { 
+import {
     ValidationConfInterface,
     ValidationDataInterface,
     ValidationFormInterface,
@@ -53,7 +53,7 @@ export class UserManagementUtils {
      * Checks whether administrator role is present in the user roles.
      */
     public static isAdminUser = (roles: UserRoleInterface[]): boolean => {
-        return roles.some((role: UserRoleInterface) => 
+        return roles.some((role: UserRoleInterface) =>
             role.display === administratorConfig.adminRoleName
         );
     };
@@ -93,13 +93,13 @@ export const getUsernameConfiguration = (configs: ValidationDataInterface[]): Va
 
     return {
         enableSpecialChars: getValidationConfig(rules, "AlphanumericValidator", "enable.special.characters") === "true",
-        enableValidator: 
+        enableValidator:
                 (getValidationConfig(rules, "AlphanumericValidator", "enable.validator") === "true"
                 || !(getValidationConfig(rules, "EmailFormatValidator", "enable.validator") === "true"))
-                    ? "true" 
+                    ? "true"
                     : "false",
         field: "username",
-        maxLength: 
+        maxLength:
             getValidationConfig(rules, "LengthValidator", "max.length")
                 ? getValidationConfig(rules, "LengthValidator", "max.length")
                 : null,

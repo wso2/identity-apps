@@ -359,7 +359,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                         <Grid.Column width={ 16 }>
                             <EmphasizedSegment className="form-wrapper" padded={ "very" }>
                                 { !isValidationLoading
-                                    ? ( 
+                                    ? (
                                         <div className="validation-configurations password-validation-configurations">
                                             <Form
                                                 id={ FORM_ID }
@@ -571,13 +571,13 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                         <Field.Checkbox
                                                             ariaLabel="enableSpecialChars"
                                                             name="enableSpecialChars"
-                                                            label={ t("extensions:manage.accountLogin.editPage." + 
+                                                            label={ t("extensions:manage.accountLogin.editPage." +
                                                                 "usernameSpecialChars") }
                                                             tabIndex={ 3 }
-                                                            hint={ t("extensions:manage.accountLogin.editPage." + 
+                                                            hint={ t("extensions:manage.accountLogin.editPage." +
                                                                 "usernameSpecialCharsHint") }
                                                             width={ 16 }
-                                                            defaultValue={ initialFormValues }           
+                                                            defaultValue={ initialFormValues }
                                                             data-componentid={ `${componentId}-enable-special-chars` }
                                                         />
                                                     </div>
