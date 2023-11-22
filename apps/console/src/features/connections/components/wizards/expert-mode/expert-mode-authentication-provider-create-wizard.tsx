@@ -233,19 +233,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
             identityProvider.name = values?.name?.toString();
             identityProvider.description = values?.description?.toString() || template.description;
             identityProvider.templateId = template.templateId;
-
-            // TODO: Refactor the usage of absolute image paths once Media Service is available.
-            // Tracked here - https://github.com/wso2/product-is/issues/12396
-            if (AppConstants.getClientOrigin()) {
-                if (AppConstants.getAppBasename()) {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                    "/" + AppConstants.getAppBasename() +
-                    `/libs/themes/${ theme }/assets/images/identity-providers/expert.svg`;
-                } else {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                    `/libs/themes/${ theme }/assets/images/identity-providers/expert.svg`;
-                }
-            }
+            identityProvider.image = "assets/images/logos/expert.svg";
 
             createNewIdentityProvider(identityProvider);
         };
