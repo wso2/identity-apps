@@ -1,5 +1,179 @@
 # @wso2is/myaccount
 
+## 2.2.38
+
+### Patch Changes
+
+- [#4780](https://github.com/wso2/identity-apps/pull/4780) [`a62910f64f`](https://github.com/wso2/identity-apps/commit/a62910f64fdd05bbffcbdedf1392ec451d37c6b8) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Revert the fix the user avatar default shape to square
+
+* [#4773](https://github.com/wso2/identity-apps/pull/4773) [`e5b37f6de4`](https://github.com/wso2/identity-apps/commit/e5b37f6de4d6692c7da9919a0edeb94d6a64bfd4) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add backward compatibility for myaccount in legacy authz runtime
+
+* Updated dependencies [[`a62910f64f`](https://github.com/wso2/identity-apps/commit/a62910f64fdd05bbffcbdedf1392ec451d37c6b8)]:
+  - @wso2is/react-components@2.0.22
+  - @wso2is/access-control@2.0.7
+  - @wso2is/forms@2.0.4
+  - @wso2is/theme@2.0.41
+  - @wso2is/core@2.0.18
+  - @wso2is/i18n@2.0.56
+
+## 2.2.37
+
+### Patch Changes
+
+- [#4556](https://github.com/wso2/identity-apps/pull/4556) [`dce62fba48`](https://github.com/wso2/identity-apps/commit/dce62fba48bb0daf47c899e471a704db1885a4d4) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Move Email and SMS providers to a new category called Email & SMS
+
+- Updated dependencies [[`dce62fba48`](https://github.com/wso2/identity-apps/commit/dce62fba48bb0daf47c899e471a704db1885a4d4)]:
+  - @wso2is/i18n@2.0.55
+
+## 2.2.36
+
+### Patch Changes
+
+- [#4747](https://github.com/wso2/identity-apps/pull/4747) [`41104e4934`](https://github.com/wso2/identity-apps/commit/41104e493424c3abb76ef5a4c84d35b2d147d369) Thanks [@brionmario](https://github.com/brionmario)! - Add Console Settings feature
+
+- Updated dependencies [[`41104e4934`](https://github.com/wso2/identity-apps/commit/41104e493424c3abb76ef5a4c84d35b2d147d369)]:
+  - @wso2is/react-components@2.0.21
+  - @wso2is/access-control@2.0.6
+  - @wso2is/forms@2.0.3
+  - @wso2is/theme@2.0.40
+  - @wso2is/core@2.0.17
+  - @wso2is/i18n@2.0.53
+
+## 2.2.35
+
+### Patch Changes
+
+- [#4745](https://github.com/wso2/identity-apps/pull/4745) [`eac39db02f`](https://github.com/wso2/identity-apps/commit/eac39db02f845275e0ab4fbc03d0ab6050ba0d76) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update the wording permission to scope in API resources
+
+- Updated dependencies [[`eac39db02f`](https://github.com/wso2/identity-apps/commit/eac39db02f845275e0ab4fbc03d0ab6050ba0d76)]:
+  - @wso2is/i18n@2.0.52
+
+## 2.2.34
+
+### Patch Changes
+
+- [#4737](https://github.com/wso2/identity-apps/pull/4737) [`31fc142c2b`](https://github.com/wso2/identity-apps/commit/31fc142c2b0ed9c74e97a8cc6f2d58e20eec709a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide default subject attribute selection dropdown for OIDC apps
+
+* [#4727](https://github.com/wso2/identity-apps/pull/4727) [`b533228182`](https://github.com/wso2/identity-apps/commit/b533228182a5092b13584912e7032c1147eacc69) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Change error msg when deleting a role
+
+* Updated dependencies [[`31fc142c2b`](https://github.com/wso2/identity-apps/commit/31fc142c2b0ed9c74e97a8cc6f2d58e20eec709a), [`b533228182`](https://github.com/wso2/identity-apps/commit/b533228182a5092b13584912e7032c1147eacc69)]:
+  - @wso2is/core@2.0.16
+  - @wso2is/access-control@2.0.5
+  - @wso2is/forms@2.0.2
+  - @wso2is/i18n@2.0.51
+  - @wso2is/react-components@2.0.20
+
+## 2.2.33
+
+### Patch Changes
+
+- [#4715](https://github.com/wso2/identity-apps/pull/4715) [`dd1d45d009`](https://github.com/wso2/identity-apps/commit/dd1d45d00935303cc397c69f96f2aabad2f43ade) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve the application list view
+
+- Updated dependencies [[`dd1d45d009`](https://github.com/wso2/identity-apps/commit/dd1d45d00935303cc397c69f96f2aabad2f43ade)]:
+  - @wso2is/i18n@2.0.50
+
+## 2.2.32
+
+### Patch Changes
+
+- [#4728](https://github.com/wso2/identity-apps/pull/4728) [`1019609267`](https://github.com/wso2/identity-apps/commit/1019609267d9ce9e5b600a51bed3071ff0f80626) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bump theme module
+
+- Updated dependencies [[`1019609267`](https://github.com/wso2/identity-apps/commit/1019609267d9ce9e5b600a51bed3071ff0f80626)]:
+  - @wso2is/theme@2.0.39
+
+## 2.2.31
+
+### Patch Changes
+
+- [#4650](https://github.com/wso2/identity-apps/pull/4650) [`afb3d189eb`](https://github.com/wso2/identity-apps/commit/afb3d189ebcaadcf1630c1abdce64e156ccd4f2d) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Set domain cookie upon language switch in myaccount
+
+## 2.2.30
+
+### Patch Changes
+
+- [#4616](https://github.com/wso2/identity-apps/pull/4616) [`e2ed10aaa3`](https://github.com/wso2/identity-apps/commit/e2ed10aaa3c1bc125cee4996a20e8ae21906bd9c) Thanks [@RivinduM](https://github.com/RivinduM)! - Restrict FAPI related configs to standard based applications.
+
+- Updated dependencies [[`e2ed10aaa3`](https://github.com/wso2/identity-apps/commit/e2ed10aaa3c1bc125cee4996a20e8ae21906bd9c)]:
+  - @wso2is/i18n@2.0.49
+
+## 2.2.29
+
+### Patch Changes
+
+- [#4696](https://github.com/wso2/identity-apps/pull/4696) [`fd29c60700`](https://github.com/wso2/identity-apps/commit/fd29c6070019dd2193690e6d85fcae670bd64815) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Implement capability of assigning FIDP groups to a role.
+
+- Updated dependencies [[`fd29c60700`](https://github.com/wso2/identity-apps/commit/fd29c6070019dd2193690e6d85fcae670bd64815)]:
+  - @wso2is/i18n@2.0.48
+
+## 2.2.28
+
+### Patch Changes
+
+- [#4674](https://github.com/wso2/identity-apps/pull/4674) [`eb5515c08c`](https://github.com/wso2/identity-apps/commit/eb5515c08c8ad7453356f30f653b0e176f2e3a72) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Improve user management section
+
+- Updated dependencies [[`eb5515c08c`](https://github.com/wso2/identity-apps/commit/eb5515c08c8ad7453356f30f653b0e176f2e3a72)]:
+  - @wso2is/i18n@2.0.47
+
+## 2.2.27
+
+### Patch Changes
+
+- [#4705](https://github.com/wso2/identity-apps/pull/4705) [`e85986248f`](https://github.com/wso2/identity-apps/commit/e85986248f67b729887a353e379f499489edc1f4) Thanks [@Avarjana](https://github.com/Avarjana)! - Add interface to configure protocol in Console.
+
+- Updated dependencies [[`e85986248f`](https://github.com/wso2/identity-apps/commit/e85986248f67b729887a353e379f499489edc1f4)]:
+  - @wso2is/i18n@2.0.46
+
+## 2.2.26
+
+### Patch Changes
+
+- [#4600](https://github.com/wso2/identity-apps/pull/4600) [`466fe513fb`](https://github.com/wso2/identity-apps/commit/466fe513fbca5ed9dc13f15d2633888895fb948b) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - pnpm changeset
+
+* [#4697](https://github.com/wso2/identity-apps/pull/4697) [`77354238c5`](https://github.com/wso2/identity-apps/commit/77354238c545e24c0efecebc19a907e2fe16a939) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Change page title of `channels` to be changed based on the enabled providers.
+
+- [#4700](https://github.com/wso2/identity-apps/pull/4700) [`c36581e863`](https://github.com/wso2/identity-apps/commit/c36581e863622eb5ab25272d2b4af35234b0d03a) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add local dropdown for user profile
+
+- Updated dependencies [[`b78719fff3`](https://github.com/wso2/identity-apps/commit/b78719fff3358a15b621623c5a09872713b634d1), [`466fe513fb`](https://github.com/wso2/identity-apps/commit/466fe513fbca5ed9dc13f15d2633888895fb948b), [`77354238c5`](https://github.com/wso2/identity-apps/commit/77354238c545e24c0efecebc19a907e2fe16a939), [`c36581e863`](https://github.com/wso2/identity-apps/commit/c36581e863622eb5ab25272d2b4af35234b0d03a)]:
+  - @wso2is/i18n@2.0.45
+
+## 2.2.25
+
+### Patch Changes
+
+- [#4687](https://github.com/wso2/identity-apps/pull/4687) [`24eb66f570`](https://github.com/wso2/identity-apps/commit/24eb66f57020805ba81456e8d68ab7b49415ef7b) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Fix groups edit page title and add audience to role assign view
+
+- Updated dependencies [[`24eb66f570`](https://github.com/wso2/identity-apps/commit/24eb66f57020805ba81456e8d68ab7b49415ef7b)]:
+  - @wso2is/i18n@2.0.44
+  - @wso2is/react-components@2.0.19
+
+## 2.2.24
+
+### Patch Changes
+
+- [#4681](https://github.com/wso2/identity-apps/pull/4681) [`a8073bb7aa`](https://github.com/wso2/identity-apps/commit/a8073bb7aab05c8b04930ed751e75637f0eee24e) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Fix groups edit page title and add audience to role assign view
+
+- Updated dependencies [[`a8073bb7aa`](https://github.com/wso2/identity-apps/commit/a8073bb7aab05c8b04930ed751e75637f0eee24e)]:
+  - @wso2is/i18n@2.0.43
+  - @wso2is/react-components@2.0.18
+  - @wso2is/theme@2.0.38
+
+## 2.2.23
+
+### Patch Changes
+
+- [#4666](https://github.com/wso2/identity-apps/pull/4666) [`5d602f7397`](https://github.com/wso2/identity-apps/commit/5d602f739726fa887340096a98cd838407c517c0) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Fix the user avatar default shape to square
+
+* [#4562](https://github.com/wso2/identity-apps/pull/4562) [`d2d53420be`](https://github.com/wso2/identity-apps/commit/d2d53420beb05e7ea9ab134ad7f506021da8c86e) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add bulk user import helper panel
+
+- [#4669](https://github.com/wso2/identity-apps/pull/4669) [`49e6a466b1`](https://github.com/wso2/identity-apps/commit/49e6a466b17f41cb3bd9d99a1997c40bb0936c1b) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Fix label for back button on administrator user page
+
+* [#4500](https://github.com/wso2/identity-apps/pull/4500) [`9ecc95eebd`](https://github.com/wso2/identity-apps/commit/9ecc95eebd43807e022f675075740cc7bf38c09a) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issues in the header logo section of My Account and Console
+
+* Updated dependencies [[`5d602f7397`](https://github.com/wso2/identity-apps/commit/5d602f739726fa887340096a98cd838407c517c0), [`d2d53420be`](https://github.com/wso2/identity-apps/commit/d2d53420beb05e7ea9ab134ad7f506021da8c86e), [`49e6a466b1`](https://github.com/wso2/identity-apps/commit/49e6a466b17f41cb3bd9d99a1997c40bb0936c1b), [`9ecc95eebd`](https://github.com/wso2/identity-apps/commit/9ecc95eebd43807e022f675075740cc7bf38c09a)]:
+  - @wso2is/react-components@2.0.17
+  - @wso2is/i18n@2.0.42
+  - @wso2is/theme@2.0.37
+
 ## 2.2.22
 
 ### Patch Changes

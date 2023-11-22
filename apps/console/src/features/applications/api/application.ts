@@ -274,6 +274,48 @@ export const getApplicationsByIds = async (
 };
 
 /**
+ * Hook to get the My Account application details.
+ *
+ * @returns My Account application data as the first element of the applications array.
+ */
+export const useMyAccountApplicationData = <Data = ApplicationListInterface, Error = RequestErrorInterface>(
+    attributes?: string,
+    shouldFetch: boolean = true
+): RequestResultInterface<Data, Error> => {
+
+    const FILTERES: string = `name eq ${ ApplicationManagementConstants.MY_ACCOUNT_APP_NAME }`;
+    const LIMIT: number = 1;
+    const OFFSET: number = 0;
+
+    const requestConfig: AxiosRequestConfig = shouldFetch
+        ? {
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            method: HttpMethods.GET,
+            params: {
+                attributes,
+                filter: FILTERES,
+                limit: LIMIT,
+                offset: OFFSET
+            },
+            url: store.getState().config.endpoints.applications
+        }
+        : null;
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate
+    };
+};
+
+/**
  * Gets the available inbound protocols.
  *
  * @param customOnly - If true only returns custom protocols.
@@ -944,7 +986,7 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
                 tokenEndpoint: response.data.token_endpoint,
                 tokenRevocationEndpoint: response.data.revocation_endpoint,
                 userEndpoint: response.data.userinfo_endpoint,
-                webFingerEndpoint: "",
+                webFingerEndpoint: response.data.webfinger_endpoint,
                 wellKnownEndpoint: `${ response.data.token_endpoint }/.well-known/openid-configuration`
             };
 

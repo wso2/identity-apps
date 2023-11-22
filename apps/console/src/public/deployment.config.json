@@ -225,11 +225,11 @@
         "enableCustomEmailTemplates": true,
         "appFaviconPath": "/assets/images/branding/favicon.ico",
         "isGOTEnabledForSuperTenantOnly": true,
-        "showAppSwitchButton": false,
+        "showAppSwitchButton": true,
         "features": {
             "administrators": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "update": [],
                     "read": [],
@@ -453,6 +453,29 @@
                     ]
                 }
             },
+            "consoleSettings": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_role_mgt_create"
+                    ],
+                    "update": [
+                        "internal_application_mgt_update",
+                        "internal_user_mgt_update"
+                    ],
+                    "read": [
+                        "internal_application_mgt_view",
+                        "internal_user_mgt_list",
+                        "internal_role_mgt_view",
+                        "internal_guest_mgt_invite_list",
+                        "internal_idp_view"
+                    ],
+                    "delete": [
+                        "internal_guest_mgt_invite_delete"
+                    ]
+                }
+            },
             "emailProviders": {
                 "disabledFeatures": [ "superTenantProvider" ],
                 "enabled": true,
@@ -508,6 +531,7 @@
                 }
             },
             "governanceConnectors": {
+                "deprecatedFeaturesToShow": [],
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
@@ -924,6 +948,11 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {}
+            },
+            "fapiApplicationCreation": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {}
             }
         },
         "gravatarConfig": {
@@ -978,7 +1007,8 @@
             "isApplicationLevelRoleMappingEnabled": false,
             "isXacmlAuthorizationEnabled": false,
             "isIncludeOrgNameInSubjectEnabled": false,
-            "isUseMappedLocalSubjectEnabled": false
+            "isUseMappedLocalSubjectEnabled": false,
+            "isSubjectIdentifierEnabled": false
         },
         "theme": {
             "name": "wso2is"

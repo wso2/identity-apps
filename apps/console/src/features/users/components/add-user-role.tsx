@@ -23,6 +23,7 @@ import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import useAuthorization from "../../authorization/hooks/use-authorization";
 
 /**
  * Proptypes for the application consents list component.
@@ -59,6 +60,7 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
 
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesInterface[]>([]);
     const [ isSelectUnassignedRolesAllRolesChecked, setIsSelectUnassignedAllRolesChecked ] = useState(false);
+    const { legacyAuthzRuntime } = useAuthorization();
 
     useEffect(() => {
         setCheckedUnassignedListItems(initialValues?.tempRoleList);
@@ -115,16 +117,26 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
     /**
      * The following method handles creating a label for the list item.
      *
-     * @param roleName - string
+     * @param roleType - string
      */
-    const createItemLabel = (roleName: string) => {
-        const role: string[] = roleName.split("/");
+    const createItemLabel = (roleType: string, application: string) => {
+        const role: string[] = roleType?.split("/");
 
-        if (role.length > 0) {
-            if (role[0] == "Application") {
-                return { labelColor: null, labelText: "Application", name: "application-label" };
+        if (role?.length > 0) {
+            if (role[0] == "application") {
+                return { 
+                    labelColor: null, 
+                    labelText: t("console:manage.features.roles.addRoleWizard." + 
+                        "forms.roleBasicDetails.roleAudience.values.application"), 
+                    name: "audience-label", 
+                    subLabel: application };
             } else {
-                return { labelColor: null, labelText: "Internal", name: "internal-label" };
+                return { 
+                    labelColor: null, 
+                    labelText: t("console:manage.features.roles.addRoleWizard." + 
+                        "forms.roleBasicDetails.roleAudience.values.organization"),
+                    name: "audience-label" 
+                };
             }
         }
     };
@@ -147,9 +159,11 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                     <TransferList
                         isListEmpty={ !(initialValues?.roleList?.length > 0) }
                         listType="unselected"
-                        listHeaders={ [
-                            t("console:manage.features.transferList.list.headers.0"),
+                        listHeaders={ legacyAuthzRuntime ? [
                             t("console:manage.features.transferList.list.headers.1"), ""
+                        ] : [
+                            t("console:manage.features.transferList.list.headers.1"),
+                            t("console:manage.features.transferList.list.headers.2"), ""
                         ] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
@@ -171,10 +185,14 @@ export const AddUserRole: FunctionComponent<AddUserRoleProps> = (props: AddUserR
                                         listItem={ roleName?.length > 1 ? roleName[1] : role?.displayName }
                                         listItemId={ role.id }
                                         listItemIndex={ index }
-                                        listItemTypeLabel={ createItemLabel(role?.displayName) }
+                                        listItemTypeLabel={ !legacyAuthzRuntime && 
+                                            createItemLabel(role?.audience?.type, role?.audience?.display) 
+                                        }
                                         isItemChecked={ checkedUnassignedListItems.includes(role) }
                                         showSecondaryActions={ false }
                                         handleOpenPermissionModal={ () => handleSetRoleId(role.id) }
+                                        reOrderLabel
+                                        showSubLabel={ !legacyAuthzRuntime }
                                         data-testid="user-mgt-add-user-wizard-modal-unselected-roles"
                                     />
                                 );

@@ -485,6 +485,113 @@ export const console: ConsoleNS = {
             }
         }
     },
+    apiResources: {
+        confirmations: {
+            deleteAPIResource: {
+                assertionHint: "Please confirm your action.",
+                content: "This action is irreversible and will permanently delete the API resource.",
+                header: "Are you sure?",
+                message: "If you delete this API resource, some functionalities may not work properly. " +
+                    "Please proceed with caution."
+            },
+            deleteAPIResourcePermission: {
+                assertionHint: "Please confirm your action.",
+                content: "This action is irreversible and will permanently remove the scope from the API resource.",
+                header: "Are you sure?",
+                message: "If you remove this scope from the API resource, some functionalities may not work properly. " +
+                    "Please proceed with caution."
+            }
+        },
+        tabs: {
+            scopes: {
+                button: "Add Scope",
+                label: "Scopes",
+                title: "List of Scopes",
+                subTitle: "List of scopes uses by the API Resource.",
+                learnMore: "Learn More",
+                search: "Search scopes by display name",
+                empty: {
+                    title: "No scope is assigned",
+                    subTitle: "Click on the + icon to add a new scope"
+                },
+                emptySearch: {
+                    title: "No results found",
+                    subTitle: {
+                        0: "We couldn't find the scope you searched for.",
+                        1: "Please try using a different parameter."
+                    },
+                    viewAll: "Clear search query"
+                },
+                copyPopupText: "Copy the Identifier",
+                copiedPopupText: "Copied the Identifier",
+                removeScopePopupText: "Remove the scope",
+                form: {
+                    button: "Add Scope",
+                    cancelButton: "Cancel",
+                    submitButton: "Finish",
+                    title: "Add Scope",
+                    subTitle: "Create a new Scope",
+                    fields: {
+                        displayName: {
+                            emptyValidate: "Display name cannot be empty",
+                            label: "Display Name",
+                            placeholder: "Read Bookings"
+                        },
+                        scope: {
+                            emptyValidate: "Scope cannot be empty",
+                            label: "Scope",
+                            placeholder: "read_bookings"
+                        },
+                        description: {
+                            label: "Description",
+                            placeholder: "Enter the Description"
+                        }
+                    }
+                }
+            }
+        },
+        wizard: {
+            addApiResource: {
+                steps: {
+                    scopes: {
+                        empty: {
+                            title: "No scope is assigned",
+                            subTitle: "Click on the + icon to add a new scope"
+                        },
+                        stepTitle: "Scopes",
+                        form: {
+                            button: "Add Scope",
+                            fields: {
+                                displayName: {
+                                    emptyValidate: "Display name cannot be empty",
+                                    label: "Display Name",
+                                    placeholder: "Read Bookings",
+                                    hint: "Provide a meaningful name as it will be displayed on the user consent screen."
+                                },
+                                permission: {
+                                    emptyValidate: "Scope cannot be empty",
+                                    uniqueValidate: "This scope already exists in the organization. Please choose a different one.",
+                                    invalid: "Scope cannot contain spaces",
+                                    label: "Scope",
+                                    placeholder: "read_bookings",
+                                    hint: "A unique value that acts as the scope when requesting an access token. <1>Note that the scope cannot be modified once created.</1>"
+                                },
+                                permissionList: {
+                                    label: "Added Scopes"
+                                },
+                                description: {
+                                    label: "Description",
+                                    placeholder: "Enter the Description",
+                                    hint: "Provide a description for your scope. This will be displayed on the user consent screen."
+                                }
+                            }
+                        },
+                        removeScopePopupText: "Remove the scope"
+                    }
+                }
+            }
+        }
+    },
     branding: {
         form: {
             actions: {
@@ -1051,6 +1158,11 @@ export const console: ConsoleNS = {
                                 "configure authentication for your application using WS-Federation.",
                             tabName: "Info"
                         },
+                        protocol: {
+                            title: "Protocol Configuration",
+                            subtitle: "Configure the protocol for your application.",
+                            button: "Configure Protocol"
+                        },
                         provisioning: {
                             inbound: {
                                 heading: "Inbound Provisioning",
@@ -1537,16 +1649,16 @@ export const console: ConsoleNS = {
                                     subjectType: {
                                         label: "Subject type",
                                         public: {
-                                            label: "public",
+                                            label: "Public",
                                             hint: "This option will use the public subject identifier as the" +
                                                 " subject. Subject identifier URI is used in subject value" +
                                                 " calculation."
                                         },
                                         pairwise: {
-                                            label: "pairwise",
-                                            hint: "This option will use the pairwise subject identifier as the" +
-                                                " subject. Subject identifier URI and callback URI or sector" +
-                                                " identifier URI is used in subject value calculation."
+                                            label: "Pairwise",
+                                            hint: "Enable pairwise to assign a unique pseudonymous ID " +
+                                                "to each client. The subject identifier URI and callback URI or " +
+                                                "sector identifier URI is considered in calculating the subject value."
                                         }
                                     },
                                     sectorIdentifierURI: {
@@ -2907,6 +3019,20 @@ export const console: ConsoleNS = {
                         },
                         success: {
                             description: "Successfully retrieved application details.",
+                            message: "Retrieval successful"
+                        }
+                    },
+                    fetchMyAccountApplication: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Retrieval error"
+                        },
+                        genericError: {
+                            description: "Couldn't retrieve the My Account application details.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Successfully retrieved the My Account application details.",
                             message: "Retrieval successful"
                         }
                     },
@@ -9219,6 +9345,7 @@ export const console: ConsoleNS = {
                 invitedUserLabel: "Managed by parent organization"
             },
             oidcScopes: {
+                back: "Go back to OpenID Connect Attrbute Mappings",
                 viewAttributes: "View Attributes",
                 manageAttributes: "Manage Attributes",
                 addAttributes: {
@@ -10247,19 +10374,19 @@ export const console: ConsoleNS = {
                         rolePermission: {
                             apiResource: {
                                 label: "Select API Resource",
-                                placeholder: "Select an API resource to assign scopes(permissions)"
+                                placeholder: "Select an API resource to assign permissions(scopes)"
                             },
                             permissions: {
-                                label: "Select scopes(permissions) from the selected API resources",
-                                placeholder: "Select scopes(permissions)",
+                                label: "Select permissions(scopes) from the selected API resources",
+                                placeholder: "Select permissions(scopes)",
                                 tooltips: {
                                     noScopes: "No scopes available for the selected API resource",
-                                    selectAllScopes: "Select all scopes(permissions)",
+                                    selectAllScopes: "Select all permissions(scopes)",
                                     removeAPIResource: "Remove API resource"
                                 }
                             },
                             notes: {
-                                applicationRoles: "Only the APIs and the scopes(permissions) that are authorized in the selected application(<1>{{applicationName}}</1>) will be listed to select."
+                                applicationRoles: "Only the APIs and the permissions(scopes) that are authorized in the selected application(<1>{{applicationName}}</1>) will be listed to select."
                             },
                             notifications: {
                                 fetchAPIResourceError: {
@@ -10409,7 +10536,9 @@ export const console: ConsoleNS = {
                                 description: "We were unable to fetch the groups assigned to the role."
                             }
                         },
+                        externalGroupsHeading: "External Groups",
                         heading: "Assigned Groups",
+                        localGroupsHeading: "Local Groups",
                         subHeading: "Add or remove the groups assigned to this role. Note that this "
                             + "will affect performing certain tasks.",
                         actions: {
@@ -10595,7 +10724,7 @@ export const console: ConsoleNS = {
                     deleteRole: {
                         error: {
                             description: "{{description}}",
-                            message: "Error deleting the selected role."
+                            message: "Unable to delete the selected role."
                         },
                         genericError: {
                             description: "Couldn't remove the selected role.",
@@ -10715,6 +10844,10 @@ export const console: ConsoleNS = {
                     pageHeading: "Admin Advisory Banner",
                     pageSubheading: "Configure the admin advisory banner to be displayed on the login page."
                 },
+                manageNotificationSendingInternally: {
+                    title: "Internal Notification Sending",
+                    description: "Manage notification sending internally."
+                },
                 remoteLogPublishing: {
                     title: "Remote Log Publishing",
                     pageTitle: "Remote Log Publishing",
@@ -10766,8 +10899,8 @@ export const console: ConsoleNS = {
                         }
                     },
                     dangerZone: {
-                        title: "Restore Default Configuration for {{logType}} Logs",
-                        header: "Restore Default Configuration for {{logType}} Logs",
+                        title: "Restore Default Configuration",
+                        header: "Restore Default Configuration",
                         subheader: "This action will delete the existing configuration for {{logType}} logs. Please be certain before you proceed.",
                         confirmation: {
                             hint: "Please confirm your action.",
@@ -10863,6 +10996,10 @@ export const console: ConsoleNS = {
                             }
                         }
                     }
+                },
+                server: {
+                    title: "Server",
+                    description: "Configure server settings."
                 }
             },
             sidePanel: {
@@ -10930,7 +11067,8 @@ export const console: ConsoleNS = {
                     },
                     headers: {
                         0: "Domain",
-                        1: "Name"
+                        1: "Name",
+                        2: "Audience"
                     }
                 },
                 searchPlaceholder: "Search {{type}}"
@@ -11110,6 +11248,14 @@ export const console: ConsoleNS = {
                             "wish to assign roles to this user please click on the button below."
                     },
                     addUserWizard: {
+                        askPassword: {
+                            alphanumericUsernameEnabled: "To use the password reset feature, disable " +
+                                "alphanumeric username feature.",
+                            emailInvalid: "To use the password reset feature, please use a valid email address as " +
+                                "the username.",
+                            emailVerificationDisabled: "To use the password reset feature, enable email verification by " +
+                                "configuring an email provider."
+                        },
                         buttons: {
                             next: "Next",
                             previous: "Previous"
@@ -11184,8 +11330,6 @@ export const console: ConsoleNS = {
                                 searchByRoleOrGroup: "Search by Role/Group",
                                 roleGroupFilterAttributePlaceHolder: "Role/Group Name"
                             },
-                            disabledSecondaryStoreInfo: "Bulk import to external user stores is not available " +
-                                "at the moment.",
                             manualCreation: {
                                 alerts: {
                                     creationSuccess: {
@@ -11203,7 +11347,9 @@ export const console: ConsoleNS = {
                                 },
                                 primaryButton: "Add",
                                 rolesLabel: "Roles",
-                                rolesPlaceholder: "Enter roles"
+                                rolesPlaceholder: "Enter roles",
+                                warningMessage: "This option can only be used when email address is configured " +
+                                    "as the username."
                             },
                             fileBased: {
                                 hint: "Bulk invite multiple users using a CSV file."
@@ -11216,6 +11362,14 @@ export const console: ConsoleNS = {
                         },
                         buttons: {
                             import: "Import"
+                        },
+                        sidePanel: {
+                            manual: "Manual",
+                            fileBased: "File Based",
+                            fileFormatTitle: "CSV File Format",
+                            fileFormatContent: "Headers of the CSV file should be user attributes that are " +
+                                    "mapped to <1>local attributes</1>.",
+                            fileFormatSampleHeading: "Sample CSV file format:"
                         }
                     },
                     changePasswordModal: {
@@ -11270,6 +11424,7 @@ export const console: ConsoleNS = {
                         generic: {
                             inputs: {
                                 placeholder: "Enter your {{fieldName}}",
+                                dropdownPlaceholder: "Select your {{fieldName}}",
                                 validations: {
                                     empty: "{{fieldName}} is a required field",
                                     invalidFormat: "The {{fieldName}} is not of the correct format"
@@ -11709,6 +11864,13 @@ export const console: ConsoleNS = {
                             "session. They will loose the progress of any ongoing tasks. Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently terminate the session."
+                    },
+                    addMultipleUser: {
+                        header: "Before you proceed",
+                        message: "Invite users option is disabled",
+                        content: "Invite users option should be enabled to add multiple users. Please enable it and " +
+                            "try again.",
+                        assertionHint: "Please confirm your action."
                     }
                 },
                 consumerUsers: {
@@ -12562,6 +12724,11 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: "Edit Role"
             },
+            groupsEdit: {
+                backButton: "Go back to {{type}}",
+                subTitle: null,
+                title: "Edit Group"
+            },
             serverConfigurations: {
                 subTitle: "Manage general configurations of the server.",
                 title: "General Configurations"
@@ -12571,7 +12738,7 @@ export const console: ConsoleNS = {
                 title: "Users"
             },
             usersEdit: {
-                backButton: "Go back to Users",
+                backButton: "Go back to {{type}}",
                 subTitle: "{{name}}",
                 title: "{{email}}"
             }

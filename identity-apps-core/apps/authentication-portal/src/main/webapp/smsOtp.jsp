@@ -249,9 +249,12 @@
                                         String multiOptionURI = request.getParameter("multiOptionURI");
                                         if (isMultiAuthAvailable(multiOptionURI)) {
                                     %>
-                                        <a class="ui fluid large button secondary mt-2" 
-                                        id="goBackLink"
-                                        href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
+                                        <div class="ui divider hidden"></div>
+                                        <a
+                                            class="ui fluid primary basic button link-button" 
+                                            id="goBackLink"
+                                            href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'
+                                        >
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
                                         </a>
                                     <% } %>

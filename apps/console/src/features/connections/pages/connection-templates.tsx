@@ -55,7 +55,11 @@ import {
     ConnectionTemplateItemInterface
 } from "../models/connection";
 import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
-import { ConnectionsManagementUtils, handleGetConnectionTemplateListError } from "../utils/connection-utils";
+import {
+    ConnectionsManagementUtils,
+    handleGetConnectionTemplateListError,
+    resolveConnectionName
+} from "../utils/connection-utils";
 
 /**
  * Proptypes for the Connection template page component.
@@ -483,8 +487,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                     <ResourceGrid.Card
                                                         key={ templateIndex }
                                                         resourceName={
-                                                            template.name === "Enterprise" ? "Standard-Based IdP"
-                                                                : template.name
+                                                            resolveConnectionName(template?.name)
                                                         }
                                                         isResourceComingSoon={ template.comingSoon }
                                                         disabled={ template.disabled }

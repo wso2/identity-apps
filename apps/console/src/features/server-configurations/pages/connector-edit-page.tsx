@@ -98,6 +98,9 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
         [ featureConfig, allowedScopes ]
     );
 
+    const path: string[] = history.location.pathname.split("/");
+    const type: string = path[ path.length - 3 ];
+
     useEffect(() => {
         // If Governance Connector read permission is not available, prevent from trying to load the connectors.
         if (
@@ -175,20 +178,27 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             properties: []
         };
 
-        if (
-            serverConfigurationConfig.connectorToggleName[ connector?.name ] &&
-            serverConfigurationConfig.autoEnableConnectorToggleProperty
-        ) {
+        if (type === "username") {
+            // special case for username recovery
+            // TODO: remove this once the ID is fixed
             updateData.properties.push({
                 name: GovernanceConnectorUtils.decodeConnectorPropertyName(
-                    serverConfigurationConfig.connectorToggleName[ connector?.name ]
+                    serverConfigurationConfig.connectorToggleName["account-recovery-username"]
+                ),
+                value: data.checked.toString()
+            });
+        } else {
+            updateData.properties.push({
+                name: GovernanceConnectorUtils.decodeConnectorPropertyName(
+                    serverConfigurationConfig.connectorToggleName[ connector?.name ] ?? connector?.name
                 ),
                 value: data.checked.toString()
             });
         }
-
+        
         updateGovernanceConnector(updateData, categoryId, connectorId)
             .then(() => {
+                loadConnectorDetails();
                 handleUpdateSuccess();
             })
             .catch((error: AxiosError) => {
@@ -214,34 +224,29 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             properties: []
         };
 
-        if (
-            serverConfigurationConfig.connectorToggleName[ connector?.name ] &&
-            serverConfigurationConfig.autoEnableConnectorToggleProperty
-        ) {
-            // Update reCaptcha settings for single sign-on.
-            updateSSOCaptchaData.properties.push({
-                name: GovernanceConnectorUtils.decodeConnectorPropertyName(
-                    serverConfigurationConfig.connectorToggleName[ connector?.name ]
-                ),
-                value: data.checked.toString()
-            });
-            updateSSOCaptchaData.properties.push({
-                name: ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE,
-                value: data.checked.toString()
-            });
+        // Update reCaptcha settings for single sign-on.
+        updateSSOCaptchaData.properties.push({
+            name: GovernanceConnectorUtils.decodeConnectorPropertyName(
+                serverConfigurationConfig.connectorToggleName[ connector?.name ] ?? connector?.name
+            ),
+            value: data.checked.toString()
+        });
+        updateSSOCaptchaData.properties.push({
+            name: ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE,
+            value: data.checked.toString()
+        });
 
-            // Update reCaptcha settings for self sign-up.
-            updateSelfSignUpCaptchaData.properties.push({
-                name: ServerConfigurationsConstants.RE_CAPTCHA,
-                value: data.checked.toString()
-            });
+        // Update reCaptcha settings for self sign-up.
+        updateSelfSignUpCaptchaData.properties.push({
+            name: ServerConfigurationsConstants.RE_CAPTCHA,
+            value: data.checked.toString()
+        });
 
-            // Update reCaptcha settings for account recovery.
-            updateRecoveryCaptchaData.properties.push({
-                name: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA,
-                value: data.checked.toString()
-            });
-        }
+        // Update reCaptcha settings for account recovery.
+        updateRecoveryCaptchaData.properties.push({
+            name: ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_RE_CAPTCHA,
+            value: data.checked.toString()
+        });
 
         updateGovernanceConnector(updateSSOCaptchaData, categoryId, connectorId)
             .then(() => {
@@ -305,7 +310,6 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     };
 
     const loadConnectorDetails = () => {
-        const path: string[] = history.location.pathname.split("/");
         const categoryId: string = path[ path.length - 2 ];
         const connectorId: string = path[ path.length - 1 ];
 
@@ -366,11 +370,19 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             case ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID:
                 return t("extensions:manage.serverConfigurations.accountSecurity.loginAttemptSecurity.heading");
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
-                return t("extensions:manage.serverConfigurations.accountRecovery.passwordRecovery.heading");
+                return type === "username" 
+                    ? "Username Recovery" 
+                    : t("extensions:manage.serverConfigurations.accountRecovery.passwordRecovery.heading");
             case ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID:
                 return t("extensions:manage.serverConfigurations.accountSecurity.botDetection.heading");
             case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
                 return t("extensions:manage.serverConfigurations.userOnboarding.selfRegistration.heading");
+            case ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_CONNECTOR_ID:
+                return "Admin Initiated Password Reset";
+            case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
+                return "Multi Attribute Login";
+            case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
+                return "Invite User to Set Password";
             default:
                 return connector?.friendlyName;
         }
@@ -381,14 +393,17 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             case ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID:
                 return t("extensions:manage.serverConfigurations.accountSecurity.loginAttemptSecurity.subHeading");
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
-                return (
-                    <div style={ { whiteSpace: "pre-line" } }>
-                        { t("extensions:manage.serverConfigurations.accountRecovery.passwordRecovery.subHeading") }
-                        <DocumentationLink link={ getLink("manage.accountRecovery.passwordRecovery.learnMore") }>
-                            { t("extensions:common.learnMore") }
-                        </DocumentationLink>
-                    </div>
-                );
+                return type === "username" 
+                    ? "Enable self-service username recovery for users on the login page." +
+                        " The user will receive a username reset link via email upon request." 
+                    : (
+                        <div style={ { whiteSpace: "pre-line" } }>
+                            { t("extensions:manage.serverConfigurations.accountRecovery.passwordRecovery.subHeading") }
+                            <DocumentationLink link={ getLink("manage.accountRecovery.passwordRecovery.learnMore") }>
+                                { t("extensions:common.learnMore") }
+                            </DocumentationLink>
+                        </div>
+                    ); 
             case ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID:
                 return t("extensions:manage.serverConfigurations.accountSecurity.botDetection.subHeading");
             case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
@@ -410,6 +425,14 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                         </DocumentationLink>
                     </>
                 );
+            case ServerConfigurationsConstants.USERNAME_RECOVERY:
+                return "Enable self-service username recovery for users on the login page." +
+                    "The user will receive a usernmae reset link via email upon request.";
+            case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
+                return "Manage and configure settings related configuring " 
+                    + "multiple attributes as the login identifier.";
+            case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
+                return "Allow users choose passwords in admin-initiated onboarding.";
             default:
                 return connector?.description
                     ? connector.description
@@ -438,10 +461,12 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     "notification.success.description"
                 );
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
-                return t(
-                    "extensions:manage.serverConfigurations.accountRecovery.passwordRecovery." +
-                    "notification.success.description"
-                );
+                return type === "username"
+                    ? "Successfully updated the username recovery configuration."
+                    : t(
+                        "extensions:manage.serverConfigurations.accountRecovery.passwordRecovery." +
+                        "notification.success.description"
+                    );
             case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
                 return t(
                     "extensions:manage.serverConfigurations.analytics.form." +
@@ -473,10 +498,12 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     "notification.error.description"
                 );
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
-                return t(
-                    "extensions:manage.serverConfigurations.accountRecovery.passwordRecovery." +
-                    "notification.error.description"
-                );
+                return type === "username"
+                    ? "Error occurred while updating the username recovery configuration."
+                    : t(
+                        "extensions:manage.serverConfigurations.accountRecovery.passwordRecovery." +
+                        "notification.error.description"
+                    );
             case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
                 return t(
                     "extensions:manage.serverConfigurations.analytics.form." +
@@ -525,9 +552,15 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
                 return ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE;
             case ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID:
-                return ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE;
+                return ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE;
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
-                return ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE;
+                return type === "username"
+                    ? ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE
+                    : ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE;
+            case ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_CONNECTOR_ID:
+                return ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE;
+            case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
+                return ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE;
             default:
                 return null;
         }

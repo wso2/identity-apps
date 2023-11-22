@@ -56,10 +56,8 @@ import { ApplicationRoleWizard } from "./wizard-updated/application-role-wizard"
 import { updateApplicationDetails } from "../../applications/api";
 import { useGetApplication } from "../../applications/api/use-get-application";
 import { ApplicationInterface } from "../../applications/models";
-import {
-    history
-} from "../../core";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { history } from "../../core/helpers/history";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getApplicationRolesByAudience } from "../api/roles";
 import { RoleAudienceTypes } from "../constants/role-constants";
 import {
@@ -96,17 +94,18 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const { t } = useTranslation();
     const dispatch: Dispatch<any> = useDispatch();
     const { getLink } = useDocumentation();
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
     const { data: application } = useGetApplication(appId, !!appId);
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ shouldUpdateRoleAudience, setShouldUpdateRoleAudience ] = useState<boolean>(false);
     const [ showSwitchAudienceWarning, setShowSwitchAudienceWarning ] = useState<boolean>(false);
     const [ roleAudience, setRoleAudience ] =
         useState<RoleAudienceTypes>(application?.associatedRoles?.allowedAudience ?? RoleAudienceTypes.ORGANIZATION);
     const [ tempRoleAudience, setTempRoleAudience ] =
         useState<RoleAudienceTypes>(application?.associatedRoles?.allowedAudience ?? RoleAudienceTypes.ORGANIZATION);
-    
+
     const [ roleList, setRoleList ] = useState<BasicRoleInterface[]>([]);
     const [ selectedRoles, setSelectedRoles ] =
         useState<BasicRoleInterface[]>(application?.associatedRoles?.roles ?? []);
@@ -121,7 +120,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     /**
      * Fetch application roles on component load and audience switch.
      */
-    useEffect(() => {        
+    useEffect(() => {
         getApplicationRoles();
         if (roleAudience === application?.associatedRoles?.allowedAudience) {
             setSelectedRoles(application?.associatedRoles?.roles);
@@ -131,6 +130,26 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             setInitialSelectedRoles([]);
         }
     }, [ roleAudience ]);
+
+    /**
+     * Send a request to update roles when one of the role audience radio buttons is selected.
+     */
+    useEffect(() => {
+
+        if (!shouldUpdateRoleAudience) {
+            return;
+        }
+
+        /**
+         * Ideally, the selectedRoles list should be cleared immediately when the current roleAudience is not allowed
+         * for the application. This does not happen in some cases due to the asynchronous nature of the
+         * setSelectedRoles() method. This if block prevents the roles from being updated with stale data in such cases.
+         */
+        if (roleAudience !== application?.associatedRoles?.allowedAudience && selectedRoles?.length !== 0) {
+            return;
+        }
+        updateRoles();
+    }, [ shouldUpdateRoleAudience, roleAudience, selectedRoles ]);
 
     /**
      * Set removed roles
@@ -154,7 +173,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     /**
      * Fetch application roles.
      */
-    const getApplicationRoles = (): void => {
+    const getApplicationRoles = (shouldUpdateSelectedRolesList?: boolean): void => {
         getApplicationRolesByAudience(roleAudience, appId, null, null, null)
             .then((response: RolesV2ResponseInterface) => {
                 const rolesArray: BasicRoleInterface[] = [];
@@ -165,8 +184,12 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                         name: role?.displayName
                     });
                 });
-                
+
                 setRoleList(rolesArray);
+
+                if (shouldUpdateSelectedRolesList) {
+                    setSelectedRoles(rolesArray);
+                }
             }).catch((error: AxiosError) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
@@ -215,7 +238,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             associatedRoles: data,
             id: appId,
             name: application.name
-        };        
+        };
 
         updateApplicationDetails(updatedApplication)
             .then(() => {
@@ -250,12 +273,13 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             })
             .finally(() => {
                 setIsSubmitting(false);
+                setShouldUpdateRoleAudience(false);
             });
     };
 
     /**
      * Handle the restore roles.
-     * 
+     *
      * @param remainingRoles - remaining roles
      */
     const handleRestoreUsers = (remainingRoles: BasicRoleInterface[]) => {
@@ -275,12 +299,20 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 
     /**
      * Prompt the user to confirm the role audience switch.
-     * 
+     *
      * @param selectedAudience - selected audience
      */
     const promptAudienceSwitchWarning = (selectedAudience: RoleAudienceTypes): void => {
         setTempRoleAudience(selectedAudience);
         setShowSwitchAudienceWarning(true);
+    };
+
+    /**
+     * Handles the on role created callback.
+     */
+    const onRoleCreated = () => {
+        getApplicationRoles(true);
+        onUpdate(appId);
     };
 
     return (
@@ -332,21 +364,26 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                         disabled={ isReadOnly }
                                         className="mr-6"
                                     />
-                                    <Button
-                                        startIcon={ <PlusIcon/> }
-                                        variant="text"
-                                        onClick={ handleAddNewRoleWizardClick }
-                                        disabled={ isReadOnly }
-                                    >
-                                        { t("console:develop.features.applications.edit." + 
-                                        "sections.roles.createApplicationRoleWizard.button") }
-                                    </Button>
+                                    {
+                                        roleAudience === RoleAudienceTypes.APPLICATION
+                                            && (
+                                                <Button
+                                                    startIcon={ <PlusIcon/> }
+                                                    variant="text"
+                                                    onClick={ handleAddNewRoleWizardClick }
+                                                    disabled={ isReadOnly }
+                                                >
+                                                    { t("console:develop.features.applications.edit." +
+                                                            "sections.roles.createApplicationRoleWizard.button") }
+                                                </Button>
+                                            )
+                                    }
                                 </Grid.Row>
                             </FormGroup>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                        <Grid.Column width={ 16 }>     
+                        <Grid.Column width={ 16 }>
                             <Heading as="h5">
                                 { t("extensions:develop.applications.edit.sections.rolesV2.assignedRoles") }
                             </Heading>
@@ -373,7 +410,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                 loading={ isLoading }
                                 options={ roleList }
                                 value={ selectedRoles ?? [] }
-                                getOptionLabel={ 
+                                getOptionLabel={
                                     (role: BasicRoleInterface) => role.name
                                 }
                                 renderInput={ (params: AutocompleteRenderInputParams) => (
@@ -384,14 +421,14 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     />
                                 ) }
                                 onChange={ (event: SyntheticEvent, roles: BasicRoleInterface[]) => {
-                                    setSelectedRoles(roles); 
+                                    setSelectedRoles(roles);
                                 } }
-                                isOptionEqualToValue={ 
-                                    (option: BasicRoleInterface, value: BasicRoleInterface) => 
-                                        option.id === value.id 
+                                isOptionEqualToValue={
+                                    (option: BasicRoleInterface, value: BasicRoleInterface) =>
+                                        option.id === value.id
                                 }
                                 renderTags={ (
-                                    value: BasicRoleInterface[], 
+                                    value: BasicRoleInterface[],
                                     getTagProps: AutocompleteRenderGetTagProps
                                 ) => value.map((option: BasicRoleInterface, index: number) => (
                                     <Chip
@@ -411,7 +448,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                 )) }
                                 renderOption={ (
                                     props: HTMLAttributes<HTMLLIElement>,
-                                    option: BasicRoleInterface, 
+                                    option: BasicRoleInterface,
                                     { selected }: { selected: boolean }
                                 ) => (
                                     <AutoCompleteRenderOption
@@ -431,7 +468,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                             loading={ isLoading }
                                             options={ removedRolesOptions }
                                             value={ removedRolesOptions }
-                                            getOptionLabel={ 
+                                            getOptionLabel={
                                                 (role: BasicRoleInterface) => role.name
                                             }
                                             onChange={ (
@@ -450,7 +487,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                 />
                                             ) }
                                             renderTags={ (
-                                                value: BasicRoleInterface[], 
+                                                value: BasicRoleInterface[],
                                                 getTagProps: AutocompleteRenderGetTagProps
                                             ) => value.map((option: BasicRoleInterface, index: number) => (
                                                 <Chip
@@ -470,7 +507,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                 />
                                             ) ) }
                                             renderOption={ (
-                                                props: HTMLAttributes<HTMLLIElement>, 
+                                                props: HTMLAttributes<HTMLLIElement>,
                                                 option: BasicRoleInterface
                                             ) => (
                                                 <AutoCompleteRenderOption
@@ -480,8 +517,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                             ) }
                                         />
                                     ) : null
-                            } 
-                            
+                            }
+
                         </Grid.Column>
                     </Grid.Row>
                     {
@@ -517,6 +554,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 } }
                 onPrimaryActionClick={ (): void => {
                     setRoleAudience(tempRoleAudience);
+                    setShouldUpdateRoleAudience(true);
                     setShowSwitchAudienceWarning(false);
                 } }
                 data-componentid={ `${ componentId }-switch-role-audience-confirmation-modal` }
@@ -555,15 +593,20 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
-            { showWizard &&
-                (<ApplicationRoleWizard
-                    setUserListRequestLoading={ null }
-                    data-testid="user-mgt-add-user-wizard-modal"
-                    closeWizard={ () => {
-                        setShowWizard(false);
-                    } }
-                    application={ application }
-                />)
+            {
+                showWizard
+                && roleAudience === RoleAudienceTypes.APPLICATION
+                && (
+                    <ApplicationRoleWizard
+                        setUserListRequestLoading={ null }
+                        data-testid="user-mgt-add-user-wizard-modal"
+                        closeWizard={ () => {
+                            setShowWizard(false);
+                        } }
+                        application={ application }
+                        onRoleCreated={ onRoleCreated }
+                    />
+                )
             }
         </>
     );

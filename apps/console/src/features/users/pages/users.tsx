@@ -27,11 +27,10 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import {
-    Button,
+    ConfirmationModal,
     EmptyPlaceholder,
     ListLayout,
     PageLayout,
-    Popup,
     PrimaryButton,
     ResourceTab,
     ResourceTabPaneInterface
@@ -41,11 +40,9 @@ import { InvitationStatus } from "apps/console/src/extensions/components/users/m
 import { AxiosError, AxiosResponse } from "axios";
 import React, {
     FunctionComponent, 
-    MutableRefObject, 
     ReactElement, 
     SyntheticEvent, 
-    useEffect, 
-    useRef, 
+    useEffect,
     useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -65,8 +62,7 @@ import {
     history,
     store
 } from "../../core";
-import { RootOnlyComponent } from "../../organizations/components";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorCategoryInterface,
@@ -85,7 +81,6 @@ import { UserInviteInterface } from "../components/guests/models/invite";
 import { GuestUsersList } from "../components/guests/pages/guest-users-list";
 import { useGetParentOrgUserInvites } from "../components/guests/pages/use-get-parent-org-user-invites";
 import { UsersList } from "../components/users-list";
-import { UsersListOptionsComponent } from "../components/users-list-options";
 import { AddUserWizard } from "../components/wizard/add-user-wizard";
 import { BulkImportUserWizard } from "../components/wizard/bulk-import-user-wizard";
 import { UserAccountTypes, UserAccountTypesMain, UserAddOptionTypes, UserManagementConstants } from "../constants";
@@ -158,10 +153,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ filterGuestList, setFilterGuestList ] = useState<UserInviteInterface[]>();
     const [ finalGuestList, setFinalGuestList ] = useState<UserInviteInterface[]>([]);
     const [ paginatedGuestList, setPaginateGuestList ] = useState<UserInviteInterface[]>([]);
+    const [ showMultipleInviteConfirmationModal, setShowMultipleInviteConfirmationModal ] = useState<boolean>(false);
+    const [ connectorConfigLoading, setConnecterConfigLoading ] = useState<boolean>(false);
 
-    const { isRootOrganization } = useGetOrganizationType();
-
-    const init : MutableRefObject<boolean> = useRef(true);
+    const { isSubOrganization, isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     const username: string = useSelector((state: AppState) => state.auth.username);
     const tenantName: string = store.getState().config.deployment.tenant;
@@ -192,7 +187,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Fetch the list of available userstores.
      */
     useEffect(() => {
-        if (!isRootOrganization) {
+        if (isSubOrganization()) {
             return;
         }
 
@@ -286,16 +281,14 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         getList(listItemLimit, listOffset, null, attributes, userStore);
         setListUpdated(false);
     }, [ isListUpdated ]);
-
+    
     useEffect(() => {
-        if (init.current) {
-            init.current = false;
-        } else {
-            if (emailVerificationEnabled !== undefined) {
-                setShowWizard(true);
-            }
-        }
-    }, [ emailVerificationEnabled ]);
+        setShowMultipleInviteConfirmationModal(
+            showBulkImportWizard
+            && !connectorConfigLoading
+            && !emailVerificationEnabled
+        );
+    }, [ showBulkImportWizard, connectorConfigLoading ]);
 
     /**
      * Handles parent user invitation pagination.
@@ -566,25 +559,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     /**
-     * The following method set the list of columns selected by the user to
-     * the state.
-     *
-     * @param metaColumns - string[]
-     */
-    const handleMetaColumnChange = (metaColumns: string[]) => {
-        metaColumns.push("profileUrl");
-        const tempColumns: Map<string, string> = new Map<string, string> ();
-
-        setUserMetaColumns(metaColumns);
-
-        metaColumns.map((column: string) => {
-            tempColumns.set(column, column);
-        });
-        setUserListMetaContent(tempColumns);
-        setListUpdated(true);
-    };
-
-    /**
      * Handles the `onFilter` callback action from the
      * users search component.
      *
@@ -628,7 +602,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Handles the click event of the create new user button.
      */
     const handleAddNewUserWizardClick = (): void => {
-
+        setConnecterConfigLoading(true);
         getConnectorCategory(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
             .then((response: GovernanceConnectorCategoryInterface) => {
                 const connectors: GovernanceConnectorInterface[]  = response?.connectors;
@@ -654,7 +628,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         "getConnector.genericError.message"
                     )
                 });
-            });
+            }).finally(() => setConnecterConfigLoading(false));
     };
 
     const addUserDropdownTrigger: ReactElement = (
@@ -725,44 +699,14 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 data-testid="user-mgt-user-list-layout"
                 onPageChange={ handlePaginationChange }
                 rightActionPanel={
-                    (
-                        <>
-                            <Popup
-                                className={ "list-options-popup" }
-                                flowing
-                                basic
-                                content={
-                                    (<UsersListOptionsComponent
-                                        data-testid="user-mgt-user-list-meta-columns"
-                                        handleMetaColumnChange={ handleMetaColumnChange }
-                                        userListMetaContent={ userListMetaContent }
-                                    />)
-                                }
-                                position="bottom left"
-                                on="click"
-                                pinned
-                                trigger={
-                                    (<Button
-                                        data-testid="user-mgt-user-list-meta-columns-button"
-                                        className="meta-columns-button"
-                                        basic
-                                    >
-                                        <Icon name="columns"/>
-                                        { t("console:manage.features.users.buttons.metaColumnBtn") }
-                                    </Button>)
-                                }
-                            />
-                            <RootOnlyComponent>
-                                <Dropdown
-                                    data-testid="user-mgt-user-list-userstore-dropdown"
-                                    selection
-                                    options={ userStoreOptions && userStoreOptions }
-                                    onChange={ handleDomainChange }
-                                    defaultValue={ PRIMARY_USERSTORE.toLocaleLowerCase() }
-                                />
-                            </RootOnlyComponent>
-                        </>
-                    )
+                    isFirstLevelOrganization() || isSuperOrganization()  
+                        ? (<Dropdown
+                            data-testid="user-mgt-user-list-userstore-dropdown"
+                            selection
+                            options={ userStoreOptions && userStoreOptions }
+                            onChange={ handleDomainChange }
+                            defaultValue={ PRIMARY_USERSTORE.toLocaleLowerCase() }
+                        />) : null  
                 }
                 showPagination={ true }
                 showTopActionPanel={ isUserListRequestLoading
@@ -844,6 +788,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             setShowWizard(true);
             setUserType(UserAccountTypesMain.EXTERNAL);
         } else if (value === UserAddOptionTypes.BULK_IMPORT) {
+            handleAddNewUserWizardClick();
             setShowBulkImportWizard(true);
         }
     };
@@ -1018,7 +963,37 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             return NUMBER_OF_PAGES_FOR_LDAP;
         }
     };
-    
+
+    const renderMultipleInviteConfirmationModel = (): ReactElement => {
+        return (
+            <ConfirmationModal
+                data-componentid={ `${componentId}-select-multiple-invite-confirmation-modal` }
+                onClose={ (): void => {
+                    setShowMultipleInviteConfirmationModal(false);
+                    setShowBulkImportWizard(false);
+                } }
+                type="warning"
+                open={ showMultipleInviteConfirmationModal }
+                primaryAction={ t("common:close") }
+                onPrimaryActionClick={ (): void => {
+                    setShowMultipleInviteConfirmationModal(false);
+                    setShowBulkImportWizard(false);
+                } }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header>
+                    { t("console:manage.features.users.confirmations.addMultipleUser.header") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message attached warning>
+                    { t("console:manage.features.users.confirmations.addMultipleUser.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content>
+                    { t("console:manage.features.users.confirmations.addMultipleUser.content") }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        );
+    };
+
     return (
         <PageLayout
             action={
@@ -1032,7 +1007,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             }
             title={ t("console:manage.pages.users.title") }
             pageTitle={ t("console:manage.pages.users.title") }
-            description={ t("console:manage.pages.users.subTitle") }
+            description={ t("extensions:manage.users.usersSubTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
             { isSubOrg ?
@@ -1046,15 +1021,23 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 : renderUsersList()
             }
             {
-                showWizard && ( showUserWizard())
+                showWizard && showUserWizard()
             } 
             {
-                showBulkImportWizard && (
+                showBulkImportWizard
+                && !connectorConfigLoading
+                && emailVerificationEnabled
+                && (
                     <BulkImportUserWizard
                         data-componentid="user-mgt-bulk-import-user-wizard-modal"
                         closeWizard={ handleBulkImportWizardClose }
                         userstore={ PRIMARY_USERSTORE }
                     />
+                )
+            }
+            {
+                showMultipleInviteConfirmationModal && (
+                    renderMultipleInviteConfirmationModel()
                 )
             }
         </PageLayout>

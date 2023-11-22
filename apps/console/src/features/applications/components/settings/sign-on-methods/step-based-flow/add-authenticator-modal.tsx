@@ -172,6 +172,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     } = props;
 
     const { t } = useTranslation();
+    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
     const hiddenAuthenticators: string[] = useSelector((state: AppState) => state.config?.ui?.hiddenAuthenticators);
     const groupedIDPTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state.identityProvider?.groupedTemplates
@@ -547,8 +548,13 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
                                             return (
                                                 <ResourceGrid.Card
+                                                    showSetupGuideButton={ isSAASDeployment }
                                                     key={ templateIndex }
-                                                    resourceName={ template.name }
+                                                    resourceName={ 
+                                                        template?.name === "Expert Mode"
+                                                            ? "Custom Connector"
+                                                            : template?.name
+                                                    }
                                                     isResourceComingSoon={ template.comingSoon }
                                                     disabled={ template.disabled }
                                                     comingSoonRibbonLabel={ t("common:comingSoon") }

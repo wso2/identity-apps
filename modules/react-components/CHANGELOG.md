@@ -1,5 +1,61 @@
 # @wso2is/react-components
 
+## 2.0.22
+
+### Patch Changes
+
+- [#4780](https://github.com/wso2/identity-apps/pull/4780) [`a62910f64f`](https://github.com/wso2/identity-apps/commit/a62910f64fdd05bbffcbdedf1392ec451d37c6b8) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Revert the fix the user avatar default shape to square
+
+- Updated dependencies [[`a62910f64f`](https://github.com/wso2/identity-apps/commit/a62910f64fdd05bbffcbdedf1392ec451d37c6b8)]:
+  - @wso2is/forms@2.0.4
+  - @wso2is/theme@2.0.41
+  - @wso2is/core@2.0.18
+
+## 2.0.21
+
+### Patch Changes
+
+- [#4747](https://github.com/wso2/identity-apps/pull/4747) [`41104e4934`](https://github.com/wso2/identity-apps/commit/41104e493424c3abb76ef5a4c84d35b2d147d369) Thanks [@brionmario](https://github.com/brionmario)! - Add Console Settings feature
+
+- Updated dependencies [[`41104e4934`](https://github.com/wso2/identity-apps/commit/41104e493424c3abb76ef5a4c84d35b2d147d369)]:
+  - @wso2is/forms@2.0.3
+  - @wso2is/theme@2.0.40
+  - @wso2is/core@2.0.17
+
+## 2.0.20
+
+### Patch Changes
+
+- [#4737](https://github.com/wso2/identity-apps/pull/4737) [`31fc142c2b`](https://github.com/wso2/identity-apps/commit/31fc142c2b0ed9c74e97a8cc6f2d58e20eec709a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide default subject attribute selection dropdown for OIDC apps
+
+- Updated dependencies [[`31fc142c2b`](https://github.com/wso2/identity-apps/commit/31fc142c2b0ed9c74e97a8cc6f2d58e20eec709a)]:
+  - @wso2is/core@2.0.16
+  - @wso2is/forms@2.0.2
+
+## 2.0.19
+
+### Patch Changes
+
+- [#4687](https://github.com/wso2/identity-apps/pull/4687) [`24eb66f570`](https://github.com/wso2/identity-apps/commit/24eb66f57020805ba81456e8d68ab7b49415ef7b) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Fix groups edit page title and add audience to role assign view
+
+## 2.0.18
+
+### Patch Changes
+
+- [#4681](https://github.com/wso2/identity-apps/pull/4681) [`a8073bb7aa`](https://github.com/wso2/identity-apps/commit/a8073bb7aab05c8b04930ed751e75637f0eee24e) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Fix groups edit page title and add audience to role assign view
+
+- Updated dependencies [[`a8073bb7aa`](https://github.com/wso2/identity-apps/commit/a8073bb7aab05c8b04930ed751e75637f0eee24e)]:
+  - @wso2is/theme@2.0.38
+
+## 2.0.17
+
+### Patch Changes
+
+- [#4666](https://github.com/wso2/identity-apps/pull/4666) [`5d602f7397`](https://github.com/wso2/identity-apps/commit/5d602f739726fa887340096a98cd838407c517c0) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Fix the user avatar default shape to square
+
+- Updated dependencies [[`9ecc95eebd`](https://github.com/wso2/identity-apps/commit/9ecc95eebd43807e022f675075740cc7bf38c09a)]:
+  - @wso2is/theme@2.0.37
+
 ## 2.0.16
 
 ### Patch Changes

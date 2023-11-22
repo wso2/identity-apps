@@ -1,0 +1,10 @@
+.console-administrators-table {
+    .role-tag-list {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+    }
+}

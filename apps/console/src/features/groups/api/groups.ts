@@ -76,12 +76,15 @@ export const getGroupList = (domain: string, excludedAttributes?: string): Promi
  *
  * @param domain - User store domain.
  * @param excludedAttributes - Excluded Attributes.
+ * @param filter - Filter string.
+ * @param shouldFetch - Should fetch the data.
  * @returns `RequestResultInterface<Data, Error>`
  */
 export const useGroupList = <Data = GroupListInterface, Error = RequestErrorInterface>(
     domain: string,
     excludedAttributes?: string,
-    filter?: string
+    filter?: string,
+    shouldFetch?: boolean
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -103,7 +106,7 @@ export const useGroupList = <Data = GroupListInterface, Error = RequestErrorInte
         isValidating,
         mutate,
         response
-    } = useRequest<Data, Error>(requestConfig);
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,

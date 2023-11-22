@@ -64,6 +64,8 @@
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.mobile.not.found");
             } else if (errorMessage.equalsIgnoreCase("directly.send.otp.disable")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.not.found");
+            } else if (errorMessage.equalsIgnoreCase("error.user.not.found.smsotp")) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.not.found.smsotp");
             } else if (errorMessage.equalsIgnoreCase("user.account.locked")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked");
                 String unlockTime = request.getParameter("unlockTime");

@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -86,6 +86,15 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
     const [ isSubmitting, setIsSubmitting ] = useState(false);
 
     /**
+     * Dispatches the alert object to the redux store.
+     *
+     * @param alert - Alert object.
+     */
+    const handleAlerts = (alert: AlertInterface) => {
+        dispatch(addAlert<AlertInterface>(alert));
+    };
+    
+    /**
      * Handles the advanced config form submit action.
      *
      * @param values - Form values.
@@ -141,6 +150,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
                         allowedScopes)
                 }
                 template={ template }
+                onAlertFired={ handleAlerts }
                 data-testid={ `${ componentId }-form` }
                 isSubmitting={ isSubmitting }
             />

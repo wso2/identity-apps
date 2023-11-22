@@ -2022,14 +2022,14 @@ export const extensions: Extensions = {
             }
         },
         emailProviders: {
-            configureEmailProvider: "Configurer le fournisseur de messagerie",
+            configureEmailTemplates: "Configurer les modèles d'e-mail",
             heading: "Fournisseur de messagerie personnalisé",
             subHeading: "Configurez des serveurs SMTP personnalisés pour envoyer des e-mails avec votre propre adresse e-mail.",
             description: "Configurez les paramètres du fournisseur de messagerie en fonction de votre serveur SMTP.",
             info: "Vous pouvez personnaliser le contenu des e-mails à l'aide de <1>Modèles d'e-mails</1>.",
             updateButton: "Mise à jour",
             sendTestMailButton: "Envoyer un e-mail test",
-            goBack: "Revenir aux chaînes",
+            goBack: "Revenir à E-mail et SMS",
             confirmationModal: {
                 assertionHint: "Veuillez confirmer votre action.",
                 content: "Si vous supprimez cette configuration, les e-mails seront envoyés à partir de l'adresse e-mail Asgardeo. " +
@@ -2123,10 +2123,22 @@ export const extensions: Extensions = {
                 }
             }
         },
-        notificationChannel: {
-            heading: "Fournisseurs SMS/e-mail",
-            title: "Fournisseurs SMS/e-mail",
-            description: "Configurez les fournisseurs SMS et Email pour votre organisation."
+        emailAndSMS: {
+            heading: {
+                heading: "Fournisseurs Email & SMS",
+                onlySMSProvider: "Fournisseur de SMS",
+                onlyEmailProvider: "Fournisseur de messagerie"
+            },
+            title: {
+                heading: "Fournisseurs Email & SMS",
+                onlySMSProvider: "Fournisseur de SMS",
+                onlyEmailProvider: "Fournisseur de messagerie"
+            },
+            description: {
+                description: "Configurez les SMS et les fournisseurs de messagerie pour votre organisation.",
+                onlySMSProvider: "Configurez le fournisseur SMS pour votre organisation.",
+                onlyEmailProvider: "Configurez les fournisseurs Email et SMS pour votre organisation."
+            }
         },
         smsProviders: {
             heading: "Fournisseur de SMS personnalisé",
@@ -2135,7 +2147,7 @@ export const extensions: Extensions = {
             info: "Vous pouvez personnaliser le contenu du SMS à l'aide des <1>Modèles de SMS</1>.",
             updateButton: "Mise à jour",
             sendTestSMSButton: "Envoyer un SMS test",
-            goBack: "Revenir aux chaînes",
+            goBack: "Revenir à E-mail et SMS",
             confirmationModal: {
                 assertionHint: "Veuillez confirmer votre action.",
                 content: "Si vous supprimez cette configuration, vous ne recevrez pas de SMS." +
@@ -2762,6 +2774,40 @@ export const extensions: Extensions = {
                                 "<3>Ajouter une connexion par clé d'accès</3> pour configurer " +
                                 " un flux de clé d'accès de base.",
                             heading: "Sélectionnez <1>Ajouter une connexion par mot de passe</1>."
+                        },
+                        configureParameters: {
+                            heading: "Configurer les options de clé d'accès",
+                            content: {
+                                parameters: {
+                                    progressiveEnrollment: {
+                                        description: "Activez cette option pour permettre aux utilisateurs " + 
+                                        "de s'inscrire pour obtenir un mot de passe lors de la connexion.",
+                                        label: "Inscription progressive du mot de passe:",
+                                        note: "Si la clé d'accès est définie comme premier facteur, " + 
+                                        "le <1> script adaptatif</1> suivant doit être ajouté " + 
+                                        "sous l'onglet <3>Méthode de connexion</3> de l'application. " + 
+                                        "Ce script est ajouté automatiquement avec la configuration de " + 
+                                        "la clé d'accès basée sur un modèle et est utilisé pour vérifier " + 
+                                        "l'identité de l'utilisateur avant d'inscrire les " +
+                                        "clés d'accès. Toutefois, si vous " + 
+                                        "configurez des mots de passe sans modèle, n'oubliez " +
+                                        "pas d'ajouter le script manuellement."
+                                    },
+                                    usernamelessAuthentication: {
+                                        description: "L'activation de cette fonctionnalité permet aux " +
+                                        "utilisateurs de se connecter avec un mot de passe sans saisir " +
+                                        "de nom d'utilisateur, créant ainsi une expérience de " + 
+                                        "connexion plus rationalisée.",
+                                        label: "Authentification sans nom d'utilisateur:"
+                                    }
+                                },
+                                steps: {
+                                    info: "Pour configurer, veuillez suivre les étapes ci-dessous:",
+                                    1: "Accédez à la zone <1>Connexions</1>.",
+                                    2: "Recherchez et sélectionnez la connexion <1>Passkey</1>.",
+                                    3: "Accédez à l'onglet <1>Paramètres</1>."
+                                }
+                            }
                         }
                     },
                     subHeading:

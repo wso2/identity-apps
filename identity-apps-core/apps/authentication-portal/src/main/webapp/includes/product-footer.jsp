@@ -65,11 +65,11 @@
                     <%
                         if (!shouldRemoveDefaultBranding) {
                     %>
-                        <% if (StringUtils.isNotBlank(productURL) && StringUtils.isNotBlank(logoURL)) {%>
+                        <% if (StringUtils.isNotBlank(productURL) && StringUtils.isNotBlank(productLogoURL)) {%>
                             <div class="powered-by-logo-divider">|</div>
                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "powered.by")%>
                             <div class="powered-by-logo" onclick="window.open('<%= StringEscapeUtils.escapeHtml4(productURL) %>', '_self', 'noopener,noreferrer,resizable')">
-                                <img width="80" height="20" src="<%= StringEscapeUtils.escapeHtml4(logoURL) %>" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" />
+                                <img width="80" height="20" src="<%= StringEscapeUtils.escapeHtml4(productLogoURL) %>" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" />
                             </div>
                         <% } %>
                     <% } %>

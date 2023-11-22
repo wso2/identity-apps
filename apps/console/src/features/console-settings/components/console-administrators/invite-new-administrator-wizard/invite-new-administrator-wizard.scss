@@ -1,0 +1,20 @@
+.invite-new-administrator-wizard {
+    .root-invite-only-disclaimer-alert {
+        margin-bottom: 1.5rem;
+    }
+
+    // TODO: Fix this from `@oxygen-ui` side.
+    // Tracker: https://github.com/wso2/oxygen-ui/issues/191
+    .oxygen-autocomplete {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    .invite-parent-user-wizard-form {
+        .oxygen-form-helper-text {
+            &:not(:last-child) {
+                margin-bottom: 2rem;
+            }
+        }
+    }
+}

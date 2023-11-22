@@ -1,5 +1,44 @@
 # @wso2is/common
 
+## 2.0.10
+
+### Patch Changes
+
+- [#4780](https://github.com/wso2/identity-apps/pull/4780) [`a62910f64f`](https://github.com/wso2/identity-apps/commit/a62910f64fdd05bbffcbdedf1392ec451d37c6b8) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Revert the fix the user avatar default shape to square
+
+- Updated dependencies [[`a62910f64f`](https://github.com/wso2/identity-apps/commit/a62910f64fdd05bbffcbdedf1392ec451d37c6b8)]:
+  - @wso2is/react-components@2.0.22
+  - @wso2is/access-control@2.0.7
+  - @wso2is/forms@2.0.4
+  - @wso2is/core@2.0.18
+  - @wso2is/i18n@2.0.56
+
+## 2.0.9
+
+### Patch Changes
+
+- [#4747](https://github.com/wso2/identity-apps/pull/4747) [`41104e4934`](https://github.com/wso2/identity-apps/commit/41104e493424c3abb76ef5a4c84d35b2d147d369) Thanks [@brionmario](https://github.com/brionmario)! - Add Console Settings feature
+
+- Updated dependencies [[`41104e4934`](https://github.com/wso2/identity-apps/commit/41104e493424c3abb76ef5a4c84d35b2d147d369)]:
+  - @wso2is/react-components@2.0.21
+  - @wso2is/access-control@2.0.6
+  - @wso2is/forms@2.0.3
+  - @wso2is/core@2.0.17
+  - @wso2is/i18n@2.0.53
+
+## 2.0.8
+
+### Patch Changes
+
+- [#4737](https://github.com/wso2/identity-apps/pull/4737) [`31fc142c2b`](https://github.com/wso2/identity-apps/commit/31fc142c2b0ed9c74e97a8cc6f2d58e20eec709a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide default subject attribute selection dropdown for OIDC apps
+
+- Updated dependencies [[`31fc142c2b`](https://github.com/wso2/identity-apps/commit/31fc142c2b0ed9c74e97a8cc6f2d58e20eec709a), [`b533228182`](https://github.com/wso2/identity-apps/commit/b533228182a5092b13584912e7032c1147eacc69)]:
+  - @wso2is/core@2.0.16
+  - @wso2is/access-control@2.0.5
+  - @wso2is/forms@2.0.2
+  - @wso2is/i18n@2.0.51
+  - @wso2is/react-components@2.0.20
+
 ## 2.0.7
 
 ### Patch Changes

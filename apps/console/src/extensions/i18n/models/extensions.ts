@@ -1764,7 +1764,7 @@ export interface Extensions {
             };
         };
         emailProviders: {
-            configureEmailProvider: string;
+            configureEmailTemplates: string;
             heading: string;
             subHeading: string;
             description: string;
@@ -1857,10 +1857,22 @@ export interface Extensions {
                 }
             };
         };
-        notificationChannel: {
-            heading: string;
-            title: string;
-            description: string;
+        emailAndSMS: {
+            heading: {
+                heading: string;
+                onlySMSProvider: string;
+                onlyEmailProvider: string;
+            },
+            title: {
+                heading: string;
+                onlySMSProvider: string;
+                onlyEmailProvider: string;
+            },
+            description: {
+                description: string;
+                onlySMSProvider: string;
+                onlyEmailProvider: string;
+            }
         };
         smsProviders: {
             heading: string;
@@ -2401,6 +2413,28 @@ export interface Extensions {
                         selectFIDO: {
                             content: string;
                             heading: string;
+                        };
+                        configureParameters: {
+                            heading: string;
+                            content: {
+                                parameters: {
+                                    progressiveEnrollment: {
+                                        description: string;
+                                        label: string;
+                                        note: string;
+                                    };
+                                    usernamelessAuthentication: {
+                                        description: string;
+                                        label: string;
+                                    };
+                                };
+                                steps: {
+                                    info: string;
+                                    1: string;
+                                    2: string;
+                                    3: string;
+                                }
+                            };
                         };
                     };
                     subHeading: string;

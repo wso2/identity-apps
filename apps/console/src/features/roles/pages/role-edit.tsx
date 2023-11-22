@@ -67,7 +67,8 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
         data: roleObject,
         isLoading: isRoleDetailsRequestLoading,
         error: roleDetailsRequestError,
-        mutate: mutateRoleObject
+        mutate: mutateRoleObject,
+        isValidating: isRoleDetailsRequestValidating
     } = useGetRoleById(roleId);
 
     /**
@@ -165,7 +166,7 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
                     bottomMargin={ false }
                 >
                     <EditRole
-                        isLoading={ isRoleDetailsRequestLoading }
+                        isLoading={ isRoleDetailsRequestLoading || isRoleDetailsRequestValidating }
                         roleObject={ roleObject }
                         onRoleUpdate={ onRoleUpdate }
                         featureConfig={ featureConfig }

@@ -37,6 +37,7 @@
         "userIdleTimeOut": 1800,
         "checkSessionInterval": 5
     },
+    "legacyAuthzRuntime": false,
     "ui": {
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",

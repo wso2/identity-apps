@@ -17,7 +17,7 @@
  */
 
 import React, { PropsWithChildren, ReactElement } from "react";
-import { useGetOrganizationType } from "../hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../hooks/use-get-organization-type";
 
 /**
  * Renders the child component only in the root organization.
@@ -29,7 +29,7 @@ export const RootOnlyComponent = (props: PropsWithChildren<Record<string, unknow
 
     const { children } = props;
 
-    const { isRootOrganization } = useGetOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
-    return <>{ isRootOrganization ? children : null }</>;
+    return <>{ isSuperOrganization() || isFirstLevelOrganization() ? children : null }</>;
 };

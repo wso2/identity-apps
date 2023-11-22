@@ -16,7 +16,14 @@
  * under the License.
  */
 
-import { AlertLevels, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import {
+    AlertLevels,
+    IdentifiableComponentInterface,
+    ProfileSchemaInterface,
+    RolesInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
@@ -32,43 +39,45 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Grid, Icon, Modal } from "semantic-ui-react";
+import { DropdownItemProps, Grid, Icon, Modal } from "semantic-ui-react";
 import { AddConsumerUserWizardSummary } from "./steps/add-consumer-user-wizard-summary";
 import { AddConsumerUserGroups } from "./steps/consumer-user-groups";
 import { RolePermissions } from "./user-role-permissions";
-import { AddUserWizardSummary } from "./wizard-summary";
+import { AddUserWizardSummary } from "./user-wizard-summary";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { UserAccountTypes, UsersConstants } from "../../../../extensions/components/users/constants";
 import { SCIMConfigs } from "../../../../extensions/configs/scim";
-import { AppConstants } from "../../../core/constants";
-import { history } from "../../../core/helpers";
+import useAuthorization from "../../../authorization/hooks/use-authorization";
+import { UserStoreDetails, UserStoreProperty } from "../../../core/models";
 import { AppState } from "../../../core/store";
 import { GroupsInterface } from "../../../groups";
 import { getGroupList, updateGroupDetails } from "../../../groups/api";
 import { getOrganizationRoles } from "../../../organizations/api";
 import { OrganizationRoleManagementConstants, OrganizationType } from "../../../organizations/constants";
-import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { OrganizationResponseInterface, OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface } from "../../../organizations/models";
 import { getRolesList, updateRoleDetails } from "../../../roles/api";
+import { getUserStores } from "../../../userstores/api";
 import { useValidationConfigData } from "../../../validation/api";
+import { ValidationFormInterface } from "../../../validation/models";
 import { addUser } from "../../api";
 import { getUserWizardStepIcons } from "../../configs";
-import { AdminAccountTypes, UserAccountTypesMain } from "../../constants";
+import { AdminAccountTypes, HiddenFieldNames, PasswordOptionTypes, UserAccountTypesMain } from "../../constants";
 import { 
     AddUserWizardStateInterface, 
     PayloadInterface,
     UserDetailsInterface, 
     WizardStepInterface,
     createEmptyUserDetails } from "../../models";
-import { getUsernameConfiguration } from "../../utils";
-import { AddUser } from "../add-user";
+import { generatePassword, getConfiguration, getUsernameConfiguration } from "../../utils";
 import { AddUserGroup } from "../add-user-groups";
 import { AddUserRole } from "../add-user-role";
+import { AddUserUpdated } from "../add-user-updated";
 import { sendParentOrgUserInvite } from "../guests/api/invite";
 import { InviteParentOrgUser } from "../guests/pages/invite-parent-org-user";
 
-interface AddUserWizardPropsInterface extends TestableComponentInterface {
+interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     closeWizard: () => void;
     compact?: boolean;
     currentStep?: number;
@@ -88,6 +97,7 @@ interface AddUserWizardPropsInterface extends TestableComponentInterface {
     conditionallyShowStepper?: boolean;
     requiredSteps?: WizardStepsFormTypes[] | string[];
     userStore?: string;
+    requestedPasswordOption?: PasswordOptionTypes;
 }
 
 /**
@@ -120,22 +130,26 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 ): ReactElement => {
 
     const {
+        adminTypeSelection,
         closeWizard,
         currentStep,
+        defaultUserTypeSelection,
         emailVerificationEnabled,
         isAdminUser,
-        userTypeSelection,
-        defaultUserTypeSelection,
-        adminTypeSelection,
         isSubOrg,
-        requiredSteps,
+        onSuccessfulUserAddition,
+        submitStep,
+        updateList,
         userStore,
+        userTypeSelection,
+        requiredSteps,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { organizationType } = useGetOrganizationType();
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitRoleList, setSubmitRoleList ] = useTrigger();
@@ -143,11 +157,15 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
     const [ submitUserTypeSelection, setSubmitUserTypeSelection ] = useTrigger();
 
+    const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) =>
+        state.organization.organization);
+    const profileSchemas: ProfileSchemaInterface[] = useSelector(
+        (state: AppState) => state.profile.profileSchemas);
+    
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
     const [ fixedGroupList, setFixedGroupsList ] = useState<GroupsInterface[]>(undefined);
-
     const [ roleList, setRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>([]);
     const [ tempRoleList, setTempRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>(
         []);
@@ -155,32 +173,34 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         []);
     const [ initialTempRoleList, setInitialTempRoleList ] = useState<RolesInterface[]
         | OrganizationRoleListItemInterface[]>([]);
-
     const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
     const [ tempGroupList, setTempGroupList ] = useState<GroupsInterface[]>([]);
     const [ initialGroupList, setInitialGroupList ] = useState<GroupsInterface[]>([]);
     const [ initialTempGroupList, setInitialTempGroupList ] = useState<GroupsInterface[]>([]);
-
     const [ viewRolePermissions, setViewRolePermissions ] = useState<boolean>(false);
     const [ selectedRoleId,  setSelectedRoleId ] = useState<string>();
     const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ viewNextButton, setViewNextButton ] = useState<boolean>(true);
     const [ isAlphanumericUsername, setIsAlphanumericUsername ] = useState<boolean>(false);
-    const [ askPasswordFromUser ] = useState<boolean>(true);
     const [ isFinishButtonDisabled, setFinishButtonDisabled ] = useState<boolean>(false);
     const [ isBasicDetailsLoading, setBasicDetailsLoading ] = useState<boolean>(false);
     const [ isStepsUpdated, setIsStepsUpdated ] = useState<boolean>(false);
-    const [ isUserSummaryEnabled ] = useState<boolean>(false);
-
-    const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) =>
-        state.organization.organization);
-
-    const [ alert, setAlert, alertComponent ] = useWizardAlert();
-
+    const [ isFirstNameRequired, setFirstNameRequired ] = useState<boolean>(true);
+    const [ isLastNameRequired, setLastNameRequired ] = useState<boolean>(true);
+    const [ isEmailRequired, setEmailRequired ] = useState<boolean>(false);
+    const [ askPasswordFromUser, setAskPasswordFromUser ] = useState<boolean>(true);
+    const [ isOfflineUser, setOfflineUser ] = useState<boolean>(false);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>([]);
-
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>("PRIMARY");
+    const [ hiddenFields, setHiddenFields ] =
+        useState<(HiddenFieldNames)[]>([]);
+    const [ readWriteUserStoresList, setReadWriteUserStoresList ] = useState<DropdownItemProps[]>([]);
+    const [ isUserStoreError, setUserStoreError ] = useState<boolean>(false);
+    const [ isUserSummaryEnabled, setUserSummaryEnabled ] = useState(false);
+    const [ newUserId, setNewUserId ] = useState<string>("");
+    const { legacyAuthzRuntime } = useAuthorization();
+
     const excludedAttributes: string = "members";
 
     const {
@@ -298,7 +318,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     useEffect(() => {
         if (initialRoleList.length === 0) {
             if (organizationType === OrganizationType.SUPER_ORGANIZATION
-                || organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION) {
+                || organizationType === OrganizationType.FIRST_LEVEL_ORGANIZATION
+                || !legacyAuthzRuntime
+            ) {
                 // Get Roles from the SCIM API
                 getRolesList(null)
                     .then((response: AxiosResponse) => {
@@ -323,6 +345,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             }
         }
 
+        getUserStoreList();
+        resolveNamefieldAttributes(profileSchemas);
     }, []);
 
     /**
@@ -381,6 +405,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 setWizardSteps(filterSteps([
                     WizardStepsFormTypes.BASIC_DETAILS,
                     WizardStepsFormTypes.GROUP_LIST,
+                    WizardStepsFormTypes.ROLE_LIST,
                     WizardStepsFormTypes.USER_SUMMARY
                 ]));
                 setIsStepsUpdated(true);
@@ -391,7 +416,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             setWizardSteps(filterSteps([
                 // TODO: Enable temporarily disabled  USER_TYPE step.
                 WizardStepsFormTypes.BASIC_DETAILS,
-                WizardStepsFormTypes.GROUP_LIST
+                WizardStepsFormTypes.GROUP_LIST,
+                WizardStepsFormTypes.ROLE_LIST
                 // TODO: Enable temporarily disabled summary step.
             ]));
             setIsStepsUpdated(true);
@@ -447,6 +473,141 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             }).finally(() => setBasicDetailsLoading(false));
     };
 
+    const getUserStoreList = (): void => {
+        setBasicDetailsLoading(true);
+        const userStoreArray: DropdownItemProps[] = [
+            {
+                key: -1,
+                text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
+                value: "PRIMARY"
+            }
+        ];
+
+        getUserStores(null)
+            .then((response: UserStoreDetails[]) => {
+
+                response?.forEach((item: UserStoreDetails, index: number) => {
+                    // Set read/write enabled userstores based on the type.
+                    if (checkReadWriteUserStore(item)) {    
+                        userStoreArray.push({
+                            key: index,
+                            text: item.name.toUpperCase(),
+                            value: item.name.toUpperCase()
+                        });
+                    }});
+
+                setUserStoreError(false);
+                setReadWriteUserStoresList(userStoreArray);
+            }).catch((error: IdentityAppsApiException) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.description ?? error?.response?.data?.detail
+                            ?? t("console:manage.features.users.notifications.fetchUserStores.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.response?.data?.message
+                            ?? t("console:manage.features.users.notifications.fetchUserStores.error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("console:manage.features.users.notifications.fetchUserStores.genericError." +
+                        "description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.users.notifications.fetchUserStores.genericError.message")
+                }));
+
+                setUserStoreError(true);
+
+                return;
+            })
+            .finally(() => {
+                setBasicDetailsLoading(false);
+            });
+    };
+
+    /**
+     * Check the given user store is Read/Write enabled
+     * 
+     * @param userStore - Userstore
+     * @returns If the given userstore is read only or not
+     */
+    const checkReadWriteUserStore = (userStore: UserStoreDetails): boolean => {
+        if( userStore.typeName === UsersConstants.DEFAULT_USERSTORE_TYPE_NAME ) {
+            return true;
+        } else {
+            return  userStore.enabled && userStore.properties.filter((property: UserStoreProperty)=>
+                property.name===UsersConstants.USER_STORE_PROPERTY_READ_ONLY)[0].value==="false";
+        }
+    };
+
+    const resolveNamefieldAttributes = (profileSchemas: ProfileSchemaInterface[]) => {
+        const hiddenAttributes: (HiddenFieldNames)[] = [];
+        const nameSchema: ProfileSchemaInterface = profileSchemas
+            .find((schema: ProfileSchemaInterface) => schema.name === "name");
+        const emailSchema: ProfileSchemaInterface = profileSchemas
+            .find((schema: ProfileSchemaInterface) => (schema.name === "emails"));
+
+        if (emailSchema) {
+            hiddenAttributes.push(HiddenFieldNames.EMAIL);
+            setEmailRequired(emailSchema.required);
+        }
+
+        if (nameSchema?.subAttributes?.length > 0) {
+            // Check for presence of firstName, lastName attributes.
+            const firstNameAttribute: ProfileSchemaInterface = nameSchema.subAttributes
+                .find((attribute: ProfileSchemaInterface) => attribute.name === "givenName");
+            const lastNameAttribute: ProfileSchemaInterface = nameSchema.subAttributes
+                .find((attribute: ProfileSchemaInterface) => attribute.name === "familyName");
+
+            if (firstNameAttribute && lastNameAttribute) {
+                setFirstNameRequired(firstNameAttribute.required);
+                setLastNameRequired(lastNameAttribute.required);
+
+                return;
+            }
+            
+            if (firstNameAttribute) {
+                // First Name attribute is available.
+                // But Last Name attribute is not available
+                hiddenAttributes.push(HiddenFieldNames.LASTNAME);
+                setFirstNameRequired(firstNameAttribute.required);
+            }
+
+            if (lastNameAttribute) {
+                // Last Name attribute is available.
+                // But First Name attribute is not available
+                hiddenAttributes.push(HiddenFieldNames.FIRSTNAME);
+                setLastNameRequired(lastNameAttribute.required);
+            }
+        } else {
+            // If nameSchema is not present, firstName and lastName is set
+            // to be not visible on the attributes.
+            // Therefore it is hidden from the add user wizard.
+            hiddenAttributes.push(HiddenFieldNames.FIRSTNAME, HiddenFieldNames.LASTNAME);
+        }
+        setHiddenFields(hiddenAttributes);
+    };
+
+    /**
+     * The following function generate a random password.
+     */
+    const generateRandomPassword = (): string => {
+
+        const config: ValidationFormInterface = getConfiguration(validationData);
+
+        if (config === undefined) {
+            return generatePassword(10, true, true, true, true, 1, 1, 1, 1);
+        } else {
+            return generatePassword(Number(config.minLength), Number(config.minLowerCaseCharacters) > 0,
+                Number(config.minUpperCaseCharacters) > 0, Number(config.minNumbers) > 0,
+                Number(config.minSpecialCharacters) > 0, Number(config.minLowerCaseCharacters),
+                Number(config.minUpperCaseCharacters), Number(config.minNumbers),
+                Number(config.minSpecialCharacters), Number(config.minUniqueCharacters));
+        }
+    };
+
     /**
      * Filters the steps evaluating the requested steps.
      *
@@ -454,7 +615,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      * @returns Filtered steps.
      */
     const filterSteps = (steps: WizardStepsFormTypes[]): WizardStepInterface[] => {
-
         const getStepContent = (stepsToFilter: WizardStepsFormTypes[] | string[]) => {
 
             const filteredSteps: any[] = [];
@@ -466,6 +626,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     filteredSteps.push(resolveBasicDetailsStep());
                 } else if (step === WizardStepsFormTypes.GROUP_LIST) {
                     filteredSteps.push(getUserGroupsWizardStep());
+                } else if (step === WizardStepsFormTypes.ROLE_LIST) {
+                    filteredSteps.push(getUserRoleWizardStep());
                 } else if (step === WizardStepsFormTypes.SUMMARY) {
                     filteredSteps.push(getSummaryWizardStep());
                 } else if (step === WizardStepsFormTypes.USER_SUMMARY) {
@@ -569,6 +731,12 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 break;
             case 3:
                 setFinishSubmit();
+                onSuccessfulUserAddition(newUserId);
+                closeWizard();
+
+                break;
+            default:
+                break;
         }
     };
 
@@ -716,55 +884,74 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      * This function handles adding the user.
      */
     const addUserBasic = (userInfo: AddUserWizardStateInterface) => {
-        let userName: string = "";
+        let username: string = "";
 
-        userInfo.domain !== "primary"
-            ? userName = userInfo.domain + "/" + userInfo.userName
-            : userName = userInfo.userName;
+        if (!isAlphanumericUsername) {
+            username = userInfo.domain + "/" + userInfo.email;
+        } else {
+            username = userInfo.domain + "/" + userInfo.userName;
+        }
 
         let userDetails: UserDetailsInterface = createEmptyUserDetails();
         const password: string = userInfo.newPassword;
 
-        userInfo.passwordOption && userInfo.passwordOption !== "ask-password"
-            ? (
-                userDetails = {
-                    emails:[
-                        {
-                            primary: true,
-                            value: userInfo.email
-                        }
-                    ],
-                    name: {
-                        familyName: userInfo.lastName,
-                        givenName: userInfo.firstName
-                    },
-                    password,
-                    profileUrl: userInfo.profileUrl,
-                    userName
-                }
-            )
-            : (
-                userDetails = {
-                    emails: [
-                        {
-                            primary: true,
-                            value: userInfo.email
-                        }
-                    ],
-                    name: {
-                        familyName: userInfo.lastName,
-                        givenName: userInfo.firstName
-                    },
-                    password: userInfo.newPassword,
-                    profileUrl: userInfo.profileUrl,
-                    [SCIMConfigs.scim.enterpriseSchema] : {
-                        askPassword: "true"
-                    },
-                    userName
-                }
-            );
+        // Users who get invited offline are also considered as password-based users.
+        // They will be assigned a randomly generated temporary password.
+        // Temporary password can be changed via the offline invite link.
+        if (askPasswordFromUser) {
+            userDetails = {
+                emails: [
+                    {
+                        primary: true,
+                        value: userInfo.email
+                    }
+                ],
+                name: {
+                    familyName: userInfo.lastName,
+                    givenName: userInfo.firstName
+                },
+                password: password,
+                profileUrl: userInfo.profileUrl,
+                userName: username
+            };
+        } else if (isOfflineUser) {
+            userDetails = {
+                emails: [
+                    {
+                        primary: true,
+                        value: userInfo.email
+                    }
+                ],
+                name: {
+                    familyName: userInfo.lastName,
+                    givenName: userInfo.firstName
+                },
+                password: generateRandomPassword(),
+                profileUrl: userInfo.profileUrl,
+                userName: username
+            };
+        } else {
+            userDetails = {
+                emails: [
+                    {
+                        primary: true,
+                        value: userInfo.email
+                    }
+                ],
+                name: {
+                    familyName: userInfo.lastName,
+                    givenName: userInfo.firstName
+                },
+                profileUrl: userInfo.profileUrl,
+                [ SCIMConfigs.scim.enterpriseSchema ]: {
+                    askPassword: "true"
+                },
+                userName: username
+            };
+        }
 
-        setIsSubmitting(true);                
+        setIsSubmitting(true);
+
         addUser(userDetails)
             .then((response: AxiosResponse) => {
                 if (response.status === 202) {
@@ -787,29 +974,31 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             "console:manage.features.users.notifications.addUser.success.message"
                         )
                     }));
-
-                    if (wizardState?.RoleList?.roles && wizardState?.GroupList?.groups) {
-                        assignUserRole(response.data, wizardState.RoleList.roles, wizardState.GroupList.groups);
+                    
+                    if (userInfo?.roles && userInfo?.groups) {
+                        assignUserRole(response.data, userInfo?.roles, userInfo?.groups);
                     }
 
                     if (isAdminUser) {
                         assignUserRole(response.data, userInfo.roles, userInfo.groups);
-                        history.push(AppConstants.getPaths().get("ADMINISTRATOR_EDIT")
-                            .replace(":id", response.data.id));
+                    } 
+
+                    // Saving the user ID to redirect user after the summary
+                    setNewUserId(response.data?.id);
+                    // Close the wizard as the summary will not be shown
+                    if(!isUserSummaryEnabled) {
+                        closeWizard();
+                        onSuccessfulUserAddition(response.data?.id);
                     } else {
-                        history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", response.data.id));
+                        // Once the user is created, take the user to next step which is the summary.
+                        setCurrentWizardStep(currentWizardStep + 1);
                     }
-
                 }
-
-                closeWizard();
             })
             .catch((error: AxiosError) => {
-                /**
-                 * Axios throws a generic `Network Error` for 401 status.
-                 * As a temporary solution, a check to see if a response
-                 * is available has be used.
-                 */
+                // Axios throws a generic `Network Error` for 401 status.
+                // As a temporary solution, a check to see if a response
+                // is available has be used.
                 if (!error.response || error.response.status === 401) {
                     closeWizard();
                     dispatch(addAlert({
@@ -819,6 +1008,18 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         level: AlertLevels.ERROR,
                         message: t(
                             "console:manage.features.users.notifications.addUser.error.message"
+                        )
+                    }));
+                } else if (error.response && error.response.status === 403 &&
+                    error.response.data && error.response.data.scimType === UsersConstants.ERROR_USER_LIMIT_REACHED) {
+                    closeWizard();
+                    dispatch(addAlert({
+                        description: t(
+                            "extensions:manage.users.notifications.addUser.customerUser.limitReachError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "extensions:manage.users.notifications.addUser.customerUser.limitReachError.message"
                         )
                     }));
                 } else if (error.response && error.response.data && error.response.data.detail) {
@@ -859,7 +1060,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      * @param formType - Type of the form.
      */
     const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes) => {
-        setCurrentWizardStep(currentWizardStep + 1);
         let processedValues: any = values;        
 
         if (isAdminUser) {
@@ -879,6 +1079,24 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             };
         }
 
+        // Click next while in group list and summary enabled will take the user to summary page.
+        if (isUserSummaryEnabled && 
+            (
+                formType === WizardStepsFormTypes.BASIC_DETAILS ||
+                formType === WizardStepsFormTypes.GROUP_LIST ||
+                formType === WizardStepsFormTypes.ROLE_LIST
+            )) {
+            setWizardState({ ...wizardState, [ formType ]: processedValues });
+        }
+        
+        // If the submit step is not default, and submit step is the current step, submit the form.
+        if (submitStep !== WizardStepsFormTypes.SUMMARY && submitStep === formType) {
+            handleWizardFormFinish(generateWizardSummary(processedValues));
+
+            return;
+        }
+    
+        setCurrentWizardStep(currentWizardStep + 1);
         setWizardState({ ...wizardState, [ formType ]: processedValues });
     };
 
@@ -887,14 +1105,18 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      *
      * @returns Summary of the wizard.
      */
-    const generateWizardSummary = () => {
+    const generateWizardSummary = (extension?: Record<string, unknown>) => {
         if (!wizardState) {
             return;
         }
 
         const wizardData: WizardStateInterface = { ...wizardState };
 
-        let summary: WizardStateInterface = {};
+        let summary: any = {};
+
+        if (extension) {
+            summary = { ...extension };
+        }
 
         for (const value of Object.values(wizardData)) {
             summary = {
@@ -952,12 +1174,27 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const ALL_STEPS: WizardStepInterface[] = [
         {
             content: (
-                <AddUser
+                <AddUserUpdated
                     triggerSubmit={ submitGeneralSettings }
                     initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
                     emailVerificationEnabled={ emailVerificationEnabled }
-                    onSubmit={ (values: AddUserWizardStateInterface) =>
+                    onSubmit={ (values: AddUserWizardStateInterface) => 
                         handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
+                    hiddenFields={ hiddenFields }
+                    requestedPasswordOption={ wizardState &&
+                        wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.passwordOption }
+                    isFirstNameRequired={ isFirstNameRequired }
+                    isLastNameRequired={ isLastNameRequired }
+                    isEmailRequired={ isEmailRequired }
+                    setUserSummaryEnabled={ setUserSummaryEnabled }
+                    setAskPasswordFromUser={ setAskPasswordFromUser }
+                    setOfflineUser={ setOfflineUser }
+                    setSelectedUserStore = { setSelectedUserStore }
+                    isBasicDetailsLoading={ isBasicDetailsLoading }
+                    setBasicDetailsLoading={ setBasicDetailsLoading }
+                    validationConfig ={ validationData }
+                    isUserStoreError={ isUserStoreError }
+                    readWriteUserStoresList={ readWriteUserStoresList }
                 />
             ),
             icon: getUserWizardStepIcons().general,
@@ -1027,9 +1264,14 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             content: (
                 <AddUserWizardSummary
                     triggerSubmit={ finishSubmit }
-                    onSubmit={ handleWizardFormFinish }
-                    summary={ generateWizardSummary() }
-                    onProfileImageChange={ handleProfileImageChange }
+                    selectedUserStore = { selectedUserStore }
+                    username={ 
+                        isAlphanumericUsername
+                            ? wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.userName
+                            : wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.email
+                    }
+                    password={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.newPassword }
+                    isPasswordBased={ askPasswordFromUser }
                 />
             ),
             icon: getUserWizardStepIcons().summary,
@@ -1133,6 +1375,48 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             icon: getUserWizardStepIcons().groups,
             name: WizardStepsFormTypes.GROUP_LIST,
             title: t("console:manage.features.user.modals.addUserWizard.steps.groups")
+        };
+    };
+
+    /**
+     * User role wizard step.
+     * @returns Role wizard step.
+     */
+    const getUserRoleWizardStep = (): WizardStepInterface => {
+        return {
+            content: (
+                viewRolePermissions
+                    ? (<RolePermissions
+                        data-testid={ `${ testId }-role-permission` }
+                        handleNavigateBack={ handleViewRolePermission }
+                        handleViewNextButton={ handleViewNextButton }
+                        roleId={ selectedRoleId }
+                    />)
+                    : (<AddUserRole
+                        triggerSubmit={ submitRoleList }
+                        onSubmit={ (values: AddUserWizardStateInterface) =>
+                            handleWizardFormSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
+                        initialValues={
+                            {
+                                initialRoleList: initialRoleList,
+                                initialTempRoleList: initialTempRoleList,
+                                roleList: roleList,
+                                tempRoleList: tempRoleList
+                            }
+                        }
+                        handleRoleListChange={ (roles: RolesInterface[] |
+                             OrganizationRoleListItemInterface[]) => handleRoleListChange(roles) }
+                        handleTempListChange={ (roles: RolesInterface[] |
+                             OrganizationRoleListItemInterface[]) => handleAddedListChange(roles) }
+                        handleInitialTempListChange={ (roles: RolesInterface[] |
+                             OrganizationRoleListItemInterface[]) => handleAddedRoleInitialListChange(roles) }
+                        handleInitialRoleListChange={ (roles: RolesInterface[] |
+                             OrganizationRoleListItemInterface[]) => handleInitialRoleListChange(roles) }
+                        handleSetRoleId={ (roleId: string) => handleRoleIdSet(roleId) }
+                    />)
+            ),
+            icon: getUserWizardStepIcons().roles,
+            title: t("console:manage.features.user.modals.addUserWizard.steps.roles")
         };
     };
 
@@ -1304,8 +1588,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     };
 
     const STEPS: WizardStepInterface[] = isAdminUser 
-        ? [ ALL_STEPS[0], ...ALL_STEPS.slice(3) ]
-        : [ ...ALL_STEPS ];
+        ? isUserSummaryEnabled ? [ ALL_STEPS[0], ...ALL_STEPS.slice(3) ] : [ ALL_STEPS[0] ]
+        : isUserSummaryEnabled ? [ ...ALL_STEPS ] : ALL_STEPS.slice(0, ALL_STEPS.length - 1);
 
     const showInternalUserWizard = (): ReactElement => {
         return (
@@ -1325,7 +1609,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 </Modal.Content>
                 <Modal.Content className="content-container" scrolling>
                     { alert && alertComponent }
-                    { resolveStepContent() }
                     { STEPS[ currentWizardStep ].content }
                 </Modal.Content>
             </>
@@ -1351,7 +1634,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             <LinkButton
                                 data-testid={ `${ testId }-cancel-button` }
                                 floated="left"
-                                onClick={ () => closeWizard() }
+                                onClick={ () => {
+                                    updateList();
+                                    closeWizard();
+                                } }
                             >
                                 { t("common:cancel") }
                             </LinkButton>
@@ -1378,7 +1664,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 >
                                         Finish</PrimaryButton>
                             ) }
-                            { currentWizardStep > 0 && (
+                            { (wizardSteps?.length > 1 && currentWizardStep > 0 && 
+                                    (wizardSteps[ currentWizardStep ]?.name !== WizardStepsFormTypes.USER_SUMMARY)) && (
                                 <LinkButton
                                     data-testid={ `${ testId }-previous-button` }
                                     floated="right"
@@ -1438,6 +1725,5 @@ AddUserWizard.defaultProps = {
     currentStep: 0,
     emailVerificationEnabled: false,
     showStepper: true,
-    // TODO: Submit Step changed to temporarily disable the summary step.
-    submitStep: WizardStepsFormTypes.GROUP_LIST
+    submitStep: WizardStepsFormTypes.ROLE_LIST
 };

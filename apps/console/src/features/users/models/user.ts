@@ -414,3 +414,22 @@ export const MultipleInvitesDisplayNames: { manualConfiguration: string; metadat
     [ MultipleInviteMode.META_FILE ]: "File Based"
 };
 
+/**
+ * Interface to store data for create group api.
+ */
+export interface UserInviteInterface {
+    id?: string;
+    roles?: string[];
+    email: string;
+    status?: InviteUserStatus;
+}
+
+/**
+ * Enum for Invite User Status.
+ *
+ * @readonly
+ */
+export enum InviteUserStatus {
+    PENDING = "PENDING",
+    EXPIRED = "EXPIRED"
+}

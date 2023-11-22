@@ -93,6 +93,8 @@ export const createConnection = (
  * @param offset - Offset for get to start.
  * @param filter - Search filter.
  * @param requiredAttributes - Extra attribute to be included in the list response. ex:`isFederationHub`
+ * @param shouldFetch - Should fetch from the network. If false, will return results from cache.
+ * @param expectEmpty - If true, will allow returning empty results.
  *
  * @returns Requested connections.
  */
@@ -101,7 +103,8 @@ export const useGetConnections = <Data = ConnectionListResponseInterface, Error 
     offset?: number,
     filter?: string,
     requiredAttributes?: string,
-    shouldFetch: boolean = true
+    shouldFetch: boolean = true,
+    expectEmpty: boolean = false
 ): RequestResultInterface<Data, Error> => {
     
     const { resourceEndpoints } = useResourceEndpoints();
@@ -126,7 +129,7 @@ export const useGetConnections = <Data = ConnectionListResponseInterface, Error 
     return {
         data,
         error: error,
-        isLoading: !error && !data,
+        isLoading: !expectEmpty && !error && !data,
         isValidating,
         mutate
     };

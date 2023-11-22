@@ -21,7 +21,7 @@ import { AppState } from "../../core";
 import { OrganizationType } from "../constants";
 
 /**
- * Interface for the useGetOrganizationType hook.
+ * Interface for the useGetCurrentOrganizationType hook.
  */
 interface UseGetOrganizationTypeInterface {
     /**
@@ -43,10 +43,6 @@ interface UseGetOrganizationTypeInterface {
      * @returns True if the organization is a sub organization.
      */
     isSubOrganization: () => boolean;
-    /**
-     * If the organization is a super organization or a first level organization.
-     */
-    isRootOrganization: boolean;
 }
 
 /**
@@ -54,7 +50,7 @@ interface UseGetOrganizationTypeInterface {
  *
  * @returns An object containing the organization type and helper methods.
  */
-export const useGetOrganizationType = (): UseGetOrganizationTypeInterface => {
+export const useGetCurrentOrganizationType = (): UseGetOrganizationTypeInterface => {
     const orgType: OrganizationType = useSelector(
         (state: AppState) => state.organization.organizationType
     );
@@ -88,7 +84,6 @@ export const useGetOrganizationType = (): UseGetOrganizationTypeInterface => {
 
     return {
         isFirstLevelOrganization,
-        isRootOrganization: isSuperOrganization() || isFirstLevelOrganization(),
         isSubOrganization,
         isSuperOrganization,
         organizationType: orgType

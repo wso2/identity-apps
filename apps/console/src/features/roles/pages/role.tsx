@@ -30,7 +30,7 @@ import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, AppConstants, UIConstants } from "../../core";
 import { history } from "../../core/helpers";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { deleteRoleById, useRolesList } from "../api";
 import { RoleList } from "../components/role-list";
 import { RoleConstants } from "../constants";
@@ -53,7 +53,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);

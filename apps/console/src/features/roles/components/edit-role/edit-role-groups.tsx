@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,46 +16,34 @@
  * under the License.
  */
 
-import Autocomplete, {  
-    AutocompleteRenderGetTagProps, 
-    AutocompleteRenderInputParams 
-} from "@oxygen-ui/react/Autocomplete";
-import Button from "@oxygen-ui/react/Button";
-import TextField from "@oxygen-ui/react/TextField";
 import { AlertLevels, IdentifiableComponentInterface, RoleGroupsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { EmphasizedSegment, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
+import { EmphasizedSegment, Heading } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import debounce, { DebouncedFunc } from "lodash-es/debounce";
-import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
-    HTMLAttributes,
     ReactElement,
-    SyntheticEvent,
-    useCallback,
     useEffect,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Icon } from "semantic-ui-react";
-import { AutoCompleteRenderOption } from "./edit-role-common/auto-complete-render-option";
-import { RenderChip } from "./edit-role-common/render-chip";
-import { updateResources } from "../../../core/api/bulk-operations";
-import { getEmptyPlaceholderIllustrations } from "../../../core/configs/ui";
-import { 
-    GroupsInterface, 
-    PatchBulkGroupDataInterface, 
-    PatchGroupAddOpInterface, 
-    PatchGroupOpInterface, 
-    PatchGroupRemoveOpInterface 
+import { Divider } from "semantic-ui-react";
+import { EditRoleFederatedGroupsAccordion } from "./edit-role-federated-groups-accordion";
+import { EditRoleLocalGroupsAccordion } from "./edit-role-local-groups-accordion";
+import { useGetApplication } from "../../../applications/api/use-get-application";
+import { AuthenticationStepInterface, AuthenticatorInterface } from "../../../applications/models/application";
+import { AuthenticatorManagementConstants } from "../../../connections/constants/autheticator-constants";
+import {
+    PatchGroupAddOpInterface,
+    PatchGroupRemoveOpInterface
 } from "../../../groups";
-import { useGroupList } from "../../../groups/api/groups";
-import { UserBasicInterface } from "../../../users/models";
-import { RoleConstants, Schemas } from "../../constants";
-import { RoleEditSectionsInterface } from "../../models/roles";
+import { useIdentityProviderList } from "../../../identity-providers/api/identity-provider";
+import { IdentityProviderInterface, StrictIdentityProviderInterface } from "../../../identity-providers/models";
+import { updateRoleDetails } from "../../api";
+import { RoleAudienceTypes, Schemas } from "../../constants";
+import { PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils";
 
 type RoleGroupsPropsInterface = IdentifiableComponentInterface & RoleEditSectionsInterface;
@@ -71,233 +59,166 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         tabIndex
     } = props;
 
+    const roleAudience: string = role.audience?.type?.toUpperCase();
+    const assignedGroups: Map<string, RoleGroupsInterface[]> = RoleManagementUtils
+        .getRoleGroupsGroupedByIdp(role?.groups);
+    const LOCAL_GROUPS_IDENTIFIER_ID: string = "LOCAL";
+
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const [ groupSearchValue, setGroupSearchValue ] = useState<string>(undefined);
-    const [ isGroupSearchLoading, setGroupSearchLoading ] = useState<boolean>(false);
-    const [ groupsOptions, setGroupsOptions ] = useState<GroupsInterface[]>([]);
-    const [ selectedGroupsOptions, setSelectedGroupsOptions ] = useState<GroupsInterface[]>(undefined);
-    const [ initialSelectedGroupsOptions, setInitialSelectedGroupsOptions ] = useState<GroupsInterface[]>(undefined);
-    const [ removedGroupsOptions, setRemovedGroupsOptions ] = useState<GroupsInterface[]>(undefined);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ activeOption, setActiveOption ] = useState<GroupsInterface|UserBasicInterface>(undefined);
-    const [ showEmptyRolesListPlaceholder, setShowEmptyRolesListPlaceholder ] = useState<boolean>(false);
+    const [ filteredIdpList, setFilteredIdpList ] = useState<IdentityProviderInterface[]>([]);
+    const [ selectedGroupsIds, setSelectedGroupsIds ] = useState<Map<string, string[]>>(new Map<string, string[]>());
+    const [ removedGroupsIds, setRemovedGroupsIds ] = useState<Map<string, string[]>>(new Map<string, string[]>());
+    const [ expandedGroupIndex, setExpandedGroupIndex ] = useState<string>(LOCAL_GROUPS_IDENTIFIER_ID);
 
     const {
-        data: originalGroupList,
-        isLoading: isGroupListFetchRequestLoading,
-        error: groupListFetchRequestError,
-        mutate: mutateGroupListFetchRequest
-    } = useGroupList(null, null, groupSearchValue ? `displayName co ${ groupSearchValue }` : null);
+        data: idpList,
+        isLoading: isIdPListRequestLoading,
+        error: idpListError
+    } = useIdentityProviderList(null, null, null, "federatedAuthenticators", true);
+
+    const {
+        data: applicationData,
+        isLoading: isApplicationRequestLoading,
+        error: applicationRequestError
+    } = useGetApplication(role.audience?.value, roleAudience === RoleAudienceTypes.APPLICATION);
+
+    const excludedIDPs: string[] = [
+        AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID,
+        AuthenticatorManagementConstants.LEGACY_EMAIL_OTP_AUTHENTICATOR_ID,
+        AuthenticatorManagementConstants.LEGACY_SMS_OTP_AUTHENTICATOR_ID
+    ];
 
     /**
-     * Set initial selected groups options
+     * Filter out the IDPs.
      */
     useEffect(() => {
-        if ( role?.groups?.length > 0 ) {
-            setInitialSelectedGroupsOptions(role.groups.map((group: RoleGroupsInterface) => {
-                return {
-                    displayName: group.display,
-                    id: group.value
-                };
-            }));
-        } else {
-            setInitialSelectedGroupsOptions([]);
-            setShowEmptyRolesListPlaceholder(true);
-        }
-    }, [ role ]);
-
-    /**
-     * Set selected groups options initially
-     */
-    useEffect(() => {
-        if (!selectedGroupsOptions && initialSelectedGroupsOptions) {
-            setSelectedGroupsOptions(initialSelectedGroupsOptions);
+        if (isIdPListRequestLoading || idpListError) {
+            return;
         }
 
-        // Set groups options when the user is read only
-        if (isReadOnly && initialSelectedGroupsOptions) {
-            setGroupsOptions(initialSelectedGroupsOptions);
+        if (roleAudience === RoleAudienceTypes.APPLICATION
+            && (isApplicationRequestLoading || applicationRequestError)) {
+            return;
         }
-    }, [ isReadOnly, initialSelectedGroupsOptions ]);
 
-    /**
-     * Set groups options
-     */
-    useEffect(() => {
-        if (!isReadOnly) {
-            if (originalGroupList && originalGroupList?.totalResults !== 0) {
-                setGroupsOptions(originalGroupList?.Resources);
-            } else {
-                setGroupsOptions([]);
+        const filteredList: StrictIdentityProviderInterface[] = idpList?.identityProviders?.filter(
+            (provider: StrictIdentityProviderInterface) => {
+                return !excludedIDPs.includes(provider.federatedAuthenticators.defaultAuthenticatorId);
             }
-        }
-    }, [ originalGroupList ]);
+        );
 
-    /**
-     * Set removed groups
-     */
-    useEffect(() => {
-        if (!isReadOnly && initialSelectedGroupsOptions && selectedGroupsOptions) {
-            setRemovedGroupsOptions(initialSelectedGroupsOptions?.filter((group: GroupsInterface) => {
-                return selectedGroupsOptions?.find(
-                    (selectedGroup: GroupsInterface) => selectedGroup.id === group.id) === undefined;
-            }));
-        }
-    }, [ initialSelectedGroupsOptions, selectedGroupsOptions ]);
+        // If the role is an application role, filter out the IDPs that are configured for the application.
+        if (roleAudience === RoleAudienceTypes.APPLICATION) {
+            const applicationIDPList: StrictIdentityProviderInterface[] = [];
 
-    /**
-     * Call mutateGroupListFetchRequest when the group search value changes
-     */
-    useEffect(() => {
-        if ( groupSearchValue ) {
-            mutateGroupListFetchRequest().finally(() => {
-                setGroupSearchLoading(false);
+            applicationData.authenticationSequence.steps.forEach((step: AuthenticationStepInterface) => {
+                step.options.forEach((option: AuthenticatorInterface) => {
+                    const idp: StrictIdentityProviderInterface = filteredList?.find(
+                        (idp: StrictIdentityProviderInterface) => idp.name === option.idp);
+
+                    if (idp) {
+                        applicationIDPList.push(idp);
+                    }
+                });
             });
+            setFilteredIdpList(applicationIDPList);
+        } else {
+            setFilteredIdpList(filteredList);
         }
-    }, [ groupSearchValue ]);
-    
-    /**
-     * Show error if group list fetch request failed
-     */ 
-    useEffect(() => {
-        if ( groupListFetchRequestError ) {
-            dispatch(
-                addAlert({
-                    description: t("console:manage.features.roles.edit.groups.notifications.fetchError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.edit.groups.notifications.fetchError.message")
-                })
-            );
-        }
-    }, [ groupListFetchRequestError ]);
+    }, [ isIdPListRequestLoading, idpListError, isApplicationRequestLoading, applicationRequestError ]);
 
     /**
-     * Handle the restore groups.
-     * 
-     * @param remainingGroups - remaining groups
+     * Handles the change of the selected groups list.
+     *
+     * @param idpID - Identity provider ID.
+     * @param selectedGroupsIDs - List of selected groups IDs.
+     * @param removedGroupsIDs - List of removed groups IDs.
      */
-    const handleRestoreGroups = (remainingGroups: GroupsInterface[]) => {
-        const removedGroups: GroupsInterface[] = [];
+    const onSelectedGroupsChange = (idpID: string, selectedGroupsIDs: string[], removedGroupsIDs: string[]) => {
+        setSelectedGroupsIds((prevState: Map<string, string[]>) => {
+            const newState: Map<string, string[]> = new Map<string, string[]>(prevState);
 
-        removedGroupsOptions.forEach((group: GroupsInterface) => {
-            if (!remainingGroups?.find((newGroup: GroupsInterface) => newGroup.id === group.id)) {
-                removedGroups.push(group);
-            }
+            newState.set(idpID ?? LOCAL_GROUPS_IDENTIFIER_ID, selectedGroupsIDs);
+
+            return newState;
         });
 
-        setSelectedGroupsOptions([
-            ...selectedGroupsOptions,
-            ...removedGroups
-        ]);
+        setRemovedGroupsIds((prevState: Map<string, string[]>) => {
+            const newState: Map<string, string[]> = new Map<string, string[]>(prevState);
+
+            newState.set(idpID ?? LOCAL_GROUPS_IDENTIFIER_ID, removedGroupsIDs);
+
+            return newState;
+        });
     };
 
     /**
-     * Get the place holder components.
-     * 
-     * @returns - place holder components
+     * Listener for the group accordion expansion.
+     *
+     * @param idpID - Identity provider ID.
+     * @param isExpanded - Is the accordion expanded.
      */
-    const getPlaceholders = () => {
-        if (groupListFetchRequestError) {
-            return (
-                <EmptyPlaceholder
-                    subtitle={ 
-                        [ t("console:manage.features.roles.edit.groups.placeholders.errorPlaceholder.subtitles.0"),
-                            t("console:manage.features.roles.edit.groups.placeholders.errorPlaceholder.subtitles.1") ] 
-                    }
-                    title={ t("console:manage.features.roles.edit.groups.placeholders.errorPlaceholder.title") }
-                    image={ getEmptyPlaceholderIllustrations().genericError }
-                    imageSize="tiny"
-                />
-            );
-        } else if (showEmptyRolesListPlaceholder) {
-            return (
-                <EmptyPlaceholder
-                    subtitle={ 
-                        [ t("console:manage.features.roles.edit.groups.placeholders.emptyPlaceholder.subtitles.0") ]
-                    }
-                    title={ t("console:manage.features.roles.edit.groups.placeholders.emptyPlaceholder.title") }
-                    image={ getEmptyPlaceholderIllustrations().emptyList }
-                    imageSize="tiny"
-                    action={ 
-                        !isReadOnly 
-                            ? (
-                                <PrimaryButton
-                                    onClick={ () => setShowEmptyRolesListPlaceholder(false) }
-                                >
-                                    <Icon name="plus"/>
-                                    { t("console:manage.features.roles.edit.groups.placeholders.emptyPlaceholder" + 
-                                        ".action") }
-                                </PrimaryButton>
-                            )
-                            : null
-                    }
-                />
-            );
+    const onGroupAccordionExpanded = (idpID: string, isExpanded: boolean) => {
+        if (!isExpanded) {
+            setExpandedGroupIndex(undefined);
+        } else {
+            setExpandedGroupIndex(idpID);
         }
     };
-
-    /**
-     * Handles the search query for the groups list.
-     */
-    const searchGroups: DebouncedFunc<(query: string) => void> = 
-        useCallback(debounce((query: string) => {
-            query = !isEmpty(query) ? query : null;
-            setGroupSearchValue(query);
-        }, RoleConstants.DEBOUNCE_TIMEOUT), []);
 
     /**
      * Handles the update of the groups list.
      */
-    const onGroupsUpdate: () => void = () => {
-
-        const removeOperations: PatchGroupRemoveOpInterface[] = [];
-        const addOperations: PatchGroupAddOpInterface[] = [];
-
-        const bulkData: PatchBulkGroupDataInterface = {
-            Operations: [],
-            failOnErrors: 1,
-            schemas: [ Schemas.BULK_REQUEST ]
-        };
-
-        const operation: PatchGroupOpInterface = {
-            data: {
-                "Operations": []
-            },
-            method: "PATCH",
-            path: "/v2/Roles/" + role.id
-        };
-        
-        removedGroupsOptions?.map((group: GroupsInterface) => {
-            removeOperations.push({
-                "op": "remove",
-                "path": `groups[value eq ${ group.id }]`
-            });
-        } );
-
-        operation.data.Operations.push(...removeOperations);
-
-        selectedGroupsOptions?.map((group: GroupsInterface) => {
-            if (!initialSelectedGroupsOptions?.find(
-                (selectedGroup: GroupsInterface) => selectedGroup.id === group.id)) {
-                addOperations.push({
-                    "op": "add",
-                    "value": {
-                        "groups": [ {
-                            "value": group.id
-                        } ]
-                    }
-                });
-            }
-        } );
-
-        operation.data.Operations.push(...addOperations);
-        bulkData.Operations.push(operation);
-
+    const onGroupsUpdate = (): void => {
         setIsSubmitting(true);
+        const groupIDsToBeRemoved: string[] = [];
 
-        updateResources(bulkData)
+        removedGroupsIds?.forEach((groupIDs: string[]) => {
+            if (groupIDs?.length > 0) {
+                groupIDsToBeRemoved.push(...groupIDs);
+            }
+        });
+
+        const groupIDsToBeAdded: string[] = [];
+        const flattenedSelectedGroupsIds: string[][] = Array.from(selectedGroupsIds.values());
+
+        flattenedSelectedGroupsIds.forEach((groupIDs: string[]) => {
+            groupIDs?.forEach((groupID: string) => {
+                if (!role.groups?.find((group: RoleGroupsInterface) => group.value === groupID)) {
+                    groupIDsToBeAdded.push(groupID);
+                }
+            });
+        });
+
+        const patchOperations: PatchGroupAddOpInterface[] | PatchGroupRemoveOpInterface[] = [];
+
+        patchOperations.push({
+            "op": "add",
+            "value": {
+                "groups": groupIDsToBeAdded?.map((groupID: string) => {
+                    return {
+                        "value": groupID
+                    };
+                })
+            }
+        });
+
+        groupIDsToBeRemoved.forEach((groupID: string) => {
+            patchOperations.push({
+                "op": "remove",
+                "path": `groups[value eq ${ groupID }]`
+            });
+        });
+
+        const roleUpdateData: PatchRoleDataInterface = {
+            Operations: patchOperations,
+            schemas: [ Schemas.PATCH_OP ]
+        };
+
+        updateRoleDetails(role.id, roleUpdateData)
             .then(() => {
                 dispatch(
                     addAlert({
@@ -312,7 +233,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 if (error.response && error.response.data.detail) {
                     dispatch(
                         addAlert({
-                            description: 
+                            description:
                                 t("console:manage.features.roles.edit.groups.notifications.error.description",
                                     { description: error.response.data.detail }),
                             level: AlertLevels.ERROR,
@@ -322,7 +243,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 } else {
                     dispatch(
                         addAlert({
-                            description: t("console:manage.features.roles.edit.groups.notifications.genericError" + 
+                            description: t("console:manage.features.roles.edit.groups.notifications.genericError" +
                                 ".description"),
                             level: AlertLevels.ERROR,
                             message: t("console:manage.features.roles.edit.groups.notifications.genericError.message")
@@ -343,203 +264,47 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             <Heading subHeading ellipsis as="h6">
                 { t("console:manage.features.roles.edit.groups.subHeading") }
             </Heading>
+            <Heading as="h5">
+                { t("console:manage.features.roles.edit.groups.localGroupsHeading") }
+            </Heading>
             {
-                groupListFetchRequestError || showEmptyRolesListPlaceholder
-                    ? getPlaceholders()
-                    : (
-                        <>
-                            {
-                                isReadOnly
-                                    ? (
-                                        <Autocomplete
-                                            multiple
-                                            disableCloseOnSelect
-                                            options={ selectedGroupsOptions ? selectedGroupsOptions : [] }
-                                            value={ selectedGroupsOptions ? selectedGroupsOptions : [] }
-                                            getOptionLabel={ (group: GroupsInterface) => 
-                                                RoleManagementUtils.getGroupDisplayName(group) }
-                                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                <TextField
-                                                    { ...params }
-                                                    placeholder= { t("console:manage.features.roles.edit.groups" + 
-                                                        ".actions.search.placeholder") }
-                                                />
-                                            ) }
-                                            renderTags={ (
-                                                value: GroupsInterface[], 
-                                                getTagProps: AutocompleteRenderGetTagProps
-                                            ) => value.map((option: GroupsInterface, index: number) => (
-                                                <RenderChip 
-                                                    { ...getTagProps({ index }) }
-                                                    key={ index }
-                                                    primaryText={ RoleManagementUtils.getGroupDisplayName(option) }
-                                                    userStore={ 
-                                                        RoleManagementUtils.getUserStore(option.displayName) 
-                                                    }
-                                                    option={ option }
-                                                    activeOption={ activeOption }
-                                                    setActiveOption={ setActiveOption }
-                                                    onDelete= { null }
-                                                />
-                                            )) }
-                                            renderOption={ (
-                                                props: HTMLAttributes<HTMLLIElement>, 
-                                                option: GroupsInterface
-                                            ) => (
-                                                <AutoCompleteRenderOption
-                                                    displayName={ RoleManagementUtils.getGroupDisplayName(option) }
-                                                    userstore={ RoleManagementUtils.getUserStore(option.displayName) }
-                                                    renderOptionProps={ props }
-                                                />
-                                            ) }
-                                        />
-                                    ) : (
-                                        <Autocomplete
-                                            multiple
-                                            disableCloseOnSelect
-                                            loading={ isGroupListFetchRequestLoading || isGroupSearchLoading }
-                                            options={ groupsOptions }
-                                            value={ selectedGroupsOptions ? selectedGroupsOptions : [] }
-                                            getOptionLabel={ (group: GroupsInterface) => group.displayName }
-                                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                <TextField
-                                                    { ...params }
-                                                    placeholder= { t("console:manage.features.roles.edit.groups" + 
-                                                        ".actions.assign.placeholder") }
-                                                />
-                                            ) }
-                                            onChange={ (event: SyntheticEvent, groups: GroupsInterface[]) => {
-                                                setSelectedGroupsOptions(groups); 
-                                            } }
-                                            filterOptions={ (groups: GroupsInterface[]) => groups }
-                                            onInputChange={ 
-                                                (event: SyntheticEvent, newValue: string) => {
-                                                    setGroupSearchLoading(true);
-                                                    searchGroups(newValue);
-                                                } 
-                                            }
-                                            isOptionEqualToValue={ 
-                                                (option: GroupsInterface, value: GroupsInterface) => 
-                                                    option.id === value.id 
-                                            }
-                                            renderTags={ (
-                                                value: GroupsInterface[], 
-                                                getTagProps: AutocompleteRenderGetTagProps
-                                            ) => value.map((option: GroupsInterface, index: number) => (
-                                                <RenderChip 
-                                                    { ...getTagProps({ index }) }
-                                                    key={ index }
-                                                    primaryText={ RoleManagementUtils.getGroupDisplayName(option) }
-                                                    userStore={ 
-                                                        RoleManagementUtils.getUserStore(option.displayName) 
-                                                    }
-                                                    option={ option }
-                                                    activeOption={ activeOption }
-                                                    setActiveOption={ setActiveOption }
-                                                    variant={
-                                                        initialSelectedGroupsOptions?.find(
-                                                            (group: GroupsInterface) => group.id === option.id
-                                                        )
-                                                            ? "solid"
-                                                            : "outlined"
-                                                    }
-                                                />
-                                            )) }
-                                            renderOption={ (
-                                                props: HTMLAttributes<HTMLLIElement>,
-                                                option: GroupsInterface, 
-                                                { selected }: { selected: boolean }
-                                            ) => (
-                                                <AutoCompleteRenderOption
-                                                    selected={ selected }
-                                                    displayName={ RoleManagementUtils.getGroupDisplayName(option) }
-                                                    userstore={ RoleManagementUtils.getUserStore(option.displayName) }
-                                                    renderOptionProps={ props }
-                                                />
-                                            ) }
-                                        />
-                                    )
-                            }
-
-                            {   
-                                // Removing groups
-                                removedGroupsOptions?.length > 0
-                                    ? (
-                                        <Autocomplete
-                                            multiple
-                                            disableCloseOnSelect
-                                            loading={ isGroupListFetchRequestLoading || isGroupSearchLoading }
-                                            options={ removedGroupsOptions }
-                                            value={ removedGroupsOptions }
-                                            getOptionLabel={ 
-                                                (group: GroupsInterface) => 
-                                                    RoleManagementUtils.getGroupDisplayName(group)
-                                            }
-                                            onChange={ (event: SyntheticEvent, remainingGroups: GroupsInterface[]) => 
-                                                handleRestoreGroups(remainingGroups)
-                                            }
-                                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                <TextField
-                                                    { ...params }
-                                                    placeholder={ t("console:manage.features.roles.edit.groups" + 
-                                                        ".actions.remove.placeholder") }
-                                                    label={ t("console:manage.features.roles.edit.groups" + 
-                                                        ".actions.remove.label") }
-                                                    margin="dense"
-                                                />
-                                            ) }
-                                            renderTags={ (
-                                                value: GroupsInterface[], 
-                                                getTagProps: AutocompleteRenderGetTagProps
-                                            ) => value.map((option: GroupsInterface, index: number) => (
-                                                <RenderChip
-                                                    { ...getTagProps({ index }) }
-                                                    key={ index }
-                                                    primaryText={ RoleManagementUtils.getGroupDisplayName(option) }
-                                                    userStore={ RoleManagementUtils.getUserStore(option.displayName) }
-                                                    option={ option }
-                                                    activeOption={ activeOption }
-                                                    setActiveOption={ setActiveOption }
-                                                    variant="outlined"
-                                                    onDelete={ () => {
-                                                        setSelectedGroupsOptions([
-                                                            ...selectedGroupsOptions,
-                                                            option
-                                                        ]);
-                                                    } }
-                                                />
-                                            )) }
-                                            renderOption={ (
-                                                props: HTMLAttributes<HTMLLIElement>, 
-                                                option: GroupsInterface
-                                            ) => (
-                                                <AutoCompleteRenderOption
-                                                    displayName={ RoleManagementUtils.getGroupDisplayName(option) }
-                                                    userstore={ RoleManagementUtils.getUserStore(option.displayName) }
-                                                    renderOptionProps={ props }
-                                                />
-                                            ) }
-                                        />
-                                    ) : null
-                            } 
-                            {
-                                // Update Button
-                                !isReadOnly 
-                                    ? (
-                                        <Button
-                                            className="role-assigned-button"
-                                            variant="contained" 
-                                            loading={ isSubmitting } 
-                                            onClick={ onGroupsUpdate }
-                                            disabled={ initialSelectedGroupsOptions === selectedGroupsOptions }
-                                        >
-                                            { t("common:update") }
-                                        </Button>
-                                    ) : null
-                            }
-                        </>
-                    )
+                <EditRoleLocalGroupsAccordion
+                    key={ "role-group-accordion-local" }
+                    isReadOnly={ isReadOnly }
+                    onUpdate={ onGroupsUpdate }
+                    initialSelectedGroups={ assignedGroups[LOCAL_GROUPS_IDENTIFIER_ID] }
+                    onSelectedGroupsListChange={ onSelectedGroupsChange }
+                    isUpdating={ isSubmitting }
+                />
             }
+            {
+                filteredIdpList?.length > 0 && (
+                    <>
+                        <Divider hidden />
+                        <Divider />
+                        <Heading as="h5">
+                            { t("console:manage.features.roles.edit.groups.externalGroupsHeading") }
+                        </Heading>
+                    </>
+                )
+            }
+            { filteredIdpList?.map((idp: IdentityProviderInterface) => {
+                const initialSelectedGroupsOptions: RoleGroupsInterface[] = assignedGroups[idp.id];
+
+                return (
+                    <EditRoleFederatedGroupsAccordion
+                        key={ `role-group-accordion-${idp.id}` }
+                        isReadOnly={ isReadOnly }
+                        onUpdate={ onGroupsUpdate }
+                        initialSelectedGroups={ initialSelectedGroupsOptions }
+                        identityProvider={ idp }
+                        onSelectedGroupsListChange={ onSelectedGroupsChange }
+                        isExpanded={ expandedGroupIndex === idp.id }
+                        onExpansionChange={ onGroupAccordionExpanded }
+                        isUpdating={ isSubmitting }
+                    />
+                );
+            }) }
         </EmphasizedSegment>
     );
 };

@@ -18,7 +18,12 @@
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { 
+    AlertLevels, 
+    DeprecatedFeatureInterface,
+    FeatureAccessConfigInterface, 
+    IdentifiableComponentInterface 
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
@@ -56,6 +61,12 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
     const pageContextRef: MutableRefObject<any> = useRef(null);
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
     const url: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
+    const gonvernanConnectorsConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.governanceConnectors);
+    const saml2WebSSO: DeprecatedFeatureInterface = gonvernanConnectorsConfig
+        .deprecatedFeaturesToShow.find((feature: any) => {
+            return feature?.name === "saml2";
+        });
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -314,45 +325,51 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                             />
                                                         </Grid.Column>
                                                     </Grid.Row>
-                                                    <Grid.Row columns={ 1 } key={ 2 }>
-                                                        <Grid.Column width={ 10 } key="destinationUrl">
-                                                            <div ref={ url } />
-                                                            <URLInput
-                                                                urlState={ destinationUrls }
-                                                                setURLState={ (url: string) => {
-                                                                    const processedUrl: string = url?.split(",")
-                                                                        ?.toString();
-                                                                    
-                                                                    setDestinationUrls(processedUrl);
-                                                                } }
-                                                                labelName={ t("console:saml2Config.form." +
-                                                                    "destinationUrl.label") }
-                                                                hint={ t("console:saml2Config.form." +
-                                                                    "destinationUrl.hint") }
-                                                                required={ true }
-                                                                showError={ showURLError }
-                                                                setShowError={ setShowURLError }
-                                                                validationErrorMsg={ t("console:saml2Config.form." +
-                                                                    "validation.destinationURLs") }
-                                                                validation={ (value: string) => {
-                                                                    if (!URLUtils.isURLValid(value, true)) {
-                                                                        setShowURLError(true);
-
-                                                                        return false;
-                                                                    }
-                                                        
-                                                                    return true;
-                                                                } }
-                                                                readOnly={ isReadOnly }
-                                                                addURLTooltip={ t("common:addURL") }
-                                                                duplicateURLErrorMessage={ 
-                                                                    t("common:duplicateURLError") }
-                                                                data-componentid={ `${ componentId }
-                                                                    -destination-url-input` }
-                                                                showPredictions={ false }
-                                                            />
-                                                        </Grid.Column>
-                                                    </Grid.Row>
+                                                    {
+                                                        saml2WebSSO?.deprecatedProperties
+                                                            .includes("destinationURLs.pattern") && (
+                                                            <Grid.Row columns={ 1 } key={ 2 }>
+                                                                <Grid.Column width={ 10 } key="destinationUrl">
+                                                                    <div ref={ url } />
+                                                                    <URLInput
+                                                                        urlState={ destinationUrls }
+                                                                        setURLState={ (url: string) => {
+                                                                            const processedUrl: string = url?.split(",")
+                                                                                ?.toString();
+                                                                            
+                                                                            setDestinationUrls(processedUrl);
+                                                                        } }
+                                                                        labelName={ t("console:saml2Config.form." +
+                                                                            "destinationUrl.label") }
+                                                                        hint={ t("console:saml2Config.form." +
+                                                                            "destinationUrl.hint") }
+                                                                        required={ true }
+                                                                        showError={ showURLError }
+                                                                        setShowError={ setShowURLError }
+                                                                        validationErrorMsg={ 
+                                                                            t("console:saml2Config.form." +
+                                                                            "validation.destinationURLs") }
+                                                                        validation={ (value: string) => {
+                                                                            if (!URLUtils.isURLValid(value, true)) {
+                                                                                setShowURLError(true);
+        
+                                                                                return false;
+                                                                            }
+                                                                
+                                                                            return true;
+                                                                        } }
+                                                                        readOnly={ isReadOnly }
+                                                                        addURLTooltip={ t("common:addURL") }
+                                                                        duplicateURLErrorMessage={ 
+                                                                            t("common:duplicateURLError") }
+                                                                        data-componentid={ `${ componentId }
+                                                                            -destination-url-input` }
+                                                                        showPredictions={ false }
+                                                                    />
+                                                                </Grid.Column>
+                                                            </Grid.Row>
+                                                        )
+                                                    }                                                 
                                                 </Grid>
                                             </Form>
                                             <Divider hidden />

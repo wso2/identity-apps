@@ -52,6 +52,8 @@ public class AppsCommonDataHolder {
 
     private Set<String> systemApplications = new HashSet<>();
 
+    private final Set<String> defaultApplications = new HashSet<>();
+
     private boolean isOrganizationManagementEnabled;
 
     private AppsCommonDataHolder() {
@@ -218,5 +220,26 @@ public class AppsCommonDataHolder {
     public APIResourceManager getAPIResourceManager() {
 
         return apiResourceManager;
+    }
+
+
+    /**
+     * Set default applications.
+     *
+     * @param defaultApplications Default applications.
+     */
+    public void setDefaultApplications(Set<String> defaultApplications) {
+
+        this.defaultApplications.addAll(defaultApplications);
+    }
+
+    /**
+     * Get default applications.
+     *
+     * @return Default applications.
+     */
+    public Set<String> getDefaultApplications() {
+
+        return defaultApplications;
     }
 }

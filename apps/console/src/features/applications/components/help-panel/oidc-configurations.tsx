@@ -316,33 +316,33 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                         />
                     </Grid.Column>
                 </Grid.Row>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
+                        <GenericIcon
+                            icon={ getHelpPanelIcons().endpoints.par }
+                            size="micro"
+                            square
+                            transparent
+                            inline
+                            className="left-icon"
+                            verticalAlign="middle"
+                            spaced="right"
+                        />
+                        <label data-testid={ `${ testId }-pushed-authorization-request-label` }>
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                "oidcConfigurations.labels.pushedAuthorizationRequest") }
+                        </label>
+                    </Grid.Column>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                        <CopyInputField
+                            value={ oidcConfigurations?.pushedAuthorizationRequestEndpoint  }
+                            data-testid={ `${ testId }-pushed-authorization-request-readonly-input` }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
                 {
                     featureConfig?.residentIdp?.enabled && (
                         <>
-                            <Grid.Row columns={ 2 }>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
-                                    <GenericIcon
-                                        icon={ getHelpPanelIcons().endpoints.par }
-                                        size="micro"
-                                        square
-                                        transparent
-                                        inline
-                                        className="left-icon"
-                                        verticalAlign="middle"
-                                        spaced="right"
-                                    />
-                                    <label data-testid={ `${ testId }-pushed-authorization-request-label` }>
-                                        { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                            "oidcConfigurations.labels.pushedAuthorizationRequest") }
-                                    </label>
-                                </Grid.Column>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                                    <CopyInputField
-                                        value={ oidcConfigurations?.pushedAuthorizationRequestEndpoint  }
-                                        data-testid={ `${ testId }-pushed-authorization-request-readonly-input` }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
                             <Grid.Row columns={ 2 }>
                                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
                                     <GenericIcon

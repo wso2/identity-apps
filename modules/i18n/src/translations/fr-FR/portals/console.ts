@@ -483,6 +483,113 @@ export const console: ConsoleNS = {
             }
         }
     },
+    apiResources: {
+        confirmations: {
+            deleteAPIResource: {
+                assertionHint: "Veuillez confirmer votre action.",
+                content: "Cette action est irréversible et supprimera en permanence la ressource API.",
+                header: "Es-tu sûr?",
+                message: "Si vous supprimez cette ressource API, certaines fonctionnalités peuvent ne pas fonctionner correctement. " +
+                    "Veuillez procéder avec prudence."
+            },
+            deleteAPIResourcePermission: {
+                assertionHint: "Veuillez confirmer votre action.",
+                content: "Cette action est irréversible et supprimera en permanence la portée de la ressource API.",
+                header: "Es-tu sûr?",
+                message: "Si vous supprimez cette portée de la ressource API, certaines fonctionnalités peuvent ne pas fonctionner correctement. " +
+                    "Veuillez procéder avec prudence."
+            }
+        },
+        tabs: {
+            scopes: {
+                button: "Ajouter la portée",
+                label: "Portées",
+                title: "Liste des étendues",
+                subTitle: "Liste des utilisations de lunettes par la ressource API.",
+                learnMore: "Apprendre encore plus",
+                search: "Rechercher des portées par le nom d'affichage",
+                empty: {
+                    title: "Aucune portée n'est attribuée",
+                    subTitle: "Cliquez sur l'icône + pour ajouter une nouvelle portée"
+                },
+                emptySearch: {
+                    title: "Aucun résultat trouvé",
+                    subTitle: {
+                        0: "Nous n'avons pas pu trouver la portée que vous avez recherchée.",
+                        1: "Veuillez essayer d'utiliser un autre paramètre."
+                    },
+                    viewAll: "Recherche de recherche claire"
+                },
+                copyPopupText: "Copiez l'identifiant",
+                copiedPopupText: "Copié l'identifiant",
+                removeScopePopupText: "Retirez la portée",
+                form: {
+                    button: "Ajouter la portée",
+                    cancelButton: "Annuler",
+                    submitButton: "Finition",
+                    title: "Ajouter une portée",
+                    subTitle: "Créer une nouvelle portée",
+                    fields: {
+                        displayName: {
+                            emptyValidate: "Le nom de l'affichage ne peut pas être vide",
+                            label: "Afficher un nom",
+                            placeholder: "Lire les réservations"
+                        },
+                        scope: {
+                            emptyValidate: "La portée ne peut pas être vide",
+                            label: "Portée",
+                            placeholder: "read_bookings"
+                        },
+                        description: {
+                            label: "description",
+                            placeholder: "Entrez la description"
+                        }
+                    }
+                }
+            }
+        },
+        wizard: {
+            addApiResource: {
+                steps: {
+                    scopes: {
+                        empty: {
+                            title: "Aucune portée n'est attribuée",
+                            subTitle: "Click on the + icon to add a new scope"
+                        },
+                        stepTitle: "Portées",
+                        form: {
+                            button: "Ajouter la portée",
+                            fields: {
+                                displayName: {
+                                    emptyValidate: "Le nom de l'affichage ne peut pas être vide",
+                                    label: "Afficher un nom",
+                                    placeholder: "Lire les réservations",
+                                    hint: "Fournissez un nom significatif car il sera affiché sur l'écran de consentement de l'utilisateur."
+                                },
+                                permission: {
+                                    emptyValidate: "La portée ne peut pas être vide",
+                                    uniqueValidate: "Cette portée existe déjà dans l'organisation.Veuillez en choisir un autre.",
+                                    invalid: "La portée ne peut pas contenir des espaces",
+                                    label: "Portée",
+                                    placeholder: "read_bookings",
+                                    hint: "Une valeur unique qui agit comme portée lors de la demande d'un jeton d'accès. <1>Notez que la portée ne peut pas être modifiée une fois créée.</1>"
+                                },
+                                permissionList: {
+                                    label: "Scopes ajoutées"
+                                },
+                                description: {
+                                    label: "description",
+                                    placeholder: "Entrez la description",
+                                    hint: "Fournissez une description de votre portée.Cela sera affiché sur l'écran de consentement de l'utilisateur."
+                                }
+                            }
+                        },
+                        removeScopePopupText: "Retirez la portée"
+                    }
+                }
+            }
+        }
+    },
     branding: {
         form: {
             actions: {
@@ -1049,6 +1156,11 @@ export const console: ConsoleNS = {
                                 "Configurer l'authentification pour votre application à l'aide de WS-Federation.",
                             tabName: "Info"
                         },
+                        protocol: {
+                            title: "Configuration du protocole",
+                            subtitle: "Configurez le protocole pour votre application.",
+                            button: "Configurer le protocole"
+                        },
                         provisioning: {
                             inbound: {
                                 heading: "Provisionnement entrant",
@@ -1571,10 +1683,10 @@ export const console: ConsoleNS = {
                                         },
                                         pairwise: {
                                             label: "par paire",
-                                            hint: "Cette option utilisera l'identifiant de sujet par paire comme " +
-                                                "sujet. L'URI de l'identifiant de sujet et l'URI de rappel ou l'URI " +
-                                                "de l'identifiant de secteur sont utilisés dans le calcul de la " +
-                                                "valeur du sujet."
+                                            hint: "Activez par paire pour attribuer un identifiant pseudonyme unique " +
+                                                "à chaque client. L'URI de l'identifiant du sujet et l'URI de rappel " +
+                                                "ou l'URI de l'identifiant du secteur sont pris en compte dans le " +
+                                                "calcul de la valeur du sujet."
                                         }
                                     },
                                     sectorIdentifierURI: {
@@ -2949,6 +3061,20 @@ export const console: ConsoleNS = {
                         },
                         success: {
                             description: "Les détails de l'application ont été récupérés avec succès.",
+                            message: "Récupération réussie"
+                        }
+                    },
+                    fetchMyAccountApplication: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Impossible de récupérer les détails de l'application Mon compte.",
+                            message: "Quelque chose s'est mal passé"
+                        },
+                        success: {
+                            description: "Récupération réussie des détails de l'application Mon compte.",
                             message: "Récupération réussie"
                         }
                     },
@@ -7461,6 +7587,7 @@ export const console: ConsoleNS = {
                 invitedUserLabel: "Géré par l'organisation mère"
             },
             oidcScopes: {
+                back: "Revenir aux mappages d’attributs OpenID Connect",
                 viewAttributes: "Afficher les attributs",
                 manageAttributes: "Gérer les attributs",
                 addAttributes: {
@@ -8474,19 +8601,19 @@ export const console: ConsoleNS = {
                         rolePermission: {
                             apiResource: {
                                 label: "Sélectionnez la ressource API",
-                                placeholder: "Sélectionnez une ressource API pour attribuer des scopes (autorisations)"
+                                placeholder: "Sélectionnez une ressource API pour attribuer des autorisations (lunettes)"
                             },
                             permissions: {
-                                label: "Sélectionnez Scopes (autorisations) dans les ressources API sélectionnées",
-                                placeholder: "Sélectionnez des lunettes (autorisations)",
+                                label: "Sélectionnez autorisations (lunettes) dans les ressources API sélectionnées",
+                                placeholder: "Sélectionnez les autorisations (lunettes)",
                                 tooltips: {
                                     noScopes: "Aucune portée disponible pour la ressource API sélectionnée",
-                                    selectAllScopes: "Sélectionnez toutes les portées (autorisations)",
+                                    selectAllScopes: "Sélectionnez toutes les autorisations (lunettes)",
                                     removeAPIResource: "Supprimer la ressource API"
                                 }
                             },
                             notes: {
-                                applicationRoles: "Seules les API et les étendues (autorisations) autorisées dans l'application sélectionnée(<1>{{applicationName}}</1>) seront répertoriées pour être sélectionnées."
+                                applicationRoles: "Seules les API et les autorisations (lunettes) autorisées dans l'application sélectionnée(<1>{{applicationName}}</1>) seront répertoriées pour être sélectionnées."
                             },
                             notifications: {
                                 fetchAPIResourceError: {
@@ -8641,6 +8768,8 @@ export const console: ConsoleNS = {
                                 description: "Nous n'avons pas pu récupérer les groupes attribués à ce rôle."
                             }
                         },
+                        externalGroupsHeading: "Groupes externes",
+                        localGroupsHeading: "Groupes locaux",
                         heading: "Groupes attribués",
                         subHeading: "Ajoutez ou supprimez les groupes affectés au rôle. Notez que ceci"
                             + "affectera l'exécution de certaines tâches.",
@@ -8828,7 +8957,7 @@ export const console: ConsoleNS = {
                     deleteRole: {
                         error: {
                             description: "{{description}}",
-                            message: "Erreur de suppression du rôle sélectionné."
+                            message: "Impossible de supprimer le rôle sélectionné."
                         },
                         genericError: {
                             description: "Impossible de supprimer le rôle sélectionné.",
@@ -8960,6 +9089,10 @@ export const console: ConsoleNS = {
                     pageHeading: "Bannière de conseil d'administration",
                     pageSubheading: "Configurez la bannière d'avis d'administration à afficher " +
                         "sur la page de connexion."
+                },
+                manageNotificationSendingInternally: {
+                    title: "Notification interne",
+                    description: "Gérer la notification Envoi en interne."
                 },
                 remoteLogPublishing: {
                     title: "Publication de journaux à distance",
@@ -9111,6 +9244,10 @@ export const console: ConsoleNS = {
                             }
                         }
                     }
+                },
+                server: {
+                    title: "Serveuse",
+                    description: "Configurer les paramètres du serveur."
                 }
             },
             sidePanel: {
@@ -9178,7 +9315,8 @@ export const console: ConsoleNS = {
                     },
                     headers: {
                         0: "Domaine",
-                        1: "Nom"
+                        1: "Nom",
+                        2: "Audience"
                     }
                 },
                 searchPlaceholder: "Rechercher un {{type}}"
@@ -9364,6 +9502,14 @@ export const console: ConsoleNS = {
                             "vous souhaitez lui en attribuer, veuillez cliquer sur le bouton ci-dessous."
                     },
                     addUserWizard: {
+                        askPassword: {
+                            alphanumericUsernameEnabled: "Pour utiliser la fonction de réinitialisation du mot de passe, désactiver " +
+                                "Fonction de nom d'utilisateur alphanumérique.",
+                            emailInvalid: "Pour utiliser la fonction de réinitialisation du mot de passe, veuillez utiliser une adresse e-mail valide comme "+
+                                "l'identifiant.",
+                            emailVerificationDisabled: "Pour utiliser la fonction de réinitialisation du mot de passe, activez la vérification par e-mail par "+
+                                "Configuration d'un fournisseur de messagerie."
+                        },
                         buttons: {
                             next: "Suivant",
                             previous: "Précédent"
@@ -9443,8 +9589,6 @@ export const console: ConsoleNS = {
                                 searchByRoleOrGroup: "Recherche par nom de rôle/groupe",
                                 roleGroupFilterAttributePlaceHolder: "Nom du rôle/groupe"
                             },
-                            disabledSecondaryStoreInfo: "L’importation groupée vers des magasins d’utilisateurs " +
-                                "externes n’est pas disponible pour le moment.",
                             manualCreation: {
                                 alerts: {
                                     creationSuccess: {
@@ -9462,7 +9606,9 @@ export const console: ConsoleNS = {
                                 },
                                 primaryButton: "Ajouter",
                                 rolesLabel: "Les rôles",
-                                rolesPlaceholder: "Entrez les rôles"
+                                rolesPlaceholder: "Entrez les rôles",
+                                warningMessage: "Cette option ne peut être utilisée que lorsque l'adresse e-mail " +
+                                    "est configurée comme nom d'utilisateur."
                             },
                             fileBased: {
                                 hint: "Invitez plusieurs utilisateurs en masse à l’aide d’un fichier CSV."
@@ -9475,6 +9621,14 @@ export const console: ConsoleNS = {
                         },
                         buttons: {
                             import: "Importer"
+                        },
+                        sidePanel: {
+                            manual: "Manuel",
+                            fileBased: "Basé sur un fichier",
+                            fileFormatTitle: "Format de fichier CSV",
+                            fileFormatContent: "Les en-têtes du fichier CSV doivent être des attributs utilisateur " +
+                                "mappés aux <1>attributs locaux</1>.",
+                            fileFormatSampleHeading: "Exemple de format de fichier CSV:"
                         }
                     },
                     changePasswordModal: {
@@ -9532,6 +9686,7 @@ export const console: ConsoleNS = {
                         generic: {
                             inputs: {
                                 placeholder: "Entrez votre {{fieldName}}",
+                                dropdownPlaceholder: "Sélectionnez votre {{fieldName}}",
                                 validations: {
                                     empty: "L'attribut {{fieldName}} est obligatoire",
                                     invalidFormat: "Le format de l'attribut {{fieldName}} saisi est invalide"
@@ -10002,6 +10157,13 @@ export const console: ConsoleNS = {
                             "procéder avec prudence.",
                         header: "Êtes-vous sûr?",
                         message: "Cette action est irréversible et mettra fin définitivement à la session."
+                    },
+                    addMultipleUser: {
+                        header: "Avant de continuer",
+                        message: "L'option Inviter des utilisateurs est désactivée",
+                        content: "L’option Inviter des utilisateurs doit être activée pour ajouter plusieurs " +
+                            "utilisateurs. Veuillez l'activer et réessayer.",
+                        assertionHint: "Veuillez confirmer votre action."
                     }
                 },
                 consumerUsers: {
@@ -10853,6 +11015,11 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: "Modifier le rôle"
             },
+            groupsEdit: {
+                backButton: "Revenir aux {{type}}",
+                subTitle: null,
+                title: "Modifier le groupe"
+            },
             serverConfigurations: {
                 subTitle: "Gérer la configuration générale du serveur.",
                 title: "Configurations générales"
@@ -10862,7 +11029,7 @@ export const console: ConsoleNS = {
                 title: "Utilisateurs"
             },
             usersEdit: {
-                backButton: "Revenir aux Utilisateurs",
+                backButton: "Revenir aux {{type}}",
                 subTitle: "{{name}}",
                 title: "{{email}}"
             }

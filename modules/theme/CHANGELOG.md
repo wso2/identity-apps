@@ -1,5 +1,35 @@
 # @wso2is/theme
 
+## 2.0.41
+
+### Patch Changes
+
+- [#4780](https://github.com/wso2/identity-apps/pull/4780) [`a62910f64f`](https://github.com/wso2/identity-apps/commit/a62910f64fdd05bbffcbdedf1392ec451d37c6b8) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Revert the fix the user avatar default shape to square
+
+## 2.0.40
+
+### Patch Changes
+
+- [#4747](https://github.com/wso2/identity-apps/pull/4747) [`41104e4934`](https://github.com/wso2/identity-apps/commit/41104e493424c3abb76ef5a4c84d35b2d147d369) Thanks [@brionmario](https://github.com/brionmario)! - Add Console Settings feature
+
+## 2.0.39
+
+### Patch Changes
+
+- [#4728](https://github.com/wso2/identity-apps/pull/4728) [`1019609267`](https://github.com/wso2/identity-apps/commit/1019609267d9ce9e5b600a51bed3071ff0f80626) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update the icon for SSO
+
+## 2.0.38
+
+### Patch Changes
+
+- [#4681](https://github.com/wso2/identity-apps/pull/4681) [`a8073bb7aa`](https://github.com/wso2/identity-apps/commit/a8073bb7aab05c8b04930ed751e75637f0eee24e) Thanks [@kayathiri4](https://github.com/kayathiri4)! - Fix groups edit page title and add audience to role assign view
+
+## 2.0.37
+
+### Patch Changes
+
+- [#4500](https://github.com/wso2/identity-apps/pull/4500) [`9ecc95eebd`](https://github.com/wso2/identity-apps/commit/9ecc95eebd43807e022f675075740cc7bf38c09a) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issues in the header logo section of My Account and Console
+
 ## 2.0.36
 
 ### Patch Changes

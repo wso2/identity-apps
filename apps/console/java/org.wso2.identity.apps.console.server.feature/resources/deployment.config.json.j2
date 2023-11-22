@@ -621,6 +621,36 @@
                 }
             },
             {% endif %}
+            {% if console.console_settings is defined %}
+            "consoleSettings": {
+                "disabledFeatures": [
+                    {% if console.console_settings.disabled_features is defined %}
+                    {% for feature in console.console_settings.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.console_settings.enabled is defined %} {{ console.console_settings.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.console_settings.scopes is defined %}
+                    {% for operation, scopes in console.console_settings.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.developer_getting_started is defined %}
             "developerGettingStarted": {
                 "disabledFeatures": [
@@ -773,6 +803,20 @@
             {% endif %}
             {% if console.governance_connectors is defined %}
             "governanceConnectors": {
+                "deprecatedFeaturesToShow": [
+                    {% if console.governance_connectors.disabled_features is defined %}
+                    {% for feature in deprecated_features_to_show %}
+                    {
+                        "name": "{{ feature.name }}",
+                        "deprecatedProperties": [
+                            {% for property in feature.deprecated_properties %}
+                            "{{ property }}"{% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        ]
+                    }{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                    {% endif %}
+                ],
                 "disabledFeatures": [
                     {% if console.governance_connectors.disabled_features is defined %}
                     {% for feature in console.governance_connectors.disabled_features %}
@@ -1454,6 +1498,36 @@
                 }
             },
             {% endif %}
+            {% if console.fapi_application_creation is defined %}
+            "fapiApplicationCreation": {
+                "disabledFeatures": [
+                    {% if console.fapi_application_creation.disabled_features is defined %}
+                    {% for feature in console.fapi_application_creation.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.fapi_application_creation.enabled is defined %} {{ console.fapi_application_creation.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.fapi_application_creation.scopes is defined %}
+                    {% for operation, scopes in console.fapi_application_creation.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.user_stores is defined %}
             "userStores": {
                 "disabledFeatures": [
@@ -1616,6 +1690,17 @@
                 {% endfor %}
             {% endif %}
         ],
+        "classicFeatures": {
+            {% if console.ui.classic_features.items() is defined %}
+            {% for key, value in console.ui.classic_features.items() %}
+            {% if value is string %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        },
         "theme": {
             "name": "{{ console.theme }}"
         }

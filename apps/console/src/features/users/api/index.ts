@@ -16,5 +16,6 @@
  * under the License.
  */
 
+export * from "./invite";
 export * from "./profile";
 export * from "./users";

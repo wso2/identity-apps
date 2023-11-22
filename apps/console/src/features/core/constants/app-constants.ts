@@ -251,7 +251,7 @@ export class AppConstants {
             [ "GETTING_STARTED", `${ AppConstants.getDeveloperViewBasePath() }/getting-started` ],
             [ "ADMIN_OVERVIEW", `${ AppConstants.getAdminViewBasePath() }/overview` ],
             [ "ADMIN_ADVISORY_BANNER", `${ AppConstants.getAdminViewBasePath() }/admin-advisory` ],
-            [ "ADMIN_ADVISORY_BANNER_EDIT", `${ AppConstants.getAdminViewBasePath() }/admin-advisory-banner-edit` ],
+            [ "ADMIN_ADVISORY_BANNER_EDIT", `${ AppConstants.getAdminViewBasePath() }/server/admin-advisory` ],
             [
                 "ANALYTICS",
                 `${AppConstants.getAdminViewBasePath()}/analytics/:categoryId/:connectorId`
@@ -272,6 +272,9 @@ export class AppConstants {
             [ "APPROVALS", `${ AppConstants.getAdminViewBasePath() }/approvals` ],
             [ "CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates` ],
             [ "CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/attributes-and-mappings` ],
+            [ "CLAIM_VERIFICATION_SETTINGS",
+                `${ AppConstants.getAdminViewBasePath() }/attribute-verification-settings`
+            ],
             [ "CONNECTIONS", `${ AppConstants.getDeveloperViewBasePath() }/connections` ],
             [ "CONNECTION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/connections/templates` ],
             [ "CONNECTION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/connections/:id` ],
@@ -284,6 +287,8 @@ export class AppConstants {
             [ "ORGANIZATION_DISCOVERY_DOMAINS", `${AppConstants.getAdminViewBasePath()}/email-domain-discovery` ],
             [ "UPDATE_ORGANIZATION_DISCOVERY_DOMAINS", `${AppConstants.getAdminViewBasePath()}/email-domain-edit/:id` ],
             [ "EMAIL_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/email-provider` ],
+            [ "EMAIL_AND_SMS", `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms` ],
+            [ "EMAIL_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/email-management` ],
             [ "SMS_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/sms-provider` ],
             [ "EMAIL_TEMPLATE_TYPES", `${ AppConstants.getAdminViewBasePath() }/email-templates` ],
             [ "EMAIL_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId` ],
@@ -349,8 +354,13 @@ export class AppConstants {
                 "GOVERNANCE_CONNECTOR_EDIT",
                 `${AppConstants.getAdminViewBasePath()}/connector/:categoryId/:connectorId`
             ],
+            [
+                "USERNAME_RECOVERY_CONNECTOR_EDIT",
+                `${AppConstants.getAdminViewBasePath()}/connector/:type/:categoryId/:connectorId`
+            ],
             [ "SECRETS", `${AppConstants.getDeveloperViewBasePath()}/secrets` ],
             [ "SECRET_EDIT", `${AppConstants.getDeveloperViewBasePath()}/secrets/:type/:name` ],
+            [ "SERVER_CONFIG_CATEGORY", `${AppConstants.getAdminViewBasePath()}/login-and-registration/:id` ],
             [
                 "ATTRIBUTE_MAPPINGS",
                 `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type/:customAttributeMappingID?`
@@ -375,13 +385,20 @@ export class AppConstants {
                 `${AppConstants.getAdminViewBasePath()}/edit-private-key-jwt-configuration`
             ],
             [ "INSIGHTS", `${AppConstants.getAdminViewBasePath()}/insights` ],
-            [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/logs` ],
+            [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/server/logs` ],
             [ "SESSION_MANAGEMENT",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/session-management` ],
             [ "SAML2_CONFIGURATION",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/saml2-configuration` ],
+            [ "CONSOLE_SETTINGS", `${AppConstants.getAdminViewBasePath()}/settings` ],
+            [ "CONSOLE_ADMINISTRATORS_EDIT", `${AppConstants.getAdminViewBasePath()}/settings/administrators/:id` ],
+            [ "CONSOLE_ROLES_EDIT", `${AppConstants.getAdminViewBasePath()}/settings/roles/:id` ],
             [ "WSFED_CONFIGURATION",
-                `${AppConstants.getAdminViewBasePath()}/login-and-registration/wsfed-configuration` ]
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/wsfed-configuration` ],
+            [ "SERVER",
+                `${AppConstants.getAdminViewBasePath()}/server` ],
+            [ "INTERNAL_NOTIFICATION_SENDING",
+                `${AppConstants.getAdminViewBasePath()}/server/internal-notification-sending` ]
         ]);
 
         return paths;
@@ -449,7 +466,8 @@ export class AppConstants {
         "applications",
         "emailTemplates",
         "governanceConnectors",
-        "branding"
+        "branding",
+        "consoleSettings"
     ];
 
     /**
@@ -472,9 +490,16 @@ export class AppConstants {
      * Route ids that are enabled in only for super admins.
      */
     public static readonly SUPER_ADMIN_ONLY_ROUTES: string[] = [
-        "adminAdvisoryBanner",
-        "remoteLogging"
+        "admin-session-advisory-banner-edit",
+        "remote-logging",
+        "internal-notification-sending",
+        "server"
     ]
+
+    /**
+     * Route id of the console settings page.
+     */
+    public static readonly CONSOLE_SETTINGS_ROUTE: string = "consoleSettings";
 
     /**
      * Name of the root node

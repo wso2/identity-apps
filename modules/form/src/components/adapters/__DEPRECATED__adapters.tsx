@@ -68,24 +68,24 @@ export const __DEPRECATED__TextFieldAdapter = (props:FieldRenderProps<any> ): Re
 
     return (
         <Form.Input
-            aria-label={ childFieldProps.ariaLabel }
-            key={ childFieldProps.testId }
-            required={ childFieldProps.required }
-            data-testid={ childFieldProps.testId }
-            label={ childFieldProps.label !== "" ? childFieldProps.label : null }
+            aria-label={ childFieldProps?.ariaLabel }
+            key={ childFieldProps?.testId }
+            required={ childFieldProps?.required }
+            data-testid={ childFieldProps?.testId }
+            label={ childFieldProps?.label !== "" ? childFieldProps?.label : null }
             onKeyPress={ (event: React.KeyboardEvent, data: any) => {
                 event.key === ENTER_KEY && input.onBlur(data?.name);
             } }
             onChange={ (_event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
-                if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
-                    childFieldProps.listen(data?.value);
+                if (childFieldProps?.listen && typeof childFieldProps?.listen === "function") {
+                    childFieldProps?.listen(data?.value);
                 }
 
                 input.onChange(data?.value);
             } }
             onBlur={ (event: any) => input.onBlur(event) }
             control={ Input }
-            autoFocus={ childFieldProps.autoFocus || false }
+            autoFocus={ childFieldProps?.autoFocus || false }
             value={ meta.modified
                 ? input.value
                 : (childFieldProps?.value
@@ -95,7 +95,7 @@ export const __DEPRECATED__TextFieldAdapter = (props:FieldRenderProps<any> ): Re
                         : "")) }
             { ...omit(childFieldProps, [ "value", "listen" ]) }
             type={
-                childFieldProps.inputType === "number"
+                childFieldProps?.inputType === "number"
                     ? "number"
                     : "text"
             }
@@ -108,7 +108,7 @@ export const __DEPRECATED__TextFieldAdapter = (props:FieldRenderProps<any> ): Re
                 // Restrict typing non-numeric characters in the "number" input fields.
                 // Setting `type=number` is not sufficient to support firefox & IE.
                 // Port fix from https://github.com/wso2/identity-apps/pull/2035
-                childFieldProps.inputType === "number"
+                childFieldProps?.inputType === "number"
                     ? ((event: KeyboardEvent) => {
                         const isNumber: boolean = /^[0-9]$/i.test(event.key);
                         const isAllowed: boolean = (
@@ -134,7 +134,7 @@ export const __DEPRECATED__TextFieldAdapter = (props:FieldRenderProps<any> ): Re
                 // Restrict pasting non-numeric characters in the "number" input fields
                 // Setting `type=number` is not sufficient to support firefox & IE.
                 // Port fix from https://github.com/wso2/identity-apps/pull/2035
-                childFieldProps.inputType === "number"
+                childFieldProps?.inputType === "number"
                     ? ((event: ClipboardEvent) => {
                         const data: string = event.clipboardData.getData("Text") ;
                         const isNumber: boolean = /^[0-9]+$/i.test(data);
@@ -298,21 +298,21 @@ export const ToggleAdapter = (props: FieldRenderProps<any>): ReactElement => {
 
     return (
         <Form.Checkbox
-            label={ childFieldProps.label }
-            name={ childFieldProps.name }
-            children={ childFieldProps.children }
+            label={ childFieldProps?.label }
+            name={ childFieldProps?.name }
+            children={ childFieldProps?.children }
             onChange={ (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
-                if (childFieldProps.listen && typeof childFieldProps.listen === "function") {
-                    childFieldProps.listen(data?.checked);
+                if (childFieldProps?.listen && typeof childFieldProps?.listen === "function") {
+                    childFieldProps?.listen(data?.checked);
                 }
 
                 input.onChange(data?.checked);
             } }
             control={ Checkbox }
-            readOnly={ childFieldProps.readOnly }
-            disabled={ childFieldProps.disabled }
-            defaultChecked={ !(childFieldProps.value.length == 0) }
-            autoFocus={ childFieldProps.autoFocus || false }
+            readOnly={ childFieldProps?.readOnly }
+            disabled={ childFieldProps?.disabled }
+            defaultChecked={ !(childFieldProps?.value.length == 0) }
+            autoFocus={ childFieldProps?.autoFocus || false }
             { ...childFieldProps }
         />
     );

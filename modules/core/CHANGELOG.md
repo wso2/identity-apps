@@ -1,5 +1,29 @@
 # @wso2is/core
 
+## 2.0.18
+
+### Patch Changes
+
+- [#4780](https://github.com/wso2/identity-apps/pull/4780) [`a62910f64f`](https://github.com/wso2/identity-apps/commit/a62910f64fdd05bbffcbdedf1392ec451d37c6b8) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Revert the fix the user avatar default shape to square
+
+## 2.0.17
+
+### Patch Changes
+
+- [#4747](https://github.com/wso2/identity-apps/pull/4747) [`41104e4934`](https://github.com/wso2/identity-apps/commit/41104e493424c3abb76ef5a4c84d35b2d147d369) Thanks [@brionmario](https://github.com/brionmario)! - Add Console Settings feature
+
+## 2.0.16
+
+### Patch Changes
+
+- [#4737](https://github.com/wso2/identity-apps/pull/4737) [`31fc142c2b`](https://github.com/wso2/identity-apps/commit/31fc142c2b0ed9c74e97a8cc6f2d58e20eec709a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide default subject attribute selection dropdown for OIDC apps
+
+## 2.0.15
+
+### Patch Changes
+
+- [#4702](https://github.com/wso2/identity-apps/pull/4702) [`2d93945d78`](https://github.com/wso2/identity-apps/commit/2d93945d780ac25ea20acc4af42d23863d080e90) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Revamp login and registration page
+
 ## 2.0.14
 
 ### Patch Changes

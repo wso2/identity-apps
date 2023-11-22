@@ -34,7 +34,7 @@ export const getExtendedFeatureResourceEndpoints = (serverHost: string,
     return {
         authzEndpoint: `${ authzServiceHost }/o/${ orgId }`,
         choreoEventingEndpoint: deploymentConfig.extensions?.choreoEventingEndpoint as string,
-        diagnosticLogsEndpoint: `${ serverHost }/api/asgardeo/v1/logs/diagnostics/search`,
+        diagnosticLogsEndpoint: `${ serverHost }/api/asgardeo/v2/logs/diagnostics/search`,
         emailManagement: `${ serverHost }/api/server/v1/email`,
         emailProviderEndpoint: `${ serverHost }/api/server/v1/notification-senders/email`,
         eventsEndpoint: `${ serverHost }/api/event-configurations/v1/events`,

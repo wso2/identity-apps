@@ -85,6 +85,7 @@
     String GITHUB_AUTHENTICATOR = "GithubAuthenticator";
     String FACEBOOK_AUTHENTICATOR = "FacebookAuthenticator";
     String OIDC_AUTHENTICATOR = "OpenIDConnectAuthenticator";
+    String SSO_AUTHENTICATOR = "OrganizationAuthenticator";
     String commonauthURL = "../commonauth";
 
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -534,7 +535,7 @@
                         </div>
                     </div>
                     <br>
-                    <% } else {
+                    <% } else if (!StringUtils.equals(type, SSO_AUTHENTICATOR)) {
 
                         String logoPath = imageURL;
                         if (!imageURL.isEmpty() && imageURL.contains("/")) {
@@ -1797,6 +1798,18 @@
             if (element.type === 'text' && element.required && element.value.trim() === "") {
                 $("#" + error_msg_txt).text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                 "For.required.fields.cannot.be.empty")%>");
+                $("#" + error_msg_element).show();
+                $("#" + element_field).addClass("error");
+                var error_msg_txt_element = document.getElementById(error_msg_txt);
+                if (error_msg_txt_element) {
+                    $("html, body").animate({scrollTop: $("#" + error_msg_txt).offset().top}, 'slow');
+                }
+
+                return false;
+            }
+            if (element.type === 'text' && element.value != null && !element.checkValidity()) {
+                $("#" + error_msg_txt).text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                    "Please.enter.valid.input")%>");
                 $("#" + error_msg_element).show();
                 $("#" + element_field).addClass("error");
                 var error_msg_txt_element = document.getElementById(error_msg_txt);

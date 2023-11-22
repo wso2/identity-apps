@@ -30,6 +30,7 @@ import {
     EmphasizedSegment,
     PageLayout,
     PrimaryButton,
+    SecondaryButton,
     useDocumentation
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -427,7 +428,11 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
     };
 
     const handleBackButtonClick = () => {
-        history.push(`${ AppConstants.getDeveloperViewBasePath() }/channels`);
+        history.push(`${AppConstants.getPaths().get("EMAIL_AND_SMS")}`);
+    };
+
+    const goToEmailTemplates = () => {
+        history.push(`${AppConstants.getPaths().get("EMAIL_MANAGEMENT")}`);
     };
 
     return (
@@ -442,6 +447,17 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                 onClick: handleBackButtonClick,
                 text: t("extensions:develop.emailProviders.goBack")
             } }
+            action={
+                featureConfig.emailProviders?.enabled &&
+                (
+                    <SecondaryButton
+                        onClick={ goToEmailTemplates }
+                        data-componentId="email-templates-configure-button"
+                    >
+                        { t("extensions:develop.emailProviders.configureEmailTemplates") }
+                    </SecondaryButton>
+                )
+            }
             data-componentid={ `${ componentId }-form-layout` }
         >
             <Ref innerRef={ pageContextRef }>

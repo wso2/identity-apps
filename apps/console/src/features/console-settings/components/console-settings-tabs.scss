@@ -1,0 +1,39 @@
+.console-settings-tabs {
+    /* TODO: Bump OUI & Remove */
+    .oxygen-tab {
+        font-size: 1rem;
+        font-weight: 400;
+
+        &:not(.Mui-selected) {
+            color: var(--oxygen-palette-text-primary);
+        }
+    }
+    /* TODO: Bump OUI & Remove */
+
+    .oxygen-tab-panel {
+        .list-layout {
+            margin-top: 2rem;
+        }
+    }
+
+    .console-roles-list, .administrators-list {
+        .top-action-panel {
+            display: flex;
+            flex-direction: row-reverse;
+            flex-wrap: nowrap;
+            align-content: center;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 10px;
+
+            >.ui.grid {
+                flex-grow: 1;
+            }
+        }
+    }
+
+    .multi-option-radio-group {
+        gap: 40px;
+        margin: 20px 0;
+    }
+}
