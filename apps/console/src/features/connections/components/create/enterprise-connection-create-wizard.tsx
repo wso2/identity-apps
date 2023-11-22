@@ -333,16 +333,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         }
 
         // Identity provider placeholder image.
-        if (AppConstants.getClientOrigin()) {
-            if (AppConstants.getAppBasename()) {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                    "/" + AppConstants.getAppBasename() +
-                    "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
-            } else {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                    "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
-            }
-        }
+        identityProvider.image = "assets/images/logos/enterprise.svg";
 
         // Add the default description from the metadata instead from template.
         identityProvider.description = AuthenticatorMeta.getAuthenticatorDescription(
