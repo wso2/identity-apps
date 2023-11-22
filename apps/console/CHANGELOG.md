@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.9.18
+
+### Patch Changes
+
+- [#4786](https://github.com/wso2/identity-apps/pull/4786) [`b022448e71`](https://github.com/wso2/identity-apps/commit/b022448e71761f34d607137fcf282ad7ee896d27) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Implement hiding console settings page when group and role separation is disabled.
+
 ## 2.9.17
 
 ### Patch Changes
