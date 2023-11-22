@@ -1516,7 +1516,7 @@ export const console: ConsoleNS = {
                                                     progressiveEnrollmentEnabled: "Passkey progressive enrollment is enabled. " +
                                                     "Users can enroll passkeys on-the-fly. If they wish to enroll multiple passkeys " +
                                                     "they should do so via MyAccount.",
-                                                    progressiveEnrollmentDisabled: "On-the-fly passkey enrollment is disabled. " + 
+                                                    progressiveEnrollmentDisabled: "On-the-fly passkey enrollment is disabled. " +
                                                     "Users must enroll their passkeys through MyAccount to use passwordless sign-in."
                                                 }
                                             },
