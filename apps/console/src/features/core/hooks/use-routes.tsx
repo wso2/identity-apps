@@ -16,32 +16,22 @@
  * under the License.
  */
 
-import { GearIcon } from "@oxygen-ui/react-icons";
 import { AccessControlUtils } from "@wso2is/access-control";
-import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
+import { RouteInterface } from "@wso2is/core/models";
 import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
 import isEmpty from "lodash-es/isEmpty";
-import React, { lazy } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { commonConfig } from "../../../extensions/configs/common";
-import { serverConfigurationConfig } from "../../../extensions/configs/server-configuration";
 import useAuthorization from "../../authorization/hooks/use-authorization";
 import { OrganizationManagementConstants } from "../../organizations/constants/organization-constants";
-import { OrganizationUtils } from "../../organizations/utils/organization";
-import { useGovernanceConnectorCategories } from "../../server-configurations/api/governance-connectors";
-import {
-    GovernanceCategoryForOrgsInterface,
-    GovernanceConnectorForOrgsInterface
-} from "../../server-configurations/models/governance-connectors";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getAppViewRoutes } from "../configs/routes";
-import { getSidePanelIcons } from "../configs/ui";
 import { AppConstants } from "../constants/app-constants";
 import { history } from "../helpers/history";
 import { FeatureConfigInterface } from "../models/config";
 import { AppState, setDeveloperVisibility, setFilteredDevelopRoutes, setSanitizedDevelopRoutes } from "../store";
 import { AppUtils } from "../utils/app-utils";
-import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 
 /**
  * Props interface of {@link useOrganizations}
@@ -67,17 +57,11 @@ const useRoutes = (): useRoutesInterface => {
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const loggedUserName: string = useSelector((state: AppState) => state.profile.profileInfo.userName);
     const isSuperAdmin: string = useSelector((state: AppState) => state.organization.superAdmin);
-    const isFirstLevelOrg: boolean = useSelector((state: AppState) => state.organization.isFirstLevelOrganization);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state?.auth?.isPrivilegedUser);
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) => 
         state?.config?.ui?.isGroupAndRoleSeparationEnabled);
-
-    const {
-        data: governanceConnectors
-    } = useGovernanceConnectorCategories(featureConfig?.residentIdp?.enabled && isFirstLevelOrg);
-
     /**
      * Filter the routes based on the user roles and permissions.
      *
