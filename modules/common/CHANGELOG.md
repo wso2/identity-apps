@@ -1,5 +1,18 @@
 # @wso2is/common
 
+## 2.0.10
+
+### Patch Changes
+
+- [#4780](https://github.com/wso2/identity-apps/pull/4780) [`a62910f64f`](https://github.com/wso2/identity-apps/commit/a62910f64fdd05bbffcbdedf1392ec451d37c6b8) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Revert the fix the user avatar default shape to square
+
+- Updated dependencies [[`a62910f64f`](https://github.com/wso2/identity-apps/commit/a62910f64fdd05bbffcbdedf1392ec451d37c6b8)]:
+  - @wso2is/react-components@2.0.22
+  - @wso2is/access-control@2.0.7
+  - @wso2is/forms@2.0.4
+  - @wso2is/core@2.0.18
+  - @wso2is/i18n@2.0.56
+
 ## 2.0.9
 
 ### Patch Changes
