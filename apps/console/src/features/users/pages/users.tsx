@@ -156,7 +156,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ showMultipleInviteConfirmationModal, setShowMultipleInviteConfirmationModal ] = useState<boolean>(false);
     const [ connectorConfigLoading, setConnecterConfigLoading ] = useState<boolean>(false);
 
-    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
+    const { isSubOrganization, isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     const username: string = useSelector((state: AppState) => state.auth.username);
     const tenantName: string = store.getState().config.deployment.tenant;
@@ -187,7 +187,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * Fetch the list of available userstores.
      */
     useEffect(() => {
-        if (!isSuperOrganization() || !isFirstLevelOrganization()) {
+        if (isSubOrganization()) {
             return;
         }
 
@@ -699,15 +699,14 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 data-testid="user-mgt-user-list-layout"
                 onPageChange={ handlePaginationChange }
                 rightActionPanel={
-                    (
-                        <Dropdown
+                    isFirstLevelOrganization() || isSuperOrganization()  
+                        ? (<Dropdown
                             data-testid="user-mgt-user-list-userstore-dropdown"
                             selection
                             options={ userStoreOptions && userStoreOptions }
                             onChange={ handleDomainChange }
                             defaultValue={ PRIMARY_USERSTORE.toLocaleLowerCase() }
-                        />
-                    )
+                        />) : null  
                 }
                 showPagination={ true }
                 showTopActionPanel={ isUserListRequestLoading
