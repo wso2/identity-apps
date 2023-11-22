@@ -234,16 +234,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
         identityProvider.alias = values?.alias?.toString();
 
         // Trusted token placeholder image.
-        if (AppConstants.getClientOrigin()) {
-            if (AppConstants.getAppBasename()) {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                    "/" + AppConstants.getAppBasename() +
-                    "/libs/themes/default/assets/images/identity-providers/trusted-token-issuer-illustration.svg";
-            } else {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                    "/libs/themes/default/assets/images/identity-providers/trusted-token-issuer-illustration.svg";
-            }
-        }
+        identityProvider.image = "assets/images/icons/trusted-token-issuer.svg";
         
         // Populate certificate settings.
         identityProvider[ "certificate" ][ "jwksUri" ] = jwksUrl ?? "";
