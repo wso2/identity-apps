@@ -26,10 +26,7 @@ import {
 } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { SemanticSIZES } from "semantic-ui-react";
-import { AnimatedAvatar } from "./animated-avatar";
-import { AppAvatar } from "./app-avatar";
-import { AvatarPropsInterface } from "./avatar";
+import { Avatar, AvatarPropsInterface } from "./avatar";
 import GravatarLogo from "../../assets/images/gravatar-logo.png";
 import DummyUser from "../../assets/images/user.png";
 import { Popup } from "../popup";
@@ -87,10 +84,6 @@ export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
 
     const [ userImage, setUserImage ] = useState(null);
     const [ showPopup, setShowPopup ] = useState(false);
-
-    // To check if the size is a valid Semantic UI size.
-    const validSizesAnimatedAppAvatar: SemanticSIZES[] = 
-        [ "mini", "tiny", "small", "medium", "large", "big", "huge", "massive" ];
 
     // Check if the image is a promise, and resolve.
     useEffect(() => {
@@ -176,22 +169,14 @@ export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
             hoverable
             open={ showPopup }
             trigger={ (
-                <AppAvatar
+                <Avatar
+                    avatar
+                    shape="circular"
+                    bordered={ false }
                     className={ classes }
-                    image={ 
-                        resolveAvatarImage() 
-                        ?? (
-                            <AnimatedAvatar
-                                name={ profileInfo ? resolveUserDisplayName(profileInfo, authState) : name || "" }
-                                size={ 
-                                    validSizesAnimatedAppAvatar.includes(rest.size as SemanticSIZES)
-                                        ? rest.size as SemanticSIZES 
-                                        : "mini" 
-                                }
-                                data-testid={ `${componentId}-item-display-name-avatar` }
-                            />
-                        ) }
+                    image={ resolveAvatarImage() }
                     label={ showGravatarLabel ? resolveTopLabel() : null }
+                    name={ profileInfo ? resolveUserDisplayName(profileInfo, authState) : name || "" }
                     onMouseOver={ handleOnMouseOver }
                     onMouseOut={ handleOnMouseOut }
                     data-componentid={ componentId }
@@ -199,7 +184,7 @@ export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
                     { ...rest }
                 >
                     { children }
-                </AppAvatar>
+                </Avatar>
             ) }
             data-componentid={ `${ componentId }-gravatar-disclaimer-popup` }
             data-testid={ `${ testId }-gravatar-disclaimer-popup` }
