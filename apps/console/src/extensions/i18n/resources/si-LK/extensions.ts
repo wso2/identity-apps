@@ -3034,7 +3034,9 @@ export const extensions: Extensions = {
                 alphanumericType: "අක්ෂරාංක (a-z, A-Z, 0-9)",
                 usernameLength: "පරිශීලක නාමය දිග සකසන්න",
                 usernameLengthMin: "අවම",
-                usernameLengthMax: "උපරිම"
+                usernameLengthMax: "උපරිම",
+                usernameSpecialChars: "පරිශීලක නාමයේ විශේෂ අක්ෂරවලට ඉඩ දෙන්න.",
+                usernameSpecialCharsHint: "ඉදිරි ස්ලැෂ් (\"/\") භාවිතය සීමා කර ඇත."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "විකල්ප පිවිසුම් හඳුනාගැනීම්",
@@ -3272,8 +3274,10 @@ export const extensions: Extensions = {
                             passwordValidation: "මුරපදය පහත සීමාවන් සපුරාලිය යුතුය."
                         },
                         usernameHint: "අවම වශයෙන් එක් අකුරක් ඇතුළුව අක්ෂර {{minLength}} සිට {{maxLength}} දක්වා අක්ෂරාංක (a-z, A-Z, 0-9) තන්තුවක් විය යුතුය.",
+                        usernameSpecialCharHint: "අවම වශයෙන් එක් අකුරක් ඇතුළුව අනුලකුණු {{minLength}} සිට {{maxLength}} දක්වා අද්විතීය තන්තුවක් විය යුතුය.",
                         usernameLength: "පරිශීලක නාමයේ දිග {{minLength}} සහ {{maxLength}} අතර විය යුතුය.",
-                        usernameSymbols: "පරිශීලක නාමය අක්ෂරාංක අක්ෂරවලින් (a-z, A-Z, 0-9) සමන්විත විය යුතු අතර අවම වශයෙන් එක් අකුරක් ඇතුළත් විය යුතුය."
+                        usernameSymbols: "පරිශීලක නාමය අක්ෂරාංක අක්ෂරවලින් (a-z, A-Z, 0-9) සමන්විත විය යුතු අතර අවම වශයෙන් එක් අකුරක් ඇතුළත් විය යුතුය.",
+                        usernameSpecialCharSymbols: "පරිශීලක නාමයේ අවම වශයෙන් එක් අකුරක්වත් අඩංගු විය යුතු අතර වලංගු නොවන විශේෂ අක්ෂර වලින් සමන්විත නොවිය යුතුය."
                     }
                 }
             },

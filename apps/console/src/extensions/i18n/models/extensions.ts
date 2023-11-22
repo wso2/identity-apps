@@ -2761,6 +2761,8 @@ export interface Extensions {
                 usernameLength: string;
                 usernameLengthMin: string;
                 usernameLengthMax: string;
+                usernameSpecialChars: string;
+                usernameSpecialCharsHint: string;
             };
             alternativeLoginIdentifierPage: {
                 pageTitle: string;
@@ -3073,8 +3075,10 @@ export interface Extensions {
                             passwordValidation: string;
                         };
                         usernameHint: string;
+                        usernameSpecialCharHint: string;
                         usernameLength: string;
                         usernameSymbols: string;
+                        usernameSpecialCharSymbols: string;
                     };
                     summary: {
                         invitation: string;

@@ -242,6 +242,8 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
         const rules: ValidationConfInterface[] = config.rules;
 
         setInitialFormValues({
+            enableSpecialChars: getValidationConfig(
+                rules, "AlphanumericValidator", "enable.special.characters")=="true",
             enableValidator:
                 (getValidationConfig(rules, "AlphanumericValidator", "enable.validator")=="true"
                 || !(getValidationConfig(rules, "EmailFormatValidator", "enable.validator")=="true"))
@@ -566,6 +568,18 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                                 data-testid={ `${componentId}-max-length` }
                                                             />
                                                         </div>
+                                                        <Field.Checkbox
+                                                            ariaLabel="enableSpecialChars"
+                                                            name="enableSpecialChars"
+                                                            label={ t("extensions:manage.accountLogin.editPage." + 
+                                                                "usernameSpecialChars") }
+                                                            tabIndex={ 3 }
+                                                            hint={ t("extensions:manage.accountLogin.editPage." + 
+                                                                "usernameSpecialCharsHint") }
+                                                            width={ 16 }
+                                                            defaultValue={ initialFormValues }           
+                                                            data-componentid={ `${componentId}-enable-special-chars` }
+                                                        />
                                                     </div>
                                                 ) }
                                                 <Field.Button

@@ -3141,7 +3141,9 @@ export const extensions: Extensions = {
                 alphanumericType: "Alphanumérique (a-z, A-Z, 0-9)",
                 usernameLength: "Définir la longueur du nom d'utilisateur",
                 usernameLengthMin: "Min",
-                usernameLengthMax: "Max"
+                usernameLengthMax: "Max",
+                usernameSpecialChars: "Autoriser les caractères spéciaux dans le nom d'utilisateur.",
+                usernameSpecialCharsHint: "L'utilisation de la barre oblique (\"/\") est restreinte."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "Identifiants de connexion alternatifs",
@@ -3392,9 +3394,13 @@ export const extensions: Extensions = {
                         },
                         usernameHint: "Doit être une chaîne alphanumérique (a-z, A-Z, 0-9) entre {{minLength}} et {{maxLength}} caractères comprenant " +
                             "au moins une lettre.",
+                        usernameSpecialCharHint: "Doit être une chaîne unique comprise entre {{minLength}} et" + 
+                            "{{maxLength}} caractères comprenant au moins une lettre.",
                         usernameLength: "La longueur du nom d'utilisateur doit être comprise " +
                             "entre {{minLength}} et {{maxLength}}.",
-                        usernameSymbols: "Le nom d'utilisateur doit être composé de caractères alphanumériques (a-z, A-Z, 0-9) et doit inclure au moins une lettre."
+                        usernameSymbols: "Le nom d'utilisateur doit être composé de caractères alphanumériques (a-z, A-Z, 0-9) et doit inclure au moins une lettre.",
+                        usernameSpecialCharSymbols: "Le nom d'utilisateur doit inclure au moins une lettre et ne doit pas contenir de caractères spéciaux invalides."
+
                     }
                 }
             },
