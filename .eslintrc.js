@@ -284,6 +284,7 @@ module.exports = {
                 patterns: [ "@wso2is/**/dist/**", "lodash/**", "lodash/fp/**" ]
             }
         ],
+        "no-trailing-spaces": "warn",
         "no-unreachable": "error",
         "object-curly-spacing": [ "warn", "always" ],
         "padding-line-between-statements": [ ...LINE_PADDING_RULES ],
