@@ -96,12 +96,12 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
         const userRoles: RolesMemberInterface[] = [];
         
         groups?.forEach((group: RoleGroupsInterface) => {
-            const splitDisplayName: string[] = group?.display?.split(DOMAIN_SEPARATOR);
+            const [ domain, displayName ]: string[] = group?.display?.split(DOMAIN_SEPARATOR);
             
-            if (splitDisplayName?.length > 1 && [ APPLICATION_DOMAIN, INTERNAL_DOMAIN ].includes(splitDisplayName[0])) {
+            if (domain && displayName && [ APPLICATION_DOMAIN, INTERNAL_DOMAIN ].includes(domain)) {
                 userRoles.push({
                     $ref: group.$ref,
-                    display: splitDisplayName[1],
+                    display: displayName,
                     orgId: undefined,
                     orgName: undefined,
                     value: group.value
