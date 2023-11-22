@@ -202,6 +202,13 @@
                 }
 
                 function getApiPath(path) {
+                    if (startupConfig.legacyAuthzRuntime) {
+                        if(path) {
+                            return serverOrigin + path;
+                        }
+
+                        return serverOrigin;
+                    }
                     var basePath = serverOrigin;
 
                     if (getTenantName()) {
@@ -227,6 +234,10 @@
                  * @returns {string} Contructed URL.
                  */
                  function signInRedirectURL() {
+                    if (startupConfig.legacyAuthzRuntime) {
+                        return applicationDomain.replace(/\/+$/, '') + getOrganizationPath() 
+                        + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
+                    }
                     if (getTenantName() === startupConfig.superTenant) {
                         return applicationDomain.replace(/\/+$/, '')
                             + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
@@ -241,10 +252,52 @@
                  * @returns {string} Contructed URL.
                  */
                 function getSignOutRedirectURL() {
+                    if (startupConfig.legacyAuthzRuntime) {
+                        return applicationDomain.replace(/\/+$/, '') + getOrganizationPath();
+                    }
                     if (getTenantName() === startupConfig.superTenant) {
                         return applicationDomain.replace(/\/+$/, '');
                     }
                     return applicationDomain.replace(/\/+$/, '') + getTenantPath();
+                }
+
+                /**
+                 * Construct the authorization endpoint.
+                 *
+                 * @returns {string} Contructed URL.
+                 */
+                 function getAuthorizationEndpoint() {
+                    if (startupConfig.legacyAuthzRuntime) {
+                        return getApiPath(
+                            userTenant ?
+                            "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize" + "?ut="+userTenant.replace(/\/+$/, '') + (utype ? "&utype="+ utype : '')
+                            : "/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oauth2/authorize");
+                    }
+                    return getApiPath("/oauth2/authorize");
+                }
+
+                /**
+                 * Construct the logout endpoint.
+                 *
+                 * @returns {string} Contructed URL.
+                 */
+                 function getLogoutEndpointURL() {
+                    if (startupConfig.legacyAuthzRuntime) {
+                        return getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/logout");
+                    }
+                    getApiPath("/oidc/logout");
+                }
+
+                /**
+                 * Construct the oidc check session endpoint.
+                 *
+                 * @returns {string} Contructed URL.
+                 */
+                 function getOIDCSessionIFrameEndpointURL() {
+                    if (startupConfig.legacyAuthzRuntime) {
+                        return getApiPath("/" + startupConfig.tenantPrefix + "/" + startupConfig.superTenantProxy + startupConfig.pathExtension + "/oidc/checksession");
+                    }
+                    return getApiPath("/oidc/checksession");
                 }
 
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
@@ -258,11 +311,11 @@
                     scope: ["openid SYSTEM"],
                     storage: "webWorker",
                     endpoints: {
-                        authorizationEndpoint: getApiPath("/oauth2/authorize"),
+                        authorizationEndpoint: getAuthorizationEndpoint(),
                         clockTolerance: 300,
                         jwksEndpointURL: undefined,
-                        logoutEndpointURL: getApiPath("/oidc/logout"),
-                        oidcSessionIFrameEndpointURL: getApiPath("/oidc/checksession"),
+                        logoutEndpointURL: getLogoutEndpointURL(),
+                        oidcSessionIFrameEndpointURL: getOIDCSessionIFrameEndpointURL(),
                         tokenEndpointURL: undefined,
                         tokenRevocationEndpointURL: undefined,
                     },
