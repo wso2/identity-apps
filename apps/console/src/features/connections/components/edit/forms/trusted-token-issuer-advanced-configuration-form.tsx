@@ -113,7 +113,7 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
         let oidcDialectId: string;
 
         setClaimListRequestLoading(true);
-        getDialects({})
+        getDialects(null)
             .then((response: ClaimDialect[]) => {
                 response.forEach((dialect: ClaimDialect) => {
                     if (dialect.dialectURI === OIDC_DIALECT_URI) {
