@@ -77,12 +77,11 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
             userRoles = extractUserRolesFromGroups(user?.groups);
         }
 
-        if ( userRoles?.length > 0 ) {
+        if (userRoles?.length > 0) {
             setInitialSelectedRolesOptions(userRoles);
         } else {
             setShowEmptyRolesListPlaceholder(true);
         }
-        
     }, [ user ]);
 
     /**
@@ -97,12 +96,12 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
         const userRoles: RolesMemberInterface[] = [];
         
         groups?.forEach((group: RoleGroupsInterface) => {
-            const displayName: string[] = group?.display?.split(DOMAIN_SEPARATOR);
+            const splitDisplayName: string[] = group?.display?.split(DOMAIN_SEPARATOR);
             
-            if (displayName?.length > 1 && [ APPLICATION_DOMAIN, INTERNAL_DOMAIN ].includes(displayName[0])) {
+            if (splitDisplayName?.length > 1 && [ APPLICATION_DOMAIN, INTERNAL_DOMAIN ].includes(splitDisplayName[0])) {
                 userRoles.push({
                     $ref: group.$ref,
-                    display: displayName[1],
+                    display: splitDisplayName[1],
                     orgId: undefined,
                     orgName: undefined,
                     value: group.value
