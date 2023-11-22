@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.9.17
+
+### Patch Changes
+
+- [#4784](https://github.com/wso2/identity-apps/pull/4784) [`d27864b0d9`](https://github.com/wso2/identity-apps/commit/d27864b0d9050fe8fb398000c558cf328fc6005f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix user store list not populating in the users page
+
 ## 2.9.16
 
 ### Patch Changes
