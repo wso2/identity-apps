@@ -36,7 +36,7 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
+import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
@@ -226,7 +226,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                             className="client-id-label"
                                         >
                                             { role?.audience?.display }
-                                        </Label>   
+                                        </Label>
                                     )
                                 }
                             </Header.Subheader>
@@ -249,10 +249,6 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             }
         ];
     };
-
-    useEffect(() => {
-        console.log(roleList)
-    },[roleList])
 
     /**
      * Resolves data table actions.
