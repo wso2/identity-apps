@@ -36,7 +36,7 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
+import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
@@ -250,6 +250,10 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
         ];
     };
 
+    useEffect(() => {
+        console.log(roleList)
+    },[roleList])
+
     /**
      * Resolves data table actions.
      */
@@ -270,9 +274,12 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 renderer: "semantic-icon"
             },
             {
-                hidden: (role: RolesInterface) => isSubOrg || (role?.displayName === RoleConstants.ADMIN_ROLE ||
-                    role?.displayName === RoleConstants.ADMIN_GROUP) || (role?.displayName === 
-                        RoleConstants.EVERYONE_ROLE || role?.displayName === RoleConstants.EVERYONE_GROUP)
+                hidden: (role: RolesInterface) => isSubOrg
+                    || (role?.displayName === RoleConstants.ADMIN_ROLE
+                    || role?.displayName === RoleConstants.ADMIN_GROUP)
+                    || (role?.displayName === RoleConstants.EVERYONE_ROLE
+                    || role?.displayName === RoleConstants.EVERYONE_GROUP)
+                    || (role?.audience?.display + "/" + role?.displayName === RoleConstants.CONSOLE_ADMIN_ROLE)
                     || !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.delete, allowedScopes),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {

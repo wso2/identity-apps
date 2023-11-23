@@ -42,4 +42,7 @@ export class RoleConstants {
     // Everyone role display names.
     public static readonly EVERYONE_ROLE: string = "everyone";
     public static readonly EVERYONE_GROUP: string = "Internal/everyone";
+
+    // Application role display names
+    public static readonly CONSOLE_ADMIN_ROLE: string = "Console/Administrator"
 }
