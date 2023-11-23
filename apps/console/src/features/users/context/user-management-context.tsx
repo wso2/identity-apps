@@ -36,7 +36,7 @@ export interface UserManagementContextProps {
 /**
  * Context object for managing users.
  */
-const UserManagementContext: Context<UserManagementContextProps> = 
+const UserManagementContext: Context<UserManagementContextProps> =
     createContext< null | UserManagementContextProps >(null);
 
 /**
