@@ -167,7 +167,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const orgType: OrganizationType = useSelector((state: AppState) =>
         state?.organization?.organizationType);
     const isFAPIAppCreationEnabled: boolean = useSelector((state: AppState) =>
-        state.config.ui.features?.applications?.disabledFeatures?.includes("fapiApplicationCreation"));
+        !state.config.ui.features?.applications?.disabledFeatures?.includes("fapiApplicationCreation"));
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
