@@ -20,6 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment, Heading } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
+import { IdentityProviderManagementConstants } from "apps/console/src/features/identity-providers/constants";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -28,9 +29,9 @@ import { identityProviderConfig } from "../../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../../core";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import {
-    GeneralDetailsFormValuesInterface,
     ConnectionInterface,
     ConnectionListResponseInterface,
+    GeneralDetailsFormValuesInterface,
     StrictConnectionInterface
 } from "../../../models/connection";
 import { IdpCertificates } from "../settings";
@@ -89,10 +90,9 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface {
      */
     isOidc?: boolean;
     /**
-     * Explicitly specifies whether the currently displaying
-     * IdP is a trusted token issuer or not.
+     * Type of the template.
      */
-    isTrustedTokenIssuer?: boolean;
+    templateType?: string;
     /**
      * Specifies if the form is submitting.
      */
@@ -120,7 +120,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         hideIdPLogoEditField,
         isReadOnly,
         isSaml,
-        isTrustedTokenIssuer,
+        templateType,
         isSubmitting,
         [ "data-testid" ]: testId
     } = props;
@@ -280,7 +280,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         readOnly={ isReadOnly }
                     />
                     {
-                        isTrustedTokenIssuer && (
+                        templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER && (
                             <Field.Input
                                 ariaLabel="idpIssuerName"
                                 inputType="resource_name"
@@ -301,7 +301,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         )
                     }
                     {
-                        isTrustedTokenIssuer && (
+                        templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER && (
                             <Field.Input
                                 ariaLabel="alias"
                                 inputType="resource_name"
@@ -396,7 +396,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 ? certificateOptionsForTemplate.JWKS
                                 : !isSaml
                         }
-                        isTrustedTokenIssuer={ isTrustedTokenIssuer }
+                        templateType={ templateType }
                         isReadOnly={ isReadOnly }
                         editingIDP={ editingIDP }
                         onUpdate={ onUpdate }

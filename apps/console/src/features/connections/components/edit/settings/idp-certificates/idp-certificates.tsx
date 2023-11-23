@@ -34,6 +34,7 @@ import {
     SwitcherOptionProps
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
+import { IdentityProviderManagementConstants } from "apps/console/src/features/identity-providers/constants";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -64,9 +65,9 @@ export interface IdpCertificatesV2Props extends IdentifiableComponentInterface {
      */
     isPEMEnabled?: boolean;
     /**
-     * Is the IDP a trusted token issuer
+     * Type of the template.
      */
-    isTrustedTokenIssuer?: boolean;
+    templateType?: string;
 }
 
 export type CertificateConfigurationMode = "jwks" | "certificates";
@@ -141,7 +142,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
         isReadOnly,
         isJWKSEnabled,
         isPEMEnabled,
-        isTrustedTokenIssuer
+        templateType
     } = props;
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -345,7 +346,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                             </Grid>
                             <Grid xs={ 12 }>
                                 <IdpCertificatesList
-                                    isTrustedTokenIssuer={ isTrustedTokenIssuer }
+                                    templateType={ templateType }
                                     isReadOnly={ isReadOnly }
                                     currentlyEditingIdP={ editingIDP }
                                     refreshIdP={ onUpdate }
@@ -372,7 +373,8 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
      * 
      * @returns `true` if the IDP is a trusted token issuer and has no certificates, `false` otherwise.
      */
-    const shouldShowNoCertificatesAlert = (): boolean => isTrustedTokenIssuer && !editingIDP?.certificate;
+    const shouldShowNoCertificatesAlert = (): boolean => templateType === 
+        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER && !editingIDP?.certificate;
 
     if (!isJWKSEnabled && !isPEMEnabled) {
         return null;

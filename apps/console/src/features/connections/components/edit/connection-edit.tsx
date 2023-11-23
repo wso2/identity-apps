@@ -193,7 +193,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                             identityProvider?.federatedAuthenticators?.defaultAuthenticatorId
                         )
                 }
-                isTrustedTokenIssuer={ isTrustedTokenIssuer }
+                templateType={ type }
                 isSaml={ isSaml }
                 isOidc={ isOidc }
                 editingIDP={ identityProvider }
@@ -292,7 +292,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 isReadOnly={ isReadOnly }
                 isLoading={ isLoading }
                 loader={ Loader }
-                isTrustedTokenIssuer={ isTrustedTokenIssuer }
+                templateType = { type }
             />
         </ResourceTab.Pane>
     );
@@ -382,117 +382,106 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             panes.push(...tabPaneExtensions);
         }
 
-        /**
-         * This check is used as a temporary fix to hide the un-necessary tabs for trusted token issuers.
-         * This will be removed once the dynamic tab loading is implemented.
-         * (https://github.com/wso2-enterprise/iam-engineering/issues/575)
-         */
-        if (isTrustedTokenIssuer) {
+        if (shouldShowTab(type, ConnectionTabTypes.GENERAL)) {
             panes.push({
                 "data-tabid": ConnectionManagementConstants.GENERAL_TAB_ID,
                 menuItem: "General",
                 render: GeneralIdentityProviderSettingsTabPane
             });
+        }
 
-            if (identityProviderConfig.editIdentityProvider.showTokenIssuerAdvancedSettings) {
-                panes.push({
-                    "data-tabid": ConnectionManagementConstants.ADVANCED_TAB_ID,
-                    menuItem: "Advanced",
-                    render: AdvancedSettingsTabPane
-                });
-            }
-        } else {
+        if (shouldShowTab(type, ConnectionTabTypes.SETTINGS) && !isOrganizationEnterpriseAuthenticator) { 
             panes.push({
-                "data-tabid": ConnectionManagementConstants.GENERAL_TAB_ID,
-                menuItem: "General",
-                render: GeneralIdentityProviderSettingsTabPane
-            });
-
-            !isOrganizationEnterpriseAuthenticator && panes.push({
                 "data-tabid": ConnectionManagementConstants.SETTINGS_TAB_ID,
                 menuItem: "Settings",
                 render: AuthenticatorSettingsTabPane
             });
+        }
 
-            /**
-             * If the protocol is SAML and if the feature is enabled in
-             * configuration level we can show the attributes section.
-             * {@link identityProviderConfig} contains the configuration
-             * to enable or disable this via extensions. Please refer
-             * {@link apps/console/src/extensions#} configs folder and
-             * models folder for types. identity-provider.ts
-             */
-            const attributesForSamlEnabled: boolean = isSaml &&
-            identityProviderConfig.editIdentityProvider.attributesSettings;
+        /**
+         * If the protocol is SAML and if the feature is enabled in
+         * configuration level we can show the attributes section.
+         * {@link identityProviderConfig} contains the configuration
+         * to enable or disable this via extensions. Please refer
+         * {@link apps/console/src/extensions#} configs folder and
+         * models folder for types. identity-provider.ts
+         */
+        const attributesForSamlEnabled: boolean = isSaml &&
+        identityProviderConfig.editIdentityProvider.attributesSettings;
 
-            // Evaluate whether to Show/Hide `Attributes`.
-            if ((attributesForSamlEnabled || shouldShowAttributeSettings(type))
-            && !isOrganizationEnterpriseAuthenticator) {
-                panes.push({
-                    "data-tabid": ConnectionManagementConstants.ATTRIBUTES_TAB_ID,
-                    menuItem: "Attributes",
-                    render: AttributeSettingsTabPane
-                });
-            }
+        // Evaluate whether to Show/Hide `Attributes`.
+        if ((attributesForSamlEnabled || shouldShowTab(type, ConnectionTabTypes.USER_ATTRIBUTES))
+        && !isOrganizationEnterpriseAuthenticator) {
+            panes.push({
+                "data-tabid": ConnectionManagementConstants.ATTRIBUTES_TAB_ID,
+                menuItem: "Attributes",
+                render: AttributeSettingsTabPane
+            });
+        }
 
+        if (shouldShowTab(type, ConnectionTabTypes.CONNECTED_APPS)) {
             panes.push({
                 "data-tabid": ConnectionManagementConstants.CONNECTED_APPS_TAB_ID,
                 menuItem: "Connected Apps",
                 render: ConnectedAppsTabPane
             });
+        }
+    
+        if (shouldShowTab(type, ConnectionTabTypes.IDENTITY_PROVIDER_GROUPS) && 
+        featureConfig?.identityProviderGroups?.enabled && 
+        !isOrganizationEnterpriseAuthenticator) {
+            panes.push({
+                "data-tabid": ConnectionManagementConstants.IDENTITY_PROVIDER_GROUPS_TAB_ID,
+                menuItem: "Groups",
+                render: IdentityProviderGroupsTabPane
+            });
+        }
 
-            if (featureConfig?.identityProviderGroups?.enabled
-            && !isOrganizationEnterpriseAuthenticator) {
-                panes.push({
-                    "data-tabid": ConnectionManagementConstants.IDENTITY_PROVIDER_GROUPS_TAB_ID,
-                    menuItem: "Groups",
-                    render: IdentityProviderGroupsTabPane
-                });
-            }
+        if (shouldShowTab(type, ConnectionTabTypes.OUTBOUND_PROVISIONING) && 
+        identityProviderConfig.editIdentityProvider.showOutboundProvisioning &&
+        !isOrganizationEnterpriseAuthenticator) {
+            panes.push({
+                "data-tabid": ConnectionManagementConstants.OUTBOUND_PROVISIONING_TAB_ID,
+                menuItem: "Outbound Provisioning",
+                render: OutboundProvisioningSettingsTabPane
+            });
+        }
 
-            if (identityProviderConfig.editIdentityProvider.showOutboundProvisioning
-            && !isOrganizationEnterpriseAuthenticator) {
-                panes.push({
-                    "data-tabid": ConnectionManagementConstants.OUTBOUND_PROVISIONING_TAB_ID,
-                    menuItem: "Outbound Provisioning",
-                    render: OutboundProvisioningSettingsTabPane
-                });
-            }
+        if (shouldShowTab(type, ConnectionTabTypes.JIT_PROVISIONING) && 
+        identityProviderConfig.editIdentityProvider.showJitProvisioning &&
+        !isOrganizationEnterpriseAuthenticator) {
+            panes.push({
+                "data-tabid": ConnectionManagementConstants.JIT_PROVISIONING_TAB_ID,
+                menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
+                render: JITProvisioningSettingsTabPane
+            });
+        }
 
-            if (identityProviderConfig.editIdentityProvider.showJitProvisioning
-            && !isOrganizationEnterpriseAuthenticator) {
-                panes.push({
-                    "data-tabid": ConnectionManagementConstants.JIT_PROVISIONING_TAB_ID,
-                    menuItem: identityProviderConfig.jitProvisioningSettings?.menuItemName,
-                    render: JITProvisioningSettingsTabPane
-                });
-            }
-
-            if (identityProviderConfig.editIdentityProvider.showAdvancedSettings
-            && !isOrganizationEnterpriseAuthenticator) {
-                panes.push({
-                    "data-tabid": ConnectionManagementConstants.ADVANCED_TAB_ID,
-                    menuItem: "Advanced",
-                    render: AdvancedSettingsTabPane
-                });
-            }
+        if (shouldShowTab(type, ConnectionTabTypes.ADVANCED) && 
+        identityProviderConfig.editIdentityProvider.showAdvancedSettings &&
+        !isOrganizationEnterpriseAuthenticator) {
+            panes.push({
+                "data-tabid": ConnectionManagementConstants.ADVANCED_TAB_ID,
+                menuItem: "Advanced",
+                render: AdvancedSettingsTabPane
+            });
         }
 
         return panes;
     };
 
     /**
-     * Evaluate internally whether to show/hide `Attributes` tab.
+     * Evaluate internally whether to show/hide a tab.
      *
-     * @param type - IDP Type.
+     * @param templateType - IDP Type.
      *
-     * @returns Should show attribute settings or not.
+     * @returns Should show tab or not.
      */
-    const shouldShowAttributeSettings = (type: string): boolean => {
+    const shouldShowTab = (templateType: string, tabType: ConnectionTabTypes): boolean => {
 
         const isTabEnabledInExtensions: boolean | undefined = identityProviderConfig
             .editIdentityProvider
-            .isTabEnabledForIdP(type, ConnectionTabTypes.USER_ATTRIBUTES);
+            .isTabEnabledForIdP(templateType, tabType);
 
         return isTabEnabledInExtensions !== undefined
             ? isTabEnabledInExtensions

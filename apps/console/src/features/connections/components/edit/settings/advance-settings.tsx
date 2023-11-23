@@ -19,6 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
+import { IdentityProviderManagementConstants } from "apps/console/src/features/identity-providers/constants";
 import { AxiosError } from "axios";
 import React, { Dispatch, FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -61,9 +62,9 @@ interface AdvanceSettingsPropsInterface extends TestableComponentInterface {
      */
     loader: () => ReactElement;
     /**
-     * Specifies if the connection is a trusted token issuer.
+     * Type of the template
      */
-    isTrustedTokenIssuer: boolean;
+    templateType: string;
     /**
      * Implicit association configuration of the connection.
      */
@@ -88,7 +89,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
         isLoading,
         loader: Loader,
         [ "data-testid" ]: testId,
-        isTrustedTokenIssuer,
+        templateType,
         implicitAssociationConfig
 
     } = props;
@@ -154,7 +155,7 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
 
     return (
         <EmphasizedSegment padded="very" className="advanced-configuration-section">
-            { isTrustedTokenIssuer ? 
+            { templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ? 
                 (<TrustedTokenIssuerAdvanceConfigurationsForm
                     config={ implicitAssociationConfig } 
                     onSubmit={ handleImplicitAssociationConfigFormSubmit }
