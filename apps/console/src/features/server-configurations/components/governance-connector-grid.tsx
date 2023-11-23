@@ -171,6 +171,10 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                 return (
                     <EnvelopeAtIcon className="icon" />
                 );
+            case ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY:
+                return (
+                    <EnvelopeMagnifyingGlassIcon className="icon" />
+                );
             default:
                 return <GearIcon fill="primary" className="icon" />;
         }

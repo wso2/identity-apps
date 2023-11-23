@@ -348,6 +348,19 @@ export class GovernanceConnectorUtils {
                         route: AppConstants.getPaths().get("WSFED_CONFIGURATION")
                     } 
                 ]
+            },
+            {
+                connectors: [
+                    {
+                        description: I18n.instance.t("console:manage.pages.emailDomainDiscovery.subTitle"),
+                        header: I18n.instance.t("console:manage.pages.emailDomainDiscovery.title"),
+                        id: ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY,
+                        route: AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS")
+                    }
+                ],
+                displayOrder: 0,
+                id: "organization-settings",
+                title: "Organization Settings",
             }
         ];
     }

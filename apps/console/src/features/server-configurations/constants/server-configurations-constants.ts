@@ -388,4 +388,9 @@ export class ServerConfigurationsConstants {
     public static readonly PRIVATE_KEY_JWT_CLIENT_AUTH: string = "private-key-jwt-configuration";
 
     public static readonly LOGIN_ATTEMPT_SECURITY: string = "login-attempt-security";
+
+	/**
+	 * Organization Settings Category Constants.
+	 */
+	public static readonly EMAIL_DOMAIN_DISCOVERY: string = "ZW1haWwtZG9tYWluLWRpc2NvdmVyeQ==";
 }
