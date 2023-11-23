@@ -32,22 +32,20 @@ import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import {
     ExpertModeAuthenticationProviderCreateWizardContent
 } from "./expert-mode-authentication-provider-create-wizard-content";
 import { ModalWithSidePanel, TierLimitReachErrorModal } from "../../../../core/components";
-import { AppConstants } from "../../../../core/constants";
-import { AppState } from "../../../../core/store";
 import { EventPublisher } from "../../../../core/utils";
 import { createConnection } from "../../../api/connections";
 import { getConnectionIcons } from "../../../configs/ui";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import {
     ConnectionInterface,
-    GenericConnectionCreateWizardPropsInterface,
+    GenericConnectionCreateWizardPropsInterface
 } from "../../../models/connection";
 
 /**
@@ -110,8 +108,6 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
         const { getLink } = useDocumentation();
 
         const [ alert, setAlert, alertComponent ] = useWizardAlert();
-
-        const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
 
         const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
         const [ wizStep, setWizStep ] = useState<number>(0);

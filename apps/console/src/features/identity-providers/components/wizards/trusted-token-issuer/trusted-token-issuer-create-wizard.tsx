@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -59,7 +59,6 @@ import { ThunkDispatch } from "redux-thunk";
 import { Icon, Modal } from "semantic-ui-react";
 import { commonConfig, identityProviderConfig } from "../../../../../extensions";
 import {
-    AppConstants,
     AppState,
     ConfigReducerStateInterface,
     EventPublisher,
@@ -234,16 +233,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
         identityProvider.alias = values?.alias?.toString();
 
         // Trusted token placeholder image.
-        if (AppConstants.getClientOrigin()) {
-            if (AppConstants.getAppBasename()) {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                    "/" + AppConstants.getAppBasename() +
-                    "/libs/themes/default/assets/images/identity-providers/trusted-token-issuer-illustration.svg";
-            } else {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                    "/libs/themes/default/assets/images/identity-providers/trusted-token-issuer-illustration.svg";
-            }
-        }
+        identityProvider.image = "assets/images/icons/trusted-token-issuer.svg";
         
         // Populate certificate settings.
         identityProvider[ "certificate" ][ "jwksUri" ] = jwksUrl ?? "";

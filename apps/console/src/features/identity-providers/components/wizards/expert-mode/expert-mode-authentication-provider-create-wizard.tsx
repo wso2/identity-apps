@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -32,7 +33,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import {
@@ -40,8 +41,6 @@ import {
 } from "./expert-mode-authentication-provider-create-wizard-content";
 import { identityProviderConfig } from "../../../../../extensions/configs/identity-provider";
 import { ModalWithSidePanel, TierLimitReachErrorModal } from "../../../../core/components";
-import { AppConstants } from "../../../../core/constants";
-import { AppState } from "../../../../core/store";
 import { EventPublisher } from "../../../../core/utils";
 import { createIdentityProvider } from "../../../api";
 import { getIdPIcons } from "../../../configs/ui";
@@ -111,8 +110,6 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
         const { getLink } = useDocumentation();
 
         const [ alert, setAlert, alertComponent ] = useWizardAlert();
-
-        const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
 
         const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
         const [ wizStep, setWizStep ] = useState<number>(0);
@@ -236,18 +233,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
             identityProvider.description = values?.description?.toString() || template.description;
             identityProvider.templateId = template.templateId;
 
-            // TODO: Refactor the usage of absolute image paths once Media Service is available.
-            // Tracked here - https://github.com/wso2/product-is/issues/12396
-            if (AppConstants.getClientOrigin()) {
-                if (AppConstants.getAppBasename()) {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                    "/" + AppConstants.getAppBasename() +
-                    `/libs/themes/${ theme }/assets/images/identity-providers/expert.svg`;
-                } else {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                    `/libs/themes/${ theme }/assets/images/identity-providers/expert.svg`;
-                }
-            }
+            identityProvider.image = "assets/images/logos/expert.svg";
 
             createNewIdentityProvider(identityProvider);
         };

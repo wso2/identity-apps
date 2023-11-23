@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -42,7 +43,6 @@ import {
 } from "./google-authentication-provider-create-wizard-content";
 import { identityProviderConfig } from "../../../../../extensions/configs";
 import {
-    AppConstants,
     AppState,
     ConfigReducerStateInterface,
     EventPublisher,
@@ -310,17 +310,8 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
             !(isEmpty(values?.clientId.toString())
                 || isEmpty(values?.clientSecret.toString()));
 
-            // TODO Need to make this dynamic
-            if (AppConstants.getClientOrigin()) {
-                if (AppConstants.getAppBasename()) {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                    "/" + AppConstants.getAppBasename() +
-                    "/libs/themes/default/assets/images/identity-providers/google-idp-illustration.svg";
-                } else {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                    "/libs/themes/default/assets/images/identity-providers/google-idp-illustration.svg";
-                }
-            }
+            identityProvider.image = "assets/images/logos/google.svg";
+            
             handleWizardFormFinish(identityProvider);
         };
 

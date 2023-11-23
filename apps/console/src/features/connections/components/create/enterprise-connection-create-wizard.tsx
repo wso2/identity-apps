@@ -22,7 +22,6 @@ import Divider from "@oxygen-ui/react/Divider";
 import Grid from "@oxygen-ui/react/Grid";
 import { ModalWithSidePanel } from "@wso2is/common/src/components/modals/modal-with-side-panel";
 import { getCertificateIllustrations } from "@wso2is/common/src/configs/ui";
-import { AppConstants } from "@wso2is/common/src/constants/app-constants";
 import { ConfigReducerStateInterface } from "@wso2is/common/src/models/reducer-state";
 import { AppState } from "@wso2is/common/src/store";
 import { IdentityAppsError } from "@wso2is/core/errors";

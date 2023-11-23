@@ -59,7 +59,6 @@ import { ThunkDispatch } from "redux-thunk";
 import { Icon, Modal } from "semantic-ui-react";
 import { commonConfig } from "../../../../extensions";
 import {
-    AppConstants,
     AppState,
     ConfigReducerStateInterface,
     EventPublisher,

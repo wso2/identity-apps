@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -64,7 +65,6 @@ import { ThunkDispatch } from "redux-thunk";
 import { Card, Dimmer, Divider, Grid, Icon } from "semantic-ui-react";
 import { commonConfig, identityProviderConfig } from "../../../../extensions";
 import {
-    AppConstants,
     AppState,
     ConfigReducerStateInterface,
     EventPublisher,
@@ -326,16 +326,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         }
 
         // Identity provider placeholder image.
-        if (AppConstants.getClientOrigin()) {
-            if (AppConstants.getAppBasename()) {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                    "/" + AppConstants.getAppBasename() +
-                    "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
-            } else {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                    "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
-            }
-        }
+        identityProvider.image = "assets/images/logos/enterprise.svg";
 
         // Add the default description from the metadata instead from template.
         identityProvider.description = AuthenticatorMeta.getAuthenticatorDescription(

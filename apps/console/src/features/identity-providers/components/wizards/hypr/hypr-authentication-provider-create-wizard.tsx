@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -40,7 +40,6 @@ import {
 } from "./hypr-authentication-provider-create-wizard-content";
 import { identityProviderConfig } from "../../../../../extensions/configs";
 import {
-    AppConstants,
     EventPublisher,
     ModalWithSidePanel
 } from "../../../../../features/core";
@@ -170,16 +169,7 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
                 }
             ];
 
-            if (AppConstants.getClientOrigin()) {
-                if (AppConstants.getAppBasename()) {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                        "/" + AppConstants.getAppBasename() +
-                        "/libs/themes/default/assets/images/identity-providers/hypr.svg";
-                } else {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                        "/libs/themes/default/assets/images/identity-providers/hypr.svg";
-                }
-            }
+            identityProvider.image = "assets/images/logos/hypr.svg";
 
             createNewIdentityProvider(identityProvider);
         };
