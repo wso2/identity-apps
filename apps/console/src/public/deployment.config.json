@@ -372,7 +372,7 @@
                 }
             },
             "applications": {
-                "disabledFeatures": [ "fapiApplicationCreation" ],
+                "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
                     "feature": [
