@@ -414,7 +414,6 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: false
                     },
                     {
-                        category: "console:manage.features.sidePanel.categories.organizations",
                         children: [
                             {
                                 component: lazy(() =>
@@ -444,7 +443,6 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
-                        category: "console:manage.features.sidePanel.categories.organizations",
                         children: [
                             {
                                 component: lazy(() => {
