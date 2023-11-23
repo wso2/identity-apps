@@ -17,7 +17,6 @@
  */
 
 import {
-    BuildingPenIcon,
     DatabaseDocumentIcon,
     PaletteIcon,
     SquareUserIcon
