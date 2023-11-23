@@ -394,11 +394,13 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 render: GeneralIdentityProviderSettingsTabPane
             });
 
-            panes.push({
-                "data-tabid": ConnectionManagementConstants.ADVANCED_TAB_ID,
-                menuItem: "Advanced",
-                render: AdvancedSettingsTabPane
-            });
+            if (identityProviderConfig.editIdentityProvider.showTokenIssuerAdvancedSettings) {
+                panes.push({
+                    "data-tabid": ConnectionManagementConstants.ADVANCED_TAB_ID,
+                    menuItem: "Advanced",
+                    render: AdvancedSettingsTabPane
+                });
+            }
         } else {
             panes.push({
                 "data-tabid": ConnectionManagementConstants.GENERAL_TAB_ID,

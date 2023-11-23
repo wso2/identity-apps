@@ -225,7 +225,8 @@ export const identityProviderConfig: IdentityProviderConfig = {
         },
         showAdvancedSettings: true,
         showJitProvisioning: true,
-        showOutboundProvisioning: true
+        showOutboundProvisioning: true,
+        showTokenIssuerAdvancedSettings: false
     },
     extendedSamlConfig: {
         attributeConsumingServiceIndexEnabled: true,
