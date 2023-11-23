@@ -150,7 +150,7 @@ export const useIdentityProviderList = <Data = IdentityProviderListResponseInter
     offset?: number,
     filter?: string,
     requiredAttributes?: string,
-    shouldFetch?: boolean
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {

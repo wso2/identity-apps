@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,7 @@ import {
 } from "./expert-mode-authentication-provider-create-wizard";
 import { useIdentityProviderList } from "../../../api";
 import { IdentityProviderManagementConstants } from "../../../constants";
-import { IdentityProviderTemplateInterface } from "../../../models";
+import { IdentityProviderTemplateInterface, StrictIdentityProviderInterface } from "../../../models";
 import { handleGetIDPListCallError } from "../../utils";
 
 /**
@@ -95,7 +95,7 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
             data: idpList,
             isLoading: isIdPListFetchRequestLoading,
             error: idpListFetchRequestError
-        } = useIdentityProviderList(null, null, null);
+        } = useIdentityProviderList();
 
         /**
          * Handles the IdP list fetch request error.
@@ -114,12 +114,12 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
          * @param value - IDP name.
          * @returns error msg if name is already taken.
          */
-        const idpNameValidation = (value): string => {
+        const idpNameValidation = (value: string): string => {
 
             let nameExist: boolean = false;
 
             if (idpList?.count > 0) {
-                idpList?.identityProviders.map((idp) => {
+                idpList?.identityProviders.map((idp: StrictIdentityProviderInterface) => {
                     if (idp?.name === value) {
                         nameExist = true;
 
@@ -160,7 +160,7 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
         };
 
         if (isIdPListFetchRequestLoading) {
-            return <ContentLoader dimmer={ false } />;
+            return <ContentLoader />;
         }
 
         return (
@@ -172,8 +172,8 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
                 onSubmit={
                     (values: ExpertModeAuthenticationProviderCreateWizardFormValuesInterface) => onSubmit(values)
                 }
-                triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
-                triggerPrevious={ (previousFunction) => triggerPrevious(previousFunction) }
+                triggerSubmit={ (submitFunction: () => void) => triggerSubmission(submitFunction) }
+                triggerPrevious={ (previousFunction: () => void) => triggerPrevious(previousFunction) }
                 changePage={ (step: number) => changePageNumber(step) }
                 setTotalPage={ (step: number) => setTotalPage(step) }
                 data-componentid={ componentId }
@@ -192,7 +192,7 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
                             "generalDetails.name.placeholder")
                         }
                         required={ true }
-                        validation={ (value) => idpNameValidation(value) }
+                        validation={ (value: string) => idpNameValidation(value) }
                         maxLength={
                             IdentityProviderManagementConstants
                                 .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.IDP_NAME_MAX_LENGTH as number
