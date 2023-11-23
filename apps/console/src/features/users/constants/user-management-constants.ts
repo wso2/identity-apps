@@ -238,3 +238,18 @@ export enum PasswordOptionTypes {
     ASK_PASSWORD = "ask-password",
     CREATE_PASSWORD = "create-password"
 }
+
+/**
+ * Enum for wizard steps form types.
+ * @readonly
+ */
+export enum WizardStepsFormTypes {
+    USER_MODE = "UserMode",
+    BASIC_DETAILS = "BasicDetails",
+    INVITE_BASIC_DETAILS = "InviteBasicDetails",
+    ROLE_LIST= "RoleList",
+    GROUP_LIST= "GroupList",
+    SUMMARY = "summary",
+    USER_TYPE = "UserType",
+    USER_SUMMARY = "UserSummary"
+}
