@@ -92,10 +92,13 @@ export const useGroupList = <Data = GroupListInterface, Error = RequestErrorInte
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        params: {
+        params: filter ? {
             domain,
             excludedAttributes,
             filter
+        } : {
+            domain,
+            excludedAttributes
         },
         url: store.getState().config.endpoints.groups
     };

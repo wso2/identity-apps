@@ -24,7 +24,7 @@ import {
     PageLayout,
     PrimaryButton
 } from "@wso2is/react-components";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import find from "lodash-es/find";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -43,14 +43,13 @@ import {
 } from "../../core";
 import { RootOnlyComponent } from "../../organizations/components";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
-import { OrganizationUtils } from "../../organizations/utils";
 import { getUserStoreList } from "../../userstores/api";
 import { UserStorePostData } from "../../userstores/models/user-stores";
-import { deleteGroupById, getGroupList, searchGroupList } from "../api";
+import { deleteGroupById, useGroupList } from "../api";
 import { GroupList } from "../components";
 import { CreateGroupWizard } from "../components/wizard";
 import { GroupConstants } from "../constants";
-import { GroupsInterface, SearchGroupInterface } from "../models";
+import { GroupsInterface } from "../models";
 
 const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -84,42 +83,48 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ isListUpdated, setListUpdated ] = useState(false);
     const [ userStoreOptions, setUserStoresList ] = useState<DropdownItemProps[]>([]);
     const [ userStore, setUserStore ] = useState(null);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
-    // TODO: Check the usage and delete id not required.
-    const [ , setIsEmptyResults ] = useState<boolean>(false);
-    const [ isGroupsListRequestLoading, setGroupsListRequestLoading ] = useState<boolean>(false);
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
-    const [ groupsError, setGroupsError ] = useState<boolean>(false);
-
     const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
     const [ paginatedGroups, setPaginatedGroups ] = useState<GroupsInterface[]>([]);
-
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(GROUPS_SORTING_OPTIONS[ 0 ]);
 
     const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
-    useEffect(() => {
-        if(searchQuery == "") {
-            getGroups();
-        }
-    },[ groupList.length != 0 ]);
-
-    useEffect(() => {
-        getGroups();
-        setListUpdated(false);
-    }, [ isListUpdated ]);
+    const {
+        data,
+        error: groupsError,
+        isLoading: isGroupsListRequestLoading,
+        mutate
+    } = useGroupList(userStore, null, searchQuery, true);
 
     useEffect(() => {
         getUserStores();
     }, []);
 
     useEffect(() => {
-        getGroups();
-    }, [ userStore ]);
+        const updatedResources: GroupsInterface[] = data?.Resources?.filter((role: GroupsInterface) => {
+            return !role.displayName.includes("Application/")
+                    && !role.displayName.includes("Internal/");
+        });
+
+        setGroupsList(updatedResources);
+        setGroupsPage(0, listItemLimit, updatedResources);
+    },[ data ] );
+
+    useEffect(() => {
+        if (groupsError) {
+            dispatch(addAlert({
+                description: groupsError?.response?.data?.description ?? groupsError?.response?.data?.detail
+                    ?? t("console:manage.features.groups.notifications.fetchGroups.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: groupsError?.response?.data?.message
+                    ?? t("console:manage.features.groups.notifications.fetchGroups.genericError.message")
+            }));
+        }
+    },[ groupsError ]);
 
     useEffect(() => {
         if (!isSuperOrganization()) {
@@ -130,56 +135,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             setReadOnlyUserStoresList(response);
         });
     }, [ userStore ]);
-
-    const getGroups = () => {
-        setGroupsListRequestLoading(true);
-
-        getGroupList(userStore)
-            .then((response: AxiosResponse) => {
-                if (response.status === 200) {
-                    const groupResources: GroupsInterface[] = response.data.Resources;
-
-                    if (groupResources && groupResources instanceof Array && groupResources.length !== 0) {
-                        const updatedResources: GroupsInterface[] = groupResources.filter((role: GroupsInterface) => {
-                            return !role.displayName.includes("Application/")
-                                && !role.displayName.includes("Internal/");
-                        });
-
-                        response.data.Resources = updatedResources;
-                        setGroupsList(updatedResources);
-                        setGroupsPage(0, listItemLimit, updatedResources);
-                    } else {
-                        setPaginatedGroups([]);
-                        setIsEmptyResults(true);
-                    }
-                    setGroupsError(false);
-                } else {
-                    dispatch(addAlert({
-                        description: t("console:manage.features.groups.notifications." +
-                            "fetchGroups.genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("console:manage.features.groups.notifications.fetchGroups.genericError.message")
-                    }));
-                    setGroupsError(true);
-                    setGroupsList([]);
-                    setPaginatedGroups([]);
-                }
-            }).catch((error: AxiosError) => {
-                dispatch(addAlert({
-                    description: error?.response?.data?.description ?? error?.response?.data?.detail
-                        ?? t("console:manage.features.groups.notifications.fetchGroups.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.response?.data?.message
-                        ?? t("console:manage.features.groups.notifications.fetchGroups.genericError.message")
-                }));
-                setGroupsError(true);
-                setGroupsList([]);
-                setPaginatedGroups([]);
-            })
-            .finally(() => {
-                setGroupsListRequestLoading(false);
-            });
-    };
 
     /**
      * The following function fetches the user store list and sets it to the state.
@@ -202,7 +157,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         if (isSuperOrganization() || isFirstLevelOrganization()) {
             getUserStoreList()
                 .then((response: AxiosResponse<UserstoreListResponseInterface[]>) => {
-                    if (storeOptions.length === 0) {
+                    if (storeOptions?.length === 0) {
                         storeOptions.push(storeOption);
                     }
 
@@ -240,37 +195,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         setListSortingStrategy(find(GROUPS_SORTING_OPTIONS, (option: DropdownItemProps) => {
             return data.value === option.value;
         }));
-    };
-
-    const searchRoleListHandler = (searchQuery: string) => {
-        let searchData: SearchGroupInterface = {
-            filter: searchQuery,
-            schemas: [
-                "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
-            ],
-            startIndex: 1
-        };
-
-        if (userStore) {
-            searchData = { ...searchData, domain: userStore };
-        }
-
-        setSearchQuery(searchQuery);
-
-        searchGroupList(searchData).then((response: AxiosResponse) => {
-            if (response.status === 200) {
-                const results: GroupsInterface[] = response.data.Resources;
-                let updatedResults: GroupsInterface[] = [];
-
-                if (results) {
-                    updatedResults = results.filter((role: RolesInterface) => {
-                        return !role.displayName.includes("Application/") && !role.displayName.includes("Internal/");
-                    });
-                }
-                setGroupsList(updatedResults);
-                setPaginatedGroups(updatedResults);
-            }
-        });
     };
 
     /**
@@ -329,7 +253,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     "console:manage.features.groups.notifications.deleteGroup.success.message"
                 )
             });
-            setListUpdated(true);
+            mutate();
         }).catch(() => {
             handleAlerts({
                 description: t(
@@ -341,31 +265,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 )
             });
         });
-    };
-
-    /**
-     * Handles the `onFilter` callback action from the
-     * roles search component.
-     *
-     * @param query - Search query.
-     */
-    const handleUserFilter = (query: string): void => {
-        if (query === null || query === "displayName sw ") {
-            getGroups();
-
-            return;
-        }
-
-        searchRoleListHandler(query);
-    };
-
-    /**
-     * Handles the `onSearchQueryClear` callback action.
-     */
-    const handleSearchQueryClear = (): void => {
-        setTriggerClearQuery(!triggerClearQuery);
-        setSearchQuery("");
-        getGroups();
     };
 
     return (
@@ -392,7 +291,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 advancedSearch={ (
                     <AdvancedSearchWithBasicFilters
                         data-testid="group-mgt-groups-list-advanced-search"
-                        onFilter={ handleUserFilter  }
+                        onFilter={ (query: string) => setSearchQuery(query)  }
                         filterAttributeOptions={ [
                             {
                                 key: 0,
@@ -414,7 +313,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         placeholder={ t("console:manage.features.groups.advancedSearch.placeholder") }
                         defaultSearchAttribute="displayName"
                         defaultSearchOperator="sw"
-                        triggerClearQuery={ triggerClearQuery }
                     />
                 ) }
                 currentListSize={ listItemLimit }
@@ -433,13 +331,13 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                             onChange={ handleDomainChange }
                             defaultValue={ GroupConstants.PRIMARY_USER_STORE_OPTION_VALUE }
                         />
-                    </RootOnlyComponent> 
+                    </RootOnlyComponent>
                 ) }
-                showPagination={ paginatedGroups.length > 0  }
+                showPagination={ paginatedGroups?.length > 0  }
                 showTopActionPanel={ isGroupsListRequestLoading
                     || !(!searchQuery
                         && !groupsError
-                        && userStoreOptions.length < 3
+                        && userStoreOptions?.length < 3
                         && paginatedGroups?.length <= 0) }
                 totalPages={ Math.ceil(groupList?.length / listItemLimit) }
                 totalListSize={ groupList?.length }
@@ -457,7 +355,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         advancedSearch={ (
                             <AdvancedSearchWithBasicFilters
                                 data-testid="group-mgt-groups-list-advanced-search"
-                                onFilter={ handleUserFilter }
+                                onFilter={ (query: string) => setSearchQuery(query) }
                                 filterAttributeOptions={ [
                                     {
                                         key: 0,
@@ -480,13 +378,12 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                                 placeholder={ t("console:manage.features.groups.advancedSearch.placeholder") }
                                 defaultSearchAttribute="displayName"
                                 defaultSearchOperator="sw"
-                                triggerClearQuery={ triggerClearQuery }
                             />
                         ) }
                         data-testid="group-mgt-groups-list"
                         handleGroupDelete={ handleOnDelete }
                         onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
-                        onSearchQueryClear={ handleSearchQueryClear }
+                        onSearchQueryClear={ () => setSearchQuery("") }
                         groupList={ paginatedGroups }
                         searchQuery={ searchQuery }
                         readOnlyUserStores={ readOnlyUserStoresList }
@@ -499,7 +396,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     <CreateGroupWizard
                         data-testid="group-mgt-create-group-wizard"
                         closeWizard={ () => setShowWizard(false) }
-                        updateList={ () => setListUpdated(true) }
+                        updateList={ () => mutate() }
                     />
                 )
             }
