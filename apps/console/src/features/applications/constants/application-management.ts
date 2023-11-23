@@ -65,7 +65,7 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_EDIT_ADVANCED_SETTINGS", "applications.edit.advancedSettings")
         .set("APPLICATION_SHARED_ACCESS", "applications.edit.sharedAccess")
         .set("APPLICATION_EDIT_INFO", "applications.edit.info")
-        .set("FAPI_APP_CREATION", "fapiApplicationCreation");
+        .set("FAPI_APP_CREATION", "applications.create.fapi");
 
     /**
      * Key for the `Edit Application` tag in the docs structure object.
