@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,6 +25,7 @@ import { AppConstants, AppState, FeatureConfigInterface, history } from "../../c
 import { getGroupById } from "../api";
 import { EditGroup } from "../components";
 import { GroupsInterface } from "../models";
+import GroupManagementProvider from "../providers/group-management-provider";
 
 const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
 
@@ -72,29 +73,31 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
     };
 
     return (
-        <TabPageLayout
-            isLoading={ isGroupDetailsRequestLoading }
-            title={
-                group && group.displayName ?
-                    group.displayName :
-                    t("console:manage.pages.groupsEdit.title")
-            }
-            pageTitle={ t("console:manage.pages.groupsEdit.title") }
-            backButton={ {
-                onClick: handleBackButtonClick,
-                text: t("console:manage.pages.groupsEdit.backButton", { type: "groups" })
-            } }
-            titleTextAlign="left"
-            bottomMargin={ false }
-        >
-            <EditGroup
+        <GroupManagementProvider>
+            <TabPageLayout
                 isLoading={ isGroupDetailsRequestLoading }
-                group={ group }
-                groupId={ roleId }
-                onGroupUpdate={ onGroupUpdate }
-                featureConfig={ featureConfig }
-            />
-        </TabPageLayout>
+                title={
+                    group && group.displayName ?
+                        group.displayName :
+                        t("console:manage.pages.rolesEdit.title")
+                }
+                pageTitle={ t("console:manage.pages.rolesEdit.title") }
+                backButton={ {
+                    onClick: handleBackButtonClick,
+                    text: t("console:manage.pages.rolesEdit.backButton", { type: "groups" })
+                } }
+                titleTextAlign="left"
+                bottomMargin={ false }
+            >
+                <EditGroup
+                    isLoading={ isGroupDetailsRequestLoading }
+                    group={ group }
+                    groupId={ roleId }
+                    onGroupUpdate={ onGroupUpdate }
+                    featureConfig={ featureConfig }
+                />
+            </TabPageLayout>
+        </GroupManagementProvider>
     );
 };
 
