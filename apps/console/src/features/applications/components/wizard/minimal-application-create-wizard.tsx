@@ -17,6 +17,7 @@
  */
 import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
@@ -61,6 +62,7 @@ import {
     AppState,
     CORSOriginsListInterface,
     EventPublisher,
+    FeatureConfigInterface,
     ModalWithSidePanel,
     getCORSOrigins,
     getTechnologyLogos,
@@ -166,8 +168,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         state.config.ui.isClientSecretHashEnabled);
     const orgType: OrganizationType = useSelector((state: AppState) =>
         state?.organization?.organizationType);
-    const isFAPIAppCreationEnabled: boolean = useSelector((state: AppState) =>
-        !state.config.ui.features?.applications?.disabledFeatures?.includes("fapiApplicationCreation"));
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const isFAPIAppCreationEnabled: boolean = isFeatureEnabled(featureConfig?.applications,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("FAPI_APP_CREATION"));
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
