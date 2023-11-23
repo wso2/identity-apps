@@ -1048,14 +1048,14 @@ export interface ConsoleNS {
                     advancedAttributeSettings: {
                         sections: {
                             linkedAccounts: {
+                                errorAlert: {
+                                    message: string;
+                                    description: string;
+                                }
                                 heading: string;
                                 fields: {
                                     validateLocalAccount: FormAttributes;
-                                }
-                                message: {
-                                    disabled: string;
-                                    optional: string;
-                                    mandatory: string;
+                                    mandateLocalAccount: FormAttributes;
                                 }
                             }
                             subject: {

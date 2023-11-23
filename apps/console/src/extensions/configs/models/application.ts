@@ -44,9 +44,10 @@ export interface ApplicationConfig {
             showIncludeTenantDomain: boolean;
             showIncludeUserstoreDomainRole: boolean;
             showIncludeUserstoreDomainSubject: boolean;
+            showMandateLinkedLocalAccount: boolean;
             showRoleAttribute: boolean;
             showRoleMapping: boolean;
-            showUseMappedLocalSubject: boolean;
+            showValidateLinkedLocalAccount: boolean;
             showSubjectAttribute: boolean;
         };
         attributeSelection: {

@@ -1614,23 +1614,22 @@ export const console: ConsoleNS = {
                     advancedAttributeSettings: {
                         sections: {
                             linkedAccounts: {
+                                errorAlert: {
+                                    message: "Configuration invalide",
+                                    description: "La validation du compte local lié doit être activée pour mandater un compte local lié"
+                                },
                                 heading: "Comptes liés",
                                 fields: {
                                     validateLocalAccount: {
                                         label: "Valider le compte local lié",
-                                        hint: "Cette option décidera de la manière dont le compte utilisateur local lié sera validé avec le " +
-                                        "identité authentifiée."
+                                        hint: "Cette option décidera si le compte d'utilisateur local lié est validé avec l'identité authentifiée."
+                                    },
+                                    mandateLocalAccount: {
+                                        label: "Mandater le compte local lié",
+                                        hint: "Ces options détermineront comment le compte utilisateur local lié est validé avec " +
+                                            "l'identité authentifiée."
                                     }
-                                },
-                                message: {
-                                    disabled: "<1>Désactivé</1> - la validation du compte d'utilisateur local lié est désactivée, " +
-                                    "et le profil de l'identité authentifiée est toujours partagé.",
-                                    optional: "<1>Facultatif</1> - un compte d'utilisateur local lié à l'identité authentifiée est" + 
-                                    "facultatif pour une authentification réussie; s'il est présent, son profil est partagé, sinon, " +
-                                    "le profil de l'identité authentifiée est partagé.",
-                                    mandatory: "<1>Obligatoire</1> - mandatez un compte d'utilisateur local lié pour une authentification " + 
-                                    "réussie. S'il existe, partagez son profil dans la réponse; sinon, l'authentification échouera."
-                                }    
+                                }
                             },
                             role: {
                                 fields: {

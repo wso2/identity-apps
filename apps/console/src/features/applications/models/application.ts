@@ -44,12 +44,6 @@ export interface ApplicationBasicInterface {
     associatedRoles?: AssociatedRolesInterface;
 }
 
-export enum ApplicationValidateLocalAccountTypes {
-    DISABLED = "Disabled",
-    OPTIONAL = "Optional",
-    MANDATORY = "Mandatory"
-}
-
 export enum ApplicationAccessTypes {
     READ = "READ",
     WRITE = "WRITE"
