@@ -60,6 +60,7 @@ import {
     handleGetConnectionTemplateListError,
     resolveConnectionName
 } from "../utils/connection-utils";
+import { identityProviderConfig } from "apps/console/src/extensions";
 
 /**
  * Proptypes for the Connection template page component.
@@ -480,6 +481,13 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                 if (template.id === ConnectionManagementConstants
                                                     .ORG_ENTERPRISE_CONNECTION_ID) {
                                                         
+                                                    return null;
+                                                }
+
+                                                if (template.id === 
+                                                        ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID
+                                                    && !identityProviderConfig.createIdentityProvider
+                                                        .enableTrustedTokenIssuer) {
                                                     return null;
                                                 }
 

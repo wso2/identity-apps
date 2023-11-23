@@ -541,6 +541,8 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                                 || template.templateId === 
                                                     ConnectionManagementConstants.IDP_TEMPLATE_IDS
                                                         .ORGANIZATION_ENTERPRISE_IDP
+                                                || template.templateId === 
+                                                    ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID
                                             ) {
                                                 return null;
                                             }

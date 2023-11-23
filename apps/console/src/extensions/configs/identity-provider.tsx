@@ -91,6 +91,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
         }
     },
     createIdentityProvider: {
+        enableTrustedTokenIssuer: false,
         getOverriddenCreateWizard: (
             templateId: string,
             props: GenericIdentityProviderCreateWizardPropsInterface & IdentifiableComponentInterface
