@@ -372,7 +372,7 @@
                 }
             },
             "applications": {
-                "disabledFeatures": [],
+                "disabledFeatures": [ "fapiApplicationCreation" ],
                 "enabled": true,
                 "scopes": {
                     "feature": [
@@ -921,11 +921,6 @@
                 "scopes": {}
             },
             "adminAdvisoryBanner": {
-                "disabledFeatures": [],
-                "enabled": true,
-                "scopes": {}
-            },
-            "fapiApplicationCreation": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {}
