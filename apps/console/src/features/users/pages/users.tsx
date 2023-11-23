@@ -83,7 +83,13 @@ import { useGetParentOrgUserInvites } from "../components/guests/pages/use-get-p
 import { UsersList } from "../components/users-list";
 import { AddUserWizard } from "../components/wizard/add-user-wizard";
 import { BulkImportUserWizard } from "../components/wizard/bulk-import-user-wizard";
-import { UserAccountTypes, UserAccountTypesMain, UserAddOptionTypes, UserManagementConstants } from "../constants";
+import {
+    UserAccountTypes,
+    UserAccountTypesMain,
+    UserAddOptionTypes,
+    UserManagementConstants,
+    WizardStepsFormTypes
+} from "../constants";
 import { UserListInterface } from "../models";
 
 interface UserStoreItem {
@@ -744,9 +750,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         featureConfig={ featureConfig }
                     />)
                 }
-                {
-                    showWizard && ( showUserWizard() )
-                }
             </ListLayout>
         );
     };
@@ -777,13 +780,13 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const handleDropdownItemChange = (value: string): void => {
         if (value === UserAccountTypesMain.INTERNAL) {
             handleAddNewUserWizardClick();
-            eventPublisher.publish("manage-users-click-create-new", {
+            eventPublisher.publish("manage-users-click-create-invite", {
                 type: "user"
             });
             setShowWizard(true);
             setUserType(UserAccountTypesMain.INTERNAL);
         } else if (value === UserAccountTypesMain.EXTERNAL) {
-            eventPublisher.publish("manage-users-click-create-invite", {
+            eventPublisher.publish("manage-users-click-create-new", {
                 type: "user"
             });
             setShowWizard(true);
@@ -854,6 +857,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 listItemLimit={ listItemLimit }
                 updateList={ () => setListUpdated(true) }
                 userStore= { userStore }
+                submitStep={ WizardStepsFormTypes.GROUP_LIST }
             />
         );
     };
@@ -1023,7 +1027,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             }
             {
                 showWizard && showUserWizard()
-            } 
+            }
             {
                 showBulkImportWizard
                 && !connectorConfigLoading
@@ -1037,9 +1041,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 )
             }
             {
-                showMultipleInviteConfirmationModal && (
+                showMultipleInviteConfirmationModal &&
                     renderMultipleInviteConfirmationModel()
-                )
             }
         </PageLayout>
     );
