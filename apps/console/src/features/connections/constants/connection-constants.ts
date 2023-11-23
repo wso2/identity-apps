@@ -192,6 +192,7 @@ export class ConnectionManagementConstants {
         GITHUB: string;
         GOOGLE: string;
         HYPR: string;
+        LINKEDIN: string;
         MICROSOFT: string;
         OIDC: string;
         ORGANIZATION_ENTERPRISE_IDP: string;
@@ -204,6 +205,7 @@ export class ConnectionManagementConstants {
         GITHUB: "github-idp",
         GOOGLE: "google-idp",
         HYPR: "hypr-idp",
+        LINKEDIN: "linkedin-idp",
         MICROSOFT: "microsoft-idp",
         OIDC: "enterprise-oidc-idp",
         ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",

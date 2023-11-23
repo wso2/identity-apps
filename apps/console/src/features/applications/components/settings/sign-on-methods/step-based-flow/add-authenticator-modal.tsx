@@ -27,6 +27,7 @@ import {
     ResourceGrid,
     Text
 } from "@wso2is/react-components";
+import { ConnectionManagementConstants } from "apps/console/src/features/connections";
 import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
@@ -535,14 +536,12 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                             templateIndex: number
                                         ) => {
 
-                                            const isOrgIdp: boolean =
-                                                template.templateId === "organization-enterprise-idp";
-
-                                            if (isOrgIdp && !isOrganizationManagementEnabled) {
-                                                return null;
-                                            }
-
-                                            if (isOrgIdp && orgType === OrganizationType.SUBORGANIZATION) {
+                                            if (template.templateId === 
+                                                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.LINKEDIN
+                                                || template.templateId === 
+                                                    ConnectionManagementConstants.IDP_TEMPLATE_IDS
+                                                        .ORGANIZATION_ENTERPRISE_IDP
+                                            ) {
                                                 return null;
                                             }
 
