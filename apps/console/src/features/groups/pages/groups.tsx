@@ -98,7 +98,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         error: groupsError,
         isLoading: isGroupsListRequestLoading,
         mutate
-    } = useGroupList(userStore, null, searchQuery, true);
+    } = useGroupList(userStore, "members,roles", searchQuery, true);
 
     useEffect(() => {
         getUserStores();
