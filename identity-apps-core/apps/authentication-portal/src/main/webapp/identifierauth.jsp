@@ -259,6 +259,8 @@
         </div>
         <input id="username" name="username" type="hidden" value="">
         <input id="authType" name="authType" type="hidden" value="idf">
+        <input id="multiOptionURI" type="hidden" name="multiOptionURI"
+            value='<%=Encode.forHtmlAttribute(request.getParameter("multiOptionURI"))%>' />
     </div>
     <%
         if (reCaptchaEnabled) {
