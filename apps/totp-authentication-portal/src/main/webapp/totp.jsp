@@ -68,6 +68,8 @@
             <jsp:include page="includes/header.jsp"/>
             <% } %>
 
+            <script src="libs/jquery_3.6.0/jquery-3.6.0.js"></script>
+            <script src="libs/theme/semantic.min.js"></script>
             <script src="js/scripts.js"></script>
             <script src="/totpauthenticationendpoint/js/scripts.js"></script>
             <!--[if lt IE 9]>
@@ -88,6 +90,8 @@
                             } else {
                                 // Mark it so that the next submit can be ignored.
                                 $form.data('submitted', true);
+                                // trim value before submission
+                                $('#totpInput').val($('#totpInput').val().trim());
                             }
                         });
 
@@ -130,7 +134,7 @@
                             <form action="../../commonauth" method="post" id="totpForm" class="ui large form">
                                 <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.verification.code.got.by.device")%></p>
                                 <div class="field">
-                                    <input type="text" name="token" class="form-control" placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "verification.code")%>">
+                                    <input id="totpInput" type="text" name="token" class="form-control" placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "verification.code")%>">
                                 </div>
                                 <input id="sessionDataKey" type="hidden" name="sessionDataKey"
                                        value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>' />

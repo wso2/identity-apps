@@ -158,7 +158,7 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 $('#authenticate').click(function () {
-                    var code = document.getElementById("OTPCode").value;
+                    var code = document.getElementById("OTPCode").value.trim();
                     if (code == "") {
                         document.getElementById('alertDiv').innerHTML 
                             = '<div id="error-msg" class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.enter.code")%></div>'
@@ -168,6 +168,8 @@
                             console.warn("Prevented a possible double submit event");
                         } else {
                             $('#codeForm').data("submitted", true);
+                            // trim value before submission
+                            $('#OTPCode').val($('#OTPCode').val().trim());
                             $('#codeForm').submit();
                         }
                     }
