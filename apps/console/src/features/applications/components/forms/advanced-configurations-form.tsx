@@ -215,7 +215,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
             />
             {
                 (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION
-                    || template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ) &&
+                    || template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                    || template?.id === ApplicationManagementConstants.MOBILE) &&
                 (
                     <div>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
