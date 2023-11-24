@@ -320,10 +320,10 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                         size="small"
                                                     >
                                                         <ToggleButton value="read" aria-label="left aligned">
-                                                            { t("console:consoleSettings.roles.permissionLevel.view") }
+                                                            { t("console:consoleSettings.roles.permissionLevels.view") }
                                                         </ToggleButton>
                                                         <ToggleButton value="write" aria-label="right aligned">
-                                                            { t("console:consoleSettings.roles.permissionLevel.edit") }
+                                                            { t("console:consoleSettings.roles.permissionLevels.edit") }
                                                         </ToggleButton>
                                                     </ToggleButtonGroup>
                                                 </TableCell>
@@ -403,8 +403,9 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                             Object.keys(selectedPermissions.organization).includes(
                                                                 collection.id
                                                             )
-                                                                ? get(selectedPermissions.organization, collection.id)
-                                                                    ?.write
+                                                                ? get(
+                                                                    selectedPermissions.organization, collection.id
+                                                                )?.write
                                                                     ? "write"
                                                                     : "read"
                                                                 : null
@@ -422,10 +423,10 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                         size="small"
                                                     >
                                                         <ToggleButton value="read" aria-label="left aligned">
-                                                            Read
+                                                            { t("console:consoleSettings.roles.permissionLevels.view") }
                                                         </ToggleButton>
                                                         <ToggleButton value="write" aria-label="right aligned">
-                                                            Write
+                                                            { t("console:consoleSettings.roles.permissionLevels.edit") }
                                                         </ToggleButton>
                                                     </ToggleButtonGroup>
                                                 </TableCell>
