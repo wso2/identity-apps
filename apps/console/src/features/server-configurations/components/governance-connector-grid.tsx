@@ -16,37 +16,37 @@
  * under the License.
  */
 
+import { CardContent } from "@oxygen-ui/react";
+import {
+    ArrowLoopRightUserIcon,
+    BuildingGearIcon,
+    EnvelopeAtIcon,
+    EnvelopeMagnifyingGlassIcon,
+    GearIcon,
+    HexagonTwoIcon,
+    PadlockAsteriskIcon,
+    ShieldCheckIcon,
+    ShieldUserPencilIcon,
+    UserDatabaseIcon,
+    UserDocumentIcon,
+    UserGearIcon,
+    UserPlusIcon
+} from "@oxygen-ui/react-icons";
+import Card from "@oxygen-ui/react/Card";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
 import { serverConfigurationConfig } from "../../../extensions";
-import { AppConstants, EventPublisher } from "../../core";
+import { AppConstants, history } from "../../core";
 import "./governance-connector-grid.scss";
-import { history } from "../../core";
 import { getSettingsSectionIcons } from "../configs/ui";
-import { 
-    ArrowLoopRightUserIcon,
-    BuildingGearIcon, 
-    EnvelopeAtIcon, 
-    GearIcon, 
-    HexagonTwoIcon, 
-    PadlockAsteriskIcon, 
-    ShieldCheckIcon, 
-    ShieldUserPencilIcon, 
-    UserDatabaseIcon, 
-    UserDocumentIcon, 
-    UserGearIcon, 
-    UserPlusIcon 
-} from "@oxygen-ui/react-icons";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
-import Card from "@oxygen-ui/react/Card";
-import { CardContent } from "@oxygen-ui/react";
 
 /**
  * Props for the Governance connector configuration categories page.
  */
-export interface GovernanceConnectorCategoriesGridInterface extends 
+export interface GovernanceConnectorCategoriesGridInterface extends
     IdentifiableComponentInterface, LoadableComponentInterface {
         /**
          * Connector categories.
@@ -68,14 +68,12 @@ export interface GovernanceConnectorCategoriesGridInterface extends
 const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCategoriesGridInterface> = (
     props: GovernanceConnectorCategoriesGridInterface
 ): ReactElement => {
-    const { 
-        isLoading, 
-        ["data-componentid"]: componentId, 
+    const {
+        isLoading,
+        ["data-componentid"]: componentId,
         connectorCategories,
-        dynamicConnectors 
+        dynamicConnectors
     } = props;
-
-    const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     /**
      * Handles connector selection.
@@ -90,7 +88,7 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
     const handleDynamicConnectorSelection = (e: SyntheticEvent, connector: any): void => {
         history.push(AppConstants.getPaths()
             .get("GOVERNANCE_CONNECTOR_EDIT")
-            .replace(":categoryId", 
+            .replace(":categoryId",
                 connector.categoryId)
             .replace(":connectorId", connector.id));
     };
@@ -113,11 +111,11 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                         transparent
                         shape={ "square" }
                     />
-                ); 
+                );
             case ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_CONNECTOR_ID:
                 return (
                     <BuildingGearIcon className="icon" />
-                );            
+                );
             case ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID:
                 return (
                     <UserPlusIcon className="icon" />
@@ -171,6 +169,10 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                 return (
                     <EnvelopeAtIcon className="icon" />
                 );
+            case ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY:
+                return (
+                    <EnvelopeMagnifyingGlassIcon className="icon" />
+                );
             default:
                 return <GearIcon fill="primary" className="icon" />;
         }
@@ -181,9 +183,9 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
             { connectorCategories?.map((category: any, index: number) => {
                 return (
                     <div className="catergory-container" key={ index }>
-                        <Typography 
+                        <Typography
                             color="text.primary"
-                            className="mb-3" 
+                            className="mb-3"
                             variant="h4"
                         >
                             { category?.title }
@@ -197,7 +199,8 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                 <Card
                                                     key={ connector.id }
                                                     className="governance-connector"
-                                                    onClick={ (e) => handleConnectorSelection(e, connector.route) }
+                                                    onClick={ (e: SyntheticEvent) => handleConnectorSelection(e,
+                                                        connector.route) }
                                                 >
                                                     <CardContent className="governance-connector-header">
                                                         <div className="governance-connector-image-container">
@@ -216,20 +219,20 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                     </CardContent>
                                                 </Card>
                                             );
-                                        }                                    
+                                        }
                                     })
                                 }
                             </div>
                         </div>
-                    </div>                  
+                    </div>
                 );
             }) }
             {
                 (serverConfigurationConfig.dynamicConnectors && dynamicConnectors.length > 0) && (
                     <div className="catergory-container">
-                        <Typography 
+                        <Typography
                             color="text.primary"
-                            className="mb-3" 
+                            className="mb-3"
                             variant="h4"
                         >
                             Other Settings
@@ -242,7 +245,8 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                             <Card
                                                 key={ connector.id }
                                                 className="governance-connector"
-                                                onClick={ (e) => handleDynamicConnectorSelection(e, connector) }
+                                                onClick={ (e: SyntheticEvent) => handleDynamicConnectorSelection(e,
+                                                    connector) }
                                             >
                                                 <CardContent className="governance-connector-header">
                                                     <div className="governance-connector-image-container">

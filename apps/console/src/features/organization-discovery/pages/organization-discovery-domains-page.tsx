@@ -342,6 +342,13 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
         return orgList?.startIndex + orgList?.count !== orgList?.totalResults + 1;
     };
 
+    /**
+     * Handle back button click.
+     */
+    const handleBackButtonClick = () => {
+        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
+    };
+
     return (
         <PageLayout
             action={
@@ -375,6 +382,11 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
             title={ t("console:manage.pages.emailDomainDiscovery.title") }
             description={ t("console:manage.pages.emailDomainDiscovery.subTitle") }
             data-componentid={ `${ testId }-page-layout` }
+            backButton={ {
+                "data-testid": `${ testId }-page-back-button`,
+                onClick: handleBackButtonClick,
+                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+            } }
         >
             { discoveryToggle() }
             <Divider hidden />
