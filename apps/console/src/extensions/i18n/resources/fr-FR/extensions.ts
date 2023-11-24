@@ -3400,7 +3400,6 @@ export const extensions: Extensions = {
                             "entre {{minLength}} et {{maxLength}}.",
                         usernameSymbols: "Le nom d'utilisateur doit être composé de caractères alphanumériques (a-z, A-Z, 0-9) et doit inclure au moins une lettre.",
                         usernameSpecialCharSymbols: "Le nom d'utilisateur doit inclure au moins une lettre et ne doit pas contenir de caractères spéciaux invalides."
-
                     }
                 }
             },
