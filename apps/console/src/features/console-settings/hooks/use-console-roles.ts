@@ -48,7 +48,7 @@ const useConsoleRoles = (
     } = useRolesList(
         count,
         startIndex,
-        `audience.value eq ${consoleId}${ filter ? ` and ${ filter }` : "" }}`,
+        `audience.value eq ${consoleId}${ filter ? ` and ${ filter }` : "" }`,
         !!consoleId || shouldFetch
     );
 
