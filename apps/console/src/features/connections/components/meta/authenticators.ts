@@ -136,7 +136,7 @@ const getKnownExternalConnectorMetadata = (): FederatedAuthenticatorMetaDataInte
             authenticatorId: ConnectionManagementConstants.GITHUB_AUTHENTICATOR_ID,
             description: "Login users with existing GitHub accounts",
             displayName: "GitHub",
-            icon: "github",
+            icon: getConnectionIcons().githubAuthenticator,
             name: ConnectionManagementConstants.GITHUB_AUTHENTICATOR_NAME
         }
     ];
