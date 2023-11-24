@@ -1009,6 +1009,20 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         }
     };
 
+    /**
+     * This method will find whether the current identity provider
+     * contains a default authenticator or not.
+     *
+     * @returns Boolean value of default authenticator existance.
+     */
+    const checkDefaultAuthenticatorAvailable = (): boolean => {
+        if (!identityProvider?.federatedAuthenticators?.defaultAuthenticatorId) {
+            return false;
+        }
+
+        return true;
+    };
+
     if (isLoading || isFederatedAuthenticatorFetchRequestLoading) {
         return <Loader />;
     }
@@ -1098,6 +1112,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                 .SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP && availableTemplates
                         }
                         idpId={ identityProvider.id }
+                        isDefaultAuthenticatorAvailable={ checkDefaultAuthenticatorAvailable() }
                         data-testid={ `${ testId }-authenticator-create-wizard` }
                     />
                 )
