@@ -32,7 +32,7 @@ const useGroupManagement = (): UseGroupManagementInterface => {
     const context: GroupManagementContextProps = useContext(GroupManagementContext);
 
     if (context === undefined) {
-        throw new Error("UseGroupManagement must be used within a GroupManagementProvider");
+        throw new Error("useGroupManagement must be used within a GroupManagementProvider");
     }
 
     return context;
