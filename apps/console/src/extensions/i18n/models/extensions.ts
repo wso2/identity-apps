@@ -2758,9 +2758,11 @@ export interface Extensions {
                 usernameTypeHint: string;
                 emailType: string;
                 customType: string;
-                usernameLength: string;
-                usernameLengthMin: string;
-                usernameLengthMax: string;
+                usernameLength: {
+                    0: string;
+                    1: string;
+                    2: string;
+                };
                 usernameAlphanumeric: string;
                 usernameSpecialCharsHint: string;
             };

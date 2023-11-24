@@ -425,17 +425,13 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                 </div>
                                                 { currentValues?.enableValidator=="true" && (
                                                     <div className="ml-6">
-                                                        <Text>
-                                                            {
-                                                                t("extensions:manage.accountLogin.editPage." +
-                                                                    "usernameLength")
-                                                            }
-                                                        </Text>
                                                         <div className="criteria-username">
-                                                            <label>
-                                                                { t("extensions:manage.accountLogin.editPage." +
-                                                                "usernameLengthMin") }
-                                                            </label>
+                                                            <Text>
+                                                                {
+                                                                    t("extensions:manage.accountLogin.editPage." +
+                                                                        "usernameLength.0")
+                                                                }
+                                                            </Text>
                                                             <Field.Input
                                                                 ariaLabel="minLength"
                                                                 inputType="number"
@@ -499,7 +495,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                             />
                                                             <label>
                                                                 { t("extensions:manage.accountLogin.editPage." +
-                                                                "usernameLengthMax") }
+                                                                "usernameLength.1") }
                                                             </label>
                                                             <Field.Input
                                                                 ariaLabel="maxLength"
@@ -567,6 +563,10 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                                 disabled={ false }
                                                                 data-testid={ `${componentId}-max-length` }
                                                             />
+                                                            <label>
+                                                                { t("extensions:manage.accountLogin.editPage." +
+                                                                "usernameLength.2") }
+                                                            </label>
                                                         </div>
                                                         <Field.Checkbox
                                                             ariaLabel="isAlphanumericOnly"

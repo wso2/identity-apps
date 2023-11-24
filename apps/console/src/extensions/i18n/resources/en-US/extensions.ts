@@ -3064,9 +3064,11 @@ export const extensions: Extensions = {
                 usernameTypeHint: "Allow users to set an email or a combination of alphanumeric characters for the username.",
                 emailType: "Email",
                 customType: "Custom",
-                usernameLength: "Set username length",
-                usernameLengthMin: "Min",
-                usernameLengthMax: "Max",
+                usernameLength: {
+                    0: "Must be between",
+                    1: "and",
+                    2: "characters."
+                },
                 usernameAlphanumeric: "Restrict to alphanumeric (a-z, A-Z, 0-9).",
                 usernameSpecialCharsHint: "Usage of forward slash (\"/\") is restricted."
             },
