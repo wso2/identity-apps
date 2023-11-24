@@ -52,24 +52,22 @@ export interface CreateConsoleRoleWizardPermissionsFormProps extends Identifiabl
     onPermissionsChange: (permissions: CreateRolePermissionInterface[]) => void;
 }
 
-interface SelectedPermissionInterface {
+interface PermissionScopeInterface {
+    value: string;
+}
+
+interface SelectedPermissionCategoryInterface {
+    read: boolean;
+    write: boolean;
+    permissions: PermissionScopeInterface[];
+}
+
+interface SelectedPermissionsInterface {
     tenant: {
-        [key: string]: {
-            read: boolean;
-            write: boolean;
-            permissions: {
-                value: string;
-            }[];
-        };
+        [key: string]: SelectedPermissionCategoryInterface;
     };
     organization: {
-        [key: string]: {
-            read: boolean;
-            write: boolean;
-            permissions: {
-                value: string;
-            }[];
-        };
+        [key: string]: SelectedPermissionCategoryInterface;
     };
 }
 
@@ -95,7 +93,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
     );
 
     const [ expanded, setExpanded ] = useState<string | false>(false);
-    const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionInterface>({
+    const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface>({
         organization: {},
         tenant: {}
     });
@@ -105,12 +103,17 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
     };
 
     const handleSelectAll = (e: ChangeEvent<HTMLInputElement>, type: APIResourceCollectionTypes) => {
-        const _selectedPermissions: SelectedPermissionInterface = cloneDeep(selectedPermissions);
+        const _selectedPermissions: SelectedPermissionsInterface = cloneDeep(selectedPermissions);
 
         if (type === APIResourceCollectionTypes.TENANT) {
             if (e.target.checked) {
                 _selectedPermissions.tenant = (tenantAPIResourceCollections?.apiResourceCollections || []).reduce(
-                    (result, collection) => {
+                    (
+                        result: {
+                            [key: string]: SelectedPermissionCategoryInterface;
+                        },
+                        collection: APIResourceCollectionInterface
+                    ) => {
                         result[collection.id] = {
                             permissions: transformResourceCollectionToPermissions(collection.apiResources.read),
                             read: true,
@@ -128,15 +131,23 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
             if (e.target.checked) {
                 _selectedPermissions.organization = (
                     organizationAPIResourceCollections?.apiResourceCollections || []
-                ).reduce((result, collection) => {
-                    result[collection.id] = {
-                        permissions: transformResourceCollectionToPermissions(collection.apiResources.read),
-                        read: true,
-                        write: false
-                    };
+                ).reduce(
+                    (
+                        result: {
+                            [key: string]: SelectedPermissionCategoryInterface;
+                        },
+                        collection: APIResourceCollectionInterface
+                    ) => {
+                        result[collection.id] = {
+                            permissions: transformResourceCollectionToPermissions(collection.apiResources.read),
+                            read: true,
+                            write: false
+                        };
 
-                    return result;
-                }, {});
+                        return result;
+                    },
+                    {}
+                );
             } else {
                 _selectedPermissions.organization = {};
             }
@@ -146,25 +157,31 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         processPermissionsChange(_selectedPermissions);
     };
 
-    const transformResourceCollectionToPermissions = (resource: APIResourceCollectionPermissionCategoryInterface[]) => {
+    const transformResourceCollectionToPermissions = (
+        resource: APIResourceCollectionPermissionCategoryInterface[]
+    ): PermissionScopeInterface[] => {
         return resource
             .map((resource: APIResourceCollectionPermissionCategoryInterface) =>
                 resource.scopes.map((scope: APIResourceCollectionPermissionScopeInterface) => ({ value: scope.name }))
             )
-            .reduce((acc, permissions) => acc.concat(permissions), []);
+            .reduce(
+                (result: PermissionScopeInterface[], permissions: PermissionScopeInterface[]) =>
+                    result.concat(permissions),
+                []
+            );
     };
 
-    const processPermissionsChange = (permissions: SelectedPermissionInterface): void => {
-        const uniquePermissionsSet = new Set<string>();
+    const processPermissionsChange = (permissions: SelectedPermissionsInterface): void => {
+        const uniquePermissionsSet: Set<string> = new Set<string>();
 
-        Object.keys(permissions).forEach(key => {
-            const typePermissions = permissions[key];
+        Object.keys(permissions).forEach((key: string) => {
+            const typePermissions: SelectedPermissionsInterface = permissions[key];
 
-            Object.keys(typePermissions).forEach(id => {
-                const resource = typePermissions[id];
+            Object.keys(typePermissions).forEach((id: string) => {
+                const resource: SelectedPermissionCategoryInterface = typePermissions[id];
 
                 if (resource.permissions && resource.permissions.length > 0) {
-                    resource.permissions.forEach(permission => {
+                    resource.permissions.forEach((permission: PermissionScopeInterface) => {
                         uniquePermissionsSet.add(JSON.stringify(permission));
                     });
                 }
@@ -173,7 +190,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
         const flattenedPermissions: CreateRolePermissionInterface[] = Array.from(
             uniquePermissionsSet
-        ).map(permissionString => JSON.parse(permissionString));
+        ).map((permissionString: string) => JSON.parse(permissionString));
 
         onPermissionsChange(flattenedPermissions);
     };
@@ -184,7 +201,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         type: APIResourceCollectionTypes
     ) => {
         const { id, apiResources } = collection;
-        const _selectedPermissions: SelectedPermissionInterface = cloneDeep(selectedPermissions);
+        const _selectedPermissions: SelectedPermissionsInterface = cloneDeep(selectedPermissions);
 
         if (e.target.checked) {
             _selectedPermissions[type][id] = {
@@ -207,7 +224,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         type: APIResourceCollectionTypes
     ): void => {
         const { id, apiResources } = collection;
-        const _selectedPermissions: SelectedPermissionInterface = cloneDeep(selectedPermissions);
+        const _selectedPermissions: SelectedPermissionsInterface = cloneDeep(selectedPermissions);
 
         _selectedPermissions[type][id] = {
             permissions: transformResourceCollectionToPermissions(apiResources[value]),
@@ -220,7 +237,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
     };
 
     return (
-        <div className="create-console-role-wizard-permissions-form">
+        <div className="create-console-role-wizard-permissions-form" data-componentid={ componentId }>
             <div>
                 <Accordion
                     elevation={ 0 }
@@ -360,9 +377,11 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                                                 <TableCell padding="checkbox">
                                                     <Checkbox
                                                         color="primary"
-                                                        checked={ Object.keys(selectedPermissions.organization).includes(
-                                                            collection.id
-                                                        ) }
+                                                        checked={
+                                                            Object
+                                                                .keys(selectedPermissions.organization)
+                                                                .includes(collection.id)
+                                                        }
                                                         onChange={ (e: ChangeEvent<HTMLInputElement>) =>
                                                             handleSelect(
                                                                 e,
