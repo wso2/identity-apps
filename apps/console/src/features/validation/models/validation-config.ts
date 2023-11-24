@@ -54,5 +54,5 @@ export interface ValidationFormInterface {
     minUniqueCharacters?: string;
     maxConsecutiveCharacters?: string;
     enableValidator?: string;
-    enableSpecialChars?: boolean;
+    isAlphanumericOnly?: boolean;
 }

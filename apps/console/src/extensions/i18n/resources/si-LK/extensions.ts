@@ -3031,11 +3031,11 @@ export const extensions: Extensions = {
                 usernameType: "පරිශීලක නාම වර්ගය තෝරන්න",
                 usernameTypeHint: "පරිශීලක නාමය සඳහා ඊමේල් හෝ අක්ෂරාංක අක්ෂර එකතුවක් සැකසීමට පරිශීලකයින්ට ඉඩ දෙන්න.",
                 emailType: "විද්යුත් තැපෑල",
-                alphanumericType: "අක්ෂරාංක (a-z, A-Z, 0-9)",
+                customType: "අභිරුචි",
                 usernameLength: "පරිශීලක නාමය දිග සකසන්න",
                 usernameLengthMin: "අවම",
                 usernameLengthMax: "උපරිම",
-                usernameSpecialChars: "පරිශීලක නාමයේ විශේෂ අක්ෂරවලට ඉඩ දෙන්න.",
+                usernameAlphanumeric: "අක්ෂරාංක වලට සීමා කරන්න (a-z, A-Z, 0-9).",
                 usernameSpecialCharsHint: "ඉදිරි ස්ලැෂ් (\"/\") භාවිතය සීමා කර ඇත."
             },
             alternativeLoginIdentifierPage: {

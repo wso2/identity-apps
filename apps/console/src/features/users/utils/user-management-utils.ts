@@ -92,13 +92,13 @@ export const getUsernameConfiguration = (configs: ValidationDataInterface[]): Va
     }
 
     return {
-        enableSpecialChars: getValidationConfig(rules, "AlphanumericValidator", "enable.special.characters") === "true",
         enableValidator:
                 (getValidationConfig(rules, "AlphanumericValidator", "enable.validator") === "true"
                 || !(getValidationConfig(rules, "EmailFormatValidator", "enable.validator") === "true"))
                     ? "true"
                     : "false",
         field: "username",
+        isAlphanumericOnly: getValidationConfig(rules, "AlphanumericValidator", "enable.special.characters") != "true",
         maxLength:
             getValidationConfig(rules, "LengthValidator", "max.length")
                 ? getValidationConfig(rules, "LengthValidator", "max.length")

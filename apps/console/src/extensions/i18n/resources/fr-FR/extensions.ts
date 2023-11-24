@@ -3138,11 +3138,11 @@ export const extensions: Extensions = {
                 usernameType: "Sélectionnez le type de nom d'utilisateur",
                 usernameTypeHint: "Autoriser les utilisateurs à définir une adresse e-mail ou une combinaison de caractères alphanumériques pour le nom d'utilisateur.",
                 emailType: "Email",
-                alphanumericType: "Alphanumérique (a-z, A-Z, 0-9)",
+                customType: "Coutume",
                 usernameLength: "Définir la longueur du nom d'utilisateur",
                 usernameLengthMin: "Min",
                 usernameLengthMax: "Max",
-                usernameSpecialChars: "Autoriser les caractères spéciaux dans le nom d'utilisateur.",
+                usernameAlphanumeric: "Restreindre aux caractères alphanumériques (a-z, A-Z, 0-9).",
                 usernameSpecialCharsHint: "L'utilisation de la barre oblique (\"/\") est restreinte."
             },
             alternativeLoginIdentifierPage: {

@@ -2757,11 +2757,11 @@ export interface Extensions {
                 usernameType: string;
                 usernameTypeHint: string;
                 emailType: string;
-                alphanumericType: string;
+                customType: string;
                 usernameLength: string;
                 usernameLengthMin: string;
                 usernameLengthMax: string;
-                usernameSpecialChars: string;
+                usernameAlphanumeric: string;
                 usernameSpecialCharsHint: string;
             };
             alternativeLoginIdentifierPage: {

@@ -3063,11 +3063,11 @@ export const extensions: Extensions = {
                 usernameType: "Select username type",
                 usernameTypeHint: "Allow users to set an email or a combination of alphanumeric characters for the username.",
                 emailType: "Email",
-                alphanumericType: "Alphanumeric (a-z, A-Z, 0-9)",
+                customType: "Custom",
                 usernameLength: "Set username length",
                 usernameLengthMin: "Min",
                 usernameLengthMax: "Max",
-                usernameSpecialChars: "Allow special characters in username.",
+                usernameAlphanumeric: "Restrict to alphanumeric (a-z, A-Z, 0-9).",
                 usernameSpecialCharsHint: "Usage of forward slash (\"/\") is restricted."
             },
             alternativeLoginIdentifierPage: {

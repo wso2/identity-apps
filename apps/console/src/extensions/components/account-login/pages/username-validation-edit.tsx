@@ -242,14 +242,14 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
         const rules: ValidationConfInterface[] = config.rules;
 
         setInitialFormValues({
-            enableSpecialChars: getValidationConfig(
-                rules, "AlphanumericValidator", "enable.special.characters")=="true",
             enableValidator:
                 (getValidationConfig(rules, "AlphanumericValidator", "enable.validator")=="true"
                 || !(getValidationConfig(rules, "EmailFormatValidator", "enable.validator")=="true"))
                     ? "true"
                     : "false",
             field: "username",
+            isAlphanumericOnly: getValidationConfig(
+                rules, "AlphanumericValidator", "enable.special.characters") != "true",
             maxLength:
                 getValidationConfig(rules, "LengthValidator", "max.length")
                     ? getValidationConfig(rules, "LengthValidator", "max.length")
@@ -404,7 +404,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                                         }
                                                                         required={ false }
                                                                         value={
-                                                                            usernameType=="alphanumericType"
+                                                                            usernameType=="customType"
                                                                                 ? "true"
                                                                                 : "false" }
                                                                         data-componentid=
@@ -413,7 +413,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                                             setCurrentValues({
                                                                                 ...currentValues,
                                                                                 enableValidator:
-                                                                                    usernameType=="alphanumericType"
+                                                                                    usernameType=="customType"
                                                                                         ? "true"
                                                                                         : "false"
                                                                             });
@@ -569,16 +569,16 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                             />
                                                         </div>
                                                         <Field.Checkbox
-                                                            ariaLabel="enableSpecialChars"
-                                                            name="enableSpecialChars"
+                                                            ariaLabel="isAlphanumericOnly"
+                                                            name="isAlphanumericOnly"
                                                             label={ t("extensions:manage.accountLogin.editPage." +
-                                                                "usernameSpecialChars") }
+                                                                "usernameAlphanumeric") }
                                                             tabIndex={ 3 }
                                                             hint={ t("extensions:manage.accountLogin.editPage." +
                                                                 "usernameSpecialCharsHint") }
                                                             width={ 16 }
-                                                            defaultValue={ initialFormValues }
-                                                            data-componentid={ `${componentId}-enable-special-chars` }
+                                                            defaultValue={ initialFormValues }           
+                                                            data-componentid={ `${componentId}-is-alphanumeric-only` }
                                                         />
                                                     </div>
                                                 ) }
