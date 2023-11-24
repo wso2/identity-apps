@@ -338,7 +338,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
         const modifiedLimit : number = limit + TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET;
 
-        getUsersList(modifiedLimit, offset, filter, attribute, domain)
+        getUsersList(modifiedLimit, offset, filter, attribute, domain, "groups,roles")
             .then((response: UserListInterface) => {
                 const data: UserListInterface = { ...response };
 
