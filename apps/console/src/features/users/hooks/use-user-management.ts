@@ -32,7 +32,7 @@ const useUserManagement = (): UseUserManagementInterface => {
     const context: UserManagementContextProps = useContext(UserManagementContext);
 
     if (context === undefined) {
-        throw new Error("UseUserManagement must be used within a UserManagementProvider");
+        throw new Error("useUserManagement must be used within a UserManagementProvider");
     }
 
     return context;
