@@ -1277,13 +1277,23 @@
 
         // Prepare the alphanumeric username message text.
         var alphanumericUsernameText = $("#alphanumeric-username-msg-text");
-        alphanumericUsernameText.text(
-            "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.alphanumeric")%>"
-            + " " + (usernameConfig?.minLength ?? 3) + " "
-            + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "to")%>"
-            + " " + (usernameConfig.maxLength ?? 255) + " "
-            + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters.including.one.letter")%>"
-        );
+        if (usernameConfig.enableSpecialCharacters) {
+            alphanumericUsernameText.text(
+                "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.unique")%>"
+                + " " + (usernameConfig?.minLength ?? 3) + " "
+                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "to")%>"
+                + " " + (usernameConfig.maxLength ?? 255) + " "
+                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters.including.one.letter")%>"
+            );
+        } else {
+            alphanumericUsernameText.text(
+                "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.alphanumeric")%>"
+                + " " + (usernameConfig?.minLength ?? 3) + " "
+                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "to")%>"
+                + " " + (usernameConfig.maxLength ?? 255) + " "
+                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters.including.one.letter")%>"
+            );
+        }
         if (!<%=isUsernameValidationEnabled%>) {
             $("#alphanumeric-username-msg").hide();
         }
@@ -1894,7 +1904,14 @@
                     alphanumeric_username_error_msg.show();
                     alphanumericUsernameField.addClass("error");
 
-                } else if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/.test(alphanumericUsernameUserInput.value.trim())) {
+                } else if (usernameConfig.enableSpecialCharacters
+                && !/^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%&'*+/=?^_`.{|}~-]+$/.test(alphanumericUsernameUserInput.value.trim())) {
+                    alphanumeric_username_error_msg_text.text(
+                        "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.with.special.character.symbols")%>");
+                    alphanumeric_username_error_msg.show();
+                    alphanumericUsernameField.addClass("error");
+                } else if (!usernameConfig.enableSpecialCharacters
+                && !/^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/.test(alphanumericUsernameUserInput.value.trim())) {
                     alphanumeric_username_error_msg_text.text(
                         "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.with.symbols")%>");
                     alphanumeric_username_error_msg.show();
