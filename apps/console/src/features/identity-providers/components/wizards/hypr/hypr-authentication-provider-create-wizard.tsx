@@ -131,7 +131,7 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
             // Trigger the close method from props.
             onWizardClose();
         };
-        
+
         /**
         * Close the limit reached modal.
         */
@@ -215,10 +215,10 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
                         ? IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED
                         : IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED_IDP;
 
-                    if (error.response.status === 403 && 
+                    if (error.response.status === 403 &&
                         error?.response?.data?.code === identityAppsError.getErrorCode()) {
                         setOpenLimitReachedModal(true);
-        
+
                         return;
                     }
 
@@ -331,7 +331,7 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
                 <ModalWithSidePanel.SidePanel>
                     <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
                         <div className="help-panel-header-text">
-                            { t("console:develop.features.authenticationProvider" + 
+                            { t("console:develop.features.authenticationProvider" +
                             ".templates.microsoft.wizardHelp.heading") }
                         </div>
                     </ModalWithSidePanel.Header>
@@ -372,12 +372,12 @@ export const HyprAuthenticationProviderCreateWizard: FunctionComponent<
                             "tierLimitReachedError.emptyPlaceholder.subtitles"
                             ) }
                             message={ t(
-                                "console:develop.features.idp.notifications." + 
+                                "console:develop.features.idp.notifications." +
                             "tierLimitReachedError.emptyPlaceholder.title"
                             ) }
                             openModal={ openLimitReachedModal }
                         />
-                    ) 
+                    )
                 }
                 <ModalWithSidePanel
                     open={ !openLimitReachedModal }

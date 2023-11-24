@@ -209,10 +209,10 @@ export const AppleAuthenticationProviderCreateWizard: FunctionComponent<
                     ? IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED
                     : IdentityProviderManagementConstants.ERROR_CREATE_LIMIT_REACHED_IDP;
 
-                if (error.response.status === 403 && 
+                if (error.response.status === 403 &&
                     error?.response?.data?.code === identityAppsError.getErrorCode()) {
                     setOpenLimitReachedModal(true);
-    
+
                     return;
                 }
 
@@ -405,7 +405,7 @@ export const AppleAuthenticationProviderCreateWizard: FunctionComponent<
                                     } }
                                     data-testid={ `${ componentId }-modal-previous-button` }
                                 >
-                                    { t("console:develop.features.authenticationProvider.wizards.buttons" + 
+                                    { t("console:develop.features.authenticationProvider.wizards.buttons" +
                                     ".previous") }
                                 </LinkButton>
                             )
@@ -476,7 +476,7 @@ export const AppleAuthenticationProviderCreateWizard: FunctionComponent<
                     "tierLimitReachedError.emptyPlaceholder.subtitles"
                     ) }
                     message={ t(
-                        "console:develop.features.idp.notifications." + 
+                        "console:develop.features.idp.notifications." +
                     "tierLimitReachedError.emptyPlaceholder.title"
                     ) }
                     openModal={ openLimitReachedModal }

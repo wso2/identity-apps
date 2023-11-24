@@ -33,7 +33,6 @@ import {
     OrganizationEnterpriseConnectionCreateWizardContent
 } from "./organization-enterprise-connection-create-wizard-content";
 import {
-    AppConstants,
     EventPublisher,
     ModalWithSidePanel,
     TierLimitReachErrorModal

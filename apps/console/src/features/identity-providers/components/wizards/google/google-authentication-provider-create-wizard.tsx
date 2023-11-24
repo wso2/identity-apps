@@ -165,7 +165,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                     error?.response?.data?.code ===
                     identityAppsError.getErrorCode()) {
                         setOpenLimitReachedModal(true);
-        
+
                         return;
                     }
 
@@ -311,7 +311,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                 || isEmpty(values?.clientSecret.toString()));
 
             identityProvider.image = "assets/images/logos/google.svg";
-            
+
             handleWizardFormFinish(identityProvider);
         };
 
@@ -343,7 +343,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                                             loading={ isSubmitting }
                                             disabled={ isSubmitting }
                                         >
-                                            { t("console:develop.features.authenticationProvider." + 
+                                            { t("console:develop.features.authenticationProvider." +
                                                 "wizards.buttons.next") }
                                         </PrimaryButton>
                                     )
@@ -432,7 +432,7 @@ export const GoogleAuthenticationProviderCreateWizard: FunctionComponent<
                         "tierLimitReachedError.emptyPlaceholder.subtitles"
                         ) }
                         message={ t(
-                            "console:develop.features.idp.notifications." + 
+                            "console:develop.features.idp.notifications." +
                         "tierLimitReachedError.emptyPlaceholder.title"
                         ) }
                         openModal={ openLimitReachedModal }

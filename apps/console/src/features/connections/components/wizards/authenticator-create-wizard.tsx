@@ -218,9 +218,9 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
      * @param identityProvider - Identity provider data.
      */
     const handleWizardFormFinish = (identityProvider: ConnectionInterface): void => {
-        const authenticator: FederatedAuthenticatorListItemInterface = 
+        const authenticator: FederatedAuthenticatorListItemInterface =
             identityProvider?.federatedAuthenticators?.authenticators.find(
-                (a: FederatedAuthenticatorListItemInterface) => 
+                (a: FederatedAuthenticatorListItemInterface) =>
                     a.authenticatorId === identityProvider?.federatedAuthenticators?.defaultAuthenticatorId
             );
 

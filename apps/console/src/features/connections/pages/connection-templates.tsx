@@ -33,6 +33,7 @@ import {
     SearchWithFilterLabels,
     useDocumentation
 } from "@wso2is/react-components";
+import { identityProviderConfig } from "apps/console/src/extensions";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import orderBy from "lodash-es/orderBy";
@@ -42,10 +43,10 @@ import React, { FC, ReactElement, SyntheticEvent, useEffect, useState } from "re
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { AppState, ConfigReducerStateInterface, EventPublisher, history } from "../../core"; 
+import { AppState, ConfigReducerStateInterface, EventPublisher, history } from "../../core";
 import { useGetConnectionTemplates } from "../api/connections";
-import { 
-    AuthenticatorCreateWizardFactory 
+import {
+    AuthenticatorCreateWizardFactory
 } from "../components/create/authenticator-create-wizard-factory";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { useSetConnectionTemplates } from "../hooks/use-connection-templates";
@@ -60,12 +61,11 @@ import {
     handleGetConnectionTemplateListError,
     resolveConnectionName
 } from "../utils/connection-utils";
-import { identityProviderConfig } from "apps/console/src/extensions";
 
 /**
  * Proptypes for the Connection template page component.
  */
-type ConnectionTemplatePagePropsInterface = IdentifiableComponentInterface & RouteComponentProps 
+type ConnectionTemplatePagePropsInterface = IdentifiableComponentInterface & RouteComponentProps
 
 /**
  * Connection template page component page.
@@ -113,7 +113,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
     const [ searchQuery, setSearchQuery ] = useState<string>("");
 
     const setConnectionTemplates: (templates: Record<string, any>[]) => void = useSetConnectionTemplates();
-    
+
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const {
@@ -146,7 +146,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
         handleGetConnectionTemplateListError(connectionTemplatesFetchRequestError);
         setFilteredCategorizedTemplates([]);
     }, [ connectionTemplatesFetchRequestError ]);
- 
+
     /**
      *  Group the connection templates.
      */
@@ -167,7 +167,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                 }
 
                 if (template.displayOrder < 0) {
-                
+
                     return;
                 }
 
@@ -475,16 +475,16 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                 template: ConnectionTemplateInterface,
                                                 templateIndex: number
                                             ) => {
-                                                
+
                                                 // if the template is "organization-enterprise-idp",
                                                 // then prevent rendering it.
                                                 if (template.id === ConnectionManagementConstants
                                                     .ORG_ENTERPRISE_CONNECTION_ID) {
-                                                        
+
                                                     return null;
                                                 }
 
-                                                if (template.id === 
+                                                if (template.id ===
                                                         ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID
                                                     && !identityProviderConfig.createIdentityProvider
                                                         .enableTrustedTokenIssuer) {
@@ -502,7 +502,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                         comingSoonRibbonLabel={ t("common:comingSoon") }
                                                         resourceDescription={ template.description }
                                                         showSetupGuideButton={ getLink(template.docLink) !== undefined }
-                                                        resourceDocumentationLink={ 
+                                                        resourceDocumentationLink={
                                                             getLink(ConnectionsManagementUtils
                                                                 .resolveConnectionDocLink(template.id))
                                                         }
@@ -515,11 +515,11 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                             handleTemplateSelection(e, template.id);
                                                             setShowWizard(true);
                                                         } }
-                                                        showTooltips={ 
-                                                            { 
-                                                                description: true, 
-                                                                header: false 
-                                                            } 
+                                                        showTooltips={
+                                                            {
+                                                                description: true,
+                                                                header: false
+                                                            }
                                                         }
                                                         data-testid={ `${ componentId }-${ template.name }` }
                                                     />
