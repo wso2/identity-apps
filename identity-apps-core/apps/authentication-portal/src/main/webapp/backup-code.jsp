@@ -240,34 +240,30 @@
                             <input id="sessionDataKey" type="hidden" name="sessionDataKey"
                                     value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>' />
                             <div class="ui divider hidden"></div>
-
-                            <div class="social-login blurring social-dimmer text-left">
-                                <div class="field text-left">
-                                    <% String multiOptionURI = request.getParameter("multiOptionURI");
-                                        if (multiOptionURI != null &&
-                                            AuthenticationEndpointUtil.isValidURL(multiOptionURI)) {
-                                    %>
-                                        <a
-                                            onclick="window.location.href='<%=Encode.forHtmlAttribute(multiOptionURI)%>';"
-                                            target="_blank"
-                                            class="clickable-link text-left"
-                                            rel="noopener noreferrer"
-                                            data-testid="login-page-backup-code-link"
-                                        >
-                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
-                                        </a>
-                                    <% } %>
-                                </div>
-                            </div>
-
-                            <input id="multiOptionURI" type="hidden" name="multiOptionURI"
-                                    value='<%=Encode.forHtmlAttribute(request.getParameter("multiOptionURI"))%>' />
-                            <div class="ui divider hidden"></div>
                             <div>
                                 <input type="submit" id="subButton" onclick="sub(); return false;"
                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
                                 class="ui primary fluid large button" />
                             </div>
+                            <div class="ui divider hidden"></div>
+                            <div class="text-center mt-1">
+                                <% String multiOptionURI = request.getParameter("multiOptionURI");
+                                    if (multiOptionURI != null &&
+                                        AuthenticationEndpointUtil.isValidURL(multiOptionURI)) {
+                                %>
+                                    <a
+                                        onclick="window.location.href='<%=Encode.forHtmlAttribute(multiOptionURI)%>';"
+                                        target="_blank"
+                                        class="ui primary basic button link-button"
+                                        rel="noopener noreferrer"
+                                        data-testid="login-page-backup-code-link"
+                                    >
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
+                                    </a>
+                                <% } %>
+                            </div>
+                            <input id="multiOptionURI" type="hidden" name="multiOptionURI"
+                                    value='<%=Encode.forHtmlAttribute(request.getParameter("multiOptionURI"))%>' />
                         </form>
                     </div>
                 </div>
