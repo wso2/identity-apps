@@ -3032,9 +3032,11 @@ export const extensions: Extensions = {
                 usernameTypeHint: "පරිශීලක නාමය සඳහා ඊමේල් හෝ අක්ෂරාංක අක්ෂර එකතුවක් සැකසීමට පරිශීලකයින්ට ඉඩ දෙන්න.",
                 emailType: "විද්යුත් තැපෑල",
                 customType: "අභිරුචි",
-                usernameLength: "පරිශීලක නාමය දිග සකසන්න",
-                usernameLengthMin: "අවම",
-                usernameLengthMax: "උපරිම",
+                usernameLength: {
+                    0: "අක්ෂර",
+                    1: "සහ",
+                    2: "අතර විය යුතුය."
+                },
                 usernameAlphanumeric: "අක්ෂරාංක වලට සීමා කරන්න (a-z, A-Z, 0-9).",
                 usernameSpecialCharsHint: "ඉදිරි ස්ලැෂ් (\"/\") භාවිතය සීමා කර ඇත."
             },

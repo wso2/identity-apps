@@ -3140,9 +3140,9 @@ export const extensions: Extensions = {
                 emailType: "Email",
                 customType: "Coutume",
                 usernameLength: {
-                    0: "Must be between",
-                    1: "and",
-                    2: "characters."
+                    0: "Doit contenir entre",
+                    1: "et",
+                    2: "caractères."
                 },
                 usernameAlphanumeric: "Restreindre aux caractères alphanumériques (a-z, A-Z, 0-9).",
                 usernameSpecialCharsHint: "L'utilisation de la barre oblique (\"/\") est restreinte."
