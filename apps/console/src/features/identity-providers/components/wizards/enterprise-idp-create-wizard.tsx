@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -33,8 +34,6 @@ import {
     PrimaryButton,
     SelectionCard,
     Steps,
-    Switcher,
-    SwitcherOptionProps,
     XMLFileStrategy,
     useDocumentation,
     useWizardAlert
@@ -46,6 +45,7 @@ import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
 
 import React, {
+    ChangeEvent,
     FC,
     MutableRefObject,
     PropsWithChildren,
@@ -438,7 +438,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
 
     const wizardCommonFirstPage = () => (
         <WizardPage
-            validate={ (values: any) => {
+            validate={ (values: IdentityProviderFormValuesInterface) => {
                 const errors: FormErrors = {};
 
                 errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
@@ -464,10 +464,10 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 minLength={ IDP_NAME_LENGTH.min }
                 required={ true }
                 width={ 15 }
-                format = { (values: any) => {
-                    return values.toString().trimStart();
+                format = { (values: string) => {
+                    return values.trimStart();
                 } }
-                validation={ (values: any) => {
+                validation={ (values: string) => {
                     let errors: "";
 
                     errors = composeValidators(required, length(IDP_NAME_LENGTH))(values);
@@ -577,20 +577,27 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <p><b>Mode of configuration</b></p>
-                        <Switcher
-                            compact
-                            data-testid={ `${ testId }-form-wizard-saml-config-switcher` }
-                            className={ "mt-1" }
-                            selectedValue={ selectedSamlConfigMode }
-                            onChange={ ({ value }: SwitcherOptionProps) => setSelectedSamlConfigMode(value as any) }
-                            options={ [ {
-                                label: "Manual Configuration",
-                                value: "manual"
-                            }, {
-                                label: "File Based Configuration",
-                                value: "file"
-                            } ] }
-                        />
+                        <FormControl>
+                            <RadioGroup
+                                row
+                                name="configuration-mode"
+                                onChange={ (event: ChangeEvent<HTMLInputElement>) =>
+                                    setSelectedSamlConfigMode((event.target as HTMLInputElement).value as any) }
+                                data-testid={ `${ testId }-form-wizard-saml-config-radio-group` }
+                                value={ selectedSamlConfigMode }
+                            >
+                                <FormControlLabel
+                                    control={ <Radio /> }
+                                    label="Manual Configuration"
+                                    value="manual"
+                                />
+                                <FormControlLabel
+                                    control={ <Radio /> }
+                                    label="File Based Configuration"
+                                    value="file"
+                                />
+                            </RadioGroup>
+                        </FormControl>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
@@ -755,21 +762,26 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <p><b>Mode of certificate configuration</b></p>
                         { (selectedProtocol === "oidc") && (
-                            <Switcher
-                                compact
-                                disabledMessage="This feature will be enabled soon."
-                                className={ "mt-1" }
-                                defaultOptionValue={ "jwks" }
-                                selectedValue={ selectedCertInputType }
-                                onChange={ ({ value }: SwitcherOptionProps) => setSelectedCertInputType(value as any) }
-                                options={ [ {
-                                    label: "JWKS endpoint",
-                                    value: "jwks"
-                                }, {
-                                    label: "Use PEM certificate",
-                                    value: "pem"
-                                } ] }
-                            />
+                            <FormControl>
+                                <RadioGroup
+                                    row
+                                    name="certificate-type"
+                                    onChange={ (event: ChangeEvent<HTMLInputElement>) =>
+                                        setSelectedCertInputType((event.target as HTMLInputElement).value as any) }
+                                    value={ selectedCertInputType }
+                                >
+                                    <FormControlLabel
+                                        control={ <Radio /> }
+                                        label="JWKS endpoint"
+                                        value="jwks"
+                                    />
+                                    <FormControlLabel
+                                        control={ <Radio /> }
+                                        label="Use PEM certificate"
+                                        value="pem"
+                                    />
+                                </RadioGroup>
+                            </FormControl>
                         ) }
                     </Grid.Column>
                 </Grid.Row>
@@ -811,7 +823,7 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
                             /**
                              * If there's pasted content or a file, but it hasn't been serialized
                              * and if it's not valid then we must disable the next button. This condition
-                             * implies =\> that when the input is optional but the user tries to enter
+                             * implies that when the input is optional but the user tries to enter
                              * invalid content to the picker we can't enable next because it's invalid.
                              */
                             setNextShouldBeDisabled(
@@ -906,11 +918,11 @@ export const EnterpriseIDPCreateWizard: FC<EnterpriseIDPCreateWizardProps> = (
         let docLink: string = undefined;
 
         if (selectedProtocol === AuthProtocolTypes.SAML) {
-            docLink = getLink("develop.connections.newConnection.enterprise.saml.learnMore");
+            docLink = getLink("develop.connections.newConnection.enterprise.samlLearnMore");
         }
 
         if (selectedProtocol === AuthProtocolTypes.OIDC) {
-            docLink = getLink("develop.connections.newConnection.enterprise.oidc.learnMore");
+            docLink = getLink("develop.connections.newConnection.enterprise.oidcLearnMore");
         }
 
         return (
@@ -1109,7 +1121,7 @@ const ifFieldsHave = (errors: FormErrors): boolean => {
     return !Object.keys(errors).every((k: string) => !errors[ k ]);
 };
 
-const required = (value: any) => {
+const required = (value: string) => {
     if (!value) {
         return "This is a required field";
     }
