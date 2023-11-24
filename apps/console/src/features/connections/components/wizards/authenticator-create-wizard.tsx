@@ -239,11 +239,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
          * If the default authenticator is not available then the currently adding
          * new authenticator is set as the default authenticator.
          */
-        if (!isDefaultAuthenticatorAvailable) {
-            authenticator.isDefault = true;
-        } else {
-            authenticator.isDefault = false;
-        }
+        authenticator.isDefault = !isDefaultAuthenticatorAvailable;
 
         addNewAuthenticator(authenticator);
     };

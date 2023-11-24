@@ -1013,14 +1013,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * This method will find whether the current identity provider
      * contains a default authenticator or not.
      *
-     * @returns Boolean value of default authenticator existance.
+     * @returns Whether the identity provider contains a default authenticator.
      */
     const checkDefaultAuthenticatorAvailable = (): boolean => {
-        if (!identityProvider?.federatedAuthenticators?.defaultAuthenticatorId) {
-            return false;
-        }
-
-        return true;
+        return !!identityProvider?.federatedAuthenticators?.defaultAuthenticatorId;
     };
 
     if (isLoading || isFederatedAuthenticatorFetchRequestLoading) {

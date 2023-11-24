@@ -246,7 +246,7 @@ export const SIWEAuthenticationProviderCreateWizard: FunctionComponent<
             identityProvider.templateId = template.templateId;
 
             identityProvider.federatedAuthenticators.authenticators[ 0 ].properties =
-                identityProvider.federatedAuthenticators.authenticators[ 0 ].properties.filter(
+                identityProvider?.federatedAuthenticators?.authenticators[ 0 ]?.properties?.filter(
                     (item: CommonPluggableComponentPropertyInterface) =>
                         item.key !== "ClientId" && item.key !== "ClientSecret" && item.key !== "callbackUrl"
                 );

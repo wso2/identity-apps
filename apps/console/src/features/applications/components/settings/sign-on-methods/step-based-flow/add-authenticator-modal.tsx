@@ -536,14 +536,14 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                             templateIndex: number
                                         ) => {
 
-                                            if (template.templateId ===
-                                                    ConnectionManagementConstants.IDP_TEMPLATE_IDS.LINKEDIN
-                                                || template.templateId ===
-                                                    ConnectionManagementConstants.IDP_TEMPLATE_IDS
-                                                        .ORGANIZATION_ENTERPRISE_IDP
-                                                || template.templateId ===
-                                                    ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID
-                                            ) {
+                                            const hiddenTemplates: string[] = [
+                                                ConnectionManagementConstants.IDP_TEMPLATE_IDS.LINKEDIN,
+                                                ConnectionManagementConstants.IDP_TEMPLATE_IDS
+                                                    .ORGANIZATION_ENTERPRISE_IDP,
+                                                ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID
+                                            ];
+
+                                            if (hiddenTemplates.includes(template.templateId)) {
                                                 return null;
                                             }
 
