@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,20 +19,21 @@
 /**
  * Interface for diagnostic logs API request
  */
-export interface InterfaceDiagnosticLogsRequest {
+export interface InterfaceLogsRequest {
     limit: number,
     filter: string,
     nextToken?: string,
     previousToken?: string,
     startTime?: string,
     endTime?: string,
+    logType?: number //TODO : question mark is not needed here.
 }
 
 /**
  * Interface for diagnostic logs API response
  */
-export interface InterfaceDiagnosticLogsResponse {
-    logs: InterfaceDiagnosticLogEntry[];
+export interface InterfaceLogsResponse {
+    logs: InterfaceLogEntry[];
     nextToken: string;
     previousToken: string;
 }
@@ -40,17 +41,23 @@ export interface InterfaceDiagnosticLogsResponse {
 /**
  * Interface for a diagnostic log entry
  */
-export interface InterfaceDiagnosticLogEntry {
+export interface InterfaceLogEntry {
     id: string;
     recordedAt: string;
     requestId: string;
-    flowId: string;
-    componentId: string;
-    input: any; // TODO: define proper types
-    resultStatus: string;
-    resultMessage: string;
-    actionId: string;
-    configurations: any; // TODO: define proper types
+    componentId?: string;
+    initiatorId?: string;
+    initiatorType?: string;
+    targetId?: string;
+    targetType?: string;
+    actionId?: string;
+    action?: string;
+    data?: any; // TODO: define proper types
+    flowId?: string;
+    input?: any; // TODO: define proper types
+    resultStatus? : string;
+    resultMessage? : string;
+    configurations? : any; // TODO: define proper types
 }
 
 /**
@@ -59,4 +66,20 @@ export interface InterfaceDiagnosticLogEntry {
 export interface InterfaceLogsFilter {
     property: string;
     value: string;
+}
+
+/**
+ * enum for admin tab index.
+ */
+export enum TabIndex {
+    DIAGNOSTIC_LOGS = 0,
+    AUDIT_LOGS = 1,
+}
+
+/**
+ * enum for result status of a log entry.
+ */
+export enum ResultStatus {
+    SUCCESS = "SUCCESS",
+    FAILED = "FAILED"
 }

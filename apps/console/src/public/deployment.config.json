@@ -939,6 +939,24 @@
                 "enabled": false,
                 "scopes": {}
             },
+            "diagnosticLogs": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "update": [
+                        "internal_application_mgt_view"
+                    ]
+                }
+            },
+            "auditLogs": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "update": [
+                        "internal_application_mgt_view"
+                    ]
+                }
+            },
             "remoteLogging": {
                 "disabledFeatures": [],
                 "enabled": true,
