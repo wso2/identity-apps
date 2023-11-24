@@ -707,6 +707,14 @@ export const console: ConsoleNS = {
             placeholder: "තිරය තෝරන්න"
         }
     },
+    consoleSettings: {
+        roles: {
+            permissionLevels: {
+                edit: "සංස්කරණය කරන්න",
+                view: "කියවන්න"
+            }
+        }
+    },
     develop: {
         componentExtensions: {
             component: {
