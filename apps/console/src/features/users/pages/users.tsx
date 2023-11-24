@@ -769,7 +769,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         }
     ];
 
-
     const handleDropdownItemChange = (value: string): void => {
         if (value === UserAccountTypesMain.EXTERNAL) {
             eventPublisher.publish("manage-users-click-create-new", {
