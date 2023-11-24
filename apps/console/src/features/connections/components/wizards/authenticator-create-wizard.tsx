@@ -224,7 +224,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                     a.authenticatorId === identityProvider?.federatedAuthenticators?.defaultAuthenticatorId
             );
 
-        authenticator.properties = authenticator.properties.filter(
+        authenticator.properties = authenticator?.properties.filter(
             (property: CommonPluggableComponentPropertyInterface) => {
                 if (isEmpty(property.key)) {
                     return false;
