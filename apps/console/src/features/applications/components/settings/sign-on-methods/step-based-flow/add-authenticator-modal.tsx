@@ -536,12 +536,12 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                             templateIndex: number
                                         ) => {
 
-                                            if (template.templateId === 
+                                            if (template.templateId ===
                                                     ConnectionManagementConstants.IDP_TEMPLATE_IDS.LINKEDIN
-                                                || template.templateId === 
+                                                || template.templateId ===
                                                     ConnectionManagementConstants.IDP_TEMPLATE_IDS
                                                         .ORGANIZATION_ENTERPRISE_IDP
-                                                || template.templateId === 
+                                                || template.templateId ===
                                                     ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID
                                             ) {
                                                 return null;
@@ -551,7 +551,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                                 <ResourceGrid.Card
                                                     showSetupGuideButton={ isSAASDeployment }
                                                     key={ templateIndex }
-                                                    resourceName={ 
+                                                    resourceName={
                                                         template?.name === "Expert Mode"
                                                             ? "Custom Connector"
                                                             : template?.name

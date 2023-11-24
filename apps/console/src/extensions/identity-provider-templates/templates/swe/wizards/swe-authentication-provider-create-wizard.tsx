@@ -29,6 +29,7 @@ import {
     useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
+import { CommonPluggableComponentPropertyInterface } from "apps/console/src/features/connections";
 import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
@@ -48,7 +49,6 @@ import {
 } from "../../../../../features/identity-providers/models";
 import { IdentityProviderManagementUtils } from "../../../../../features/identity-providers/utils";
 import { identityProviderConfig } from "../../../../configs/identity-provider";
-import { CommonPluggableComponentPropertyInterface } from "apps/console/src/features/connections";
 
 /**
  * Prop-types for the SIWE Authentication Provider Create Wizard.
@@ -185,7 +185,7 @@ export const SIWEAuthenticationProviderCreateWizard: FunctionComponent<
                     error?.response?.data?.code ===
                     identityAppsError.getErrorCode()) {
                         setOpenLimitReachedModal(true);
-        
+
                         return;
                     }
 
@@ -245,9 +245,9 @@ export const SIWEAuthenticationProviderCreateWizard: FunctionComponent<
             identityProvider.description = template.description;
             identityProvider.templateId = template.templateId;
 
-            identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = 
+            identityProvider.federatedAuthenticators.authenticators[ 0 ].properties =
                 identityProvider.federatedAuthenticators.authenticators[ 0 ].properties.filter(
-                    (item: CommonPluggableComponentPropertyInterface) => 
+                    (item: CommonPluggableComponentPropertyInterface) =>
                         item.key !== "ClientId" && item.key !== "ClientSecret" && item.key !== "callbackUrl"
                 );
 
@@ -396,7 +396,7 @@ export const SIWEAuthenticationProviderCreateWizard: FunctionComponent<
                         "tierLimitReachedError.emptyPlaceholder.subtitles"
                         ) }
                         message={ t(
-                            "console:develop.features.idp.notifications." + 
+                            "console:develop.features.idp.notifications." +
                         "tierLimitReachedError.emptyPlaceholder.title"
                         ) }
                         openModal={ openLimitReachedModal }

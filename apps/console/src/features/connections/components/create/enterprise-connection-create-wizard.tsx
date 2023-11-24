@@ -159,7 +159,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
     const { getLink } = useDocumentation();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    
+
     const {
         data: connections,
         isLoading: isConnectionsFetchRequestLoading,
@@ -264,7 +264,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
             return t("console:develop.features.idp.forms.common.internetResolvableErrorMessage");
         }
- 
+
         return undefined;
     };
 
@@ -486,9 +486,9 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
             />
             <div className="sub-template-selection">
                 <label className="sub-templates-label">Select protocol</label>
-                <Grid 
-                    container 
-                    spacing={ { md: 3, xs: 2 } } 
+                <Grid
+                    container
+                    spacing={ { md: 3, xs: 2 } }
                     columns={ { md: 12, sm: 8, xs: 4 } }
                 >
                     <Grid xs={ 2 } sm={ 4 } md={ 8 }>
@@ -539,7 +539,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         </WizardPage>
     );
 
-    const samlConfigurationPage = () => ( 
+    const samlConfigurationPage = () => (
         <WizardPage
             validate={ (values: any) => {
                 const errors: FormErrors = {};
