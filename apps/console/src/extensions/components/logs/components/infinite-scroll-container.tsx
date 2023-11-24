@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,29 +18,31 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Popup } from "@wso2is/react-components";
+import { saveAs } from "file-saver";
 import React, { MutableRefObject, ReactElement, UIEventHandler, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, Icon } from "semantic-ui-react";
 import CopyButton from "./copy-button";
 import LoaderPlaceholder from "./loader-placeholder";
-import { InterfaceDiagnosticLogEntry, InterfaceLogsFilter } from "../models";
+import { InterfaceLogEntry, InterfaceLogsFilter, ResultStatus, TabIndex } from "../models/log-models";
 import { formatTimestampToDateTime, getDateFromTimestamp, getTimeFromTimestamp } from "../utils/datetime-utils";
 
 interface InfiniteScrollContainerPropsInterface
     extends IdentifiableComponentInterface {
     handleScroll: UIEventHandler<HTMLDivElement>,
     scrollRef: MutableRefObject<HTMLDivElement>,
-    logs: InterfaceDiagnosticLogEntry[] | [],
+    logs: InterfaceLogEntry[] | [],
     loading: boolean,
     rowHeight: number,
     logCount: number,
     isPreviousEmpty?: boolean,
     isNextEmpty?: boolean,
+    logType : TabIndex,
     setSearchQuery?: (query: InterfaceLogsFilter) => void
 }
 
 /**
- * Infinite scrolling component for diagnostic logs
+ * Infinite scrolling component for diagnostic and audit logs
  * @param props - InfiniteScrollContainer props
  * @returns React functional component
  */
@@ -53,6 +55,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
         loading,
         rowHeight,
         logCount,
+        logType,
         setSearchQuery
     } = props;
 
@@ -85,7 +88,36 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
         setActiveIndex(tempIndexArr);
     };
 
-    const handleExpandedView = (logObject: InterfaceDiagnosticLogEntry): Array<ReactElement> => {
+    const exportDataOfLog = (logObject : InterfaceLogEntry) => {
+        const blob: Blob = new Blob( [ JSON.stringify(logObject["data"], null, 2) ],
+            { type: "application/json" });
+
+        saveAs(blob, "log_data_" + logObject["id"] + ".json");
+    };
+
+    const getIconByStatus = (status: ResultStatus): JSX.Element => {
+        switch (status) {
+            case ResultStatus.SUCCESS:
+                return <Icon name="check circle" color="green" />;
+            case ResultStatus.FAILED:
+                return <Icon name="close" color="red" />;
+            default:
+                return <></>; // Return an empty fragment or any default icon.
+        }
+    };
+
+    const getResultStatus = (status: string): ResultStatus => {
+        switch (status) {
+            case "SUCCESS":
+                return ResultStatus.SUCCESS;
+            case "FAILED":
+                return ResultStatus.FAILED;
+            default:
+                return ResultStatus.SUCCESS; // Return a default value.
+        }
+    };
+
+    const handleExpandedView = (logObject: InterfaceLogEntry): Array<ReactElement> => {
         const propertyElements: Array<ReactElement> = [];
 
         for (const property in logObject) {
@@ -155,36 +187,53 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                         );
                     }
                 } else if (typeof logObject[property] === "object") {
-                    for (const childProp in logObject[property])
-                        if (typeof logObject[property][childProp] === "string") {
-                            propertyElements.push(
-                                <tr>
-                                    <td className="log-property">{ childProp }:</td>
-                                    <td>
-                                        { logObject[property][childProp] }
-                                        &nbsp;&nbsp;
-                                        <Icon.Group
-                                            className="icon-button"
-                                            onClick={ () => {
-                                                setSearchQuery({
-                                                    property: childProp, value: logObject[property][childProp]
-                                                });
-                                            } }
-                                        >
-                                            <Icon name="filter" color="green" />
-                                            <Icon corner name="add" color="green" />
-                                        </Icon.Group>
-                                    </td>
-                                </tr>
-                            );
-                        } else {
-                            propertyElements.push(
-                                <tr>
-                                    <td className="log-property">{ childProp }:</td>
-                                    <td>{ JSON.stringify(logObject[property][childProp], null, 10) }</td>
-                                </tr>
-                            );
-                        }
+                    if (property === "data") {
+                        propertyElements.push(
+                            <tr>
+                                <td className="log-property">{ property }:</td>
+                                <td className="download-data-button">
+                                    <span
+                                        data-testid={ `${ componentId }-${ logObject["id"] }-download-data-button` }
+                                        onClick={ () => exportDataOfLog(logObject) }
+                                    >
+                                        <Icon name="download" />
+                                        { t("extensions:develop.monitor.filter.downloadButton.label") }
+                                    </span>
+                                </td>
+                            </tr>
+                        );
+                    } else {
+                        for (const childProp in logObject[property])
+                            if (typeof logObject[property][childProp] === "string") {
+                                propertyElements.push(
+                                    <tr>
+                                        <td className="log-property">{ childProp }:</td>
+                                        <td>
+                                            { logObject[property][childProp] }
+                                            &nbsp;&nbsp;
+                                            <Icon.Group
+                                                className="icon-button"
+                                                onClick={ () => {
+                                                    setSearchQuery({
+                                                        property: childProp, value: logObject[property][childProp]
+                                                    });
+                                                } }
+                                            >
+                                                <Icon name="filter" color="green" />
+                                                <Icon corner name="add" color="green" />
+                                            </Icon.Group>
+                                        </td>
+                                    </tr>
+                                );
+                            } else {
+                                propertyElements.push(
+                                    <tr>
+                                        <td className="log-property">{ childProp }:</td>
+                                        <td>{ JSON.stringify(logObject[property][childProp], null, 10) }</td>
+                                    </tr>
+                                );
+                            }
+                    }
                 }
             }
         }
@@ -207,7 +256,7 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                     <LoaderPlaceholder />
                 ) }
                 <Accordion data-componentid={ `${componentId}-log-entries-wrapper` } exclusive={ false } fluid>
-                    { logs.map((log: InterfaceDiagnosticLogEntry, key: number) => (
+                    { logs.map((log: InterfaceLogEntry, key: number) => (
                         <div key={ key }>
                             <Accordion.Title
                                 active={ activeIndex.includes(key) }
@@ -224,41 +273,49 @@ const InfiniteScrollContainer = (props: InfiniteScrollContainerPropsInterface): 
                                             { getTimeFromTimestamp(log.recordedAt) }
                                         </span>
                                     </div>
+
                                     <div className="log-description-container">
-                                        <div className="log-message-container">
-                                            { log.resultStatus === "SUCCESS" &&
-                                                <Icon name="check circle" color="green" />
-                                            }
-                                            { log.resultStatus === "FAILED" &&
-                                                <Icon name="close" color="red" />
-                                            }
-                                            { log.actionId === "auth-script-logging" &&
-                                                <Icon name="code" />
-                                            }
-                                            {
-                                                log.resultMessage.length > 60 ? (
-                                                    <Popup
-                                                        inverted
-                                                        trigger={
-                                                            <span>{ `${log.resultMessage.slice(0,60)}...` }</span>
-                                                        }
-                                                        content={ (
-                                                            <small>
-                                                                {
-                                                                    t("extensions:develop.monitor.logView." +
-                                                                        "toolTips.seeMore")
-                                                                }
-                                                            </small>
-                                                        ) }
-                                                        position="bottom right"
-                                                        size="mini"
-                                                    />
-                                                ) : log.resultMessage
-                                            }
-                                        </div>
+                                        { (logType === TabIndex.DIAGNOSTIC_LOGS) &&
+                                            (<div className="log-message-container">
+                                                { getIconByStatus(getResultStatus(log.resultStatus)) }
+                                                { log.actionId === "auth-script-logging" &&
+                                                    <Icon name="code" />
+                                                }
+                                                {
+                                                    log.resultMessage.length > 60 ? (
+                                                        <Popup
+                                                            inverted
+                                                            trigger={
+                                                                <span>{ `${log.resultMessage.slice(0,60)}...` }</span>
+                                                            }
+                                                            content={ (
+                                                                <small>
+                                                                    {
+                                                                        t("extensions:develop.monitor.logView." +
+                                                                            "toolTips.seeMore")
+                                                                    }
+                                                                </small>
+                                                            ) }
+                                                            position="bottom right"
+                                                            size="mini"
+                                                        />
+                                                    ) : log.resultMessage
+                                                }
+                                            </div>)
+                                        }
+                                        { (logType === TabIndex.AUDIT_LOGS) &&
+                                            (<div>
+                                                { log.initiatorId }
+                                            </div>)
+                                        }
                                         { log.actionId && (
                                             <div className="log-actionid-container">
                                                 { log.actionId }
+                                            </div>
+                                        ) }
+                                        { log.action && (
+                                            <div className="log-actionid-container">
+                                                { log.action }
                                             </div>
                                         ) }
                                     </div>

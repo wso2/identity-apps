@@ -226,7 +226,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                             className="client-id-label"
                                         >
                                             { role?.audience?.display }
-                                        </Label>   
+                                        </Label>
                                     )
                                 }
                             </Header.Subheader>
@@ -270,9 +270,12 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 renderer: "semantic-icon"
             },
             {
-                hidden: (role: RolesInterface) => isSubOrg || (role?.displayName === RoleConstants.ADMIN_ROLE ||
-                    role?.displayName === RoleConstants.ADMIN_GROUP) || (role?.displayName === 
-                        RoleConstants.EVERYONE_ROLE || role?.displayName === RoleConstants.EVERYONE_GROUP)
+                hidden: (role: RolesInterface) => isSubOrg
+                    || (role?.displayName === RoleConstants.ADMIN_ROLE
+                    || role?.displayName === RoleConstants.ADMIN_GROUP)
+                    || (role?.displayName === RoleConstants.EVERYONE_ROLE
+                    || role?.displayName === RoleConstants.EVERYONE_GROUP)
+                    || (role?.audience?.display + "/" + role?.displayName === RoleConstants.CONSOLE_ADMIN_ROLE)
                     || !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.delete, allowedScopes),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {

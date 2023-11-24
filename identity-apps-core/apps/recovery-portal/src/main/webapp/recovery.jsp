@@ -18,6 +18,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<%@ page import="java.io.File" %>
 <%@ page import="org.apache.commons.collections.map.HashedMap" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.identity.base.IdentityRuntimeException" %>
@@ -45,6 +46,15 @@
 <%-- Include tenant context --%>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
+<% 
+    File usernameResolverFile = new File(getServletContext().getRealPath("extensions/username-resolver.jsp"));
+    if (usernameResolverFile.exists()) {
+%>
+        <jsp:include page="extensions/username-resolver.jsp"/>
+<% } else { %>
+        <jsp:include page="includes/username-resolver.jsp"/>
+<% } %>
+
 <%
     boolean isPasswordRecoveryEmailConfirmation =
             Boolean.parseBoolean(request.getParameter("isPasswordRecoveryEmailConfirmation"));
@@ -65,12 +75,7 @@
     }
 
     if (StringUtils.isNotBlank(username)) {
-        if (StringUtils.isNotBlank(userTenantHint)) {
-            username = MultitenantUtils.getTenantAwareUsername(username);
-            username = UserCoreUtil.addTenantDomainToEntry(username, userTenantHint);
-        } else {
-            username = UserCoreUtil.addTenantDomainToEntry(username, userTenant);
-        }
+        username = (String) request.getAttribute("resolvedUsername");
     }
 
     // Password recovery parameters

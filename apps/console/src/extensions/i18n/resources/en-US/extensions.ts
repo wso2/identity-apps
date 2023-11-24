@@ -2718,7 +2718,7 @@ export const extensions: Extensions = {
                                         note: "If Passkey is set as a first factor, the following " +
                                         "<1> adaptive script</1> should be added under " +
                                         "the <3>Sign-In-Method</3> tab of the application. " +
-                                        "This script is added automatically with the template-based " + 
+                                        "This script is added automatically with the template-based " +
                                         "Passkey setup and is used to verify the user's " +
                                         "identity before enrolling passkeys. " +
                                         "However, if you're configuring Passkey " +
@@ -2825,7 +2825,8 @@ export const extensions: Extensions = {
                     }
                 },
                 searchBar: {
-                    placeholder: "Search Logs by Trace ID, Action ID, Client ID, Result Message, or Result Status"
+                    placeholderDiagnostic: "Search Logs by Trace ID, Action ID, Client ID, Result Message, or Result Status",
+                    placeholderAudit: "Search Logs by Action, Target ID, Initiator ID, Request ID"
                 },
                 refreshMessage: {
                     text: "Last fetched logs at ",
@@ -2836,6 +2837,9 @@ export const extensions: Extensions = {
                 },
                 queryButton: {
                     label: "Run Query"
+                },
+                downloadButton : {
+                    label : "Download log data"
                 },
                 delayMessage: {
                     text: "Some queries may take longer to load."
@@ -2849,7 +2853,7 @@ export const extensions: Extensions = {
             notifications: {
                 genericError: {
                     subtitle: {
-                        0: "Couldn't fetch diagnostic logs.",
+                        0: "Couldn't fetch logs.",
                         1: "Please try again."
                     },
                     title: "Something went wrong"
@@ -2879,8 +2883,8 @@ export const extensions: Extensions = {
                 }
             },
             pageHeader: {
-                description: "Query your logs to troubleshoot production application issues.",
-                title: "Diagnostic Logs"
+                description: "Query your logs to troubleshoot issues and monitor resource activities.",
+                title: "Logs"
             },
             tooltips: {
                 copy: "Copy to clipboard"

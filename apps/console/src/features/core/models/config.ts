@@ -190,6 +190,14 @@ export interface FeatureConfigInterface {
      */
     insights?: FeatureAccessConfigInterface
     /**
+     * Diagnostic Logs feature.
+     */
+    diagnosticLogs?: FeatureAccessConfigInterface
+    /**
+     * Audit Logs feature.
+     */
+    auditLogs?: FeatureAccessConfigInterface
+    /**
      * Event Configurations feature
      */
     eventConfiguration?: FeatureAccessConfigInterface;

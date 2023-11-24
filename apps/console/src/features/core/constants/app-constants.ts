@@ -497,6 +497,11 @@ export class AppConstants {
     ]
 
     /**
+     * Route id of the console settings page.
+     */
+    public static readonly CONSOLE_SETTINGS_ROUTE: string = "consoleSettings";
+
+    /**
      * Name of the root node
      */
     public static readonly PERMISSIONS_ROOT_NODE: string = "All Permissions";
