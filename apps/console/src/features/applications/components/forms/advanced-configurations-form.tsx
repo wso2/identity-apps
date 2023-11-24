@@ -240,7 +240,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             name="enableClientAttestation"
                             label={ "Enable Client Attesstation" }
                             required={ false }
-                            value={ config?.attestationMetaData?.enableClientAttestation ? 
+                            value={ config?.attestationMetaData?.enableClientAttestation ?
                                 [ "enableClientAttestation" ] : [] }
                             data-testid={ `${testId}-enable-client-attestation` }
                             hidden={ !applicationConfig.advancedConfigurations.showEnableAuthorization }
@@ -251,7 +251,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             name="androidPackageName"
                             label={ "Android application package name" }
                             required={ false }
-                            value={ config?.attestationMetaData?.androidPackageName ? 
+                            value={ config?.attestationMetaData?.androidPackageName ?
                                 config?.attestationMetaData?.androidPackageName : "" }
                             placeholder={ "Android application package name" }
                             hint={
@@ -273,7 +273,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             placeholder={
                                 "Enter Service Account Credential"
                             }
-                            value={ config?.attestationMetaData?.androidAttestationServiceCredentials ? 
+                            value={ config?.attestationMetaData?.androidAttestationServiceCredentials ?
                                 [ JSON.stringify(config?.attestationMetaData?.androidAttestationServiceCredentials,
                                     null, 4) ] : [] }
                             hint={
@@ -297,7 +297,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             placeholder={
                                 "Apple applicaiton App Id"
                             }
-                            value={ config?.attestationMetaData?.appleAppId ? 
+                            value={ config?.attestationMetaData?.appleAppId ?
                                 config?.attestationMetaData?.appleAppId  : "" }
                             hint={
                                 "Enter the Apple App ID, a unique identifier assigned " +
