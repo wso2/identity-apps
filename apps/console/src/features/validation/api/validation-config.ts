@@ -220,7 +220,7 @@ const preparePasswordValidationConfigData = (values: ValidationFormInterface): V
 };
 
 const prepareUsernameValidationConfigData = (values: ValidationFormInterface): ValidationDataInterface => {
- 
+
     if (!values || values?.field === "password") {
         return;
     }
@@ -239,7 +239,6 @@ const prepareUsernameValidationConfigData = (values: ValidationFormInterface): V
                 validator: "EmailFormatValidator"
             }
         );
-        
     } else {
         rules.push(
             {
