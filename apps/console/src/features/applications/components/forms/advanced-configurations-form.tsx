@@ -224,7 +224,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             <Divider hidden />
                         </Grid.Column>
                         <Heading as="h4">
-                            { "API Based Authentication" }
+                            { "Application native authentication" }
                         </Heading>
 
                         <Grid.Row columns={ 1 }>
