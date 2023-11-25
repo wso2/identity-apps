@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
@@ -128,6 +129,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
     const [ pastedMetadataContent, setPastedMetadataContent ] = useState<string>(null);
     const [ emptyFileError, setEmptyFileError ] = useState(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     useEffect(() => {
         setConfigureMode(SAMLConfigModes.MANUAL);
@@ -472,7 +474,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                     showMoreContent={ t("common:showMore") }
                                 />
                                 {
-                                    (assertionConsumerURLFromTemplate) && (
+                                    (assertionConsumerURLFromTemplate) && isSAASDeployment && (
                                         <Message
                                             visible
                                             type="info"
@@ -488,8 +490,8 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                                             } }
                                                         >
                                                             Don’t have an app? Try out a sample app
-                                                            using <strong>{ assertionConsumerURLFromTemplate }</strong> 
-                                                            as the assertion Response URL. 
+                                                            using <strong>{ assertionConsumerURLFromTemplate }</strong>
+                                                            as the assertion Response URL.
                                                             (You can download and run a sample
                                                             at a later step.)
                                                         </Trans>
@@ -499,7 +501,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                                             assertionConsumerUrls === "") && (
                                                             <LinkButton
                                                                 className={ "m-1 p-1 with-no-border orange" }
-                                                                onClick={ 
+                                                                onClick={
                                                                     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>
                                                                     ) => {
                                                                         e.preventDefault();
@@ -507,7 +509,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                                                             assertionConsumerURLFromTemplate);
                                                                         setIssuer(issuerFromTemplate);
                                                                         setHasAssertionConsumerUrls(true);
-                                                                    } 
+                                                                    }
                                                                 }
                                                                 data-testid={ `${testId}-add-now-button` }
                                                             >
