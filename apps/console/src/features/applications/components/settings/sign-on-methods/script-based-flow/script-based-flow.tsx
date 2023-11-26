@@ -444,7 +444,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         // based on the number of steps.
         if (script
             && AdaptiveScriptUtils.isDefaultScript(internalScript ?? script,
-                internalStepCount ?? authenticationSteps)) {
+                internalStepCount ?? authenticationSteps)
+            && AdaptiveScriptUtils.minifyScript(internalScript) !== AdaptiveScriptUtils.minifyScript(sourceCode)) {
 
             setInternalStepCount(authenticationSteps);
             setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
@@ -461,7 +462,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             setInternalStepCount(authenticationSteps);
 
             // Checks if the editor content is different to the externally provided script.
-            if (AdaptiveScriptUtils.minifyScript(internalScript) !== AdaptiveScriptUtils.minifyScript(script)) {
+            if (AdaptiveScriptUtils.minifyScript(internalScript) !== AdaptiveScriptUtils.minifyScript(script)
+                && AdaptiveScriptUtils.minifyScript(internalScript) !== AdaptiveScriptUtils.minifyScript(sourceCode)) {
                 setSourceCode(internalScript ?? script);
 
                 return;
