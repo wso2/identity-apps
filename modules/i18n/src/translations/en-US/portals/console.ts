@@ -701,6 +701,14 @@ export const console: ConsoleNS = {
             placeholder: "Select screen"
         }
     },
+    consoleSettings: {
+        roles: {
+            permissionLevels: {
+                edit: "Edit",
+                view: "View"
+            }
+        }
+    },
     featureGate: {
         enabledFeatures: {
             tags: {
