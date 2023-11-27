@@ -42,7 +42,6 @@ import React, { FC, ReactElement, SyntheticEvent, useEffect, useState } from "re
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { identityProviderConfig } from "../../../extensions";
 import { AppState, ConfigReducerStateInterface, EventPublisher, history } from "../../core";
 import { useGetConnectionTemplates } from "../api/connections";
 import {
