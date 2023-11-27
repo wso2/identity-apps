@@ -1,5 +1,14 @@
 # @wso2is/access-control
 
+## 2.0.8
+
+### Patch Changes
+
+- [#4794](https://github.com/wso2/identity-apps/pull/4794) [`3ff5ae5e97`](https://github.com/wso2/identity-apps/commit/3ff5ae5e97085dad7d64bcd34644cd42b1774533) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide delete button in admin role for console application
+
+- Updated dependencies [[`3ff5ae5e97`](https://github.com/wso2/identity-apps/commit/3ff5ae5e97085dad7d64bcd34644cd42b1774533)]:
+  - @wso2is/core@2.0.19
+
 ## 2.0.7
 
 ### Patch Changes

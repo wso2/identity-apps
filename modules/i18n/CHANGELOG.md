@@ -1,5 +1,18 @@
 # @wso2is/i18n
 
+## 2.0.57
+
+### Patch Changes
+
+- [#4794](https://github.com/wso2/identity-apps/pull/4794) [`3ff5ae5e97`](https://github.com/wso2/identity-apps/commit/3ff5ae5e97085dad7d64bcd34644cd42b1774533) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide delete button in admin role for console application
+
+* [#4790](https://github.com/wso2/identity-apps/pull/4790) [`02599b5d1a`](https://github.com/wso2/identity-apps/commit/02599b5d1a0aba9197986275617ecd3ff5e7625e) Thanks [@Avarjana](https://github.com/Avarjana)! - Introduce special characters in username.
+
+- [#4797](https://github.com/wso2/identity-apps/pull/4797) [`827e21fa38`](https://github.com/wso2/identity-apps/commit/827e21fa38d65ec67cc30e97c9ce321c2f4549f4) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the user management section
+
+- Updated dependencies [[`3ff5ae5e97`](https://github.com/wso2/identity-apps/commit/3ff5ae5e97085dad7d64bcd34644cd42b1774533)]:
+  - @wso2is/core@2.0.19
+
 ## 2.0.56
 
 ### Patch Changes

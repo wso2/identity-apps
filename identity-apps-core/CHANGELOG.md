@@ -1,5 +1,18 @@
 # @wso2is/identity-apps-core
 
+## 2.0.68
+
+### Patch Changes
+
+- [#4793](https://github.com/wso2/identity-apps/pull/4793) [`0386f58096`](https://github.com/wso2/identity-apps/commit/0386f58096913026192d24d0fbcec7f2ecd9a2b2) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Introduce username resolver
+
+* [#4790](https://github.com/wso2/identity-apps/pull/4790) [`02599b5d1a`](https://github.com/wso2/identity-apps/commit/02599b5d1a0aba9197986275617ecd3ff5e7625e) Thanks [@Avarjana](https://github.com/Avarjana)! - Introduce special characters in username.
+
+- [#4802](https://github.com/wso2/identity-apps/pull/4802) [`374121b059`](https://github.com/wso2/identity-apps/commit/374121b059bbe37ba90a8226bdab5978baac7e5a) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the connections related bugs
+
+- Updated dependencies [[`374121b059`](https://github.com/wso2/identity-apps/commit/374121b059bbe37ba90a8226bdab5978baac7e5a), [`827e21fa38`](https://github.com/wso2/identity-apps/commit/827e21fa38d65ec67cc30e97c9ce321c2f4549f4)]:
+  - @wso2is/theme@2.0.42
+
 ## 2.0.67
 
 ### Patch Changes

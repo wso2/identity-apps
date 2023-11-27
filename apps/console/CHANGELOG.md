@@ -1,5 +1,50 @@
 # @wso2is/console
 
+## 2.9.19
+
+### Patch Changes
+
+- [#4794](https://github.com/wso2/identity-apps/pull/4794) [`3ff5ae5e97`](https://github.com/wso2/identity-apps/commit/3ff5ae5e97085dad7d64bcd34644cd42b1774533) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide delete button in admin role for console application
+
+* [#4812](https://github.com/wso2/identity-apps/pull/4812) [`12b68daecd`](https://github.com/wso2/identity-apps/commit/12b68daecd221c9d515339044c09d00db914a123) Thanks [@brionmario](https://github.com/brionmario)! - Update Console login flow configuration settings
+
+- [#4791](https://github.com/wso2/identity-apps/pull/4791) [`5cf6d87c31`](https://github.com/wso2/identity-apps/commit/5cf6d87c31668714d0db7fa44460ee5c32d80be9) Thanks [@asekawa](https://github.com/asekawa)! - Display clientID description as text
+
+* [#4805](https://github.com/wso2/identity-apps/pull/4805) [`70c83e961b`](https://github.com/wso2/identity-apps/commit/70c83e961bca3a7c02bda1ab3a7df21a8cbb0e89) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Hide default callback adding hint
+
+- [#4813](https://github.com/wso2/identity-apps/pull/4813) [`b31f9e0798`](https://github.com/wso2/identity-apps/commit/b31f9e0798fbeac1453dbd7e3c6d4a8454a84eea) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix an issue with Application sharing
+
+* [#4810](https://github.com/wso2/identity-apps/pull/4810) [`493a19fa6c`](https://github.com/wso2/identity-apps/commit/493a19fa6cf28c7227f380fb38dd2f00f777e772) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues with login and registration section
+
+- [#4806](https://github.com/wso2/identity-apps/pull/4806) [`3516ab3d2f`](https://github.com/wso2/identity-apps/commit/3516ab3d2fec80d19f211c9545799506ffb19763) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the classic editor update issue
+
+* [#4790](https://github.com/wso2/identity-apps/pull/4790) [`02599b5d1a`](https://github.com/wso2/identity-apps/commit/02599b5d1a0aba9197986275617ecd3ff5e7625e) Thanks [@Avarjana](https://github.com/Avarjana)! - Introduce special characters in username.
+
+- [#4802](https://github.com/wso2/identity-apps/pull/4802) [`374121b059`](https://github.com/wso2/identity-apps/commit/374121b059bbe37ba90a8226bdab5978baac7e5a) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the connections related bugs
+
+* [#4788](https://github.com/wso2/identity-apps/pull/4788) [`24b86ab40f`](https://github.com/wso2/identity-apps/commit/24b86ab40fda9ba92fbe7da3fe922dbcf7f76b66) Thanks [@brionmario](https://github.com/brionmario)! - Add `console_settings` config generation
+
+- [#4798](https://github.com/wso2/identity-apps/pull/4798) [`4215e4e255`](https://github.com/wso2/identity-apps/commit/4215e4e2554414f91bd58e6d9774b8d65d42f320) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Move Email Domain Discovery section to the Login & Registration page.
+
+* [#4801](https://github.com/wso2/identity-apps/pull/4801) [`0499a70231`](https://github.com/wso2/identity-apps/commit/0499a7023193bfb7dac149d03b7bb2abed74bd0b) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Make API based authentication section available for mobile app template
+
+- [#4792](https://github.com/wso2/identity-apps/pull/4792) [`c065c62f8c`](https://github.com/wso2/identity-apps/commit/c065c62f8ce5d4c98d52a78cef93840e3585cf79) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Use optional chaining for null safety in isFAPIApp value retrieval logic
+
+* [#4809](https://github.com/wso2/identity-apps/pull/4809) [`fc2442e553`](https://github.com/wso2/identity-apps/commit/fc2442e553da83f287f524253c4fd8bba8dae2f0) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the setup guide hidding issue
+
+- [#4797](https://github.com/wso2/identity-apps/pull/4797) [`827e21fa38`](https://github.com/wso2/identity-apps/commit/827e21fa38d65ec67cc30e97c9ce321c2f4549f4) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the user management section
+
+- Updated dependencies [[`3ff5ae5e97`](https://github.com/wso2/identity-apps/commit/3ff5ae5e97085dad7d64bcd34644cd42b1774533), [`493a19fa6c`](https://github.com/wso2/identity-apps/commit/493a19fa6cf28c7227f380fb38dd2f00f777e772), [`02599b5d1a`](https://github.com/wso2/identity-apps/commit/02599b5d1a0aba9197986275617ecd3ff5e7625e), [`374121b059`](https://github.com/wso2/identity-apps/commit/374121b059bbe37ba90a8226bdab5978baac7e5a), [`827e21fa38`](https://github.com/wso2/identity-apps/commit/827e21fa38d65ec67cc30e97c9ce321c2f4549f4)]:
+  - @wso2is/core@2.0.19
+  - @wso2is/access-control@2.0.8
+  - @wso2is/common@2.0.11
+  - @wso2is/dynamic-forms@2.0.14
+  - @wso2is/form@2.0.14
+  - @wso2is/forms@2.0.5
+  - @wso2is/i18n@2.0.57
+  - @wso2is/react-components@2.0.23
+  - @wso2is/theme@2.0.42
+
 ## 2.9.18
 
 ### Patch Changes
