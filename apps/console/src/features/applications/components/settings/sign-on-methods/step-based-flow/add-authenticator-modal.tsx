@@ -543,7 +543,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                                 ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID
                                             ];
 
-                                            if (hiddenTemplates.includes(template.templateId)) {
+                                            if (hiddenTemplates.includes(template?.templateId)) {
                                                 return null;
                                             }
 
