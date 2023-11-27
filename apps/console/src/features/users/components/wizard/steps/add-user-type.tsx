@@ -110,7 +110,7 @@ export const AddUserType: FunctionComponent<AddUserTypeProps> = (props: AddUserT
                         </CardContent>
                     </Card>
                 </Grid>
-            </Grid>            
+            </Grid>
         </>
     );
 };
