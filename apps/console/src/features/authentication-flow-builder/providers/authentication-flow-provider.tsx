@@ -86,6 +86,10 @@ export interface AuthenticationFlowProviderProps {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Flag to determine if the updated application a system application.
+     */
+    isSystemApplication?: boolean;
 }
 
 /**
@@ -95,7 +99,7 @@ export interface AuthenticationFlowProviderProps {
  * @returns Authentication flow provider.
  */
 const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowProviderProps>): ReactElement => {
-    const { application, authenticators, children, onUpdate, onAuthenticatorsRefetch } = props;
+    const { application, authenticators, children, isSystemApplication, onUpdate, onAuthenticatorsRefetch } = props;
 
     const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config?.ui?.features?.applications;
@@ -175,7 +179,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                     authenticator.id,
                     authenticator.displayName
                 );
-            } 
+            }
 
             if (authenticator.name === IdentityProviderManagementConstants.BACKUP_CODE_AUTHENTICATOR) {
                 recoveryAuthenticators.push(authenticator);
@@ -191,7 +195,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
                 ? AuthenticatorMeta.getAuthenticatorIcon(
                     (authenticator as ConnectionInterface)
-                        .federatedAuthenticators?.defaultAuthenticatorId 
+                        .federatedAuthenticators?.defaultAuthenticatorId
                             ?? authenticator.defaultAuthenticator?.authenticatorId)
                 : ConnectionsManagementUtils
                     .resolveConnectionResourcePath(connectionResourcesUrl, authenticator.image);
@@ -345,19 +349,19 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             // TODO: setShowHandlerDisclaimerModal(true);
         }
 
-        const isFirstFactorAuth: boolean = 
+        const isFirstFactorAuth: boolean =
             ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS.includes(authenticatorId);
-        const isSecondFactorAuth: boolean = 
+        const isSecondFactorAuth: boolean =
             ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId);
         const isValidSecondFactorAddition: boolean = SignInMethodUtils.isSecondFactorAdditionValid(
             authenticator.defaultAuthenticator.authenticatorId,
             stepIndex,
             steps
         );
-        
+
         // If the adding option is a second factor, and if the adding step is the first or there are no
         // first factor authenticators in previous steps, show a warning and stop adding the option.
-        if ( 
+        if (
             isSecondFactorAuth
             && (
                 (!isFirstFactorAuth && (stepIndex === 0 || !isValidSecondFactorAddition))
@@ -748,6 +752,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                 isAuthenticationSequenceDefault,
                 isConditionalAuthenticationEnabled,
                 isLegacyEditorEnabled,
+                isSystemApplication,
                 isValidAuthenticationFlow,
                 isVisualEditorEnabled,
                 onConditionalAuthenticationToggle: (enabled: boolean) => setIsConditionalAuthenticationEnabled(enabled),

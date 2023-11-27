@@ -40,6 +40,7 @@ import { Divider, Grid, Icon } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
+import useAuthenticationFlow from "../../../../authentication-flow-builder/hooks/use-authentication-flow";
 import { AuthenticatorManagementConstants } from "../../../../connections";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { getMultiFactorAuthenticatorDetails } from "../../../../identity-providers/api";
@@ -73,6 +74,10 @@ interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureC
      * ID of the application.
      */
     appId: string;
+    /**
+     * Name of the application.
+     */
+    applicationName?: string;
     /**
      * All authenticators in the system.
      */
@@ -121,6 +126,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
     const {
         appId,
+        applicationName,
         authenticators,
         authenticationSequence,
         clientId,
@@ -134,8 +140,12 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     } = props;
 
     const { t } = useTranslation();
+
     const { getLink } = useDocumentation();
+
     const dispatch: Dispatch = useDispatch();
+
+    const { isSystemApplication } = useAuthenticationFlow();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const orgType: OrganizationType = useSelector((state: AppState) =>
@@ -311,6 +321,12 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     script: adaptiveScript
                 }
             };
+        }
+
+        // If the updating application is a system application,
+        // we need to send the application name in the PATCH request.
+        if (isSystemApplication) {
+            requestBody.name = applicationName;
         }
 
         setIsLoading(true);

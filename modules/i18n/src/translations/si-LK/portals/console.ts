@@ -708,7 +708,14 @@ export const console: ConsoleNS = {
         }
     },
     consoleSettings: {
+        administrators: {
+            tabLabel: "පරිපාලකයින්"
+        },
+        loginFlow: {
+            tabLabel: "පිවිසුම් ප්රවාහය"
+        },
         roles: {
+            tabLabel: "භූමිකාවන්",
             permissionLevels: {
                 edit: "සංස්කරණය කරන්න",
                 view: "කියවන්න"

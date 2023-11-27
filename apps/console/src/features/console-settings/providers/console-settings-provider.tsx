@@ -45,7 +45,8 @@ const ConsoleSettingsProvider = (props: PropsWithChildren<ConsoleSettingsProvide
 
     const {
         data: consoleApplication,
-        mutate: mutateConsoleApplication
+        mutate: mutateConsoleApplication,
+        isLoading: isConsoleConfigurationsFetchRequestLoading
     } = useGetApplication(consoleId, !!consoleId);
 
     /**
@@ -65,8 +66,10 @@ const ConsoleSettingsProvider = (props: PropsWithChildren<ConsoleSettingsProvide
         <ConsoleSettingsContext.Provider
             value={ {
                 consoleAuthenticationSequence: consoleApplication?.authenticationSequence,
+                consoleConfigurations: consoleApplication,
                 consoleDisplayName: consoleApplication?.name,
                 consoleId,
+                isConsoleConfigurationsFetchRequestLoading,
                 mutateConsoleConfigurations: mutateConsoleApplication,
                 updateConsoleLoginFlow
             } }
