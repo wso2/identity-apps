@@ -699,6 +699,14 @@ export const console: ConsoleNS = {
             placeholder: "Sélectionner l'écran"
         }
     },
+    consoleSettings: {
+        roles: {
+            permissionLevels: {
+                edit: "Modifier",
+                view: "Voir"
+            }
+        }
+    },
     develop: {
         componentExtensions: {
             component: {

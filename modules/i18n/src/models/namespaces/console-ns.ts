@@ -516,6 +516,14 @@ export interface ConsoleNS {
             placeholder: string;
         };
     };
+    consoleSettings: {
+        roles: {
+            permissionLevels: {
+                edit: string;
+                view: string;
+            };
+        };
+    };
     featureGate: {
         enabledFeatures: {
             tags: {

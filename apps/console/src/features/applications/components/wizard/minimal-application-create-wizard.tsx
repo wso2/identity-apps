@@ -356,7 +356,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         grantTypes: [
                             "client_credentials"
                         ],
-                        isFAPIApplication: generalFormValues.get("isFAPIApp").length >= 2
+                        isFAPIApplication: generalFormValues.get("isFAPIApp")?.length >= 2
                     }
                 };
             } else if (customApplicationProtocol === SupportedAuthProtocolTypes.SAML) {

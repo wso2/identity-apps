@@ -43,14 +43,14 @@ import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequen
 import { AuthenticatorManagementConstants } from "../../../../connections";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import { getMultiFactorAuthenticatorDetails } from "../../../../identity-providers/api";
-import { 
+import {
     IdentityProviderManagementConstants
 } from "../../../../identity-providers/constants/identity-provider-management-constants";
 import { GenericAuthenticatorInterface } from "../../../../identity-providers/models/identity-provider";
 import { OrganizationType } from "../../../../organizations/constants";
-import { 
-    ConnectorPropertyInterface, 
-    GovernanceConnectorInterface 
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface
 } from "../../../../server-configurations/models/governance-connectors";
 import { getRequestPathAuthenticators, updateAuthenticationSequence } from "../../../api";
 import {
@@ -141,16 +141,16 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const orgType: OrganizationType = useSelector((state: AppState) =>
         state?.organization?.organizationType);
 
-    const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(authenticationSequence);
+    const [ sequence, setSequence ] = useState<AuthenticationSequenceInterface>(undefined);
     const [ updateTrigger, setUpdateTrigger ] = useState<boolean>(false);
     const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
     const [ requestPathAuthenticators, setRequestPathAuthenticators ] = useState<any>(undefined);
     const [ selectedRequestPathAuthenticators, setSelectedRequestPathAuthenticators ] = useState<any>(undefined);
     const [ steps, setSteps ] = useState<number>(1);
-    const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(true);
+    const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(false);
     const [ isButtonDisabled, setIsButtonDisabled ] = useState<boolean>(false);
     const [ updatedSteps, setUpdatedSteps ] = useState<AuthenticationStepInterface[]>();
-    const [ isPasskeyProgressiveEnrollmentEnabled, setIsPasskeyProgressiveEnrollmentEnabled ] = 
+    const [ isPasskeyProgressiveEnrollmentEnabled, setIsPasskeyProgressiveEnrollmentEnabled ] =
         useState<boolean>(false);
 
     const [ validationResult, setValidationResult ] =
@@ -159,7 +159,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         useState<FederatedConflictWithSMSOTPReturnValueInterface>(null);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    
+
     useEffect(() => {
 
         const FEDERATED_CONNECTIONS: number = 1;
@@ -205,12 +205,12 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         getMultiFactorAuthenticatorDetails(AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID)
             .then((response: GovernanceConnectorInterface) => {
                 const properties: ConnectorPropertyInterface[] = response?.properties;
-                const passkeyProgressiveEnrollmentProperty: ConnectorPropertyInterface | undefined = 
-                    properties?.find((property: ConnectorPropertyInterface) => 
+                const passkeyProgressiveEnrollmentProperty: ConnectorPropertyInterface | undefined =
+                    properties?.find((property: ConnectorPropertyInterface) =>
                         property.name === "FIDO.EnablePasskeyProgressiveEnrollment");
-                const isPasskeyProgressiveEnrollmentEnabled: boolean = 
+                const isPasskeyProgressiveEnrollmentEnabled: boolean =
                     passkeyProgressiveEnrollmentProperty?.value === "true";
-    
+
                 setIsPasskeyProgressiveEnrollmentEnabled(isPasskeyProgressiveEnrollmentEnabled);
             });
     }, []);
@@ -224,6 +224,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             return;
         }
 
+        setSequence(authenticationSequence);
         setSteps(authenticationSequence.steps.length);
     }, [ authenticationSequence ]);
 
@@ -448,7 +449,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             });
 
             eventPublisher.publish(
-                "application-sign-in-method-click-update-button", 
+                "application-sign-in-method-click-update-button",
                 { "client-id": clientId, type: eventPublisherProperties }
             );
         });
@@ -671,7 +672,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                 className="pr-0"
                                 onClick={ () => {
                                     eventPublisher.publish(
-                                        "application-revert-sign-in-method-default", 
+                                        "application-revert-sign-in-method-default",
                                         { "client-id": clientId }
                                     );
                                     handleSequenceUpdate(null, true);
@@ -699,8 +700,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             </div>
             <Divider hidden />
             {
-                authenticationSequence.steps.some((step: AuthenticationStepInterface) => 
-                    step.options.find((authenticator: AuthenticatorInterface) => 
+                authenticationSequence.steps.some((step: AuthenticationStepInterface) =>
+                    step.options.find((authenticator: AuthenticatorInterface) =>
                         authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR))
                 && (
                     isPasskeyProgressiveEnrollmentEnabled
@@ -716,8 +717,8 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                                 "types.passkey.info.progressiveEnrollmentEnabled")
                                             }
                                         >
-                                        Passkey progressive enrollment is enabled. Users can enroll passkeys 
-                                        on-the-fly. If they wish to enroll multiple passkeys they should do 
+                                        Passkey progressive enrollment is enabled. Users can enroll passkeys
+                                        on-the-fly. If they wish to enroll multiple passkeys they should do
                                         so via MyAccount.
                                         </Trans>
                                         <DocumentationLink
@@ -741,7 +742,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                                 "types.passkey.info.progressiveEnrollmentDisabled")
                                             }
                                         >
-                                        Passkey progressive enrollment is disabled. Users must enroll 
+                                        Passkey progressive enrollment is disabled. Users must enroll
                                         their passkeys through MyAccount to use passwordless sign-in.
                                         </Trans>
                                         <DocumentationLink

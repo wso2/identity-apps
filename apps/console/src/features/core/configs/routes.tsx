@@ -38,7 +38,7 @@ import values from "lodash-es/values";
 import React, { FunctionComponent, lazy } from "react";
 import { getSidePanelIcons } from "./ui";
 import { identityProviderConfig, userstoresConfig } from "../../../extensions";
-import { 
+import {
     APIResourcesConstants as APIResourcesExtensionConstants
 }from "../../../extensions/components/api-resources/constants";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
@@ -132,9 +132,9 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 name: "Multi Attribute Login",
                                 path: AppConstants.getPaths()
                                     .get("GOVERNANCE_CONNECTOR_EDIT")
-                                    .replace(":categoryId", 
+                                    .replace(":categoryId",
                                         ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID)
-                                    .replace(":connectorId", 
+                                    .replace(":connectorId",
                                         ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID),
                                 protected: true,
                                 showOnSidePanel: false
@@ -154,9 +154,9 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 name: "Admin Forced Password Reset",
                                 path: AppConstants.getPaths()
                                     .get("GOVERNANCE_CONNECTOR_EDIT")
-                                    .replace(":categoryId", 
+                                    .replace(":categoryId",
                                         ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID)
-                                    .replace(":connectorId", 
+                                    .replace(":connectorId",
                                         ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET),
                                 protected: true,
                                 showOnSidePanel: false
@@ -414,7 +414,6 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: false
                     },
                     {
-                        category: "console:manage.features.sidePanel.categories.organizations",
                         children: [
                             {
                                 component: lazy(() =>
@@ -444,7 +443,6 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         showOnSidePanel: true
                     },
                     {
-                        category: "console:manage.features.sidePanel.categories.organizations",
                         children: [
                             {
                                 component: lazy(() => {
@@ -489,7 +487,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 12,
                         path: AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:develop.sidePanel.categories.branding",
@@ -664,7 +662,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 path: AppConstants.getPaths()
                                     .get("GOVERNANCE_CONNECTOR_EDIT")
                                     .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
-                                    .replace(":connectorId", 
+                                    .replace(":connectorId",
                                         ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_CONNECTOR_ID),
                                 protected: true,
                                 showOnSidePanel: false
@@ -685,11 +683,11 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 path: AppConstants.getPaths()
                                     .get("GOVERNANCE_CONNECTOR_EDIT")
                                     .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
-                                    .replace(":connectorId", 
+                                    .replace(":connectorId",
                                         ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID),
                                 protected: true,
                                 showOnSidePanel: false
-                            }   
+                            }
                         ],
                         component: lazy(() =>
                             import(
@@ -1625,7 +1623,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 order: 5,
                 path: UsersConstants.getPaths().get("COLLABORATOR_USERS_PATH"),
                 protected: true,
-                showOnSidePanel: false
+                showOnSidePanel: true
             },
             {
                 category: "extensions:manage.sidePanel.categories.userManagement",

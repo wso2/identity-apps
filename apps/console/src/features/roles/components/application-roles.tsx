@@ -105,7 +105,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
         useState<RoleAudienceTypes>(application?.associatedRoles?.allowedAudience ?? RoleAudienceTypes.ORGANIZATION);
     const [ tempRoleAudience, setTempRoleAudience ] =
         useState<RoleAudienceTypes>(application?.associatedRoles?.allowedAudience ?? RoleAudienceTypes.ORGANIZATION);
-    
+
     const [ roleList, setRoleList ] = useState<BasicRoleInterface[]>([]);
     const [ selectedRoles, setSelectedRoles ] =
         useState<BasicRoleInterface[]>(application?.associatedRoles?.roles ?? []);
@@ -120,7 +120,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     /**
      * Fetch application roles on component load and audience switch.
      */
-    useEffect(() => {        
+    useEffect(() => {
         getApplicationRoles();
         if (roleAudience === application?.associatedRoles?.allowedAudience) {
             setSelectedRoles(application?.associatedRoles?.roles);
@@ -132,7 +132,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     }, [ roleAudience ]);
 
     /**
-     * Send a request to update roles when one of the role audience radio buttons is selected. 
+     * Send a request to update roles when one of the role audience radio buttons is selected.
      */
     useEffect(() => {
 
@@ -141,8 +141,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
         }
 
         /**
-         * Ideally, the selectedRoles list should be cleared immediately when the current roleAudience is not allowed 
-         * for the application. This does not happen in some cases due to the asynchronous nature of the 
+         * Ideally, the selectedRoles list should be cleared immediately when the current roleAudience is not allowed
+         * for the application. This does not happen in some cases due to the asynchronous nature of the
          * setSelectedRoles() method. This if block prevents the roles from being updated with stale data in such cases.
          */
         if (roleAudience !== application?.associatedRoles?.allowedAudience && selectedRoles?.length !== 0) {
@@ -184,7 +184,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                         name: role?.displayName
                     });
                 });
-                
+
                 setRoleList(rolesArray);
 
                 if (shouldUpdateSelectedRolesList) {
@@ -238,7 +238,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             associatedRoles: data,
             id: appId,
             name: application.name
-        };        
+        };
 
         updateApplicationDetails(updatedApplication)
             .then(() => {
@@ -279,7 +279,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 
     /**
      * Handle the restore roles.
-     * 
+     *
      * @param remainingRoles - remaining roles
      */
     const handleRestoreUsers = (remainingRoles: BasicRoleInterface[]) => {
@@ -299,7 +299,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 
     /**
      * Prompt the user to confirm the role audience switch.
-     * 
+     *
      * @param selectedAudience - selected audience
      */
     const promptAudienceSwitchWarning = (selectedAudience: RoleAudienceTypes): void => {
@@ -383,7 +383,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
-                        <Grid.Column width={ 16 }>     
+                        <Grid.Column width={ 16 }>
                             <Heading as="h5">
                                 { t("extensions:develop.applications.edit.sections.rolesV2.assignedRoles") }
                             </Heading>
@@ -410,7 +410,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                 loading={ isLoading }
                                 options={ roleList }
                                 value={ selectedRoles ?? [] }
-                                getOptionLabel={ 
+                                getOptionLabel={
                                     (role: BasicRoleInterface) => role.name
                                 }
                                 renderInput={ (params: AutocompleteRenderInputParams) => (
@@ -421,14 +421,14 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     />
                                 ) }
                                 onChange={ (event: SyntheticEvent, roles: BasicRoleInterface[]) => {
-                                    setSelectedRoles(roles); 
+                                    setSelectedRoles(roles);
                                 } }
-                                isOptionEqualToValue={ 
-                                    (option: BasicRoleInterface, value: BasicRoleInterface) => 
-                                        option.id === value.id 
+                                isOptionEqualToValue={
+                                    (option: BasicRoleInterface, value: BasicRoleInterface) =>
+                                        option.id === value.id
                                 }
                                 renderTags={ (
-                                    value: BasicRoleInterface[], 
+                                    value: BasicRoleInterface[],
                                     getTagProps: AutocompleteRenderGetTagProps
                                 ) => value.map((option: BasicRoleInterface, index: number) => (
                                     <Chip
@@ -448,7 +448,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                 )) }
                                 renderOption={ (
                                     props: HTMLAttributes<HTMLLIElement>,
-                                    option: BasicRoleInterface, 
+                                    option: BasicRoleInterface,
                                     { selected }: { selected: boolean }
                                 ) => (
                                     <AutoCompleteRenderOption
@@ -468,7 +468,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                             loading={ isLoading }
                                             options={ removedRolesOptions }
                                             value={ removedRolesOptions }
-                                            getOptionLabel={ 
+                                            getOptionLabel={
                                                 (role: BasicRoleInterface) => role.name
                                             }
                                             onChange={ (
@@ -487,7 +487,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                 />
                                             ) }
                                             renderTags={ (
-                                                value: BasicRoleInterface[], 
+                                                value: BasicRoleInterface[],
                                                 getTagProps: AutocompleteRenderGetTagProps
                                             ) => value.map((option: BasicRoleInterface, index: number) => (
                                                 <Chip
@@ -507,7 +507,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                                 />
                                             ) ) }
                                             renderOption={ (
-                                                props: HTMLAttributes<HTMLLIElement>, 
+                                                props: HTMLAttributes<HTMLLIElement>,
                                                 option: BasicRoleInterface
                                             ) => (
                                                 <AutoCompleteRenderOption
@@ -517,8 +517,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                             ) }
                                         />
                                     ) : null
-                            } 
-                            
+                            }
+
                         </Grid.Column>
                     </Grid.Row>
                     {

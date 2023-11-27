@@ -215,76 +215,104 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
             />
             {
                 (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION
-                    || template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ) &&
+                    || template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                    || template?.id === ApplicationManagementConstants.MOBILE) &&
                 (
-                    <div>
+                    <>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Divider />
                             <Divider hidden />
                         </Grid.Column>
                         <Heading as="h4">
-                            { "API Based Authentication" }
+                            { "Application native authentication" }
                         </Heading>
-                        <Field.CheckboxLegacy
-                            ariaLabel="Enable apiBasedAuthentication"
-                            name="enableAPIBasedAuthentication"
-                            label={ "Enable API Based Authentication" }
-                            required={ false }
-                            value={ config?.enableAPIBasedAuthentication ? [ "enableAPIBasedAuthentication" ] : [] }
-                            data-testid={ `${testId}-enable-api-based-authentication` }
-                            hidden={ !applicationConfig.advancedConfigurations.showEnableAuthorization }
-                        />
+
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column className="pb-3">
+                                <Field.CheckboxLegacy
+                                    ariaLabel="Enable apiBasedAuthentication"
+                                    name="enableAPIBasedAuthentication"
+                                    label={ "Enable app-native authentication API" }
+                                    required={ false }
+                                    value={ config?.enableAPIBasedAuthentication 
+                                        ? [ "enableAPIBasedAuthentication" ] 
+                                        : [] 
+                                    }
+                                    data-testid={ `${testId}-enable-api-based-authentication` }
+                                    hidden={ !applicationConfig.advancedConfigurations.showEnableAuthorization }
+                                    hint={
+                                        "Select to authorize the application to use app-native authentication API" + 
+                                " to implement browserless in-app authentication"
+                                    }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                        
                         <Field.CheckboxLegacy
                             ariaLabel="Enable attestation"
                             name="enableClientAttestation"
                             label={ "Enable Client Attesstation" }
                             required={ false }
-                            value={ config?.attestationMetaData?.enableClientAttestation ? 
+                            value={ config?.attestationMetaData?.enableClientAttestation ?
                                 [ "enableClientAttestation" ] : [] }
                             data-testid={ `${testId}-enable-client-attestation` }
                             hidden={ !applicationConfig.advancedConfigurations.showEnableAuthorization }
                         />
-                        <Field.Input
-                            ariaLabel="Android package name"
-                            inputType="default"
-                            name="androidPackageName"
-                            label={ "Android application package name" }
-                            required={ false }
-                            value={ config?.attestationMetaData?.androidPackageName ? 
-                                config?.attestationMetaData?.androidPackageName : "" }
-                            placeholder={ "Android application package name" }
-                            hint={
-                                "Enter the Android Package Name, a unique identifier for your Android app," +
+
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column className="pb-3">
+                                <Field.Input
+                                    ariaLabel="Android package name"
+                                    inputType="default"
+                                    name="androidPackageName"
+                                    label={ "Android application package name" }
+                                    required={ false }
+                                    value={ config?.attestationMetaData?.androidPackageName ? 
+                                        config?.attestationMetaData?.androidPackageName : "" }
+                                    placeholder={ "Android application package name" }
+                                    hint={
+                                        "Enter the Android Package Name, a unique identifier for your Android app," +
                                 "typically in reverse domain format (e.g., com.example.myapp)."
-                            }
-                            maxLength={ 200 }
-                            minLength={ 3 }
-                            width={ 16 }
-                            data-testid={ `${testId}-client-attestation-android-package-name` }
-                        />
-                        <Field.Textarea
-                            ariaLabel="Android service account credentials"
-                            inputType="description"
-                            name="androidAttestationServiceCredentials"
-                            label={
-                                "Enter Service Account Credential"
-                            }
-                            placeholder={
-                                "Enter Service Account Credential"
-                            }
-                            value={ config?.attestationMetaData?.androidAttestationServiceCredentials ? 
-                                [ JSON.stringify(config?.attestationMetaData?.androidAttestationServiceCredentials,
-                                    null, 4) ] : [] }
-                            hint={
-                                "Provide the JSON key content for the Android service account " +
+                                    }
+                                    maxLength={ 200 }
+                                    minLength={ 3 }
+                                    width={ 16 }
+                                    data-testid={ `${testId}-client-attestation-android-package-name` }
+                                />
+                            </Grid.Column>                        
+                        </Grid.Row>    
+                        
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column className="pb-3">
+                                <Field.Textarea
+                                    ariaLabel="Android service account credentials"
+                                    inputType="description"
+                                    name="androidAttestationServiceCredentials"
+                                    label={
+                                        "Enter Service Account Credential"
+                                    }
+                                    placeholder={
+                                        "Enter Service Account Credential"
+                                    }
+                                    value={ config?.attestationMetaData?.androidAttestationServiceCredentials ? 
+                                        [ JSON.stringify(
+                                            config?.attestationMetaData?.androidAttestationServiceCredentials,
+                                            null, 4) 
+                                        ] : [] 
+                                    }
+                                    hint={
+                                        "Provide the JSON key content for the Android service account " +
                                 " credentials to access the Google Play Integrity Service."
-                            }
-                            type="text"
-                            maxLength={ 5000 }
-                            minLength={ 30 }
-                            width={ 30 }
-                            data-testid={ `${testId}-client-attestation-android-account-credentials` }
-                        />
+                                    }
+                                    type="text"
+                                    maxLength={ 5000 }
+                                    minLength={ 30 }
+                                    width={ 30 }
+                                    data-testid={ `${testId}-client-attestation-android-account-credentials` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                        
                         <Field.Input
                             ariaLabel="Apple App Id"
                             inputType="default"
@@ -296,7 +324,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             placeholder={
                                 "Apple applicaiton App Id"
                             }
-                            value={ config?.attestationMetaData?.appleAppId ? 
+                            value={ config?.attestationMetaData?.appleAppId ?
                                 config?.attestationMetaData?.appleAppId  : "" }
                             hint={
                                 "Enter the Apple App ID, a unique identifier assigned " +
@@ -307,7 +335,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             width={ 16 }
                             data-testid={ `${testId}-client-attestation-apple=app=id` }
                         />
-                    </div>
+                    </>
                 ) }
             <Field.Button
                 form={ FORM_ID }

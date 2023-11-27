@@ -270,6 +270,7 @@ export class Config {
             appTitle: window[ "AppUtils" ]?.getConfig()?.ui?.appTitle,
             applicationTemplateLoadingStrategy:
                 window[ "AppUtils" ]?.getConfig()?.ui?.applicationTemplateLoadingStrategy,
+            classicFeatures: window[ "AppUtils" ]?.getConfig()?.ui?.classicFeatures,
             connectionResourcesUrl: window[ "AppUtils" ]?.getConfig()?.ui?.connectionResourcesUrl,
             cookiePolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl,
             emailTemplates: {

@@ -2520,7 +2520,8 @@ export interface Extensions {
                     };
                 };
                 searchBar: {
-                    placeholder: string;
+                    placeholderDiagnostic: string;
+                    placeholderAudit: string;
                 };
                 refreshMessage: {
                     text: string;
@@ -2531,6 +2532,9 @@ export interface Extensions {
                 };
                 queryButton: {
                     label: string;
+                };
+                downloadButton: {
+                    label : string;
                 };
                 delayMessage: {
                     text: string;
