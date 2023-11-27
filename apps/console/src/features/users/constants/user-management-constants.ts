@@ -113,7 +113,7 @@ export class UserManagementConstants {
         .set("ACCOUNT_LOCKED", SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked)
         .set("ACCOUNT_DISABLED", SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled)
         .set("ONETIME_PASSWORD", SCIMConfigs.scimEnterpriseUserClaimUri.oneTimePassword);
-    
+
     public static readonly ROLES: string = "roles";
     public static readonly GROUPS: string = "groups";
     public static readonly SCIM_USER_PATH: string = "/Users";
