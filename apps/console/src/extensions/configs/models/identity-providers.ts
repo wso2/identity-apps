@@ -51,7 +51,6 @@ export interface IdentityProviderConfig {
         [key: string]: AuthenticatorExtensionsConfigInterface;
     };
     createIdentityProvider: {
-        enableTrustedTokenIssuer: boolean;
         /**
          * Used to the IDP create wizard of a certain IDP template type.
          * @param templateId - The IDP Template Type.

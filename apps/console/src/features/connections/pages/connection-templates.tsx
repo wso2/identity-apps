@@ -484,13 +484,6 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                                     return null;
                                                 }
 
-                                                if (template.id ===
-                                                        ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID
-                                                    && !identityProviderConfig?.createIdentityProvider
-                                                        ?.enableTrustedTokenIssuer) {
-                                                    return null;
-                                                }
-
                                                 return (
                                                     <ResourceGrid.Card
                                                         key={ templateIndex }
