@@ -222,12 +222,12 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                         { ...imageOptions }
                                     />
                                 ) }
-                            </Item>                        
+                            </Item>
                             { featureStatus && (
                                 <Item>
                                     { featureStatus }
                                 </Item>
-                            ) }                        
+                            ) }
                         </Grid>
                     }
 
@@ -430,8 +430,8 @@ export const InfoCard: FunctionComponent<PropsWithChildren<InfoCardPropsInterfac
                                             onClick(e as unknown as MouseEvent<HTMLAnchorElement>,
                                                 null);
                                         } }
-                                        data-componentid={ 
-                                            `${ componentId }-${ header.toString().replace(/\s/g, "-") }` 
+                                        data-componentid={
+                                            `${ componentId }-${ header.toString().replace(/\s/g, "-") }`
                                         }
                                     >
                                         Create
@@ -524,7 +524,7 @@ InfoCard.defaultProps = {
     inline: false,
     onClick: () => null,
     showCardAction: true,
-    showSetupGuideButton: true,
+    showSetupGuideButton: false,
     showTooltips: false,
     textAlign: "center"
 };
