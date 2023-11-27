@@ -524,7 +524,7 @@ InfoCard.defaultProps = {
     inline: false,
     onClick: () => null,
     showCardAction: true,
-    showSetupGuideButton: false,
+    showSetupGuideButton: true,
     showTooltips: false,
     textAlign: "center"
 };

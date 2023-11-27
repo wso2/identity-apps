@@ -548,9 +548,9 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
                                             return (
                                                 <ResourceGrid.Card
-                                                    showSetupGuideButton={ isSAASDeployment }
+                                                    showSetupGuideButton={ !!isSAASDeployment }
                                                     key={ templateIndex }
-                                                    resourceName={ 
+                                                    resourceName={
                                                         template?.name === "Expert Mode"
                                                             ? "Custom Connector"
                                                             : template?.name
