@@ -168,6 +168,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     "EmailVerification.Enable",
                     "A verification notification will be triggered during user creation.")
                 }
+                hidden={ !serverConfigurationConfig.dynamicConnectors }
             />
             <Field.Checkbox
                 ariaLabel="EmailVerification.LockOnCreation"

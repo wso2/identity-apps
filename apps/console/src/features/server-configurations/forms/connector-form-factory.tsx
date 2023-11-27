@@ -124,9 +124,7 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                     <UsernameRecoveryConfigurationForm
                         onSubmit={ onSubmit }
                         initialValues={ initialValues }
-                        isConnectorEnabled={ isConnectorEnabled }
                         readOnly={ isReadOnly }
-                        isSubmitting={ isSubmitting }
                     />
                 );
             }
@@ -173,16 +171,6 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
         case ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET:
             return (
                 <AdminForcedPasswordResetForm
-                    onSubmit={ onSubmit }
-                    initialValues={ initialValues }
-                    isConnectorEnabled={ isConnectorEnabled }
-                    readOnly={ isReadOnly }
-                    isSubmitting={ isSubmitting }
-                />
-            );
-        case ServerConfigurationsConstants.USERNAME_RECOVERY:
-            return (
-                <UsernameRecoveryConfigurationForm
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ isConnectorEnabled }

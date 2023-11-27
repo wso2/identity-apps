@@ -668,7 +668,6 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                     "SelfRegistration.NotifyAccountConfirmation",
                     "Enable sending notification for self sign up confirmation.")
                 }
-                hidden={ !serverConfigurationConfig.dynamicConnectors }
             />
             <Field.Input
                 ariaLabel="SelfRegistration.VerificationCode.SMSOTP.ExpiryTime"

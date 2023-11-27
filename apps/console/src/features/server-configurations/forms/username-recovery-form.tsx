@@ -17,20 +17,15 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
-import { Hint } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Label } from "semantic-ui-react";
-import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
 } from "../models/governance-connectors";
+import { GovernanceConnectorUtils } from "../utils/governance-connector-utils";
 
 /**
  * Interface for Username Recovery Configuration Form props.
@@ -49,28 +44,6 @@ interface UsernameRecoveryConfigurationFormPropsInterface extends IdentifiableCo
      * Is readonly.
      */
     readOnly?: boolean;
-    /**
-     * Whether the connector is enabled using the toggle button.
-     */
-    isConnectorEnabled?: boolean;
-    /**
-     * Specifies if the form is submitting.
-     */
-    isSubmitting?: boolean;
-}
-
-/**
- * Form initial values interface.
- */
-interface UsernameRecoveryFormInitialValuesInterface {
-    /**
-     * Recovery link expiry time.
-     */
-    expiryTime: string;
-    /**
-     * Notify user on successful Username recovery.
-     */
-    notifySuccess: boolean;
 }
 
 /**
@@ -82,11 +55,6 @@ export interface UsernameRecoveryFormErrorValidationsInterface {
      */
     expiryTime: string;
 }
-
-const allowedConnectorFields: string[] = [
-    ServerConfigurationsConstants.NOTIFY_SUCCESS,
-    ServerConfigurationsConstants.RECOVERY_LINK_EXPIRY_TIME
-];
 
 const FORM_ID: string = "governance-connectors-username-recovery-form";
 
@@ -104,14 +72,11 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
         initialValues,
         onSubmit,
         readOnly,
-        isConnectorEnabled,
-        isSubmitting,
         ["data-componentid"]: testId
     } = props;
 
-    const { t } = useTranslation();
-    const [ initialConnectorValues, setInitialConnectorValues ]
-        = useState<UsernameRecoveryFormInitialValuesInterface>(undefined);
+    const [ initialValue, setInitialValue ]
+        = useState<string>("");
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -122,64 +87,12 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
             return;
         }
 
-        let resolvedInitialValues: UsernameRecoveryFormInitialValuesInterface = null;
-
         initialValues.properties.map((property: ConnectorPropertyInterface) => {
-            if (allowedConnectorFields.includes(property.name)) {
-                if (property.name === ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE) {
-                    resolvedInitialValues = {
-                        ...resolvedInitialValues,
-                        notifySuccess: CommonUtils.parseBoolean(property.value)
-                    };
-                } else if (property.name === ServerConfigurationsConstants.RECOVERY_LINK_EXPIRY_TIME) {
-                    resolvedInitialValues = {
-                        ...resolvedInitialValues,
-                        expiryTime: property.value
-                    };
-                }
+            if (property.name === ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE) {
+                setInitialValue(property.value);
             }
         });
-        setInitialConnectorValues(resolvedInitialValues);
     }, [ initialValues ]);
-
-    /**
-     * Validate input data.
-     *
-     * @param values - Form values.
-     * @returns Form validation.
-     */
-    const validateForm = (values: any):
-        UsernameRecoveryFormErrorValidationsInterface => {
-
-        const errors: UsernameRecoveryFormErrorValidationsInterface = {
-            expiryTime: undefined
-        };
-
-        if (!values.expiryTime) {
-            // Check for required error.
-            errors.expiryTime = t("extensions:manage.serverConfigurations.accountRecovery." +
-                "passwordRecovery.form.fields.expiryTime.validations.empty");
-        } else if (!FormValidation.isInteger(values.expiryTime as unknown as number)) {
-            // Check for invalid input.
-            errors.expiryTime = t("extensions:manage.serverConfigurations.accountRecovery." +
-                "passwordRecovery.form.fields.expiryTime.validations.invalid");
-        } else if ((parseInt(values.expiryTime, 10) < GovernanceConnectorConstants
-            .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_VALUE)
-            || (parseInt(values.expiryTime, 10) > GovernanceConnectorConstants
-                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_VALUE)) {
-            // Check for invalid range.
-            errors.expiryTime = t("extensions:manage.serverConfigurations.accountRecovery." +
-                "passwordRecovery.form.fields.expiryTime.validations.range");
-        } else if (values.expiryTime &&
-            !FormValidation.isLengthValid(values.expiryTime as string, GovernanceConnectorConstants
-                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_LENGTH)) {
-            // Check for invalid input length.
-            errors.expiryTime = t("extensions:manage.serverConfigurations.accountRecovery." +
-                "passwordRecovery.form.fields.expiryTime.validations.maxLengthReached");
-        }
-
-        return errors;
-    };
 
     /**
      * Prepare form values for submitting.
@@ -187,103 +100,34 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
      * @param values - Form values.
      * @returns Sanitized form values.
      */
-    const getUpdatedConfigurations = (values: Record<string, any>) => {
-        const data: {
-            "Recovery.ExpiryTime": any;
-            "Recovery.NotifySuccess": boolean;
-        } = {
-            "Recovery.ExpiryTime": values.expiryTime !== undefined
-                ? values.expiryTime
-                : initialConnectorValues?.expiryTime,
-            "Recovery.NotifySuccess": values.notifySuccess !== undefined
-                ? !!values.notifySuccess
-                : initialConnectorValues?.notifySuccess
+    const getUpdatedConfigurations = (value: boolean) => {
+        const data: { [ key: string ]: unknown } = {
+            [ GovernanceConnectorUtils.decodeConnectorPropertyName(
+                ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE) ]: value.toString()
         };
 
         return data;
     };
 
-    if (!initialConnectorValues) {
-        return null;
-    }
-
     return (
         <div className={ "connector-form" }>
             <Form
                 id={ FORM_ID }
-                initialValues={ initialConnectorValues }
-                onSubmit={ (values: Record<string, any>) => onSubmit(getUpdatedConfigurations(values)) }
-                validate={ validateForm }
+                onSubmit={ null }
                 uncontrolledForm={ false }
             >
                 <Field.Checkbox
+                    className="mb-3"
                     ariaLabel="notifyRecoverySuccess"
-                    name="notifySuccess"
-                    label={ t("extensions:manage.serverConfigurations.accountRecovery." +
-                        "passwordRecovery.form.fields.notifySuccess.label") }
+                    name={ ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE }
+                    label="Enable username recovery"
                     required={ false }
                     readOnly={ readOnly }
                     width={ 10 }
-                    disabled={ !isConnectorEnabled }
                     data-testid={ `${testId}-notify-success` }
-                />
-                <Hint className={ "mb-5" }>
-                    {
-                        "This specifies whether to notify the user via an email when username recovery is successful"
-                    }
-                </Hint>
-                <Field.Input
-                    ariaLabel="expiryTime"
-                    inputType="number"
-                    name="expiryTime"
-                    min={
-                        GovernanceConnectorConstants.PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS
-                            .EXPIRY_TIME_MIN_VALUE
-                    }
-                    max={
-                        GovernanceConnectorConstants.PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS
-                            .EXPIRY_TIME_MAX_VALUE
-                    }
-                    label={ t("extensions:manage.serverConfigurations.accountRecovery." +
-                        "passwordRecovery.form.fields.expiryTime.label") }
-                    placeholder={ t("extensions:manage.serverConfigurations.accountRecovery." +
-                        "passwordRecovery.form.fields.expiryTime.placeholder") }
-                    required={ false }
-                    maxLength={
-                        GovernanceConnectorConstants
-                            .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_LENGTH
-                    }
-                    minLength={
-                        GovernanceConnectorConstants
-                            .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_LENGTH
-                    }
-                    readOnly={ readOnly }
-                    width={ 10 }
-                    labelPosition="right"
-                    disabled={ !isConnectorEnabled }
-                    data-testid={ `${testId}-link-expiry-time` }
-                >
-                    <input/>
-                    <Label
-                        content={ "mins" }
-                    />
-                </Field.Input>
-                <Hint className={ "mb-5" }>
-                    {
-                        "Username recovery link expiry time in minutes"
-                    }
-                </Hint>
-                <Field.Button
-                    form={ FORM_ID }
-                    size="small"
-                    buttonType="primary_btn"
-                    ariaLabel="Password Recovery update button"
-                    name="update-button"
-                    data-testid={ `${testId}-submit-button` }
-                    disabled={ isSubmitting }
-                    loading={ isSubmitting }
-                    label={ t("common:update") }
-                    hidden={ !isConnectorEnabled || readOnly }
+                    toggle
+                    listen={ (value: boolean) => onSubmit(getUpdatedConfigurations(value)) }
+                    checked={ initialValue === "true" }
                 />
             </Form>
         </div>

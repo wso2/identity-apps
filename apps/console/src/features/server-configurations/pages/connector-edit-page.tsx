@@ -195,7 +195,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 value: data.checked.toString()
             });
         }
-        
+
         updateGovernanceConnector(updateData, categoryId, connectorId)
             .then(() => {
                 loadConnectorDetails();
@@ -370,8 +370,8 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             case ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID:
                 return t("extensions:manage.serverConfigurations.accountSecurity.loginAttemptSecurity.heading");
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
-                return type === "username" 
-                    ? "Username Recovery" 
+                return type === "username"
+                    ? "Username Recovery"
                     : t("extensions:manage.serverConfigurations.accountRecovery.passwordRecovery.heading");
             case ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID:
                 return t("extensions:manage.serverConfigurations.accountSecurity.botDetection.heading");
@@ -393,9 +393,9 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             case ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID:
                 return t("extensions:manage.serverConfigurations.accountSecurity.loginAttemptSecurity.subHeading");
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
-                return type === "username" 
+                return type === "username"
                     ? "Enable self-service username recovery for users on the login page." +
-                        " The user will receive a username reset link via email upon request." 
+                        " The user will receive a username reset link via email upon request."
                     : (
                         <div style={ { whiteSpace: "pre-line" } }>
                             { t("extensions:manage.serverConfigurations.accountRecovery.passwordRecovery.subHeading") }
@@ -403,7 +403,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                                 { t("extensions:common.learnMore") }
                             </DocumentationLink>
                         </div>
-                    ); 
+                    );
             case ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID:
                 return t("extensions:manage.serverConfigurations.accountSecurity.botDetection.subHeading");
             case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
@@ -429,7 +429,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return "Enable self-service username recovery for users on the login page." +
                     "The user will receive a usernmae reset link via email upon request.";
             case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
-                return "Manage and configure settings related configuring " 
+                return "Manage and configure settings related configuring "
                     + "multiple attributes as the login identifier.";
             case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
                 return "Allow users choose passwords in admin-initiated onboarding.";
@@ -555,7 +555,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                 return ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE;
             case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
                 return type === "username"
-                    ? ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE
+                    ? undefined
                     : ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE;
             case ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_CONNECTOR_ID:
                 return ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE;
