@@ -29,7 +29,6 @@ import {
     useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
-import { CommonPluggableComponentPropertyInterface } from "apps/console/src/features/connections";
 import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
@@ -38,6 +37,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import { SIWEAuthenticationProviderCreateWizardContent } from "./swe-authentication-provider-create-wizard-content";
+import { CommonPluggableComponentPropertyInterface } from "../../../../../features/connections";
 import { ModalWithSidePanel, TierLimitReachErrorModal } from "../../../../../features/core/components";
 import { EventPublisher } from "../../../../../features/core/utils";
 import { createIdentityProvider } from "../../../../../features/identity-providers/api";
