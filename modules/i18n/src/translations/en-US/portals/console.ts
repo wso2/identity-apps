@@ -11257,12 +11257,11 @@ export const console: ConsoleNS = {
                     },
                     addUserWizard: {
                         askPassword: {
-                            alphanumericUsernameEnabled: "To use the password reset feature, disable " +
+                            alphanumericUsernameEnabled: "To invite users to set the password, disable " +
                                 "alphanumeric username feature.",
-                            emailInvalid: "To use the password reset feature, please use a valid email address as " +
-                                "the username.",
-                            emailVerificationDisabled: "To use the password reset feature, enable email verification by " +
-                                "configuring an email provider."
+                            emailInvalid: "To invite users to set the password, please enter a valid email address.",
+                            emailVerificationDisabled: "To invite users to set the password, enable email verification from " +
+                                "Login & Registration settings."
                         },
                         buttons: {
                             next: "Next",
@@ -11272,7 +11271,8 @@ export const console: ConsoleNS = {
                             basicDetails: "Basic Details",
                             groups: "User Groups",
                             roles: "User Roles",
-                            summary: "Summary"
+                            summary: "Summary",
+                            method: "Method"
                         },
                         subTitle: "Follow the steps to create the new user",
                         title: "Create User",
@@ -11823,6 +11823,16 @@ export const console: ConsoleNS = {
                 }
             },
             users: {
+                addUserType: {
+                    createUser: {
+                        title: "Create user",
+                        description: "Create a user in your organization."
+                    },
+                    inviteParentUser: {
+                        title: "Invite parent user",
+                        description: "Invite user from the parent organization."
+                    }
+                },
                 advancedSearch: {
                     form: {
                         dropdown: {

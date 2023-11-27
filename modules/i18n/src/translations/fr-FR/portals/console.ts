@@ -9526,7 +9526,8 @@ export const console: ConsoleNS = {
                             basicDetails: "Informations générales",
                             groups: "Groupes",
                             roles: "Rôles",
-                            summary: "Résumé"
+                            summary: "Résumé",
+                            method: "Méthode"
                         },
                         subTitle: "Assistant de création d'un nouvel utilisateur",
                         title: "Ajouter un utilisateur",
@@ -10112,6 +10113,16 @@ export const console: ConsoleNS = {
                 }
             },
             users: {
+                addUserType: {
+                    createUser: {
+                        title: "Créer un utilisateur",
+                        description: "Créez un utilisateur dans votre organisation."
+                    },
+                    inviteParentUser: {
+                        title: "Inviter l'utilisateur des parents",
+                        description: "Invitez l'utilisateur de l'organisation parentale."
+                    }
+                },
                 advancedSearch: {
                     form: {
                         dropdown: {

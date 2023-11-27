@@ -9317,7 +9317,8 @@ export const console: ConsoleNS = {
                             basicDetails: "මූලික විස්තර",
                             groups: "පරිශීලක කණ්ඩායම්",
                             roles: "පරිශීලක භූමිකාවන්",
-                            summary: "සාරාංශය"
+                            summary: "සාරාංශය",
+                            method: "ක්රමය"
                         },
                         subTitle: "නව පරිශීලකයා නිර්මාණය කිරීමට පියවර අනුගමනය කරන්න",
                         title: "පරිශීලක සාදන්න",
@@ -9867,6 +9868,16 @@ export const console: ConsoleNS = {
                 }
             },
             users: {
+                addUserType: {
+                    createUser: {
+                        title: "පරිශීලකයා සාදන්න",
+                        description: "ඔබේ සංවිධානයේ පරිශීලකයෙකු සාදන්න."
+                    },
+                    inviteParentUser: {
+                        title: "දෙමාපිය පරිශීලකයාට ආරාධනා කරන්න",
+                        description: "මව් සංවිධානයෙන් පරිශීලකයාට ආරාධනා කරන්න."
+                    }
+                },
                 advancedSearch: {
                     form: {
                         dropdown: {

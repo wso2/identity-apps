@@ -113,7 +113,7 @@ export class UserManagementConstants {
         .set("ACCOUNT_LOCKED", SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked)
         .set("ACCOUNT_DISABLED", SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled)
         .set("ONETIME_PASSWORD", SCIMConfigs.scimEnterpriseUserClaimUri.oneTimePassword);
-    
+
     public static readonly ROLES: string = "roles";
     public static readonly GROUPS: string = "groups";
     public static readonly SCIM_USER_PATH: string = "/Users";
@@ -237,4 +237,19 @@ export enum HiddenFieldNames {
 export enum PasswordOptionTypes {
     ASK_PASSWORD = "ask-password",
     CREATE_PASSWORD = "create-password"
+}
+
+/**
+ * Enum for wizard steps form types.
+ * @readonly
+ */
+export enum WizardStepsFormTypes {
+    USER_MODE = "UserMode",
+    BASIC_DETAILS = "BasicDetails",
+    INVITE_BASIC_DETAILS = "InviteBasicDetails",
+    ROLE_LIST= "RoleList",
+    GROUP_LIST= "GroupList",
+    SUMMARY = "summary",
+    USER_TYPE = "UserType",
+    USER_SUMMARY = "UserSummary"
 }
