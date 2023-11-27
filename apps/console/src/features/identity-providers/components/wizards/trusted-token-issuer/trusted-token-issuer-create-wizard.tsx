@@ -210,10 +210,13 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
      *
      * @param value - URL to check.
      */
-    const isLoopBackCall = (value: string): string =>
-        !(URLUtils.isLoopBackCall(value) && commonConfig?.blockLoopBackCalls)
-            ? undefined
-            : t("console:develop.features.idp.forms.common.internetResolvableErrorMessage");
+    const isLoopBackCall = (value: string): string => {
+        if (URLUtils.isLoopBackCall(value) && commonConfig?.blockLoopBackCalls) {
+            return t("console:develop.features.idp.forms.common.internetResolvableErrorMessage");
+        }
+
+        return undefined;
+    };
 
     /**
      * Create the token issuer body.
