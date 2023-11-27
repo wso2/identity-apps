@@ -122,7 +122,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         "username.validations.regExViolation");
     const USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE: string = t("console:manage.features.users.consumerUsers.fields." +
         "username.validations.invalidCharacters");
-    // const USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE: string = 
+    // const USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE: string =
     // t("extensions:manage.features.user.addUser.validation." +
     //     "usernameSymbols");
     // const USERNAME_HAS_INVALID_LENGTH_ERROR_MESSAGE: string =
@@ -237,7 +237,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
      *
      * @param values - Map of form values.
      */
-    const handleEmailEmpty = (values: Map<string, FormValue>): void => {        
+    const handleEmailEmpty = (values: Map<string, FormValue>): void => {
         if (values.get("email")?.toString() === "") {
             setIsEmailFilled(false);
         } else {
