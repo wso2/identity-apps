@@ -24,7 +24,7 @@ import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -33,12 +33,12 @@ import { serverConfigurationConfig } from "../../../extensions/configs/server-co
 import { AppState, FeatureConfigInterface, store  } from "../../core";
 import { getConnectorCategories, getConnectorCategory } from "../api";
 import GovernanceConnectorCategoriesGrid from "../components/governance-connector-grid";
+import { ServerConfigurationsConstants } from "../constants";
 import {
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorInterface
 } from "../models";
 import { GovernanceConnectorUtils } from "../utils";
-import { ServerConfigurationsConstants } from "../constants";
 
 /**
  * Props for the Server Configurations page.
@@ -68,12 +68,21 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const isPasswordInputValidationEnabled: boolean = useSelector((state: AppState) => 
+    const isPasswordInputValidationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isPasswordInputValidationEnabled);
-    const predefinedCategories = GovernanceConnectorUtils.getPredefinedConnectorCategories();
 
-    const [ 
-        dynamicConnectorCategories, 
+    const predefinedCategories: any = useMemo(() => {
+        const originalConnectors: any = GovernanceConnectorUtils.getPredefinedConnectorCategories();
+
+        return originalConnectors.map((category: any) => ({
+            ...category,
+            connectors: category.connectors.filter(
+                (connector: any) => !serverConfigurationConfig.connectorsToHide.includes(connector.id))
+        }));
+    }, []);
+
+    const [
+        dynamicConnectorCategories,
         setDynamicConnectorCategories
     ] = useState<GovernanceConnectorCategoryInterface[]>([]);
     const [ connectors, setConnectors ] = useState<GovernanceConnectorWithRef[]>([]);
@@ -101,7 +110,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                         return !isPasswordInputValidationEnabled;
                     }
 
-                    return serverConfigurationConfig.connectorCategoriesToShow.includes(category.id); 
+                    return serverConfigurationConfig.connectorCategoriesToShow.includes(category.id);
                 }));
 
                 setDynamicConnectorCategories(connectorCategoryArray);
@@ -110,7 +119,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 if (error.response && error.response.data && error.response.data.detail) {
                     store.dispatch(addAlert({
                         description: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
-                        "getConnectorCategories.error.description", 
+                        "getConnectorCategories.error.description",
                         { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
@@ -244,11 +253,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                     isConnectorCategoryLoading
                         ? renderLoadingPlaceholder()
                         : (
-                            <GovernanceConnectorCategoriesGrid 
+                            <GovernanceConnectorCategoriesGrid
                                 connectorCategories={ predefinedCategories }
-                                dynamicConnectors={ connectors }   
+                                dynamicConnectors={ connectors }
                             />
-                        )                    
+                        )
                 }
             </Ref>
         </PageLayout>

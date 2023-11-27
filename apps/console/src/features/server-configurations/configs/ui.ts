@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import { 
-    CircleUserIcon, 
-    GearIcon, 
+import {
+    CircleUserIcon,
+    GearIcon,
     HexagonTwoIcon,
+    Icon,
     PadlockAsteriskIcon,
-    Icon, 
-    ShareNodesIcon, 
-    ShieldCheckIcon, 
-    ShieldUserPencilIcon, 
-    UserDatabaseIcon, 
-    UserPlusIcon, 
-    VerticleFilterBarsIcon 
+    ShareNodesIcon,
+    ShieldCheckIcon,
+    ShieldUserPencilIcon,
+    UserDatabaseIcon,
+    UserPlusIcon,
+    VerticleFilterBarsIcon
 } from "@oxygen-ui/react-icons";
 import UsernameValidationIcon from "../../../extensions/assets/images/icons/username-validation-icon.svg";
 import {
@@ -37,7 +37,7 @@ import {
     default as PasswordValidationIcon
 } from "../../../themes/default/assets/images/icons/password-validation.svg";
 import {
-    default as RobotIcon
+    ReactComponent as RobotIcon
 } from "../../../themes/default/assets/images/icons/robot-icon.svg";
 import {
     default as UserAddIcon
@@ -135,7 +135,6 @@ export const getSettingsSectionIcons = (): GetSettingsSectionIconsInterface => {
     return {
         accountLock: WarningWithNumberIcon,
         accountRecovery: LockRecoverIcon,
-        botDetection: RobotIcon,
         jwtPrivateKeyValidation: JWTKeyIcon,
         passwordValidation: PasswordValidationIcon,
         selfRegistration: UserAddIcon,
@@ -154,6 +153,7 @@ export const getConnectorCategoryIcon = (): ConnectorCategoryIconsInterface => {
         [ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR_ID]: UserDatabaseIcon,
         [ServerConfigurationsConstants.SSO_SETTINGS_CATEGORY_ID]: ShareNodesIcon,
         [ServerConfigurationsConstants.LOGIN_SECURITY_SETTINGS_CATEGORY_ID]: ShieldUserPencilIcon,
+        [ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID]: RobotIcon,
         "default": GearIcon
     };
 };

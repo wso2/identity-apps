@@ -78,8 +78,8 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         ServerConfigurationsConstants.PRIVATE_KEY_JWT_CLIENT_AUTH,
         ServerConfigurationsConstants.USERNAME_VALIDATION
     ],
-    connectorsToShow: [ 
-        "account-recovery", 
+    connectorsToShow: [
+        "account-recovery",
         "self-sign-up",
         "user-email-verification"
     ],
@@ -125,7 +125,6 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         "QWNjb3VudCBNYW5hZ2VtZW50",
         "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz"
     ],
-    
     processInitialValues: (
         initialValues: ValidationFormInterface,
         passwordHistoryCount: GovernanceConnectorInterface,
@@ -229,8 +228,8 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
 
         return updatePasswordExpiryProperties(passwordExpiryData);
     },
-    processPasswordPoliciesSubmitData: (data: PasswordPoliciesInterface) => {   
-        let passwordExpiryTime: number | undefined = parseInt((data.passwordExpiryTime as string));     
+    processPasswordPoliciesSubmitData: (data: PasswordPoliciesInterface) => {
+        let passwordExpiryTime: number | undefined = parseInt((data.passwordExpiryTime as string));
         const passwordExpiryEnabled: boolean | undefined = data.passwordExpiryEnabled;
         let passwordHistoryCount: number | undefined = parseInt((data.passwordHistoryCount as string));
         const passwordHistoryCountEnabled: boolean | undefined = data.passwordHistoryCountEnabled;

@@ -37,7 +37,7 @@ interface AdminForcedPasswordResetFormPropsInterface extends IdentifiableCompone
     initialValues: GovernanceConnectorInterface;
     /**
      * Callback for form submit.
-     * 
+     *
      * @param values - Resolved Form Values.
      */
     onSubmit: (values) => void;
@@ -116,20 +116,14 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
      * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: Record<string, unknown>) => {
-        let data = {};
-
-        for (const key in values) {
-            if (Object.prototype.hasOwnProperty.call(values, key)) {
-                data = {
-                    ...data,
-                    [ GovernanceConnectorUtils.decodeConnectorPropertyName(key) ]: values[ key ]
-                };
-            }
-        }
+        const data: any = {
+            [ GovernanceConnectorUtils.decodeConnectorPropertyName(
+                "Recovery.AdminPasswordReset.RecoveryLink") ]: values[ "Recovery.AdminPasswordReset.RecoveryLink" ]
+        };
 
         return data;
-    };   
-   
+    };
+
     if (!initialConnectorValues) {
         return null;
     }
@@ -139,8 +133,8 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
             id={ FORM_ID }
             uncontrolledForm
             initialValues={ initialFormValues }
-            onSubmit={ (values: Record<string, unknown>) => 
-                onSubmit(getUpdatedConfigurations(values)) 
+            onSubmit={ (values: Record<string, unknown>) =>
+                onSubmit(getUpdatedConfigurations(values))
             }
         >
             <Field.Checkbox
@@ -150,90 +144,18 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
                 className="toggle"
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "Account Management",
-                    "Recovery.AdminPasswordReset.RecoveryLink", 
+                    "Recovery.AdminPasswordReset.RecoveryLink",
                     "Enable password reset via recovery e-mail") }
-                defaultValue={ initialFormValues?.[ 
+                defaultValue={ initialFormValues?.[
                     "Recovery.AdminPasswordReset.RecoveryLink" ] === "true" }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }
                 width={ 16 }
-                data-componentid={ `${ testId }-enable-auto-login` }
+                data-componentid={ `${ testId }-enable-admin-forced-password-reset` }
                 hint={ GovernanceConnectorUtils.resolveFieldHint(
                     "Account Management",
-                    "Recovery.AdminPasswordReset.RecoveryLink", 
+                    "Recovery.AdminPasswordReset.RecoveryLink",
                     "User gets notified with a link to reset password.")
-                }
-            />
-            <Field.Checkbox
-                ariaLabel="Recovery.AdminPasswordReset.OTP"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "Recovery.AdminPasswordReset.OTP") 
-                }
-                className="toggle"
-                label={ GovernanceConnectorUtils.resolveFieldLabel(
-                    "Account Management",
-                    "Recovery.AdminPasswordReset.OTP", 
-                    "Enable password reset via OTP") }
-                defaultValue={ initialFormValues?.[ 
-                    "Recovery.AdminPasswordReset.OTP" ] === "true" }
-                readOnly={ readOnly }
-                disabled={ !isConnectorEnabled }
-                width={ 16 }
-                data-componentid={ `${ testId }-enable-auto-login` }
-                hint={ GovernanceConnectorUtils.resolveFieldHint(
-                    "Account Management",
-                    "Recovery.AdminPasswordReset.OTP", 
-                    "An OTP generated and stored in users claims.")
-                }
-            />
-            <Field.Checkbox
-                ariaLabel="Recovery.AdminPasswordReset.Offline"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "Recovery.AdminPasswordReset.Offline") 
-                }
-                className="toggle"
-                label={ GovernanceConnectorUtils.resolveFieldLabel(
-                    "Account Management",
-                    "Recovery.AdminPasswordReset.Offline", 
-                    "Enable password reset offline") }
-                defaultValue={ initialFormValues?.[ 
-                    "Recovery.AdminPasswordReset.Offline" ] === "true" }
-                readOnly={ readOnly }
-                disabled={ !isConnectorEnabled }
-                width={ 16 }
-                data-componentid={ `${ testId }-enable-auto-login` }
-                hint={ GovernanceConnectorUtils.resolveFieldHint(
-                    "Account Management",
-                    "Recovery.AdminPasswordReset.Offline", 
-                    "An OTP generated and stored in users claims.")
-                }
-            />
-            <Field.Input
-                ariaLabel="Recovery.AdminPasswordReset.ExpiryTime"
-                inputType="number"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "Recovery.AdminPasswordReset.ExpiryTime") 
-                }
-                type="number"
-                width={ 16 }
-                required={ true }
-                placeholder={ "Enter password reset code expiry time" }
-                labelPosition="top"
-                minLength={ 3 }
-                maxLength={ 100 }
-                readOnly={ readOnly }
-                initialValue={ initialFormValues?.[ 
-                    "Recovery.AdminPasswordReset.ExpiryTime" ] }
-                data-testid={ `${ testId }-otp-length` }
-                label={ GovernanceConnectorUtils.resolveFieldLabel(
-                    "Account Management",
-                    "Recovery.AdminPasswordReset.ExpiryTime", 
-                    "Admin forced password reset code expiry time") }
-                disabled={ !isConnectorEnabled }
-                hint={ GovernanceConnectorUtils.resolveFieldHint(
-                    "Account Management",
-                    "Recovery.AdminPasswordReset.ExpiryTime", 
-                    "Validity time of the admin forced password reset code in minutes.")
                 }
             />
             <Field.Button

@@ -16,11 +16,8 @@
  * under the License.
  */
 
-import { Typography } from "@mui/material";
 import {
     AlertLevels,
-    DeprecatedFeatureInterface,
-    FeatureAccessConfigInterface, 
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -47,7 +44,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Ref } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { AppConstants, AppState, history } from "../../core";
 import { GovernanceConnectorUtils, ServerConfigurationsConstants } from "../../server-configurations";
 import { getConfiguration } from "../../users/utils/generate-password.utils";
 import { updateValidationConfigData, useValidationConfigData } from "../api";
@@ -76,12 +73,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const pageContextRef: MutableRefObject<HTMLElement> = useRef(null);
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-    const gonvernanConnectorsConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.governanceConnectors);
-    const passwordPatternConnector: DeprecatedFeatureInterface = gonvernanConnectorsConfig
-        .deprecatedFeaturesToShow.find((feature) => {
-            return feature?.name === "passwordPolicy";
-        });
+    const isPasswordInputValidationEnabled: boolean = useSelector((state: AppState) =>
+        state?.config?.ui?.isPasswordInputValidationEnabled);
 
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<
@@ -104,7 +97,6 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         boolean
     >(false);
     const [ passwordExpiryEnabled, setPasswordExpiryEnabled ] = useState<boolean>(false);
-    const [ passwordValidationType, setPasswordValidationType ] = useState<string>("policyValidation");
 
     const {
         data: passwordHistoryCountData,
@@ -252,7 +244,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
      * Initialize the initial form values.
      */
     const initializeForm = (): void => {
-        let updatedInitialFormValues: ValidationFormInterface = serverConfigurationConfig.processInitialValues(
+        let updatedInitialFormValues: ValidationFormInterface = serverConfigurationConfig?.processInitialValues(
             getConfiguration(validationData),
             passwordHistoryCountData,
             setPasswordHistoryEnabled
@@ -445,101 +437,145 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const resolveLegacyPasswordValidation: () => ReactElement = (): ReactElement => {
         return (
             <>
-                {
-                    passwordPatternConnector.deprecatedProperties
-                        .includes("passwordPolicy.pattern") && (
-                        <>
-                            <Field.Input
-                                ariaLabel="passwordPolicy.pattern"
-                                inputType="text"
-                                name={ 
-                                    GovernanceConnectorUtils
-                                        .encodeConnectorPropertyName(
-                                            "passwordPolicy.pattern"
-                                        ) 
-                                }
-                                type="text"
-                                width={ 12 }
-                                required={ true }
-                                placeholder={ "Enter password pattern regex" }
-                                labelPosition="top"
-                                minLength={ 3 }
-                                maxLength={ 100 }
-                                readOnly={ false }
-                                initialValue={ 
-                                    initialFormValues?.[ "passwordPolicy.pattern" ] 
-                                }
-                                data-testid={ `${ componentId }-otp-length` }
-                                label={ 
-                                    GovernanceConnectorUtils.resolveFieldLabel(
-                                        "Password Validation",
-                                        "passwordPolicy.pattern", 
-                                        "Password pattern regex") 
-                                }
-                                disabled={ false }
-                            />
-                            <Hint>
-                                { 
-                                    GovernanceConnectorUtils.resolveFieldHint(
-                                        "Password Validation",
-                                        "passwordPolicy.pattern", 
-                                        "Length of the OTP for SMS and" + 
-                                        "e-mail verifications. OTP length" + 
-                                        " must be 4-10."
-                                    ) 
-                                }
-                            </Hint>
-                        </>
-                    )
-                }
-                {
-                    passwordPatternConnector.deprecatedProperties
-                        .includes("passwordPolicy.pattern") && (
-                        <>
-                            <Field.Input
-                                ariaLabel="passwordPolicy.errorMsg"
-                                inputType="text"
-                                name={ 
-                                    GovernanceConnectorUtils
-                                        .encodeConnectorPropertyName(
-                                            "passwordPolicy.errorMsg"
-                                        ) 
-                                }
-                                type="text"
-                                width={ 12 }
-                                required={ true }
-                                placeholder={ "Enter password pattern regex" }
-                                labelPosition="top"
-                                minLength={ 3 }
-                                maxLength={ 100 }
-                                readOnly={ false }
-                                initialValue={ 
-                                    initialFormValues?.[ 
-                                        "passwordPolicy.errorMsg" 
-                                    ] 
-                                }
-                                data-testid={ `${ componentId }-otp-length` }
-                                label={ 
-                                    GovernanceConnectorUtils.resolveFieldLabel(
-                                        "Password Validation",
-                                        "passwordPolicy.errorMsg", 
-                                        "Error message on pattern violation") 
-                                }
-                                disabled={ false }
-                            />
-                            <Hint>
-                                { 
-                                    GovernanceConnectorUtils.resolveFieldHint(
-                                        "Password Validation",
-                                        "passwordPolicy.errorMsg", 
-                                        "This error message will be displayed" + 
-                                        " when a pattern violation is detected."
-                                    ) 
-                                }
-                            </Hint>
-                        </>
-                    )
-                }               
+                <Field.Checkbox
+                    className="toggle mb-4"
+                    ariaLabel="passwordPolicy.enable"
+                    name="passwordPolicy.enable"
+                    required={ false }
+                    label={ GovernanceConnectorUtils.resolveFieldLabel(
+                        "Password Policies",
+                        "passwordPolicy.enable",
+                        "Validate passwords based on a policy pattern") }
+                    defaultValue={ initialFormValues?.[
+                        "passwordPolicy.enable" ] === "true" }
+                    width={ 16 }
+                    data-componentid={ `${ componentId }-enable-password-policy` }
+                />
+                <Field.Input
+                    className="mb-4"
+                    ariaLabel="passwordPolicy.min.length"
+                    inputType="number"
+                    name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                        "passwordPolicy.min.length"
+                    ) }
+                    type="number"
+                    width={ 12 }
+                    required={ true }
+                    labelPosition="top"
+                    minLength={ 1 }
+                    maxLength={ 100 }
+                    initialValue={ initialFormValues?.[
+                        "passwordPolicy.min.length" ] }
+                    data-componentid={ `${ componentId }-password-policy-min-length` }
+                    label={ GovernanceConnectorUtils.resolveFieldLabel(
+                        "Password Policies",
+                        "passwordPolicy.min.length",
+                        "Minimum number of characters")
+                    }
+                />
+                <Field.Input
+                    className="mb-4"
+                    ariaLabel="passwordPolicy.max.length"
+                    inputType="number"
+                    name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                        "passwordPolicy.max.length"
+                    ) }
+                    type="number"
+                    width={ 12 }
+                    required={ true }
+                    labelPosition="top"
+                    minLength={ 1 }
+                    maxLength={ 100 }
+                    initialValue={ initialFormValues?.[
+                        "passwordPolicy.max.length" ] }
+                    data-componentid={ `${ componentId }-password-policy-max-length` }
+                    label={ GovernanceConnectorUtils.resolveFieldLabel(
+                        "Password Policies",
+                        "passwordPolicy.max.length",
+                        "Maximum number of characters")
+                    }
+                />
+                <Field.Input
+                    ariaLabel="passwordPolicy.pattern"
+                    inputType="text"
+                    name={
+                        GovernanceConnectorUtils
+                            .encodeConnectorPropertyName(
+                                "passwordPolicy.pattern"
+                            )
+                    }
+                    type="text"
+                    width={ 12 }
+                    required={ true }
+                    placeholder={ "Enter password pattern regex" }
+                    labelPosition="top"
+                    minLength={ 3 }
+                    maxLength={ 100 }
+                    readOnly={ false }
+                    initialValue={
+                        initialFormValues?.[ "passwordPolicy.pattern" ]
+                    }
+                    data-componentid={ `${ componentId }-password-pattern-regex` }
+                    label={
+                        GovernanceConnectorUtils.resolveFieldLabel(
+                            "Password Validation",
+                            "passwordPolicy.pattern",
+                            "Password pattern regex")
+                    }
+                    disabled={ false }
+                />
+                <Hint className="mb-4">
+                    {
+                        GovernanceConnectorUtils.resolveFieldHint(
+                            "Password Validation",
+                            "passwordPolicy.pattern",
+                            "Length of the OTP for SMS and" +
+                            "e-mail verifications. OTP length" +
+                            " must be 4-10."
+                        )
+                    }
+                </Hint>
+                <Field.Input
+                    ariaLabel="passwordPolicy.errorMsg"
+                    inputType="text"
+                    name={
+                        GovernanceConnectorUtils
+                            .encodeConnectorPropertyName(
+                                "passwordPolicy.errorMsg"
+                            )
+                    }
+                    type="text"
+                    width={ 12 }
+                    required={ true }
+                    placeholder={ "Enter password pattern regex" }
+                    labelPosition="top"
+                    minLength={ 3 }
+                    maxLength={ 100 }
+                    readOnly={ false }
+                    initialValue={
+                        initialFormValues?.[
+                            "passwordPolicy.errorMsg"
+                        ]
+                    }
+                    data-componentid={ `${ componentId }-password-policy-error-msg` }
+                    label={
+                        GovernanceConnectorUtils.resolveFieldLabel(
+                            "Password Validation",
+                            "passwordPolicy.errorMsg",
+                            "Error message on pattern violation")
+                    }
+                    disabled={ false }
+                />
+                <Hint>
+                    {
+                        GovernanceConnectorUtils.resolveFieldHint(
+                            "Password Validation",
+                            "passwordPolicy.errorMsg",
+                            "This error message will be displayed" +
+                            " when a pattern violation is detected."
+                        )
+                    }
+                </Hint>
             </>
         );
     };
@@ -765,7 +801,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         }
                         readOnly={ false }
                         disabled={ false }
-                        data-testid={ `${ componentId }-min-numbers` }
+                        data-componentid={ `${ componentId }-min-length` }
                     ></Field.Input>
                     <label>
                         numbers (0-9).
@@ -1177,56 +1213,6 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         );
     };
 
-    const resolvePasswordValidationTypeSelection: () => ReactElement = (): ReactElement => {
-        return (
-            <>
-                <Typography className="mb-3">
-                    Select the type of validation you want to use for the password.
-                </Typography>
-                <Field.Radio
-                    ariaLabel="Pattern based password validation"
-                    name="policyValidation"
-                    label="Policy based password validation"
-                    required={ false }
-                    checked={ passwordValidationType === "policyValidation" }
-                    value={ passwordValidationType }
-                    data-componentid=
-                        { `${componentId}-policy-pattern-validation-radio` }
-                    listen={ () => setPasswordValidationType("policyValidation") }
-                />
-                {
-                    passwordValidationType === "policyValidation" && resolvePasswordValidation()
-                }
-                <Field.Radio
-                    ariaLabel="Regex based password validation"
-                    name="regexValidation"
-                    label="Regex based password validation"
-                    required={ false }
-                    checked={ passwordValidationType === "regexValidation" }
-                    value={ passwordValidationType }
-                    data-componentid=
-                        { `${componentId}-regex-pattern-validation-radio` }
-                    listen={ () => setPasswordValidationType("regexValidation") }
-                />
-                <Divider hidden />
-                {
-                    passwordValidationType === "regexValidation" && resolveLegacyPasswordValidation()
-                }
-            </>
-        );
-    };
-
-    const resolvePasswordValidationType: () => ReactElement = (): ReactElement => {
-        if (passwordPatternConnector?.deprecatedProperties
-            .includes("passwordPolicy.pattern") || passwordPatternConnector?.deprecatedProperties
-            .includes("passwordPolicy.errorMsg")) {
-
-            return resolvePasswordValidationTypeSelection();
-        } else {
-            return resolvePasswordValidation();
-        }
-    };
-
     return (
         <PageLayout
             pageTitle={ t("console:manage.features.validation.pageTitle") }
@@ -1293,10 +1279,13 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                         passwordHistoryEnabled,
                                                         setPasswordHistoryEnabled,
                                                         t
-                                                    ) } 
+                                                    ) }
                                                 </div>
                                             ) }
-                                            { resolvePasswordValidationType() }
+                                            { isPasswordInputValidationEnabled
+                                                ? resolvePasswordValidation()
+                                                : resolveLegacyPasswordValidation()
+                                            }
                                             <Field.Button
                                                 form={ FORM_ID }
                                                 size="small"

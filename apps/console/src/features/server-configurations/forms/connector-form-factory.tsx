@@ -25,7 +25,6 @@ import { AnalyticsConfigurationForm } from "./analytics-form";
 import { AskPasswordForm } from "./ask-password";
 import { LoginAttemptSecurityConfigurationFrom } from "./login-attempt-security-form";
 import { MultiAttributeLoginForm } from "./multi-attribute-login";
-import { OrganizationSelfServiceForm } from "./organization-self-service-form";
 import { PasswordRecoveryConfigurationForm } from "./password-recovery-form";
 import { SelfRegistrationForm } from "./self-registration-form";
 import { UsernameRecoveryConfigurationForm } from "./username-recovery-form";
@@ -98,7 +97,7 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
     const path: string[] = history?.location?.pathname?.split("/");
     const type: string = path && path[ path.length - 3 ];
 
-    switch (connectorId) {        
+    switch (connectorId) {
         case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
             return (
                 <SelfRegistrationForm
@@ -125,9 +124,7 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                     <UsernameRecoveryConfigurationForm
                         onSubmit={ onSubmit }
                         initialValues={ initialValues }
-                        isConnectorEnabled={ isConnectorEnabled }
                         readOnly={ isReadOnly }
-                        isSubmitting={ isSubmitting }
                     />
                 );
             }
@@ -144,16 +141,6 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
         case ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID:
             return (
                 <AnalyticsConfigurationForm
-                    onSubmit={ onSubmit }
-                    initialValues={ initialValues }
-                    isConnectorEnabled={ true }
-                    readOnly={ isReadOnly }
-                    isSubmitting={ isSubmitting }
-                />
-            );
-        case ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_CONNECTOR_ID:
-            return (
-                <OrganizationSelfServiceForm
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ true }
@@ -184,16 +171,6 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
         case ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET:
             return (
                 <AdminForcedPasswordResetForm
-                    onSubmit={ onSubmit }
-                    initialValues={ initialValues }
-                    isConnectorEnabled={ isConnectorEnabled }
-                    readOnly={ isReadOnly }
-                    isSubmitting={ isSubmitting }
-                />
-            );
-        case ServerConfigurationsConstants.USERNAME_RECOVERY:
-            return (
-                <UsernameRecoveryConfigurationForm
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ isConnectorEnabled }
