@@ -25,8 +25,10 @@ import {
     LinkButton,
     PrimaryButton,
     ResourceGrid,
-    Text
+    Text,
+    useDocumentation
 } from "@wso2is/react-components";
+import { ConnectionsManagementUtils } from "apps/console/src/features/connections/utils/connection-utils";
 import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
@@ -173,6 +175,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
     const hiddenAuthenticators: string[] = useSelector((state: AppState) => state.config?.ui?.hiddenAuthenticators);
     const groupedIDPTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
@@ -550,6 +553,10 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                             return (
                                                 <ResourceGrid.Card
                                                     showSetupGuideButton={ !!isSAASDeployment }
+                                                    navigationLink={
+                                                        getLink(ConnectionsManagementUtils
+                                                            .resolveConnectionDocLink(template.id))
+                                                    }
                                                     key={ templateIndex }
                                                     resourceName={
                                                         template?.name === "Expert Mode"
