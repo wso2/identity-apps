@@ -249,7 +249,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                     : "false",
             field: "username",
             isAlphanumericOnly: getValidationConfig(
-                rules, "AlphanumericValidator", "enable.special.characters") != "true",
+                rules, "AlphanumericValidator", "enable.special.characters") !== "true",
             maxLength:
                 getValidationConfig(rules, "LengthValidator", "max.length")
                     ? getValidationConfig(rules, "LengthValidator", "max.length")

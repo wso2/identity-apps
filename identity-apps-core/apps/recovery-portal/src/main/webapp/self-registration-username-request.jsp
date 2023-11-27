@@ -1212,6 +1212,8 @@
     <% } %>
 
     <script>
+        const ALPHANUMERIC_USERNAME_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/;
+        const USERNAME_WITH_SPECIAL_CHARS_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%&'*+\\=?^_`.{|}~-]+$/;
         var registrationDataKey = "registrationData";
         var passwordField = $("#passwordUserInput");
         var $registerForm = $("#register");
@@ -1278,12 +1280,12 @@
         // Prepare the alphanumeric username message text.
         var alphanumericUsernameText = $("#alphanumeric-username-msg-text");
         if (usernameConfig.enableSpecialCharacters) {
-            alphanumericUsernameText.text(
-                "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.unique")%>"
+            alphanumericUsernameText.html(
+                "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.between")%>"
                 + " " + (usernameConfig?.minLength ?? 3) + " "
                 + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "to")%>"
                 + " " + (usernameConfig.maxLength ?? 255) + " "
-                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters.including.one.letter")%>"
+                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters.may.contain")%>"
             );
         } else {
             alphanumericUsernameText.text(
@@ -1905,13 +1907,13 @@
                     alphanumericUsernameField.addClass("error");
 
                 } else if (usernameConfig.enableSpecialCharacters
-                && !/^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%&'*+\\=?^_`.{|}~-]+$/.test(alphanumericUsernameUserInput.value.trim())) {
+                    && !USERNAME_WITH_SPECIAL_CHARS_REGEX.test(alphanumericUsernameUserInput.value.trim())) {
                     alphanumeric_username_error_msg_text.text(
                         "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.with.special.character.symbols")%>");
                     alphanumeric_username_error_msg.show();
                     alphanumericUsernameField.addClass("error");
                 } else if (!usernameConfig.enableSpecialCharacters
-                && !/^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/.test(alphanumericUsernameUserInput.value.trim())) {
+                    && !ALPHANUMERIC_USERNAME_REGEX.test(alphanumericUsernameUserInput.value.trim())) {
                     alphanumeric_username_error_msg_text.text(
                         "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.with.symbols")%>");
                     alphanumeric_username_error_msg.show();

@@ -3070,7 +3070,7 @@ export const extensions: Extensions = {
                     2: "characters."
                 },
                 usernameAlphanumeric: "Restrict to alphanumeric (a-z, A-Z, 0-9).",
-                usernameSpecialCharsHint: "Usage of forward slash (\"/\") is restricted."
+                usernameSpecialCharsHint: "Any combination of letters (a-z, A-Z), numbers (0-9), and the following characters: !@#$%&'*+\\=?^_`.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "Alternative Login Identifiers",
@@ -3316,7 +3316,7 @@ export const extensions: Extensions = {
                             "{{maxLength}} characters including at least one letter.",
                         usernameLength: "The username length should be between {{minLength}} and {{maxLength}}.",
                         usernameSymbols: "The username should consist of alphanumeric characters (a-z, A-Z, 0-9) and must include at least one letter.",
-                        usernameSpecialCharSymbols: "The username must include at least one letter and should not consist of invalid special characters."
+                        usernameSpecialCharSymbols: "Please choose a valid username that adheres to the given guidelines."
                     }
                 }
             },

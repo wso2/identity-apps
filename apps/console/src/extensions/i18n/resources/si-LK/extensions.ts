@@ -3038,7 +3038,7 @@ export const extensions: Extensions = {
                     2: "අතර විය යුතුය."
                 },
                 usernameAlphanumeric: "අක්ෂරාංක වලට සීමා කරන්න (a-z, A-Z, 0-9).",
-                usernameSpecialCharsHint: "ඉදිරි ස්ලැෂ් (\"/\") භාවිතය සීමා කර ඇත."
+                usernameSpecialCharsHint: "අකුරු (a-z, A-Z), අංක (0-9) සහ පහත දැක්වෙන අක්ෂරවල ඕනෑම සංයෝජනයක්: !@#$%&'*+\\=?^_`.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "විකල්ප පිවිසුම් හඳුනාගැනීම්",
@@ -3279,7 +3279,7 @@ export const extensions: Extensions = {
                         usernameSpecialCharHint: "අවම වශයෙන් එක් අකුරක් ඇතුළුව අනුලකුණු {{minLength}} සිට {{maxLength}} දක්වා අද්විතීය තන්තුවක් විය යුතුය.",
                         usernameLength: "පරිශීලක නාමයේ දිග {{minLength}} සහ {{maxLength}} අතර විය යුතුය.",
                         usernameSymbols: "පරිශීලක නාමය අක්ෂරාංක අක්ෂරවලින් (a-z, A-Z, 0-9) සමන්විත විය යුතු අතර අවම වශයෙන් එක් අකුරක් ඇතුළත් විය යුතුය.",
-                        usernameSpecialCharSymbols: "පරිශීලක නාමයේ අවම වශයෙන් එක් අකුරක්වත් අඩංගු විය යුතු අතර වලංගු නොවන විශේෂ අක්ෂර වලින් සමන්විත නොවිය යුතුය."
+                        usernameSpecialCharSymbols: "කරුණාකර ලබා දී ඇති මාර්ගෝපදේශවලට අනුකූල වන වලංගු පරිශීලක නාමයක් තෝරන්න."
                     }
                 }
             },
