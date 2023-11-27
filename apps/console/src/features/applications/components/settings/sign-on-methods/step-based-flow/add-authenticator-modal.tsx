@@ -60,6 +60,7 @@ import {
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
 import { authenticatorConfig } from "../../../../../../extensions/configs/authenticator";
+import { ConnectionManagementConstants } from "../../../../../connections";
 import { getEmptyPlaceholderIllustrations } from "../../../../../core/configs/ui";
 import { AppState } from "../../../../../core/store";
 import { EventPublisher } from "../../../../../core/utils/event-publisher";
@@ -535,14 +536,14 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                             templateIndex: number
                                         ) => {
 
-                                            const isOrgIdp: boolean =
-                                                template.templateId === "organization-enterprise-idp";
+                                            const hiddenTemplates: string[] = [
+                                                ConnectionManagementConstants.IDP_TEMPLATE_IDS.LINKEDIN,
+                                                ConnectionManagementConstants.IDP_TEMPLATE_IDS
+                                                    .ORGANIZATION_ENTERPRISE_IDP,
+                                                ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID
+                                            ];
 
-                                            if (isOrgIdp && !isOrganizationManagementEnabled) {
-                                                return null;
-                                            }
-
-                                            if (isOrgIdp && orgType === OrganizationType.SUBORGANIZATION) {
+                                            if (hiddenTemplates.includes(template?.templateId)) {
                                                 return null;
                                             }
 

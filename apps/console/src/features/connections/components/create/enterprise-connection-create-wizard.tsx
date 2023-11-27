@@ -22,7 +22,6 @@ import Divider from "@oxygen-ui/react/Divider";
 import Grid from "@oxygen-ui/react/Grid";
 import { ModalWithSidePanel } from "@wso2is/common/src/components/modals/modal-with-side-panel";
 import { getCertificateIllustrations } from "@wso2is/common/src/configs/ui";
-import { AppConstants } from "@wso2is/common/src/constants/app-constants";
 import { ConfigReducerStateInterface } from "@wso2is/common/src/models/reducer-state";
 import { AppState } from "@wso2is/common/src/store";
 import { IdentityAppsError } from "@wso2is/core/errors";
@@ -160,7 +159,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
     const { getLink } = useDocumentation();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
-    
+
     const {
         data: connections,
         isLoading: isConnectionsFetchRequestLoading,
@@ -265,7 +264,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
             return t("console:develop.features.idp.forms.common.internetResolvableErrorMessage");
         }
- 
+
         return undefined;
     };
 
@@ -333,16 +332,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         }
 
         // Identity provider placeholder image.
-        if (AppConstants.getClientOrigin()) {
-            if (AppConstants.getAppBasename()) {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                    "/" + AppConstants.getAppBasename() +
-                    "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
-            } else {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                    "/libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
-            }
-        }
+        identityProvider.image = "assets/images/logos/enterprise.svg";
 
         // Add the default description from the metadata instead from template.
         identityProvider.description = AuthenticatorMeta.getAuthenticatorDescription(
@@ -496,9 +486,9 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
             />
             <div className="sub-template-selection">
                 <label className="sub-templates-label">Select protocol</label>
-                <Grid 
-                    container 
-                    spacing={ { md: 3, xs: 2 } } 
+                <Grid
+                    container
+                    spacing={ { md: 3, xs: 2 } }
                     columns={ { md: 12, sm: 8, xs: 4 } }
                 >
                     <Grid xs={ 2 } sm={ 4 } md={ 8 }>
@@ -549,7 +539,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         </WizardPage>
     );
 
-    const samlConfigurationPage = () => ( 
+    const samlConfigurationPage = () => (
         <WizardPage
             validate={ (values: any) => {
                 const errors: FormErrors = {};

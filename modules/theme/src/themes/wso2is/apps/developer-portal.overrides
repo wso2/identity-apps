@@ -1887,3 +1887,16 @@ TODO : Move values to separate variables and cleanup styles.
     color: @primaryColor !important;
     text-transform: capitalize !important;
 }
+
+/*-------------------------------
+         Sign-in methods
+     Add Authenticator Modal
+--------------------------------*/
+
+.add-authenticator-modal {
+    .authenticator-container {
+        .resource-grid-wrapper .ui.cards.resource-grid .ui.card.info-card {
+            width: 290px;
+        }
+    }
+}

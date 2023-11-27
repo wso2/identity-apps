@@ -32,22 +32,20 @@ import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import {
     ExpertModeAuthenticationProviderCreateWizardContent
 } from "./expert-mode-authentication-provider-create-wizard-content";
 import { ModalWithSidePanel, TierLimitReachErrorModal } from "../../../../core/components";
-import { AppConstants } from "../../../../core/constants";
-import { AppState } from "../../../../core/store";
 import { EventPublisher } from "../../../../core/utils";
 import { createConnection } from "../../../api/connections";
 import { getConnectionIcons } from "../../../configs/ui";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import {
     ConnectionInterface,
-    GenericConnectionCreateWizardPropsInterface,
+    GenericConnectionCreateWizardPropsInterface
 } from "../../../models/connection";
 
 /**
@@ -111,8 +109,6 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
 
         const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
-        const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
-
         const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
         const [ wizStep, setWizStep ] = useState<number>(0);
         const [ totalStep, setTotalStep ] = useState<number>(0);
@@ -174,7 +170,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                     error?.response?.data?.code ===
                     identityAppsError.getErrorCode()) {
                         setOpenLimitReachedModal(true);
-        
+
                         return;
                     }
 
@@ -233,19 +229,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
             identityProvider.name = values?.name?.toString();
             identityProvider.description = values?.description?.toString() || template.description;
             identityProvider.templateId = template.templateId;
-
-            // TODO: Refactor the usage of absolute image paths once Media Service is available.
-            // Tracked here - https://github.com/wso2/product-is/issues/12396
-            if (AppConstants.getClientOrigin()) {
-                if (AppConstants.getAppBasename()) {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                    "/" + AppConstants.getAppBasename() +
-                    `/libs/themes/${ theme }/assets/images/identity-providers/expert.svg`;
-                } else {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                    `/libs/themes/${ theme }/assets/images/identity-providers/expert.svg`;
-                }
-            }
+            identityProvider.image = "assets/images/logos/expert.svg";
 
             createNewIdentityProvider(identityProvider);
         };
@@ -378,7 +362,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                         "tierLimitReachedError.emptyPlaceholder.subtitles"
                         ) }
                         message={ t(
-                            "console:develop.features.idp.notifications." + 
+                            "console:develop.features.idp.notifications." +
                         "tierLimitReachedError.emptyPlaceholder.title"
                         ) }
                         openModal={ openLimitReachedModal }

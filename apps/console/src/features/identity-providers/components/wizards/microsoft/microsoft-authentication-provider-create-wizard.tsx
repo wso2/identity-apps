@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -40,7 +41,6 @@ import {
 } from "./microsoft-authentication-provider-create-wizard-content";
 import { identityProviderConfig } from "../../../../../extensions/configs";
 import {
-    AppConstants,
     AppState,
     ConfigReducerStateInterface,
     EventPublisher,
@@ -198,7 +198,7 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
                     error?.response?.data?.code ===
                     identityAppsError.getErrorCode()) {
                         setOpenLimitReachedModal(true);
-        
+
                         return;
                     }
 
@@ -318,18 +318,7 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
                 }
             ];
 
-            // TODO: Refactor the usage of absolute image paths once Media Service is available.
-            // Tracked here - https://github.com/wso2/product-is/issues/12396
-            if (AppConstants.getClientOrigin()) {
-                if (AppConstants.getAppBasename()) {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                    "/" + AppConstants.getAppBasename() +
-                    "/libs/themes/default/assets/images/identity-providers/microsoft-idp-illustration.svg";
-                } else {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                    "/libs/themes/default/assets/images/identity-providers/microsoft-idp-illustration.svg";
-                }
-            }
+            identityProvider.image = "assets/images/logos/microsoft.svg";
 
             handleWizardFormFinish(identityProvider);
         };
@@ -419,7 +408,7 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
                 <ModalWithSidePanel.SidePanel>
                     <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
                         <div className="help-panel-header-text">
-                            { t("console:develop.features.authenticationProvider" + 
+                            { t("console:develop.features.authenticationProvider" +
                             ".templates.microsoft.wizardHelp.heading") }
                         </div>
                     </ModalWithSidePanel.Header>
@@ -459,7 +448,7 @@ export const MicrosoftAuthenticationProviderCreateWizard: FunctionComponent<
                         "tierLimitReachedError.emptyPlaceholder.subtitles"
                         ) }
                         message={ t(
-                            "console:develop.features.idp.notifications." + 
+                            "console:develop.features.idp.notifications." +
                         "tierLimitReachedError.emptyPlaceholder.title"
                         ) }
                         openModal={ openLimitReachedModal }

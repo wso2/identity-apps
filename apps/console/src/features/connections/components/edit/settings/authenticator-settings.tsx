@@ -140,13 +140,13 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     ] = useState<FederatedAuthenticatorListItemInterface>(undefined);
     const [ availableAuthenticators, setAvailableAuthenticators ] =
         useState<FederatedAuthenticatorWithMetaInterface[]>([]);
-    const [ 
-        availableFederatedAuthenticators, 
-        setAvailableFederatedAuthenticators 
+    const [
+        availableFederatedAuthenticators,
+        setAvailableFederatedAuthenticators
     ] = useState(undefined);
-    const [ 
-        availableTemplates, 
-        setAvailableTemplates 
+    const [
+        availableTemplates,
+        setAvailableTemplates
     ] = useState<ConnectionTemplateInterface[]>(undefined);
     const [
         availableManualModeOptions,
@@ -192,7 +192,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 const filteredAuthenticators: FederatedAuthenticatorMetaInterface[] = response.filter(
                     (authenticator: FederatedAuthenticatorMetaInterface) => {
                         return authenticator.authenticatorId !== AuthenticatorManagementConstants
-                            .LEGACY_SMS_OTP_AUTHENTICATOR_ID && 
+                            .LEGACY_SMS_OTP_AUTHENTICATOR_ID &&
                             authenticator.authenticatorId !== AuthenticatorManagementConstants
                                 .LEGACY_EMAIL_OTP_AUTHENTICATOR_ID;
                     }
@@ -598,7 +598,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         );
 
         const filteredTemplates: ConnectionTemplateItemInterface[] = identityProviderTemplates?.filter(
-            (template: ConnectionTemplateItemInterface) => 
+            (template: ConnectionTemplateItemInterface) =>
                 (template?.idp?.federatedAuthenticators?.defaultAuthenticatorId &&
                     !availableAuthenticatorIDs?.includes(
                         template?.idp?.federatedAuthenticators?.defaultAuthenticatorId))
@@ -607,7 +607,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         // sort templateList based on display Order
         filteredTemplates?.sort(
             (
-                a: ConnectionTemplateItemInterface, 
+                a: ConnectionTemplateItemInterface,
                 b: ConnectionTemplateItemInterface
             ) => (a?.displayOrder > b?.displayOrder) ? 1 : -1);
 
@@ -811,8 +811,8 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                         actions: createAccordionActions(authenticator),
                                                         content: authenticator && (
                                                             <AuthenticatorFormFactory
-                                                                connectionSettingsMetaData={ 
-                                                                    connectionSettingsMetaData 
+                                                                connectionSettingsMetaData={
+                                                                    connectionSettingsMetaData
                                                                 }
                                                                 mode={ AuthenticatorSettingsFormModes.CREATE }
                                                                 authenticator={ authenticator }
@@ -1009,6 +1009,16 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         }
     };
 
+    /**
+     * This method will find whether the current identity provider
+     * contains a default authenticator or not.
+     *
+     * @returns Whether the identity provider contains a default authenticator.
+     */
+    const checkDefaultAuthenticatorAvailable = (): boolean => {
+        return !!identityProvider?.federatedAuthenticators?.defaultAuthenticatorId;
+    };
+
     if (isLoading || isFederatedAuthenticatorFetchRequestLoading) {
         return <Loader />;
     }
@@ -1098,6 +1108,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                 .SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP && availableTemplates
                         }
                         idpId={ identityProvider.id }
+                        isDefaultAuthenticatorAvailable={ checkDefaultAuthenticatorAvailable() }
                         data-testid={ `${ testId }-authenticator-create-wizard` }
                     />
                 )

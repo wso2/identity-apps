@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { getEmptyPlaceholderIllustrations } from "@wso2is/common/src/configs/ui";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -33,24 +35,26 @@ import merge from "lodash-es/merge";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AuthenticatorTemplateSelection } from "./steps/authenticator-template-selection";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/common/src/configs/ui";
+import { AuthenticatorSettings } from "../../../identity-providers/components/wizards/steps";
 import {
     getFederatedAuthenticatorMetadata,
     updateFederatedAuthenticator
 } from "../../api/connections";
 import { getConnectionWizardStepIcons } from "../../configs/ui";
 import {
-    FederatedAuthenticatorMetaInterface,
-    ConnectionInterface,
-    ConnectionTemplateInterface
-} from "../../models/connection";
-import {
     FederatedAuthenticatorMetaDataInterface
 } from "../../models/authenticators";
+import {
+    CommonPluggableComponentPropertyInterface,
+    ConnectionInterface,
+    ConnectionTemplateInterface,
+    FederatedAuthenticatorListItemInterface,
+    FederatedAuthenticatorMetaInterface
+} from "../../models/connection";
 import { handleGetFederatedAuthenticatorMetadataAPICallError } from "../../utils/connection-utils";
-import { AuthenticatorSettings } from "../../../identity-providers/components/wizards/steps";
 
 /**
  * Proptypes for the identity provider creation wizard component.
@@ -63,6 +67,7 @@ interface AddAuthenticatorWizardPropsInterface extends TestableComponentInterfac
     manualModeOptions: FederatedAuthenticatorMetaDataInterface[];
     availableTemplates?: ConnectionTemplateInterface[];
     idpId?: string;
+    isDefaultAuthenticatorAvailable?: boolean;
 }
 
 /**
@@ -119,6 +124,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         manualModeOptions,
         availableTemplates,
         idpId,
+        isDefaultAuthenticatorAvailable,
         [ "data-testid" ]: testId,
         [ "data-componentid" ]: componentId
     } = props;
@@ -137,7 +143,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isTemplateSelected, setIsTemplateSelected ] = useState<boolean>(false);
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
     // Triggers for each wizard step.
@@ -149,7 +155,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
      * Navigates to the next wizard step.
      */
     const navigateToNext = (): void => {
-        let step = currentWizardStep;
+        let step: number = currentWizardStep;
 
         if (isSelectionHidden) {
             step = currentWizardStep + 1;
@@ -212,22 +218,33 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
      * @param identityProvider - Identity provider data.
      */
     const handleWizardFormFinish = (identityProvider: ConnectionInterface): void => {
-        const authenticator = identityProvider?.federatedAuthenticators?.authenticators.find((a) =>
-            a.authenticatorId === identityProvider?.federatedAuthenticators?.defaultAuthenticatorId);
+        const authenticator: FederatedAuthenticatorListItemInterface =
+            identityProvider?.federatedAuthenticators?.authenticators.find(
+                (a: FederatedAuthenticatorListItemInterface) =>
+                    a.authenticatorId === identityProvider?.federatedAuthenticators?.defaultAuthenticatorId
+            );
 
-        authenticator.properties = authenticator.properties.filter((property) => {
-            if (isEmpty(property.key)) {
-                return false;
+        authenticator.properties = authenticator?.properties.filter(
+            (property: CommonPluggableComponentPropertyInterface) => {
+                if (isEmpty(property.key)) {
+                    return false;
+                }
+
+                return true;
             }
-
-            return true;
-        });
+        );
         authenticator.properties.filter(Boolean);
-        authenticator.isDefault = false;
+
+        /**
+         * If the default authenticator is not available then the currently adding
+         * new authenticator is set as the default authenticator.
+         */
+        authenticator.isDefault = !isDefaultAuthenticatorAvailable;
+
         addNewAuthenticator(authenticator);
     };
 
-    const addNewAuthenticator = (authenticator) => {
+    const addNewAuthenticator = (authenticator: FederatedAuthenticatorListItemInterface) => {
         setIsSubmitting(true);
         updateFederatedAuthenticator(idpId, authenticator)
             .then(() => {
@@ -240,7 +257,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                         ".notifications.addFederatedAuthenticator.success.message")
                 }));
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
                         description: t("console:develop.features.authenticationProvider." +
@@ -288,7 +305,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
      * @returns Step content.
      */
     const resolveStepContent = (currentStep: number): ReactElement => {
-        let step = currentStep;
+        let step: number = currentStep;
 
         if (isSelectionHidden) {
             step = currentStep + 1;
@@ -299,7 +316,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                 return (
                     <AuthenticatorTemplateSelection
                         triggerSubmit={ submitTemplateSelection }
-                        onSubmit={ (values): void => handleWizardFormSubmit(values, false) }
+                        onSubmit={ (values: ConnectionInterface): void => handleWizardFormSubmit(values, false) }
                         manualModeOptions={ manualModeOptions }
                         authenticatorTemplates={ availableTemplates }
                         onTemplateSelect={ (): void => setIsTemplateSelected(true) }
@@ -340,7 +357,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                         <AuthenticatorSettings
                             metadata={ selectedAuthenticatorMetadata }
                             initialValues={ wizardState[WizardConstants.AUTHENTICATOR] }
-                            onSubmit={ (values): void => handleWizardFormSubmit(values, true) }
+                            onSubmit={ (values: ConnectionInterface): void => handleWizardFormSubmit(values, true) }
                             triggerSubmit={ submitAuthenticator }
                             data-testid={ `${ testId }-authenticator-settings` }
                         />
@@ -352,19 +369,21 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
 
     const loadAuthenticatorMetadata = (authenticatorId: string) => {
         getFederatedAuthenticatorMetadata(authenticatorId)
-            .then((response) => {
+            .then((response: FederatedAuthenticatorMetaInterface) => {
                 setSelectedAuthenticatorMetadata(response);
             })
-            .catch((error) => {
+            .catch((error: IdentityAppsApiException) => {
                 handleGetFederatedAuthenticatorMetadataAPICallError(error);
             });
     };
 
     useEffect(() => {
         if (selectedTemplateId) {
-            const selectedTemplate = availableTemplates.find((template) => {
-                return template.id === selectedTemplateId;
-            });
+            const selectedTemplate: ConnectionTemplateInterface = availableTemplates.find(
+                (template: ConnectionTemplateInterface) => {
+                    return template.id === selectedTemplateId;
+                }
+            );
 
             loadAuthenticatorMetadata(selectedTemplate.idp.federatedAuthenticators.defaultAuthenticatorId);
             setWizardState({
@@ -452,7 +471,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                     header={ t("console:develop.features.authenticationProvider." +
                     "wizards.addAuthenticator.header") }
                     current={ currentWizardStep }>
-                    { wizardSteps.map((step, index) => (
+                    { wizardSteps.map((step: WizardStepInterface, index: number) => (
                         <Steps.Step
                             key={ index }
                             icon={ step.icon }

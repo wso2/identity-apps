@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -41,7 +42,6 @@ import {
 } from "./github-authentication-provider-create-wizard-content";
 import { identityProviderConfig } from "../../../../../extensions/configs";
 import {
-    AppConstants,
     AppState,
     ConfigReducerStateInterface,
     EventPublisher,
@@ -199,7 +199,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                     error?.response?.data?.code ===
                     identityAppsError.getErrorCode()) {
                         setOpenLimitReachedModal(true);
-        
+
                         return;
                     }
 
@@ -308,18 +308,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                 }
             ];
 
-            // TODO: Refactor the usage of absolute image paths once Media Service is available.
-            // Tracked here - https://github.com/wso2/product-is/issues/12396
-            if (AppConstants.getClientOrigin()) {
-                if (AppConstants.getAppBasename()) {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                    "/" + AppConstants.getAppBasename() +
-                    "/libs/themes/default/assets/images/identity-providers/github-idp-illustration.svg";
-                } else {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                    "/libs/themes/default/assets/images/identity-providers/github-idp-illustration.svg";
-                }
-            }
+            identityProvider.image = "assets/images/logos/github.svg";
 
             handleWizardFormFinish(identityProvider);
         };
@@ -448,7 +437,7 @@ export const GitHubAuthenticationProviderCreateWizard: FunctionComponent<
                         "tierLimitReachedError.emptyPlaceholder.subtitles"
                         ) }
                         message={ t(
-                            "console:develop.features.idp.notifications." + 
+                            "console:develop.features.idp.notifications." +
                         "tierLimitReachedError.emptyPlaceholder.title"
                         ) }
                         openModal={ openLimitReachedModal }

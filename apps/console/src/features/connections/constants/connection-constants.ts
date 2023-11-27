@@ -46,7 +46,7 @@ export class ConnectionManagementConstants {
     public static readonly PROVISIONING_CONNECTOR_GOOGLE: string = "googleapps";
 
     public static readonly GOOGLE_ONE_TAP_ENABLED: string = "IsGoogleOneTapEnabled";
-    
+
     public static readonly GOOGLE_OIDC_AUTHENTICATOR_ID: string = "R29vZ2xlT0lEQ0F1dGhlbnRpY2F0b3I";
     public static readonly FACEBOOK_AUTHENTICATOR_ID: string = "RmFjZWJvb2tBdXRoZW50aWNhdG9y";
     public static readonly TWITTER_AUTHENTICATOR_ID: string = "VHdpdHRlckF1dGhlbnRpY2F0b3I";
@@ -124,7 +124,7 @@ export class ConnectionManagementConstants {
 
     public static readonly MULTI_FACTOR_AUTHENTICATOR_UPDATE_ERROR: string = "An error occurred while updating the " +
         "multi-factor authenticator.";
-    
+
     public static readonly CONNECTION_JIT_PROVISIONING_UPDATE_ERROR: string = "An error occurred while" +
         " updating the JIT provisioning configurations of the identity provider.";
 
@@ -192,6 +192,7 @@ export class ConnectionManagementConstants {
         GITHUB: string;
         GOOGLE: string;
         HYPR: string;
+        LINKEDIN: string;
         MICROSOFT: string;
         OIDC: string;
         ORGANIZATION_ENTERPRISE_IDP: string;
@@ -204,6 +205,7 @@ export class ConnectionManagementConstants {
         GITHUB: "github-idp",
         GOOGLE: "google-idp",
         HYPR: "hypr-idp",
+        LINKEDIN: "linkedin-idp",
         MICROSOFT: "microsoft-idp",
         OIDC: "enterprise-oidc-idp",
         ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",
