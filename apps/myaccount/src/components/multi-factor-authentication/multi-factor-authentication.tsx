@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -215,8 +215,8 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                 { hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         featureConfig?.security,
-                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_BACKUP_CODE")
-                    ) ? (
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_BACKUP_CODE")) &&
+                        (isBackupCodeForced && enableMFAUserWise) ? (
                         <>
                             <List.Item
                                 className="inner-list-item recovery-options-muted-header"
