@@ -100,6 +100,10 @@ interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterfa
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Flag to determine if the updated application a system application.
+     */
+    isSystemApplication?: boolean;
 }
 
 /**
@@ -127,6 +131,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         isLoading,
         onUpdate,
         readOnly,
+        isSystemApplication,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -849,6 +854,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     return (
         <AuthenticationFlowProvider
             application={ cloneDeep(application) }
+            isSystemApplication={ isSystemApplication }
             authenticators={ authenticators }
             onAuthenticatorsRefetch={ () => fetchAndCategorizeAuthenticators() }
             onUpdate={ onUpdate }
@@ -878,6 +884,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                             ) : (
                                 <SignInMethodCustomization
                                     appId={ appId }
+                                    applicationName={ application?.name }
                                     authenticators={ authenticators }
                                     clientId={ clientId }
                                     authenticationSequence={ moderatedAuthenticationSequence }

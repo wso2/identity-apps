@@ -53,6 +53,7 @@ import {
     updateAuthenticationSequence as updateAuthenticationSequenceFromAPI
 } from "../../applications/api/application";
 import {
+    ApplicationInterface,
     AuthenticationSequenceInterface,
     AuthenticationSequenceType,
     AuthenticationStepInterface
@@ -126,7 +127,8 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
         removeSignInStep,
         revertAuthenticationSequenceToDefault,
         updateAuthenticationSequence,
-        visualEditorFlowNodeMeta
+        visualEditorFlowNodeMeta,
+        isSystemApplication
     } = useAuthenticationFlow();
 
     const [ authenticatorAddStep, setAuthenticatorAddStep ] = useState<number>(0);
@@ -308,6 +310,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
         newSequence: AuthenticationSequenceInterface = authenticationSequence,
         isRevertFlow?: boolean
     ): void => {
+        let payload: Partial<ApplicationInterface> = {};
         const sequence: AuthenticationSequenceInterface = {
             ...cloneDeep(newSequence),
             type: isRevertFlow
@@ -327,7 +330,20 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
             script: sequence.script
         });
 
-        updateAuthenticationSequenceFromAPI(applicationMetaData?.id, { authenticationSequence: sequence })
+        // If the updating application is a system application,
+        // we need to send the application name in the PATCH request.
+        if (isSystemApplication) {
+            payload = {
+                authenticationSequence: sequence,
+                name: applicationMetaData?.name
+            };
+        } else {
+            payload = {
+                authenticationSequence: sequence
+            };
+        }
+
+        updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
             .then(() => {
                 dispatch(
                     addAlert({

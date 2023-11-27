@@ -700,7 +700,14 @@ export const console: ConsoleNS = {
         }
     },
     consoleSettings: {
+        administrators: {
+            tabLabel: "Administratrices"
+        },
+        loginFlow: {
+            tabLabel: "Flux de connexion"
+        },
         roles: {
+            tabLabel: "Les rôles",
             permissionLevels: {
                 edit: "Modifier",
                 view: "Voir"

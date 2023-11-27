@@ -702,7 +702,14 @@ export const console: ConsoleNS = {
         }
     },
     consoleSettings: {
+        administrators: {
+            tabLabel: "Administrators"
+        },
+        loginFlow: {
+            tabLabel: "Login Flow"
+        },
         roles: {
+            tabLabel: "Roles",
             permissionLevels: {
                 edit: "Edit",
                 view: "View"

@@ -17,7 +17,7 @@
  */
 
 import { Context, createContext } from "react";
-import { AuthenticationSequenceInterface } from "../../applications/models/application";
+import { ApplicationInterface, AuthenticationSequenceInterface } from "../../applications/models/application";
 
 /**
  * Props interface of {@link ConsoleSettingsContext}
@@ -32,9 +32,17 @@ export interface ConsoleSettingsContextProps {
      */
     consoleDisplayName: string;
     /**
+     * Console application configurations.
+     */
+    consoleConfigurations: ApplicationInterface;
+    /**
      * Authentication sequence of the Console.
      */
     consoleAuthenticationSequence: AuthenticationSequenceInterface;
+    /**
+     * Flag to determine if the Console configurations fetch request loading.
+     */
+    isConsoleConfigurationsFetchRequestLoading: boolean;
     /**
      * Mutate the Console application configurations and get updated values for `consoleAuthenticationSequence`, etc .
      */

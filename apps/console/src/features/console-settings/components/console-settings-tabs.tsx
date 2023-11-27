@@ -28,12 +28,11 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import ConsoleRolesList from "./console-roles/console-roles-list";
-import AdministratorsList from "./console-administrators/administrators-list/administrators-list";
-import "./console-settings-tabs.scss";
-import ConsoleLoginSecurity from "./console-login-security/console-login-security";
 import ConsoleAdministrators from "./console-administrators/console-administrators";
+import ConsoleLoginFlow from "./console-login-flow/console-login-flow";
+import ConsoleRolesList from "./console-roles/console-roles-list";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import "./console-settings-tabs.scss";
 
 /**
  * Props interface of {@link ConsoleSettingsTabs}
@@ -104,26 +103,24 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
             className: "administrators-list",
             "data-componentid": `${componentId}-tab-administrators`,
             id: ConsoleSettingsModes.ADMINISTRATORS,
-            label: "Members",
+            label: t("console:consoleSettings.administrators.tabLabel"),
             pane: <ConsoleAdministrators />,
             value: 0
         },
         {
             className: "console-roles-list",
-            "data-componentid": `${componentId}-roles-administrators`,
+            "data-componentid": `${componentId}-tab-roles`,
             id: ConsoleSettingsModes.ROLES,
-            label: "Roles",
+            label: t("console:consoleSettings.roles.tabLabel"),
             pane: <ConsoleRolesList />,
             value: 1
         },
         !isSubOrganization() && {
             className: "console-security",
-            "data-componentid": `${componentId}-tab-security`,
+            "data-componentid": `${componentId}-tab-login-flow`,
             id: ConsoleSettingsModes.SECURITY,
-            label: "Login & Security",
-            pane: (
-                <ConsoleLoginSecurity />
-            ),
+            label: t("console:consoleSettings.loginFlow.tabLabel"),
+            pane: <ConsoleLoginFlow />,
             value: 2
         }
     ], []);

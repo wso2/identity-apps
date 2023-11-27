@@ -517,7 +517,14 @@ export interface ConsoleNS {
         };
     };
     consoleSettings: {
+        administrators: {
+            tabLabel: string;
+        };
+        loginFlow: {
+            tabLabel: string;
+        };
         roles: {
+            tabLabel: string;
             permissionLevels: {
                 edit: string;
                 view: string;
