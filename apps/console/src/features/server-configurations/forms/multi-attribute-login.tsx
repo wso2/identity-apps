@@ -16,19 +16,11 @@
  * under the License.
  */
 
-import { hasRequiredScopes } from "@wso2is/core/helpers";
-import {
-    DeprecatedFeatureInterface,
-    FeatureAccessConfigInterface,
-    IdentifiableComponentInterface
-} from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { AppState } from "apps/console/src/features/core";
 import isEmpty from "lodash-es/isEmpty";
-import { FeatureConfigInterface } from "modules/common/src/models/config";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
@@ -124,7 +116,7 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
      * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: Record<string, unknown>) => {
-        let data = {};
+        let data: { [key: string]: unknown } = {};
 
         for (const key in values) {
             if (Object.prototype.hasOwnProperty.call(values, key)

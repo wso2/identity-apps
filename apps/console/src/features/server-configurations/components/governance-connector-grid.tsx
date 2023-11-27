@@ -19,8 +19,8 @@
 import { Avatar, CardContent } from "@oxygen-ui/react";
 import {
     ArrowLoopRightUserIcon,
-    ArrowRightToBracketPencilIcon,
     BuildingGearIcon,
+    EnvelopeAtIcon,
     EnvelopeMagnifyingGlassIcon,
     GearIcon,
     HexagonTwoIcon,
@@ -28,11 +28,11 @@ import {
     ShareNodesIcon,
     ShieldCheckIcon,
     ShieldUserPencilIcon,
+    UserBriefcaseIcon,
     UserDatabaseIcon,
     UserDocumentIcon,
     UserGearIcon,
-    UserPlusIcon,
-    UserBriefcaseIcon
+    UserPlusIcon
 } from "@oxygen-ui/react-icons";
 import Card from "@oxygen-ui/react/Card";
 import Typography from "@oxygen-ui/react/Typography";
@@ -168,7 +168,7 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                 );
             case ServerConfigurationsConstants.USERNAME_RECOVERY:
                 return (
-                    <ArrowRightToBracketPencilIcon className="icon" />
+                    <EnvelopeAtIcon className="icon" />
                 );
             case ServerConfigurationsConstants.SAML2_SSO_CONNECTOR_ID:
                 return (
