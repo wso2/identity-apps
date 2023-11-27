@@ -27,7 +27,6 @@ import {
     ResourceGrid,
     Text
 } from "@wso2is/react-components";
-import { ConnectionManagementConstants } from "apps/console/src/features/connections";
 import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
@@ -61,6 +60,7 @@ import {
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
 import { authenticatorConfig } from "../../../../../../extensions/configs/authenticator";
+import { ConnectionManagementConstants } from "../../../../../connections";
 import { getEmptyPlaceholderIllustrations } from "../../../../../core/configs/ui";
 import { AppState } from "../../../../../core/store";
 import { EventPublisher } from "../../../../../core/utils/event-publisher";
