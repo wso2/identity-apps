@@ -9334,8 +9334,23 @@ export const console: ConsoleNS = {
                     heading: "Invite Parent User",
                     description: "Invite a user from the parent organization.",
                     hint: "Invited users are managed by the parent organization.",
-                    usernameHint: "Username should belong to a user " +
-                        "from the parent organization."
+                    username: {
+                        label: "Username",
+                        placeholder: "Enter the username",
+                        hint: "Username should belong to a user from the parent organization.",
+                        validations: {
+                            required: "Username is a required field."
+                        }
+                    },
+                    roles: {
+                        label: "Roles",
+                        placeholder: "Select roles",
+                        hint: "Assign roles for the user that is being invited.",
+                        validations: {
+                            required: "Roles is a required field."
+                        }
+                    },
+                    inviteButton: "Invite"
                 },
                 tab: {
                     usersTab: "Users",

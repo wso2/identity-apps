@@ -36,6 +36,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, Grid, Icon, Menu, Modal } from "semantic-ui-react";
+import { InviteParentOrgUser } from "../guests/pages/invite-parent-org-user";
 import { AddUserUpdated } from "./steps/add-user-basic";
 import { AddUserGroups } from "./steps/add-user-groups";
 import { AddUserType } from "./steps/add-user-type";
@@ -60,7 +61,7 @@ import {
     AdminAccountTypes,
     HiddenFieldNames,
     PasswordOptionTypes,
-    UserAccountTypesMain,
+    UserAccountTypesMain, UserManagementConstants,
     WizardStepsFormTypes
 } from "../../constants";
 import {
@@ -71,7 +72,6 @@ import {
     createEmptyUserDetails } from "../../models";
 import { generatePassword, getConfiguration, getUsernameConfiguration } from "../../utils";
 import { sendParentOrgUserInvite } from "../guests/api/invite";
-import { InviteParentOrgUser } from "../guests/pages/invite-parent-org-user";
 
 interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     closeWizard: () => void;
@@ -509,6 +509,12 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setInitialTempGroupList(newGroupList);
     };
 
+    const submitParentUserInviteForm = () => {
+        document
+            .getElementById(UserManagementConstants.INVITE_PARENT_ORG_USER_FORM_ID)
+            .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+    };
+
     const navigateToNext = () => {
         if (wizardSteps[ currentWizardStep ]?.name === WizardStepsFormTypes.USER_MODE) {
             handleWizardFormSubmit(wizardState[ WizardStepsFormTypes.USER_MODE ], WizardStepsFormTypes.USER_MODE);
@@ -517,7 +523,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         if (wizardSteps[ currentWizardStep ]?.name === WizardStepsFormTypes.BASIC_DETAILS) {
             userTypeSelection === AdminAccountTypes.EXTERNAL
                 ? setSubmitGeneralSettings()
-                : setSubmitParentUserInvite();
+                : submitParentUserInviteForm();
         }
 
         if (wizardSteps[ currentWizardStep ]?.name === WizardStepsFormTypes.GROUP_LIST) {
@@ -958,11 +964,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             />
                         ) : (
                             <InviteParentOrgUser
-                                triggerSubmit={ submitParentUserInvite }
-                                onSubmit={ (values: InternalAdminFormDataInterface | UserInviteInterface) =>
-                                    sendParentOrgInvitation(values as UserInviteInterface)
-                                }
-                                setFinishButtonDisabled={ (setFinishButtonDisabled) }
+                                closeWizard={ closeWizard }
+                                setIsSubmitting={ setIsSubmitting }
                             />
                         )
                     }
@@ -979,14 +982,12 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      * @returns Basic details wizard step.
      */
     const getInviteParentOrgUserStep = (): WizardStepInterface => {
+
         return {
             content: (
                 <InviteParentOrgUser
-                    triggerSubmit={ submitParentUserInvite }
-                    onSubmit={ (values: InternalAdminFormDataInterface | UserInviteInterface) =>
-                        sendParentOrgInvitation(values as UserInviteInterface)
-                    }
-                    setFinishButtonDisabled={ (setFinishButtonDisabled) }
+                    closeWizard={ closeWizard }
+                    setIsSubmitting={ setIsSubmitting }
                 />
             ),
             icon: getUserWizardStepIcons().general,
