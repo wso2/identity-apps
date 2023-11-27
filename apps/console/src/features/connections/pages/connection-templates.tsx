@@ -33,7 +33,6 @@ import {
     SearchWithFilterLabels,
     useDocumentation
 } from "@wso2is/react-components";
-import { identityProviderConfig } from "apps/console/src/extensions";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import orderBy from "lodash-es/orderBy";
@@ -43,6 +42,7 @@ import React, { FC, ReactElement, SyntheticEvent, useEffect, useState } from "re
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
+import { identityProviderConfig } from "../../../extensions";
 import { AppState, ConfigReducerStateInterface, EventPublisher, history } from "../../core";
 import { useGetConnectionTemplates } from "../api/connections";
 import {
