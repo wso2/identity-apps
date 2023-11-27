@@ -17,18 +17,16 @@
  */
 
 import { PadlockAsteriskIcon } from "@oxygen-ui/react-icons";
+import Avatar from "@oxygen-ui/react/Avatar";
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Grid from "@oxygen-ui/react/Grid";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import useAuthorization from "../../authorization/hooks/use-authorization";
 import "./add-user-type.scss";
-import Avatar from "@oxygen-ui/react/Avatar";
-import { AdminAccountTypes } from "../constants/user-management-constants";
+import { AdminAccountTypes } from "../../../constants/user-management-constants";
 
 /**
  * Interface for the AddUserType component.
@@ -66,19 +64,19 @@ export const AddUserType: FunctionComponent<AddUserTypeProps> = (props: AddUserT
                         }
                     >
                         <CardContent>
-                            <Grid container padding={ 0 } justifyContent="center">
-                                <Avatar variant="circular" className="user-type-avatar">
+                            <Grid container padding={ 0 } justifyContent="center" className="mb-5">
+                                <Avatar variant="rounded" >
                                     <PadlockAsteriskIcon />
                                 </Avatar>
                             </Grid>
                             <Grid padding={ 1 } textAlign="center">
                                 <Typography variant="h6">
-                                    { "Create user" }
+                                    { t("console:manage.features.users.addUserType.createUser.title") }
                                 </Typography>
                             </Grid>
                             <Grid padding={ 1 } textAlign="center">
                                 <Typography variant="body2" color="text.secondary">
-                                    { "Create a user in your organization." }
+                                    { t("console:manage.features.users.addUserType.createUser.description") }
                                 </Typography>
                             </Grid>
                         </CardContent>
@@ -94,19 +92,19 @@ export const AddUserType: FunctionComponent<AddUserTypeProps> = (props: AddUserT
                         }
                     >
                         <CardContent>
-                            <Grid container padding={ 0 } justifyContent="center">
-                                <Avatar variant="circular" className="user-type-avatar">
+                            <Grid container padding={ 0 } justifyContent="center" className="mb-5">
+                                <Avatar variant="rounded" className="user-type-avatar">
                                     <PadlockAsteriskIcon />
                                 </Avatar>
                             </Grid>
                             <Grid padding={ 1 } textAlign="center">
                                 <Typography variant="h6">
-                                    { "Invite parent user" }
+                                    { t("console:manage.features.users.addUserType.inviteParentUser.title") }
                                 </Typography>
                             </Grid>
                             <Grid padding={ 1 } textAlign="center">
                                 <Typography variant="body2" color="text.secondary">
-                                    { "Invite user from the parent organization." }
+                                    { t("console:manage.features.users.addUserType.inviteParentUser.description") }
                                 </Typography>
                             </Grid>
                         </CardContent>

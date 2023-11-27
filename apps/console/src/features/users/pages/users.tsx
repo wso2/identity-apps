@@ -87,8 +87,7 @@ import {
     UserAccountTypes,
     UserAccountTypesMain,
     UserAddOptionTypes,
-    UserManagementConstants,
-    WizardStepsFormTypes
+    UserManagementConstants
 } from "../constants";
 import { UserListInterface } from "../models";
 
@@ -148,7 +147,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ emailVerificationEnabled, setEmailVerificationEnabled ] = useState<boolean>(undefined);
     const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(undefined);
     const [ realmConfigs, setRealmConfigs ] = useState<RealmConfigInterface>(undefined);
-    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
     const [ selectedAddUserType ] = useState<UserAccountTypes>(UserAccountTypes.USER);
     const [ userType, setUserType ] = useState<string>();
     const [ selectedUserStore ] = useState<string>(CONSUMER_USERSTORE);
@@ -169,6 +167,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const tenantSettings: Record<string, any> = JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenantName));
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
     const invitationStatusOptions: DropdownItemProps[] = [
         {
@@ -756,10 +756,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const addUserOptions: DropdownItemProps[] = [
         {
-            "data-componentid": `${ componentId }-add-internal-user`,
+            "data-componentid": `${ componentId }-add-user`,
             key: 1,
             text: t("console:manage.features.users.addUserDropDown.addNewUser"),
-            value: UserAccountTypesMain.INTERNAL
+            value: UserAccountTypesMain.EXTERNAL
         },
         {
             "data-componentid": `${ testId }-bulk-import-users-dropdown-item`,
@@ -767,25 +767,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             key: 2,
             text: t("console:manage.features.users.addUserDropDown.bulkImport"),
             value: UserAddOptionTypes.BULK_IMPORT
-        },
-        isSubOrg && {
-            "data-componentid": `${ componentId }-add-external-user`,
-            key: 3,
-            text: t("console:manage.features.parentOrgInvitations.createDropdown.inviteLabel"),
-            value: UserAccountTypesMain.EXTERNAL
         }
-    ].filter(Boolean);
+    ];
 
     
     const handleDropdownItemChange = (value: string): void => {
-        if (value === UserAccountTypesMain.INTERNAL) {
-            handleAddNewUserWizardClick();
-            eventPublisher.publish("manage-users-click-create-invite", {
-                type: "user"
-            });
-            setShowWizard(true);
-            setUserType(UserAccountTypesMain.INTERNAL);
-        } else if (value === UserAccountTypesMain.EXTERNAL) {
+        if (value === UserAccountTypesMain.EXTERNAL) {
             eventPublisher.publish("manage-users-click-create-new", {
                 type: "user"
             });
@@ -857,7 +844,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 listItemLimit={ listItemLimit }
                 updateList={ () => setListUpdated(true) }
                 userStore= { userStore }
-                submitStep={ WizardStepsFormTypes.GROUP_LIST }
             />
         );
     };
@@ -1015,15 +1001,16 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             description={ t("extensions:manage.users.usersSubTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
-            { isSubOrg ?
-                ( <ResourceTab
-                    activeIndex= { activeTabIndex }
-                    data-testid= { `${ testId }-administrator-tabs` }
-                    defaultActiveIndex={ 0 }
-                    onTabChange={ handleTabChange }
-                    panes= { resolveAdminTabPanes() }
-                /> )
-                : renderUsersList()
+            { isSubOrg
+                ? (
+                    <ResourceTab
+                        activeIndex= { activeTabIndex }
+                        data-testid= { `${ testId }-administrator-tabs` }
+                        defaultActiveIndex={ 0 }
+                        onTabChange={ handleTabChange }
+                        panes= { resolveAdminTabPanes() }
+                    />
+                ) : renderUsersList()
             }
             {
                 showWizard && showUserWizard()

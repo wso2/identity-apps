@@ -17,33 +17,32 @@
  */
 
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { Button, Hint, PasswordValidation, Popup } from "@wso2is/react-components";
+import { Button, PasswordValidation, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Message, Radio } from "semantic-ui-react";
-import { SharedUserStoreConstants } from "../../core/constants";
-import { EventPublisher, SharedUserStoreUtils } from "../../core/utils";
-import { getUsersList } from "../../users/api/users";
+import { SharedUserStoreConstants } from "../../../../core/constants";
+import { EventPublisher, SharedUserStoreUtils } from "../../../../core/utils";
+import {
+    PRIMARY_USERSTORE,
+    USERSTORE_REGEX_PROPERTIES
+} from "../../../../userstores/constants/user-store-constants";
+import { ValidationDataInterface, ValidationFormInterface } from "../../../../validation/models";
+import { getUsersList } from "../../../api/users";
+import {
+    HiddenFieldNames,
+    PasswordOptionTypes
+} from "../../../constants";
 import {
     BasicUserDetailsInterface,
     UserListInterface
-} from "../../users/models/user";
+} from "../../../models/user";
 import {
     generatePassword,
     getConfiguration,
     getUsernameConfiguration
-} from "../../users/utils";
-import {
-    PRIMARY_USERSTORE,
-    USERSTORE_REGEX_PROPERTIES
-} from "../../userstores/constants/user-store-constants";
-import { ValidationDataInterface, ValidationFormInterface } from "../../validation/models";
-import {
-    HiddenFieldNames,
-    PasswordOptionTypes,
-    UserManagementConstants
-} from "../constants";
+} from "../../../utils";
 
 /**
  * Proptypes for the add user component.
@@ -123,13 +122,14 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         "username.validations.regExViolation");
     const USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE: string = t("console:manage.features.users.consumerUsers.fields." +
         "username.validations.invalidCharacters");
-    const USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE: string = t("extensions:manage.features.user.addUser.validation." +
-        "usernameSymbols");
-    const USERNAME_HAS_INVALID_LENGTH_ERROR_MESSAGE: string =
-        t("extensions:manage.features.user.addUser.validation.usernameLength", {
-            maxLength: usernameConfig?.maxLength,
-            minLength: usernameConfig?.minLength
-        });
+    // const USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE: string = 
+    // t("extensions:manage.features.user.addUser.validation." +
+    //     "usernameSymbols");
+    // const USERNAME_HAS_INVALID_LENGTH_ERROR_MESSAGE: string =
+    //     t("extensions:manage.features.user.addUser.validation.usernameLength", {
+    //         maxLength: usernameConfig?.maxLength,
+    //         minLength: usernameConfig?.minLength
+    //     });
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -167,8 +167,12 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     }, [ validationConfig ]);
 
     /**
-     * This checks if the entered email is valid based on alphanumeric config.
+     * This gets regex for each userstore.
      */
+    useEffect(() => {
+        getUserStoreRegex();
+    }, [ userStore ]);
+
     useEffect(() => {
         if (!isAlphanumericUsernameEnabled()) {
             setIsValidEmail(true);
@@ -176,13 +180,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
             setIsValidEmail(false);
         }
     }, [ usernameConfig ]);
-
-    /**
-     * This gets regex for each userstore.
-     */
-    useEffect(() => {
-        getUserStoreRegex();
-    }, [ userStore ]);
 
     /**
      * Check whether the alphanumeric usernames are enabled.
@@ -240,8 +237,12 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
      *
      * @param values - Map of form values.
      */
-    const handleEmailEmpty = (values: Map<string, FormValue>): void => {
-        setIsEmailFilled(values.get("email")?.toString()?.trim() !== "");
+    const handleEmailEmpty = (values: Map<string, FormValue>): void => {        
+        if (values.get("email")?.toString() === "") {
+            setIsEmailFilled(false);
+        } else {
+            setIsEmailFilled(true);
+        }
     };
 
     const getFormValues = (values: Map<string, FormValue>): BasicUserDetailsInterface => {
@@ -327,15 +328,9 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
             );
         }
 
-        if (!isValidEmail || !isEmailFilled) {
+        if (!isEmailFilled || !isValidEmail) {
             return t(
                 "console:manage.features.user.modals.addUserWizard.askPassword.emailInvalid"
-            );
-        }
-
-        if (isAlphanumericUsernameEnabled()) {
-            return t(
-                "console:manage.features.user.modals.addUserWizard.askPassword.alphanumericUsernameEnabled"
             );
         }
 
@@ -501,10 +496,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
         );
     };
 
-    /**
-     * The modal to add new user.
-     */
-    const addUserBasicForm = () => (
+    return (
         <Forms
             data-testid="user-mgt-add-user-form"
             onSubmit={ async (values: Map<string, FormValue>) => {
@@ -674,55 +666,55 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                             //         USERNAME_HAS_INVALID_SYMBOLS_ERROR_MESSAGE);
                                             // }
 
-                                            // try {
-                                            //     setBasicDetailsLoading(true);
-                                            //     // Check for the existence of users in the userstore by the username.
-                                            //     // Some characters disallowed by username
-                                            //     // -regex cause failure in below request.
-                                            //     // Therefore, existence of duplicates is
-                                            //     // -checked only post regex validation success.
-                                            //     if (value && validation.isValid === true) {
-                                            //         const usersList: UserListInterface
-                                            //         = await getUsersList(null, null,
-                                            //             "userName eq " + value, null,
-                                            //             userStore);
+                                            try {
+                                                setBasicDetailsLoading(true);
+                                                // Check for the existence of users in the userstore by the username.
+                                                // Some characters disallowed by username
+                                                // -regex cause failure in below request.
+                                                // Therefore, existence of duplicates is
+                                                // -checked only post regex validation success.
+                                                if (value && validation.isValid === true) {
+                                                    const usersList: UserListInterface
+                                                    = await getUsersList(null, null,
+                                                        "userName eq " + value, null,
+                                                        userStore);
 
-                                            //         if (usersList?.totalResults > 0) {
-                                            //             validation.isValid = false;
-                                            //             validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
-                                            //             scrollToInValidField("email");
-                                            //         }
-                                            //     }
+                                                    if (usersList?.totalResults > 0) {
+                                                        validation.isValid = false;
+                                                        validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
+                                                        scrollToInValidField("email");
+                                                    }
+                                                }
 
-                                            //     setBasicDetailsLoading(false);
-                                            // } catch (error) {
-                                            //     // Some non ascii characters are not accepted by DBs
-                                            //     // with certain charsets.
-                                            //     // Hence, the API sends a `500` status code.
-                                            //     // see below issue for more context.
-                                            //     // https://github.com/wso2/product-is/issues/
-                                            //     // 10190#issuecomment-719760318
-                                            //     if (error?.response?.status === 500) {
-                                            //         validation.isValid = false;
-                                            //         validation.errorMessages.push(
-                                            //             USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
-                                            //         scrollToInValidField("email");
-                                            //     }
+                                                setBasicDetailsLoading(false);
+                                            } catch (error) {
+                                                // Some non ascii characters are not accepted by DBs
+                                                // with certain charsets.
+                                                // Hence, the API sends a `500` status code.
+                                                // see below issue for more context.
+                                                // https://github.com/wso2/product-is/issues/
+                                                // 10190#issuecomment-719760318
+                                                if (error?.response?.status === 500) {
+                                                    validation.isValid = false;
+                                                    validation.errorMessages.push(
+                                                        USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
+                                                    scrollToInValidField("email");
+                                                }
 
-                                            //     setBasicDetailsLoading(false);
-                                            // }
+                                                setBasicDetailsLoading(false);
+                                            }
                                         } }
                                         type="text"
                                         value={ initialValues && initialValues.userName }
                                         tabIndex={ 1 }
                                         maxLength={ 60 }
                                     />
-                                    {/* <Hint>
+                                    { /* <Hint>
                                         { t("extensions:manage.features.user.addUser.validation.usernameHint", {
                                             maxLength: usernameConfig?.maxLength,
                                             minLength: usernameConfig?.minLength
                                         }) }
-                                    </Hint> */}
+                                    </Hint> */ }
                                     <Field
                                         data-testid="user-mgt-add-user-form-alphanumeric-email-input"
                                         label={ "Email" }
@@ -737,7 +729,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                             "validations.empty"
                                         ) }
                                         validation={ async (value: string, validation: Validation) => {
-                                            setIsEmailFilled(value?.trim() !== "");
+                                            setBasicDetailsLoading(true);
 
                                             // Check username validity against userstore regex.
                                             if (value && (
@@ -751,6 +743,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                             } else {
                                                 setIsValidEmail(true);
                                             }
+                                            setBasicDetailsLoading(false);
                                         } }
                                         type="email"
                                         value={ initialValues && initialValues.email }
@@ -837,16 +830,19 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                         ? (
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                    {/* This needs to be fixed an re-enabled in the beta-2 */}
-                                    {/* <Form.Field
+                                    <Form.Field
                                     >
                                         <label className="mb-3">
                                             { t("console:manage.features.user.forms.addUserForm" +
                                                 ".buttons.radioButton.label") }
                                         </label>
                                         {
-                                            emailVerificationEnabled &&
-                                            !isAlphanumericUsernameEnabled()
+                                            emailVerificationEnabled && (
+                                                (
+                                                    isValidEmail
+                                                    && isEmailFilled
+                                                ) || !isAlphanumericUsernameEnabled()
+                                            )
                                                 ? (
                                                     <Radio
                                                         label={ askPasswordOptionData.label }
@@ -888,8 +884,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                                     />
                                                 )
                                         }
-                                    </Form.Field> */}
-                                    {/* {
+                                    </Form.Field>
+                                    {
                                         passwordOption === askPasswordOptionData.value
                                             ? renderAskPasswordOption()
                                             : null
@@ -906,7 +902,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                                     setPasswordOption(item?.value)
                                             }
                                         />
-                                    </Form.Field> */}
+                                    </Form.Field>
                                     {
                                         passwordOption === createPasswordOptionData.value
                                             ? renderCreatePasswordOption()
@@ -918,12 +914,6 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                 }
             </Grid>
         </Forms>
-    );
-
-    return (
-        <>
-            { addUserBasicForm() }
-        </>
     );
 };
 

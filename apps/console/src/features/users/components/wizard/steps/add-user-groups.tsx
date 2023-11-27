@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,7 @@ import { useTranslation } from "react-i18next";
 /**
  * Proptypes for the application consents list component.
  */
-interface AddUserGroupPropsInterface {
+interface AddConsumerUserGroupPropsInterface {
     initialValues: any;
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
@@ -39,12 +39,12 @@ interface AddUserGroupPropsInterface {
 }
 
 /**
- * User role component.
+ * Add user groups component.
  *
- * @return {ReactElement}
+ * @returns add user groups component.
  */
-export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
-    props: AddUserGroupPropsInterface): ReactElement => {
+export const AddUserGroups: FunctionComponent<AddConsumerUserGroupPropsInterface> = (
+    props: AddConsumerUserGroupPropsInterface): ReactElement => {
 
     const {
         initialValues,
@@ -59,7 +59,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
     const { t } = useTranslation();
 
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<RolesInterface[]>([]);
-    const [ isSelectUnassignedGroupsAllRolesChecked, setIsSelectUnassignedAllGroupsChecked ] = useState(false);
+    const [ , setIsSelectUnassignedAllGroupsChecked ] = useState(false);
 
     useEffect(() => {
         setCheckedUnassignedListItems(initialValues?.tempGroupList);
@@ -73,14 +73,14 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
      * @param e - Click event.
      * @param value - Input value of the field
      */
-    const handleUnselectedListSearch = (e, { value }) => {
-        let isMatch = false;
-        const filteredGroupList = [];
+    const handleUnselectedListSearch = ({ value }: any) => {
+        let isMatch: boolean = false;
+        const filteredGroupList: any[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            initialValues.initialGroupList && initialValues.initialGroupList.map((group) => {
+            initialValues.initialGroupList && initialValues.initialGroupList.map((group: any) => {
                 isMatch = re.test(group.displayName);
                 if (isMatch) {
                     filteredGroupList.push(group);
@@ -92,25 +92,27 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         }
     };
 
-    /**
-     * The following function enables the user to select all the roles at once.
-     */
-    const selectAllUnAssignedList = () => {
-        if (!isSelectUnassignedGroupsAllRolesChecked) {
-            setCheckedUnassignedListItems(initialValues?.groupList);
-            handleTempListChange(initialValues?.groupList);
-        } else {
-            setCheckedUnassignedListItems([]);
-        }
-        setIsSelectUnassignedAllGroupsChecked(!isSelectUnassignedGroupsAllRolesChecked);
-    };
+    // Commented when the select all option for groups was removed.
+    // Uncomment if select all option is reintroduced.
+    // /**
+    //  * The following function enables the user to select all the roles at once.
+    //  */
+    // const selectAllUnAssignedList = () => {
+    //     if (!isSelectUnassignedGroupsAllRolesChecked) {
+    //         setCheckedUnassignedListItems(initialValues?.groupList);
+    //         handleTempListChange(initialValues?.groupList);
+    //     } else {
+    //         setCheckedUnassignedListItems([]);
+    //     }
+    //     setIsSelectUnassignedAllGroupsChecked(!isSelectUnassignedGroupsAllRolesChecked);
+    // };
 
     /**
      * The following method handles the onChange event of the
      * checkbox field of an unassigned item.
      */
-    const handleUnassignedItemCheckboxChange = (group) => {
-        const checkedGroups = [ ...checkedUnassignedListItems ];
+    const handleUnassignedItemCheckboxChange = (group: any) => {
+        const checkedGroups: RolesInterface[] = [ ...checkedUnassignedListItems ];
 
         if (checkedGroups?.includes(group)) {
             checkedGroups.splice(checkedGroups.indexOf(group), 1);
@@ -120,20 +122,6 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         handleTempListChange(checkedGroups);
         handleInitialTempListChange(checkedGroups);
         setIsSelectUnassignedAllGroupsChecked(initialValues?.groupList?.length === checkedGroups.length);
-    };
-
-    /**
-     * The following method handles creating a label for the list item.
-     *
-     * @param groupName: string
-     */
-    const createGroupLabel = (groupName: string): any => {
-        const group = groupName.split("/");
-        if (group.length > 1) {
-            return { labelColor: "teal", labelText: group[0].toString() };
-        } else {
-            return { labelColor: "olive", labelText: "Primary" };
-        }
     };
 
     return (
@@ -153,21 +141,16 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                 <TransferList
                     isListEmpty={ !(initialValues?.groupList?.length > 0) }
                     listType="unselected"
-                    listHeaders={ [
-                        t("console:manage.features.transferList.list.headers.0"),
-                        t("console:manage.features.transferList.list.headers.1"), ""
-                    ] }
-                    handleHeaderCheckboxChange={ selectAllUnAssignedList }
-                    isHeaderCheckboxChecked={ isSelectUnassignedGroupsAllRolesChecked }
-                    emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders.users." +
-                        "roles.unselected", { type: "groups" }) }
-                    data-testid="user-mgt-add-user-wizard-modal-unselected-groups-select-all-checkbox"
+                    emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
+                        "users.roles.unselected", { type: "groups" }) }
+                    data-testid="user-mgt-add-user-wizard-modal-unselected-transfer-list"
                     emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
                         + "emptyPlaceholders.default") }
                 >
                     {
-                        initialValues?.groupList?.map((group, index)=> {
-                            const groupName = group?.displayName?.split("/");
+                        initialValues?.groupList?.map((group: any, index: number)=> {
+                            const groupName: string = group?.displayName?.split("/");
+
                             return (
                                 <TransferListItem
                                     handleItemChange={ () => handleUnassignedItemCheckboxChange(group) }
@@ -175,7 +158,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                                     listItem={ groupName?.length > 1 ? groupName[1] : group?.displayName }
                                     listItemId={ group.id }
                                     listItemIndex={ index }
-                                    listItemTypeLabel={ createGroupLabel(group?.displayName) }
+                                    listItemTypeLabel={ null }
                                     isItemChecked={ checkedUnassignedListItems.includes(group) }
                                     showSecondaryActions={ false }
                                     handleOpenPermissionModal={ () => handleSetGroupId(group.id) }

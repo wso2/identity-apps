@@ -3687,6 +3687,16 @@ export interface ConsoleNS {
                 }
             };
             users: {
+                addUserType: {
+                    createUser: {
+                        title: string;
+                        description: string
+                    };
+                    inviteParentUser: {
+                        title: string;
+                        description: string
+                    };
+                };
                 consumerUsers: {
                     fields: {
                        username: {
@@ -5986,6 +5996,7 @@ export interface ConsoleNS {
                             roles: string;
                             groups: string;
                             summary: string;
+                            method: string;
                         };
                         buttons: {
                             next: string;
