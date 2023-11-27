@@ -252,10 +252,9 @@ export class GovernanceConnectorUtils {
                         route: AppConstants.getPaths().get("SESSION_MANAGEMENT")
                     },
                     {
-                        description: "Authenticate confidential clients to the authorization"
-                            + " server when using the token endpoint.",
-                        header: "Private Key JWT Client Authentication for OIDC",
+                        description: "Authentication via JWT signed with client's registered key.",
                         id: ServerConfigurationsConstants.PRIVATE_KEY_JWT_CLIENT_AUTH,
+                        header: "Private Key JWT Client Authentication (OIDC)",
                         route: AppConstants.getPaths().get("PRIVATE_KEY_JWT_CONFIG_EDIT")
                     }
                 ],
@@ -319,8 +318,8 @@ export class GovernanceConnectorUtils {
                     },
                     {
                         description: "Enable administrators to initiate password reset process for users.",
+                        id: ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET,
                         header: "Admin Initiated Password Reset",
-                        id: ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_CONNECTOR_ID,
                         route: AppConstants.getPaths()
                             .get("GOVERNANCE_CONNECTOR_EDIT")
                             .replace(":categoryId",

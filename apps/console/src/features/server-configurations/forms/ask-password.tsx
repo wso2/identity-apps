@@ -17,10 +17,10 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { 
-    DeprecatedFeatureInterface, 
-    FeatureAccessConfigInterface, 
-    IdentifiableComponentInterface 
+import {
+    DeprecatedFeatureInterface,
+    FeatureAccessConfigInterface,
+    IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { Field, Form, FormFieldMessage } from "@wso2is/form";
 import { ConfirmationModal, Hint, Text } from "@wso2is/react-components";
@@ -105,7 +105,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
         !hasRequiredScopes(
             featureConfig?.governanceConnectors, featureConfig?.governanceConnectors?.scopes?.update, allowedScopes)
     ), [ featureConfig, allowedScopes ]);
-    
+
     const gonvernanConnectorsConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.governanceConnectors);
     const passwordPatternConnector: DeprecatedFeatureInterface = gonvernanConnectorsConfig.deprecatedFeaturesToShow.find((feature) => {
@@ -150,7 +150,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
         let data = {};
 
         for (const key in values) {
-            if (Object.prototype.hasOwnProperty.call(values, key) 
+            if (Object.prototype.hasOwnProperty.call(values, key)
             && key !== ServerConfigurationsConstants.ASK_PASSWORD_ENABLE) {
                 data = {
                     ...data,
@@ -160,8 +160,8 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
         }
 
         return data;
-    };   
-   
+    };
+
     if (!initialConnectorValues) {
         return null;
     }
@@ -171,170 +171,77 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
             id={ FORM_ID }
             uncontrolledForm={ false }
             initialValues={ initialFormValues }
-            onSubmit={ (values: Record<string, unknown>) => 
-                onSubmit(getUpdatedConfigurations(values)) 
+            onSubmit={ (values: Record<string, unknown>) =>
+                onSubmit(getUpdatedConfigurations(values))
             }
         >
             <Field.Checkbox
-                ariaLabel="EmailVerification.OTP.SendOTPInEmail"
+                ariaLabel="EmailVerification.Enable"
                 name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "EmailVerification.OTP.SendOTPInEmail") }
-                className="toggle"
-                label={ GovernanceConnectorUtils.resolveFieldLabel(
-                    "User Onboarding",
-                    "EmailVerification.OTP.SendOTPInEmail", 
-                    "Send OTP in e-mail") }
-                defaultValue={ initialFormValues?.[ 
-                    "EmailVerification.OTP.SendOTPInEmail" ] === "true" }
-                readOnly={ readOnly }
-                disabled={ !isConnectorEnabled }
-                width={ 16 }
-                data-componentid={ `${ testId }-enable-auto-login` }
-                hint={ GovernanceConnectorUtils.resolveFieldHint(
-                    "User Onboarding",
-                    "EmailVerification.OTP.SendOTPInEmail", 
-                    "Enable to send OTP in verification e-mail instead of confirmation code.")
-                }
-            />
-            <Field.Checkbox
-                ariaLabel="EmailVerification.OTP.UseUppercaseCharactersInOTP"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "EmailVerification.OTP.UseUppercaseCharactersInOTP") 
+                    "EmailVerification.Enable")
                 }
                 className="toggle"
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
-                    "EmailVerification.OTP.UseUppercaseCharactersInOTP", 
-                    "Include uppercase characters in OTP") }
-                defaultValue={ initialFormValues?.[ 
-                    "EmailVerification.OTP.UseUppercaseCharactersInOTP" ] === "true" }
+                    "EmailVerification.Enable",
+                    "Enable user email verification") }
+                defaultValue={ initialFormValues?.[
+                    "EmailVerification.Enable" ] === "true" }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }
                 width={ 16 }
-                data-componentid={ `${ testId }-enable-auto-login` }
+                data-componentid={ `${ testId }-enable-email-verification` }
                 hint={ GovernanceConnectorUtils.resolveFieldHint(
                     "User Onboarding",
-                    "EmailVerification.OTP.UseUppercaseCharactersInOTP", 
-                    "Enable to include uppercase characters in SMS and e-mail OTPs.")
+                    "EmailVerification.Enable",
+                    "A verification notification will be triggered during user creation.")
                 }
             />
-            <Field.Checkbox
-                ariaLabel="EmailVerification.OTP.UseLowercaseCharactersInOTP"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "EmailVerification.OTP.UseLowercaseCharactersInOTP") 
-                }
-                className="toggle"
-                label={ GovernanceConnectorUtils.resolveFieldLabel(
-                    "User Onboarding",
-                    "EmailVerification.OTP.UseLowercaseCharactersInOTP", 
-                    "Include lowercase characters in OTP") }
-                defaultValue={ initialFormValues?.[ 
-                    "EmailVerification.OTP.UseLowercaseCharactersInOTP" ] === "true" }
-                readOnly={ readOnly }
-                disabled={ !isConnectorEnabled }
-                width={ 16 }
-                data-componentid={ `${ testId }-enable-auto-login` }
-                hint={ GovernanceConnectorUtils.resolveFieldHint(
-                    "User Onboarding",
-                    "EmailVerification.OTP.UseLowercaseCharactersInOTP", 
-                    "Enable to include lowercase characters in SMS and e-mail OTPs.")
-                }
-            />
-            <Field.Checkbox
-                ariaLabel="EmailVerification.OTP.UseNumbersInOTP"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "EmailVerification.OTP.UseNumbersInOTP") 
-                }
-                className="toggle"
-                label={ GovernanceConnectorUtils.resolveFieldLabel(
-                    "User Onboarding",
-                    "EmailVerification.OTP.UseNumbersInOTP", 
-                    "Include numbers in OTP") }
-                defaultValue={ initialFormValues?.[ 
-                    "EmailVerification.OTP.UseNumbersInOTP" ] === "true" }
-                readOnly={ readOnly }
-                disabled={ !isConnectorEnabled }
-                width={ 16 }
-                data-componentid={ `${ testId }-enable-auto-login` }
-                hint={ GovernanceConnectorUtils.resolveFieldHint(
-                    "User Onboarding",
-                    "EmailVerification.OTP.UseNumbersInOTP", 
-                    "Enable to include numbers in SMS and e-mail OTPs.")
-                }
-            />
-            <Field.Input
-                ariaLabel="EmailVerification.OTP.OTPLength"
-                inputType="text"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "EmailVerification.OTP.OTPLength"
-                ) }
-                type="text"
-                width={ 16 }
-                required={ true }
-                placeholder={ "Enter OTP length" }
-                labelPosition="top"
-                minLength={ 3 }
-                maxLength={ 100 }
-                readOnly={ readOnly }
-                initialValue={ initialFormValues?.[ "EmailVerification.OTP.OTPLength" ] }
-                data-testid={ `${ testId }-otp-length` }
-                label={ GovernanceConnectorUtils.resolveFieldLabel(
-                    "User Onboarding",
-                    "EmailVerification.OTP.OTPLength", 
-                    "OTP length") 
-                }
-                disabled={ !isConnectorEnabled }
-            />
-            <Hint>
-                { GovernanceConnectorUtils.resolveFieldHint(
-                    "User Onboarding",
-                    "EmailVerification.OTP.OTPLength", 
-                    "Length of the OTP for SMS and e-mail verifications. OTP length must be 4-10.") 
-                }
-            </Hint>
             <Field.Checkbox
                 ariaLabel="EmailVerification.LockOnCreation"
                 name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "EmailVerification.LockOnCreation") 
+                    "EmailVerification.LockOnCreation")
                 }
                 className="toggle"
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
-                    "EmailVerification.LockOnCreation", 
+                    "EmailVerification.LockOnCreation",
                     "Enable account lock on creation") }
-                defaultValue={ initialFormValues?.[ 
+                defaultValue={ initialFormValues?.[
                     "EmailVerification.LockOnCreation" ] === "true" }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }
                 width={ 16 }
-                data-componentid={ `${ testId }-enable-auto-login` }
+                data-componentid={ `${ testId }-enable-account-lock-on-creation` }
                 hint={ GovernanceConnectorUtils.resolveFieldHint(
                     "User Onboarding",
-                    "EmailVerification.LockOnCreation", 
+                    "EmailVerification.LockOnCreation",
                     "The user account will be locked during user creation.")
                 }
+                hidden={ !serverConfigurationConfig.dynamicConnectors }
             />
             <Field.Checkbox
                 ariaLabel="EmailVerification.AskPassword.AccountActivation"
                 name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "EmailVerification.AskPassword.AccountActivation") 
+                    "EmailVerification.AskPassword.AccountActivation")
                 }
                 className="toggle"
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
-                    "EmailVerification.AskPassword.AccountActivation", 
+                    "EmailVerification.AskPassword.AccountActivation",
                     "Send account activation email") }
-                defaultValue={ initialFormValues?.[ 
+                defaultValue={ initialFormValues?.[
                     "EmailVerification.AskPassword.AccountActivation" ] === "true" }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }
                 width={ 16 }
-                data-componentid={ `${ testId }-enable-auto-login` }
+                data-componentid={ `${ testId }-enable-send-account-activation-email` }
                 hint={ GovernanceConnectorUtils.resolveFieldHint(
                     "User Onboarding",
-                    "EmailVerification.AskPassword.AccountActivation", 
+                    "EmailVerification.AskPassword.AccountActivation",
                     "Disable if account activation confirmation email is not required.")
                 }
+                hidden={ !serverConfigurationConfig.dynamicConnectors }
             />
             <Field.Input
                 ariaLabel="EmailVerification.ExpiryTime"
@@ -351,10 +258,10 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                 width={ 10 }
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
-                    "EmailVerification.ExpiryTime", 
+                    "EmailVerification.ExpiryTime",
                     "Email verification code expiry time") }
                 required={ false }
-                hidden={ false }
+                hidden={ !serverConfigurationConfig.dynamicConnectors }
                 placeholder={ t("extensions:manage.serverConfigurations.userOnboarding." +
                     "selfRegistration.form.fields.expiryTime.placeholder") }
                 maxLength={
@@ -368,6 +275,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                 }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }
+                data-componentid={ `${ testId }-link-expiry-time` }
                 data-testid={ `${testId}-link-expiry-time` }
             >
                 <input/>
@@ -388,10 +296,10 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                 width={ 10 }
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
-                    "EmailVerification.AskPassword.ExpiryTime", 
-                    "Enable account lock on creation") }
+                    "EmailVerification.AskPassword.ExpiryTime",
+                    "Ask password code expiry time") }
                 required={ false }
-                hidden={ false }
+                hidden={ !serverConfigurationConfig.dynamicConnectors }
                 placeholder={ t("extensions:manage.serverConfigurations.userOnboarding." +
                     "selfRegistration.form.fields.expiryTime.placeholder") }
                 maxLength={
@@ -405,11 +313,12 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                 }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }
-                data-testid={ `${testId}-link-expiry-time` }
+                data-componentid={ `${ testId }-ask-password-code-expiry-time` }
+                data-testid={ `${testId}-link-ask-password-code-expiry-time` }
                 hint={ GovernanceConnectorUtils.resolveFieldHint(
                     "User Onboarding",
-                    "EmailVerification.AskPassword.ExpiryTime", 
-                    "Set the time span that the ask password e-mail would be valid, " + 
+                    "EmailVerification.AskPassword.ExpiryTime",
+                    "Set the time span that the ask password e-mail would be valid, " +
                         "in minutes. (For infinite validity period, set -1).")
                 }
             >

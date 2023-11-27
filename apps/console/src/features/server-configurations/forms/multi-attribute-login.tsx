@@ -17,10 +17,10 @@
  */
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { 
-    DeprecatedFeatureInterface, 
-    FeatureAccessConfigInterface, 
-    IdentifiableComponentInterface 
+import {
+    DeprecatedFeatureInterface,
+    FeatureAccessConfigInterface,
+    IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { Field, Form, FormFieldMessage } from "@wso2is/form";
 import { ConfirmationModal, Hint, Text } from "@wso2is/react-components";
@@ -89,7 +89,7 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
         readOnly,
         isConnectorEnabled,
         isSubmitting,
-        ["data-componentid"]: testId
+        ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -105,7 +105,7 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
         !hasRequiredScopes(
             featureConfig?.governanceConnectors, featureConfig?.governanceConnectors?.scopes?.update, allowedScopes)
     ), [ featureConfig, allowedScopes ]);
-    
+
     const gonvernanConnectorsConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.governanceConnectors);
     const passwordPatternConnector: DeprecatedFeatureInterface = gonvernanConnectorsConfig.deprecatedFeaturesToShow.find((feature) => {
@@ -150,7 +150,7 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
         let data = {};
 
         for (const key in values) {
-            if (Object.prototype.hasOwnProperty.call(values, key) 
+            if (Object.prototype.hasOwnProperty.call(values, key)
             && key !== ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE) {
                 data = {
                     ...data,
@@ -160,8 +160,8 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
         }
 
         return data;
-    };   
-   
+    };
+
     if (!initialConnectorValues) {
         return null;
     }
@@ -171,8 +171,8 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
             id={ FORM_ID }
             uncontrolledForm={ true }
             initialValues={ initialFormValues }
-            onSubmit={ (values: Record<string, unknown>) => 
-                onSubmit(getUpdatedConfigurations(values)) 
+            onSubmit={ (values: Record<string, unknown>) =>
+                onSubmit(getUpdatedConfigurations(values))
             }
         >
             <Field.Input
@@ -190,17 +190,17 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
                 maxLength={ 100 }
                 readOnly={ readOnly }
                 initialValue={ initialFormValues?.[ "account.multiattributelogin.handler.allowedattributes" ] }
-                data-testid={ `${ testId }-otp-length` }
+                data-componentid={ `${ componentId }-allowed-attribute-list` }
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "Account Management",
-                    "account.multiattributelogin.handler.allowedattributes", 
-                    "Allowed Attribute List") 
+                    "account.multiattributelogin.handler.allowedattributes",
+                    "Allowed Attribute List")
                 }
                 disabled={ !isConnectorEnabled }
                 hint={ GovernanceConnectorUtils.resolveFieldHint(
                     "Account Management",
-                    "account.multiattributelogin.handler.allowedattributes", 
-                    "Allowed claim list separated by commas.") 
+                    "account.multiattributelogin.handler.allowedattributes",
+                    "Allowed claim list separated by commas.")
                 }
             />
             <Field.Button
@@ -209,7 +209,7 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
                 buttonType="primary_btn"
                 ariaLabel="Self registration update button"
                 name="update-button"
-                data-testid={ `${testId}-submit-button` }
+                data-componentid={ `${ componentId }-submit-button` }
                 disabled={ !isConnectorEnabled || isSubmitting }
                 loading={ isSubmitting }
                 label={ t("common:update") }

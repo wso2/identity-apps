@@ -108,12 +108,6 @@ const allowedConnectorFields: string[] = [
     LOCK_ON_CREATION
 ];
 
-const hintExcludedFields: string[] = [
-    "SelfRegistration.OTP.UseUppercaseCharactersInOTP",
-    "SelfRegistration.OTP.UseLowercaseCharactersInOTP",
-    "SelfRegistration.OTP.UseNumbersInOTP"
-];
-
 const FORM_ID: string = "governance-connectors-self-registration-form";
 
 /**
@@ -160,7 +154,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
     useEffect(() => {
         const emailSchema: ProfileSchemaInterface = profileSchemas
             .find((schema: ProfileSchemaInterface) => (schema.name === "emails"));
-        
+
         if (emailSchema) {
             setEmailRequired(emailSchema.required);
         }
@@ -310,13 +304,12 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
 
         if (serverConfigurationConfig.dynamicConnectors) {
 
-            const keysToOmit: string[] = [ 
-                "autoLogin", 
+            const keysToOmit: string[] = [
+                "autoLogin",
                 "accountActivateImmediately",
-                "verificationLinkExpiryTime", 
-                "signUpConfirmation", 
+                "verificationLinkExpiryTime",
+                "signUpConfirmation",
                 "SelfRegistration.VerificationCode.ExpiryTime",
-                "SelfRegistration.LockOnCreation",
                 "SelfRegistration.SendConfirmationOnCreation",
                 "SelfRegistration",
                 "SelfRegistration.Notification.InternallyManage",
@@ -533,13 +526,13 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
         const fieldHintKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
                 camelCase(initialValues?.category) + ".connectors." + camelCase(initialValues?.name) +
                 ".properties." + camelCase(name) + ".hint";
-            
-        let fieldHint: string = !hintExcludedFields.includes(name) ? description : "";
+
+        let fieldHint: string = description;
 
         if (i18n.exists(fieldHintKey)) {
             fieldHint = t(fieldHintKey);
         }
-        
+
         return fieldHint;
     };
 
@@ -549,8 +542,8 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             uncontrolledForm={ false }
             validate={ validateForm }
             initialValues={ initialFormValues }
-            onSubmit={ (values: Record<string, unknown>) => 
-                onSubmit(getUpdatedConfigurations(values)) 
+            onSubmit={ (values: Record<string, unknown>) =>
+                onSubmit(getUpdatedConfigurations(values))
             }
         >
             <Field.Checkbox
@@ -571,9 +564,9 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             />
             {
                 isAlphanumericUsernameEnabled && !emailRequired && (
-                    <Text 
+                    <Text
                         compact
-                        weight={ "300" } 
+                        weight={ "300" }
                         className="field-compact-description pb-3 pt-0"
                         size={ "13px" }
                     >
@@ -657,122 +650,27 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 }
             />
             <Field.Checkbox
-                ariaLabel="SelfRegistration.OTP.UseNumbersInOTP"
+                ariaLabel="SelfRegistration.NotifyAccountConfirmation"
                 name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "SelfRegistration.OTP.UseNumbersInOTP") 
+                    "SelfRegistration.NotifyAccountConfirmation")
                 }
                 className="toggle"
-                label={ resolveFieldLabel("SelfRegistration.OTP.UseNumbersInOTP", 
-                    "Include numbers in OTP") }
-                defaultValue={ initialFormValues?.[ 
-                    "SelfRegistration.OTP.UseNumbersInOTP" ] === "true" }
+                label={ GovernanceConnectorUtils.resolveFieldLabel(
+                    "User Onboarding",
+                    "SelfRegistration.NotifyAccountConfirmation",
+                    "Send sign up confirmation email") }
+                defaultValue={ initialFormValues?.[
+                    "SelfRegistration.NotifyAccountConfirmation" ] === "true" }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }
                 width={ 16 }
-                data-componentid={ `${ testId }-enable-auto-login` }
-                hint={ resolveFieldHint("SelfRegistration.OTP.UseNumbersInOTP", 
-                    "Enable to include numbers in SMS and e-mail OTPs.")
+                data-componentid={ `${ testId }-enable-notification-sign-up-confirmation` }
+                hint={ GovernanceConnectorUtils.resolveFieldHint(
+                    "User Onboarding",
+                    "SelfRegistration.NotifyAccountConfirmation",
+                    "Enable sending notification for self sign up confirmation.")
                 }
                 hidden={ !serverConfigurationConfig.dynamicConnectors }
-            />
-            <Field.Checkbox
-                ariaLabel="SelfRegistration.OTP.SendOTPInEmail"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "SelfRegistration.OTP.SendOTPInEmail") }
-                className="toggle"
-                label={ resolveFieldLabel("SelfRegistration.OTP.SendOTPInEmail", 
-                    "Send OTP in e-mail") }
-                defaultValue={ initialFormValues?.[ 
-                    "SelfRegistration.OTP.SendOTPInEmail" ] === "true" }
-                readOnly={ readOnly }
-                disabled={ !isConnectorEnabled }
-                width={ 16 }
-                hidden={ !serverConfigurationConfig.dynamicConnectors }
-                data-componentid={ `${ testId }-enable-auto-login` }
-                hint={ resolveFieldHint("SelfRegistration.OTP.SendOTPInEmail", 
-                    "Enable to send OTP in verification e-mail instead of confirmation code.")
-                }
-            />
-            <Field.Checkbox
-                ariaLabel="SelfRegistration.OTP.UseUppercaseCharactersInOTP"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "SelfRegistration.OTP.UseUppercaseCharactersInOTP") 
-                }
-                className="toggle"
-                label={ resolveFieldLabel("SelfRegistration.OTP.UseUppercaseCharactersInOTP", 
-                    "Include uppercase characters in OTP") }
-                defaultValue={ initialFormValues?.[ 
-                    "SelfRegistration.OTP.UseUppercaseCharactersInOTP" ] === "true" }
-                readOnly={ readOnly }
-                disabled={ !isConnectorEnabled }
-                width={ 16 }
-                data-componentid={ `${ testId }-enable-auto-login` }
-                hint={ resolveFieldHint("SelfRegistration.OTP.UseUppercaseCharactersInOTP", 
-                    "Enable to include uppercase characters in SMS and e-mail OTPs.")
-                }
-                hidden={ !serverConfigurationConfig.dynamicConnectors }
-            />
-            <Field.Checkbox
-                ariaLabel="SelfRegistration.OTP.UseLowercaseCharactersInOTP"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "SelfRegistration.OTP.UseLowercaseCharactersInOTP") 
-                }
-                className="toggle"
-                label={ resolveFieldLabel("SelfRegistration.OTP.UseLowercaseCharactersInOTP", 
-                    "Include lowercase characters in OTP") }
-                defaultValue={ initialFormValues?.[ 
-                    "SelfRegistration.OTP.UseLowercaseCharactersInOTP" ] === "true" }
-                readOnly={ readOnly }
-                disabled={ !isConnectorEnabled }
-                width={ 16 }
-                data-componentid={ `${ testId }-enable-auto-login` }
-                hint={ resolveFieldHint("SelfRegistration.OTP.UseLowercaseCharactersInOTP", 
-                    "Enable to include lowercase characters in SMS and e-mail OTPs.")
-                }
-                hidden={ !serverConfigurationConfig.dynamicConnectors }
-            />
-            <Field.Checkbox
-                ariaLabel="SelfRegistration.OTP.UseNumbersInOTP"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "SelfRegistration.OTP.UseNumbersInOTP") 
-                }
-                className="toggle"
-                label={ resolveFieldLabel("SelfRegistration.OTP.UseNumbersInOTP", 
-                    "Include numbers in OTP") }
-                defaultValue={ initialFormValues?.[ 
-                    "SelfRegistration.OTP.UseNumbersInOTP" ] === "true" }
-                readOnly={ readOnly }
-                disabled={ !isConnectorEnabled }
-                width={ 16 }
-                data-componentid={ `${ testId }-enable-auto-login` }
-                hint={ resolveFieldHint("SelfRegistration.OTP.UseNumbersInOTP", 
-                    "Enable to include numbers in SMS and e-mail OTPs.")
-                }
-                hidden={ !serverConfigurationConfig.dynamicConnectors }
-            />
-            <Field.Input
-                ariaLabel="SelfRegistration.OTP.OTPLength"
-                inputType="text"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "SelfRegistration.OTP.OTPLength"
-                ) }
-                type="text"
-                width={ 16 }
-                required={ true }
-                placeholder={ "Enter OTP length" }
-                labelPosition="top"
-                minLength={ 3 }
-                maxLength={ 100 }
-                readOnly={ readOnly }
-                initialValue={ initialFormValues?.[ "SelfRegistration.OTP.OTPLength" ] }
-                data-testid={ `${ testId }-otp-length` }
-                label={ resolveFieldLabel("SelfRegistration.OTP.OTPLength", 
-                    "OTP length") 
-                }
-                hidden={ !serverConfigurationConfig.dynamicConnectors }
-                disabled={ !isConnectorEnabled }
-                hint={ resolveFieldHint("SelfRegistration.OTP.OTPLength", 
-                    "Length of the OTP for SMS and e-mail verifications. OTP length must be 4-10.") } 
             />
             <Field.Input
                 ariaLabel="SelfRegistration.VerificationCode.SMSOTP.ExpiryTime"
@@ -788,15 +686,15 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 minLength={ 3 }
                 maxLength={ 100 }
                 readOnly={ readOnly }
-                initialValue={ initialFormValues?.[ 
+                initialValue={ initialFormValues?.[
                     "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime" ] }
-                data-testid={ `${ testId }-otp-length` }
-                label={ resolveFieldLabel("SelfRegistration.VerificationCode.SMSOTP.ExpiryTime", 
-                    "User self registration SMS OTP expiry time") 
+                data-componentid={ `${ testId }-sms-otp-expiry-time` }
+                label={ resolveFieldLabel("SelfRegistration.VerificationCode.SMSOTP.ExpiryTime",
+                    "User self registration SMS OTP expiry time")
                 }
                 hidden={ !serverConfigurationConfig.dynamicConnectors }
                 disabled={ !isConnectorEnabled }
-                hint={ resolveFieldHint("SelfRegistration.VerificationCode.SMSOTP.ExpiryTime", 
+                hint={ resolveFieldHint("SelfRegistration.VerificationCode.SMSOTP.ExpiryTime",
                     "Specify the expiry time in minutes for the SMS OTP.") }
             />
             <Field.Input
@@ -813,42 +711,16 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 minLength={ 3 }
                 maxLength={ 100 }
                 readOnly={ readOnly }
-                initialValue={ initialFormValues?.[ 
+                initialValue={ initialFormValues?.[
                     "SelfRegistration.CallbackRegex" ] }
-                data-testid={ `${ testId }-otp-length` }
-                label={ resolveFieldLabel("SelfRegistration.CallbackRegex", 
-                    "User self registration callback URL regex") 
+                data-component={ `${ testId }-callback-url-regex` }
+                label={ resolveFieldLabel("SelfRegistration.CallbackRegex",
+                    "User self registration callback URL regex")
                 }
                 hidden={ !serverConfigurationConfig.dynamicConnectors }
                 disabled={ !isConnectorEnabled }
-                hint={ resolveFieldHint("SelfRegistration.CallbackRegex", 
+                hint={ resolveFieldHint("SelfRegistration.CallbackRegex",
                     "This prefix will be used to validate the callback URL.") }
-            />
-            <Field.Input
-                ariaLabel="SelfRegistration.AutoLogin.AliasName"
-                inputType="text"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "SelfRegistration.AutoLogin.AliasName"
-                ) }
-                type="text"
-                width={ 16 }
-                required={ true }
-                placeholder={ "Enter user self registration verification link expiry time" }
-                labelPosition="top"
-                minLength={ 3 }
-                maxLength={ 100 }
-                readOnly={ readOnly }
-                initialValue={ initialFormValues?.[ 
-                    "SelfRegistration.AutoLogin.AliasName" ] }
-                data-testid={ `${ testId }-otp-length` }
-                label={ resolveFieldLabel("SelfRegistration.AutoLogin.AliasName", 
-                    "Alias of the key used to sign to cookie") 
-                }
-                hidden={ !serverConfigurationConfig.dynamicConnectors }
-                disabled={ !isConnectorEnabled }
-                hint={ resolveFieldHint("SelfRegistration.AutoLogin.AliasName", 
-                    "Alias of the key used to sign to cookie. The public key" + 
-                        " has to be imported to the keystore.") }
             />
             <Field.Button
                 form={ FORM_ID }

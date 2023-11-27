@@ -16,21 +16,23 @@
  * under the License.
  */
 
-import { CardContent } from "@oxygen-ui/react";
+import { Avatar, CardContent } from "@oxygen-ui/react";
 import {
+    ArrowRightToBracketPencilIcon,
     ArrowLoopRightUserIcon,
     BuildingGearIcon,
-    EnvelopeAtIcon,
     EnvelopeMagnifyingGlassIcon,
     GearIcon,
     HexagonTwoIcon,
     PadlockAsteriskIcon,
+    ShareNodesIcon,
     ShieldCheckIcon,
     ShieldUserPencilIcon,
     UserDatabaseIcon,
     UserDocumentIcon,
     UserGearIcon,
-    UserPlusIcon
+    UserPlusIcon,
+    UserBriefcaseIcon
 } from "@oxygen-ui/react-icons";
 import Card from "@oxygen-ui/react/Card";
 import Typography from "@oxygen-ui/react/Typography";
@@ -38,9 +40,9 @@ import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso
 import { ContentLoader, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
 import { serverConfigurationConfig } from "../../../extensions";
-import { AppConstants, history } from "../../core";
+import { AppConstants, EventPublisher, history } from "../../core";
 import "./governance-connector-grid.scss";
-import { getSettingsSectionIcons } from "../configs/ui";
+import { getConnectorCategoryIcon, getSettingsSectionIcons } from "../configs/ui";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 
 /**
@@ -101,16 +103,11 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
         switch (id) {
             case ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID:
                 return (
-                    <PadlockAsteriskIcon fill="primary" className="icon" />
+                    <PadlockAsteriskIcon size="small" className="icon" />
                 );
             case ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID:
                 return (
-                    <GenericIcon
-                        size="micro"
-                        icon={ getSettingsSectionIcons().botDetection }
-                        transparent
-                        shape={ "square" }
-                    />
+                    <ShieldCheckIcon size="small" className="icon" />
                 );
             case ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_CONNECTOR_ID:
                 return (
@@ -165,23 +162,31 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                 return (
                     <ShieldUserPencilIcon className="icon" />
                 );
+            case ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET:
+                return (
+                    <UserBriefcaseIcon className="icon" />
+                );
             case ServerConfigurationsConstants.USERNAME_RECOVERY:
                 return (
-                    <EnvelopeAtIcon className="icon" />
+                    <ArrowRightToBracketPencilIcon className="icon" />
+                );
+            case ServerConfigurationsConstants.SAML2_SSO_CONNECTOR_ID:
+                return (
+                    <ShareNodesIcon className="icon" />
                 );
             case ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY:
                 return (
                     <EnvelopeMagnifyingGlassIcon className="icon" />
                 );
             default:
-                return <GearIcon fill="primary" className="icon" />;
+                return <GearIcon className="icon" />;
         }
     };
 
     return (
         <div>
             { connectorCategories?.map((category: any, index: number) => {
-                return (
+                return category.connectors && category.connectors.length > 0 && (
                     <div className="catergory-container" key={ index }>
                         <Typography
                             color="text.primary"
@@ -199,13 +204,17 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                 <Card
                                                     key={ connector.id }
                                                     className="governance-connector"
-                                                    onClick={ (e: SyntheticEvent) => handleConnectorSelection(e,
-                                                        connector.route) }
+                                                    onClick={ (e) => handleConnectorSelection(e, connector.route) }
                                                 >
                                                     <CardContent className="governance-connector-header">
-                                                        <div className="governance-connector-image-container">
+                                                        <Avatar
+                                                            variant="square"
+                                                            randomBackgroundColor
+                                                            backgroundColorRandomizer={ category.id }
+                                                            className="governance-connector-icon-container"
+                                                        >
                                                             { resolveConnectorCategoryIcon(connector.id) }
-                                                        </div>
+                                                        </Avatar>
                                                         <div>
                                                             <Typography variant="h6">
                                                                 { connector.header }
@@ -226,7 +235,8 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                         </div>
                     </div>
                 );
-            }) }
+            })
+            }
             {
                 (serverConfigurationConfig.dynamicConnectors && dynamicConnectors.length > 0) && (
                     <div className="catergory-container">

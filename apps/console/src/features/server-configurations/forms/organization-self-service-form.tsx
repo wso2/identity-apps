@@ -85,7 +85,7 @@ export const OrganizationSelfServiceForm: FunctionComponent<OrganizationSelfServ
         readOnly,
         isConnectorEnabled,
         isSubmitting,
-        ["data-componentid"]: testId
+        ["data-componentid"]: componentId
     } = props;
 
     console.log("isConnectorEnabled", isConnectorEnabled);
@@ -142,7 +142,7 @@ export const OrganizationSelfServiceForm: FunctionComponent<OrganizationSelfServ
         let data = {};
 
         for (const key in values) {
-            if (Object.prototype.hasOwnProperty.call(values, key) 
+            if (Object.prototype.hasOwnProperty.call(values, key)
             && key !== ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE) {
                 data = {
                     ...data,
@@ -152,8 +152,8 @@ export const OrganizationSelfServiceForm: FunctionComponent<OrganizationSelfServ
         }
 
         return data;
-    };   
-   
+    };
+
     if (!initialConnectorValues) {
         return null;
     }
@@ -163,8 +163,8 @@ export const OrganizationSelfServiceForm: FunctionComponent<OrganizationSelfServ
             id={ FORM_ID }
             uncontrolledForm={ true }
             initialValues={ initialFormValues }
-            onSubmit={ (values: Record<string, unknown>) => 
-                onSubmit(getUpdatedConfigurations(values)) 
+            onSubmit={ (values: Record<string, unknown>) =>
+                onSubmit(getUpdatedConfigurations(values))
             }
         >
             <Field.Checkbox
@@ -174,17 +174,17 @@ export const OrganizationSelfServiceForm: FunctionComponent<OrganizationSelfServ
                 className="toggle"
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
-                    "Organization.SelfService.AdminEmailVerification", 
+                    "Organization.SelfService.AdminEmailVerification",
                     "Onboard admin to root organization") }
-                defaultValue={ initialFormValues?.[ 
+                defaultValue={ initialFormValues?.[
                     "Organization.SelfService.AdminEmailVerification" ] === "true" }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }
                 width={ 16 }
-                data-componentid={ `${ testId }-enable-auto-login` }
+                data-componentid={ `${ componentId }-enable-auto-login` }
                 hint={ GovernanceConnectorUtils.resolveFieldHint(
                     "User Onboarding",
-                    "Organization.SelfService.AdminEmailVerification", 
+                    "Organization.SelfService.AdminEmailVerification",
                     "User gets onboard as an admin in suborganization")
                 }
             />
@@ -195,17 +195,17 @@ export const OrganizationSelfServiceForm: FunctionComponent<OrganizationSelfServ
                 className="toggle"
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
-                    "Organization.SelfService.OnboardAdminToSubOrg", 
+                    "Organization.SelfService.OnboardAdminToSubOrg",
                     "Onboard admin to root organization") }
-                defaultValue={ initialFormValues?.[ 
+                defaultValue={ initialFormValues?.[
                     "Organization.SelfService.OnboardAdminToSubOrg" ] === "true" }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }
                 width={ 16 }
-                data-componentid={ `${ testId }-enable-auto-login` }
+                data-componentid={ `${ componentId }-enable-auto-login` }
                 hint={ GovernanceConnectorUtils.resolveFieldHint(
                     "User Onboarding",
-                    "Organization.SelfService.OnboardAdminToSubOrg", 
+                    "Organization.SelfService.OnboardAdminToSubOrg",
                     "User gets onboard as admin in suborganization.")
                 }
             />
@@ -216,17 +216,17 @@ export const OrganizationSelfServiceForm: FunctionComponent<OrganizationSelfServ
                 className="toggle"
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
-                    "Organization.SelfService.EnableAutoLogin", 
+                    "Organization.SelfService.EnableAutoLogin",
                     "Auto login after self service") }
-                defaultValue={ initialFormValues?.[ 
+                defaultValue={ initialFormValues?.[
                     "Organization.SelfService.EnableAutoLogin" ] === "true" }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }
                 width={ 16 }
-                data-componentid={ `${ testId }-enable-auto-login` }
+                data-componentid={ `${ componentId }-enable-auto-login` }
                 hint={ GovernanceConnectorUtils.resolveFieldHint(
                     "User Onboarding",
-                    "Organization.SelfService.EnableAutoLogin", 
+                    "Organization.SelfService.EnableAutoLogin",
                     "After self service admin auto login to organization")
                 }
             />
@@ -236,7 +236,7 @@ export const OrganizationSelfServiceForm: FunctionComponent<OrganizationSelfServ
                 buttonType="primary_btn"
                 ariaLabel="Self registration update button"
                 name="update-button"
-                data-testid={ `${testId}-submit-button` }
+                data-testid={ `${ componentId }-submit-button` }
                 disabled={ !isConnectorEnabled || isSubmitting }
                 loading={ isSubmitting }
                 label={ t("common:update") }
