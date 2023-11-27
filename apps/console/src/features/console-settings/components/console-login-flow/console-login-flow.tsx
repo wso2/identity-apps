@@ -28,7 +28,7 @@ import "./console-login-flow.scss";
 /**
  * Props interface of {@link ConsoleLoginFlow}
  */
-type ConsoleLoginSecurityInterface = IdentifiableComponentInterface;
+type ConsoleLoginFlowPropsInterface = IdentifiableComponentInterface;
 
 /**
  * Component to render the login and security settings.
@@ -36,8 +36,8 @@ type ConsoleLoginSecurityInterface = IdentifiableComponentInterface;
  * @param props - Props injected to the component.
  * @returns Console login and security component.
  */
-const ConsoleLoginFlow: FunctionComponent<ConsoleLoginSecurityInterface> = (
-    props: ConsoleLoginSecurityInterface
+const ConsoleLoginFlow: FunctionComponent<ConsoleLoginFlowPropsInterface> = (
+    props: ConsoleLoginFlowPropsInterface
 ): ReactElement => {
     const { ["data-componentid"]: componentId } = props;
 
