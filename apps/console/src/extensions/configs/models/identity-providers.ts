@@ -63,6 +63,7 @@ export interface IdentityProviderConfig {
     },
     editIdentityProvider: {
         showAdvancedSettings: boolean;
+        showIssuerSettings: boolean;
         showJitProvisioning: boolean;
         showOutboundProvisioning: boolean;
         /**
