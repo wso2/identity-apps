@@ -1,5 +1,13 @@
 # @wso2is/theme
 
+## 2.0.42
+
+### Patch Changes
+
+- [#4802](https://github.com/wso2/identity-apps/pull/4802) [`374121b059`](https://github.com/wso2/identity-apps/commit/374121b059bbe37ba90a8226bdab5978baac7e5a) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the connections related bugs
+
+* [#4797](https://github.com/wso2/identity-apps/pull/4797) [`827e21fa38`](https://github.com/wso2/identity-apps/commit/827e21fa38d65ec67cc30e97c9ce321c2f4549f4) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the user management section
+
 ## 2.0.41
 
 ### Patch Changes

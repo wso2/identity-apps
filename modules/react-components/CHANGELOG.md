@@ -1,5 +1,18 @@
 # @wso2is/react-components
 
+## 2.0.23
+
+### Patch Changes
+
+- [#4794](https://github.com/wso2/identity-apps/pull/4794) [`3ff5ae5e97`](https://github.com/wso2/identity-apps/commit/3ff5ae5e97085dad7d64bcd34644cd42b1774533) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide delete button in admin role for console application
+
+* [#4810](https://github.com/wso2/identity-apps/pull/4810) [`493a19fa6c`](https://github.com/wso2/identity-apps/commit/493a19fa6cf28c7227f380fb38dd2f00f777e772) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues with login and registration section
+
+* Updated dependencies [[`3ff5ae5e97`](https://github.com/wso2/identity-apps/commit/3ff5ae5e97085dad7d64bcd34644cd42b1774533), [`374121b059`](https://github.com/wso2/identity-apps/commit/374121b059bbe37ba90a8226bdab5978baac7e5a), [`827e21fa38`](https://github.com/wso2/identity-apps/commit/827e21fa38d65ec67cc30e97c9ce321c2f4549f4)]:
+  - @wso2is/core@2.0.19
+  - @wso2is/forms@2.0.5
+  - @wso2is/theme@2.0.42
+
 ## 2.0.22
 
 ### Patch Changes
