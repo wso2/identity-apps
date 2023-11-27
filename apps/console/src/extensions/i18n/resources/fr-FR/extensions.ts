@@ -3143,10 +3143,14 @@ export const extensions: Extensions = {
                 usernameType: "Sélectionnez le type de nom d'utilisateur",
                 usernameTypeHint: "Autoriser les utilisateurs à définir une adresse e-mail ou une combinaison de caractères alphanumériques pour le nom d'utilisateur.",
                 emailType: "Email",
-                alphanumericType: "Alphanumérique (a-z, A-Z, 0-9)",
-                usernameLength: "Définir la longueur du nom d'utilisateur",
-                usernameLengthMin: "Min",
-                usernameLengthMax: "Max"
+                customType: "Coutume",
+                usernameLength: {
+                    0: "Doit contenir entre",
+                    1: "et",
+                    2: "caractères."
+                },
+                usernameAlphanumeric: "Restreindre aux caractères alphanumériques (a-z, A-Z, 0-9).",
+                usernameSpecialCharsHint: "Toute combinaison de lettres (a-z, A-Z), de chiffres (0-9) et des caractères suivants : !@#$%&'*+\\=?^_`.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "Identifiants de connexion alternatifs",
@@ -3397,9 +3401,12 @@ export const extensions: Extensions = {
                         },
                         usernameHint: "Doit être une chaîne alphanumérique (a-z, A-Z, 0-9) entre {{minLength}} et {{maxLength}} caractères comprenant " +
                             "au moins une lettre.",
+                        usernameSpecialCharHint: "Doit être une chaîne unique comprise entre {{minLength}} et" +
+                            "{{maxLength}} caractères comprenant au moins une lettre.",
                         usernameLength: "La longueur du nom d'utilisateur doit être comprise " +
                             "entre {{minLength}} et {{maxLength}}.",
-                        usernameSymbols: "Le nom d'utilisateur doit être composé de caractères alphanumériques (a-z, A-Z, 0-9) et doit inclure au moins une lettre."
+                        usernameSymbols: "Le nom d'utilisateur doit être composé de caractères alphanumériques (a-z, A-Z, 0-9) et doit inclure au moins une lettre.",
+                        usernameSpecialCharSymbols: "Veuillez choisir un nom d'utilisateur valide qui respecte les directives données."
                     }
                 }
             },

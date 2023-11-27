@@ -2761,10 +2761,14 @@ export interface Extensions {
                 usernameType: string;
                 usernameTypeHint: string;
                 emailType: string;
-                alphanumericType: string;
-                usernameLength: string;
-                usernameLengthMin: string;
-                usernameLengthMax: string;
+                customType: string;
+                usernameLength: {
+                    0: string;
+                    1: string;
+                    2: string;
+                };
+                usernameAlphanumeric: string;
+                usernameSpecialCharsHint: string;
             };
             alternativeLoginIdentifierPage: {
                 pageTitle: string;
@@ -3077,8 +3081,10 @@ export interface Extensions {
                             passwordValidation: string;
                         };
                         usernameHint: string;
+                        usernameSpecialCharHint: string;
                         usernameLength: string;
                         usernameSymbols: string;
+                        usernameSpecialCharSymbols: string;
                     };
                     summary: {
                         invitation: string;

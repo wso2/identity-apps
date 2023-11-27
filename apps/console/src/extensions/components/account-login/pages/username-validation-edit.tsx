@@ -248,6 +248,8 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                     ? "true"
                     : "false",
             field: "username",
+            isAlphanumericOnly: getValidationConfig(
+                rules, "AlphanumericValidator", "enable.special.characters") !== "true",
             maxLength:
                 getValidationConfig(rules, "LengthValidator", "max.length")
                     ? getValidationConfig(rules, "LengthValidator", "max.length")
@@ -357,7 +359,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                         <Grid.Column width={ 16 }>
                             <EmphasizedSegment className="form-wrapper" padded={ "very" }>
                                 { !isValidationLoading
-                                    ? ( 
+                                    ? (
                                         <div className="validation-configurations password-validation-configurations">
                                             <Form
                                                 id={ FORM_ID }
@@ -402,7 +404,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                                         }
                                                                         required={ false }
                                                                         value={
-                                                                            usernameType=="alphanumericType"
+                                                                            usernameType=="customType"
                                                                                 ? "true"
                                                                                 : "false" }
                                                                         data-componentid=
@@ -411,7 +413,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                                             setCurrentValues({
                                                                                 ...currentValues,
                                                                                 enableValidator:
-                                                                                    usernameType=="alphanumericType"
+                                                                                    usernameType=="customType"
                                                                                         ? "true"
                                                                                         : "false"
                                                                             });
@@ -423,17 +425,13 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                 </div>
                                                 { currentValues?.enableValidator=="true" && (
                                                     <div className="ml-6">
-                                                        <Text>
-                                                            {
-                                                                t("extensions:manage.accountLogin.editPage." +
-                                                                    "usernameLength")
-                                                            }
-                                                        </Text>
                                                         <div className="criteria-username">
-                                                            <label>
-                                                                { t("extensions:manage.accountLogin.editPage." +
-                                                                "usernameLengthMin") }
-                                                            </label>
+                                                            <Text>
+                                                                {
+                                                                    t("extensions:manage.accountLogin.editPage." +
+                                                                        "usernameLength.0")
+                                                                }
+                                                            </Text>
                                                             <Field.Input
                                                                 ariaLabel="minLength"
                                                                 inputType="number"
@@ -497,7 +495,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                             />
                                                             <label>
                                                                 { t("extensions:manage.accountLogin.editPage." +
-                                                                "usernameLengthMax") }
+                                                                "usernameLength.1") }
                                                             </label>
                                                             <Field.Input
                                                                 ariaLabel="maxLength"
@@ -565,7 +563,27 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                                 disabled={ false }
                                                                 data-testid={ `${componentId}-max-length` }
                                                             />
+                                                            <label>
+                                                                { t("extensions:manage.accountLogin.editPage." +
+                                                                "usernameLength.2") }
+                                                            </label>
                                                         </div>
+                                                        <Field.Checkbox
+                                                            ariaLabel="isAlphanumericOnly"
+                                                            name="isAlphanumericOnly"
+                                                            label={ t("extensions:manage.accountLogin.editPage." +
+                                                                "usernameAlphanumeric") }
+                                                            tabIndex={ 3 }
+                                                            hint={ !initialFormValues.isAlphanumericOnly ?
+                                                                t("extensions:manage.accountLogin.editPage." +
+                                                                "usernameSpecialCharsHint") : undefined }
+                                                            listen={ (value: boolean) => setInitialFormValues(
+                                                                { ...initialFormValues, isAlphanumericOnly: value }
+                                                            ) }
+                                                            width={ 16 }
+                                                            defaultValue={ initialFormValues }
+                                                            data-componentid={ `${componentId}-is-alphanumeric-only` }
+                                                        />
                                                     </div>
                                                 ) }
                                                 <Field.Button
