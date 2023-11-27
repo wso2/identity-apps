@@ -347,7 +347,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         const isSecondFactorAuth: boolean =
             ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId);
         const isValidSecondFactorAddition: boolean = SignInMethodUtils.isSecondFactorAdditionValid(
-            authenticator.defaultAuthenticator.authenticatorId,
+            authenticator?.defaultAuthenticator?.authenticatorId,
             stepIndex,
             steps
         );
