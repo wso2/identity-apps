@@ -18,8 +18,8 @@
 
 import { Avatar, CardContent } from "@oxygen-ui/react";
 import {
-    ArrowRightToBracketPencilIcon,
     ArrowLoopRightUserIcon,
+    ArrowRightToBracketPencilIcon,
     BuildingGearIcon,
     EnvelopeMagnifyingGlassIcon,
     GearIcon,
@@ -40,9 +40,9 @@ import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso
 import { ContentLoader, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
 import { serverConfigurationConfig } from "../../../extensions";
-import { AppConstants, EventPublisher, history } from "../../core";
+import { AppConstants, history } from "../../core";
 import "./governance-connector-grid.scss";
-import { getConnectorCategoryIcon, getSettingsSectionIcons } from "../configs/ui";
+import { getSettingsSectionIcons } from "../configs/ui";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 
 /**
@@ -83,7 +83,7 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
      * @param e - Click event.
      * @param id - Id of the template.
      */
-    const handleConnectorSelection = (e: SyntheticEvent, route: string): void => {
+    const handleConnectorSelection = (route: string): void => {
         history.push(route);
     };
 
@@ -204,7 +204,7 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                 <Card
                                                     key={ connector.id }
                                                     className="governance-connector"
-                                                    onClick={ (e) => handleConnectorSelection(e, connector.route) }
+                                                    onClick={ () => handleConnectorSelection(connector.route) }
                                                 >
                                                     <CardContent className="governance-connector-header">
                                                         <Avatar

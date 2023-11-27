@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import { 
-    CircleUserIcon, 
-    GearIcon, 
+import {
+    CircleUserIcon,
+    GearIcon,
     HexagonTwoIcon,
+    Icon,
     PadlockAsteriskIcon,
-    Icon, 
-    ShareNodesIcon, 
-    ShieldCheckIcon, 
-    ShieldUserPencilIcon, 
-    UserDatabaseIcon, 
-    UserPlusIcon, 
-    VerticleFilterBarsIcon 
+    ShareNodesIcon,
+    ShieldCheckIcon,
+    ShieldUserPencilIcon,
+    UserDatabaseIcon,
+    UserPlusIcon,
+    VerticleFilterBarsIcon
 } from "@oxygen-ui/react-icons";
 import UsernameValidationIcon from "../../../extensions/assets/images/icons/username-validation-icon.svg";
 import {

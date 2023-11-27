@@ -22,22 +22,13 @@ import {
     FeatureAccessConfigInterface,
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
-import { Field, Form, FormFieldMessage } from "@wso2is/form";
-import { ConfirmationModal, Hint, Text } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
+import { Field, Form } from "@wso2is/form";
 import { AppState } from "apps/console/src/features/core";
-import { getUsernameConfiguration } from "apps/console/src/features/users/utils/user-management-utils";
-import { useValidationConfigData } from "apps/console/src/features/validation/api";
-import camelCase from "lodash-es/camelCase";
-import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import { FeatureConfigInterface } from "modules/common/src/models/config";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Grid, Label } from "semantic-ui-react";
-import { serverConfigurationConfig } from "../../../extensions/configs";
-import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
@@ -98,20 +89,6 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
         = useState<Map<string, ConnectorPropertyInterface>>(undefined);
     const [ initialFormValues, setInitialFormValues ]
         = useState<any>(undefined);
-
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    const isReadOnly: boolean = useMemo(() => (
-        !hasRequiredScopes(
-            featureConfig?.governanceConnectors, featureConfig?.governanceConnectors?.scopes?.update, allowedScopes)
-    ), [ featureConfig, allowedScopes ]);
-
-    const gonvernanConnectorsConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.governanceConnectors);
-    const passwordPatternConnector: DeprecatedFeatureInterface = gonvernanConnectorsConfig.deprecatedFeaturesToShow.find((feature) => {
-        return feature?.name === "passwordPolicy";
-    });
-
 
     /**
      * Flattens and resolved form initial values and field metadata.
