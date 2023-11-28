@@ -3546,7 +3546,7 @@ export const console: ConsoleNS = {
                             action: "Voir les forfaits",
                             subtitles: "Vous pouvez contacter l'administrateur de l'organisation ou (si vous êtes l'administrateur) " +
                                 "mettre à niveau votre abonnement pour augmenter la limite autorisée.",
-                            title: "Vous avez atteint le nombre maximal de organisations autorisées."
+                            title: "Vous avez atteint le nombre maximum d'organisations autorisées."
                         },
                         heading: "Vous avez atteint la limite maximale pour les organisations"
                     },
@@ -3555,13 +3555,13 @@ export const console: ConsoleNS = {
                             action: "Voir les forfaits",
                             subtitles: "Vous pouvez contacter l'administrateur de l'organisation ou (si vous êtes l'administrateur) " +
                                 "mettre à niveau votre abonnement pour augmenter la limite autorisée.",
-                            title: "Vous avez atteint le nombre maximal de niveaux de organisation autorisés."
+                            title: "Vous avez atteint le nombre maximal de niveaux d'organisation autorisés."
                         },
-                        heading: "Vous avez atteint les niveaux de organisation maximum autorisés pour l'organisation."
+                        heading: "Vous avez atteint les niveaux d'organisation maximaux autorisés pour l'organisation."
                     },
                     duplicateOrgError: {
-                        message: "Une organisation portant le même nom existe déjà.",
-                        description: "La organisation que vous essayez de créer existe déjà."
+                        message: "Une organisation du même nom existe déjà.",
+                        description: "L'organisation que vous essayez de créer existe déjà."
                     }
                 }
             },
@@ -7883,7 +7883,7 @@ export const console: ConsoleNS = {
                 },
                 assign: {
                     title: "Affecter les domaines e-mail",
-                    description: "Attribuez des domaines de messagerie aux sous-organisations.",
+                    description: "Fournir des domaines de messagerie pour les organisations.",
                     form: {
                         fields: {
                             emailDomains: {

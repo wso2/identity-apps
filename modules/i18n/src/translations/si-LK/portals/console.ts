@@ -3458,12 +3458,12 @@ export const console: ConsoleNS = {
                             action: "සැලසුම් බලන්න",
                             subtitles: "ඔබට ආයතනයේ පරිපාලකයා සම්බන්ධ කර ගැනීමට හෝ (ඔබ පරිපාලක නම්) " +
                                 "අවසර ලත් සීමාව වැඩි කිරීමට ඔබගේ දායකත්වය උත්ශ්‍රේණි කිරීමට හැකිය.",
-                            title: "ඔබ අනුමත සංවිධාන මට්ටම් උපරිම සංඛ්‍යාවට ළඟා වී ඇත."
+                            title: "ඔබ අවසර දී ඇති සංවිධානයේ මට්ටම් ගණනට ළඟා වී ඇත."
                         },
-                        heading: "ඔබ ආයතනය සඳහා අවසර දී ඇති උපරිම සංවිධාන මට්ටම් කරා ළඟා වී ඇත."
+                        heading: "සංවිධානය සඳහා අවසර දී ඇති උපරිම සංවිධාන මට්ටම් කරා ළඟා වී ඇත."
                     },
                     duplicateOrgError: {
-                        message: "එම නමින්ම සංවිධානයක් දැනටමත් පවතී.",
+                        message: "එකම නමක් ඇති සංවිධානයක් දැනටමත් පවතී.",
                         description: "ඔබ නිර්මාණය කිරීමට උත්සාහ කරන සංවිධානය දැනටමත් පවතී."
                     }
                 }
@@ -7714,7 +7714,7 @@ export const console: ConsoleNS = {
                 },
                 assign: {
                     title: "ඊමේල් වසම්",
-                    description: "උප සංවිධාන සඳහා විද්‍යුත් තැපැල් වසම් පවරන්න.",
+                    description: "සංවිධාන සඳහා විද්යුත් තැපැල් වසම් ලබා දෙන්න.",
                     form: {
                         fields: {
                             emailDomains: {
@@ -8023,8 +8023,7 @@ export const console: ConsoleNS = {
                             message: "ආයතනය සාර්ථකව අක්‍රිය කර ඇත"
                         }
                     },
-                    disableOrganizationWithSubOrganizationError: "Organization {{ organizationName }} cannot be " +
-                        "disabled since it has one or more sub organizations.",
+                    disableOrganizationWithSubOrganizationError: "උප සංවිධාන එකක් හෝ කිහිපයක් ඇති බැවින්, ආයතනය {{ organizationName }} අක්රිය කළ නොහැක.",
                     enableOrganization: {
                         error: {
                             description: "{{description}}",

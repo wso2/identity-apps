@@ -5415,7 +5415,7 @@ export const console: ConsoleNS = {
                             action: "View Plans",
                             subtitles: "You can contact the organization administrator or (if you are the " +
                                 "administrator) upgrade your subscription to increase the allowed limit.",
-                            title: "You have reached the maximum number of allowed suborganizations."
+                            title: "You have reached the maximum number of allowed organizations."
                         },
                         heading: "You've reached the maximum limit for organizations"
                     },
@@ -5424,13 +5424,13 @@ export const console: ConsoleNS = {
                             action: "View Plans",
                             subtitles: "You can contact the organization administrator or (if you are the " +
                                 "administrator) upgrade your subscription to increase the allowed limit.",
-                            title: "You have reached the maximum number of allowed suborganization levels."
+                            title: "You have reached the maximum number of allowed organization levels."
                         },
-                        heading: "You’ve reached the maximum suborganization levels allowed for the organization."
+                        heading: "You’ve reached the maximum organization levels allowed for the organization."
                     },
                     duplicateOrgError: {
-                        message: "A suborganization with the same name already exists.",
-                        description: "The suborganization you are trying to create already exists."
+                        message: "A organization with the same name already exists.",
+                        description: "The organization you are trying to create already exists."
                     }
                 }
             },
@@ -9667,7 +9667,7 @@ export const console: ConsoleNS = {
                 },
                 assign: {
                     title: "Assign Email Domains",
-                    description: "Assign email domains for sub organizations.",
+                    description: "Assign email domains for organizations.",
                     form: {
                         fields: {
                             emailDomains: {
