@@ -35,7 +35,7 @@
         // Set current lang value coming from cookie
         const urlParams = new URLSearchParams(window.location.search);
         const localeFromCookie = getCookie("ui_lang");
-        const localeFromUrlParams = urlParams.get('ui_locales');
+        const localeFromUrlParams = encodeURIComponent(urlParams.get('ui_locales'));
         const computedLocale = computeLocale(localeFromCookie, localeFromUrlParams);
 
         languageSelectionInput.val(computedLocale);
@@ -179,7 +179,7 @@
             <i class="cn flag"></i>
             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lang.switcher.chinese")%>
         </div>
-        
+
         <div class="item"
              data-value="ja_JP"
              style="background-color: var(--language-selector-background-color) !important;
