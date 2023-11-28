@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.2.40
+
+### Patch Changes
+
+- [#4819](https://github.com/wso2/identity-apps/pull/4819) [`2c9715c4de`](https://github.com/wso2/identity-apps/commit/2c9715c4dec09200c65750e62602a725cebf5b2e) Thanks [@Avarjana](https://github.com/Avarjana)! - Rephrase usernameSpecialCharHint.
+
+- Updated dependencies [[`2c9715c4de`](https://github.com/wso2/identity-apps/commit/2c9715c4dec09200c65750e62602a725cebf5b2e)]:
+  - @wso2is/i18n@2.0.58
+
 ## 2.2.39
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.58
+
+### Patch Changes
+
+- [#4819](https://github.com/wso2/identity-apps/pull/4819) [`2c9715c4de`](https://github.com/wso2/identity-apps/commit/2c9715c4dec09200c65750e62602a725cebf5b2e) Thanks [@Avarjana](https://github.com/Avarjana)! - Rephrase usernameSpecialCharHint.
+
 ## 2.0.57
 
 ### Patch Changes
