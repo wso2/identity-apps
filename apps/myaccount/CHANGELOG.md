@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.2.41
+
+### Patch Changes
+
+- [#4817](https://github.com/wso2/identity-apps/pull/4817) [`f0b4bcf9fe`](https://github.com/wso2/identity-apps/commit/f0b4bcf9fe367f3838ffba2f0386a86531360319) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Hide MFA backup options in the my account if the config is not present
+
 ## 2.2.40
 
 ### Patch Changes
