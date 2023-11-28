@@ -8716,6 +8716,11 @@ export const console: ConsoleNS = {
                                 "ක්‍රියා සිදු කිරීමට තවදුරටත් නොහැකි වනු ඇත. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
                             header: "ඔබට විශ්වාසද?",
                             message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර තෝරාගත් {{type}} ස්ථිරවම මකා දමනු ඇත."
+                        },
+                        deleteItemError: {
+                            content: "Remove the associations from following application before deleting:",
+                            header: "Unable to Delete",
+                            message: "There is an application using this role."
                         }
                     },
                     emptyPlaceholders: {

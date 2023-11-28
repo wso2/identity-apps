@@ -25,6 +25,7 @@ import {
     FormField,
     HelpPanelActionsInterface,
     HelpPanelInterface,
+    InfoModal,
     Message,
     ModalInterface,
     Notification,
@@ -5635,6 +5636,7 @@ export interface ConsoleNS {
                     };
                     confirmations: {
                         deleteItem: Confirmation;
+                        deleteItemError: InfoModal;
                     };
                     emptyPlaceholders: {
                         search: Placeholder;

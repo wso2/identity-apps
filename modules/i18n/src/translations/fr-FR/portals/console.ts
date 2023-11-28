@@ -8905,6 +8905,11 @@ export const console: ConsoleNS = {
                             header: "Êtes-vous sûr ?",
                             message: "Cette action est irréversible et supprimera définitivement le {{type}} " +
                                 "sélectionné"
+                        },
+                        deleteItemError: {
+                            content: "Remove the associations from following application before deleting:",
+                            header: "Unable to Delete",
+                            message: "There is an application using this role."
                         }
                     },
                     emptyPlaceholders: {
