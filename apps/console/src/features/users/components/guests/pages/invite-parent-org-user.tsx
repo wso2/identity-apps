@@ -51,8 +51,17 @@ interface InviteParentOrgUserFormErrorsInterface {
     roles: string;
 }
 
+/**
+ * Props interface of {@link InviteParentOrgUser}
+ */
 interface InviteParentOrgUserPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Callback method for closing the wizard.
+     */
     closeWizard: () => void;
+    /**
+     * Callback method for setting the isSubmitting state.
+     */
     setIsSubmitting: (isSubmitting: boolean) => void;
 }
 
@@ -92,6 +101,12 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
             });
     }, [ allowedRoles ]);
 
+
+    /**
+     * Handles the error scenario when sending an invitation to a user in a parent organization to join the current
+     * organization.
+     * @param error - Error response.
+     */
     const handleParentOrgUserInviteError = (error: AxiosError) => {
 
         /**
@@ -134,9 +149,10 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
     };
 
     /**
-     * This function handles sending the invitation to the external admin user.
+     * Sends an invitation to a user in a parent organization to join the current organization.
+     * @param values - Form values.
      */
-    const sendParentOrgInvitation = (values: InviteParentOrgUserFormValuesInterface) => {
+    const inviteParentOrgUser = (values: InviteParentOrgUserFormValuesInterface) => {
 
         const invite: UserInviteInterface = {
             roles: values?.roles?.map((role: RolesAutoCompleteOption) => role.role.id),
@@ -167,6 +183,11 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
             });
     };
 
+    /**
+     * Validates the invite parent org user form values.
+     * @param values - Form values.
+     * @returns An error object containing validation error messages.
+     */
     const validateInviteParentOrgUserForm = (
         values: InviteParentOrgUserFormValuesInterface
     ): InviteParentOrgUserFormErrorsInterface => {
@@ -194,7 +215,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
             initialValues={ null }
             keepDirtyOnReinitialize={ true }
             data-componentid={ `${ componentId }-external-form` }
-            onSubmit={ sendParentOrgInvitation }
+            onSubmit={ inviteParentOrgUser }
             validate={ validateInviteParentOrgUserForm }
             render={ ({ handleSubmit }: FormRenderProps) => {
                 return (
