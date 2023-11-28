@@ -34,7 +34,10 @@
         // Set current lang value coming from cookie
         const urlParams = new URLSearchParams(window.location.search);
         const localeFromCookie = getCookie("ui_lang");
-        const localeFromUrlParams = encodeURIComponent(urlParams.get('ui_locales'));
+        var localeFromUrlParams = null;
+        if (urlParams.has('ui_locales')) {
+            localeFromUrlParams = encodeURIComponent(urlParams.get('ui_locales'));
+        }
         const computedLocale = computeLocale(localeFromCookie, localeFromUrlParams);
 
         languageSelectionInput.val(computedLocale);
