@@ -28,7 +28,6 @@ import {
     Text,
     useDocumentation
 } from "@wso2is/react-components";
-import { ConnectionsManagementUtils } from "apps/console/src/features/connections/utils/connection-utils";
 import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
@@ -63,6 +62,7 @@ import {
 import { Authenticators } from "./authenticators";
 import { authenticatorConfig } from "../../../../../../extensions/configs/authenticator";
 import { ConnectionManagementConstants } from "../../../../../connections";
+import { ConnectionsManagementUtils } from "../../../../../connections/utils/connection-utils";
 import { getEmptyPlaceholderIllustrations } from "../../../../../core/configs/ui";
 import { AppState } from "../../../../../core/store";
 import { EventPublisher } from "../../../../../core/utils/event-publisher";
