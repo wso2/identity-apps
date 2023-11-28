@@ -11,6 +11,10 @@ End-user apps in WSO2 Identity Server
 1. Install NodeJS from [https://nodejs.org/en/download/](https://nodejs.org/en/download/).
 2. Install Maven from [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi).
 
+**Note:** In order to build this branch, the following node and npm versions should be used.
+- npm - 6.14.16
+- node - v12.22.12
+
 ## Build & Run
 
 #### Build
