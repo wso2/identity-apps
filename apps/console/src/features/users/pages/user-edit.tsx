@@ -25,7 +25,6 @@ import {
 import {
     AlertInterface,
     AlertLevels,
-    MultiValueAttributeInterface,
     ProfileInfoInterface,
     emptyProfileInfo
 }from "@wso2is/core/models";
