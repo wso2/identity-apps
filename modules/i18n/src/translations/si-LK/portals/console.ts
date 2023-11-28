@@ -9905,7 +9905,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "විද්‍යුත් තැපෑලෙන් සොයන්න"
+                    placeholder: "පරිශීලක නාමයන් සොයන්න"
                 },
                 all: {
                     heading: "පරිශීලකයින්",

@@ -10150,7 +10150,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Rechercher par e-mail"
+                    placeholder: "Rechercher par Nom d'utilisateur"
                 },
                 all: {
                     heading: "Utilisateurs",

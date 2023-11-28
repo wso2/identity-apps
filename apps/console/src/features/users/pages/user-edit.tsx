@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import { hasRequiredScopes, resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
+import {
+    getUserNameWithoutDomain,
+    hasRequiredScopes,
+    resolveUserDisplayName,
+    resolveUserEmails
+} from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -31,6 +36,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
+import { UserManagementUtils as ExtendedUserManagementUtils } from "../../../extensions/components/users/utils";
 import { getProfileInformation } from "../../authentication/store";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
@@ -65,6 +71,9 @@ const UserEditPage = (): ReactElement => {
     const [ connectorProperties, setConnectorProperties ] = useState<ConnectorPropertyInterface[]>(undefined);
     const [ isReadOnlyUserStoresLoading, setReadOnlyUserStoresLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
+    const isNameAvailable: boolean = user.name?.familyName === undefined &&
+        user.name?.givenName === undefined;
 
     useEffect(() => {
         if (!isSuperOrganization() && !isFirstLevelOrganization()) {
@@ -235,21 +244,6 @@ const UserEditPage = (): ReactElement => {
             });
     };
 
-    /**
-     * This function resolves the primary email of the user.
-     *
-     * @param emails - User emails.
-     */
-    const resolvePrimaryEmail = (emails: (string | MultiValueAttributeInterface)[]): string => {
-        let primaryEmail: string | MultiValueAttributeInterface = "";
-
-        if (emails && Array.isArray(emails) && emails.length > 0) {
-            primaryEmail = emails.find((value: string | MultiValueAttributeInterface) => typeof value === "string");
-        }
-
-        return primaryEmail as string;
-    };
-
     return (
         <TabPageLayout
             isLoading={ isUserDetailsRequestLoading }
@@ -289,20 +283,19 @@ const UserEditPage = (): ReactElement => {
                                                 />
                                             )
                                     }
-                                    { resolveUserDisplayName(user, null, "Administrator") }
+                                    { getUserNameWithoutDomain(user?.userName) }
 
                                 </>
                             ) : (
                                 <>
-                                    { resolveUserDisplayName(user, null, "Administrator") }
+                                    { getUserNameWithoutDomain(user?.userName) }
                                 </>
                             )
                     }
                 </>
             ) }
             pageTitle="Edit User"
-            description={ t("" + user.emails && user.emails !== undefined ? resolvePrimaryEmail(user?.emails) :
-                user.userName) }
+            description={ !isNameAvailable && ExtendedUserManagementUtils.resolveUserListSubheader(user) }
             image={ (
                 <UserAvatar
                     editable={
@@ -365,8 +358,8 @@ const UserEditPage = (): ReactElement => {
                                                 }
                                             >
                                                 It seems like the selected email is not registered on Gravatar.
-                                                Sign up for a Gravatar account by visiting 
-                                                <a href="https://www.gravatar.com"> Gravatar Official Website</a> 
+                                                Sign up for a Gravatar account by visiting
+                                                <a href="https://www.gravatar.com"> Gravatar Official Website</a>
                                                 or use one of the following.
                                             </Trans>
                                         ),
