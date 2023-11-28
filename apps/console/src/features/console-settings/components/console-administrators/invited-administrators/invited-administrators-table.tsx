@@ -143,7 +143,6 @@ const InvitedAdministratorsTable: React.FunctionComponent<InvitedAdministratorsT
         onSearchQueryClear,
         selection,
         showListItemActions,
-        onUserEdit,
         searchQuery,
         [ "data-componentid" ]: componentId
     } = props;
@@ -408,6 +407,7 @@ const InvitedAdministratorsTable: React.FunctionComponent<InvitedAdministratorsT
                     </ConfirmationModal>
                 )
             }
+            { alert && alertComponent }
         </>
     );
 };
