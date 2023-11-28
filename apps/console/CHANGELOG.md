@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.9.21
+
+### Patch Changes
+
+- [#4795](https://github.com/wso2/identity-apps/pull/4795) [`4c824408a0`](https://github.com/wso2/identity-apps/commit/4c824408a08df031683194850a023a27569e8cf5) Thanks [@RivinduM](https://github.com/RivinduM)! - Update FAPI App creation enabling configuration
+
+* [#4804](https://github.com/wso2/identity-apps/pull/4804) [`1d1852a9d0`](https://github.com/wso2/identity-apps/commit/1d1852a9d00123fa67a371e14bf4ac8bf3440f2b) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Exclude groups and roles from the user list request in Users page
+
+- [#4796](https://github.com/wso2/identity-apps/pull/4796) [`2ed74e31ec`](https://github.com/wso2/identity-apps/commit/2ed74e31ec79bb8479fe16917907645001142665) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prevent unwanted scim2/Groups calls in the groups page
+
+* [#4822](https://github.com/wso2/identity-apps/pull/4822) [`9e542a39c2`](https://github.com/wso2/identity-apps/commit/9e542a39c229d235e483a3f7cbf37fe294346c2d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Hide organization sso issuer settings
+
+- [#4823](https://github.com/wso2/identity-apps/pull/4823) [`0c625fbea4`](https://github.com/wso2/identity-apps/commit/0c625fbea482dcd0b762ccfe6a3808f778711195) Thanks [@Avarjana](https://github.com/Avarjana)! - Fix special character checkbox value update
+
 ## 2.9.20
 
 ### Patch Changes
