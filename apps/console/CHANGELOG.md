@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.9.20
+
+### Patch Changes
+
+- [#4819](https://github.com/wso2/identity-apps/pull/4819) [`2c9715c4de`](https://github.com/wso2/identity-apps/commit/2c9715c4dec09200c65750e62602a725cebf5b2e) Thanks [@Avarjana](https://github.com/Avarjana)! - Rephrase usernameSpecialCharHint.
+
+* [#4811](https://github.com/wso2/identity-apps/pull/4811) [`ebfc4707ef`](https://github.com/wso2/identity-apps/commit/ebfc4707ef5babbbfd399b986eb3fbcf6725cf9e) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - remove restriction of adding smt OTP as first factor
+
+- [#4816](https://github.com/wso2/identity-apps/pull/4816) [`7f23f09344`](https://github.com/wso2/identity-apps/commit/7f23f0934412cb1d7cd3934f329d07c62e93cdf1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add issuer settings for IDPs
+
+* [#4781](https://github.com/wso2/identity-apps/pull/4781) [`16f204d653`](https://github.com/wso2/identity-apps/commit/16f204d653ff09cd0011ffb7882aee1a26bee55d) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update the fido default template adaptive script
+
+* Updated dependencies [[`2c9715c4de`](https://github.com/wso2/identity-apps/commit/2c9715c4dec09200c65750e62602a725cebf5b2e)]:
+  - @wso2is/i18n@2.0.58
+
 ## 2.9.19
 
 ### Patch Changes
