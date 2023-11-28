@@ -62,8 +62,6 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isReadOnlyUser: string =
         useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
-    const isBackupCodeForced: boolean = useSelector((state: AppState) => state?.config?.ui?.forceBackupCode);
-    const enableMFAUserWise: boolean = useSelector((state: AppState) => state?.config?.ui?.enableMFAUserWise);
 
     const [ enabledAuthenticators, setEnabledAuthenticators ] = useState<Array<string>>([]);
     const [ isTOTPEnabled, setIsTOTPEnabled ] = useState<boolean>(false);
@@ -215,8 +213,8 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                 { hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         featureConfig?.security,
-                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_BACKUP_CODE")) &&
-                        (isBackupCodeForced && enableMFAUserWise) ? (
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_BACKUP_CODE")
+                    ) ? (
                         <>
                             <List.Item
                                 className="inner-list-item recovery-options-muted-header"
@@ -243,7 +241,6 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                                     isBackupCodesConfigured={ isBackupCodesConfigured }
                                     enabledAuthenticators={ enabledAuthenticators }
                                     backupCodeAuthenticatorName={ backupCodeAuthenticatorName }
-                                    isBackupCodeForced={ isBackupCodeForced && enableMFAUserWise }
                                     isSuperTenantLogin={ isSuperTenantLogin() }
                                     onEnabledAuthenticatorsUpdated={ handleEnabledAuthenticatorsUpdated }
                                 />
