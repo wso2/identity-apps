@@ -8023,7 +8023,7 @@ export const console: ConsoleNS = {
                             message: "ආයතනය සාර්ථකව අක්‍රිය කර ඇත"
                         }
                     },
-                    disableOrganizationWithSubOrganizationError: "උප සංවිධාන එකක් හෝ කිහිපයක් ඇති බැවින්, ආයතනය {{ organizationName }} අක්රිය කළ නොහැක.",
+                    disableOrganizationWithSubOrganizationError: "සංවිධාන එකක් හෝ කිහිපයක් ඇති බැවින්, ආයතනය {{ organizationName }} අක්රිය කළ නොහැක.",
                     enableOrganization: {
                         error: {
                             description: "{{description}}",
