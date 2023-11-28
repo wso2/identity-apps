@@ -9,7 +9,7 @@
     "disabled": false,
     "idp": {
         "alias": "Alias",
-        "idpIssuerName": "IDP issuer name",
+        "idpIssuerName": "Enterprise IDP issuer name",
         "certificate": {},
         "claims": {
             "provisioningClaims": [],
