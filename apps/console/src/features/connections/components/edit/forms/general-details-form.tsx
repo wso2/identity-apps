@@ -28,9 +28,9 @@ import { identityProviderConfig } from "../../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../../core";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import {
-    GeneralDetailsFormValuesInterface,
     ConnectionInterface,
     ConnectionListResponseInterface,
+    GeneralDetailsFormValuesInterface,
     StrictConnectionInterface
 } from "../../../models/connection";
 import { IdpCertificates } from "../settings";
@@ -165,7 +165,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     /**
      * Validate issuer value.
-     * 
+     *
      * @param value - Issuer value
      * @returns error msg if issuer is not valid.
      */
@@ -178,7 +178,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     /**
      * Validate alias value.
-     * 
+     *
      * @param value - Alias value
      * @returns error msg if alias is not valid.
      */
@@ -280,7 +280,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         readOnly={ isReadOnly }
                     />
                     {
-                        isTrustedTokenIssuer && (
+                        (identityProviderConfig?.editIdentityProvider?.showIssuerSettings || isTrustedTokenIssuer) && (
                             <Field.Input
                                 ariaLabel="idpIssuerName"
                                 inputType="resource_name"
@@ -290,7 +290,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 hint={ t("console:develop.features.authenticationProvider.forms." +
                                     "generalDetails.issuer.hint") }
                                 required
-                                placeholder={ editingIDP.idpIssuerName }
+                                placeholder={
+                                    editingIDP?.idpIssuerName ??
+                                        t("console:develop.features.authenticationProvider.forms.generalDetails." +
+                                        "issuer.placeholder")
+                                }
                                 validation={ (value: string) => issuerValidation(value) }
                                 value={ editingIDP.idpIssuerName }
                                 maxLength={ ConnectionManagementConstants.IDP_NAME_LENGTH.max }
@@ -301,7 +305,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         )
                     }
                     {
-                        isTrustedTokenIssuer && (
+                        (identityProviderConfig?.editIdentityProvider?.showIssuerSettings || isTrustedTokenIssuer) && (
                             <Field.Input
                                 ariaLabel="alias"
                                 inputType="resource_name"

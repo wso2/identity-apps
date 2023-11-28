@@ -977,7 +977,10 @@
             "fallback": "404"
         },
         "hiddenAuthenticators": [],
-        "hiddenConnectionTemplates": [],
+        "hiddenConnectionTemplates": [
+            "hypr-idp",
+            "swe-idp"
+        ],
         "hiddenUserStores": [],
         "i18nConfigs": {
             "showLanguageSwitcher": false,

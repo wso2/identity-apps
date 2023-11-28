@@ -224,6 +224,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
             return undefined;
         },
         showAdvancedSettings: true,
+        showIssuerSettings: true,
         showJitProvisioning: true,
         showOutboundProvisioning: true
     },

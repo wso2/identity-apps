@@ -8,6 +8,8 @@
     "services": [],
     "disabled": false,
     "idp": {
+        "alias": "Alias",
+        "idpIssuerName": "Enterprise IDP issuer name",
         "certificate": {},
         "claims": {
             "provisioningClaims": [],
