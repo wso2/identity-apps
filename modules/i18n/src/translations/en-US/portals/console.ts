@@ -5429,7 +5429,7 @@ export const console: ConsoleNS = {
                         heading: "You’ve reached the maximum organization levels allowed for the organization."
                     },
                     duplicateOrgError: {
-                        message: "A organization with the same name already exists.",
+                        message: "An organization with the same name already exists.",
                         description: "The organization you are trying to create already exists."
                     }
                 }
