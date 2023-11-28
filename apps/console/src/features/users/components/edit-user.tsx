@@ -27,6 +27,7 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { TabProps } from "semantic-ui-react";
 import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
 import { UserRolesList } from "./user-roles-list";
@@ -38,6 +39,7 @@ import { AppState, store } from "../../core/store";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { ConnectorPropertyInterface } from "../../server-configurations/models";
 import { UserManagementConstants } from "../constants";
+import useUserManagement from "../hooks/use-user-management";
 
 interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
@@ -86,6 +88,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const { activeTab, updateActiveTab } = useUserManagement();
     const dispatch: Dispatch = useDispatch();
     const { isSuperOrganization } = useGetCurrentOrganizationType();
 
@@ -106,7 +109,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     useEffect(() => {
         //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to
         //see if they are the same values. If they are the same values we do not do anything.
-        //This makes sure the child components or side effects depending on the user object won't 
+        //This makes sure the child components or side effects depending on the user object won't
         //re-render or re-trigger.
         if (!selectedUser || isEqual(user, selectedUser)) {
             return;
@@ -258,7 +261,11 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     return (
         <ResourceTab
+            activeIndex={ activeTab }
             isLoading={ isLoading }
+            onTabChange={ (event: React.MouseEvent<HTMLDivElement>, data: TabProps) => {
+                updateActiveTab(data.activeIndex as number);
+            } }
             panes={ panes() }
         />
     );
