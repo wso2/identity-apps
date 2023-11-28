@@ -90,7 +90,6 @@ import {
     UserManagementConstants
 } from "../constants";
 import { UserListInterface } from "../models";
-import { InviteParentOrgUser } from "../components/guests/pages/invite-parent-org-user";
 
 interface UserStoreItem {
     key: number;

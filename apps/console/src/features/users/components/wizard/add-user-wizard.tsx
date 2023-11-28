@@ -36,16 +36,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, Grid, Icon, Menu, Modal } from "semantic-ui-react";
-import { InviteParentOrgUser } from "../guests/pages/invite-parent-org-user";
 import { AddUserUpdated } from "./steps/add-user-basic";
 import { AddUserGroups } from "./steps/add-user-groups";
 import { AddUserType } from "./steps/add-user-type";
 import { AddUserWizardSummary } from "./user-wizard-summary";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { UsersConstants } from "../../../../extensions/components/users/constants";
-import {
-    InternalAdminFormDataInterface,
-    UserInviteInterface } from "../../../../extensions/components/users/models";
 import { administratorConfig } from "../../../../extensions/configs/administrator";
 import { SCIMConfigs } from "../../../../extensions/configs/scim";
 import { UserStoreDetails, UserStoreProperty } from "../../../core/models";
@@ -61,7 +57,8 @@ import {
     AdminAccountTypes,
     HiddenFieldNames,
     PasswordOptionTypes,
-    UserAccountTypesMain, UserManagementConstants,
+    UserAccountTypesMain,
+    UserManagementConstants,
     WizardStepsFormTypes
 } from "../../constants";
 import {
@@ -71,7 +68,7 @@ import {
     WizardStepInterface,
     createEmptyUserDetails } from "../../models";
 import { generatePassword, getConfiguration, getUsernameConfiguration } from "../../utils";
-import { sendParentOrgUserInvite } from "../guests/api/invite";
+import { InviteParentOrgUser } from "../guests/pages/invite-parent-org-user";
 
 interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
     closeWizard: () => void;
@@ -129,7 +126,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
-    const [ submitParentUserInvite, setSubmitParentUserInvite ] = useTrigger();
     const [ submitGroupList, setSubmitGroupList ] = useTrigger();
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
@@ -146,7 +142,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ initialTempGroupList, setInitialTempGroupList ] = useState<GroupsInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isAlphanumericUsername, setIsAlphanumericUsername ] = useState<boolean>(false);
-    const [ isFinishButtonDisabled, setFinishButtonDisabled ] = useState<boolean>(false);
     const [ isBasicDetailsLoading, setBasicDetailsLoading ] = useState<boolean>(false);
     const [ isStepsUpdated, setIsStepsUpdated ] = useState<boolean>(false);
     const [ isFirstNameRequired, setFirstNameRequired ] = useState<boolean>(true);
@@ -1062,87 +1057,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     };
 
     /**
-     * This function handles sending the invitation to the external admin user.
-     */
-    const sendParentOrgInvitation = (invite: UserInviteInterface) => {
-        if (invite != null) {
-            setIsSubmitting(true);
-
-            sendParentOrgUserInvite(invite)
-                .then(() => {
-                    dispatch(addAlert({
-                        description: t(
-                            "console:manage.features.invite.notifications.sendInvite.success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "console:manage.features.invite.notifications.sendInvite.success.message"
-                        )
-                    }));
-                    closeWizard();
-                })
-                .catch((error: AxiosError) => {
-                    /**
-                     * Axios throws a generic `Network Error` for 401 status.
-                     * As a temporary solution, a check to see if a response
-                     * is available has be used.
-                     */
-                    if (!error.response || error.response.status === 401) {
-                        closeWizard();
-                        dispatch(addAlert({
-                            description: t(
-                                "console:manage.features.invite.notifications.sendInvite.error.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:manage.features.invite.notifications.sendInvite.error.message"
-                            )
-                        }));
-                    } else if (error.response.status === 403 &&
-                            error?.response?.data?.code === UsersConstants.ERROR_COLLABORATOR_USER_LIMIT_REACHED) {
-                        closeWizard();
-                        dispatch(addAlert({
-                            description: t(
-                                "extensions:manage.invite.notifications.sendInvite.limitReachError.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "extensions:manage.invite.notifications.sendInvite.limitReachError.message"
-                            )
-                        }));
-                    } else if (error?.response?.data?.description) {
-                        closeWizard();
-                        dispatch(addAlert({
-                            description: t(
-                                "console:manage.features.invite.notifications.sendInvite.error.description",
-                                { description: error.response.data.description }
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:manage.features.invite.notifications.sendInvite.error.message"
-                            )
-                        }));
-                    } else {
-                        closeWizard();
-                        // Generic error message
-                        dispatch(addAlert({
-                            description: t(
-                                "console:manage.features.invite.notifications.sendInvite.genericError.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:manage.features.invite.notifications.sendInvite.genericError.message"
-                            )
-                        }));
-                    }
-                })
-                .finally(() => {
-                    setIsSubmitting(false);
-                });
-        }
-    };
-
-    /**
      * Resolves the step content.
      *
      * @returns Step content.
@@ -1224,7 +1138,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                     floated="right"
                                     onClick={ navigateToNext }
                                     loading={ isSubmitting }
-                                    disabled={ isSubmitting || isFinishButtonDisabled }
+                                    disabled={ isSubmitting }
                                 >
                                     { resolveWizardPrimaryButtonText() }
                                 </PrimaryButton>
