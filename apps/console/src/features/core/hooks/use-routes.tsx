@@ -90,8 +90,7 @@ const useRoutes = (): useRoutesInterface => {
                     return [ ...AppUtils.getHiddenRoutes(), ...AppConstants.ORGANIZATION_ROUTES ];
                 }
 
-                const isCurrentOrgRootAndSuperTenant: boolean =
-                    isSuperOrganization() && AppConstants.getSuperTenant() === tenantDomain;
+                const isCurrentOrgRootAndSuperTenant: boolean = isSuperOrganization();
 
                 if (legacyAuthzRuntime) {
                     if (isCurrentOrgRootAndSuperTenant || isFirstLevelOrg) {
@@ -131,7 +130,7 @@ const useRoutes = (): useRoutesInterface => {
                 } else {
                     if (isCurrentOrgRootAndSuperTenant && loggedUserName === isSuperAdmin) {
                         return commonHiddenRoutes;
-                    } else if (!isCurrentOrgRootAndSuperTenant) {
+                    } else if (!isCurrentOrgRootAndSuperTenant || loggedUserName !== isSuperAdmin) {
                         return [ ...commonHiddenRoutes, ...AppConstants.SUPER_ADMIN_ONLY_ROUTES ];
                     }else {
                         return [ ...commonHiddenRoutes ];
@@ -140,14 +139,14 @@ const useRoutes = (): useRoutesInterface => {
             }
 
             const additionalRoutes: string[] = getAdditionalRoutes();
-            
+
             if (!isGroupAndRoleSeparationEnabled) {
                 additionalRoutes.push(AppConstants.CONSOLE_SETTINGS_ROUTE);
             }
 
             return [ ...additionalRoutes ];
         };
-        
+
         let allowedRoutes: string[] = window["AppUtils"].getConfig().organizationName
             ? AppConstants.ORGANIZATION_ENABLED_ROUTES
             : undefined;
