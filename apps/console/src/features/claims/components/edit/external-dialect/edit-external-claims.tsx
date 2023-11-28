@@ -373,14 +373,14 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                             data-testid={ `${testId}-list-layout-add-button` }
                         >
                             <Icon name="add" />
-                            { 
+                            {
                                 t("console:manage.features.claims.external.pageLayout.edit.primaryAction",
                                     { type: resolveType(attributeType, true) }
                                 )
                             }
                         </PrimaryButton>
                     ) }
-                    { attributeType === ClaimManagementConstants.OIDC && 
+                    { attributeType === ClaimManagementConstants.OIDC &&
                     featureConfig?.oidcScopes?.enabled &&
                     hasRequiredScopes(
                         featureConfig?.oidcScopes,
@@ -391,6 +391,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                             onClick={ () => {
                                 history.push(AppConstants.getPaths().get("OIDC_SCOPES"));
                             } }
+                            data-componentid={ `${testId}-oidc-scopes-button` }
                         >
                             <UserCircleDotIcon fill="black" className="icon" />
                             { t("console:develop.features.sidePanel.oidcScopes") }
