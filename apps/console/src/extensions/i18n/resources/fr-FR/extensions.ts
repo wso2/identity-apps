@@ -3401,8 +3401,8 @@ export const extensions: Extensions = {
                         },
                         usernameHint: "Doit être une chaîne alphanumérique (a-z, A-Z, 0-9) entre {{minLength}} et {{maxLength}} caractères comprenant " +
                             "au moins une lettre.",
-                        usernameSpecialCharHint: "Doit être une chaîne unique comprise entre {{minLength}} et" +
-                            "{{maxLength}} caractères comprenant au moins une lettre.",
+                        usernameSpecialCharHint: "Doit contenir entre {minLength}} et {{maxLength}} caractères et ne peut contenir qu'une " +
+                            "combinaison de lettres (a-z, A-Z), de chiffres (0-9) et des caractères suivants: !@#$%&'*+\\=?^_`.{|}~-.",
                         usernameLength: "La longueur du nom d'utilisateur doit être comprise " +
                             "entre {{minLength}} et {{maxLength}}.",
                         usernameSymbols: "Le nom d'utilisateur doit être composé de caractères alphanumériques (a-z, A-Z, 0-9) et doit inclure au moins une lettre.",

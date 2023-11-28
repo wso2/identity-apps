@@ -3280,7 +3280,8 @@ export const extensions: Extensions = {
                             passwordValidation: "මුරපදය පහත සීමාවන් සපුරාලිය යුතුය."
                         },
                         usernameHint: "අවම වශයෙන් එක් අකුරක් ඇතුළුව අක්ෂර {{minLength}} සිට {{maxLength}} දක්වා අක්ෂරාංක (a-z, A-Z, 0-9) තන්තුවක් විය යුතුය.",
-                        usernameSpecialCharHint: "අවම වශයෙන් එක් අකුරක් ඇතුළුව අනුලකුණු {{minLength}} සිට {{maxLength}} දක්වා අද්විතීය තන්තුවක් විය යුතුය.",
+                        usernameSpecialCharHint: "අක්ෂර {{minLength}} සිට {{maxLength}} දක්වා දිගු විය යුතු අතර අකුරු (a-z, A-Z), ඉලක්කම් (0-9) " +
+                            "සහ පහත දැක්වෙන අනුලකුණු වල සංකලනයක් පමණක් අඩංගු විය හැක: !@#$%&'*+\\=?^_`.{|}~-.",
                         usernameLength: "පරිශීලක නාමයේ දිග {{minLength}} සහ {{maxLength}} අතර විය යුතුය.",
                         usernameSymbols: "පරිශීලක නාමය අක්ෂරාංක අක්ෂරවලින් (a-z, A-Z, 0-9) සමන්විත විය යුතු අතර අවම වශයෙන් එක් අකුරක් ඇතුළත් විය යුතුය.",
                         usernameSpecialCharSymbols: "කරුණාකර ලබා දී ඇති මාර්ගෝපදේශවලට අනුකූල වන වලංගු පරිශීලක නාමයක් තෝරන්න."
