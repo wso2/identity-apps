@@ -26,6 +26,7 @@ import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../../core";
+import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../../../constants/connection-constants";
 import {
     ConnectionInterface,
@@ -35,7 +36,6 @@ import {
     StrictConnectionInterface
 } from "../../../models/connection";
 import { IdpCertificates } from "../settings";
-import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
 
 /**
  * Proptypes for the identity provider general details form component.
