@@ -59,8 +59,7 @@ const useRoutes = (): useRoutesInterface => {
     const isSuperAdmin: string = useSelector((state: AppState) => state.organization.superAdmin);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state?.auth?.isPrivilegedUser);
-    const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
-    const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) => 
+    const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isGroupAndRoleSeparationEnabled);
     /**
      * Filter the routes based on the user roles and permissions.
@@ -150,7 +149,7 @@ const useRoutes = (): useRoutesInterface => {
         let allowedRoutes: string[] = window["AppUtils"].getConfig().organizationName
             ? AppConstants.ORGANIZATION_ENABLED_ROUTES
             : undefined;
-            
+
         if (legacyAuthzRuntime) {
             allowedRoutes = !isSuperOrganization()
                 && !isFirstLevelOrg
