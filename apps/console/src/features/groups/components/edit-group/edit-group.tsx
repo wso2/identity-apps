@@ -23,6 +23,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 // TODO: Move to shared components.
 import { useSelector } from "react-redux";
+import { TabProps } from "semantic-ui-react";
 import { BasicGroupDetails } from "./edit-group-basic";
 import { EditGroupRoles } from "./edit-group-roles";
 import { GroupUsersList } from "./edit-group-users";
@@ -33,6 +34,7 @@ import { OrganizationUtils } from "../../../organizations/utils";
 import { getUsersList } from "../../../users/api";
 import { UserBasicInterface, UserListInterface } from "../../../users/models";
 import { GroupConstants } from "../../constants";
+import useGroupManagement from "../../hooks/use-group-management";
 import { GroupsInterface, GroupsMemberInterface } from "../../models";
 
 /**
@@ -78,6 +80,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     } = props;
 
     const { t } = useTranslation();
+    const { activeTab, updateActiveTab } = useGroupManagement();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
@@ -213,7 +216,12 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
 
     return (
         <ResourceTab
-            isLoading={ isLoading } 
-            panes={ resolveResourcePanes() } />
+            activeIndex={ activeTab }
+            isLoading={ isLoading }
+            onTabChange={ (event: React.MouseEvent<HTMLDivElement>, data: TabProps) => {
+                updateActiveTab(data.activeIndex as number);
+            } }
+            panes={ resolveResourcePanes() }
+        />
     );
 };
