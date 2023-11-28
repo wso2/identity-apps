@@ -131,10 +131,7 @@
         }
     }
 
-    if (!StringUtils.equals(tenantDomain, "carbon.super")) {
-        identityServerEndpointContextParam = ServiceURLBuilder.create().setTenant(tenantDomain).build()
-                .getAbsolutePublicURL();
-    }
+    identityServerEndpointContextParam = ServiceURLBuilder.create().build().getAbsolutePublicURL();
 
     if (StringUtils.isNotBlank(identityServerEndpointContextParam)) {
 
