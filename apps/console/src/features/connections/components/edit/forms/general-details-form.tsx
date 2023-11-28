@@ -280,7 +280,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         readOnly={ isReadOnly }
                     />
                     {
-                        identityProviderConfig?.editIdentityProvider?.showIssuerSettings && (
+                        (identityProviderConfig?.editIdentityProvider?.showIssuerSettings || isTrustedTokenIssuer) && (
                             <Field.Input
                                 ariaLabel="idpIssuerName"
                                 inputType="resource_name"
@@ -305,7 +305,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         )
                     }
                     {
-                        identityProviderConfig?.editIdentityProvider?.showIssuerSettings && (
+                        (identityProviderConfig?.editIdentityProvider?.showIssuerSettings || isTrustedTokenIssuer) && (
                             <Field.Input
                                 ariaLabel="alias"
                                 inputType="resource_name"
