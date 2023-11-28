@@ -51,7 +51,7 @@ import { UserStoreDetails, UserStoreProperty } from "../../../core/models";
 import { AppState } from "../../../core/store";
 import { GroupsInterface } from "../../../groups";
 import { getGroupList, updateGroupDetails } from "../../../groups/api";
-import { getUserStores } from "../../../userstores/api";
+import { getAUserStore, getUserStores } from "../../../userstores/api";
 import { useValidationConfigData } from "../../../validation/api";
 import { ValidationFormInterface } from "../../../validation/models";
 import { addUser } from "../../api";
@@ -301,6 +301,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     setFixedGroupsList(response.data.Resources);
                 }
             }).catch((error: AxiosError) => {
+                setGroupsList([]);
+                setInitialGroupList([]);
+                setFixedGroupsList([]);
+
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
@@ -338,9 +342,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
         getUserStores(null)
             .then((response: UserStoreDetails[]) => {
-                response?.forEach((item: UserStoreDetails, index: number) => {
+                response?.forEach(async (item: UserStoreDetails, index: number) => {
                     // Set read/write enabled userstores based on the type.
-                    if (checkReadWriteUserStore(item)) {
+                    if (await checkReadWriteUserStore(item)) {
                         userStoreArray.push({
                             key: index,
                             text: item.name.toUpperCase(),
@@ -385,13 +389,29 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      * @param userStore - Userstore
      * @returns If the given userstore is read only or not
      */
-    const checkReadWriteUserStore = (userStore: UserStoreDetails): boolean => {
-        if( userStore.typeName === UsersConstants.DEFAULT_USERSTORE_TYPE_NAME ) {
-            return true;
-        } else {
-            return  userStore.enabled && userStore.properties.filter((property: UserStoreProperty)=>
-                property.name===UsersConstants.USER_STORE_PROPERTY_READ_ONLY)[0].value==="false";
-        }
+    const checkReadWriteUserStore = (userStore: UserStoreDetails): Promise<boolean> => {
+        let isReadWriteUserStore: boolean = false;
+
+        return getAUserStore(userStore?.id).then((response: UserStoreDetails) => {
+            response?.properties?.some((property: UserStoreProperty) => {
+                if (property.name === UsersConstants.USER_STORE_PROPERTY_READ_ONLY) {
+                    isReadWriteUserStore = property.value === "false";
+
+                    return true;
+                }
+            });
+
+            return isReadWriteUserStore;
+        }).catch(() => {
+            dispatch(addAlert({
+                description: t("console:manage.features.users.notifications.fetchUserStores.genericError." +
+                    "description"),
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.users.notifications.fetchUserStores.genericError.message")
+            }));
+
+            return false;
+        });
     };
 
     const resolveNamefieldAttributes = (profileSchemas: ProfileSchemaInterface[]) => {
