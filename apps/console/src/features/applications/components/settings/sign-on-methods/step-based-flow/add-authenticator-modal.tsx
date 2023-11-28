@@ -25,7 +25,8 @@ import {
     LinkButton,
     PrimaryButton,
     ResourceGrid,
-    Text
+    Text,
+    useDocumentation
 } from "@wso2is/react-components";
 import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
@@ -61,6 +62,7 @@ import {
 import { Authenticators } from "./authenticators";
 import { authenticatorConfig } from "../../../../../../extensions/configs/authenticator";
 import { ConnectionManagementConstants } from "../../../../../connections";
+import { ConnectionsManagementUtils } from "../../../../../connections/utils/connection-utils";
 import { getEmptyPlaceholderIllustrations } from "../../../../../core/configs/ui";
 import { AppState } from "../../../../../core/store";
 import { EventPublisher } from "../../../../../core/utils/event-publisher";
@@ -173,6 +175,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
     const hiddenAuthenticators: string[] = useSelector((state: AppState) => state.config?.ui?.hiddenAuthenticators);
     const groupedIDPTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
@@ -550,6 +553,10 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                             return (
                                                 <ResourceGrid.Card
                                                     showSetupGuideButton={ !!isSAASDeployment }
+                                                    navigationLink={
+                                                        getLink(ConnectionsManagementUtils
+                                                            .resolveConnectionDocLink(template.id))
+                                                    }
                                                     key={ templateIndex }
                                                     resourceName={
                                                         template?.name === "Expert Mode"
