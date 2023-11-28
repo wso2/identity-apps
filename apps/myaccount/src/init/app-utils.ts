@@ -127,7 +127,7 @@ export const AppUtils: AppUtilsInterface = (function() {
                 return _config.clientOrigin + (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
             }
 
-            return _config.clientOrigin + this.getTenantPath() + 
+            return _config.clientOrigin + this.getTenantPath() +
                 (_config.appBaseName ? "/" + _config.appBaseName : "") + url;
         },
 
@@ -396,7 +396,7 @@ export const AppUtils: AppUtilsInterface = (function() {
             return {
                 serverOrigin: this.isSaas()
                     ? _config.serverOrigin
-                    : _config.serverOrigin + 
+                    : _config.serverOrigin +
                     (_config.legacyAuthzRuntime ? this.getTenantPath(true) : this.getTenantPath()),
                 ..._config.idpConfigs,
                 ...this.resolveURLs()
@@ -412,7 +412,7 @@ export const AppUtils: AppUtilsInterface = (function() {
          */
         resolveURLs: function() {
             const tenantPath: string = _config.legacyAuthzRuntime ? "" : this.getTenantPath();
-        
+
             return {
                 authorizeEndpointURL: _config.idpConfigs
                     && _config.idpConfigs.authorizeEndpointURL
@@ -495,7 +495,7 @@ export const AppUtils: AppUtilsInterface = (function() {
             }
 
             _config.appBaseWithTenant = "/" + this.getTenantPrefix() + "/" + tenant + "/" + _config.appBaseName;
-            
+
         }
     };
 }());
