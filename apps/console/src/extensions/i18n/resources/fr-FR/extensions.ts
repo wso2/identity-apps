@@ -462,7 +462,7 @@ export const extensions: Extensions = {
             },
             managementAPI: {
                 header: "API de gestion",
-                description: "API pour gérer les ressources dans votre auto-organisation"
+                description: "API pour gérer les ressources de votre organisation (racine)"
             },
             notifications: {
                 deleteAPIResource: {
