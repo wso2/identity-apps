@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.70
+
+### Patch Changes
+
+- [#4845](https://github.com/wso2/identity-apps/pull/4845) [`cde7a2d52b`](https://github.com/wso2/identity-apps/commit/cde7a2d52bb9bbd4b42f1b8d9a3eaba5285f1469) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Temporarily add logs for debugging localize.jsp
+
 ## 2.0.69
 
 ### Patch Changes
