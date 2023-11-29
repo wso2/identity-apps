@@ -1768,6 +1768,7 @@ export interface Extensions {
             heading: string;
             subHeading: string;
             description: string;
+            note: string;
             info: string;
             updateButton: string;
             sendTestMailButton: string;
@@ -1857,22 +1858,10 @@ export interface Extensions {
                 }
             };
         };
-        emailAndSMS: {
-            heading: {
-                heading: string;
-                onlySMSProvider: string;
-                onlyEmailProvider: string;
-            },
-            title: {
-                heading: string;
-                onlySMSProvider: string;
-                onlyEmailProvider: string;
-            },
-            description: {
-                description: string;
-                onlySMSProvider: string;
-                onlyEmailProvider: string;
-            }
+        notificationChannel: {
+            heading: string;
+            title: string;
+            description: string;
         };
         smsProviders: {
             heading: string;

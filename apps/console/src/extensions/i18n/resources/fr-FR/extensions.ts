@@ -2026,6 +2026,7 @@ export const extensions: Extensions = {
             heading: "Fournisseur de messagerie personnalisé",
             subHeading: "Configurez des serveurs SMTP personnalisés pour envoyer des e-mails avec votre propre adresse e-mail.",
             description: "Configurez les paramètres du fournisseur de messagerie en fonction de votre serveur SMTP.",
+            note: "Les configurations du fournisseur de messagerie pour la super-organisation ne peuvent être mises à jour que via <1>deployment.toml</1>.",
             info: "Vous pouvez personnaliser le contenu des e-mails à l'aide de <1>Modèles d'e-mails</1>.",
             updateButton: "Mise à jour",
             sendTestMailButton: "Envoyer un e-mail test",
@@ -2123,22 +2124,10 @@ export const extensions: Extensions = {
                 }
             }
         },
-        emailAndSMS: {
-            heading: {
-                heading: "Fournisseurs Email & SMS",
-                onlySMSProvider: "Fournisseur de SMS",
-                onlyEmailProvider: "Fournisseur de messagerie"
-            },
-            title: {
-                heading: "Fournisseurs Email & SMS",
-                onlySMSProvider: "Fournisseur de SMS",
-                onlyEmailProvider: "Fournisseur de messagerie"
-            },
-            description: {
-                description: "Configurez les SMS et les fournisseurs de messagerie pour votre organisation.",
-                onlySMSProvider: "Configurez le fournisseur SMS pour votre organisation.",
-                onlyEmailProvider: "Configurez les fournisseurs Email et SMS pour votre organisation."
-            }
+        notificationChannel: {
+            heading: "Fournisseurs SMS/e-mail",
+            title: "Fournisseurs SMS/e-mail",
+            description: "Configurez les fournisseurs SMS et Email pour votre organisation."
         },
         smsProviders: {
             heading: "Fournisseur de SMS personnalisé",

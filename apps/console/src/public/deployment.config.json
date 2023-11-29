@@ -477,7 +477,7 @@
                 }
             },
             "emailProviders": {
-                "disabledFeatures": [ "superTenantProvider" ],
+                "disabledFeatures": [ ],
                 "enabled": true,
                 "scopes": {
                     "update": [

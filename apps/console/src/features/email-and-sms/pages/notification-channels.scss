@@ -1,0 +1,59 @@
+.notification-channel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.notification-channel-disabled {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    color: gray;
+    position: relative;
+
+    &.MuiCard-root {
+        padding: 0;
+    }
+
+    .notification-channel-header {
+        padding: 34px 26px 10px 38px;
+    }
+
+    .notification-channel-description {
+        padding: 10px 26px 15px 38px;
+    }
+}
+
+.notification-channel-header {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-content: center;
+    align-items: center;
+    padding: 10px 14px;
+
+    .notification-channel-icon-container {
+        border-radius: var(--oxygen-shape-borderRadius);
+    }
+}
+
+.notification-channel-note {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px; 
+    background-color: #2196F3;
+    color: #fff;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}
