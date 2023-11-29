@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.9.25
+
+### Patch Changes
+
+- [#4827](https://github.com/wso2/identity-apps/pull/4827) [`f85d74e442`](https://github.com/wso2/identity-apps/commit/f85d74e44253cf0c37c2b520ad47b0fd028b8eaa) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the user creation wizard
+
+- Updated dependencies [[`f85d74e442`](https://github.com/wso2/identity-apps/commit/f85d74e44253cf0c37c2b520ad47b0fd028b8eaa)]:
+  - @wso2is/i18n@2.0.61
+
 ## 2.9.24
 
 ### Patch Changes
