@@ -87,6 +87,8 @@ export class UserManagementUtils {
         if (user?.name?.familyName) {
             return user.name.familyName;
         }
+
+        return null;
     }
 }
 
