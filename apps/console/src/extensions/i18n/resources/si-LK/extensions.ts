@@ -452,7 +452,7 @@ export const extensions: Extensions = {
             },
             managementAPI: {
                 header: "කළමනාකරණ API",
-                description: "ඔබේ ස්වයං සංවිධානයේ සම්පත් කළමනාකරණය කිරීමට API"
+                description: "ඔබේ ස්වයං සංවිධානයේ සම්පත් කළමනාකරණය කිරීමට API (root)"
             },
             notifications: {
                 deleteAPIResource: {
@@ -548,7 +548,7 @@ export const extensions: Extensions = {
             },
             organizationAPI: {
                 header: "සංවිධානය API",
-                description: "සම්පත් කළමනාකරණය කිරීමට API ඔබේ වෙනත් සංවිධාන"
+                description: "ඔබේ අනෙකුත් ආයතනවල සම්පත් කළමනාකරණය කිරීමට API"
             },
             table: {
                 name: {
