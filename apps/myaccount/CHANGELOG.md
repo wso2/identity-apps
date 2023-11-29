@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.2.44
+
+### Patch Changes
+
+- [#4828](https://github.com/wso2/identity-apps/pull/4828) [`b9a44a77fb`](https://github.com/wso2/identity-apps/commit/b9a44a77fbd30029aac10aa1a7520b8bacf53101) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Improve url building
+
 ## 2.2.43
 
 ### Patch Changes
