@@ -392,5 +392,6 @@ export class ServerConfigurationsConstants {
 	/**
 	 * Organization Settings Category Constants.
 	 */
+	public static readonly ORGANIZATION_SETTINGS_CATEGORY_ID: string = "organization-settings";
 	public static readonly EMAIL_DOMAIN_DISCOVERY: string = "ZW1haWwtZG9tYWluLWRpc2NvdmVyeQ==";
 }
