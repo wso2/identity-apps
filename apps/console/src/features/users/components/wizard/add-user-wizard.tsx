@@ -502,6 +502,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setInitialTempGroupList(newGroupList);
     };
 
+    /**
+     * Triggers a form submit event for the form in the InviteParentOrgUser component.
+     */
     const submitParentUserInviteForm = () => {
         document
             .getElementById(UserManagementConstants.INVITE_PARENT_ORG_USER_FORM_ID)
