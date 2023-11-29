@@ -6481,7 +6481,23 @@ export interface ConsoleNS {
                     heading: string;
                     description: string;
                     hint: string;
-                    usernameHint: string;
+                    username: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                        validations: {
+                            required: string;
+                        }
+                    },
+                    roles: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                        validations: {
+                            required: string;
+                        }
+                    },
+                    inviteButton: string;
                 };
                 tab: {
                     usersTab: string

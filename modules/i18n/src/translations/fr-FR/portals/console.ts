@@ -7577,7 +7577,23 @@ export const console: ConsoleNS = {
                     heading: "Inviter un utilisateur parent",
                     description: "Invitez un utilisateur de l’organisation parente.",
                     hint: "Les utilisateurs invités sont gérés par l'organisation parente.",
-                    usernameHint: "Le nom d'utilisateur doit appartenir à un utilisateur de l'organisation parente."
+                    username: {
+                        label: "nom d'utilisateur",
+                        placeholder: "Entrez le nom d'utilisateur",
+                        hint: "Le nom d'utilisateur doit appartenir à un utilisateur de l'organisation parente.",
+                        validations: {
+                            required: "Le nom d'utilisateur est un champ obligatoire."
+                        }
+                    },
+                    roles: {
+                        label: "Les rôles",
+                        placeholder: "Sélectionnez des rôles",
+                        hint: "Attribuez des rôles à l'utilisateur invité.",
+                        validations: {
+                            required: "Les rôles sont un champ obligatoire."
+                        }
+                    },
+                    inviteButton: "Inviter"
                 },
                 tab: {
                     usersTab: "Utilisateurs",

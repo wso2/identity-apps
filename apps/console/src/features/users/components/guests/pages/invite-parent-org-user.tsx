@@ -16,127 +16,280 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms } from "@wso2is/forms";
-import {
-    Hint,
-    Message
-} from "@wso2is/react-components";
-import React, { ReactElement } from "react";
-import { Trans, useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Divider, Grid } from "semantic-ui-react";
-import { AppState } from "../../../../core";
+import { Chip, Typography } from "@oxygen-ui/react";
+import { AutocompleteRenderGetTagProps } from "@oxygen-ui/react/Autocomplete";
+import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { AutocompleteFieldAdapter, FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/form";
+import { Hint, Message } from "@wso2is/react-components";
+import { AxiosError } from "axios";
+import isEmpty from "lodash-es/isEmpty";
+import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from "react";
+import { FormRenderProps } from "react-final-form";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { UsersConstants } from "../../../../../extensions/components/users/constants";
+import { useRolesList } from "../../../../roles/api";
+import { UserManagementConstants } from "../../../constants";
+import { sendParentOrgUserInvite } from "../api/invite";
 import { UserInviteInterface } from "../models/invite";
 
-/**
- * Proptypes for the invite parent org user component.
- */
-interface InviteParentOrgUserProps extends IdentifiableComponentInterface {
-    triggerSubmit: boolean;
-    onSubmit?: (values: any) => void;
-    setFinishButtonDisabled: (values: boolean) => void;
+interface RolesAutoCompleteOption {
+    key: string;
+    label: ReactNode;
+    role: RolesInterface;
+}
+
+interface InviteParentOrgUserFormValuesInterface {
+    username: string;
+    roles: RolesAutoCompleteOption[];
+}
+
+interface InviteParentOrgUserFormErrorsInterface {
+    username: string;
+    roles: string;
 }
 
 /**
- * Invite parent org user component.
- *
- * @returns invite parent org user modal component.
+ * Props interface of {@link InviteParentOrgUser}
  */
-export const InviteParentOrgUser: React.FunctionComponent<InviteParentOrgUserProps> = (
-    props: InviteParentOrgUserProps): ReactElement => {
+interface InviteParentOrgUserPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Callback method for closing the wizard.
+     */
+    closeWizard: () => void;
+    /**
+     * Callback method for setting the isSubmitting state.
+     */
+    setIsSubmitting: (isSubmitting: boolean) => void;
+}
+
+/**
+ * The invite parent organization user component.
+ *
+ * @returns Invite parent organization user component.
+ */
+export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInterface> = (
+    props: InviteParentOrgUserPropsInterface
+): ReactElement => {
 
     const {
-        triggerSubmit,
-        onSubmit,
+        closeWizard,
+        setIsSubmitting,
         [ "data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
+    const { data: allowedRoles } = useRolesList();
 
-    const currentOrganization: string =  useSelector((state: AppState) => state?.config?.deployment?.tenant);
+    const rolesAutocompleteOptions: RolesAutoCompleteOption[] = useMemo(() => {
+
+        if (isEmpty(allowedRoles?.Resources)) {
+            return [];
+        }
+
+        return allowedRoles?.Resources
+            ?.filter((role: RolesInterface) => role.audience.display !== "Console")
+            ?.map((role: RolesInterface) => {
+                return {
+                    key: role.id,
+                    label: role.displayName,
+                    role
+                };
+            });
+    }, [ allowedRoles ]);
 
     /**
-     * Extracts form values from a Map and triggers a submit action if specified.
-     * @param values - A Map containing form values where keys are strings and values are of type FormValue.
+     * Handles the error scenario when sending an invitation to a user in a parent organization to join the current
+     * organization.
+     * @param error - Error response.
      */
-    const getFormValues = (values: Map<string, FormValue>): void => {
+    const handleParentOrgUserInviteError = (error: AxiosError) => {
 
-        const inviteUser: UserInviteInterface = {
-            username: values.get("username").toString()
-        };
-
-        if (triggerSubmit) {
-            onSubmit(inviteUser);
+        /**
+         * Axios throws a generic `Network Error` for status code 401.
+         * As a temporary solution, a check to see if a response
+         * is available has been used.
+         */
+        if (!error.response || error.response.status === 401) {
+            dispatch(addAlert({
+                description: t("console:manage.features.invite.notifications.sendInvite.error.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.invite.notifications.sendInvite.error.message")
+            }));
+        } else if (error.response.status === 403 &&
+            error?.response?.data?.code === UsersConstants.ERROR_COLLABORATOR_USER_LIMIT_REACHED) {
+            dispatch(addAlert({
+                description: t("extensions:manage.invite.notifications.sendInvite.limitReachError.description"),
+                level: AlertLevels.ERROR,
+                message: t("extensions:manage.invite.notifications.sendInvite.limitReachError.message")
+            }));
+        } else if (error?.response?.data?.description) {
+            dispatch(addAlert({
+                description: t(
+                    "console:manage.features.invite.notifications.sendInvite.error.description",
+                    { description: error.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.invite.notifications.sendInvite.error.message")
+            }));
+        } else {
+            // Generic error message
+            dispatch(addAlert({
+                description: t(
+                    "console:manage.features.invite.notifications.sendInvite.genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.invite.notifications.sendInvite.genericError.message")
+            }));
         }
     };
 
+    /**
+     * Sends an invitation to a user in a parent organization to join the current organization.
+     * @param values - Form values.
+     */
+    const inviteParentOrgUser = (values: InviteParentOrgUserFormValuesInterface) => {
+
+        const invite: UserInviteInterface = {
+            roles: values?.roles?.map((role: RolesAutoCompleteOption) => role.role.id),
+            username: values?.username
+        };
+
+        setIsSubmitting(true);
+
+        sendParentOrgUserInvite(invite)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t(
+                        "console:manage.features.invite.notifications.sendInvite.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "console:manage.features.invite.notifications.sendInvite.success.message"
+                    )
+                }));
+                closeWizard();
+            })
+            .catch((error: AxiosError) => {
+                handleParentOrgUserInviteError(error);
+            })
+            .finally(() => {
+                closeWizard();
+                setIsSubmitting(false);
+            });
+    };
+
+    /**
+     * Validates the invite parent org user form values.
+     * @param values - Form values.
+     * @returns An error object containing validation error messages.
+     */
+    const validateInviteParentOrgUserForm = (
+        values: InviteParentOrgUserFormValuesInterface
+    ): InviteParentOrgUserFormErrorsInterface => {
+
+        const errors: InviteParentOrgUserFormErrorsInterface = {
+            roles: undefined,
+            username: undefined
+        };
+
+        if (!values.username) {
+            errors.username = t("console:manage.features.parentOrgInvitations.addUserWizard.username.validations" +
+                ".required");
+        }
+
+        if (!values.roles || isEmpty(values.roles)) {
+            errors.roles =  t("console:manage.features.parentOrgInvitations.addUserWizard.roles.validations.required");
+        }
+
+        return errors;
+    };
+
+
     return (
-        <Forms
+        <FinalForm
+            initialValues={ null }
+            keepDirtyOnReinitialize={ true }
             data-componentid={ `${ componentId }-external-form` }
-            onSubmit={ (values: Map<string, FormValue>) => {
-                onSubmit(getFormValues(values));
+            onSubmit={ inviteParentOrgUser }
+            validate={ validateInviteParentOrgUserForm }
+            render={ ({ handleSubmit }: FormRenderProps) => {
+                return (
+                    <form
+                        id={ UserManagementConstants.INVITE_PARENT_ORG_USER_FORM_ID }
+                        onSubmit={ handleSubmit }
+                        className="invite-parent-org-user-form">
+                        <Message
+                            type="info"
+                            className="add-user-info"
+                            content={ t("console:manage.features.parentOrgInvitations.addUserWizard.hint") }
+                        />
+                        <FinalFormField
+                            fullWidth
+                            ariaLabel="Username field"
+                            data-componentid={ `${componentId}-external-form-username-input` }
+                            label={ t("console:manage.features.parentOrgInvitations.addUserWizard.username.label") }
+                            name="username"
+                            placeholder={ t(
+                                "console:manage.features.parentOrgInvitations.addUserWizard.username.placeholder"
+                            ) }
+                            required={ true }
+                            type="text"
+                            helperText={ (
+                                <Hint>
+                                    <Typography variant="inherit">
+                                        { t("console:manage.features.parentOrgInvitations.addUserWizard.username" +
+                                                ".hint") }
+                                    </Typography>
+                                </Hint>
+                            ) }
+                            component={ TextFieldAdapter }
+                        />
+                        <FinalFormField
+                            fullWidth
+                            required
+                            freeSolo
+                            multipleValues
+                            ariaLabel="Roles field"
+                            data-componentid={ `${componentId}-form-roles-field` }
+                            name="roles"
+                            label={ t("console:manage.features.parentOrgInvitations.addUserWizard.roles.label") }
+                            helperText={
+                                (<Hint>
+                                    <Typography variant="inherit">
+                                        { t("console:manage.features.parentOrgInvitations.addUserWizard.roles" +
+                                                ".hint") }
+                                    </Typography>
+                                </Hint>)
+                            }
+                            placeholder={
+                                t("console:manage.features.parentOrgInvitations.addUserWizard.roles.placeholder")
+                            }
+                            component={ AutocompleteFieldAdapter }
+                            options={ rolesAutocompleteOptions }
+                            renderTags={ (value: readonly any[], getTagProps: AutocompleteRenderGetTagProps) => {
+                                return value.map((option: any, index: number) => (
+                                    <Chip
+                                        key={ index }
+                                        size="medium"
+                                        label={ option.label }
+                                        { ...getTagProps({ index }) }
+                                    />
+                                ));
+                            } }
+                        />
+                    </form>
+                );
             } }
-            submitState={ triggerSubmit }
-        >
-            {
-                <Grid>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                            <Message
-                                type="info"
-                                className="add-user-info"
-                                content={ 
-                                    (<Trans
-                                        i18nKey= "console:manage.features.parentOrgInvitations.addUserWizard.hint"
-                                        tOptions={ { currentOrganization: currentOrganization } }
-                                    >
-                                        Invited users are managed by the parent organization.                        
-                                    </Trans>)
-                                }
-                            />
-                            <Field
-                                data-componentid={ `${ componentId }-external-form-username-input` }
-                                label={ t(
-                                    "console:manage.features.user.forms.addUserForm.inputs.username.label"
-                                ) }
-                                name="username"
-                                placeholder={ t(
-                                    "console:manage.features.user.forms.addUserForm.inputs." +
-                                    "username.placeholder"
-                                ) }
-                                required={ true }
-                                requiredErrorMessage={ t(
-                                    "console:manage.features.user.forms.addUserForm.inputs.email.validations.empty"
-                                ) }
-                                type="text"
-                                tabIndex={ 5 }
-                                maxLength={ 50 }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                            <Hint>
-                                <Trans 
-                                    i18nKey="console:manage.features.parentOrgInvitations.addUserWizard.usernameHint"
-                                    tOptions={ { currentOrganization: currentOrganization } }
-                                >
-                                    Username should belong to a user 
-                                    from the <strong>{ currentOrganization } </strong> organization.
-                                </Trans>
-                            </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Divider hidden/>
-                </Grid>
-            }
-        </Forms>
+        />
     );
 };
 
 /**
- * Default props for the component.
+ * Default props for the invite parent org user wizard component.
  */
 InviteParentOrgUser.defaultProps = {
     "data-componentid": "invite-parent-org-user"
