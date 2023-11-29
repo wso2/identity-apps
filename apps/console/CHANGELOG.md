@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.9.23
+
+### Patch Changes
+
+- [#4834](https://github.com/wso2/identity-apps/pull/4834) [`f96afb8982`](https://github.com/wso2/identity-apps/commit/f96afb8982b5cadcbbf94fdc87c857db14cdae98) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Release console
+
+* [#4824](https://github.com/wso2/identity-apps/pull/4824) [`61814ff51e`](https://github.com/wso2/identity-apps/commit/61814ff51ea2bd4d22251eb2a496d271216efc0b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update `sub organization` wordings to `organization`
+
+* Updated dependencies [[`61814ff51e`](https://github.com/wso2/identity-apps/commit/61814ff51ea2bd4d22251eb2a496d271216efc0b)]:
+  - @wso2is/i18n@2.0.59
+
 ## 2.9.22
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.59
+
+### Patch Changes
+
+- [#4824](https://github.com/wso2/identity-apps/pull/4824) [`61814ff51e`](https://github.com/wso2/identity-apps/commit/61814ff51ea2bd4d22251eb2a496d271216efc0b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update `sub organization` wordings to `organization`
+
 ## 2.0.58
 
 ### Patch Changes
