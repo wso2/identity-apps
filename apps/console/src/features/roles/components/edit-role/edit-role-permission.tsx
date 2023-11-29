@@ -181,7 +181,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         if(role.audience.type.toUpperCase() === RoleAudienceTypes.ORGANIZATION) {
             // API resources list options when role audience is "organization".
             allAPIResourcesListData.map((api: APIResourceInterface) => {
-                if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) => 
+                if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                     selectedAPIResource?.id === api?.id)) {
                     options.push({
                         key: api.id,
@@ -190,7 +190,6 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                         value: api.id
                     });
                 }
-                
             });
 
             // Filter out duplicate options
@@ -228,7 +227,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     }, [ initialAPIResourceIds ]);
 
     /**
-     * Assign all the API resources to the dropdown options if the after value is not null. 
+     * Assign all the API resources to the dropdown options if the after value is not null.
      */
     useEffect(() => {
         if (!isAPIResourcesListLoading) {
@@ -265,10 +264,12 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 return filtered;
             }, []));
 
-            setAllAPIResourcesDropdownOptions([
-                ...allAPIResourcesDropdownOptions,
-                ...filteredDropdownItemOptions ? filteredDropdownItemOptions : []
-            ]);
+            if (role.audience.type.toUpperCase() === RoleAudienceTypes.ORGANIZATION) {
+                setAllAPIResourcesDropdownOptions([
+                    ...allAPIResourcesDropdownOptions,
+                    ...filteredDropdownItemOptions ? filteredDropdownItemOptions : []
+                ]);
+            }
 
             // Add the current API resources to the all API resources list.
             setAllAPIResourcesListData([ ...allAPIResourcesListData, ...currentAPIResourcesListData.apiResources ]);
@@ -286,14 +287,14 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                     }
                 }
             });
-            
+
             if (isAfterValueExists) {
                 mutatecurrentAPIResourcesList();
             } else {
                 setIsAPIResourcesListLoading(false);
             }
         }
-    }, [ currentAPIResourcesListData ]);        
+    }, [ currentAPIResourcesListData ]);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching API resources.
@@ -457,18 +458,18 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
      */
     const onAPIResourceSelected = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
         event.preventDefault();
-        if (role.audience.type.toUpperCase() === RoleAudienceTypes.ORGANIZATION) {
-            setSelectedAPIResourceId(data.value.toString());
+        if (role?.audience?.type?.toUpperCase() === RoleAudienceTypes.ORGANIZATION) {
+            setSelectedAPIResourceId(data?.value?.toString());
         } else {
-            const selectedAPIResource: AuthorizedAPIListItemInterface = authorizedAPIListForApplication.find(
-                (api: AuthorizedAPIListItemInterface) => api.id === data.value.toString()
+            const selectedAPIResource: AuthorizedAPIListItemInterface = authorizedAPIListForApplication?.find(
+                (api: AuthorizedAPIListItemInterface) => api?.id === data?.value?.toString()
             );
 
             setSelectedAPIResources([
                 {
-                    id: selectedAPIResource.id,
-                    name: selectedAPIResource.displayName,
-                    scopes: selectedAPIResource.authorizedScopes
+                    id: selectedAPIResource?.id,
+                    name: selectedAPIResource?.displayName,
+                    scopes: selectedAPIResource?.authorizedScopes
                 },
                 ...selectedAPIResources
             ]);
@@ -534,9 +535,9 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                     getOptionLabel={ (apiResourcesListOption: DropdownProps) =>
                         apiResourcesListOption.text }
                     groupBy={ (apiResourcesListOption: DropdownProps) => apiResourcesListOption.type }
-                    isOptionEqualToValue={ 
-                        (option: DropdownProps, value: DropdownProps) => 
-                            option.value === value.value 
+                    isOptionEqualToValue={
+                        (option: DropdownProps, value: DropdownProps) =>
+                            option.value === value.value
                     }
                     loading={ iscurrentAPIResourcesListLoading }
                     onChange={ onAPIResourceSelected }
