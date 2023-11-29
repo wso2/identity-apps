@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.9.27
+
+### Patch Changes
+
+- [#4854](https://github.com/wso2/identity-apps/pull/4854) [`6e107e959e`](https://github.com/wso2/identity-apps/commit/6e107e959e6967abbdeaced7ed0280b09f7942be) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix bugs in the role edit permission dropdown
+
+* [#4850](https://github.com/wso2/identity-apps/pull/4850) [`faa8642b71`](https://github.com/wso2/identity-apps/commit/faa8642b7165b19e0e1773fe225dae41a5857cf5) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Conditionally render email domain discovery based on the feature configs in deployment.config.json.
+
+- [#4837](https://github.com/wso2/identity-apps/pull/4837) [`0e18410bdd`](https://github.com/wso2/identity-apps/commit/0e18410bdd2c92ab721df8dc90cf57da0b171d19) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Change the precendence of role types
+
+* [#4858](https://github.com/wso2/identity-apps/pull/4858) [`9327f1df46`](https://github.com/wso2/identity-apps/commit/9327f1df46eb1e6f2cd37b131fd715c7d1d5046e) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix selected API resources in Role view Permissions tab
+
 ## 2.9.26
 
 ### Patch Changes
