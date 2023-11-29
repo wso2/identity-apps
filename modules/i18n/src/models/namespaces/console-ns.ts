@@ -523,6 +523,9 @@ export interface ConsoleNS {
         loginFlow: {
             tabLabel: string;
         };
+        protocol: {
+            tabLabel: string;
+        };
         roles: {
             tabLabel: string;
             permissionLevels: {

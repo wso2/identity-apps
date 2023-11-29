@@ -30,6 +30,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import ConsoleAdministrators from "./console-administrators/console-administrators";
 import ConsoleLoginFlow from "./console-login-flow/console-login-flow";
+import ConsoleProtocol from "./console-protocol/console-protocol";
 import ConsoleRolesList from "./console-roles/console-roles-list";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import "./console-settings-tabs.scss";
@@ -51,6 +52,10 @@ enum ConsoleSettingsModes {
      * Roles tab mode.
      */
     ROLES = "ROLES",
+    /**
+     * Protocol tab mode.
+     */
+    PROTOCOL = "PROTOCOL",
     /**
      * Security tab mode.
      */
@@ -116,12 +121,20 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
             value: 1
         },
         !isSubOrganization() && {
+            className: "console-protocol",
+            "data-componentid": `${componentId}-tab-protocol`,
+            id: ConsoleSettingsModes.PROTOCOL,
+            label: t("console:consoleSettings.protocol.tabLabel"),
+            pane: <ConsoleProtocol />,
+            value: 3
+        },
+        !isSubOrganization() && {
             className: "console-security",
             "data-componentid": `${componentId}-tab-login-flow`,
             id: ConsoleSettingsModes.SECURITY,
             label: t("console:consoleSettings.loginFlow.tabLabel"),
             pane: <ConsoleLoginFlow />,
-            value: 2
+            value: 4
         }
     ], []);
 

@@ -18,6 +18,7 @@
 
 import { Context, createContext } from "react";
 import { ApplicationInterface, AuthenticationSequenceInterface } from "../../applications/models/application";
+import { OIDCDataInterface } from "../../applications/models/application-inbound";
 
 /**
  * Props interface of {@link ConsoleSettingsContext}
@@ -36,6 +37,10 @@ export interface ConsoleSettingsContextProps {
      */
     consoleConfigurations: ApplicationInterface;
     /**
+     * Console application inbound configurations.
+     */
+    consoleInboundConfigurations: OIDCDataInterface;
+    /**
      * Authentication sequence of the Console.
      */
     consoleAuthenticationSequence: AuthenticationSequenceInterface;
@@ -44,9 +49,17 @@ export interface ConsoleSettingsContextProps {
      */
     isConsoleConfigurationsFetchRequestLoading: boolean;
     /**
+     * Flag to determine if the Console inbound configurations fetch request loading.
+     */
+    isConsoleApplicationInboundConfigsFetchRequestLoading: boolean;
+    /**
      * Mutate the Console application configurations and get updated values for `consoleAuthenticationSequence`, etc .
      */
     mutateConsoleConfigurations: () => void;
+    /**
+     * Mutate the Console application inbound configurations.
+     */
+    mutateConsoleApplicationInboundConfigs: () => void;
     /**
      * Update the Console login flow.
      * @param authenticationSequence - Authentication sequence.
