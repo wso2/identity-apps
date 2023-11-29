@@ -86,6 +86,10 @@ interface ConsoleSettingsTabInterface extends IdentifiableComponentInterface {
      * Tab pane.
      */
     pane: ReactElement;
+    /**
+     * Is tab hidden.
+     */
+    hidden?: boolean;
 }
 
 /**
@@ -123,6 +127,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
         !isSubOrganization() && {
             className: "console-protocol",
             "data-componentid": `${componentId}-tab-protocol`,
+            hidden: true,
             id: ConsoleSettingsModes.PROTOCOL,
             label: t("console:consoleSettings.protocol.tabLabel"),
             pane: <ConsoleProtocol />,
@@ -148,9 +153,13 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     setActiveTab(newValue);
                 } }
             >
-                { consoleTabs.map((tab: ConsoleSettingsTabInterface) => (
-                    <Tab key={ tab.value } label={ tab.label } />
-                )) }
+                { consoleTabs.map((tab: ConsoleSettingsTabInterface) => {
+                    if (tab.hidden) {
+                        return null;
+                    }
+
+                    return <Tab key={ tab.value } label={ tab.label } />;
+                }) }
             </Tabs>
             { consoleTabs.map((tab: ConsoleSettingsTabInterface, index: number) => (
                 <TabPanel
