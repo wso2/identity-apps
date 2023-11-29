@@ -27,16 +27,11 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%
-    System.out.println("====== Localize.jsp ======");
     String lang = "en_US"; // Default lang is en_US
     String COOKIE_NAME = "ui_lang";
     Locale browserLocale = request.getLocale();
-    System.out.println("Browser Locale: " + browserLocale);
-
     Locale userLocale = browserLocale;
     String uiLocaleFromURL = request.getParameter("ui_locales");
-    System.out.println("uiLocaleFromURL: " + uiLocaleFromURL);
-
     String localeFromCookie = null;
     String BUNDLE = "org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources";
     
@@ -60,11 +55,9 @@
             }
         }
     }
-    System.out.println("localeFromCookie: " + localeFromCookie);
 
     // Set lang from the priority order
     if (localeFromCookie != null) {
-        System.out.println("Inside function for localeFromCookie not null");
         lang = localeFromCookie;
 
         try {
@@ -85,8 +78,6 @@
             userLocale = browserLocale;
         }
     } else if (uiLocaleFromURL != null) {
-        System.out.println("Inside function for uiLocaleFromURL not null");
-
         for (String localeStr : uiLocaleFromURL.split(" ")) {
             String langStr = "en";
             String langLocale = "US";
@@ -124,21 +115,15 @@
             }
         }
     } else {
-        System.out.println("Inside function for when localeFromCookie and uiLocaleFromURL is null. Setting locale from browser locale");
-
         // `browserLocale` is coming as `en` instead of `en_US` for the first render before switching the language from the dropdown.
         String countryCode = supportedLanguages.get(browserLocale.getLanguage());
-        System.out.println("countryCode: " + countryCode);
 
         if (StringUtils.isNotBlank(countryCode)) {
-            System.out.println("Setting new locale from country code from browser locale");
             userLocale = new Locale(browserLocale.getLanguage(), countryCode);
         } else {
-            System.out.println("Directly using the browser locale for user locale");
             userLocale = browserLocale;
         }
     }
-    System.out.println("userLocale at the end: " + userLocale);
 
     ResourceBundle resourceBundle = ResourceBundle.getBundle(BUNDLE, userLocale, new
         EncodedControl(StandardCharsets.UTF_8.toString()));
