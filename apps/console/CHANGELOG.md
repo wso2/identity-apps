@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.9.24
+
+### Patch Changes
+
+- [#4830](https://github.com/wso2/identity-apps/pull/4830) [`783a812ee5`](https://github.com/wso2/identity-apps/commit/783a812ee578e9f823c463196476a6af2ed50686) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve the role deletion flow
+
+* [#4841](https://github.com/wso2/identity-apps/pull/4841) [`e3f90ff7cd`](https://github.com/wso2/identity-apps/commit/e3f90ff7cd743e5769c21a3dad3d963e4e179187) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Fix wording of API resource category
+
+- [#4836](https://github.com/wso2/identity-apps/pull/4836) [`3147be47e0`](https://github.com/wso2/identity-apps/commit/3147be47e04f398fc8eb78a613b95aa48b50bada) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Add the capability to specify roles in the invite parent org user flow.
+
+- Updated dependencies [[`783a812ee5`](https://github.com/wso2/identity-apps/commit/783a812ee578e9f823c463196476a6af2ed50686), [`3147be47e0`](https://github.com/wso2/identity-apps/commit/3147be47e04f398fc8eb78a613b95aa48b50bada)]:
+  - @wso2is/i18n@2.0.60
+  - @wso2is/form@2.0.15
+
 ## 2.9.23
 
 ### Patch Changes
