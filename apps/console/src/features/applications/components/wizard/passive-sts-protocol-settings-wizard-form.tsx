@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,11 +35,11 @@ interface PassiveStsSettingsWizardFormPropsInterface extends TestableComponentIn
 }
 
 /**
- * SAML protocol settings wizard form component.
+ * Passive STS protocol settings wizard form component.
  *
- * @param {PassiveStsSettingsWizardFormPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns the Passive STS protocol settings wizard form component.
  */
 export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsSettingsWizardFormPropsInterface> = (
     props: PassiveStsSettingsWizardFormPropsInterface
@@ -59,7 +59,7 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
      * Sanitizes and prepares the form values for submission.
      *
      * @param values - Form values.
-     * @return {object} Prepared values.
+     * @returns the prepared config values required for passive STS app creation.
      */
     const getFormValues = (values: Map<string, FormValue>): any => {
         return {
@@ -147,32 +147,37 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
                                 <Field
                                     name="replyToLogout"
                                     label={
-                                        t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout.label")
+                                        t("console:develop.features.applications.forms.inboundSTS.fields." +
+                                          "replyToLogout.label")
                                     }
                                     required={ true }
                                     requiredErrorMessage={
-                                        t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout" +
-                                        ".validations.empty")
+                                        t("console:develop.features.applications.forms.inboundSTS.fields." +
+                                          "replyToLogout.validations.empty")
                                     }
                                     placeholder={
-                                        t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout" +
-                                        ".placeholder")
+                                        t("console:develop.features.applications.forms.inboundSTS.fields." +
+                                          "replyToLogout.placeholder")
                                     }
                                     validation={ (value: string, validation: Validation) => {
                                         if (!FormValidation.url(value)) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(
                                                 t("console:develop.features.applications.forms" +
-                                                    ".inboundSTS.fields.replyToLogout.validations.invalid")
+                                                  ".inboundSTS.fields.replyToLogout.validations.invalid")
                                             );
                                         }
                                     } }
                                     type="text"
-                                    value={ initialValues ? initialValues?.replyToLogout : templateValues?.replyToLogout }
+                                    value={ initialValues
+                                        ? initialValues?.replyToLogout
+                                        : templateValues?.replyToLogout
+                                    }
                                     data-testid={ `${ testId }-reply-to-logout-url-input` }
                                 />
                                 <Hint>
-                                    { t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout.hint") }
+                                    { t("console:develop.features.applications.forms.inboundSTS.fields." +
+                                        "replyToLogout.hint") }
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
