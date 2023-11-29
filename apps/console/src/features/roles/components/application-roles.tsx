@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { Button } from "@oxygen-ui/react";
-import { PlusIcon } from "@oxygen-ui/react-icons";
 import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
@@ -35,6 +33,7 @@ import {
     DocumentationLink,
     EmphasizedSegment,
     Heading,
+    LinkButton,
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
@@ -50,7 +49,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Grid } from "semantic-ui-react";
+import { Grid, Icon } from "semantic-ui-react";
 import { AutoCompleteRenderOption } from "./auto-complete-render-option";
 import { ApplicationRoleWizard } from "./wizard-updated/application-role-wizard";
 import { updateApplicationDetails } from "../../applications/api";
@@ -344,41 +343,61 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                 { t("extensions:develop.applications.edit.sections.rolesV2.roleAudience") }
                             </Heading>
                         </Grid.Column>
-                        <Grid.Column width={ 2 }>
+                        <Grid.Column width={ 10 }>
                             <FormGroup>
-                                <Grid.Row>
-                                    <FormControlLabel
-                                        checked={ roleAudience === RoleAudienceTypes.APPLICATION }
-                                        control={ <Radio size="small" /> }
-                                        onChange={ () => promptAudienceSwitchWarning(RoleAudienceTypes.APPLICATION) }
-                                        label={ t("extensions:develop.applications.edit.sections.rolesV2.application") }
-                                        data-componentid={ `${ componentId }-application-audience-checkbox` }
-                                        disabled={ isReadOnly }
-                                        className="mr-6"
-                                    />
-                                    {
-                                        roleAudience === RoleAudienceTypes.APPLICATION
-                                            && (
-                                                <Button
-                                                    startIcon={ <PlusIcon/> }
-                                                    variant="text"
-                                                    onClick={ handleAddNewRoleWizardClick }
-                                                    disabled={ isReadOnly }
-                                                >
-                                                    { t("console:develop.features.applications.edit." +
-                                                            "sections.roles.createApplicationRoleWizard.button") }
-                                                </Button>
-                                            )
-                                    }
-                                </Grid.Row>
-                                <FormControlLabel
-                                    checked={ roleAudience === RoleAudienceTypes.ORGANIZATION }
-                                    control={ <Radio size="small"/> }
-                                    onChange={ () => promptAudienceSwitchWarning(RoleAudienceTypes.ORGANIZATION) }
-                                    label={ t("extensions:develop.applications.edit.sections.rolesV2.organization") }
-                                    data-componentid={ `${ componentId }-organization-audience-checkbox` }
-                                    disabled={ isReadOnly }
-                                />
+                                <Grid>
+                                    <Grid.Row columns={ 2 } className="pb-0">
+                                        <Grid.Column width={ 4 }>
+                                            <FormControlLabel
+                                                checked={ roleAudience === RoleAudienceTypes.APPLICATION }
+                                                control={ <Radio size="small" /> }
+                                                onChange={ () =>
+                                                    promptAudienceSwitchWarning(RoleAudienceTypes.APPLICATION) }
+                                                label={
+                                                    t("extensions:develop.applications.edit.sections." +
+                                                    "rolesV2.application")
+                                                }
+                                                data-componentid={ `${ componentId }-application-audience-checkbox` }
+                                                disabled={ isReadOnly }
+                                            />
+                                        </Grid.Column>
+                                        <Grid.Column width={ 6 }>
+                                            {
+                                                roleAudience === RoleAudienceTypes.APPLICATION
+                                                    && (
+                                                        <LinkButton
+                                                            fluid
+                                                            data-componentid="create-application-role-button"
+                                                            onClick={ handleAddNewRoleWizardClick }
+                                                            disabled={ isReadOnly }
+                                                        >
+                                                            <Icon name="plus"/>
+                                                            {
+                                                                t("console:develop.features.applications.edit." +
+                                                                "sections.roles.createApplicationRoleWizard.button")
+                                                            }
+                                                        </LinkButton>
+                                                    )
+                                            }
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                    <Grid.Row className="pt-0">
+                                        <Grid.Column width={ 6 }>
+                                            <FormControlLabel
+                                                checked={ roleAudience === RoleAudienceTypes.ORGANIZATION }
+                                                control={ <Radio size="small"/> }
+                                                onChange={ () =>
+                                                    promptAudienceSwitchWarning(RoleAudienceTypes.ORGANIZATION) }
+                                                label={
+                                                    t("extensions:develop.applications.edit.sections." +
+                                                    "rolesV2.organization")
+                                                }
+                                                data-componentid={ `${ componentId }-organization-audience-checkbox` }
+                                                disabled={ isReadOnly }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
                             </FormGroup>
                         </Grid.Column>
                     </Grid.Row>
