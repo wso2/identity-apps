@@ -44,7 +44,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon, Label } from "semantic-ui-react";
-import { UserManagementUtils as ExtendedUserManagementUtils } from "../../../extensions/components/users/utils";
 import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { getProfileInformation } from "../../authentication/store";
 import {
@@ -297,7 +296,7 @@ const UserEditPage = (): ReactElement => {
      * @returns the description of user
      */
     const resolveDescription = (): string | null => {
-        return !isNameAvailable && ExtendedUserManagementUtils.resolveUserListSubheader(user);
+        return !isNameAvailable && UserManagementUtils.resolveUserListSubheaderName(user);
     };
 
     /**

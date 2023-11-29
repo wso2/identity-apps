@@ -98,7 +98,9 @@ const LogsPage: FunctionComponent<LogsPageInterface> = (
 
     const renderLogContentDiagnosticNew = () : ReactElement => {
         return (
-            <DiagnosticLogsPage/>
+            <DiagnosticLogsPage
+                data-componentid={ componentId }
+            />
         );
     };
 
