@@ -469,8 +469,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     filteredSteps.push(getUserModeStep());
                 } else if (step === WizardStepsFormTypes.BASIC_DETAILS) {
                     filteredSteps.push(getUserBasicWizardStep());
-                } else if (step === WizardStepsFormTypes.INVITE_BASIC_DETAILS) {
-                    filteredSteps.push(getInviteParentOrgUserStep());
                 } else if (step === WizardStepsFormTypes.GROUP_LIST) {
                     filteredSteps.push(getUserGroupsWizardStep());
                 } else if (step === WizardStepsFormTypes.USER_SUMMARY) {
@@ -973,25 +971,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     };
 
     /**
-     * Basic Wizard Step.
-     * @returns Basic details wizard step.
-     */
-    const getInviteParentOrgUserStep = (): WizardStepInterface => {
-
-        return {
-            content: (
-                <InviteParentOrgUser
-                    closeWizard={ closeWizard }
-                    setIsSubmitting={ setIsSubmitting }
-                />
-            ),
-            icon: getUserWizardStepIcons().general,
-            name: WizardStepsFormTypes.INVITE_BASIC_DETAILS,
-            title: t("console:manage.features.user.modals.addUserWizard.steps.basicDetails")
-        };
-    };
-
-    /**
      * User group wizard step.
      * @returns Group wizard step.
      */
@@ -1067,8 +1046,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 return getUserModeStep()?.content;
             case WizardStepsFormTypes.BASIC_DETAILS:
                 return getUserBasicWizardStep()?.content;
-            case WizardStepsFormTypes.INVITE_BASIC_DETAILS:
-                return getInviteParentOrgUserStep()?.content;
             case WizardStepsFormTypes.GROUP_LIST:
                 return getUserGroupsWizardStep()?.content;
             case WizardStepsFormTypes.USER_SUMMARY:
