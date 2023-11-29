@@ -51,6 +51,14 @@ interface RoleAPIResourcesListItemProp extends IdentifiableComponentInterface {
      * Callback to handle API resource removal.
      */
     onRemoveAPIResource: (apiResourceId: string) => void;
+    /**
+     * Whether the Autocomplete field has an error or not. Passed down to the PermissionsList component.
+     */
+    hasError?: boolean;
+    /**
+     * Error message for the Autocomplete field. Passed down to the PermissionsList component.
+     */
+    errorMessage?: string;
 }
 
 export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListItemProp> =
@@ -62,6 +70,8 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
             selectedPermissions,
             onChangeScopes,
             onRemoveAPIResource,
+            hasError,
+            errorMessage,
             [ "data-componentid" ]: componentId
         } = props;
 
@@ -145,6 +155,8 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                                     initialSelectedPermissions={ initialSelectedPermissions }
                                     selectedPermissions={ selectedPermissions }
                                     onChangeScopes={ onChangeScopes }
+                                    hasError={ hasError }
+                                    errorMessage={ errorMessage }
                                 />
                             </AccordionDetails>
                         ) : null

@@ -84,6 +84,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     const [ selectedApplication, setSelectedApplication ] = useState<DropdownItemProps[]>([]);
     const [ isFormError, setIsFormError ] = useState<boolean>(false);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
+    const [ erroneousAPIResourceFields, setErroneousAPIResourceFields ] = useState<string[]>([]);
 
     const path: string[] = history.location.pathname.split("/");
     const appId: string = path[path.length - 1].split("#")[0];
@@ -169,6 +170,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     };
 
     const onChangeScopes = (apiResource: APIResourceInterface, scopes: ScopeInterface[]): void => {
+        setErroneousAPIResourceFields([]);
         const selectedScopes: SelectedPermissionsInterface[] = selectedPermissions.filter(
             (selectedPermission: SelectedPermissionsInterface) =>
                 selectedPermission.apiResourceId !== apiResource.id
@@ -206,6 +208,29 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
      */
     const addRole = ( role: CreateRoleInterface): void => {
         setIsSubmitting(true);
+
+        const emptyAPIResourceFields: string[] = [];
+
+        selectedAPIResources?.forEach((apiResource: APIResourceInterface) => {
+            const selectedPermission: SelectedPermissionsInterface = selectedPermissions?.find(
+                (selectedPermission: SelectedPermissionsInterface) =>
+                    selectedPermission.apiResourceId === apiResource?.id
+            );
+
+            if (!selectedPermission || selectedPermission?.scopes?.length === 0) {
+                emptyAPIResourceFields.push(apiResource?.id);
+            }
+        });
+
+        // If there are any empty API resources, set the erroneousAPIResourceFields state.
+        // And return from the function.
+        if (emptyAPIResourceFields?.length > 0) {
+            setErroneousAPIResourceFields(emptyAPIResourceFields);
+            setIsSubmitting(false);
+
+            return;
+        }
+
         const selectedPermissionsList: CreateRolePermissionInterface[] = selectedPermissions?.flatMap(
             (permission: SelectedPermissionsInterface) => (
                 permission?.scopes?.map((scope: ScopeInterface) => ({ value: scope?.name })) || []
@@ -428,6 +453,9 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                                             selectedPermission.apiResourceId === apiResource?.id
                                                     )?.scopes
                                                 }
+                                                hasError={ erroneousAPIResourceFields?.includes(apiResource?.id) }
+                                                errorMessage={ t("console:manage.features.roles.addRoleWizard." +
+                                                    "forms.rolePermission.permissions.validation.empty") }
                                             />
                                         );
                                     })

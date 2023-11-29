@@ -8641,6 +8641,9 @@ export const console: ConsoleNS = {
                                     noScopes: "Aucune portée disponible pour la ressource API sélectionnée",
                                     selectAllScopes: "Sélectionnez toutes les autorisations (lunettes)",
                                     removeAPIResource: "Supprimer la ressource API"
+                                },
+                                validation: {
+                                    empty: "La liste des autorisations(lunettes) ne peut pas être vide. Sélectionnez au moins une autorisation(lunettes)."
                                 }
                             },
                             notes: {

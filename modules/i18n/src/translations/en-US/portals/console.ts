@@ -10413,6 +10413,9 @@ export const console: ConsoleNS = {
                                     noScopes: "No scopes available for the selected API resource",
                                     selectAllScopes: "Select all permissions(scopes)",
                                     removeAPIResource: "Remove API resource"
+                                },
+                                validation: {
+                                    empty: "Permissions(scopes) list cannot be empty. Select at least one permission(scope)."
                                 }
                             },
                             notes: {

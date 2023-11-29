@@ -22,7 +22,7 @@ import Autocomplete, {
 } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, HTMLAttributes, ReactElement, SyntheticEvent, useState } from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AutoCompleteRenderOption } from "./auto-complete-render-option";
 import { RenderChip } from "./render-chip";
@@ -45,6 +45,14 @@ interface PermissionsListPropsInterface extends  IdentifiableComponentInterface 
      * Callback to handle API resource removal.
      */
     onChangeScopes: (apiResource: APIResourceInterface, scopes: ScopeInterface[]) => void;
+    /**
+     * Whether the Autocomplete field has an error or not.
+     */
+    hasError?: boolean;
+    /**
+     * Error message for the Autocomplete field.
+     */
+    errorMessage?: string;
 }
 
 export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
@@ -55,12 +63,19 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
             initialSelectedPermissions,
             selectedPermissions,
             onChangeScopes,
+            hasError,
+            errorMessage,
             [ "data-componentid" ]: componentId
         } = props;
 
         const { t } = useTranslation();
 
         const [ activeOption, setActiveOption ] = useState<ScopeInterface>(undefined);
+        const [ hasErrorState, setHasErrorState ] = useState<boolean>(hasError);
+
+        useEffect(() => {
+            setHasErrorState(hasError);
+        }, [ hasError ]);
 
         /**
          * Handles the select scope action.
@@ -88,6 +103,8 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
                             data-componentid={ `${componentId}-textfield` }
                             placeholder= { t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
                                 "permissions.placeholder") }
+                            error={ hasErrorState }
+                            helperText={ hasErrorState && errorMessage }
                         />
                     ) }
                     onChange={ (event: SyntheticEvent, scopes: ScopeInterface[]) => handleScopeSelection(scopes) }
@@ -133,5 +150,6 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
  * Default props for the component.
  */
 PermissionsList.defaultProps = {
-    "data-componentid": "permissions-list"
+    "data-componentid": "permissions-list",
+    hasError: false
 };

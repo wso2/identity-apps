@@ -8461,6 +8461,9 @@ export const console: ConsoleNS = {
                                     noScopes: "තෝරාගත් API සම්පත සඳහා විෂය පදක් නොමැත",
                                     selectAllScopes: "සියලුම අවසර (විෂය පද) තෝරන්න",
                                     removeAPIResource: "API සම්පත ඉවත් කරන්න"
+                                },
+                                validation: {
+                                    empty: "අවසර(විෂය පද) ලැයිස්තුව හිස් විය නොහැක. අවම වශයෙන් එක් අවසරයක්වත්(විෂය පථය) තෝරන්න."
                                 }
                             },
                             notes: {

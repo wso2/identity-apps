@@ -5449,7 +5449,10 @@ export interface ConsoleNS {
                                     noScopes: string;
                                     selectAllScopes: string;
                                     removeAPIResource: string;
-                                }
+                                },
+                                validation: {
+                                    empty: string;
+                                };
                             };
                             notes: {
                                 applicationRoles: string;
