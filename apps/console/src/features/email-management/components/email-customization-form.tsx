@@ -210,7 +210,7 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                                     placeholder={ t("extensions:develop.emailTemplates.form.inputs" +
                                         ".footer.placeholder") }
                                     hint={ t("extensions:develop.emailTemplates.form.inputs.footer.hint") }
-                                    required={ true }
+                                    required={ false }
                                     value={ selectedEmailTemplate?.footer }
                                     maxLength={ 255 }
                                     minLength={ 1 }
