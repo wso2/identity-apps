@@ -22,7 +22,7 @@ import Autocomplete, {
 } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, HTMLAttributes, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AutoCompleteRenderOption } from "./auto-complete-render-option";
 import { RenderChip } from "./render-chip";
@@ -47,7 +47,7 @@ interface PermissionsListPropsInterface extends  IdentifiableComponentInterface 
     onChangeScopes: (apiResource: APIResourceInterface, scopes: ScopeInterface[]) => void;
 }
 
-export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> = 
+export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
     (props: PermissionsListPropsInterface): ReactElement => {
 
         const {
@@ -61,43 +61,12 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
         const { t } = useTranslation();
 
         const [ activeOption, setActiveOption ] = useState<ScopeInterface>(undefined);
-        const [ removedPermissions, setRemovedPermissions ] = useState<ScopeInterface[]>([]);
-
-        /**
-         * Set removed permissions.
-         */
-        useEffect(() => {
-            if (initialSelectedPermissions && selectedPermissions) {
-                setRemovedPermissions(initialSelectedPermissions?.filter((permission: ScopeInterface) => {
-                    return selectedPermissions?.find(
-                        (selectedPermission: ScopeInterface) =>
-                            selectedPermission.name === permission.name) === undefined;
-                }));
-            }
-        }, [ initialSelectedPermissions, selectedPermissions ]);
 
         /**
          * Handles the select scope action.
          */
         const handleScopeSelection = (scopes: ScopeInterface[]) => {
             onChangeScopes(apiResource, scopes);
-        };
-
-        /**
-         * Handle the restore permissions.
-         * 
-         * @param remainingPermissions - remaining permissions
-         */
-        const handleRestorePermissions = (remainingPermissions: ScopeInterface[]) => {
-            const removedRoles: ScopeInterface[] = removedPermissions.filter((permission: ScopeInterface) => 
-                !remainingPermissions?.some((remainingPermission: ScopeInterface) =>
-                    remainingPermission.name === permission.name)
-            );
-
-            handleScopeSelection([
-                ...selectedPermissions,
-                ...removedRoles
-            ]);
         };
 
         return (
@@ -108,8 +77,8 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
                     disablePortal
                     options={ apiResource?.scopes ? apiResource?.scopes : [] }
                     value={ selectedPermissions ? selectedPermissions : [] }
-                    isOptionEqualToValue={ 
-                        (option: ScopeInterface, value: ScopeInterface) => 
+                    isOptionEqualToValue={
+                        (option: ScopeInterface, value: ScopeInterface) =>
                             option.name === value.name
                     }
                     getOptionLabel={ (scope: ScopeInterface) => scope.displayName }
@@ -123,10 +92,10 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
                     ) }
                     onChange={ (event: SyntheticEvent, scopes: ScopeInterface[]) => handleScopeSelection(scopes) }
                     renderTags={ (
-                        value: ScopeInterface[], 
+                        value: ScopeInterface[],
                         getTagProps: AutocompleteRenderGetTagProps
                     ) => value.map((option: ScopeInterface, index: number) => (
-                        <RenderChip 
+                        <RenderChip
                             { ...getTagProps({ index }) }
                             key={ index }
                             primaryText={ option.displayName }
@@ -156,65 +125,6 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
                         />
                     ) }
                 />
-                {
-                    removedPermissions?.length > 0
-                        ? (
-                            <Autocomplete
-                                className="mt-3"
-                                multiple
-                                disableCloseOnSelect
-                                options={ removedPermissions }
-                                value={ removedPermissions }
-                                getOptionLabel={ 
-                                    (permission: ScopeInterface) => permission.name
-                                }
-                                onChange={ (
-                                    event: SyntheticEvent,
-                                    remainingPermissions: ScopeInterface[]
-                                ) => {
-                                    handleRestorePermissions(remainingPermissions);
-                                } }
-                                renderInput={ (params: AutocompleteRenderInputParams) => (
-                                    <TextField
-                                        { ...params }
-                                        label={ "Removed Permissions" }
-                                        placeholder= { t("console:manage.features.roles.addRoleWizard." +
-                                            "forms.rolePermission.permissions.placeholder") }
-                                    />
-                                ) }
-                                renderTags={ (
-                                    value: ScopeInterface[], 
-                                    getTagProps: AutocompleteRenderGetTagProps
-                                ) => value.map((option: ScopeInterface, index: number) => (
-                                    <RenderChip 
-                                        { ...getTagProps({ index }) }
-                                        key={ index }
-                                        primaryText={ option.displayName }
-                                        secondaryText={ option.name }
-                                        option={ option }
-                                        activeOption={ activeOption }
-                                        setActiveOption={ setActiveOption }
-                                        variant="outlined"
-                                        onDelete={ () => {
-                                            handleScopeSelection([
-                                                ...selectedPermissions,
-                                                option
-                                            ]);
-                                        } }
-                                    />
-                                ) ) }
-                                renderOption={ (
-                                    props: HTMLAttributes<HTMLLIElement>, 
-                                    option: ScopeInterface
-                                ) => (
-                                    <AutoCompleteRenderOption
-                                        displayName={ option.name }
-                                        renderOptionProps={ props }
-                                    />
-                                ) }
-                            />
-                        ) : null
-                } 
             </>
         );
     };
