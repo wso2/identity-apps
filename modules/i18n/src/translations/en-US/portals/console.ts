@@ -10687,6 +10687,11 @@ export const console: ConsoleNS = {
                                 "intended actions which were previously allowed. Please proceed with caution.",
                             header: "Are you sure?",
                             message: "This action is irreversible and will permanently delete the selected {{type}}"
+                        },
+                        deleteItemError: {
+                            content: "Remove the associations from following application before deleting:",
+                            header: "Unable to Delete",
+                            message: "There is an application using this role."
                         }
                     },
                     emptyPlaceholders: {
