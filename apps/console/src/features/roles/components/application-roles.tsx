@@ -346,14 +346,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                         </Grid.Column>
                         <Grid.Column width={ 2 }>
                             <FormGroup>
-                                <FormControlLabel
-                                    checked={ roleAudience === RoleAudienceTypes.ORGANIZATION }
-                                    control={ <Radio size="small"/> }
-                                    onChange={ () => promptAudienceSwitchWarning(RoleAudienceTypes.ORGANIZATION) }
-                                    label={ t("extensions:develop.applications.edit.sections.rolesV2.organization") }
-                                    data-componentid={ `${ componentId }-organization-audience-checkbox` }
-                                    disabled={ isReadOnly }
-                                />
                                 <Grid.Row>
                                     <FormControlLabel
                                         checked={ roleAudience === RoleAudienceTypes.APPLICATION }
@@ -379,6 +371,14 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                             )
                                     }
                                 </Grid.Row>
+                                <FormControlLabel
+                                    checked={ roleAudience === RoleAudienceTypes.ORGANIZATION }
+                                    control={ <Radio size="small"/> }
+                                    onChange={ () => promptAudienceSwitchWarning(RoleAudienceTypes.ORGANIZATION) }
+                                    label={ t("extensions:develop.applications.edit.sections.rolesV2.organization") }
+                                    data-componentid={ `${ componentId }-organization-audience-checkbox` }
+                                    disabled={ isReadOnly }
+                                />
                             </FormGroup>
                         </Grid.Column>
                     </Grid.Row>
