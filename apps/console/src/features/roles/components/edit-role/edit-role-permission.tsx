@@ -224,7 +224,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
 
     useEffect(() => {
         getAPIResourceById(initialAPIResourceIds);
-    }, [ initialAPIResourceIds ]);
+    }, [ initialAPIResourceIds, authorizedAPIListForApplication ]);
 
     /**
      * Assign all the API resources to the dropdown options if the after value is not null.
@@ -327,15 +327,17 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
 
                     response.map((apiResource: APIResourceInterface) => {
                         const selectedAPIResource: AuthorizedAPIListItemInterface =
-                            authorizedAPIListForApplication.find(
+                            authorizedAPIListForApplication?.find(
                                 (api: AuthorizedAPIListItemInterface) => api.id === apiResource.id
                             );
 
-                        selectedAPIResourcesList.push({
-                            id: selectedAPIResource.id,
-                            name: selectedAPIResource.displayName,
-                            scopes: selectedAPIResource.authorizedScopes
-                        });
+                        if (selectedAPIResource) {
+                            selectedAPIResourcesList.push({
+                                id: selectedAPIResource.id,
+                                name: selectedAPIResource.displayName,
+                                scopes: selectedAPIResource.authorizedScopes
+                            });
+                        }
                     });
                     setSelectedAPIResources(selectedAPIResourcesList);
                 }
