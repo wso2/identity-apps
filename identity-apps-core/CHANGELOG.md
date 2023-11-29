@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.69
+
+### Patch Changes
+
+- [#4840](https://github.com/wso2/identity-apps/pull/4840) [`4b6ea42524`](https://github.com/wso2/identity-apps/commit/4b6ea425240c2681bb19511c4718e2122b1706e3) Thanks [@dhaura](https://github.com/dhaura)! - Fix Internal Hostname not Honored Issue in dynamic_prompt.js
+
 ## 2.0.68
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/form
 
+## 2.0.15
+
+### Patch Changes
+
+- [#4836](https://github.com/wso2/identity-apps/pull/4836) [`3147be47e0`](https://github.com/wso2/identity-apps/commit/3147be47e04f398fc8eb78a613b95aa48b50bada) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Add the capability to specify roles in the invite parent org user flow.
+
 ## 2.0.14
 
 ### Patch Changes
