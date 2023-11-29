@@ -57,7 +57,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isUpdateButtonDisabled, setIsUpdateButtonDisabled ] = useState<boolean>(true);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
-    
+
     const {
         data: rolesList,
         isLoading: isRolesListLoading,
@@ -108,15 +108,16 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         }
         else if (values.roleName?.toString().trim().length >= RoleConstants.ROLE_NAME_MIN_LENGTH) {
             setIsUpdateButtonDisabled(false);
-            setRoleNameSearchQuery(`displayName eq ${values.roleName?.toString().trim()}`);
+            setRoleNameSearchQuery("displayName eq ".concat(
+                values.roleName?.toString().trim(), " and audience.value eq ").concat(role.audience.value));
 
             if (!isRolesListLoading || !isRolesListValidating) {
                 if (rolesList?.totalResults > 0 || rolesListError) {
                     errors.roleName = t("console:manage.features.roles.addRoleWizard.forms."
                         + "roleBasicDetails.roleName.validations.duplicate",{ type: "Role" });
                 }
-            } 
-            
+            }
+
             return errors;
         }
     };
@@ -161,8 +162,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     return (
         <>
             <EmphasizedSegment padded="very">
-                <Form 
-                    id={ FORM_ID } 
+                <Form
+                    id={ FORM_ID }
                     uncontrolledForm={ false }
                     validate={ validateForm }
                     noValidate={ true }
@@ -200,7 +201,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                 !isReadOnly && (
                     <DangerZoneGroup sectionHeader="Danger Zone">
                         <DangerZone
-                            actionTitle={ 
+                            actionTitle={
                                 t("console:manage.features.roles.edit.basics.dangerZone.actionTitle",
                                     { type: "Role" })
                             }
