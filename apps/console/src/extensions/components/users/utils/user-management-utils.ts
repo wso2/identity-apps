@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
+import { ProfileSchemaInterface } from "@wso2is/core/models";
 import { store } from "apps/console/src/features/core";
 import {
     UserManagementConstants
@@ -45,7 +45,7 @@ export class UserManagementUtils extends UserManagementUtilsExt {
      * @param user - User object.
      * @returns Sub header of the user list item.
      */
-    public static resolveUserListSubheader(user: UserBasicInterface | ProfileInfoInterface): string {
+    public static resolveUserListSubheader(user: UserBasicInterface): string {
         if (UserManagementUtils.isDisplayNameEnabled(store.getState()
             .profile.profileSchemas, user.displayName)) {
             return user.displayName;

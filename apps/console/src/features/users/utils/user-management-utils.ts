@@ -17,6 +17,7 @@
  */
 
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
+import { ProfileInfoInterface } from "@wso2is/core/models";
 import { administratorConfig } from "../../../extensions/configs/administrator";
 import { UserRoleInterface } from "../../core/models";
 import {
@@ -66,6 +67,26 @@ export class UserManagementUtils {
      */
     public static resolveMultipleInvitesDisplayName(mode: MultipleInviteMode): string {
         return MultipleInvitesDisplayNames[mode];
+    }
+
+    /**
+     * Resolves the sub header of the user list item.
+     *
+     * @param user - User object.
+     * @returns Sub header of the user list item.
+     */
+    public static resolveUserListSubheaderName(user: ProfileInfoInterface): string {
+        if (user?.name?.givenName && user?.name?.familyName) {
+            return user.name.givenName + " " + (user.name.familyName ? user.name.familyName : "");
+        }
+
+        if (user?.name?.givenName) {
+            return user.name.givenName;
+        }
+
+        if (user?.name?.familyName) {
+            return user.name.familyName;
+        }
     }
 }
 
