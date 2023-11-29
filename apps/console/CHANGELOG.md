@@ -1,5 +1,28 @@
 # @wso2is/console
 
+## 2.9.23
+
+### Patch Changes
+
+- [#4834](https://github.com/wso2/identity-apps/pull/4834) [`f96afb8982`](https://github.com/wso2/identity-apps/commit/f96afb8982b5cadcbbf94fdc87c857db14cdae98) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Release console
+
+* [#4824](https://github.com/wso2/identity-apps/pull/4824) [`61814ff51e`](https://github.com/wso2/identity-apps/commit/61814ff51ea2bd4d22251eb2a496d271216efc0b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update `sub organization` wordings to `organization`
+
+* Updated dependencies [[`61814ff51e`](https://github.com/wso2/identity-apps/commit/61814ff51ea2bd4d22251eb2a496d271216efc0b)]:
+  - @wso2is/i18n@2.0.59
+
+## 2.9.22
+
+### Patch Changes
+
+- [#4820](https://github.com/wso2/identity-apps/pull/4820) [`49d74dc2b0`](https://github.com/wso2/identity-apps/commit/49d74dc2b018f8bc8e65d15426098702707b4f02) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue in Multiple API permission selection during role creation under Application
+
+* [#4814](https://github.com/wso2/identity-apps/pull/4814) [`0f6fe99834`](https://github.com/wso2/identity-apps/commit/0f6fe99834d2ac0adccde16ae7e3995240652fbf) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix setup guide issue in connections
+
+- [#4406](https://github.com/wso2/identity-apps/pull/4406) [`4edb52d28c`](https://github.com/wso2/identity-apps/commit/4edb52d28c1507c12f273ed5163e9bec3b99848f) Thanks [@jcgarciaa](https://github.com/jcgarciaa)! - Add user management context. Keep last selected tab active upon refresh when editing users.
+
+* [#4402](https://github.com/wso2/identity-apps/pull/4402) [`a7eec7490e`](https://github.com/wso2/identity-apps/commit/a7eec7490e1f83709831647dec3e0b843f790708) Thanks [@jcgarciaa](https://github.com/jcgarciaa)! - Add group management context. Keep last selected tab active upon refresh when editing groups.
+
 ## 2.9.21
 
 ### Patch Changes
