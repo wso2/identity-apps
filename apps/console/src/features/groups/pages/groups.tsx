@@ -47,7 +47,7 @@ import { getUserStoreList } from "../../userstores/api";
 import { UserStorePostData } from "../../userstores/models/user-stores";
 import { deleteGroupById, useGroupList } from "../api";
 import { GroupList } from "../components";
-import { CreateGroupWizard } from "../components/wizard";
+import { CreateGroupWizardUpdated } from "../components/wizard/create-group-wizard-updated";
 import { GroupConstants } from "../constants";
 import { GroupsInterface } from "../models";
 
@@ -84,7 +84,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ userStoreOptions, setUserStoresList ] = useState<DropdownItemProps[]>([]);
-    const [ userStore, setUserStore ] = useState(null);
+    const [ userStore, setUserStore ] = useState(GroupConstants.PRIMARY_USER_STORE_OPTION_VALUE);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
     const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
@@ -393,7 +393,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             </ListLayout>
             {
                 showWizard && (
-                    <CreateGroupWizard
+                    <CreateGroupWizardUpdated
                         data-testid="group-mgt-create-group-wizard"
                         closeWizard={ () => setShowWizard(false) }
                         updateList={ () => mutate() }
