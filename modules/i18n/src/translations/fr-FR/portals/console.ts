@@ -8634,7 +8634,7 @@ export const console: ConsoleNS = {
                                 label: "Sélectionnez la ressource API",
                                 placeholder: "Sélectionnez une ressource API pour attribuer des autorisations (lunettes)",
                                 hint: {
-                                    empty: "There are no API resources authorized for the selected application. API Resources can be authorized through <1>here</1>."
+                                    empty: "Aucune ressource API n'est autorisée pour l'application sélectionnée. Les ressources de l'API peuvent être autorisées via <1>ici</1>."
                                 }
                             },
                             permissions: {
@@ -8929,9 +8929,9 @@ export const console: ConsoleNS = {
                                 "sélectionné"
                         },
                         deleteItemError: {
-                            content: "Remove the associations from following application before deleting:",
-                            header: "Unable to Delete",
-                            message: "There is an application using this role."
+                            content: "Supprimer les associations de la demande suivante avant de supprimer:",
+                            header: "Impossible de supprimer",
+                            message: "Il existe une application utilisant ce rôle."
                         }
                     },
                     emptyPlaceholders: {
