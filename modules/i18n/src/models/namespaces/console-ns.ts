@@ -5441,6 +5441,9 @@ export interface ConsoleNS {
                             apiResource: {
                                 label: string;
                                 placeholder: string;
+                                hint: {
+                                    empty: string;
+                                }
                             };
                             permissions: {
                                 label: string;

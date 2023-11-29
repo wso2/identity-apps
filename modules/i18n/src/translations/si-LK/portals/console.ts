@@ -8452,7 +8452,10 @@ export const console: ConsoleNS = {
                         rolePermission: {
                             apiResource: {
                                 label: "API සම්පත් තෝරන්න",
-                                placeholder: "අවසර ලබා දීම සඳහා API සම්පතක් තෝරන්න (විෂය පදක්කම්)"
+                                placeholder: "අවසර ලබා දීම සඳහා API සම්පතක් තෝරන්න (විෂය පදක්කම්)",
+                                hint: {
+                                    empty: "There are no API resources authorized for the selected application. API Resources can be authorized through <1>here</1>."
+                                }
                             },
                             permissions: {
                                 label: "තෝරාගත් API සම්පත් වලින් අවසර (විෂය පද) තෝරන්න",

@@ -10404,7 +10404,10 @@ export const console: ConsoleNS = {
                         rolePermission: {
                             apiResource: {
                                 label: "Select API Resource",
-                                placeholder: "Select an API resource to assign permissions(scopes)"
+                                placeholder: "Select an API resource to assign permissions(scopes)",
+                                hint: {
+                                    empty: "There are no API resources authorized for the selected application. API Resources can be authorized through <1>here</1>."
+                                }
                             },
                             permissions: {
                                 label: "Select permissions(scopes) from the selected API resources",

@@ -8632,7 +8632,10 @@ export const console: ConsoleNS = {
                         rolePermission: {
                             apiResource: {
                                 label: "Sélectionnez la ressource API",
-                                placeholder: "Sélectionnez une ressource API pour attribuer des autorisations (lunettes)"
+                                placeholder: "Sélectionnez une ressource API pour attribuer des autorisations (lunettes)",
+                                hint: {
+                                    empty: "There are no API resources authorized for the selected application. API Resources can be authorized through <1>here</1>."
+                                }
                             },
                             permissions: {
                                 label: "Sélectionnez autorisations (lunettes) dans les ressources API sélectionnées",

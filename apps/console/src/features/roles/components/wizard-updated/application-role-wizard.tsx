@@ -19,7 +19,7 @@
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
-import { EmphasizedSegment, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { EmphasizedSegment, Heading, Hint, Link, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, {
     FunctionComponent,
@@ -30,11 +30,11 @@ import React, {
     useRef,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Modal } from "semantic-ui-react";
-import { history } from "../../../../features/core";
+import { AppConstants, history } from "../../../../features/core";
 import { APIResourceInterface } from "../../../api-resources/models";
 import useSubscribedAPIResources from "../../../applications/api/use-subscribed-api-resources";
 import { AuthorizedAPIListItemInterface } from "../../../applications/models/api-authorization";
@@ -424,6 +424,29 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                         }
                         loading={ false }
                         onChange={ onAPIResourceSelected }
+                        hint={
+                            !isSubscribedAPIResourcesListLoading
+                            && apiResourcesListOptions?.length === 0
+                            && (
+                                <Hint>
+                                    <Trans
+                                        i18nKey={ "console:manage.features.roles.addRoleWizard.forms.rolePermission" +
+                                            ".apiResource.hint.empty" }
+                                    >
+                                        There are no API resources authorized for the selected application.
+                                        API Resources can be authorized through <Link
+                                            external={ false }
+                                            onClick={ () => {
+                                                history.push(
+                                                    `${ AppConstants.getPaths()
+                                                        .get("APPLICATION_EDIT").replace(":id", appId) }#tab=4`
+                                                );
+                                            } }
+                                        > here </Link>
+                                    </Trans>
+                                </Hint>
+                            )
+                        }
                     />
                 </Form>
                 { selectedAPIResources?.length > 0
