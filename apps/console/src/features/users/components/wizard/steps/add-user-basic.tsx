@@ -157,6 +157,15 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
     }, [ passwordOption, askPasswordOption ]);
 
     /**
+     * This sets the password option to create password if the email entered is not valid.
+     */
+    useEffect(() => {
+        if (!isEmailFilled || !isValidEmail) {
+            setPasswordOption(PasswordOptionTypes.CREATE_PASSWORD);
+        }
+    }, [ isEmailFilled, isValidEmail ]);
+
+    /**
      * This sets the username and password validation rules.
      */
     useEffect(() => {

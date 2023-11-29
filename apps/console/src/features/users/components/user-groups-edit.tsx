@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,10 +34,11 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import forEachRight from "lodash-es/forEachRight";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { ChangeEvent, FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     Button,
@@ -51,6 +52,7 @@ import {
 } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations, updateResources } from "../../core";
 import { getGroupList } from "../../groups/api";
+import { GroupsInterface, GroupsMemberInterface } from "../../groups/models";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../roles/constants";
 
 interface UserGroupsPropsInterface {
@@ -125,7 +127,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     }, [ user.groups && primaryGroups ]);
 
     useEffect(() => {
-        let domain = "Primary";
+        let domain: string = "Primary";
         const domainName: string[] = user?.userName?.split("/");
 
         if (domainName.length > 1) {
@@ -133,7 +135,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         }
         setPrimaryGroupsLoading(true);
         getGroupList(domain)
-            .then((response) => {
+            .then((response: AxiosResponse) => {
                 setPrimaryGroups(response.data.Resources);
             })
             .finally(() => {
@@ -142,11 +144,11 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     }, []);
 
     const mapUserGroups = () => {
-        const groupsMap = new Map<string, string> ();
+        const groupsMap: Map<string, string>  = new Map<string, string> ();
 
         if (user.groups && user.groups instanceof Array) {
-            forEachRight (user.groups, (group) => {
-                const groupName = group?.display?.split("/");
+            forEachRight (user.groups, (group: GroupsMemberInterface) => {
+                const groupName: string[] = group?.display?.split("/");
 
                 if (groupName[0] !== APPLICATION_DOMAIN && groupName[0] !== INTERNAL_DOMAIN) {
                     groupsMap.set(group.display, group.value);
@@ -174,8 +176,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
      * The following method handles the onChange event of the
      * checkbox field of an unassigned item.
      */
-    const handleUnassignedItemCheckboxChange = (group) => {
-        const checkedGroups = [ ...selectedGroupsList ];
+    const handleUnassignedItemCheckboxChange = (group: GroupsInterface) => {
+        const checkedGroups: GroupsInterface[] = [ ...selectedGroupsList ];
 
         if (checkedGroups?.includes(group)) {
             checkedGroups.splice(checkedGroups.indexOf(group), 1);
@@ -188,9 +190,10 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     };
 
     const setInitialLists = () => {
-        const groupListCopy = primaryGroups ? [ ...primaryGroups ] : [];
-        const addedGroups = [];
-        forEachRight(groupListCopy, (group) => {
+        const groupListCopy: GroupsInterface[] = primaryGroups ? [ ...primaryGroups ] : [];
+        const addedGroups: GroupsInterface[] = [];
+
+        forEachRight(groupListCopy, (group: GroupsInterface) => {
             if (primaryGroupsList?.has(group.displayName)) {
                 addedGroups.push(group);
             }
@@ -212,14 +215,14 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         setAddNewRoleModalView(false);
     };
 
-    const handleUnselectedListSearch = (e, { value }) => {
-        let isMatch = false;
-        const filteredGroupList = [];
+    const handleUnselectedListSearch = (e: FormEvent<HTMLInputElement>, { value }: { value: string}) => {
+        let isMatch: boolean = false;
+        const filteredGroupList: GroupsInterface[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            groupList && groupList.map((role) => {
+            groupList && groupList.map((role: GroupsInterface) => {
                 isMatch = re.test(role.displayName);
                 if (isMatch) {
                     filteredGroupList.push(role);
@@ -238,52 +241,52 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
      * @param groups - Assigned groups
      */
     const updateUserGroup = (user: any, groups: any) => {
-        const groupIds = [];
+        const groupIds: string[] = [];
 
-        groups.map((group) => {
+        groups.map((group: GroupsInterface) => {
             groupIds.push(group.id);
         });
 
         const bulkData: any = {
             Operations: [],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ]
         };
 
-        let removeOperation = {
+        let removeOperation: AxiosRequestConfig = {
             data: {
-                "Operations": [{
+                "Operations": [ {
                     "op": "remove",
                     "path": "members[display eq" + " " + user.userName + "]"
-                }]
+                } ]
             },
             method: "PATCH"
         };
 
-        let addOperation = {
+        let addOperation: AxiosRequestConfig = {
             data: {
-                "Operations": [{
+                "Operations": [ {
                     "op": "add",
                     "value": {
-                        "members": [{
+                        "members": [ {
                             "display": user.userName,
                             "value": user.id
-                        }]
+                        } ]
                     }
-                }]
+                } ]
             },
             method: "PATCH"
         };
 
-        const removeOperations = [];
-        const addOperations = [];
-        let removedIds = [];
+        const removeOperations: AxiosRequestConfig[] = [];
+        const addOperations: AxiosRequestConfig[] = [];
+        let removedIds: string[] = [];
 
         if (primaryGroupsList) {
-            removedIds = [...primaryGroupsList.values()];
+            removedIds = [ ...primaryGroupsList.values() ];
         }
 
         if (groupIds?.length > 0) {
-            groupIds.map((groupId) => {
+            groupIds.map((groupId: string) => {
                 if (removedIds?.includes(groupId)) {
                     removedIds.splice(removedIds.indexOf(groupId), 1);
                 }
@@ -291,7 +294,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         }
 
         if (removedIds && removedIds.length > 0) {
-            removedIds.map((id) => {
+            removedIds.map((id: string) => {
                 removeOperation = {
                     ...removeOperation,
                     ...{ path: "/Groups/" + id }
@@ -299,14 +302,14 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                 removeOperations.push(removeOperation);
             });
 
-            removeOperations.map((operation) => {
+            removeOperations.map((operation: AxiosRequestConfig) => {
                 bulkData.Operations.push(operation);
             });
         }
 
         if (groupIds && groupIds?.length > 0) {
-            groupIds.map((id) => {
-                if (!existingGroupList.find(existingGroup => existingGroup.id === id)) {
+            groupIds.map((id: string) => {
+                if (!existingGroupList.find((existingGroup: GroupsInterface) => existingGroup.id === id)) {
                     addOperation = {
                         ...addOperation,
                         ...{ path: "/Groups/" + id }
@@ -315,7 +318,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                 }
             });
 
-            addOperations.map((operation) => {
+            addOperations.map((operation: AxiosRequestConfig) => {
                 bulkData.Operations.push(operation);
             });
         }
@@ -338,7 +341,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                 handleCloseAddNewGroupModal();
                 handleUserUpdate(user.id);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error?.response?.status === 404) {
                     return;
                 }
@@ -374,7 +377,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     };
 
     const resolveListItemLabel = (displayName: string): ItemTypeLabelPropsInterface => {
-        const userGroup = displayName?.split("/");
+        const userGroup: string[]  = displayName?.split("/");
 
         let item: ItemTypeLabelPropsInterface = {
             labelColor: "olive",
@@ -395,7 +398,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     };
 
     const resolveListItem = (displayName: string): string => {
-        const userGroup = displayName?.split("/");
+        const userGroup: string[]  = displayName?.split("/");
 
         if (userGroup?.length !== 1) {
             displayName = userGroup[1];
@@ -442,7 +445,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                 + "emptyPlaceholders.default") }
                         >
                             {
-                                groupList?.map((group, index)=> {
+                                groupList?.map((group: GroupsInterface, index: number)=> {
                                     return (
                                         <TransferListItem
                                             handleItemChange={
@@ -493,15 +496,16 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         </Modal>
     );
 
-    const handleAssignedGroupListSearch = (e, { value }) => {
-        let isMatch = false;
-        const filteredGroupList = [];
+    const handleAssignedGroupListSearch = (e: ChangeEvent<HTMLInputElement>, { value }: { value: string }) => {
+        let isMatch: boolean = false;
+        const filteredGroupList: RolesMemberInterface[] = [];
 
         if (!isEmpty(value)) {
-            const re = new RegExp(escapeRegExp(value), "i");
+            const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-            assignedGroups && assignedGroups?.map((group) => {
-                const groupName = group?.display?.split("/");
+            assignedGroups && assignedGroups?.map((group: RolesMemberInterface) => {
+                const groupName: string[] = group?.display?.split("/");
+
                 if (groupName.length === 1) {
                     isMatch = re.test(group.display);
                     if (isMatch) {
@@ -519,8 +523,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         return (
             <Table.Body>
                 {
-                    assignedGroups?.map((group, index: number) => {
-                        const userGroup = group?.display?.split("/");
+                    assignedGroups?.map((group: RolesMemberInterface, index: number) => {
+                        const userGroup: string[] = group?.display?.split("/");
 
                         if (userGroup[0] !== APPLICATION_DOMAIN &&
                             userGroup[0] !== INTERNAL_DOMAIN) {
@@ -529,12 +533,12 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                     <Table.Cell>
                                         {
                                             userGroup?.length === 1
-                                                ? <Label color="olive">
+                                                ? (<Label color="olive">
                                                     { PRIMARY_DOMAIN }
-                                                </Label>
-                                                : <Label color="olive">
+                                                </Label>)
+                                                : (<Label color="olive">
                                                     { userGroup[0] }
-                                                </Label>
+                                                </Label>)
                                         }
                                     </Table.Cell>
                                     <Table.Cell>
@@ -554,7 +558,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     };
 
     return (
-        <>
+        <EmphasizedSegment padded="very">
             <Heading as="h4">
                 { t("console:manage.features.user.updateUser.groups.editGroups.heading") }
             </Heading>
@@ -564,7 +568,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             <Divider hidden/>
             <Grid>
                 <Grid.Row>
-                    <Grid.Column computer={ 8 }>
+                    <Grid.Column computer={ 10 } tablet={ 16 } mobile={ 16 }>
                         {
                             primaryGroupsList?.size > 0 ? (
                                 <EmphasizedSegment
@@ -652,6 +656,6 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                 </Grid.Row>
             </Grid>
             { addNewGroupModal() }
-        </>
+        </EmphasizedSegment>
     );
 };

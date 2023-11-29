@@ -11880,7 +11880,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Search by Email"
+                    placeholder: "Search by Username"
                 },
                 all: {
                     heading: "Users",

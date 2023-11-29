@@ -679,7 +679,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     ".placeholder")
             }
             placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
-            defaultSearchAttribute="emails"
+            defaultSearchAttribute="userName"
             defaultSearchOperator="co"
             triggerClearQuery={ triggerClearQuery }
         />
@@ -770,6 +770,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     ];
 
     const handleDropdownItemChange = (value: string): void => {
+        handleAddNewUserWizardClick();
         if (value === UserAccountTypesMain.EXTERNAL) {
             eventPublisher.publish("manage-users-click-create-new", {
                 type: "user"
@@ -777,7 +778,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             setShowWizard(true);
             setUserType(UserAccountTypesMain.EXTERNAL);
         } else if (value === UserAddOptionTypes.BULK_IMPORT) {
-            handleAddNewUserWizardClick();
             setShowBulkImportWizard(true);
         }
     };
