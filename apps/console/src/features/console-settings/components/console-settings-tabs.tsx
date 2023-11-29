@@ -141,7 +141,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
             pane: <ConsoleLoginFlow />,
             value: 4
         }
-    ], []);
+    ].filter((tab: ConsoleSettingsTabInterface) => !tab.hidden), []);
 
     const [ activeTab, setActiveTab ] = useState<number>(consoleTabs[0].value);
 
