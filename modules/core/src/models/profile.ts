@@ -51,10 +51,6 @@ export interface NameInterface {
  */
 export interface ProfileInfoInterface {
     /**
-     * Users ID
-     */
-    id?: string;
-    /**
      * Emails ex.work, mobile
      */
      active?: boolean;

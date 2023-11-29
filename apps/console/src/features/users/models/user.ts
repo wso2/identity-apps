@@ -45,7 +45,7 @@ export interface UserBasicInterface {
     /**
      * ID of the user.
      */
-    id?: string;
+    id: string;
     /**
      * Username of the user.
      */
