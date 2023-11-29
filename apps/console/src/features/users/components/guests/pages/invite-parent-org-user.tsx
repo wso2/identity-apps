@@ -101,7 +101,6 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
             });
     }, [ allowedRoles ]);
 
-
     /**
      * Handles the error scenario when sending an invitation to a user in a parent organization to join the current
      * organization.
