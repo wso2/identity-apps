@@ -11893,8 +11893,8 @@ export const console: ConsoleNS = {
                     addMultipleUser: {
                         header: "Before you proceed",
                         message: "Invite users option is disabled",
-                        content: "Invite users option should be enabled to add multiple users. Please enable it and " +
-                            "try again.",
+                        content: "Invite User to Set Password should be enabled to add multiple users. " +
+                            "Please enable email verification from Login & Registration settings.",
                         assertionHint: "Please confirm your action."
                     }
                 },
