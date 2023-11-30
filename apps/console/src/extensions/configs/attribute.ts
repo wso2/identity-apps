@@ -57,7 +57,7 @@ export const attributeConfig: AttributeConfig = {
 
             return claims;
         },
-        showDangerZone: false,
+        showDangerZone: true,
         showSCIMCore1: false
     },
     attributes: {
