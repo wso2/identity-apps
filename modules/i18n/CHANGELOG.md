@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.64
+
+### Patch Changes
+
+- [#4878](https://github.com/wso2/identity-apps/pull/4878) [`c7f7826c7b`](https://github.com/wso2/identity-apps/commit/c7f7826c7b613e6da9ad87654a482562d3c3c248) Thanks [@Achintha444](https://github.com/Achintha444)! - (improvement) revamp the UI of the Application native authentication
+
 ## 2.0.63
 
 ### Patch Changes

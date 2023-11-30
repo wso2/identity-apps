@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.9.30
+
+### Patch Changes
+
+- [#4863](https://github.com/wso2/identity-apps/pull/4863) [`5836726baf`](https://github.com/wso2/identity-apps/commit/5836726baf6da6074a0fa3988f54a4cf523e121d) Thanks [@brionmario](https://github.com/brionmario)! - Fix sub org refresh issues
+
+* [#4870](https://github.com/wso2/identity-apps/pull/4870) [`6e0950b93e`](https://github.com/wso2/identity-apps/commit/6e0950b93e79627e878b86b3149c8a6e5f50d3ad) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Make OIDC attributes editable
+
+- [#4878](https://github.com/wso2/identity-apps/pull/4878) [`c7f7826c7b`](https://github.com/wso2/identity-apps/commit/c7f7826c7b613e6da9ad87654a482562d3c3c248) Thanks [@Achintha444](https://github.com/Achintha444)! - (improvement) revamp the UI of the Application native authentication
+
+- Updated dependencies [[`c7f7826c7b`](https://github.com/wso2/identity-apps/commit/c7f7826c7b613e6da9ad87654a482562d3c3c248)]:
+  - @wso2is/i18n@2.0.64
+
 ## 2.9.29
 
 ### Patch Changes
