@@ -38,9 +38,9 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AutoCompleteRenderOption } from "./user-common-components/auto-complete-render-option";
-import { RenderChip } from "./user-common-components/render-chip";
 import { AppState } from "../../core";
 import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
+import { RenderRoleChip } from "../../roles/components/common-role-components/render-chip";
 import { APPLICATION_DOMAIN, DOMAIN_SEPARATOR, INTERNAL_DOMAIN } from "../../roles/constants";
 
 interface UserRoleEditPropsInterface extends IdentifiableComponentInterface {
@@ -163,10 +163,12 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
                                 value: RolesMemberInterface[], 
                                 getTagProps: AutocompleteRenderGetTagProps
                             ) => value.map((option: RolesMemberInterface, index: number) => (
-                                <RenderChip 
+                                <RenderRoleChip
                                     { ...getTagProps({ index }) }
                                     key={ index }
-                                    primaryText={ option.display }
+                                    displayName={ option.display }
+                                    audienceType={ option.audienceType }
+                                    audienceDisplay={ option.audienceDisplay }
                                     option={ option }
                                     activeOption={ activeOption }
                                     setActiveOption={ setActiveOption }
