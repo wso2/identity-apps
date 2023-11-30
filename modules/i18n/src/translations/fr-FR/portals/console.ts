@@ -706,6 +706,9 @@ export const console: ConsoleNS = {
         loginFlow: {
             tabLabel: "Flux de connexion"
         },
+        protocol: {
+            tabLabel: "Protocole"
+        },
         roles: {
             tabLabel: "Les rôles",
             permissionLevels: {

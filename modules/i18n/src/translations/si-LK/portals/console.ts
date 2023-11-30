@@ -714,6 +714,9 @@ export const console: ConsoleNS = {
         loginFlow: {
             tabLabel: "පිවිසුම් ප්රවාහය"
         },
+        protocol: {
+            tabLabel: "ප්රොටෝකෝලය"
+        },
         roles: {
             tabLabel: "භූමිකාවන්",
             permissionLevels: {

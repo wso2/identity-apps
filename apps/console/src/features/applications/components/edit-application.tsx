@@ -661,6 +661,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 template={ template }
                 readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
                     "APPLICATION_EDIT_ACCESS_CONFIG", application) }
+                isDefaultApplication={ application?.name === ApplicationManagementConstants.MY_ACCOUNT_APP_NAME }
                 data-componentid={ `${ componentId }-access-settings` }
             />
         </ResourceTab.Pane>
