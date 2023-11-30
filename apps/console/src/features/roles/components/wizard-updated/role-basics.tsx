@@ -276,7 +276,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                 if (!isRolesListLoading || !isRolesListValidating) {
                     if (rolesList?.totalResults > 0) {
                         errors.roleName = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
-                            "roleName.validations.duplicate", { type: "Role" });
+                            "roleName.validations.duplicateInAudience");
                     }
                 }
             }

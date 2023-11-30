@@ -10353,6 +10353,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter {{type}} name",
                                 validations: {
                                     duplicate: "A {{type}} already exists with the given {{type}} name.",
+                                    duplicateInAudience: "A role with this name already exists in the selected audience.",
                                     empty: "{{type}} Name is required to proceed.",
                                     invalid: "A {{type}} name can only contain alphanumeric characters, -, and _. "
                                         + "And must be of length between 3 to 30 characters."

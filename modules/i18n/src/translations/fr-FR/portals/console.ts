@@ -8579,6 +8579,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Saisir un nom de {{type}}",
                                 validations: {
                                     duplicate: "Un {{type}} avec ce nom existe déjà.",
+                                    duplicateInAudience: "",
                                     empty: "Le nom de {{type}} est obligatoire",
                                     invalid: "Un nom {{type}} ne peut contenir que des caractères " +
                                         "alphanumériques, - et _. Et doit avoir une longueur comprise entre 3 " +
