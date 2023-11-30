@@ -92,13 +92,14 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             open={ confirmDelete }
             assertion={ dialect.dialectURI }
             assertionHint={ (
+                /**
+                 * TODO: Trans component with strong tags doesn't seem to
+                 * work here properly, hence removed for now.
+                 * 
+                 * Need to find the root cause and fix this.
+                 */
                 <p>
-                    <Trans
-                        i18nKey="console:manage.features.claims.dialects.confirmations.hint"
-                        i18nOptions={ { confirm: dialect.dialectURI } }
-                    >
-                        Please type <strong>{ dialect.dialectURI }</strong> to confirm.
-                    </Trans>
+                    Please type <strong>{ dialect.dialectURI }</strong> to confirm.
                 </p>
             ) }
             assertionType="input"
@@ -120,7 +121,9 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 { t("console:manage.features.claims.dialects.confirmations.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
-                { t("console:manage.features.claims.dialects.confirmations.content") }
+                { t("console:manage.features.claims.dialects.confirmations.content", {
+                    type: resolveType(attributeType)
+                }) }
             </ConfirmationModal.Content>
         </ConfirmationModal>
     );

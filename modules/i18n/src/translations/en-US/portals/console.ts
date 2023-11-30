@@ -7564,7 +7564,7 @@ export const console: ConsoleNS = {
                     confirmations: {
                         action: "Confirm",
                         content: "If you delete this attribute mapping, all the associated {{type}} attributes will "
-                            + "also be deleted.Please proceed with caution.",
+                            + "also be deleted. Please proceed with caution.",
                         header: "Are you sure?",
                         hint: "Please type <1>{{confirm}}</1> to confirm.",
                         message: "This action is irreversible and will permanently delete the selected attribute " +
