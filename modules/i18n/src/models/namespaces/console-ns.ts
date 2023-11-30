@@ -5428,7 +5428,17 @@ export interface ConsoleNS {
                                     };
                                 };
                             };
-                            roleName: FormAttributes;
+                            roleName: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    duplicate: string;
+                                    duplicateInAudience: string;
+                                    empty: string;
+                                    invalid: string;
+                                }
+                            };
                             roleAudience: FormAttributes;
                             assignedApplication: FormAttributes;
                             notes: {
