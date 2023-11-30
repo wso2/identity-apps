@@ -22,7 +22,7 @@ import Autocomplete, {
 } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, HTMLAttributes, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AutoCompleteRenderOption } from "./auto-complete-render-option";
 import { RenderChip } from "./render-chip";
