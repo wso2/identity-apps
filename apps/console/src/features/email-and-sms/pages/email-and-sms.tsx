@@ -16,10 +16,7 @@
  * under the License.
  */
 
-import {
-    EnvelopeIcon
-} from "@oxygen-ui/react-icons";
-import Avatar from "@oxygen-ui/react/Avatar";
+import { EnvelopeIcon } from "@oxygen-ui/react-icons";
 import Grid from "@oxygen-ui/react/Grid";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
