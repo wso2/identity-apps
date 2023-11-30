@@ -131,7 +131,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
 
         // if apiBasedAuthentication is disabled, then disable clientAttestation as well.
         const enableClientAttestation: boolean = values.enableAPIBasedAuthentication
-            ? !!values.enableClientAttestation
+            ? values.enableClientAttestation
             : false;
 
         const data:any = {
