@@ -186,13 +186,11 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                                             "quickStart.steps.configureParameters.content.parameters." +
                                             "progressiveEnrollment.note" }
                                         >
-                                            If Passkey is set as a first factor, the following
-                                            <strong> adaptive script</strong> should be added under
-                                            the <strong>Sign-In-Method</strong> tab of the application.
-                                            This script is added automatically with the template-based
-                                            Passkey setup and is used to verify the user&apos;s identity
-                                            before enrolling passkeys. However, if you&apos;re configuring
-                                            Passkey without a template, remember to add the script manually.
+                                            When the Passkey is set as a <strong>first factor</strong> option,
+                                            users need to add an <strong>adaptive script</strong> to verify the
+                                            user&apos;s identity prior to passkey enrollment. To include the script,
+                                            users can use the <strong>Passkeys Progressive Enrollment</strong> template
+                                            available in the <strong>Sign-In-Method</strong> tab of the application.
                                         </Trans>
                                     </Alert>
                                 </Grid.Column>
