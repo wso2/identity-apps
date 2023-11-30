@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.2.45
+
+### Patch Changes
+
+- [#4856](https://github.com/wso2/identity-apps/pull/4856) [`442bac7b10`](https://github.com/wso2/identity-apps/commit/442bac7b10dd1dac14fcd3459d2d9ead5fb00471) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve UX in Application Roles assignment
+
+- Updated dependencies [[`442bac7b10`](https://github.com/wso2/identity-apps/commit/442bac7b10dd1dac14fcd3459d2d9ead5fb00471), [`d7615d4be1`](https://github.com/wso2/identity-apps/commit/d7615d4be17d618d954bd1277d5be21b38bad927)]:
+  - @wso2is/i18n@2.0.62
+
 ## 2.2.44
 
 ### Patch Changes
