@@ -245,7 +245,6 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
          */
         createGroup(groupData).then((response: AxiosResponse) => {
             if (response.status === 201) {
-
                 const createdGroup: any = response.data;
                 const rolesList: string[] = [];
 
@@ -269,59 +268,56 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                 };
 
                 if (rolesList?.length > 0) {
-                    for (const roleId of rolesList) {
-                        updateRole(roleId, roleData)
-                            .catch((error: AxiosError) => {
-                                if (!error.response || error.response.status === 401) {
-                                    setAlert({
-                                        description: t("console:manage.features.groups.notifications." +
-                                            "createPermission." +
-                                            "error.description"),
-                                        level: AlertLevels.ERROR,
-                                        message: t("console:manage.features.groups.notifications.createPermission." +
-                                            "error.message")
-                                    });
-                                } else if (error.response && error.response.data.detail) {
-                                    setAlert({
-                                        description: t("console:manage.features.groups.notifications." +
-                                            "createPermission." +
-                                            "error.description",
-                                        { description: error.response.data.detail }),
-                                        level: AlertLevels.ERROR,
-                                        message: t("console:manage.features.groups.notifications.createPermission." +
-                                            "error.message")
-                                    });
-                                } else {
-                                    setAlert({
-                                        description: t("console:manage.features.groups.notifications." +
-                                            "createPermission." +
-                                            "genericError.description"),
-                                        level: AlertLevels.ERROR,
-                                        message: t("console:manage.features.groups.notifications.createPermission." +
-                                            "genericError." +
-                                            "message")
-                                    });
-                                }
+                    Promise.all(rolesList.map((roleId: string) => {
+                        return updateRole(roleId, roleData);
+                    })).then(() => {
+                        dispatch(
+                            addAlert({
+                                description: t("console:manage.features.groups.notifications.createGroup.success." +
+                                    "description"),
+                                level: AlertLevels.SUCCESS,
+                                message: t("console:manage.features.groups.notifications.createGroup.success." +
+                                    "message")
+                            })
+                        );
+                        closeWizard();
+                        history.push(AppConstants.getPaths().get("GROUP_EDIT").replace(":id", response.data.id));
+                    }).catch((error: AxiosError) => {
+                        if (!error.response || error.response.status === 401) {
+                            setAlert({
+                                description: t("console:manage.features.groups.notifications." +
+                                    "createPermission." +
+                                    "error.description"),
+                                level: AlertLevels.ERROR,
+                                message: t("console:manage.features.groups.notifications.createPermission." +
+                                    "error.message")
                             });
-                    }
+                        } else if (error.response && error.response.data.detail) {
+                            setAlert({
+                                description: t("console:manage.features.groups.notifications." +
+                                    "createPermission." +
+                                    "error.description",
+                                { description: error.response.data.detail }),
+                                level: AlertLevels.ERROR,
+                                message: t("console:manage.features.groups.notifications.createPermission." +
+                                    "error.message")
+                            });
+                        } else {
+                            setAlert({
+                                description: t("console:manage.features.groups.notifications." +
+                                    "createPermission." +
+                                    "genericError.description"),
+                                level: AlertLevels.ERROR,
+                                message: t("console:manage.features.groups.notifications.createPermission." +
+                                    "genericError." +
+                                    "message")
+                            });
+                        }
+                    });
                 }
-
-                dispatch(
-                    addAlert({
-                        description: t("console:manage.features.groups.notifications.createGroup.success." +
-                            "description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("console:manage.features.groups.notifications.createGroup.success." +
-                            "message")
-                    })
-                );
             }
-
-            closeWizard();
-            history.push(AppConstants.getPaths().get("GROUP_EDIT").replace(":id", response.data.id));
         }).catch((error: AxiosError)  => {
             if (!error.response || error.response.status === 401) {
-                closeWizard();
                 dispatch(
                     addAlert({
                         description: t("console:manage.features.groups.notifications.createGroup.error.description"),
@@ -330,7 +326,6 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                     })
                 );
             } else if (error.response && error.response.data.detail) {
-                closeWizard();
                 dispatch(
                     addAlert({
                         description: t("console:manage.features.groups.notifications.createGroup.error.description",
@@ -340,7 +335,6 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                     })
                 );
             } else {
-                closeWizard();
                 dispatch(addAlert({
                     description: t("console:manage.features.groups.notifications.createGroup.genericError.description"),
                     level: AlertLevels.ERROR,
@@ -348,6 +342,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                 }));
             }
         }).finally(() => {
+            closeWizard();
             setIsSubmitting(false);
         });
     };

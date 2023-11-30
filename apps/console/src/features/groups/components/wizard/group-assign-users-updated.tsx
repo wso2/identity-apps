@@ -17,6 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FormValue } from "@wso2is/forms";
 import {
     ContentLoader,
     Heading,
@@ -97,7 +98,6 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
         ]));
     }, []);
 
-
     useEffect(() => {
         if (isSelectAllAssignedUsers) {
             setCheckedAssignedListItems(usersList);
@@ -121,9 +121,7 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
     }, [ initialValues ]);
 
     const getList = (limit: number, offset: number, filter: string, attribute: string, userStore: string) => {
-
         setIsUsersFetchRequestLoading(true);
-
         getUsersList(limit, offset, filter, null, userStore)
             .then((response: UserListInterface) => {
                 // Exclude JIT users.
@@ -131,7 +129,6 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
                     (user: UserBasicInterface) => !user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId);
 
                 if (responseUsers) {
-
                     responseUsers.sort((userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>
                         userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                     );
@@ -192,7 +189,7 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
         if (!isEmpty(query)) {
             const regExp: RegExp = new RegExp(escapeRegExp(query), "i");
 
-            list && list.map((user: UserBasicInterface) => {
+            list?.map((user: UserBasicInterface) => {
                 isMatch = regExp.test(user.userName) || (user.name && regExp.test(user.name.givenName))
                     || (user.name && regExp.test(user.name.familyName));
 
@@ -239,7 +236,7 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
                 initialValues={ initialValues?.basic }
                 userStore={ selectedUserStore }
                 setUserStore={ setSelectedUserStore }
-                onSubmit={ (values: any) => {
+                onSubmit={ (values: Map<string, FormValue> ) => {
                     onSubmit({
                         basic: values,
                         users: checkedAssignedListItems
