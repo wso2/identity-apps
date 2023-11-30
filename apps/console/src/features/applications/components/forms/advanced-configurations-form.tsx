@@ -201,13 +201,15 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
         if (!values.androidPackageName?.toString().trim()
             && values.androidAttestationServiceCredentials?.toString().trim()) {
 
-            errors.androidPackageName =
-                "Android application package name is required to enable client attestation for Android";
+            errors.androidPackageName = t("console:develop.features.applications.forms.advancedConfig." +
+                "sections.applicationNativeAuthentication.fields." +
+                "android.fields.androidPackageName.validations.empty");
         } else if (values.androidPackageName?.toString().trim()
             && !values.androidAttestationServiceCredentials?.toString().trim()) {
 
-            errors.androidAttestationServiceCredentials =
-                "Google service account credentials are required to enable client attestation for Android";
+            errors.androidAttestationServiceCredentials = t("console:develop.features.applications.forms." +
+                "advancedConfig.sections.applicationNativeAuthentication.fields." +
+                "android.fields.androidAttestationServiceCredentials.validations.empty");
         }
 
         return errors;
