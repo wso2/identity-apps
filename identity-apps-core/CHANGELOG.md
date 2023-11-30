@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.74
+
+### Patch Changes
+
+- [#4826](https://github.com/wso2/identity-apps/pull/4826) [`ad330b10d1`](https://github.com/wso2/identity-apps/commit/ad330b10d14e922f586f4c0cab86e7e712efef9e) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - encode locale url parameter before processing due to security concerns.
+
 ## 2.0.73
 
 ### Patch Changes
