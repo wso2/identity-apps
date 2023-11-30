@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.63
+
+### Patch Changes
+
+- [#4838](https://github.com/wso2/identity-apps/pull/4838) [`88e753d8de`](https://github.com/wso2/identity-apps/commit/88e753d8dedeca61d3c1dde98d56bd95af990c54) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Update the message when multiple user addition feature is disabled
+
 ## 2.0.62
 
 ### Patch Changes

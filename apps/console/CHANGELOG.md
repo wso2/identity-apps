@@ -1,5 +1,22 @@
 # @wso2is/console
 
+## 2.9.29
+
+### Patch Changes
+
+- [#4859](https://github.com/wso2/identity-apps/pull/4859) [`997c8bd727`](https://github.com/wso2/identity-apps/commit/997c8bd727ecf35055eb8c561ca7c08d0c5a583b) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Use unified group creation wizard
+
+* [#4844](https://github.com/wso2/identity-apps/pull/4844) [`7ac506f731`](https://github.com/wso2/identity-apps/commit/7ac506f731c9434b530a22f147603107f99070cf) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Fix issues in role name uniqueness checker in role name update
+
+- [#4838](https://github.com/wso2/identity-apps/pull/4838) [`88e753d8de`](https://github.com/wso2/identity-apps/commit/88e753d8dedeca61d3c1dde98d56bd95af990c54) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Update the message when multiple user addition feature is disabled
+
+* [#4871](https://github.com/wso2/identity-apps/pull/4871) [`c70511360f`](https://github.com/wso2/identity-apps/commit/c70511360fcd04ffc10c30811714ba6f6dce16bd) Thanks [@Rashmini](https://github.com/Rashmini)! - Fix UI issue in suborganization users page
+
+- [#4876](https://github.com/wso2/identity-apps/pull/4876) [`c9b7ef9815`](https://github.com/wso2/identity-apps/commit/c9b7ef9815221d7d1e42c0ac5c697c740a4afee8) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix role update being invoked twice
+
+- Updated dependencies [[`88e753d8de`](https://github.com/wso2/identity-apps/commit/88e753d8dedeca61d3c1dde98d56bd95af990c54)]:
+  - @wso2is/i18n@2.0.63
+
 ## 2.9.28
 
 ### Patch Changes
