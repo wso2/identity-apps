@@ -32,16 +32,16 @@
         "enableOIDCSessionManagement": false
     },
     "session": {
-        "userIdleWarningTimeOut": 1740,
-        "sessionRefreshTimeOut": 28800,
-        "userIdleTimeOut": 1800,
-        "checkSessionInterval": 5
+        "userIdleWarningTimeOut": 580.0,
+        "sessionRefreshTimeOut": 300.0,
+        "userIdleTimeOut": 600.0,
+        "checkSessionInterval": 3.0
     },
     "legacyAuthzRuntime": false,
     "ui": {
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
-        "appTitle": "IS Account",
+        "appTitle": "My Account | WSO2 Identity Server",
         "appName": "My Account",
         "appLogoPath": "/assets/images/branding/logo.svg",
         "appWhiteLogoPath": "/assets/images/branding/logo-white.svg",
@@ -85,8 +85,7 @@
             },
             "personalInfo": {
                 "disabledFeatures": [
-                    "profileInfo.mobileVerification",
-                    "profileInfo.linkedAccounts"
+                    "profileInfo.mobileVerification"
                 ],
                 "enabled": true,
                 "scopes": {
@@ -97,7 +96,7 @@
                 }
             },
             "security": {
-                "disabledFeatures": ["security.mfa.sms", "security.loginVerifyData.typingDNA"],
+                "disabledFeatures": ["security.loginVerifyData.typingDNA"],
                 "enabled": true,
                 "scopes": {
                     "create": [],
@@ -110,7 +109,7 @@
         "isCookieConsentBannerEnabled": true,
         "isPasswordInputValidationEnabled": true,
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
-        "isHeaderAvatarLabelAllowed": false,
+        "isHeaderAvatarLabelAllowed": true,
         "i18nConfigs": {
             "showLanguageSwitcher": true,
             "langAutoDetectEnabled": true
@@ -119,8 +118,7 @@
         "isProfileUsernameReadonly": true,
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {
-            "versionOverride": "",
-            "productVersion": "PREVIEW"
+            "versionOverride": ""
         },
         "theme": {
             "name": "wso2is"

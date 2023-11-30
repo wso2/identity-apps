@@ -901,7 +901,7 @@ export const myAccount: MyAccountNS = {
                 descriptions: {
                     hint: "You'll receive a text message containing an one-time verification code"
                 },
-                heading: "SMS Number",
+                heading: "Mobile number",
                 notifications: {
                     updateMobile: {
                         error: {

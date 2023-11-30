@@ -900,7 +900,7 @@ export const myAccount: MyAccountNS = {
                 descriptions: {
                     hint: "සත්\u200Dයාපන කේතය අඩංගු කෙටි පණිවිඩයක් ඔබට ලැබෙනු ඇත"
                 },
-                heading: "කෙටි පණිවුඩ OTP",
+                heading: "Mobile number",
                 notifications: {
                     updateMobile: {
                         error: {
