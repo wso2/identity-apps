@@ -84,7 +84,7 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
                 >
                     <Grid>
                         <Grid.Row>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Grid.Column mobile={ 16 }>
                                 <Field
                                     name="realm"
                                     label={
@@ -109,7 +109,7 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Grid.Column mobile={ 16 }>
                                 <Field
                                     name="replyTo"
                                     label={
@@ -143,14 +143,14 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Grid.Column mobile={ 16 }>
                                 <Field
                                     name="replyToLogout"
                                     label={
                                         t("console:develop.features.applications.forms.inboundSTS.fields." +
                                           "replyToLogout.label")
                                     }
-                                    required={ true }
+                                    required
                                     requiredErrorMessage={
                                         t("console:develop.features.applications.forms.inboundSTS.fields." +
                                           "replyToLogout.validations.empty")
@@ -169,10 +169,7 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
                                         }
                                     } }
                                     type="text"
-                                    value={ initialValues
-                                        ? initialValues?.replyToLogout
-                                        : templateValues?.replyToLogout
-                                    }
+                                    value={ initialValues?.replyToLogout ?? templateValues?.replyToLogout }
                                     data-testid={ `${ testId }-reply-to-logout-url-input` }
                                 />
                                 <Hint>
