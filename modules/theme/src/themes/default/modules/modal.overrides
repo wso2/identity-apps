@@ -18,6 +18,8 @@
  */
 
 .ui.modal {
+    z-index: 1501;
+
     &.custom-modal {
         text-align: @customModalContentAlignment;
 

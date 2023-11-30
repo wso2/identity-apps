@@ -20,11 +20,15 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
+import { AdminForcedPasswordResetForm } from "./admin-forced-password-reset";
 import { AnalyticsConfigurationForm } from "./analytics-form";
+import { AskPasswordForm } from "./ask-password";
 import { LoginAttemptSecurityConfigurationFrom } from "./login-attempt-security-form";
+import { MultiAttributeLoginForm } from "./multi-attribute-login";
 import { PasswordRecoveryConfigurationForm } from "./password-recovery-form";
 import { SelfRegistrationForm } from "./self-registration-form";
-import { AppState, FeatureConfigInterface } from "../../core";
+import { UsernameRecoveryConfigurationForm } from "./username-recovery-form";
+import { AppState, FeatureConfigInterface, history } from "../../core";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { GovernanceConnectorInterface } from "../models/governance-connectors";
 
@@ -90,6 +94,9 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
         [ featureConfig, allowedScopes ]
     );
 
+    const path: string[] = history?.location?.pathname?.split("/");
+    const type: string = path && path[ path.length - 3 ];
+
     switch (connectorId) {
         case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
             return (
@@ -112,6 +119,16 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                 />
             );
         case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
+            if (type === "username") {
+                return (
+                    <UsernameRecoveryConfigurationForm
+                        onSubmit={ onSubmit }
+                        initialValues={ initialValues }
+                        readOnly={ isReadOnly }
+                    />
+                );
+            }
+
             return (
                 <PasswordRecoveryConfigurationForm
                     onSubmit={ onSubmit }
@@ -127,6 +144,36 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
                     isConnectorEnabled={ true }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
+            return (
+                <AskPasswordForm
+                    onSubmit={ onSubmit }
+                    initialValues={ initialValues }
+                    isConnectorEnabled={ true }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
+            return (
+                <MultiAttributeLoginForm
+                    onSubmit={ onSubmit }
+                    initialValues={ initialValues }
+                    isConnectorEnabled={ isConnectorEnabled }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET:
+            return (
+                <AdminForcedPasswordResetForm
+                    onSubmit={ onSubmit }
+                    initialValues={ initialValues }
+                    isConnectorEnabled={ isConnectorEnabled }
                     readOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
                 />

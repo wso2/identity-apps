@@ -51,9 +51,17 @@ interface RoleAPIResourcesListItemProp extends IdentifiableComponentInterface {
      * Callback to handle API resource removal.
      */
     onRemoveAPIResource: (apiResourceId: string) => void;
+    /**
+     * Whether the has an error or not. Passed down to the `PermissionsList` component.
+     */
+    hasError?: boolean;
+    /**
+     * Error message. Passed down to the `PermissionsList` component.
+     */
+    errorMessage?: string;
 }
 
-export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListItemProp> = 
+export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListItemProp> =
     (props: RoleAPIResourcesListItemProp): ReactElement => {
 
         const {
@@ -62,15 +70,17 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
             selectedPermissions,
             onChangeScopes,
             onRemoveAPIResource,
+            hasError,
+            errorMessage,
             [ "data-componentid" ]: componentId
         } = props;
 
         const { t } = useTranslation();
 
         // Check if all scopes are selected from the api resource
-        const isAllScopesSelected = (): boolean => 
+        const isAllScopesSelected = (): boolean =>
             apiResource?.scopes?.length === selectedPermissions?.length;
-        
+
         /**
          * Handles the remove API resource action.
          */
@@ -90,10 +100,10 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
         };
 
         return (
-            <Accordion disableGutters defaultExpanded elevation={ 1 } variant="elevation">
+            <Accordion disableGutters defaultExpanded elevation={ 0 } variant="elevation">
                 <AccordionSummary expandIcon={ <ChevronDownIcon /> }>
                     <ListItem
-                        secondaryAction={ ( 
+                        secondaryAction={ (
                             <Grid container alignItems="center" spacing={ 2 }>
                                 <Grid>
                                     <Tooltip
@@ -106,7 +116,7 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                                                 onChange={ handleAllScopesSelection }
                                             />
                                         ) }
-                                        content={ apiResource?.scopes?.length < 0 
+                                        content={ apiResource?.scopes?.length < 0
                                             ? t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
                                                 "permissions.tooltips.noScopes")
                                             : t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
@@ -115,9 +125,9 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                                     />
                                 </Grid>
                                 <Grid>
-                                    <Tooltip 
-                                        trigger={ ( 
-                                            <IconButton 
+                                    <Tooltip
+                                        trigger={ (
+                                            <IconButton
                                                 data-componentid = { `${componentId}-remove` }
                                                 onClick={ handleRemoveAPIResource }
                                             >
@@ -132,12 +142,12 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                             </Grid>
                         ) }
                         disablePadding
-                    >  
+                    >
                         <ListItemText primary={ apiResource?.name } />
                     </ListItem>
                 </AccordionSummary>
                 {
-                    apiResource?.scopes?.length > 0 
+                    apiResource?.scopes?.length > 0
                         ? (
                             <AccordionDetails>
                                 <PermissionsList
@@ -145,6 +155,8 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                                     initialSelectedPermissions={ initialSelectedPermissions }
                                     selectedPermissions={ selectedPermissions }
                                     onChangeScopes={ onChangeScopes }
+                                    hasError={ hasError }
+                                    errorMessage={ errorMessage }
                                 />
                             </AccordionDetails>
                         ) : null

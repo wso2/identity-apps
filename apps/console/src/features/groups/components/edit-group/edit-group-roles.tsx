@@ -34,7 +34,7 @@ import { useTranslation } from "react-i18next";
 import { getEmptyPlaceholderIllustrations } from "../../../core/configs/ui";
 import { GroupsInterface } from "../../models/groups";
 import { AutoCompleteRenderOption } from "../group-common-components/auto-complete-render-option";
-import { RenderChip } from "../group-common-components/render-chip";
+import { RenderChipRolesInGroups } from "../group-common-components/render-chip";
 
 interface EditGroupRolesPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -76,9 +76,9 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
             return (
                 <EmptyPlaceholder
                     subtitle={ 
-                        [ t("console:manage.features.roles.edit.groups.placeholders.emptyPlaceholder.subtitles.0") ]
+                        [ t("console:manage.features.groups.edit.roles.placeHolders.emptyListPlaceholder.subtitles") ]
                     }
-                    title={ t("console:manage.features.roles.edit.groups.placeholders.emptyPlaceholder.title") }
+                    title={ t("console:manage.features.groups.edit.roles.placeHolders.emptyListPlaceholder.title") }
                     image={ getEmptyPlaceholderIllustrations().emptyList }
                     imageSize="tiny"
                 />
@@ -89,10 +89,9 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
     return (
         <EmphasizedSegment padded="very">
             <Heading as="h4">
-                { t("console:manage.features.user.updateUser.roles.editRoles.heading") }
+                { t("console:manage.features.groups.edit.roles.heading") }
             </Heading>
             <Heading subHeading ellipsis as="h6">
-                { /* TODO: Need to replace this with "View assigned roles for the group." */ }
                 { t("console:manage.features.groups.edit.roles.subHeading") }
             </Heading>
             {
@@ -116,10 +115,12 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
                                 value: RolesMemberInterface[], 
                                 getTagProps: AutocompleteRenderGetTagProps
                             ) => value.map((option: RolesMemberInterface, index: number) => (
-                                <RenderChip 
+                                <RenderChipRolesInGroups 
                                     { ...getTagProps({ index }) }
                                     key={ index }
-                                    primaryText={ option.display }
+                                    displayName={ option.display }
+                                    audienceType={ option.audienceType }
+                                    audienceDisplay={ option.audienceDisplay }
                                     option={ option }
                                     activeOption={ activeOption }
                                     setActiveOption={ setActiveOption }

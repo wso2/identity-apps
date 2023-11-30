@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,9 +17,10 @@
  */
 
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
+import { ProfileInfoInterface } from "@wso2is/core/models";
 import { administratorConfig } from "../../../extensions/configs/administrator";
 import { UserRoleInterface } from "../../core/models";
-import { 
+import {
     ValidationConfInterface,
     ValidationDataInterface,
     ValidationFormInterface,
@@ -53,7 +54,7 @@ export class UserManagementUtils {
      * Checks whether administrator role is present in the user roles.
      */
     public static isAdminUser = (roles: UserRoleInterface[]): boolean => {
-        return roles.some((role: UserRoleInterface) => 
+        return roles.some((role: UserRoleInterface) =>
             role.display === administratorConfig.adminRoleName
         );
     };
@@ -66,6 +67,28 @@ export class UserManagementUtils {
      */
     public static resolveMultipleInvitesDisplayName(mode: MultipleInviteMode): string {
         return MultipleInvitesDisplayNames[mode];
+    }
+
+    /**
+     * Resolves the sub header of the user list item.
+     *
+     * @param user - User object.
+     * @returns Sub header of the user list item.
+     */
+    public static resolveUserListSubheaderName(user: ProfileInfoInterface): string {
+        if (user?.name?.givenName && user?.name?.familyName) {
+            return user.name.givenName + " " + (user.name.familyName ? user.name.familyName : "");
+        }
+
+        if (user?.name?.givenName) {
+            return user.name.givenName;
+        }
+
+        if (user?.name?.familyName) {
+            return user.name.familyName;
+        }
+
+        return null;
     }
 }
 
@@ -92,13 +115,14 @@ export const getUsernameConfiguration = (configs: ValidationDataInterface[]): Va
     }
 
     return {
-        enableValidator: 
+        enableValidator:
                 (getValidationConfig(rules, "AlphanumericValidator", "enable.validator") === "true"
                 || !(getValidationConfig(rules, "EmailFormatValidator", "enable.validator") === "true"))
-                    ? "true" 
+                    ? "true"
                     : "false",
         field: "username",
-        maxLength: 
+        isAlphanumericOnly: getValidationConfig(rules, "AlphanumericValidator", "enable.special.characters") !== "true",
+        maxLength:
             getValidationConfig(rules, "LengthValidator", "max.length")
                 ? getValidationConfig(rules, "LengthValidator", "max.length")
                 : null,

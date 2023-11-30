@@ -297,6 +297,7 @@ export const AppUtils: any = (function() {
                 getProfileInfoFromIDToken: _config.getProfileInfoFromIDToken,
                 idpConfigs: this.resolveIdpConfigs(),
                 isSaas: this.isSaas(),
+                legacyAuthzRuntime: _config.legacyAuthzRuntime,
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
                 logoutCallbackURL: this.constructRedirectURLs(_config.logoutCallbackPath),
                 organizationName: this.getOrganizationName(),
@@ -450,9 +451,11 @@ export const AppUtils: any = (function() {
                 const tenantName: string = paths[tenantIndex + 1];
 
                 return (tenantName) ? tenantName : "";
-            } else {
-                return "";
             }
+
+            return (_config.requireSuperTenantInUrls)
+                ? this.getSuperTenant()
+                : "";
         },
 
         /**
@@ -537,6 +540,7 @@ export const AppUtils: any = (function() {
                 "clientOrigin": window.location.origin,
                 "contextPath": _args.contextPath,
                 "legacyAuthzRuntime": _args.legacyAuthzRuntime || false,
+                "requireSuperTenantInUrls" : _args.requireSuperTenantInUrls || false,
                 "serverOrigin": _args.serverOrigin || fallbackServerOrigin
             };
 

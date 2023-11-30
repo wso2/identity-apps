@@ -20,13 +20,14 @@ export const APPLICATION_DOMAIN: string = "Application/";
 export const INTERNAL_DOMAIN: string = "Internal";
 export const PRIMARY_DOMAIN: string = "Primary";
 export const ROLE_VIEW_PATH: string = "/roles/";
+export const DOMAIN_SEPARATOR: string = "/";
 
 /**
  * Role audience interface.
  */
 export enum RoleAudienceTypes {
-    ORGANIZATION = "ORGANIZATION",
-    APPLICATION = "APPLICATION"
+    APPLICATION = "APPLICATION",
+    ORGANIZATION = "ORGANIZATION"
 }
 
 /**
@@ -71,7 +72,7 @@ export class RoleConstants {
     /**
      * Default role audience.
      */
-    public static readonly DEFAULT_ROLE_AUDIENCE: string = RoleAudienceTypes.ORGANIZATION;
+    public static readonly DEFAULT_ROLE_AUDIENCE: string = RoleAudienceTypes.APPLICATION;
 
     /**
      * Read only applications client ids.

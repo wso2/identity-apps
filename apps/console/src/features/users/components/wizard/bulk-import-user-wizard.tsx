@@ -17,6 +17,7 @@
  */
 
 import {
+    AlertTitle,
     Autocomplete,
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
@@ -24,8 +25,8 @@ import {
 import { Chip, TextField, Typography } from "@oxygen-ui/react";
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
+import Divider from "@oxygen-ui/react/Divider";
 import InputLabel from "@oxygen-ui/react/InputLabel/InputLabel";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertLevels,
     ClaimDialect,
@@ -40,33 +41,38 @@ import { addAlert } from "@wso2is/core/store";
 import {
     CSVFileStrategy,
     CSVResult,
+    ContentLoader,
     FilePicker,
     Heading,
     Hint,
+    Link,
     LinkButton,
+    Message,
     PickerResult,
     PrimaryButton,
     useWizardAlert
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import Axios,  { AxiosResponse }from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import camelCase from "lodash-es/camelCase";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon, Label, Modal } from "semantic-ui-react";
+import { Button, Grid, Icon, Label } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
-import { getUserStores } from "../../../../extensions/components/users/api";
-import { UsersConstants } from "../../../../extensions/components/users/constants";
 import { userConfig } from "../../../../extensions/configs";
+import { ClaimManagementConstants } from "../../../../features/claims/constants";
 import { getGroupList } from "../../../../features/groups/api";
 import { GroupsInterface } from "../../../../features/groups/models";
 import { useRolesList } from "../../../../features/roles/api";
+import useAuthorization from "../../../authorization/hooks/use-authorization";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
 import {
-    UserStoreDetails,
-    UserStoreProperty,
-    getCertificateIllustrations
+    AppConstants,
+    ModalWithSidePanel,
+    getCertificateIllustrations,
+    history
 } from "../../../core";
 import { RoleAudienceTypes } from "../../../roles/constants";
 import { PatchRoleDataInterface } from "../../../roles/models";
@@ -181,8 +187,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ bulkResponseSummary, setBulkResponseSummary ] = useState<BulkResponseSummary>(initialBulkResponseSummary);
     const [ manualInviteResponseSummary, setManualInviteesponseSummary ]
         = useState<BulkResponseSummary>(initialBulkResponseSummary);
-    const [ readWriteUserStoresList, setReadWriteUserStoresList ] = useState<DropdownItemProps[]>([]);
-    const [ selectedUserStore, setSelectedUserStore ] = useState<string>("");
     const [ configureMode, setConfigureMode ] = useState<string>(MultipleInviteMode.MANUAL);
     const [ emailData, setEmailData ] = useState<string[]>();
     const [ isEmailDataError, setIsEmailDataError ] = useState<boolean>(false);
@@ -194,13 +198,15 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         = useWizardAlert({ "data-componentid": `${componentId}-manual-invite-alert` });
 
     const optionsArray: string[] = [];
+
+    const { legacyAuthzRuntime }  = useAuthorization();
     
     const {
         data: allRolesList,
         isLoading: isAllRolesListLoading,
         error: allRolesListError
     } = useRolesList(
-        undefined, undefined, undefined
+        undefined, undefined, undefined, !legacyAuthzRuntime
     );
 
     const {
@@ -243,14 +249,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     
         setRoleUserAssociations(newRoles);
     }, [ rolesList ]);
-    
-    /**
-     * Set the user store list.
-     */
-    useEffect(() => {
-        setSelectedUserStore(userstore);
-        getUserStoreList();
-    }, [ userstore ]);
 
     /**
      * Fetch the group list.
@@ -272,7 +270,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             return newGroups;
         } catch (error) {
             setHasError(true);
-            throw error;
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:manage.features.users.notifications.bulkImportUser.submit.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.users.notifications.bulkImportUser.submit.genericError.message")
+                })
+            );
         }
     };
 
@@ -331,14 +336,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         error?.response?.data?.description ||
                         t(
                             "console:manage.features.claims.dialects.notifications.fetchDialects" +
-                                ".genericError.description"
+                            ".genericError.description"
                         ),
                     level: AlertLevels.ERROR,
                     message:
                         error?.response?.data?.message ||
                         t(
                             "console:manage.features.claims.dialects.notifications.fetchDialects" +
-                                ".genericError.message"
+                            ".genericError.message"
                         )
                 })
             );
@@ -405,76 +410,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         } finally {
             setIsLoading(false);
         }
-    };
-
-    /**
-     * This will fetch userstore list.
-     */
-    const getUserStoreList = (): void => {
-        setIsLoading(true);
-
-        getUserStores()
-            .then((response: UserStoreDetails[]) => {                      
-                const userStoreArray: DropdownItemProps[] = [];
-
-                response?.forEach((item: UserStoreDetails, index: number) => {
-                    // Set read/write enabled userstores based on the type.
-                    if (checkReadWriteUserStore(item)) {    
-                        userStoreArray.push({
-                            key: index,
-                            text: item?.name.toUpperCase(),
-                            value: item?.name.toUpperCase()
-                        });
-                    }});
-
-                if (userstore === PRIMARY_USERSTORE) {
-                    userStoreArray.push({
-                        key: userStoreArray.length,
-                        text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
-                        value: PRIMARY_USERSTORE.toUpperCase()
-                    });
-                }
-                
-                setReadWriteUserStoresList(userStoreArray);
-            }).catch((_error: IdentityAppsApiException) => {
-                dispatch(addAlert({
-                    description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError." +
-                        "description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
-                }));
-                setHasError(true);
-
-                return;
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-    };
-
-    /**
-     * Check the given user store is Read/Write enabled.
-     * 
-     * @param userStore - Userstore
-     * @returns If the given userstore is read only or not.
-     */
-    const checkReadWriteUserStore = (userStore: UserStoreDetails): boolean => {
-        if( userStore?.typeName === UsersConstants.DEFAULT_USERSTORE_TYPE_NAME ) {
-            return true;
-        } else {
-            return  userStore?.enabled && userStore?.properties.filter((property: UserStoreProperty)=>
-                property.name===UsersConstants.USER_STORE_PROPERTY_READ_ONLY)[0].value==="false";
-        }
-    };
-
-    const hideUserStoreDropdown = (): boolean => {
-        // TODO: Currently only primary userstore is supported.
-        // if(readWriteUserStoresList) {
-        //     return readWriteUserStoresList?.length === 0 || (readWriteUserStoresList?.length === 1 && 
-        //         readWriteUserStoresList[0]?.value === userstore);
-        // }
-        
-        return false;
     };
 
     const joinWithAnd = (arr: string[]): string => {
@@ -708,9 +643,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         throw new Error(DATA_VALIDATION_ERROR);
                     }
 
-                    dataObj[RequiredBulkUserImportAttributes.USERNAME] = selectedUserStore &&
-                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
-                        ? `${selectedUserStore}/${attributeValue}`
+                    dataObj[RequiredBulkUserImportAttributes.USERNAME] = 
+                    userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
+                        ? `${userstore}/${attributeValue}`
                         : attributeValue;
                 
                     continue;
@@ -1098,7 +1033,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         const operations: SCIMBulkOperation[] = [];
         const users : { value: string; }[]= [];
         const asyncOperationID: string = uuidv4();
-        const bulkIdEmail: string = "";
 
         // Create the user record.
         emailData?.map((email: string) => {
@@ -1154,7 +1088,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             };
             
             const SCIMRolesOperation: SCIMBulkOperation = {
-                bulkId: `bulkId:${bulkIdEmail}:${asyncOperationID}`,
+                bulkId: `bulkId:${role?.displayName}:${asyncOperationID}`,
                 data: roleDetails,
                 method: HttpMethods.PATCH,
                 path: `${UserManagementConstants.SCIM_V2_ROLE_PATH}/${role?.id}`
@@ -1473,6 +1407,21 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     };
 
     /**
+     * Check if the manual invite button should be disabled.
+     * @returns true if the manual invite button should be disabled.
+     */
+    const isManualInviteButtonDisabled = (): boolean => {
+        return isLoading
+            || isSubmitting
+            || hasError
+            || isAllRolesListLoading
+            || !emailData
+            || emailData?.length === 0
+            || !rolesData
+            || rolesData?.length === 0;
+    };
+
+    /**
      * Render Multiple Users configuration section.
      */
     const resolveMultipleUsersConfiguration = (): ReactElement => {
@@ -1495,164 +1444,140 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                 <>
                                     <Grid.Row columns={ 1 } className="mb-0 pb-0">
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }> 
-                                            <Alert severity="warning">
-                                                { 
-                                                    t("console:manage.features.user.modals.bulkImportUserWizard" +
-                                                    ".wizardSummary.manualCreation.warningMessage") 
-                                                }
+                                            <Alert severity="info">
+                                                <Trans
+                                                    i18nKey={
+                                                        "console:manage.features.user.modals.bulkImportUserWizard" +
+                                                        ".wizardSummary.userstoreMessage"
+                                                    }
+                                                    tOptions={ {
+                                                        userstore: camelCase(userstore)
+                                                    } }
+                                                > 
+                                                    The created users will be added to 
+                                                    the <b>{ camelCase(userstore) }</b> user store.          
+                                                </Trans>
                                             </Alert>
                                         </Grid.Column>
                                     </Grid.Row>
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }> 
-                                            <Form.Field required={ true }>
-                                                <label className="pb-2">
-                                                    { t("console:manage.features.user.forms.addUserForm."+
-                                                    "inputs.domain.placeholder") }
-                                                </label>
-                                                <Dropdown
-                                                    className="mt-2"
-                                                    fluid
-                                                    selection
-                                                    labeled
-                                                    options={ readWriteUserStoresList }
-                                                    loading={ false }
-                                                    data-testid={
-                                                        `${componentId}-userstore-dropdown`
-                                                    }
-                                                    data-componentid={
-                                                        `${componentId}-userstore-dropdown`
-                                                    }
-                                                    name="userstore"
-                                                    disabled={ true }
-                                                    value={ selectedUserStore }
-                                                    onChange={
-                                                        (e: React.ChangeEvent<HTMLInputElement>,
-                                                            data: DropdownProps) => {
-                                                            setSelectedUserStore(data.value.toString());
-                                                        }
-                                                    }
-                                                    tabIndex={ 1 }
-                                                    maxLength={ 60 }
-                                                />
-                                            </Form.Field> 
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                    { allRolesList
-                                    &&  (
-                                        <Autocomplete
-                                            size="small"
-                                            multiple
-                                            fullWidth
-                                            disablePortal
-                                            id="combo-box-demo"
-                                            options={ 
-                                                allRolesList?.Resources
-                                            }
-                                            getOptionLabel={ (option: RolesInterface) => option?.displayName }
-                                            renderOption={ (
-                                                props: React.HTMLAttributes<HTMLLIElement>,
-                                                option: RolesInterface
-                                            ) => (
-                                                <Box 
-                                                    component="li"
-                                                    { ...props }
-                                                >
-                                                    <Typography
-                                                        sx={ { fontWeight: 500 } }
+                                    {
+                                        allRolesList
+                                        && !legacyAuthzRuntime
+                                        &&  (
+                                            <Autocomplete
+                                                size="small"
+                                                multiple
+                                                fullWidth
+                                                disablePortal
+                                                id="combo-box-demo"
+                                                options={ 
+                                                    allRolesList?.Resources
+                                                }
+                                                getOptionLabel={ (option: RolesInterface) => option?.displayName }
+                                                renderOption={ (
+                                                    props: React.HTMLAttributes<HTMLLIElement>,
+                                                    option: RolesInterface
+                                                ) => (
+                                                    <Box 
+                                                        component="li"
+                                                        { ...props }
                                                     >
-                                                        { option?.displayName }
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="caption"
-                                                        className="mr-2 ml-6"
-                                                    >
-                                                        { " Audience:"  }
-                                                    </Typography>
-                                                    <label>
-                                                        {
-                                                            option?.audience?.type.charAt(0).toUpperCase()
-                                                            +option?.audience?.type.slice(1)
-                                                        }
-                                                    </label>
-                                                    <Label
-                                                        pointing="left"
-                                                        size="mini"
-                                                        className={ 
-                                                            RoleAudienceTypes.ORGANIZATION
-                                                            === option?.audience?.type.toUpperCase()
-                                                                ? "issuer-label"
-                                                                : "client-id-label"
-                                                        }
-                                                    >
-                                                        { option?.audience?.display }
-                                                    </Label>
-                                                </Box>
-                                            ) }
-                                            renderInput={ (params: AutocompleteRenderInputParams) => 
-                                                (<>
-                                                    <InputLabel
-                                                        htmlFor="tags-filled"
-                                                        disableAnimation
-                                                        shrink={ false }
-                                                        margin="dense"
-                                                        className="mt-2"
-                                                        data-componentid={ `${componentId}-roles-label` }
-                                                    >
-                                                        { 
-                                                            t("console:manage.features.user.modals." +
-                                                            "bulkImportUserWizard.wizardSummary." +
-                                                            "manualCreation.rolesLabel")
-                                                        }
-                                                    </InputLabel>
-                                                    <TextField
-                                                        id="tags-filled"
-                                                        margin="normal"
-                                                        InputLabelProps= { {
-                                                            required: true
-                                                        } }
-                                                        { ...params }
-                                                        required
-                                                        variant="outlined"
-                                                        placeholder={
-                                                            t("console:manage.features.user.modals." +
-                                                            "bulkImportUserWizard.wizardSummary." +
-                                                            "manualCreation.rolesPlaceholder") 
-                                                        }
-                                                        data-componentid={ `${componentId}-roles-input` }
-                                                
-                                                    />
-                                                </>)
-                                            }
-                                            onChange={ (
-                                                event: React.SyntheticEvent<Element, Event>,
-                                                value: RolesInterface[]
-                                            ) => {
-                                                setRolesData(value);
-                                            } }
-                                            renderTags={ (
-                                                value: RolesInterface[],
-                                                getTagProps: AutocompleteRenderGetTagProps
-                                            ) =>
-                                                value.map((option: RolesInterface, index: number) => (
-                                                    <Chip 
-                                                        key={ index }
-                                                        size="small"
-                                                        className="oxygen-chip-beta"
-                                                        label={ 
-                                                            (<label>
-                                                                {
-                                                                    `${option?.displayName}:
-                                                                    ${option?.audience?.type.charAt(0).toUpperCase()}${
-                                                                    option?.audience?.type.slice(1)}`
-                                                                }
-                                                            </label>)
-                                                        }
-                                                        { ...getTagProps({ index }) } 
-                                                    />
-                                                ))
-                                            }
-                                        />)
+                                                        <Typography
+                                                            sx={ { fontWeight: 500 } }
+                                                        >
+                                                            { option?.displayName }
+                                                        </Typography>
+                                                        <Typography
+                                                            variant="caption"
+                                                            className="mr-2 ml-6"
+                                                        >
+                                                            { " Audience:"  }
+                                                        </Typography>
+                                                        <label>
+                                                            {
+                                                                option?.audience?.type.charAt(0).toUpperCase()
+                                                                +option?.audience?.type.slice(1)
+                                                            }
+                                                        </label>
+                                                        <Label
+                                                            pointing="left"
+                                                            size="mini"
+                                                            className={ 
+                                                                RoleAudienceTypes.ORGANIZATION
+                                                                === option?.audience?.type.toUpperCase()
+                                                                    ? "issuer-label"
+                                                                    : "client-id-label"
+                                                            }
+                                                        >
+                                                            { option?.audience?.display }
+                                                        </Label>
+                                                    </Box>
+                                                ) }
+                                                renderInput={ (params: AutocompleteRenderInputParams) => 
+                                                    (<>
+                                                        <InputLabel
+                                                            htmlFor="tags-filled"
+                                                            disableAnimation
+                                                            shrink={ false }
+                                                            margin="dense"
+                                                            className="mt-2"
+                                                            data-componentid={ `${componentId}-roles-label` }
+                                                        >
+                                                            { 
+                                                                t("console:manage.features.user.modals." +
+                                                                "bulkImportUserWizard.wizardSummary." +
+                                                                "manualCreation.rolesLabel")
+                                                            }
+                                                        </InputLabel>
+                                                        <TextField
+                                                            id="tags-filled"
+                                                            margin="normal"
+                                                            InputLabelProps= { {
+                                                                required: true
+                                                            } }
+                                                            { ...params }
+                                                            required
+                                                            variant="outlined"
+                                                            placeholder={
+                                                                t("console:manage.features.user.modals." +
+                                                                "bulkImportUserWizard.wizardSummary." +
+                                                                "manualCreation.rolesPlaceholder") 
+                                                            }
+                                                            data-componentid={ `${componentId}-roles-input` }
+                                                    
+                                                        />
+                                                    </>)
+                                                }
+                                                onChange={ (
+                                                    event: React.SyntheticEvent<Element, Event>,
+                                                    value: RolesInterface[]
+                                                ) => {
+                                                    setRolesData(value);
+                                                } }
+                                                renderTags={ (
+                                                    value: RolesInterface[],
+                                                    getTagProps: AutocompleteRenderGetTagProps
+                                                ) =>
+                                                    value.map((option: RolesInterface, index: number) => (
+                                                        <Chip 
+                                                            key={ index }
+                                                            size="small"
+                                                            className="oxygen-chip-beta"
+                                                            label={ 
+                                                                (<label>
+                                                                    {
+                                                                        `${option?.displayName}:
+                                                                        ${option?.audience?.type
+                                                                        .charAt(0).toUpperCase()}${
+                                                                        option?.audience?.type.slice(1)}`
+                                                                    }
+                                                                </label>)
+                                                            }
+                                                            { ...getTagProps({ index }) } 
+                                                        />
+                                                    ))
+                                                }
+                                            />)
                                     }
                                     <Autocomplete
                                         size="small"
@@ -1747,6 +1672,23 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         hasError={ hasError }
                                         responseList={ manualInviteResponse }
                                         bulkResponseSummary={ manualInviteResponseSummary }
+                                        successAlert={ (
+                                            <Alert
+                                                severity="success"
+                                                data-componentid={ `${componentId}-success-alert` }
+                                            >
+                                                <AlertTitle data-componentid={ `${componentId}-success-alert-title` }>
+                                                    {
+                                                        t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                                        "wizardSummary.manualCreation.alerts.creationSuccess.message")
+                                                    }
+                                                </AlertTitle>
+                                                {
+                                                    t("console:manage.features.user.modals.bulkImportUserWizard." +
+                                                    "wizardSummary.manualCreation.alerts.creationSuccess.description")
+                                                }
+                                            </Alert>
+                                        ) }
                                     />
                                 </>
                             )
@@ -1767,51 +1709,25 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     </Grid.Row>
                                 )
                             }
-                            { !isLoading && !hideUserStoreDropdown()
+                            { !isLoading
                                 && (
                                     <>
                                         <Grid.Row columns={ 1 } className="mb-0 pb-0">
                                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }> 
                                                 <Alert severity="info">
-                                                    { t("console:manage.features.user.modals." +
-                                                        "bulkImportUserWizard.wizardSummary." +
-                                                        "disabledSecondaryStoreInfo") }
+                                                    <Trans
+                                                        i18nKey={
+                                                            "console:manage.features.user.modals.bulkImportUserWizard" +
+                                                        ".wizardSummary.userstoreMessage"
+                                                        }
+                                                        tOptions={ {
+                                                            userstore: camelCase(userstore)
+                                                        } }
+                                                    > 
+                                                        The created users will be added to 
+                                                        the <b>{ camelCase(userstore) }</b> user store.          
+                                                    </Trans>
                                                 </Alert>
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                        <Grid.Row columns={ 1 }>
-                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }> 
-                                                <Form.Field required={ true }>
-                                                    <label className="pb-2">
-                                                        { t("console:manage.features.user.forms.addUserForm."+
-                                                            "inputs.domain.placeholder") }
-                                                    </label>
-                                                    <Dropdown
-                                                        className="mt-2"
-                                                        fluid
-                                                        selection
-                                                        labeled
-                                                        options={ readWriteUserStoresList }
-                                                        loading={ false }
-                                                        data-testid={
-                                                            `${componentId}-userstore-dropdown`
-                                                        }
-                                                        data-componentid={
-                                                            `${componentId}-userstore-dropdown`
-                                                        }
-                                                        name="userstore"
-                                                        disabled={ true }
-                                                        value={ selectedUserStore }
-                                                        onChange={
-                                                            (e: React.ChangeEvent<HTMLInputElement>,
-                                                                data: DropdownProps) => {
-                                                                setSelectedUserStore(data.value.toString());
-                                                            }
-                                                        }
-                                                        tabIndex={ 1 }
-                                                        maxLength={ 60 }
-                                                    />
-                                                </Form.Field> 
                                             </Grid.Column>
                                         </Grid.Row>
                                     </>
@@ -1876,8 +1792,77 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         }
     };
 
+    /**
+     * Renders the help panel containing wizard help.
+     *
+     * @returns Help Panel.
+     */
+    const renderHelpPanel = (): ReactElement => {
+        return (
+            <ModalWithSidePanel.SidePanel>
+                <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
+                    <div className="help-panel-header-text">
+                        { t("console:develop.features.applications.wizards.minimalAppCreationWizard.help.heading") }
+                    </div>
+                </ModalWithSidePanel.Header>
+                <ModalWithSidePanel.Content>
+                    <Suspense fallback={ <ContentLoader/> }>
+                        <Heading as="h5">
+                            { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel.manual") }
+                        </Heading>
+                        <p>
+                            { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
+                                ".manualCreation.hint" ) }
+                        </p>
+                        <p>
+                            { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
+                                ".manualCreation.warningMessage" ) }
+                        </p>
+                        <Divider />
+                        <Heading as="h5">
+                            { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel.fileBased") }
+                        </Heading>
+                        <p>
+                            { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
+                                ".fileBased.hint" ) }
+                        </p>
+                        <Heading as="h6">
+                            { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
+                                "fileFormatTitle") }
+                        </Heading>
+                        <p>
+                            <Trans
+                                i18nKey={
+                                    "console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
+                                    "fileFormatContent"
+                                }
+                            >
+                                Headers of the CSV file should be user attributes that are mapped to
+                                local <Link onClick={ navigateToSCIMAttributesPage }>attribute names</Link>.
+                            </Trans>
+                        </p>
+                        <p> { t("console:manage.features.user.modals.bulkImportUserWizard.sidePanel." +
+                                "fileFormatSampleHeading") }</p>
+                        <p>
+                            <code>
+                                username,givenname,emailaddress,roles<br />
+                                user1,john,john@test.com,role1|role2<br/>
+                                user2,jake,jake@test.com,role2<br/>
+                                user3,jane,jane@test.com,role1<br/>
+                            </code>
+                        </p>
+                    </Suspense>
+                </ModalWithSidePanel.Content>
+            </ModalWithSidePanel.SidePanel>
+        );
+    };
+
+    const navigateToSCIMAttributesPage = () => history.push(AppConstants.getPaths()
+        .get("ATTRIBUTE_MAPPINGS")
+        .replace(":type", ClaimManagementConstants.SCIM));
+
     return (
-        <Modal
+        <ModalWithSidePanel
             data-testid={ componentId }
             data-componentid={ componentId }
             open={ true }
@@ -1888,106 +1873,115 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             closeOnDimmerClick={ false }
             closeOnEscape
         >
-            <Modal.Header className="wizard-header">
-                { t("console:manage.features.user.modals.bulkImportUserWizard.title") }
-                <Heading as="h6">
-                    { t("console:manage.features.user.modals.bulkImportUserWizard.subTitle") }
-                </Heading>
-            </Modal.Header>
+            <ModalWithSidePanel.MainPanel>
+                <ModalWithSidePanel.Header className="wizard-header">
+                    { t("console:manage.features.user.modals.bulkImportUserWizard.title") }
+                    <Heading as="h6">
+                        { t("console:manage.features.user.modals.bulkImportUserWizard.subTitle") }
+                    </Heading>
+                </ModalWithSidePanel.Header>
 
-            <Modal.Content className="content-container" scrolling>
-                <Grid>
-                    { resolveMultipleUsersModeSelection() }
-                    { resolveMultipleUsersConfiguration() }
-                </Grid>
+                <ModalWithSidePanel.Content className="content-container">
+                    <Grid>
+                        <>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column>
+                                    <Message
+                                        icon="mail"
+                                        content={ t("console:manage.features.user.modals.bulkImportUserWizard" +
+                                        ".wizardSummary.inviteEmailInfo") }
+                                        hideDefaultIcon
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                        </>
+                        { resolveMultipleUsersModeSelection() }
+                        { resolveMultipleUsersConfiguration() }
+                    </Grid>
 
-            </Modal.Content>
-            <Modal.Actions>
-                <Grid>
-                    {
-                        configureMode == MultipleInviteMode.MANUAL
-                            ? (
-                                <Grid.Row column={ 1 }>
-                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                        <LinkButton
-                                            data-testid={ `${componentId}-close-button` }
-                                            data-componentid={ `${componentId}-close-button` }
-                                            floated="left"
-                                            onClick={ () => {
-                                                closeWizard();
-                                                setshowManualInviteTable(false);
-                                            } }
-                                            disabled={ isSubmitting }
-                                        >
-                                            { t("common:close") }
-                                        </LinkButton>
-                                    </Grid.Column>
-                                    { !showManualInviteTable || isSubmitting
-                                        ? (
-                                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                                <PrimaryButton
-                                                    data-testid={ `${componentId}-invite-button` }
-                                                    data-componentid={ `${componentId}-invite-button` }
-                                                    floated="right"
-                                                    onClick={ manualInviteMultipleUsers }
-                                                    loading={ isSubmitting }
-                                                    disabled={ 
-                                                        isLoading
-                                                        ||isSubmitting
-                                                        || hasError
-                                                        || isAllRolesListLoading
-                                                    }
-                                                >
-                                                    { t("console:manage.features.user.modals." +
+                </ModalWithSidePanel.Content>
+                <ModalWithSidePanel.Actions>
+                    <Grid>
+                        {
+                            configureMode == MultipleInviteMode.MANUAL
+                                ? (
+                                    <Grid.Row column={ 1 }>
+                                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                            <LinkButton
+                                                data-testid={ `${componentId}-close-button` }
+                                                data-componentid={ `${componentId}-close-button` }
+                                                floated="left"
+                                                onClick={ () => {
+                                                    closeWizard();
+                                                    setshowManualInviteTable(false);
+                                                } }
+                                                disabled={ isSubmitting }
+                                            >
+                                                { t("common:close") }
+                                            </LinkButton>
+                                        </Grid.Column>
+                                        { !showManualInviteTable || isSubmitting
+                                            ? (
+                                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                                    <PrimaryButton
+                                                        data-testid={ `${componentId}-invite-button` }
+                                                        data-componentid={ `${componentId}-invite-button` }
+                                                        floated="right"
+                                                        onClick={ manualInviteMultipleUsers }
+                                                        loading={ isSubmitting }
+                                                        disabled={ isManualInviteButtonDisabled() }
+                                                    >
+                                                        { t("console:manage.features.user.modals." +
                                                     "bulkImportUserWizard.wizardSummary.manualCreation.primaryButton") }
-                                                </PrimaryButton>
-                                            </Grid.Column>
-                                        )
-                                        : null
-                                    }
-                                </Grid.Row>
-                            ) : (
-                                <Grid.Row column={ 1 }>
-                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                        <LinkButton
-                                            data-testid={ `${componentId}-cancel-button` }
-                                            data-componentid={ `${componentId}-cancel-button` }
-                                            floated="left"
-                                            onClick={ () => {
-                                                closeWizard();
-                                                setShowResponseView(false);
-                                            } }
-                                            disabled={ isSubmitting }
-                                        >
-                                            { t("common:close") }
-                                        </LinkButton>
-                                    </Grid.Column>
-                                    { !showResponseView || isSubmitting
-                                        ? (
-                                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                                <PrimaryButton
-                                                    data-testid={ `${componentId}-finish-button` }
-                                                    data-componentid={ `${componentId}-finish-button` }
-                                                    floated="right"
-                                                    onClick={ handleBulkUserImport }
-                                                    loading={ isSubmitting }
-                                                    disabled={ isLoading || isSubmitting || hasError
+                                                    </PrimaryButton>
+                                                </Grid.Column>
+                                            )
+                                            : null
+                                        }
+                                    </Grid.Row>
+                                ) : (
+                                    <Grid.Row column={ 1 }>
+                                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                            <LinkButton
+                                                data-testid={ `${componentId}-cancel-button` }
+                                                data-componentid={ `${componentId}-cancel-button` }
+                                                floated="left"
+                                                onClick={ () => {
+                                                    closeWizard();
+                                                    setShowResponseView(false);
+                                                } }
+                                                disabled={ isSubmitting }
+                                            >
+                                                { t("common:close") }
+                                            </LinkButton>
+                                        </Grid.Column>
+                                        { !showResponseView || isSubmitting
+                                            ? (
+                                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                                    <PrimaryButton
+                                                        data-testid={ `${componentId}-finish-button` }
+                                                        data-componentid={ `${componentId}-finish-button` }
+                                                        floated="right"
+                                                        onClick={ handleBulkUserImport }
+                                                        loading={ isSubmitting }
+                                                        disabled={ isLoading || isSubmitting || hasError
                                                         || !selectedCSVFile || isRolesListLoading
-                                                    }
-                                                >
-                                                    { t("console:manage.features.user.modals." +
+                                                        }
+                                                    >
+                                                        { t("console:manage.features.user.modals." +
                                                     "bulkImportUserWizard.buttons.import") }
-                                                </PrimaryButton>
-                                            </Grid.Column>
-                                        )
-                                        : null }
-                                </Grid.Row>
-                            )
-                    }
-                    
-                </Grid>
-            </Modal.Actions>
-        </Modal>
+                                                    </PrimaryButton>
+                                                </Grid.Column>
+                                            )
+                                            : null }
+                                    </Grid.Row>
+                                )
+                        }
+                    </Grid>
+                </ModalWithSidePanel.Actions>
+            </ModalWithSidePanel.MainPanel>
+            { renderHelpPanel() }
+        </ModalWithSidePanel>
     );
 };
 

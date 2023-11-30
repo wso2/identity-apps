@@ -17,11 +17,11 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Section } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { AppConstants, history } from "../../core";
 import { getSettingsSectionIcons } from "../../server-configurations";
+import { SettingsSection } from "../../server-configurations/settings/settings-section";
 
 /**
  * Props for my account settings page.
@@ -49,8 +49,9 @@ export const ValidationConfigPage: FunctionComponent<MyAccountSettingsPageInterf
     };
 
     return (
-        <Section
+        <SettingsSection
             data-componentid={ `${componentId}-settings-section` }
+            data-testid={ `${componentId}-settings-section` }
             description={ "Customize password validation rules for your users." }
             icon={ getSettingsSectionIcons().passwordValidation }
             header={ "Password Validation" }

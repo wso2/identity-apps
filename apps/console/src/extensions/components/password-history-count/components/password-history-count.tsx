@@ -72,7 +72,7 @@ export const generatePasswordHistoryCount = (
                 <Icon name="info circle" />
                 { t("extensions:manage.serverConfigurations.passwordHistoryCount.message") }
             </Message>
-            <Divider hidden />
+            <Divider className="mt-6 mb-6" />
             <h5>{ t("extensions:manage.serverConfigurations.passwordValidationHeading") }</h5>
         </>
     );

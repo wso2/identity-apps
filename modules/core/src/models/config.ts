@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ProductVersionConfigInterface } from "./core";
+import { ClassicFeaturesInterface, ProductVersionConfigInterface } from "./core";
 import { DocumentationProviders, DocumentationStructureFileTypes } from "./documentation";
 import { GravatarConfig } from "./profile";
 
@@ -187,6 +187,10 @@ export interface CommonUIConfigInterface<T = Record<string, unknown>> {
      */
     isLeftNavigationCategorized?: boolean;
     /**
+    * Flag to check whether the password validation is performed using input validation listener.
+    */
+    isPasswordInputValidationEnabled: boolean;
+    /**
      * Privacy Policy configs.
      */
     privacyPolicyConfigs: PrivacyPolicyConfigsInterface;
@@ -200,6 +204,10 @@ export interface CommonUIConfigInterface<T = Record<string, unknown>> {
      * ex: allowSnapshot, override etc.
      */
     productVersionConfig?: ProductVersionConfigInterface;
+    /**
+     * Classic features
+     */
+    classicFeatures?: ClassicFeaturesInterface;
     /**
      * Theme configs.
      */
@@ -326,6 +334,10 @@ export interface FeatureAccessConfigInterface {
      */
     scopes: CRUDScopesInterface;
     /**
+     * Set of deprecated features.
+     */
+    deprecatedFeaturesToShow?: DeprecatedFeatureInterface[];
+    /**
      * Set of disabled features.
      */
     disabledFeatures?: string[];
@@ -336,7 +348,23 @@ export interface FeatureAccessConfigInterface {
     /**
      * Enable the tour option
      */
-     tryittourenabled?: boolean;
+    tryittourenabled?: boolean; 
+}
+
+interface DeprecatedFeature {
+    name: string;
+    deprecatedProperties: string[];
+}
+
+export interface DeprecatedFeatureInterface {
+    /**
+     * Name of the deprecated feature.
+     */
+    name?: string;
+    /**
+     * An array of deprecated properties.
+     */
+    deprecatedProperties?: string[];
 }
 
 /**

@@ -1,0 +1,35 @@
+.governance-connector-list-grid-wrapper {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 40px;
+
+    .governance-connector-list-grid {
+        flex-grow: 1;
+        gap: 25px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+        .governance-connector {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid #e8e8e8;
+            border-radius: 10px;
+            transition: box-shadow 0.3s ease;
+            cursor: pointer;
+
+            .governance-connector-header {
+                display: flex;
+                flex-direction: row;
+                gap: 15px;
+                align-content: center;
+                align-items: center;
+                padding: 10px 14px;
+
+                .governance-connector-icon-container {
+                    border-radius: var(--oxygen-shape-borderRadius);
+                }
+            }
+        }
+    }
+}

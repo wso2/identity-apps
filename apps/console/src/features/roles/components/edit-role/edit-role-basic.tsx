@@ -26,8 +26,9 @@ import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { AppConstants, history } from "../../../core";
 import { deleteRoleById, updateRoleDetails, useRolesList } from "../../api";
-import { RoleConstants, Schemas } from "../../constants";
+import { RoleAudienceTypes, RoleConstants, Schemas } from "../../constants";
 import { PatchRoleDataInterface, RoleBasicInterface, RoleEditSectionsInterface } from "../../models/roles";
+import { RoleDeleteErrorConfirmation } from "../wizard/role-delete-error-confirmation";
 
 /**
  * Interface to contain props needed for component
@@ -54,9 +55,11 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     } = props;
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ showDeleteErrorConnectedAppsModal, setShowDeleteErrorConnectedAppsModal ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isUpdateButtonDisabled, setIsUpdateButtonDisabled ] = useState<boolean>(true);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
-    
+
     const {
         data: rolesList,
         isLoading: isRolesListLoading,
@@ -71,6 +74,19 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
      */
     const handleAlerts = (alert: AlertInterface): void => {
         dispatch(addAlert(alert));
+    };
+
+    /**
+     * Function to handle role deletion button click.
+     * If the role is in Application audience type, Info Modal will be shown
+     * to inform the user that the role is connected to applications.
+     */
+    const onRoleDeleteClicked = () => {
+        if (role?.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION) {
+            setShowDeleteErrorConnectedAppsModal(true);
+        } else {
+            setShowDeleteConfirmationModal(true);
+        }
     };
 
     /**
@@ -102,8 +118,11 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             roleName: undefined
         };
 
-        if (values.roleName?.toString().trim().length >= RoleConstants.ROLE_NAME_MIN_LENGTH) {
-
+        if (role.displayName === values.roleName?.toString().trim()) {
+            setIsUpdateButtonDisabled(true);
+        }
+        else if (values.roleName?.toString().trim().length >= RoleConstants.ROLE_NAME_MIN_LENGTH) {
+            setIsUpdateButtonDisabled(false);
             setRoleNameSearchQuery(`displayName eq ${values.roleName?.toString().trim()}`);
 
             if (!isRolesListLoading || !isRolesListValidating) {
@@ -111,8 +130,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                     errors.roleName = t("console:manage.features.roles.addRoleWizard.forms."
                         + "roleBasicDetails.roleName.validations.duplicate",{ type: "Role" });
                 }
-            } 
-            
+            }
+
             return errors;
         }
     };
@@ -144,9 +163,9 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                 });
             }).catch(() => {
                 handleAlerts({
-                    description: t("console:manage.features.roles.notifications.updateRole.error.description"),
+                    description: t("console:manage.features.roles.notifications.updateRole.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.notifications.updateRole.error.message")
+                    message: t("console:manage.features.roles.notifications.updateRole.genericError.message")
                 });
             }).finally(() => {
                 setIsSubmitting(false);
@@ -157,8 +176,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     return (
         <>
             <EmphasizedSegment padded="very">
-                <Form 
-                    id={ FORM_ID } 
+                <Form
+                    id={ FORM_ID }
                     uncontrolledForm={ false }
                     validate={ validateForm }
                     noValidate={ true }
@@ -184,7 +203,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                         ariaLabel="Update button"
                         name="update-button"
                         hidden={ isReadOnly }
-                        disabled={ isSubmitting }
+                        disabled={ isSubmitting || isUpdateButtonDisabled }
                         loading={ isSubmitting }
                         data-componentid={ `${ componentid }-role-update-button` }
                         label={ t("extensions:develop.apiResource.tabs.general.form.updateButton") }
@@ -196,7 +215,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                 !isReadOnly && (
                     <DangerZoneGroup sectionHeader="Danger Zone">
                         <DangerZone
-                            actionTitle={ 
+                            actionTitle={
                                 t("console:manage.features.roles.edit.basics.dangerZone.actionTitle",
                                     { type: "Role" })
                             }
@@ -208,7 +227,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                 t("console:manage.features.roles.edit.basics.dangerZone.subheader",
                                     { type: "role" })
                             }
-                            onActionClick={ () => setShowDeleteConfirmationModal(!showRoleDeleteConfirmation) }
+                            onActionClick={ () => onRoleDeleteClicked() }
                             data-componentid={ `${ componentid }-role-danger-zone` }
                         />
                     </DangerZoneGroup>
@@ -239,6 +258,16 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                             { t("console:manage.features.roles.edit.basics.confirmation.content", { type: "role" }) }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
+                )
+            }
+            {
+                showDeleteErrorConnectedAppsModal && (
+                    <RoleDeleteErrorConfirmation
+                        selectedRole={ role }
+                        isOpen={ showDeleteErrorConnectedAppsModal }
+                        onClose={ () => setShowDeleteErrorConnectedAppsModal(false) }
+                        data-componentid={ `${ componentid }-role-delete-error-confirmation-modal` }
+                    />
                 )
             }
         </>

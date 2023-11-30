@@ -113,12 +113,22 @@ export class UserManagementConstants {
         .set("ACCOUNT_LOCKED", SCIMConfigs.scimEnterpriseUserClaimUri.accountLocked)
         .set("ACCOUNT_DISABLED", SCIMConfigs.scimEnterpriseUserClaimUri.accountDisabled)
         .set("ONETIME_PASSWORD", SCIMConfigs.scimEnterpriseUserClaimUri.oneTimePassword);
-    
+
     public static readonly ROLES: string = "roles";
     public static readonly GROUPS: string = "groups";
     public static readonly SCIM_USER_PATH: string = "/Users";
     public static readonly SCIM_GROUP_PATH: string = "/Groups";
     public static readonly SCIM_V2_ROLE_PATH: string = "/v2/Roles";
+
+    // Regular expression to validate having alphanumeric characters.
+    public static readonly USERNAME_VALIDATION_REGEX: string = "^(?=.*[a-zA-Z])[a-zA-Z0-9]+$";
+    // Error message when API call returns a status code !== 200
+    public static readonly INVALID_STATUS_CODE_ERROR: string = "Invalid Status Code. Expected Code 200.";
+    // Error message text for resources not found.
+    public static readonly RESOURCE_NOT_FOUND_ERROR_MESSAGE: string = "Resource not found.";
+
+    // ID of the form used in the invite parent organization user component.
+    public static readonly  INVITE_PARENT_ORG_USER_FORM_ID: string = "invite-parent-org-user-form";
 }
 
 /**
@@ -210,4 +220,39 @@ export enum BulkUserImportStatus {
 export enum BulkImportResponseOperationTypes {
     USER_CREATION = "userCreation",
     ROLE_ASSIGNMENT = "roleAssignment",
+}
+
+/**
+ * Enum for hidden field names.
+ */
+export enum HiddenFieldNames {
+    USERSTORE = "userStore",
+    USERNAME = "userName",
+    FIRSTNAME = "firstName",
+    LASTNAME = "lastName",
+    PASSWORD = "password",
+    EMAIL = "email"
+}
+
+/**
+ * Enum for password option types.
+ */
+export enum PasswordOptionTypes {
+    ASK_PASSWORD = "ask-password",
+    CREATE_PASSWORD = "create-password"
+}
+
+/**
+ * Enum for wizard steps form types.
+ * @readonly
+ */
+export enum WizardStepsFormTypes {
+    USER_MODE = "UserMode",
+    BASIC_DETAILS = "BasicDetails",
+    INVITE_BASIC_DETAILS = "InviteBasicDetails",
+    ROLE_LIST= "RoleList",
+    GROUP_LIST= "GroupList",
+    SUMMARY = "summary",
+    USER_TYPE = "UserType",
+    USER_SUMMARY = "UserSummary"
 }

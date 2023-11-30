@@ -51,6 +51,9 @@
     {% if console.super_tenant_proxy_name is defined %}
         "superTenantProxy" : "{{ console.super_tenant_proxy_name }}",
     {% endif %}
+    {% if tenant_context.enable_tenant_qualified_urls is defined && tenant_context.require_super_tenant_in_urls is defined %}
+    "requireSuperTenantInUrls" : {{ tenant_context.enable_tenant_qualified_urls && tenant_context.require_super_tenant_in_urls }},
+    {% endif %}
     {% if console.doc_site_path is defined %}
     "docSiteUrl": "{{ console.doc_site_path }}",
     {% endif %}
@@ -198,7 +201,7 @@
             {% endif %}
         ],
         {% if console.ui.show_app_switch_button is defined %}
-        "showAppSwitchButton": "{{ console.ui.show_app_switch_button }}",
+        "showAppSwitchButton": {{ console.ui.show_app_switch_button }},
         {% endif %}
         "features": {
             {% if console.extensions.features is defined %}
@@ -621,6 +624,36 @@
                 }
             },
             {% endif %}
+            {% if console.console_settings is defined %}
+            "consoleSettings": {
+                "disabledFeatures": [
+                    {% if console.console_settings.disabled_features is defined %}
+                    {% for feature in console.console_settings.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.console_settings.enabled is defined %} {{ console.console_settings.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.console_settings.scopes is defined %}
+                    {% for operation, scopes in console.console_settings.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.developer_getting_started is defined %}
             "developerGettingStarted": {
                 "disabledFeatures": [
@@ -773,6 +806,20 @@
             {% endif %}
             {% if console.governance_connectors is defined %}
             "governanceConnectors": {
+                "deprecatedFeaturesToShow": [
+                    {% if console.governance_connectors.disabled_features is defined %}
+                    {% for feature in deprecated_features_to_show %}
+                    {
+                        "name": "{{ feature.name }}",
+                        "deprecatedProperties": [
+                            {% for property in feature.deprecated_properties %}
+                            "{{ property }}"{% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        ]
+                    }{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                    {% endif %}
+                ],
                 "disabledFeatures": [
                     {% if console.governance_connectors.disabled_features is defined %}
                     {% for feature in console.governance_connectors.disabled_features %}
@@ -1578,6 +1625,11 @@
         {% if console.ui.is_saas_deployment is defined %}
         "isSAASDeployment": {{ console.ui.saas_deployment }},
         {% endif %}
+        {% if event.default_listener.validation.enable is defined %}
+        "isPasswordInputValidationEnabled": {{ event.default_listener.validation.enable }},
+        {% else %}
+        "isPasswordInputValidationEnabled": true,
+        {% endif %}
         "isSignatureValidationCertificateAliasEnabled": {{ console.applications.ui.certificate_alias_enabled }},
         "listAllAttributeDialects": {{ console.list_all_attribute_dialects }},
         "privacyPolicyConfigs": {
@@ -1611,6 +1663,17 @@
                 {% endfor %}
             {% endif %}
         ],
+        "classicFeatures": {
+            {% if console.ui.classic_features.items() is defined %}
+            {% for key, value in console.ui.classic_features.items() %}
+            {% if value is string %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        },
         "theme": {
             "name": "{{ console.theme }}"
         }

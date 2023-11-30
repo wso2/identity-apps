@@ -292,7 +292,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         }
 
         const handleSMSConfigValues: Promise<SMSProviderAPIResponseInterface> = 
-            existingSMSProviders.includes(selectedProvider)
+            existingSMSProviders.length >= 1
                 ? updateSMSProvider(submittingValues)
                 : createSMSProvider(submittingValues);
         
@@ -318,6 +318,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             setSmsProviderSettings({ ...smsProviderSettings, providerParams: updatedParams });
             setIsSubmitting(false);
             handleUpdateSuccess();
+            setExistingSMSProviders([ provider + "SMSProvider" ]);
         })
             .catch(() => {
                 handleUpdateError();
@@ -530,7 +531,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
     };
 
     const handleBackButtonClick = () => {
-        history.push(`${ AppConstants.getDeveloperViewBasePath() }/notification-channels`);
+        history.push(`${AppConstants.getPaths().get("EMAIL_AND_SMS")}`);
     };
 
     return (
@@ -671,6 +672,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                 handleConfigurationDelete().finally(() => {
                                     setIsSubmitting(false);
                                     setOpenRevertConfigModal(false);
+                                    setExistingSMSProviders([]);
                                 });
 
                             } }

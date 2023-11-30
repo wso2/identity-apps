@@ -43,6 +43,7 @@
     supportedLanguages.put("es", "ES");
     supportedLanguages.put("pt", "PT");
     supportedLanguages.put("de", "DE");
+    supportedLanguages.put("zh", "CN");
     supportedLanguages.put("ja", "JP");
 
     // Check cookie for the user selected language first

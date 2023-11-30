@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,10 +23,11 @@ import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEqual from "lodash-es/isEqual";
-import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { TabProps } from "semantic-ui-react";
 import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
 import { UserRolesList } from "./user-roles-list";
@@ -35,10 +36,10 @@ import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { ServerConfigurationsInterface, getServerConfigs } from "../../../features/server-configurations";
 import { FeatureConfigInterface } from "../../core/models";
 import { AppState, store } from "../../core/store";
-import { GenericOrganization } from "../../organizations/models/organizations";
-import { OrganizationUtils } from "../../organizations/utils";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { ConnectorPropertyInterface } from "../../server-configurations/models";
 import { UserManagementConstants } from "../constants";
+import useUserManagement from "../hooks/use-user-management";
 
 interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
@@ -87,7 +88,9 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const { activeTab, updateActiveTab } = useUserManagement();
     const dispatch: Dispatch = useDispatch();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
@@ -100,15 +103,13 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     ] = useState<boolean>(false);
     const [ hideTermination, setHideTermination ] = useState<boolean>(false);
     const [ user, setUser ] = useState<ProfileInfoInterface>(selectedUser);
-
-    const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
-    const isRootOrganization: boolean = useMemo(() =>
-        OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
+    const [ isUserManagedByParentOrg, setIsUserManagedByParentOrg ] = useState<boolean>(false);
+    const [ isUserProfileReadOnly, setIsUserProfileReadOnly ] = useState<boolean>(false);
 
     useEffect(() => {
         //Since the parent component is refreshing twice we are doing a deep equals operation on the user object to
         //see if they are the same values. If they are the same values we do not do anything.
-        //This makes sure the child components or side effects depending on the user object won't 
+        //This makes sure the child components or side effects depending on the user object won't
         //re-render or re-trigger.
         if (!selectedUser || isEqual(user, selectedUser)) {
             return;
@@ -132,11 +133,18 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     }, [ user, readOnlyUserStores ]);
 
     useEffect(() => {
-        if (!OrganizationUtils.isCurrentOrganizationRoot()) {
+        if (!isSuperOrganization()) {
             return;
         }
 
         checkIsSuperAdmin();
+    }, [ user ]);
+
+    useEffect(() => {
+        if (user[ SCIMConfigs.scim.enterpriseSchema ]?.managedOrg) {
+            setIsUserManagedByParentOrg(true);
+            setIsUserProfileReadOnly(true);
+        }
     }, [ user ]);
 
     const handleAlerts = (alert: AlertInterface) => {
@@ -205,9 +213,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         onAlertFired={ handleAlerts }
                         user={ user }
                         handleUserUpdate={ handleUserUpdate }
-                        isReadOnly={ isReadOnly }
+                        isReadOnly={ isReadOnly || isUserProfileReadOnly }
                         connectorProperties={ connectorProperties }
                         isReadOnlyUserStoresLoading={ isReadOnlyUserStoresLoading }
+                        isUserManagedByParentOrg={ isUserManagedByParentOrg }
                     />
                 </ResourceTab.Pane>
             )
@@ -226,7 +235,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             )
         },
         // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
-        isRootOrganization ? {
+        isSuperOrganization ? {
             menuItem: t("console:manage.features.users.editUser.tab.menuItems.2"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -234,7 +243,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             )
         } : null,
-        OrganizationUtils.isCurrentOrganizationRoot() && {
+        isSuperOrganization && {
             menuItem: t("console:manage.features.users.editUser.tab.menuItems.3"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -252,7 +261,11 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     return (
         <ResourceTab
+            activeIndex={ activeTab }
             isLoading={ isLoading }
+            onTabChange={ (event: React.MouseEvent<HTMLDivElement>, data: TabProps) => {
+                updateActiveTab(data.activeIndex as number);
+            } }
             panes={ panes() }
         />
     );

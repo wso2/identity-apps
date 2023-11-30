@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,11 +16,12 @@
  * under the License.
  */
 
+import { UserCircleDotIcon } from "@oxygen-ui/react-icons";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { LinkButton, ListLayout, PrimaryButton } from "@wso2is/react-components";
+import { LinkButton, ListLayout, PrimaryButton, SecondaryButton } from "@wso2is/react-components";
 import kebabCase from "lodash-es/kebabCase";
 import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,11 +31,13 @@ import { ClaimsList, ListType } from "../../";
 import { attributeConfig } from "../../../../../extensions";
 import {
     AdvancedSearchWithBasicFilters,
+    AppConstants,
     AppState,
     EventPublisher,
     FeatureConfigInterface,
     UIConstants,
     filterList,
+    history,
     sortList
 } from "../../../../core";
 import { addExternalClaim } from "../../../api";
@@ -79,6 +82,15 @@ interface EditExternalClaimsPropsInterface extends TestableComponentInterface {
 }
 
 /**
+ * Interface for attribute sort by props.
+ */
+interface SortByInterface {
+    key: number;
+    text: string;
+    value: string;
+}
+
+/**
  * This lists the external claims.
  *
  * @param props - Props injected to the component.
@@ -102,7 +114,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     /**
      * Attributes to sort the list by
      */
-    const SORT_BY = [
+    const SORT_BY: SortByInterface[] = [
         {
             key: 0,
             text: t("console:manage.features.claims.external.attributes.attributeURI",
@@ -133,7 +145,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
     const [ triggerAddExternalClaim, setTriggerAddExternalClaim ] = useTrigger();
     const [ resetPagination, setResetPagination ] = useTrigger();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const { dialectID, claims, update, isLoading } = props;
 
@@ -189,7 +201,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
      * @param data - Dropdown data.
      */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-        setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
+        setSortBy(SORT_BY.filter((option: SortByInterface) => option.value === data.value)[ 0 ]);
     };
 
     /**
@@ -237,7 +249,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
 
     const handleAttributesSubmit = (claims: AddExternalClaim[]): void => {
 
-        const addAttributesRequests = claims.map((claim: AddExternalClaim) => {
+        const addAttributesRequests: Promise<AddExternalClaim>[] = claims.map((claim: AddExternalClaim) => {
             return addExternalClaim(dialectID, {
                 claimURI: claim.claimURI,
                 mappedLocalClaimURI: claim.mappedLocalClaimURI
@@ -259,7 +271,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
             ));
             update();
             updateMappedClaims(true);
-        }).catch(error => {
+        }).catch((error: any) => {
             dispatch(addAlert(
                 {
                     description: error?.description
@@ -336,32 +348,57 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
             totalPages={ Math.ceil(filteredClaims?.length / listItemLimit) }
             totalListSize={ filteredClaims?.length }
             rightActionPanel={
-                attributeConfig?.editAttributeMappings?.showAddExternalAttributeButton(dialectID) && hasRequiredScopes(
-                    featureConfig?.attributeDialects,
-                    featureConfig?.attributeDialects?.scopes?.create, allowedScopes
-                ) && (
-                    /**
-                     * `loading` property is used to check whether the current selected
-                     * dialect is same as the dialect which the claims are loaded.
-                     * If it's different, this condition will wait until the correct
-                     * dialects are loaded onto the view.
-                     */
-                    <PrimaryButton
-                        loading={ claims && attributeUri !== claims[0]?.claimDialectURI  }
-                        onClick={ (): void => {
-                            if (attributeUri !== claims[0]?.claimDialectURI ) {
-                                return;
+                (<>
+                    { attributeConfig?.editAttributeMappings?.showAddExternalAttributeButton(dialectID) &&
+                    hasRequiredScopes(
+                        featureConfig?.attributeDialects,
+                        featureConfig?.attributeDialects?.scopes?.create,
+                        allowedScopes
+                    ) && (
+                        /**
+                         * `loading` property is used to check whether the current selected
+                         * dialect is same as the dialect which the claims are loaded.
+                         * If it's different, this condition will wait until the correct
+                         * dialects are loaded onto the view.
+                         */
+                        <PrimaryButton
+                            loading={ claims && attributeUri !== claims[0]?.claimDialectURI }
+                            onClick={ (): void => {
+                                if (attributeUri !== claims[0]?.claimDialectURI) {
+                                    return;
+                                }
+                                setShowAddExternalClaim(true);
+                            } }
+                            disabled={ showAddExternalClaim || (claims && attributeUri !== claims[0]?.claimDialectURI) }
+                            data-testid={ `${testId}-list-layout-add-button` }
+                        >
+                            <Icon name="add" />
+                            {
+                                t("console:manage.features.claims.external.pageLayout.edit.primaryAction",
+                                    { type: resolveType(attributeType, true) }
+                                )
                             }
-                            setShowAddExternalClaim(true);
-                        } }
-                        disabled={ showAddExternalClaim || (claims && attributeUri !== claims[0]?.claimDialectURI) }
-                        data-testid={ `${ testId }-list-layout-add-button` }
-                    >
-                        <Icon name="add"/>
-                        { t("console:manage.features.claims.external.pageLayout.edit.primaryAction",
-                            { type: resolveType(attributeType, true) }) }
-                    </PrimaryButton>
-                ) }
+                        </PrimaryButton>
+                    ) }
+                    { attributeType === ClaimManagementConstants.OIDC &&
+                    featureConfig?.oidcScopes?.enabled &&
+                    hasRequiredScopes(
+                        featureConfig?.oidcScopes,
+                        featureConfig?.oidcScopes?.scopes?.feature,
+                        allowedScopes
+                    ) && (
+                        <SecondaryButton
+                            onClick={ () => {
+                                history.push(AppConstants.getPaths().get("OIDC_SCOPES"));
+                            } }
+                            data-componentid={ `${testId}-oidc-scopes-button` }
+                        >
+                            <UserCircleDotIcon fill="black" className="icon" />
+                            { t("console:develop.features.sidePanel.oidcScopes") }
+                        </SecondaryButton>
+                    ) }
+                </>)
+            }
             data-testid={ `${ testId }-list-layout` }
         >
             {

@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import { RoleGroupsInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { SCIMConfigs } from "apps/console/src/extensions/configs/scim";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import { AppConstants } from "../../../features/core";
-import { GroupsInterface } from "../../groups";
 import { UserBasicInterface } from "../../users/models/user";
 import { getPermissionList, searchRoleList } from "../api";
 import { generatePermissionTree } from "../components/role-utils";
@@ -103,8 +103,8 @@ export class RoleManagementUtils {
      * @param nameWithUserstore - name with userstore
      * @returns - display name
      */
-    private static getDisplayName = (nameWithUserstore: string): string => 
-        nameWithUserstore.split("/").length > 1
+    public static getDisplayName = (nameWithUserstore: string): string => 
+        nameWithUserstore?.split("/").length > 1
             ? nameWithUserstore?.split("/")[1]
             : nameWithUserstore;
 
@@ -114,7 +114,7 @@ export class RoleManagementUtils {
      * @param group - group
      * @returns - display name of the group
      */
-    public static getGroupDisplayName = (group: GroupsInterface): string => this.getDisplayName(group?.displayName);
+    public static getGroupDisplayName = (group: RoleGroupsInterface): string => this.getDisplayName(group?.display);
 
     /**
      * Get the display name of the user.
@@ -180,4 +180,39 @@ export class RoleManagementUtils {
         }
     };
 
+    /**
+     * Groups the role groups by the identity provider ID.
+     * 
+     * @param roleGroups - List of role groups.
+     * @returns A map of role groups grouped by the identity provider ID.
+     */
+    public static getRoleGroupsGroupedByIdp = (
+        roleGroups: RoleGroupsInterface[]
+    ): Map<string, RoleGroupsInterface[]> => {
+        const categorizedGroups: Map<string, RoleGroupsInterface[]> = new Map<string, RoleGroupsInterface[]>();
+
+        if (roleGroups?.length > 0) {
+            roleGroups.forEach((group: RoleGroupsInterface) => {
+                const ref: string = group.$ref;
+                let idpId: string;
+            
+                // Extract the identity provider ID from the $ref attribute.
+                const match: RegExpMatchArray = ref.match(/identity-providers\/([^/]+)/);
+
+                if (match) {
+                    idpId = match[1];
+                } else {
+                    idpId = "LOCAL"; // A default category for groups not belonging to an identity provider.
+                }
+            
+                if (!categorizedGroups[idpId]) {
+                    categorizedGroups[idpId] = [];
+                }
+            
+                categorizedGroups[idpId].push(group);
+            });
+        }
+
+        return categorizedGroups;
+    };
 }

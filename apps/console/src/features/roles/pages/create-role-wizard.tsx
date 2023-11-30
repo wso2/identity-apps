@@ -29,7 +29,7 @@ import { Dispatch } from "redux";
 import { AppConstants } from "../../core/constants";
 import { history } from "../../core/helpers";
 import { store } from "../../core/store";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { createRole } from "../api/roles";
 import { RoleBasics } from "../components/wizard-updated/role-basics";
 import { RolePermissionsList } from "../components/wizard-updated/role-permissions/role-permissions";
@@ -60,7 +60,7 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { isRootOrganization } = useGetOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     const [ stepperState, setStepperState ] = useState<CreateRoleStateInterface>(undefined);
     const [ isBasicDetailsNextButtonDisabled, setIsBasicDetailsNextButtonDisabled ] = useState<boolean>(true);
@@ -98,21 +98,24 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
                 )) || [];
     
             const roleData: CreateRoleInterface = {
-                displayName: stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ].roleName,
-                permissions: selectedPermissionsList,
-                schemas: []
-            };
-
-            // If the organization is a super or first level organization, no need to send the audience.
-            if (!isRootOrganization) {
-                roleData.audience = roleAudience === RoleAudienceTypes.ORGANIZATION
+                audience: roleAudience === RoleAudienceTypes.ORGANIZATION
                     ? {
                         type: roleAudience,
                         value: organizationId
                     } : {
                         type: roleAudience,
                         value: stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ].assignedApplicationId
-                    };
+                    },
+                displayName: stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ].roleName,
+                permissions: selectedPermissionsList,
+                schemas: []
+            };
+
+            // If the organization is super or a first level organization,
+            // no need to send the audience for Organization audience.
+            if ((isSuperOrganization() || isFirstLevelOrganization()) && 
+                roleAudience === RoleAudienceTypes.ORGANIZATION) {
+                delete roleData.audience;
             }
     
             // Create Role API Call.

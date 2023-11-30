@@ -229,7 +229,7 @@
         "features": {
             "administrators": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "update": [],
                     "read": [],
@@ -372,9 +372,7 @@
                 }
             },
             "applications": {
-                "disabledFeatures": [
-                    "applications.loginFlow.legacyEditor"
-                ],
+                "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
                     "feature": [
@@ -455,6 +453,29 @@
                     ]
                 }
             },
+            "consoleSettings": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_role_mgt_create"
+                    ],
+                    "update": [
+                        "internal_application_mgt_update",
+                        "internal_user_mgt_update"
+                    ],
+                    "read": [
+                        "internal_application_mgt_view",
+                        "internal_user_mgt_list",
+                        "internal_role_mgt_view",
+                        "internal_guest_mgt_invite_list",
+                        "internal_idp_view"
+                    ],
+                    "delete": [
+                        "internal_guest_mgt_invite_delete"
+                    ]
+                }
+            },
             "emailProviders": {
                 "disabledFeatures": [ "superTenantProvider" ],
                 "enabled": true,
@@ -510,6 +531,7 @@
                 }
             },
             "governanceConnectors": {
+                "deprecatedFeaturesToShow": [],
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
@@ -917,6 +939,24 @@
                 "enabled": false,
                 "scopes": {}
             },
+            "diagnosticLogs": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "update": [
+                        "internal_application_mgt_view"
+                    ]
+                }
+            },
+            "auditLogs": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "update": [
+                        "internal_application_mgt_view"
+                    ]
+                }
+            },
             "remoteLogging": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -926,18 +966,27 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {}
+            },
+            "server": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [],
+                    "read": [],
+                    "update": [],
+                    "delete": []
+                }
             }
         },
         "gravatarConfig": {
             "fallback": "404"
         },
         "hiddenAuthenticators": [],
-        "hiddenConnectionTemplates": [],
-        "hiddenUserStores": [
-            "ASGARDEO-USER",
-            "LITE-USER",
-            "DEFAULT"
+        "hiddenConnectionTemplates": [
+            "hypr-idp",
+            "swe-idp"
         ],
+        "hiddenUserStores": [],
         "i18nConfigs": {
             "showLanguageSwitcher": false,
             "langAutoDetectEnabled": false
@@ -966,6 +1015,7 @@
         "isRequestPathAuthenticationEnabled": false,
         "isLeftNavigationCategorized": true,
         "isSAASDeployment": false,
+        "isPasswordInputValidationEnabled": true,
         "isSignatureValidationCertificateAliasEnabled": false,
         "listAllAttributeDialects": true,
         "privacyPolicyConfigs": {},
@@ -978,6 +1028,14 @@
             "Console",
             "My Account"
         ],
+        "classicFeatures": {
+            "isRequestPathAuthenticationEnabled": false,
+            "isApplicationLevelRoleMappingEnabled": false,
+            "isXacmlAuthorizationEnabled": false,
+            "isIncludeOrgNameInSubjectEnabled": false,
+            "isUseMappedLocalSubjectEnabled": false,
+            "isSubjectIdentifierEnabled": false
+        },
         "theme": {
             "name": "wso2is"
         }

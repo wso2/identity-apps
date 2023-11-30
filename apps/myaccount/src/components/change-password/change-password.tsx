@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,6 @@ import { updatePassword } from "../../api";
 import { fetchPasswordValidationConfig, getPasswordConfig } from "../../api/validation";
 import { getSettingsSectionIcons } from "../../configs";
 import { CommonConstants } from "../../constants";
-import { passwordValidationConfig } from "../../extensions/configs/password-validation";
 import { AlertInterface, AlertLevels } from "../../models";
 import { ValidationFormInterface } from "../../models/validation";
 import { AppState } from "../../store";
@@ -78,14 +77,16 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     const { t } = useTranslation();
     const dispatch: Dispatch<any> = useDispatch();
 
+    const showPasswordValidation: boolean = useSelector((state: AppState) =>
+        state?.config?.ui?.isPasswordInputValidationEnabled);
+
     const endUserSession: () => Promise<boolean> = useEndUserSession();
 
     /**
      * Get the configurations.
      */
     useEffect(() => {
-
-        if (passwordValidationConfig.showPasswordValidation) {
+        if (showPasswordValidation) {
             getConfigurations();
         }
     }, []);
@@ -109,7 +110,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
      */
     const handleSubmit = (): void => {
 
-        if (!passwordValidationConfig.showPasswordValidation) {
+        if (!showPasswordValidation) {
             setShowConfirmationModal(true);
         } else {
             if (isValidPassword) {
@@ -385,7 +386,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         } }
                     />
 
-                    { (passwordValidationConfig.showPasswordValidation  && passwordConfig) &&
+                    { (showPasswordValidation  && passwordConfig) &&
                         (<Form.Field width={ 9 } data-testid={ `${testId}-new-password-validation-field` }>
                             <PasswordValidation
                                 password={ password }

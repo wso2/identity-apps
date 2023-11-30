@@ -32,6 +32,32 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<%!
+    private boolean isMultiAuthAvailable(String multiOptionURI) {
+        boolean isMultiAuthAvailable = true;
+        if (multiOptionURI == null || multiOptionURI.equals("null")) {
+            isMultiAuthAvailable = false;
+        } else {
+            int authenticatorIndex = multiOptionURI.indexOf("authenticators=");
+            if (authenticatorIndex == -1) {
+                isMultiAuthAvailable = false;
+            } else {
+                String authenticators = multiOptionURI.substring(authenticatorIndex + 15);
+                int authLastIndex = authenticators.indexOf("&") != -1 ? authenticators.indexOf("&") : authenticators.length();
+                authenticators = authenticators.substring(0, authLastIndex);
+                List<String> authList = new ArrayList<>(Arrays.asList(authenticators.split("%3B")));
+                if (authList.size() < 2) {
+                    isMultiAuthAvailable = false;
+                }
+                else if (authList.size() == 2 && authList.contains("backup-code-authenticator%3ALOCAL")) {
+                    isMultiAuthAvailable = false;
+                }
+            }
+        }
+        return isMultiAuthAvailable;
+    }
+%>
+
 <%
     request.getSession().invalidate();
     String queryString = request.getQueryString();
@@ -210,16 +236,6 @@
                             <input type='hidden' name='resendCode' id='resendCode' value='false'/>
 
                             <div class="ui divider hidden"></div>
-                            <div class="buttons">
-                                <input type="button" name="authenticate" id="authenticate"
-                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
-                                class="ui primary fluid button"/>
-                                <a class="ui button fluid secondary mt-3" tabindex="0"
-                                id="resend"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.code")%>
-                                </a>
-                            </div>
-
-                            <div class="ui divider hidden"></div>
 
                             <% if (request.getParameter("multiOptionURI") != null &&
                                 AuthenticationEndpointUtil.isValidURL(request.getParameter("multiOptionURI")) &&
@@ -240,6 +256,15 @@
                                         </div>
                                 </div>
                             <% }%>
+                            <div class="ui divider hidden"></div>
+                            <div class="buttons">
+                                <input type="button" name="authenticate" id="authenticate"
+                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
+                                class="ui primary fluid button"/>
+                                <a class="ui button fluid secondary mt-3" tabindex="0"
+                                id="resend"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.code")%>
+                                </a>
+                            </div>
 
                             <input id="multiOptionURI" type="hidden" name="multiOptionURI"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("multiOptionURI"))%>' />
@@ -266,7 +291,8 @@
                 <div class="ui divider hidden"></div>
                 <%
                     String multiOptionURI = request.getParameter("multiOptionURI");
-                    if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI)) {
+                    if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
+                    isMultiAuthAvailable(multiOptionURI)) {
                 %>
                     <a class="ui primary basic button link-button" id="goBackLink"
                     href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>

@@ -33,7 +33,6 @@ import {
     OrganizationEnterpriseConnectionCreateWizardContent
 } from "./organization-enterprise-connection-create-wizard-content";
 import {
-    AppConstants,
     EventPublisher,
     ModalWithSidePanel,
     TierLimitReachErrorModal
@@ -265,18 +264,7 @@ export const OrganizationEnterpriseConnectionCreateWizard: FunctionComponent<
         identityProvider.description = values.description?.toString();
         identityProvider.templateId = template.templateId;
 
-        // // TODO: Refactor the usage of absolute image paths once Media Service is available.
-        // // Tracked here - https://github.com/wso2/product-is/issues/12396
-        if (AppConstants.getClientOrigin()) {
-            if (AppConstants.getAppBasename()) {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                "/" + AppConstants.getAppBasename() +
-                "/libs/themes/default/assets/images/identity-providers/organization-sso.svg";
-            } else {
-                identityProvider.image = AppConstants.getClientOrigin() +
-                "/libs/themes/default/assets/images/identity-providers/organization-sso.svg";
-            }
-        }
+        identityProvider.image = "assets/images/logos/organization-sso.svg";
 
         handleWizardFormFinish(identityProvider);
     };

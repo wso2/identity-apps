@@ -35,6 +35,7 @@ export interface FieldInputPropsInterface extends FormFieldPropsInterface {
      */
     inputType: "default"
         | "identifier"
+        | "text"
         | "name"
         | "number"
         | "resource_name"

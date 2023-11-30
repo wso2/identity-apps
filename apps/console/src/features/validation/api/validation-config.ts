@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -220,7 +220,7 @@ const preparePasswordValidationConfigData = (values: ValidationFormInterface): V
 };
 
 const prepareUsernameValidationConfigData = (values: ValidationFormInterface): ValidationDataInterface => {
- 
+
     if (!values || values?.field === "password") {
         return;
     }
@@ -239,7 +239,6 @@ const prepareUsernameValidationConfigData = (values: ValidationFormInterface): V
                 validator: "EmailFormatValidator"
             }
         );
-        
     } else {
         rules.push(
             {
@@ -247,6 +246,10 @@ const prepareUsernameValidationConfigData = (values: ValidationFormInterface): V
                     {
                         key: "enable.validator",
                         value: "true"
+                    },
+                    {
+                        key: "enable.special.characters",
+                        value: `${!values.isAlphanumericOnly}`
                     }
                 ],
                 validator: "AlphanumericValidator"

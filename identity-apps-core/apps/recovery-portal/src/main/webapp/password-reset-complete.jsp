@@ -149,8 +149,9 @@
                 request.setAttribute(ERROR_CODE, error.getCode());
                 if (passwordHistoryErrorCode.equals(error.getCode()) ||
                         passwordPatternErrorCode.equals(error.getCode())) {
-                    String i18Resource = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error." + error.getCode());
-                    if (!i18Resource.equals(error.getCode())) {
+                    String i18nKey = "error." + error.getCode(); 
+                    String i18Resource = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, i18nKey);
+                    if (!i18Resource.equals(i18nKey)) {
                         request.setAttribute(ERROR_MESSAGE, i18Resource);
                     }
                     request.setAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN, tenantDomain);

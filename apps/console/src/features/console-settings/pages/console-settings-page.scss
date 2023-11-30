@@ -1,0 +1,18 @@
+.console-url-copy-field {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 15px;
+    
+    .MuiInputBase-root {
+        min-width: 400px;
+        
+        &.Mui-readOnly {
+            cursor: default;
+            background-color: #e9ecef!important;
+        }
+    }
+}

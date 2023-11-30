@@ -141,7 +141,7 @@ export const AddAPIResourcePermissions: FunctionComponent<AddAPIResourcePermissi
                             as="h5"
                             className="bold-text mb-2"
                         >
-                            { t("extensions:develop.apiResource.wizard.addApiResource.steps.permissions.form." +
+                            { t("console:apiResources.wizard.addApiResource.steps.scopes.form." +
                                 "fields.permissionList.label") }
                         </Header>
                         <EmphasizedSegment className="mt-0">

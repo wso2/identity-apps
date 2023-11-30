@@ -17,7 +17,6 @@
  */
 
 import {
-    BuildingPenIcon,
     DatabaseDocumentIcon,
     PaletteIcon,
     SquareUserIcon
@@ -268,12 +267,6 @@ export class RouteUtils {
             name: "User Attributes & Stores"
         };
 
-        const organizationManagement: Omit<RouteInterface, "showOnSidePanel"> = {
-            icon: BuildingPenIcon,
-            id: "organizationManagement",
-            name: "Organization Management"
-        };
-
         const branding: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: PaletteIcon,
             id: "customization",
@@ -398,12 +391,11 @@ export class RouteUtils {
                 parent: branding
             },
             {
-                category: build,
-                id: "notification-channels",
-                parent: branding,
+                category: settings,
+                id: "email-and-sms",
                 selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
                     history.location.pathname === AppConstants.getPaths().get("SMS_PROVIDER") ||
-                    history.location.pathname === `${ AppConstants.getDeveloperViewBasePath() }/notification-channels`
+                    history.location.pathname === AppConstants.getPaths().get("EMAIL_AND_SMS")
             },
             {
                 category: settings,
@@ -413,16 +405,6 @@ export class RouteUtils {
                 category: build,
                 id: "emailProviders",
                 parent: branding
-            },
-            {
-                category: manage,
-                id: "organizations",
-                parent: organizationManagement
-            },
-            {
-                category: manage,
-                id: "organizationDiscovery",
-                parent: organizationManagement
             },
             {
                 category: monitoring,

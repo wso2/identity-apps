@@ -431,8 +431,8 @@ export const extensions: Extensions = {
     develop: {
         apiResource: {
             pageHeader: {
-                description: "Create and manage the API resources used to define the API scopes/permissions that can be consumed by your applications.",
-                title: "API Resources"
+                description: "Create and manage the APIs used to define the API scopes/permissions that can be consumed by your applications.",
+                title: "APIs"
             },
             empty: "There are no API resources available at the moment.",
             managedByChoreoText: "Managed by Choreo",
@@ -443,7 +443,7 @@ export const extensions: Extensions = {
                 },
                 title: "Something went wrong"
             },
-            addApiResourceButton: "New API Resource",
+            addApiResourceButton: "New API",
             confirmations: {
                 deleteAPIResource: {
                     assertionHint: "Please confirm your action.",
@@ -459,6 +459,10 @@ export const extensions: Extensions = {
                     message: "If you remove this permission from the API resource, some functionalities may not work properly. " +
                         "Please proceed with caution."
                 }
+            },
+            managementAPI: {
+                header: "Management APIs",
+                description: "APIs to manage resources in your organization (root)"
             },
             notifications: {
                 deleteAPIResource: {
@@ -551,6 +555,10 @@ export const extensions: Extensions = {
                         message: "API resource created"
                     }
                 }
+            },
+            organizationAPI: {
+                header: "Organization APIs",
+                description: "APIs to manage resources in your other organizations"
             },
             table: {
                 name: {
@@ -693,8 +701,8 @@ export const extensions: Extensions = {
                     nextButton: "Next",
                     previousButton: "Previous",
                     submitButton: "Finish",
-                    title: "Add API Resource",
-                    subtitle: "Create a new API resource",
+                    title: "Add API",
+                    subtitle: "Create a new API",
                     steps: {
                         basic: {
                             stepTitle: "Basic Details",
@@ -1981,14 +1989,14 @@ export const extensions: Extensions = {
             }
         },
         emailProviders: {
-            configureEmailProvider: "Configure Email Provider",
-            heading: "Email Provider",
+            configureEmailTemplates: "Configure Email Templates",
+            heading: "Custom Email Provider",
             subHeading: "Configure a custom SMTP server to send emails to your users with your own email address.",
-            description: "Configure the following settings according to your SMTP server.",
+            description: "Configure the email provider settings according to your SMTP server.",
             info: "You can customize the email content using <1>Email Templates</1>.",
             updateButton: "Update",
             sendTestMailButton: "Send Test Email",
-            goBack: "Go back to Notification Channels",
+            goBack: "Go back to Email & SMS",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
                 content: "If you delete this configuration, the emails will be sent from the Asgardeo Email Address. " +
@@ -2081,19 +2089,31 @@ export const extensions: Extensions = {
                 }
             }
         },
-        notificationChannel: {
-            heading: "Notification Channels",
-            title: "Notification Channels",
-            description: "Configure the notification channels for your organization."
+        emailAndSMS: {
+            heading: {
+                heading: "Email & SMS Providers",
+                onlySMSProvider: "SMS Provider",
+                onlyEmailProvider: "Email Provider"
+            },
+            title: {
+                heading: "Email & SMS Providers",
+                onlySMSProvider: "SMS Provider",
+                onlyEmailProvider: "Email Provider"
+            },
+            description: {
+                description: "Configure the Email and SMS providers for your organization.",
+                onlySMSProvider: "Configure the SMS provider for your organization.",
+                onlyEmailProvider: "Configure the Email provider for your organization."
+            }
         },
         smsProviders: {
-            heading: "SMS Provider",
+            heading: "Custom SMS Provider",
             subHeading: "Configure a custom SMS provider to send SMS to your users.",
-            description: "Configure the following settings according to your SMS provider.",
+            description: "Configure the SMS provider settings according to your SMS provider.",
             info: "You can customize the SMS content using <1>SMS Templates</1>.",
             updateButton: "Update",
             sendTestSMSButton: "Send Test SMS",
-            goBack: "Go back to Notification Channels",
+            goBack: "Go back to Email & SMS",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
                 content: "If you delete this configuration, you will not receive SMS." +
@@ -2686,6 +2706,38 @@ export const extensions: Extensions = {
                                 "Go to <1>Sign-in Method</1> tab and click on <3>Add Passkey Login</3> to configure " +
                                 " a basic passkey flow.",
                             heading: "Select <1>Add Passkey Login</1>"
+                        },
+                        configureParameters: {
+                            heading: "Configure passkey options",
+                            content: {
+                                parameters: {
+                                    progressiveEnrollment: {
+                                        description: "Activate this option to allow users to enroll for a " +
+                                        "passkey during login.",
+                                        label: "Progressive Passkey Enrollment:",
+                                        note: "If Passkey is set as a first factor, the following " +
+                                        "<1> adaptive script</1> should be added under " +
+                                        "the <3>Sign-In-Method</3> tab of the application. " +
+                                        "This script is added automatically with the template-based " +
+                                        "Passkey setup and is used to verify the user's " +
+                                        "identity before enrolling passkeys. " +
+                                        "However, if you're configuring Passkey " +
+                                        "without a template, remember to add the script manually."
+                                    },
+                                    usernamelessAuthentication: {
+                                        description: "Enabling this feature allows users to log in with a passkey " +
+                                        "without entering a username, creating a more streamlined " +
+                                        "sign-in experience.",
+                                        label: "Usernameless Authentication:"
+                                    }
+                                },
+                                steps: {
+                                    info: "To configure, please follow the steps below:",
+                                    1: "Navigate to the <1>Connections</1> area.",
+                                    2: "Locate and select the <1>Passkey</1> connection.",
+                                    3: "Navigate to the <1>Settings</1> tab."
+                                }
+                            }
                         }
                     },
                     subHeading: "Follow the instructions given below to set up passkey login in your login flow."
@@ -2773,7 +2825,8 @@ export const extensions: Extensions = {
                     }
                 },
                 searchBar: {
-                    placeholder: "Search Logs by Trace ID, Action ID, Client ID, Result Message, or Result Status"
+                    placeholderDiagnostic: "Search Logs by Trace ID, Action ID, Client ID, Result Message, or Result Status",
+                    placeholderAudit: "Search Logs by Action, Target ID, Initiator ID, Request ID"
                 },
                 refreshMessage: {
                     text: "Last fetched logs at ",
@@ -2784,6 +2837,9 @@ export const extensions: Extensions = {
                 },
                 queryButton: {
                     label: "Run Query"
+                },
+                downloadButton : {
+                    label : "Download log data"
                 },
                 delayMessage: {
                     text: "Some queries may take longer to load."
@@ -2797,7 +2853,7 @@ export const extensions: Extensions = {
             notifications: {
                 genericError: {
                     subtitle: {
-                        0: "Couldn't fetch diagnostic logs.",
+                        0: "Couldn't fetch logs.",
                         1: "Please try again."
                     },
                     title: "Something went wrong"
@@ -2827,8 +2883,8 @@ export const extensions: Extensions = {
                 }
             },
             pageHeader: {
-                description: "Query your logs to troubleshoot production application issues.",
-                title: "Diagnostic Logs"
+                description: "Query your logs to troubleshoot issues and monitor resource activities.",
+                title: "Logs"
             },
             tooltips: {
                 copy: "Copy to clipboard"
@@ -3011,10 +3067,14 @@ export const extensions: Extensions = {
                 usernameType: "Select username type",
                 usernameTypeHint: "Allow users to set an email or a combination of alphanumeric characters for the username.",
                 emailType: "Email",
-                alphanumericType: "Alphanumeric (a-z, A-Z, 0-9)",
-                usernameLength: "Set username length",
-                usernameLengthMin: "Min",
-                usernameLengthMax: "Max"
+                customType: "Custom",
+                usernameLength: {
+                    0: "Must be between",
+                    1: "and",
+                    2: "characters."
+                },
+                usernameAlphanumeric: "Restrict to alphanumeric (a-z, A-Z, 0-9).",
+                usernameSpecialCharsHint: "Any combination of letters (a-z, A-Z), numbers (0-9), and the following characters: !@#$%&'*+\\=?^_`.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "Alternative Login Identifiers",
@@ -3256,8 +3316,12 @@ export const extensions: Extensions = {
                         },
                         usernameHint: "Must be an alphanumeric (a-z, A-Z, 0-9) string between {{minLength}} to " +
                             "{{maxLength}} characters including at least one letter.",
+                        usernameSpecialCharHint: "Must be {{minLength}} to {{maxLength}} characters long and " +
+                            "may only contain a combination of letters (a-z, A-Z), " +
+                            "numbers (0-9), and the following characters: !@#$%&'*+\\=?^_`.{|}~-.",
                         usernameLength: "The username length should be between {{minLength}} and {{maxLength}}.",
-                        usernameSymbols: "The username should consist of alphanumeric characters (a-z, A-Z, 0-9) and must include at least one letter."
+                        usernameSymbols: "The username should consist of alphanumeric characters (a-z, A-Z, 0-9) and must include at least one letter.",
+                        usernameSpecialCharSymbols: "Please choose a valid username that adheres to the given guidelines."
                     }
                 }
             },

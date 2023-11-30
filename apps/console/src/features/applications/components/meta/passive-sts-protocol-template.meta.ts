@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import { ApplicationManagementConstants } from "../../constants";
 import {
     ApplicationTemplateInterface,
     ApplicationTemplateListItemInterface,
     DefaultProtocolTemplate
 } from "../../models";
-import {ApplicationManagementConstants} from "../../constants";
 
 export const PassiveStsProtocolTemplateItem: ApplicationTemplateListItemInterface = {
     authenticationProtocol: "passive-sts",
@@ -37,7 +37,8 @@ export const PassiveStsProtocolTemplate: ApplicationTemplateInterface = {
         inboundProtocolConfiguration: {
             passiveSts: {
                 realm: "",
-                replyTo: ""
+                replyTo: "",
+                replyToLogout: ""
             }
         },
         name: ""

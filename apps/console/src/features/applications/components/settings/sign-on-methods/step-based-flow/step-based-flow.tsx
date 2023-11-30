@@ -342,6 +342,15 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         }
 
         const isValid: boolean = validateStepAddition(authenticator, steps[ stepIndex ].options);
+        const isFirstFactorAuth: boolean =
+            ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS.includes(authenticatorId);
+        const isSecondFactorAuth: boolean =
+            ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId);
+        const isValidSecondFactorAddition: boolean = SignInMethodUtils.isSecondFactorAdditionValid(
+            authenticator?.defaultAuthenticator?.authenticatorId,
+            stepIndex,
+            steps
+        );
 
         if (ApplicationManagementConstants.HANDLER_AUTHENTICATORS.includes(authenticatorId)) {
             setShowHandlerDisclaimerModal(true);
@@ -349,10 +358,13 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         // If the adding option is a second factor, and if the adding step is the first or there are no
         // first factor authenticators in previous steps, show a warning and stop adding the option.
-        if (ApplicationManagementConstants.SECOND_FACTOR_AUTHENTICATORS.includes(authenticatorId)
-            && (stepIndex === 0
-                || !SignInMethodUtils.isSecondFactorAdditionValid(authenticator.defaultAuthenticator.authenticatorId,
-                    stepIndex, steps))) {
+        if (
+            isSecondFactorAuth
+            && (
+                (!isFirstFactorAuth && (stepIndex === 0 || !isValidSecondFactorAddition))
+                || (isFirstFactorAuth && stepIndex !== 0 && !isValidSecondFactorAddition)
+            )
+        )  {
 
             dispatch(
                 addAlert({
@@ -485,7 +497,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 // If the step that the deleting authenticator has no other first factors or handlers,
                 // start evaluation other options.
                 if ((onlySecondFactorsRequiringHandlersOnRight && secondFactorHandlersInTheStep <= 1)
-                    || (!onlySecondFactorsRequiringHandlersOnRight && firstFactorsInTheStep <= 1 
+                    || (!onlySecondFactorsRequiringHandlersOnRight && firstFactorsInTheStep <= 1
                     && isDeletingOptionFirstFactor)) {
 
                     // If there is TOTP or Email OTP on the right, evaluate if the left side has necessary handlers.
@@ -887,7 +899,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     );
 
     /**
-     * Subject or attribute step needs to be increased when the identifier first authenticator 
+     * Subject or attribute step needs to be increased when the identifier first authenticator
      * is added to a step, and it's set as subject or attribute step.
      * This handles the related validations.
      */

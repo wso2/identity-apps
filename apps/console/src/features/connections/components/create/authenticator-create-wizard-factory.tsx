@@ -25,6 +25,7 @@ import {
     EnterpriseConnectionCreateWizard 
 } from "./enterprise-connection-create-wizard";
 import { useGetConnectionTemplate, useGetConnections } from "../../api/connections";
+import { ConnectionManagementConstants } from "../../constants/connection-constants";
 import {
     ConnectionTemplateInterface,
     GenericConnectionCreateWizardPropsInterface,
@@ -41,7 +42,6 @@ import {
     OrganizationEnterpriseConnectionCreateWizard 
 } from "../wizards/organization-enterprise/organization-enterprise-connection-create-wizard";
 import { TrustedTokenIssuerCreateWizard } from "../wizards/trusted-token-issuer-create-wizard";
-import { ConnectionManagementConstants } from "../../constants/connection-constants";
 
 /**
  * Proptypes for the Authenticator Create Wizard factory.
@@ -329,7 +329,11 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
             case ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID:
                 return (
                     <ExpertModeAuthenticationProviderCreateWizard
-                        title={ selectedTemplateWithUniqueName?.name }
+                        title={
+                            selectedTemplateWithUniqueName?.name === "Expert Mode"
+                                ? "Custom Connector"
+                                : selectedTemplateWithUniqueName?.name
+                        }
                         subTitle={ selectedTemplateWithUniqueName?.description }
                         onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);

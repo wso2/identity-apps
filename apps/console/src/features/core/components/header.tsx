@@ -65,7 +65,7 @@ import { getApplicationList } from "../../applications/api";
 import { ApplicationListInterface } from "../../applications/models";
 import useAuthorization from "../../authorization/hooks/use-authorization";
 import { OrganizationSwitchBreadcrumb } from "../../organizations/components/organization-switch";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
@@ -130,7 +130,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
     const { tierName }: TenantTierRequestResponse = useContext(SubscriptionContext);
 
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const { legacyAuthzRuntime }  = useAuthorization();
 
@@ -518,33 +518,34 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             </MenuItem>
                         </Show>
                     ),
-                    isShowAppSwitchButton() ? (
-                        <MenuItem
-                            color="inherit"
-                            key={ t(
-                                "myAccount:components.header.appSwitch.console.name"
-                            ) }
-                            onClick={ () => {
-                                eventPublisher.publish(
-                                    "console-click-visit-my-account"
-                                );
-                                window.open(
-                                    isPrivilegedUser
-                                        ? privilegedUserAccountURL
-                                        : accountAppURL,
-                                    "_blank",
-                                    "noopener"
-                                );
-                            } }
-                        >
-                            <ListItemIcon>
-                                <MyAccountIcon />
-                            </ListItemIcon>
-                            <ListItemText>
-                                { t("console:common.header.appSwitch.myAccount.name") }
-                            </ListItemText>
-                        </MenuItem>
-                    ) : null
+                    isShowAppSwitchButton() 
+                        ? (
+                            <MenuItem
+                                color="inherit"
+                                key={ t(
+                                    "myAccount:components.header.appSwitch.console.name"
+                                ) }
+                                onClick={ () => {
+                                    eventPublisher.publish(
+                                        "console-click-visit-my-account"
+                                    );
+                                    window.open(
+                                        isPrivilegedUser
+                                            ? privilegedUserAccountURL
+                                            : accountAppURL,
+                                        "_blank",
+                                        "noopener"
+                                    );
+                                } }
+                            >
+                                <ListItemIcon>
+                                    <MyAccountIcon />
+                                </ListItemIcon>
+                                <ListItemText>
+                                    { t("console:common.header.appSwitch.myAccount.name") }
+                                </ListItemText>
+                            </MenuItem>
+                        ) : null
                 ],
                 onActionClick: () =>
                     history.push(AppConstants.getAppLogoutPath()),

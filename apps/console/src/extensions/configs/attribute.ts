@@ -277,11 +277,11 @@ export const attributeConfig: AttributeConfig = {
             showOnlyMandatory: true,
             showPrimaryUserStore: false,
             showReadOnlyAttribute: false,
-            showRegularExpression: false,
+            showRegularExpression: true,
             showSummary: false
         },
         customDialectURI: "urn:scim:wso2:schema",
-        getDialect: async (dialectURI: string): Promise<any> => {
+        getDialect: async (dialectURI: string): Promise<Claim | ClaimDialect> => {
             let dialectObject: Claim | ClaimDialect;
             
             await getDialects()

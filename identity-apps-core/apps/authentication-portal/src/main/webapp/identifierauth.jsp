@@ -41,6 +41,32 @@
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 
+<%!
+    private boolean isMultiAuthAvailable(String multiOptionURI) {
+        boolean isMultiAuthAvailable = true;
+        if (multiOptionURI == null || multiOptionURI.equals("null")) {
+            isMultiAuthAvailable = false;
+        } else {
+            int authenticatorIndex = multiOptionURI.indexOf("authenticators=");
+            if (authenticatorIndex == -1) {
+                isMultiAuthAvailable = false;
+            } else {
+                String authenticators = multiOptionURI.substring(authenticatorIndex + 15);
+                int authLastIndex = authenticators.indexOf("&") != -1 ? authenticators.indexOf("&") : authenticators.length();
+                authenticators = authenticators.substring(0, authLastIndex);
+                List<String> authList = new ArrayList<>(Arrays.asList(authenticators.split("%3B")));
+                if (authList.size() < 2) {
+                    isMultiAuthAvailable = false;
+                }
+                else if (authList.size() == 2 && authList.contains("backup-code-authenticator%3ALOCAL")) {
+                    isMultiAuthAvailable = false;
+                }
+            }
+        }
+        return isMultiAuthAvailable;
+    }
+%>
+
 <%
     String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
     Boolean isEmailUsernameEnabled = false;
@@ -234,54 +260,33 @@
     <% } %>
 
     <div class="field">
-       <% if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT)) { %>
-            <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "email")%></label>
-            <div class="ui fluid left icon input">
-                <input
-                    type="text"
-                    id="usernameUserInput"
-                    value=""
-                    name="usernameUserInput"
-                    maxlength="50"
-                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter.your.email")%>"
-                    required />
-                <i aria-hidden="true" class="envelope outline icon"></i>
-            </div>
-            <div class="mt-1" id="usernameError" style="display: none;">
-                <i class="red exclamation circle fitted icon"></i>
-                <span class="validation-error-message" id="usernameErrorText">
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "username.cannot.be.empty")%>
-                </span>
-            </div>
-            <input id="username" name="username" type="hidden" value="">
-            <input id="authType" name="authType" type="hidden" value="idf">
+        <% if (isMultiAttributeLoginEnabledInTenant) { %>
+            <label><%=usernameLabel %></label>
         <% } else { %>
-            <% if (isMultiAttributeLoginEnabledInTenant) { %>
-                <label><%=usernameLabel %></label>
-            <% } else { %>
-                <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%></label>
-            <% } %>
-            <div class="ui fluid left icon input">
-                <input
-                    type="text"
-                    id="usernameUserInput"
-                    value=""
-                    name="usernameUserInput"
-                    maxlength="50"
-                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, usernamePlaceHolder)%>"
-                    required
-                />
-                <i aria-hidden="true" class="user outline icon"></i>
-            </div>
-            <div class="mt-1" id="usernameError" style="display: none;">
-                <i class="red exclamation circle fitted icon"></i>
-                <span class="validation-error-message" id="usernameErrorText">
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "username.cannot.be.empty")%>
-                </span>
-            </div>
-            <input id="username" name="username" type="hidden" value="">
-            <input id="authType" name="authType" type="hidden" value="idf">
+            <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, usernameLabel)%></label>
         <% } %>
+        <div class="ui fluid left icon input">
+            <input
+                type="text"
+                id="usernameUserInput"
+                value=""
+                name="usernameUserInput"
+                maxlength="50"
+                placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, usernamePlaceHolder)%>"
+                required
+            />
+            <i aria-hidden="true" class="user outline icon"></i>
+        </div>
+        <div class="mt-1" id="usernameError" style="display: none;">
+            <i class="red exclamation circle fitted icon"></i>
+            <span class="validation-error-message" id="usernameErrorText">
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "username.cannot.be.empty")%>
+            </span>
+        </div>
+        <input id="username" name="username" type="hidden" value="">
+        <input id="authType" name="authType" type="hidden" value="idf">
+        <input id="multiOptionURI" type="hidden" name="multiOptionURI"
+            value='<%=Encode.forHtmlAttribute(request.getParameter("multiOptionURI"))%>' />
     </div>
     <%
         if (reCaptchaEnabled) {
@@ -315,6 +320,21 @@
                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>" />
         </div>
     </div>
+    <div class="ui divider hidden"></div>
+    <div class="align-center">
+        <%
+            String multiOptionURI = request.getParameter("multiOptionURI");
+            if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
+            isMultiAuthAvailable(multiOptionURI)) {
+        %>
+            <a class="ui primary basic button link-button" id="goBackLink"
+            href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
+            </a>
+        <%
+            }
+        %>
+    </div>
 </form>
 <%
 if (!StringUtils.equals("CONSOLE",clientId)
@@ -322,23 +342,25 @@ if (!StringUtils.equals("CONSOLE",clientId)
         isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) {
         String urlParameters = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
 %>
-    <div class="mt-0">
-        <div class="buttons">
-            <button
-                type="button"
+    <div class="mt-4 mb-4">
+        <div class="mt-3 external-link-container text-small">
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.an.account")%>
+            <a
                 <% if(StringUtils.isNotBlank(selfSignUpOverrideURL)) { %>
-                onclick="window.location.href='<%=i18nLink(userLocale, selfSignUpOverrideURL)%>';"
+                href="<%=i18nLink(userLocale, selfSignUpOverrideURL)%>"
                 <% } else { %>
-                onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>';"
+                href="<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters))%>"
                 <% } %>
-                class="ui large fluid button secondary"
+                target="_self"
+                class="clickable-link"
+                rel="noopener noreferrer"
                 id="registerLink"
                 tabindex="4"
-                role="button"
                 data-testid="login-page-create-account-button"
+                style="cursor: pointer;"
             >
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.an.account")%>
-            </button>
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "register")%>
+            </a>
         </div>
     </div>
 <%

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -140,6 +140,10 @@ export interface ListLayoutPropsInterface extends PaginationProps, IdentifiableC
      * Active page.
      */
     activePage?: number;
+    /**
+     * Top action panel extension.
+     */
+    topActionPanelExtension?: ReactNode;
 }
 
 /**
@@ -179,6 +183,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         totalListSize,
         totalPages,
         activePage,
+        topActionPanelExtension,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
@@ -205,6 +210,11 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                             data-componentid={ `${ componentId }-top-action-panel` }
                             data-testid={ `${ testId }-top-action-panel` }
                         >
+                            { topActionPanelExtension && (
+                                <div className="top-action-panel-extension">
+                                    { topActionPanelExtension }
+                                </div>
+                            ) }
                             <Grid>
                                 <Grid.Row>
                                     {

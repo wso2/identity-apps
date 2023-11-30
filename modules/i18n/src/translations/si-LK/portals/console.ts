@@ -491,6 +491,113 @@ export const console: ConsoleNS = {
             }
         }
     },
+    apiResources: {
+        confirmations: {
+            deleteAPIResource: {
+                assertionHint: "කරුණාකර ඔබේ ක්රියාව තහවුරු කරන්න.",
+                content: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි වන අතර ඒපීපී සම්පත ස්ථිරවම මකා දමනු ඇත.",
+                header: "ඔයාට විශ්වාස ද?",
+                message: "ඔබ මෙම API සම්පත් මකා දැමුවහොත් සමහර ක්රියාකාරීත්වයන් නිසියාකාරව ක්රියා නොකරනු ඇත. " +
+                    "කරුණාකර ප්රවේශමෙන් ඉදිරියට යන්න."
+            },
+            deleteAPIResourcePermission: {
+                assertionHint: "කරුණාකර ඔබේ ක්රියාව තහවුරු කරන්න.",
+                content: "මෙම ක්රියාව ආපසු හැරවිය නොහැකි වන අතර ඒපීපී සම්පතෙන් විෂය පථය ස්ථිරවම ඉවත් කරනු ඇත.",
+                header: "ඔයාට විශ්වාස ද?",
+                message: "ඔබ මෙම විෂය පථය API සම්පතෙන් ඉවත් කළහොත් සමහර ක්රියාකාරීත්වයන් නිසියාකාරව ක්රියා නොකරනු ඇත. " +
+                    "කරුණාකර ප්රවේශමෙන් ඉදිරියට යන්න."
+            }
+        },
+        tabs: {
+            scopes: {
+                button: "විෂය පථය එක් කරන්න",
+                label: "විෂය පථ",
+                title: "විෂය පථ ලැයිස්තුව",
+                subTitle: "API සම්පත මඟින් භාවිතා කරන විෂය පථ ලැයිස්තුව.",
+                learnMore: "තවත් හදාරන්න",
+                search: "දර්ශන නාමය මඟින් SECIPS විෂය පථය",
+                empty: {
+                    title: "විෂය පථයක් පවරා නොමැත",
+                    subTitle: "නව විෂය පථයක් එක් කිරීමට + අයිකනය මත ක්ලික් කරන්න"
+                },
+                emptySearch: {
+                    title: "ප්රතිල හමු නොවීය",
+                    subTitle: {
+                        0: "ඔබ සෙවූ විෂය පථය අපට සොයාගත නොහැකි විය.",
+                        1: "කරුණාකර වෙනත් පරාමිතියක් භාවිතා කිරීමට උත්සාහ කරන්න."
+                    },
+                    viewAll: "සෙවුම් විමසුම හිස් කරන්න"
+                },
+                copyPopupText: "හඳුනාගැනීම පිටපත් කරන්න",
+                copiedPopupText: "හඳුනාගැනීම පිටපත් කරන ලදි",
+                removeScopePopupText: "විෂය පථය ඉවත් කරන්න",
+                form: {
+                    button: "විෂය පථය එක් කරන්න",
+                    cancelButton: "අවලංගු කරන්න",
+                    submitButton: "අවසන්",
+                    title: "විෂය පථය එක් කරන්න",
+                    subTitle: "නව විෂය පථයක් සාදන්න",
+                    fields: {
+                        displayName: {
+                            emptyValidate: "දර්ශන නාමය හිස් විය නොහැක",
+                            label: "ප්රදර්ශන නාමය",
+                            placeholder: "වෙන්කරවා ගැනීම කියවන්න"
+                        },
+                        scope: {
+                            emptyValidate: "විෂය පථය හිස් විය නොහැක",
+                            label: "විෂය පථය",
+                            placeholder: "read_bookings"
+                        },
+                        description: {
+                            label: "විස්තර",
+                            placeholder: "විස්තරය ඇතුළත් කරන්න"
+                        }
+                    }
+                }
+            }
+        },
+        wizard: {
+            addApiResource: {
+                steps: {
+                    scopes: {
+                        empty: {
+                            title: "විෂය පථයක් පවරා නොමැත",
+                            subTitle: "නව විෂය පථයක් එක් කිරීමට + අයිකනය මත ක්ලික් කරන්න"
+                        },
+                        stepTitle: "විෂය පථ",
+                        form: {
+                            button: "විෂය පථය එක් කරන්න",
+                            fields: {
+                                displayName: {
+                                    emptyValidate: "දර්ශන නාමය හිස් විය නොහැක",
+                                    label: "ප්රදර්ශන නාමය",
+                                    placeholder: "වෙන්කරවා ගැනීම කියවන්න",
+                                    hint: "පරිශීලක කැමැත්ත ප්රකාශයේ එය පෙන්වන ආකාරය අර්ථවත් නමක් සපයන්න."
+                                },
+                                permission: {
+                                    emptyValidate: "විෂය පථය හිස් විය නොහැක",
+                                    uniqueValidate: "මෙම විෂය පථය දැනටමත් ආයතනය තුළ පවතී.කරුණාකර වෙනත් එකක් තෝරන්න.",
+                                    invalid: "විෂය පථයට අවකාශයන් අඩංගු විය නොහැක",
+                                    label: "විෂය පථය",
+                                    placeholder: "read_bookings",
+                                    hint: "ප්රවේශ ටෝකනයක් ඉල්ලා සිටින විට විෂය පථය ලෙස ක්රියා කරන අද්විතීය අගයක්. <1>මැවූ විට විෂය පථය වෙනස් කළ නොහැකි බව සලකන්න.</1>"
+                                },
+                                permissionList: {
+                                    label: "විෂයයන් එකතු කරන ලදි"
+                                },
+                                description: {
+                                    label: "විස්තර",
+                                    placeholder: "විස්තරය ඇතුළත් කරන්න",
+                                    hint: "ඔබේ විෂය පථය සඳහා විස්තරයක් සපයන්න.මෙය පරිශීලක කැමැත්ත ප්රකාශයේ දර්ශනය වේ."
+                                }
+                            }
+                        },
+                        removeScopePopupText: "විෂය පථය ඉවත් කරන්න"
+                    }
+                }
+            }
+        }
+    },
     branding: {
         form: {
             actions: {
@@ -598,6 +705,21 @@ export const console: ConsoleNS = {
         screenSelectDropdown: {
             label: "තිරය",
             placeholder: "තිරය තෝරන්න"
+        }
+    },
+    consoleSettings: {
+        administrators: {
+            tabLabel: "පරිපාලකයින්"
+        },
+        loginFlow: {
+            tabLabel: "පිවිසුම් ප්රවාහය"
+        },
+        roles: {
+            tabLabel: "භූමිකාවන්",
+            permissionLevels: {
+                edit: "සංස්කරණය කරන්න",
+                view: "කියවන්න"
+            }
         }
     },
     develop: {
@@ -1045,6 +1167,11 @@ export const console: ConsoleNS = {
                                 "WS- සම්මේලනය භාවිතා කරමින් ඔබගේ යෙදුම සඳහා සත්යාපනය වින්යාස කරන්න.",
                             tabName: "තොරතුරු"
                         },
+                        protocol: {
+                            title: "ප්රොටෝකෝල වින්යාසය",
+                            subtitle: "ඔබගේ යෙදුම සඳහා ප්‍රොටෝකෝලය වින්‍යාස කරන්න.",
+                            button: "ප්‍රොටෝකෝලය වින්‍යාස කරන්න"
+                        },
                         provisioning: {
                             inbound: {
                                 heading: "අභ්‍යන්තර ප්‍රතිපාදන",
@@ -1392,6 +1519,19 @@ export const console: ConsoleNS = {
                                                     "සඳහා පමණක් ලබා ගත හැකි අතර තවත් පරිශීලකයින් බහුවිධ මුරපද " +
                                                     "ඇතුළත් කිරීමට කැමති නම්, ඔවුන් MyAccount හරහා එය කළ යුතුය."
                                             },
+                                            passkey: {
+                                                description: "මුර යතුරක්, ආරක්ෂක යතුරක් හෝ ජීවමිතික භාවිතයෙන් " +
+                                                    "පරිශීලකයින්ට පුරනය වීමට සබල කරන්න.",
+                                                heading: "මුර යතුර පිවිසුම එක් කරන්න",
+                                                info: {
+                                                    progressiveEnrollmentEnabled: "මුර යතුර ප්‍රගතිශීලී ලියාපදිංචිය සබල කර ඇත. " +
+                                                    "පරිශීලකයින්ට පියාසර කිරීමේදී පාස්කී ලියාපදිංචි කළ හැකිය. ඔවුන්ට මුර යතුරු කිහිපයක් " +
+                                                    "ඇතුළත් කිරීමට අවශ්‍ය නම් ඔවුන් එය MyAccount හරහා කළ යුතුය.",
+                                                    progressiveEnrollmentDisabled: "ප්‍රගතිශීලී මුර යතුරු ලියාපදිංචිය " +
+                                                    "අවහිර කර ඇත. මුරපද රහිත පුරනය වීම භාවිතා කිරීමට පරිශීලකයන් " +
+                                                    "MyAccount හරහා තම මුර යතුරු ලියාපදිංචි කළ යුතුය."
+                                                }
+                                            },
                                             emailOTP: {
                                                 description: "විද්‍යුත් තැපෑල පදනම් කරගත් OTP සමඟ අතිරේක සත්‍යාපන ස්තරය සක්‍රීය කරන්න.",
                                                 heading: "විද්‍යුත් තැපෑල දෙවන සාධකය ලෙස එක් කරන්න"
@@ -1526,9 +1666,9 @@ export const console: ConsoleNS = {
                                         },
                                         pairwise: {
                                             label: "යුගල වශයෙන්",
-                                            hint: "මෙම විකල්පය විෂය ලෙස යුගල වශයෙන් විෂය හැඳුනුම්කාරකය භාවිතා කරනු ඇත. " +
-                                                "විෂය හඳුනාගැනීමේ URI සහ ආපසු ඇමතුම් URI හෝ අංශ හඳුනාගැනීමේ URI විෂය අගය " +
-                                                "ගණනය කිරීමේදී භාවිතා වේ."
+                                            hint: "එක් එක් සේවාදායකයාට අනන්‍ය අන්වර්ථ නාමයක් පැවරීමට යුගල වශයෙන් සබල කරන්න. විෂය " +
+                                                "අගය ගණනය කිරීමේදී විෂය හඳුනාගැනීමේ URI සහ ආපසු කැඳවීමේ URI හෝ අංශ හඳුනාගැනීමේ" +
+                                                " URI සලකනු ලැබේ."
                                         }
                                     },
                                     sectorIdentifierURI: {
@@ -1686,6 +1826,10 @@ export const console: ConsoleNS = {
                             isManagementApp: {
                                 hint: "මෙම සංවිධානයේ කළමනාකරණ API වෙත ප්‍රවේශ වීමට යෙදුමට ඉඩ දීමට සබල කරන්න.",
                                 label: "කළමනාකරණ යෙදුම"
+                            },
+                            isFapiApp: {
+                                hint: "යෙදුම FAPI අනුකූල වීමට ඉඩ දීමට සබල කරන්න.",
+                                label: "FAPI අනුකූල යෙදුම"
                             },
                             name: {
                                 label: "නම",
@@ -2442,6 +2586,15 @@ export const console: ConsoleNS = {
                                     empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි.",
                                     invalid: "මෙය වලංගු URL එකක් නොවේ"
                                 }
+                            },
+                            replyToLogout: {
+                                hint: "පිටවීමේදී ප්‍රතිචාරය හසුරුවන මෘදුකාංගයේ අවසාන ලක්ෂ්‍ය URL ඇතුල් කරන්න.",
+                                label: "පිටවීමේදී පිළිතුරු URL",
+                                placeholder: "පිටවීමේදී පිළිතුරු URL ඇතුලත් කරන්න",
+                                validations: {
+                                    empty: "මෙය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි.",
+                                    invalid: "මෙය වලංගු URL එකක් නොවේ"
+                                }
                             }
                         }
                     },
@@ -2843,6 +2996,20 @@ export const console: ConsoleNS = {
                         },
                         success: {
                             description: "අයදුම්පත් විස්තර සාර්ථකව ලබා ගන්නා ලදි.",
+                            message: "නැවත ලබා ගැනීම සාර්ථකයි"
+                        }
+                    },
+                    fetchMyAccountApplication: {
+                        error: {
+                            description: "{{description}}",
+                            message: "නැවත ලබා ගැනීමේ දෝෂයකි"
+                        },
+                        genericError: {
+                            description: "My Account යෙදුම් විස්තර ලබා ගැනීමට නොහැකි විය.",
+                            message: "යම් දෝෂයක් ඇති වී ඇත"
+                        },
+                        success: {
+                            description: "My Account යෙදුම් විස්තර සාර්ථකව ලබා ගන්නා ලදී.",
                             message: "නැවත ලබා ගැනීම සාර්ථකයි"
                         }
                     },
@@ -3291,12 +3458,12 @@ export const console: ConsoleNS = {
                             action: "සැලසුම් බලන්න",
                             subtitles: "ඔබට ආයතනයේ පරිපාලකයා සම්බන්ධ කර ගැනීමට හෝ (ඔබ පරිපාලක නම්) " +
                                 "අවසර ලත් සීමාව වැඩි කිරීමට ඔබගේ දායකත්වය උත්ශ්‍රේණි කිරීමට හැකිය.",
-                            title: "ඔබ අනුමත සංවිධාන මට්ටම් උපරිම සංඛ්‍යාවට ළඟා වී ඇත."
+                            title: "ඔබ අවසර දී ඇති සංවිධානයේ මට්ටම් ගණනට ළඟා වී ඇත."
                         },
-                        heading: "ඔබ ආයතනය සඳහා අවසර දී ඇති උපරිම සංවිධාන මට්ටම් කරා ළඟා වී ඇත."
+                        heading: "සංවිධානය සඳහා අවසර දී ඇති උපරිම සංවිධාන මට්ටම් කරා ළඟා වී ඇත."
                     },
                     duplicateOrgError: {
-                        message: "එම නමින්ම සංවිධානයක් දැනටමත් පවතී.",
+                        message: "එකම නමක් ඇති සංවිධානයක් දැනටමත් පවතී.",
                         description: "ඔබ නිර්මාණය කිරීමට උත්සාහ කරන සංවිධානය දැනටමත් පවතී."
                     }
                 }
@@ -3707,7 +3874,7 @@ export const console: ConsoleNS = {
                             },
                             addAttributeButtonLabel: "Attribute Mapping එක් කරන්න",
                             modal: {
-                                header: "Attribute Mappings එක් කරන්න",
+                                header: "ගුණාංග සිතියම් එක් කරන්න",
                                 placeholder: {
                                     title: "ඔබ කිසිදු උපලක්ෂණයක් තෝරාගෙන නැත",
                                     subtitle: "සිතියම් ගුණාංග සහ ආරම්භ කිරීමට Add Attribute Mapping ක්ලික් කරන්න."
@@ -7136,12 +7303,18 @@ export const console: ConsoleNS = {
                         }
                     },
                     roles: {
+                        placeHolders: {
+                            emptyListPlaceholder: {
+                                subtitles: "මේ මොහොතේ මෙම කණ්ඩායමට කිසිදු භූමිකාවන් පවරා නොමැත.",
+                                title: "කිසිදු භූමිකාවක් පවරා නොමැත"
+                            }
+                        },
+                        heading: "පවරා ඇති භූමිකාවන්",
                         addRolesModal: {
                             heading: "කණ්ඩායම් භූමිකාවන් යාවත්කාලීන කරන්න",
                             subHeading: "නව භූමිකාවන් එක් කරන්න හෝ කණ්ඩායමට පවරා ඇති භූමිකාවන් ඉවත් කරන්න."
                         },
-                        subHeading: "මෙම කණ්ඩායම විසින් පවරා ඇති භූමිකාවන් එකතු කිරීම හෝ ඉවත් කිරීම සහ " +
-                            "මෙය ඇතැම් කාර්යයන් ඉටු කිරීමට බලපානු ඇති බව සලකන්න."
+                        subHeading: "කණ්ඩායම සඳහා පවරා ඇති භූමිකාවන් බලන්න."
                     }
                 },
                 list: {
@@ -7247,8 +7420,24 @@ export const console: ConsoleNS = {
                 addUserWizard: {
                     heading: "මාපිය පරිශීලකයාට ආරාධනා කරන්න",
                     description: "මව් සංවිධානයෙන් පරිශීලකයෙකුට ආරාධනා කරන්න.",
-                    hint: "ආරාධිත පරිශීලකයින් කළමනාකරණය කරනු ලබන්නේ <1>{{currentOrganization}}</1> සංවිධානය විසිනි.",
-                    usernameHint: "පරිශීලක නාමය <1>{{currentOrganization}}</1> සංවිධානයේ පරිශීලකයෙකුට අයත් විය යුතුය."
+                    hint: "ආරාධිත පරිශීලකයින් මව් සංවිධානය විසින් කළමනාකරණය කරනු ලැබේ.",
+                    username: {
+                        label: "පරිශීලක නාමය",
+                        placeholder: "පරිශීලක නාමය ඇතුලත් කරන්න",
+                        hint: "පරිශීලක නාමය මව් සංවිධානයේ පරිශීලකයෙකුට අයත් විය යුතුය.",
+                        validations: {
+                            required: "පරිශීලක නාමය අවශ්‍ය ක්ෂේත්‍රයකි."
+                        }
+                    },
+                    roles: {
+                        label: "භූමිකාවන්",
+                        placeholder: "භූමිකාවන් තෝරන්න",
+                        hint: "ආරාධනා කරනු ලබන පරිශීලකයා සඳහා භූමිකාවන් පවරන්න.",
+                        validations: {
+                            required: "භූමිකාවන් යනු අවශ්‍ය ක්ෂේත්‍රයකි."
+                        }
+                    },
+                    inviteButton: "ආරාධනා කරන්න"
                 },
                 tab: {
                     usersTab: "පරිශීලකයන්",
@@ -7269,9 +7458,11 @@ export const console: ConsoleNS = {
                     noExpiredInvitations: "මේ මොහොතේ කල් ඉකුත් වූ ආරාධනා ඇත.",
                     noInvitations: "දැනට ආරාධනා නැහැ.",
                     noCollaboratorUserInvitations: "මේ මොහොතේ කල් ඉකුත් වූ ආරාධනා සහිත සහකාරක පරිශීලකයන් නොමැත."
-                }
+                },
+                invitedUserLabel: "මව් සංවිධානය විසින් කළමනාකරණය කරනු ලැබේ"
             },
             oidcScopes: {
+                back: "OpenID Connect ගුණාංග සිතියම්ගත පිටුවට ආපසු යන්න",
                 viewAttributes: "ගුණාංග පෙන්වන්න",
                 manageAttributes: "ගුණාංග කළමනාකරණය කරන්න",
                 addAttributes: {
@@ -7552,7 +7743,7 @@ export const console: ConsoleNS = {
                 },
                 assign: {
                     title: "ඊමේල් වසම්",
-                    description: "උප සංවිධාන සඳහා විද්‍යුත් තැපැල් වසම් පවරන්න.",
+                    description: "සංවිධාන සඳහා විද්යුත් තැපැල් වසම් ලබා දෙන්න.",
                     form: {
                         fields: {
                             emailDomains: {
@@ -7861,8 +8052,7 @@ export const console: ConsoleNS = {
                             message: "ආයතනය සාර්ථකව අක්‍රිය කර ඇත"
                         }
                     },
-                    disableOrganizationWithSubOrganizationError: "Organization {{ organizationName }} cannot be " +
-                        "disabled since it has one or more sub organizations.",
+                    disableOrganizationWithSubOrganizationError: "සංවිධාන එකක් හෝ කිහිපයක් ඇති බැවින්, ආයතනය {{ organizationName }} අක්රිය කළ නොහැක.",
                     enableOrganization: {
                         error: {
                             description: "{{description}}",
@@ -8262,8 +8452,9 @@ export const console: ConsoleNS = {
                                 label: "පවරා ඇති අයදුම්පත",
                                 placeholder: "භූමිකාව පැවරීම සඳහා අයදුම්පත තෝරන්න",
                                 applicationSubTitle: {
-                                    application: "අයදුම්පත් සහිත භූමිකාවන් සහාය. ",
-                                    organization: "සංවිධාන භූමිකාවන් සහාය"
+                                    application: "අයදුම්පත් සහිත භූමිකාවන් සහාය.",
+                                    organization: "සංවිධාන භූමිකාවන් සහාය. ",
+                                    changeAudience: "ප්‍රේක්ෂකයින් වෙනස් කරන්න"
                                 },
                                 validations: {
                                     empty: "අයදුම්පත් සහිත භූමිකාවක් නිර්මාණය කිරීම සඳහා පවරා ඇති අයදුම්පතක් අවශ්ය වේ."
@@ -8274,15 +8465,21 @@ export const console: ConsoleNS = {
                         rolePermission: {
                             apiResource: {
                                 label: "API සම්පත් තෝරන්න",
-                                placeholder: "විෂය පථය (අවසර) පැවරීම සඳහා API සම්පතක් තෝරන්න"
+                                placeholder: "අවසර ලබා දීම සඳහා API සම්පතක් තෝරන්න (විෂය පදක්කම්)",
+                                hint: {
+                                    empty: "තෝරාගත් අයදුම්පත සඳහා API සම්පත් නොමැත. API සම්පත් <1>හරහා</1> බලය ලබා ගත හැකිය."
+                                }
                             },
                             permissions: {
-                                label: "තෝරාගත් API සම්පත් වලින් විෂයයන් (අවසර) තෝරන්න",
-                                placeholder: "විෂය පථය (අවසර) තෝරන්න",
+                                label: "තෝරාගත් API සම්පත් වලින් අවසර (විෂය පද) තෝරන්න",
+                                placeholder: "අවසර (විෂය පදක්කම්) තෝරන්න",
                                 tooltips: {
                                     noScopes: "තෝරාගත් API සම්පත සඳහා විෂය පදක් නොමැත",
-                                    selectAllScopes: "සියලුම විෂය පථය (අවසර) තෝරන්න",
+                                    selectAllScopes: "සියලුම අවසර (විෂය පද) තෝරන්න",
                                     removeAPIResource: "API සම්පත ඉවත් කරන්න"
+                                },
+                                validation: {
+                                    empty: "අවසර(විෂය පද) ලැයිස්තුව හිස් විය නොහැක. අවම වශයෙන් එක් අවසරයක්වත්(විෂය පථය) තෝරන්න."
                                 }
                             },
                             notes: {
@@ -8438,6 +8635,8 @@ export const console: ConsoleNS = {
                                 description: "භූමිකාවට පවරා ඇති කණ්ඩායම් ලබා ගැනීමට අපට නොහැකි විය."
                             }
                         },
+                        externalGroupsHeading: "බාහිර කණ්ඩායම්",
+                        localGroupsHeading: "දේශීය කණ්ඩායම්",
                         heading: "පවරා ඇති කණ්ඩායම්",
                         subHeading: "මෙම භූමිකාවට පවරා ඇති කණ්ඩායම් එකතු කරන්න හෝ ඉවත් කරන්න. "
                             + "මෙය ඇතැම් කාර්යයන් ඉටු කිරීමට බලපානු ඇති බව සලකන්න.",
@@ -8551,6 +8750,11 @@ export const console: ConsoleNS = {
                                 "ක්‍රියා සිදු කිරීමට තවදුරටත් නොහැකි වනු ඇත. කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
                             header: "ඔබට විශ්වාසද?",
                             message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර තෝරාගත් {{type}} ස්ථිරවම මකා දමනු ඇත."
+                        },
+                        deleteItemError: {
+                            content: "මකා දැමීමට පෙර ආශ්රිතයන් පහත යෙදුමේ සිට ඉවත් කරන්න:",
+                            header: "මකා දැමීමට නොහැකි විය",
+                            message: "මෙම භූමිකාව භාවිතා කරමින් අයදුම්පතක් තිබේ."
                         }
                     },
                     emptyPlaceholders: {
@@ -8618,7 +8822,7 @@ export const console: ConsoleNS = {
                     deleteRole: {
                         error: {
                             description: "{{description}}",
-                            message: "තෝරාගත් භූමිකාව මකාදැමීමේ දෝෂයකි."
+                            message: "තෝරාගත් භූමිකාව මැකීමට නොහැකිය."
                         },
                         genericError: {
                             description: "තෝරාගත් භූමිකාව ඉවත් කිරීමට නොහැකි විය.",
@@ -8738,6 +8942,10 @@ export const console: ConsoleNS = {
                     pageHeading: "පරිපාලක උපදේශන බැනරය",
                     pageSubheading: "පිවිසුම් පිටුවේ පෙන්වීමට පරිපාලක උපදේශන බැනරය වින්‍යාස කරන්න."
                 },
+                manageNotificationSendingInternally: {
+                    title: "අභ්යන්තර දැනුම්දීම යැවීම",
+                    description: "දැනුම්දීම කළමනාකරණය කිරීම අභ්යන්තරව යවයි."
+                },
                 remoteLogPublishing: {
                     title: "දුරස්ථ ලොග් ප්‍රකාශනය",
                     pageTitle: "දුරස්ථ ලොග් ප්‍රකාශනය",
@@ -8806,9 +9014,13 @@ export const console: ConsoleNS = {
                             message: "සාර්ථකව යාවත්කාලීන කරන ලදී."
                         },
                         error: {
-                            genericError: {
+                            updateError: {
                                 description: "දුරස්ථ ලොග් ප්‍රකාශන වින්‍යාසය යාවත්කාලීන කිරීමේදී දෝෂයක් ඇති විය.",
                                 message: "යම් දෝෂයක් ඇති වී ඇත"
+                            },
+                            fetchError: {
+                                description: "දුරස්ථ ලොග් ප්‍රකාශන වින්‍යාසය ලබා ගැනීමේදී දෝෂයක් ඇති විය.",
+                                message: "දුරස්ථ ලොග් ප්‍රකාශන වින්‍යාසය ලබා ගැනීමට නොහැකි විය."
                             }
                         }
                     }
@@ -8882,6 +9094,10 @@ export const console: ConsoleNS = {
                             }
                         }
                     }
+                },
+                server: {
+                    title: "සේවාදායකය",
+                    description: "සේවාදායක සැකසුම් වින්යාස කරන්න."
                 }
             },
             sidePanel: {
@@ -8949,7 +9165,8 @@ export const console: ConsoleNS = {
                     },
                     headers: {
                         0: "වසම්",
-                        1: "නම"
+                        1: "නම",
+                        2: "ප්‍රේක්ෂකයෝ"
                     }
                 },
                 searchPlaceholder: "සොයන්න {{type}}"
@@ -9055,7 +9272,9 @@ export const console: ConsoleNS = {
                                 placeholder: "ඊමේල් ලිපිනය ඇතුළත් කරන්න",
                                 validations: {
                                     empty: "විද්‍යුත් තැපැල් ලිපිනය හිස් විය නොහැක",
-                                    invalid: "කරණාකර වලංගු ඊතැපැල් ලිපිනයක් ඇතුළු කරන්න"
+                                    invalid: "කරණාකර වලංගු ඊතැපැල් ලිපිනයක් ඇතුළු කරන්න. ඔබට අක්ෂරාංක " +
+                                    "භාවිතා කළ හැකි අක්ෂර, යුනිකෝඩ් අක්ෂර, යටි ඉරි (_), ඉරි (-), කාල පරිච්ඡේද (.), " +
+                                    "සහ ලකුණක් (@)."
                                 }
                             },
                             firstName: {
@@ -9128,6 +9347,14 @@ export const console: ConsoleNS = {
                             + " පහත බොත්තම ක්ලික් කරන්න."
                     },
                     addUserWizard: {
+                        askPassword: {
+                            alphanumericUsernameEnabled: "මුරපද යළි පිහිටුවීමේ අංගය භාවිතා කිරීමට, අක්රීය කරන්න " +
+                                "අක්ෂර සංඛ්යා පරිශීලක නාම ලක්ෂණය.",
+                            emailInvalid: "මුරපද යළි පිහිටුවීමේ අංගය භාවිතා කිරීමට, කරුණාකර වලංගු විද්යුත් තැපැල් ලිපිනයක් භාවිතා කරන්න " +
+                                "පරිශීලක නාමය.",
+                            emailVerificationDisabled: "මුරපද යළි පිහිටුවීමේ අංගය භාවිතා කිරීමට, විද්යුත් තැපෑල සත්යාපනය සක්රීය කරන්න විසින් " +
+                                "විද්යුත් තැපැල් සැපයුම්කරුවෙකු වින්යාස කිරීම."
+                        },
                         buttons: {
                             next: "ලබන",
                             previous: "කලින්"
@@ -9136,7 +9363,8 @@ export const console: ConsoleNS = {
                             basicDetails: "මූලික විස්තර",
                             groups: "පරිශීලක කණ්ඩායම්",
                             roles: "පරිශීලක භූමිකාවන්",
-                            summary: "සාරාංශය"
+                            summary: "සාරාංශය",
+                            method: "ක්රමය"
                         },
                         subTitle: "නව පරිශීලකයා නිර්මාණය කිරීමට පියවර අනුගමනය කරන්න",
                         title: "පරිශීලක සාදන්න",
@@ -9156,9 +9384,10 @@ export const console: ConsoleNS = {
                         }
                     },
                     bulkImportUserWizard: {
-                        title: "බහු පරිශීලකයින්ට ආරාධනා කරන්න​",
-                        subTitle: "සංවිධානයට බහු පරිශීලකයින්ට ආරාධනා කරන්න.",
+                        title: "බහු පරිශීලකයින් එකතු කරන්න",
+                        subTitle: "බහු පරිශීලකයින් අතින් හෝ CSV ගොනුවක් භාවිතා කිරීම.",
                         wizardSummary: {
+                            inviteEmailInfo: "තහවුරු කිරීමේ සබැඳියක් සහිත ඊ-තැපෑලක් පරිශීලකයා තමන්ගේ මුරපදයක් සැකසීමට සපයා ඇති විද්යුත් තැපැල් ලිපිනයට යවනු ලැබේ.",
                             successCount: "සාර්ථකත්ව ගණන",
                             failedCount: "අසාර්ථක වූ ගණන",
                             totalUserCreationCount: "සම්පූර්ණ පරිශීලක නිර්මාණ ගණන",
@@ -9199,10 +9428,14 @@ export const console: ConsoleNS = {
                                 searchByRoleOrGroup: "භූමිකාව/කණ්ඩායම් නම අනුව සොයන්න",
                                 roleGroupFilterAttributePlaceHolder: "භූමිකාව/කණ්ඩායම් නම"
                             },
-                            disabledSecondaryStoreInfo: "බාහිර පරිශීලක වෙළඳසැල් වෙත පරිශීලක තොග ආනයනය මේ මොහොතේ ලබා " +
-                                "දිය නොහැක.",
                             manualCreation: {
-                                hint: "ඊමේල් එකතු කරන්න සහ බහු පරිශීලකයින්ට ආරාධනා යවන්න.",
+                                alerts: {
+                                    creationSuccess: {
+                                        description: "පරිශීලක ගිණුම් සාර්ථකව නිර්මාණය කරන ලදි.",
+                                        message: "පරිශීලක නිර්මාණය සාර්ථකයි"
+                                    }
+                                },
+                                hint: "ඔබට ආරාධනා කිරීමට අවශ්ය පරිශීලකයාගේ විද්යුත් තැපැල් ලිපිනය එක් කරන්න සහ Enter ඔබන්න.",
                                 emailsLabel: "ඊමේල්",
                                 emailsPlaceholder: "ඊමේල් ලිපින ඇතුලත් කරන්න",
                                 disabledHint: "ඔබගේ සංවිධානයේ අක්ෂරාංක පරිශීලක නාම භාවිතය හේතුවෙන් අතින් විකල්පය අබල කර ඇත.",
@@ -9210,10 +9443,10 @@ export const console: ConsoleNS = {
                                     buttonText: "CSV ගොනුව උඩුගත කරන්න",
                                     description: "CSV ගොනුවක් මෙතැනට ඇද දමන්න."
                                 },
-                                primaryButton: "ආරාධනා කරන්න",
+                                primaryButton: "එකතු කරන්න",
                                 rolesLabel: "භූමිකාවන්",
                                 rolesPlaceholder: "භූමිකාවන් ඇතුළත් කරන්න",
-                                warningMessage: "හස්තීය ආරාධනා බහු පරිශීලක විශේෂාංගය භාවිතා කළ හැක්කේ ඊමේල් ලිපිනය පරිශීලක නාමය ලෙස වින්‍යාස කර ඇති විට පමණි."
+                                warningMessage: "මෙම විකල්පය භාවිතා කළ හැක්කේ ඊමේල් ලිපිනය පරිශීලක නාමය ලෙස වින්‍යාස කර ඇති විට පමණි."
                             },
                             fileBased: {
                                 hint: "CSV ගොනුවක් භාවිතයෙන් බහු පරිශීලකයින්ට තොග වශයෙන් ආරාධනා කරන්න."
@@ -9221,10 +9454,18 @@ export const console: ConsoleNS = {
                             responseOperationType: {
                                 userCreation: "පරිශීලක නිර්මාණය",
                                 roleAssignment: "භූමිකාව/කණ්ඩායම් පැවරුම"
-                            }
+                            },
+                            userstoreMessage: "සාදන ලද පරිශීලකයින් <1>{{ userstore }}</1> පරිශීලක ගබඩාවට එක් කරනු ලැබේ."
                         },
                         buttons: {
                             import: "ආනයනය කරන්න"
+                        },
+                        sidePanel: {
+                            manual: "අතින්",
+                            fileBased: "ගොනුව පදනම් කරගත්",
+                            fileFormatTitle: "CSV ගොනු ආකෘතිය",
+                            fileFormatContent: "CSV ගොනුවේ ශීර්ෂයන් දේශීය ගුණාංගවලට සිතියම්ගත කර ඇති <1>පරිශීලක ගුණාංග</1> විය යුතුය.",
+                            fileFormatSampleHeading: "නියැදි CSV ගොනු ආකෘතිය:"
                         }
                     },
                     changePasswordModal: {
@@ -9280,6 +9521,7 @@ export const console: ConsoleNS = {
                         generic: {
                             inputs: {
                                 placeholder: "ඔබගේ {{fieldName}} ඇතුළත් කරන්න",
+                                dropdownPlaceholder: "ඔබගේ {{fieldName}} තෝරන්න",
                                 validations: {
                                     empty: "{{fieldName}} යනු අත්‍යවශ්‍ය ක්ෂේත්‍රයකි",
                                     invalidFormat: "{{FieldName}} නිවැරදි ආකෘතියෙන් නොවේ"
@@ -9578,6 +9820,12 @@ export const console: ConsoleNS = {
                                 header: "ඔබට විශ්වාසද?",
                                 message: "මෙම ක්‍රියාව මෙම පරිශීලකයාගේ භූමිකාව වෙනස් කරයි."
                             },
+                            placeholders: {
+                                emptyPlaceholder: {
+                                    title: "කිසිදු භූමිකාවක් පවරා නොමැත",
+                                    subtitles: "මේ මොහොතේ පරිශීලකයාට කිසිදු භූමිකාවන් නොමැත."
+                                }
+                            },
                             heading: "පවරා ඇති භූමිකාවන්",
                             popups: {
                                 viewPermissions: "අවසර බලන්න"
@@ -9597,8 +9845,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             searchPlaceholder: "සෙවුම් භූමිකාවන්",
-                            subHeading: "මෙම පරිශීලකයාට පවරා ඇති භූමිකාවන් එකතු කිරීම හෝ ඉවත් කිරීම සහ " +
-                                "මෙය ඇතැම් කාර්යයන් ඉටු කිරීමට බලපානු ඇති බව සලකන්න."
+                            subHeading: "පරිශීලකයා සඳහා පවරා ඇති භූමිකාවන් බලන්න."
                         },
                         notifications: {
                             addUserRoles: {
@@ -9667,6 +9914,16 @@ export const console: ConsoleNS = {
                 }
             },
             users: {
+                addUserType: {
+                    createUser: {
+                        title: "පරිශීලකයා සාදන්න",
+                        description: "ඔබේ සංවිධානයේ පරිශීලකයෙකු සාදන්න."
+                    },
+                    inviteParentUser: {
+                        title: "දෙමාපිය පරිශීලකයාට ආරාධනා කරන්න",
+                        description: "මව් සංවිධානයෙන් පරිශීලකයාට ආරාධනා කරන්න."
+                    }
+                },
                 advancedSearch: {
                     form: {
                         dropdown: {
@@ -9687,7 +9944,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "විද්‍යුත් තැපෑලෙන් සොයන්න"
+                    placeholder: "පරිශීලක නාමයන් සොයන්න"
                 },
                 all: {
                     heading: "පරිශීලකයින්",
@@ -9719,6 +9976,13 @@ export const console: ConsoleNS = {
                             "කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
                         header: "ඔබට විශ්වාසද?",
                         message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර සැසිය ස්ථිරවම අවසන් වේ."
+                    },
+                    addMultipleUser: {
+                        header: "ඔබ ඉදිරියට යාමට පෙර",
+                        message: "පරිශීලකයින්ට ආරාධනා කිරීමේ විකල්පය අක්‍රීය​ කර ඇත",
+                        content: "පරිශීලකයින් කිහිප දෙනෙකු එක් කිරීමට ආරාධනා පරිශීලක විකල්පය සක්‍රීය කළ යුතුය. කරුණාකර එය සබල කර " +
+                            "නැවත උත්සාහ කරන්න.",
+                        assertionHint: "කරුණාකර ඔබේ ක්‍රියාව තහවුරු කරන්න."
                     }
                 },
                 consumerUsers: {
@@ -10565,6 +10829,11 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: "භූමිකාව සංස්කරණය කරන්න"
             },
+            groupsEdit: {
+                backButton: "{{Type} වෙත ආපසු යන්න",
+                subTitle: null,
+                title: "කණ්ඩායම සංස්කරණය කරන්න"
+            },
             serverConfigurations: {
                 subTitle: "සේවාදායකයේ සාමාන්‍ය වින්‍යාසයන් කළමනාකරණය කරන්න.",
                 title: "සාමාන්‍ය වින්‍යාසයන්"
@@ -10574,7 +10843,7 @@ export const console: ConsoleNS = {
                 title: "පරිශීලකයින්"
             },
             usersEdit: {
-                backButton: "නැවත පරිශීලකයින් වෙත යන්න",
+                backButton: "{{type}} වෙත ආපසු යන්න",
                 subTitle: "{{name}}",
                 title: "{{email}}"
             }

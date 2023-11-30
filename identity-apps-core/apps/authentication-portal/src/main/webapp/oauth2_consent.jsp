@@ -89,7 +89,9 @@
         String[] queryParams = queryString.split("&");
         for (String queryParam : queryParams) {
             String[] queryParamKeyValueArray = queryParam.split("=", 2);
+            if (queryParamKeyValueArray.length == 2) {
                 queryParamMap.put(queryParamKeyValueArray[0], queryParamKeyValueArray[1]);
+            }
         }
     }
 

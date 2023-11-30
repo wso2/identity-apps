@@ -34,6 +34,7 @@ export interface APIResourceInterface {
     name?: string;
     identifier?: string;
     scopes?: ScopeInterface[];
+    type?: string;
 }
 
 /**

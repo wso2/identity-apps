@@ -23,18 +23,20 @@ import { FormValidation } from "@wso2is/validation";
 import { AppState } from "apps/console/src/features/core";
 import { getUsernameConfiguration } from "apps/console/src/features/users/utils/user-management-utils";
 import { useValidationConfigData } from "apps/console/src/features/validation/api";
+import camelCase from "lodash-es/camelCase";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Label } from "semantic-ui-react";
+import { serverConfigurationConfig } from "../../../extensions/configs";
 import { GovernanceConnectorConstants } from "../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
-    GovernanceConnectorInterface
-} from "../models/governance-connectors";
+    GovernanceConnectorInterface } from "../models/governance-connectors";
+import { GovernanceConnectorUtils } from "../utils";
 
 /**
  * Form initial values interface.
@@ -56,6 +58,10 @@ interface SelfRegistrationFormInitialValuesInterface {
      * Auto login after self registration.
      */
     autoLogin: boolean;
+    /**
+     * Dynamic properties.
+     */
+    [ key: string ]: string | boolean;
 }
 
 /**
@@ -121,7 +127,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
         ["data-testid"]: testId
     } = props;
 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const [ initialConnectorValues, setInitialConnectorValues ]
         = useState<Map<string, ConnectorPropertyInterface>>(undefined);
@@ -146,7 +152,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
     useEffect(() => {
         const emailSchema: ProfileSchemaInterface = profileSchemas
             .find((schema: ProfileSchemaInterface) => (schema.name === "emails"));
-        
+
         if (emailSchema) {
             setEmailRequired(emailSchema.required);
         }
@@ -173,9 +179,19 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             = null;
 
         initialValues.properties.map((property: ConnectorPropertyInterface) => {
-            if (allowedConnectorFields.includes(property.name)) {
+
+            if (serverConfigurationConfig.dynamicConnectors) {
                 resolvedInitialValues.set(property.name, property);
+                resolvedInitialFormValues = {
+                    ...resolvedInitialFormValues,
+                    [ property.name ]: property.value
+                };
+            } else {
+                if (allowedConnectorFields.includes(property.name)) {
+                    resolvedInitialValues.set(property.name, property);
+                }
             }
+
             if (property.name === LOCK_ON_CREATION) {
                 if (property.value === "false") {
                     setEnableAccountActivateImmediately(true);
@@ -283,6 +299,31 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             ...data,
             "SelfRegistration.NotifyAccountConfirmation": false
         };
+
+        if (serverConfigurationConfig.dynamicConnectors) {
+
+            const keysToOmit: string[] = [
+                "autoLogin",
+                "accountActivateImmediately",
+                "verificationLinkExpiryTime",
+                "signUpConfirmation",
+                "SelfRegistration.VerificationCode.ExpiryTime",
+                "SelfRegistration.SendConfirmationOnCreation",
+                "SelfRegistration",
+                "SelfRegistration.Notification.InternallyManage",
+                "SelfRegistration.ReCaptcha",
+                "SelfRegistration.AutoLogin.Enable"
+            ];
+
+            for (const key in values) {
+                if (Object.prototype.hasOwnProperty.call(values, key) && !keysToOmit.includes(key)) {
+                    data = {
+                        ...data,
+                        [ GovernanceConnectorUtils.decodeConnectorPropertyName(key) ]: values[ key ]
+                    };
+                }
+            }
+        }
 
         return data;
     };
@@ -465,13 +506,43 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
         return null;
     }
 
+    const resolveFieldLabel = (name: string, displayName: string): string => {
+        const fieldLabelKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
+                camelCase(initialValues?.category) + ".connectors." + camelCase(initialValues?.name) +
+                ".properties." + camelCase(name) + ".label";
+
+        let fieldLabel: string = displayName;
+
+        if (i18n.exists(fieldLabelKey)) {
+            fieldLabel = t(fieldLabelKey);
+        }
+
+        return fieldLabel;
+    };
+
+    const resolveFieldHint = (name: string, description: string): string => {
+        const fieldHintKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
+                camelCase(initialValues?.category) + ".connectors." + camelCase(initialValues?.name) +
+                ".properties." + camelCase(name) + ".hint";
+
+        let fieldHint: string = description;
+
+        if (i18n.exists(fieldHintKey)) {
+            fieldHint = t(fieldHintKey);
+        }
+
+        return fieldHint;
+    };
+
     return (
         <Form
             id={ FORM_ID }
-            initialValues={ initialFormValues }
             uncontrolledForm={ false }
             validate={ validateForm }
-            onSubmit={ (values: Record<string, unknown>) => onSubmit(getUpdatedConfigurations(values)) }
+            initialValues={ initialFormValues }
+            onSubmit={ (values: Record<string, unknown>) =>
+                onSubmit(getUpdatedConfigurations(values))
+            }
         >
             <Field.Checkbox
                 ariaLabel="signUpConfirmation"
@@ -491,9 +562,9 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             />
             {
                 isAlphanumericUsernameEnabled && !emailRequired && (
-                    <Text 
+                    <Text
                         compact
-                        weight={ "300" } 
+                        weight={ "300" }
                         className="field-compact-description pb-3 pt-0"
                         size={ "13px" }
                     >
@@ -575,6 +646,78 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                     t("extensions:manage.serverConfigurations.userOnboarding." +
                         "selfRegistration.form.fields.enableAutoLogin.hint")
                 }
+            />
+            <Field.Checkbox
+                ariaLabel="SelfRegistration.NotifyAccountConfirmation"
+                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                    "SelfRegistration.NotifyAccountConfirmation")
+                }
+                className="toggle"
+                label={ GovernanceConnectorUtils.resolveFieldLabel(
+                    "User Onboarding",
+                    "SelfRegistration.NotifyAccountConfirmation",
+                    "Send sign up confirmation email") }
+                defaultValue={ initialFormValues?.[
+                    "SelfRegistration.NotifyAccountConfirmation" ] === "true" }
+                readOnly={ readOnly }
+                disabled={ !isConnectorEnabled }
+                width={ 16 }
+                data-componentid={ `${ testId }-enable-notification-sign-up-confirmation` }
+                hint={ GovernanceConnectorUtils.resolveFieldHint(
+                    "User Onboarding",
+                    "SelfRegistration.NotifyAccountConfirmation",
+                    "Enable sending notification for self sign up confirmation.")
+                }
+            />
+            <Field.Input
+                ariaLabel="SelfRegistration.VerificationCode.SMSOTP.ExpiryTime"
+                inputType="number"
+                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                    "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime"
+                ) }
+                type="number"
+                width={ 16 }
+                required={ true }
+                placeholder={ "Enter user self registration verification link expiry time" }
+                labelPosition="top"
+                minLength={ 3 }
+                maxLength={ 100 }
+                readOnly={ readOnly }
+                initialValue={ initialFormValues?.[
+                    "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime" ] }
+                data-componentid={ `${ testId }-sms-otp-expiry-time` }
+                label={ resolveFieldLabel("SelfRegistration.VerificationCode.SMSOTP.ExpiryTime",
+                    "User self registration SMS OTP expiry time")
+                }
+                hidden={ !serverConfigurationConfig.dynamicConnectors }
+                disabled={ !isConnectorEnabled }
+                hint={ resolveFieldHint("SelfRegistration.VerificationCode.SMSOTP.ExpiryTime",
+                    "Specify the expiry time in minutes for the SMS OTP.") }
+            />
+            <Field.Input
+                ariaLabel="SelfRegistration.CallbackRegex"
+                inputType="text"
+                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                    "SelfRegistration.CallbackRegex"
+                ) }
+                type="text"
+                width={ 16 }
+                required={ true }
+                placeholder={ "Enter user self registration verification link expiry time" }
+                labelPosition="top"
+                minLength={ 3 }
+                maxLength={ 100 }
+                readOnly={ readOnly }
+                initialValue={ initialFormValues?.[
+                    "SelfRegistration.CallbackRegex" ] }
+                data-component={ `${ testId }-callback-url-regex` }
+                label={ resolveFieldLabel("SelfRegistration.CallbackRegex",
+                    "User self registration callback URL regex")
+                }
+                hidden={ !serverConfigurationConfig.dynamicConnectors }
+                disabled={ !isConnectorEnabled }
+                hint={ resolveFieldHint("SelfRegistration.CallbackRegex",
+                    "This prefix will be used to validate the callback URL.") }
             />
             <Field.Button
                 form={ FORM_ID }

@@ -46,37 +46,50 @@ import { generatePasswordHistoryCount } from "../components/password-history-cou
 import { updatePasswordPolicyProperties } from "../components/password-policies/api/password-policies";
 
 export const serverConfigurationConfig: ServerConfigurationConfig = {
-    autoEnableConnectorToggleProperty: true,
+    autoEnableConnectorToggleProperty: false,
     backButtonDisabledConnectorIDs: [
         ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
+    ],
+    connectorCategoriesToIgnore: [
+        ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+        ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID,
+        ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
     ],
     connectorCategoriesToShow: [
         ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
         ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID,
-        ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID,
-        ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID,
-        ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID,
-        ServerConfigurationsConstants.MFA_CONNECTOR_CATEGORY_ID
+        ServerConfigurationsConstants.LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID
     ],
     connectorPropertiesToShow: [ "all" ],
     connectorStatusViewDisabledConnectorIDs: [
         ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
     ],
-    connectorToggleName: {},
+    connectorToggleName: {
+        "account-recovery": ServerConfigurationsConstants.PASSWORD_RECOVERY_NOTIFICATION_BASED_ENABLE,
+        "account-recovery-username": ServerConfigurationsConstants.USERNAME_RECOVERY_ENABLE,
+        "account.lock.handler": ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE,
+        "multiattribute.login.handler": ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE,
+        "organization-self-service": ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE,
+        "self-sign-up": ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
+        "sso.login.recaptcha": ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE
+    },
     connectorsToHide: [
-        ServerConfigurationsConstants.WSO2_ANALYTICS_ENGINE_CONNECTOR_CATEGORY_ID,
-        ServerConfigurationsConstants.ELK_ANALYTICS_CONNECTOR_ID,
-        ServerConfigurationsConstants.LITE_USER_REGISTRATION_CONNECTOR_ID,
-        ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID,
-        ServerConfigurationsConstants.CONSENT_INFO_CONNECTOR_ID
+        ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,
+        ServerConfigurationsConstants.PRIVATE_KEY_JWT_CLIENT_AUTH,
+        ServerConfigurationsConstants.USERNAME_VALIDATION
     ],
-    connectorsToShow: [ "all" ],
+    connectorsToShow: [
+        "account-recovery",
+        "self-sign-up",
+        "user-email-verification"
+    ],
     customConnectors: [
-        ServerConfigurationsConstants.SAML2_SSO_CONNECTOR,
-        ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR,
-        ServerConfigurationsConstants.WS_FEDERATION_CONNECTOR
+        ServerConfigurationsConstants.SAML2_SSO_CONNECTOR_ID,
+        ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR_ID,
+        ServerConfigurationsConstants.WS_FEDERATION_CONNECTOR_ID
     ],
     dynamicConnectors: true,
+    extendedConnectors: [],
     intendSettings: false,
     passwordExpiryComponent: (
         componentId: string,
@@ -104,6 +117,14 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
             t
         );
     },
+    predefinedConnectorCategories: [
+        "UGFzc3dvcmQgUG9saWNpZXM",
+        "VXNlciBPbmJvYXJkaW5n",
+        "TG9naW4gQXR0ZW1wdHMgU2VjdXJpdHk",
+        "T3RoZXIgU2V0dGluZ3M",
+        "QWNjb3VudCBNYW5hZ2VtZW50",
+        "TXVsdGkgRmFjdG9yIEF1dGhlbnRpY2F0b3Jz"
+    ],
     processInitialValues: (
         initialValues: ValidationFormInterface,
         passwordHistoryCount: GovernanceConnectorInterface,
@@ -207,8 +228,8 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
 
         return updatePasswordExpiryProperties(passwordExpiryData);
     },
-    processPasswordPoliciesSubmitData: (data: PasswordPoliciesInterface) => {   
-        let passwordExpiryTime: number | undefined = parseInt((data.passwordExpiryTime as string));     
+    processPasswordPoliciesSubmitData: (data: PasswordPoliciesInterface) => {
+        let passwordExpiryTime: number | undefined = parseInt((data.passwordExpiryTime as string));
         const passwordExpiryEnabled: boolean | undefined = data.passwordExpiryEnabled;
         let passwordHistoryCount: number | undefined = parseInt((data.passwordHistoryCount as string));
         const passwordHistoryCountEnabled: boolean | undefined = data.passwordHistoryCountEnabled;

@@ -28,6 +28,7 @@ import { getBrandingResourceEndpoints } from "../../branding/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "../../certificates";
 import { getClaimResourceEndpoints } from "../../claims/configs/endpoints";
 import { getConnectionResourceEndpoints } from "../../connections";
+import { getConsoleSettingsResourceEndpoints } from "../../console-settings/configs/endpoints";
 import { getEmailTemplatesResourceEndpoints } from "../../email-templates";
 import { getGroupsResourceEndpoints } from "../../groups";
 import { getIDPResourceEndpoints } from "../../identity-providers/configs/endpoints";
@@ -70,7 +71,7 @@ export class Config {
      */
     public static resolveServerHost(enforceOrgPath?: boolean, skipAuthzRuntimePath?: boolean): string {
         if (isLegacyAuthzRuntime()) {
-            if ((OrganizationUtils.isRootOrganization(store.getState().organization.organization)
+            if ((OrganizationUtils.isSuperOrganization(store.getState().organization.organization)
                 || store.getState().organization.isFirstLevelOrganization) && !enforceOrgPath) {
                 return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
             } else {
@@ -95,7 +96,7 @@ export class Config {
      * @returns Server host.
      */
     public static resolveServerHostforFG(enforceOrgPath?: boolean): string {
-        if ((OrganizationUtils.isRootOrganization(store.getState().organization.organization)
+        if ((OrganizationUtils.isSuperOrganization(store.getState().organization.organization)
             || store.getState().organization.isFirstLevelOrganization) && !enforceOrgPath) {
             return window[ "AppUtils" ]?.getConfig()?.serverOriginWithTenant;
         } else {
@@ -245,6 +246,7 @@ export class Config {
             ...getTenantResourceEndpoints(this.getDeploymentConfig().serverOrigin),
             ...getFeatureGateResourceEndpoints(this.resolveServerHostforFG(false)),
             ...getInsightsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
+            ...getConsoleSettingsResourceEndpoints(this.getDeploymentConfig()?.serverHost),
             CORSOrigins: `${ this.getDeploymentConfig()?.serverHost }/api/server/v1/cors/origins`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,
@@ -268,6 +270,7 @@ export class Config {
             appTitle: window[ "AppUtils" ]?.getConfig()?.ui?.appTitle,
             applicationTemplateLoadingStrategy:
                 window[ "AppUtils" ]?.getConfig()?.ui?.applicationTemplateLoadingStrategy,
+            classicFeatures: window[ "AppUtils" ]?.getConfig()?.ui?.classicFeatures,
             connectionResourcesUrl: window[ "AppUtils" ]?.getConfig()?.ui?.connectionResourcesUrl,
             cookiePolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl,
             emailTemplates: {
@@ -294,6 +297,7 @@ export class Config {
             isHeaderAvatarLabelAllowed: window[ "AppUtils" ]?.getConfig()?.ui?.isHeaderAvatarLabelAllowed,
             isLeftNavigationCategorized: window[ "AppUtils" ]?.getConfig()?.ui?.isLeftNavigationCategorized,
             isMarketingConsentBannerEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isMarketingConsentBannerEnabled,
+            isPasswordInputValidationEnabled: window["AppUtils"]?.getConfig()?.ui?.isPasswordInputValidationEnabled,
             isRequestPathAuthenticationEnabled:
                 window[ "AppUtils" ]?.getConfig()?.ui?.isRequestPathAuthenticationEnabled,
             isSAASDeployment: window[ "AppUtils" ]?.getConfig()?.ui?.isSAASDeployment,

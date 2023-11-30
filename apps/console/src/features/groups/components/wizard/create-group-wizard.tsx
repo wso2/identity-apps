@@ -28,16 +28,16 @@ import { Dispatch } from "redux";
 import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { GroupBasics } from "./group-basics";
 import { CreateGroupSummary } from "./group-summary";
+import useAuthorization from "../../../authorization/hooks/use-authorization";
 import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "../../../core";
 import { getOrganizationRoles } from "../../../organizations/api";
 import { OrganizationRoleManagementConstants } from "../../../organizations/constants/organization-constants";
-import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import {
     GenericOrganization,
     OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface
 } from "../../../organizations/models";
-import { OrganizationUtils } from "../../../organizations/utils";
 import { getRolesList, updateRolesBulk } from "../../../roles/api";
 import { PatchRoleDataInterface, RolesV2ResponseInterface } from "../../../roles/models";
 import { WizardStepInterface } from "../../../users/models";
@@ -49,6 +49,7 @@ import {
     CreateGroupUserInterface,
     GroupsInterface
 } from "../../models";
+
 
 /**
  * Interface which captures create group props.
@@ -92,7 +93,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { isRootOrganization } = useGetOrganizationType();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     const [ currentStep, setCurrentWizardStep ] = useState<number>(initStep);
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
@@ -114,6 +115,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     const [ initialTempRoleList, setInitialTempRoleList ] = useState<RolesInterface[]
         | OrganizationRoleListItemInterface[]>([]);
     const [ isEnded, setEnded ] = useState<boolean>(false);
+    const { legacyAuthzRuntime } = useAuthorization();
 
     const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
 
@@ -144,7 +146,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
     useEffect(() => {
         if (roleList.length < 1) {
-            if (isRootOrganization) {
+            if (isSuperOrganization() || isFirstLevelOrganization() || !legacyAuthzRuntime) {
                 getRolesList(null)
                     .then((response: AxiosResponse<RolesV2ResponseInterface>) => {
                         setRoleList(response?.data?.Resources);
@@ -479,7 +481,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
         title: t("console:manage.features.roles.addRoleWizard.wizardSteps.3")
     } ];
 
-    const WIZARD_STEPS: WizardStepInterface[] = OrganizationUtils.isCurrentOrganizationRoot()
+    const WIZARD_STEPS: WizardStepInterface[] = isSuperOrganization
         ? [ ...ALL_WIZARD_STEPS ]
         : [ ...ALL_WIZARD_STEPS.slice(0, 1), ...ALL_WIZARD_STEPS.slice(2) ];
 
@@ -493,7 +495,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
 
                 break;
             case 1:
-                OrganizationUtils.isCurrentOrganizationRoot()
+                isSuperOrganization
                     ? setSubmitRoleList()
                     : setFinishSubmit();
 

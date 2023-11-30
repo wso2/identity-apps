@@ -33,7 +33,10 @@ export class ApplicationManagementConstants {
     public static readonly AUTHENTICATORS_LOCAL_STORAGE_KEY: string = btoa("Authenticators");
     public static readonly EMPTY_JSON_ARRAY: string = "[]";
 
-    public static readonly SYSTEM_APPS: string[] = [ "CONSOLE","MY_ACCOUNT" ];
+    public static readonly SYSTEM_APPS: string[] = [ "CONSOLE" ];
+    public static readonly HIDDEN_APPS: string[] = [ "My Account", "Console" ]
+    public static readonly MY_ACCOUNT_APP_NAME: string = "My Account";
+    public static readonly CONSOLE_APP_NAME: string = "Console";
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -64,7 +67,8 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_EDIT_PROVISIONING_SETTINGS", "applications.edit.provisioningSettings")
         .set("APPLICATION_EDIT_ADVANCED_SETTINGS", "applications.edit.advancedSettings")
         .set("APPLICATION_SHARED_ACCESS", "applications.edit.sharedAccess")
-        .set("APPLICATION_EDIT_INFO", "applications.edit.info");
+        .set("APPLICATION_EDIT_INFO", "applications.edit.info")
+        .set("FAPI_APP_CREATION", "applications.create.fapi");
 
     /**
      * Key for the `Edit Application` tag in the docs structure object.
@@ -185,7 +189,7 @@ export class ApplicationManagementConstants {
     public static readonly DEVICE_GRANT: string = "urn:ietf:params:oauth:grant-type:device_code";
     public static readonly OAUTH2_TOKEN_EXCHANGE: string = "urn:ietf:params:oauth:grant-type:token-exchange";
     public static readonly ACCOUNT_SWITCH_GRANT: string = "account_switch";
-    
+
     /**
      * Set of grant types to hide from the UI.
      */
@@ -461,6 +465,16 @@ export class ApplicationManagementConstants {
      * Application state param to be sent in the routing.
      */
     public static readonly APPLICATION_STATE: string = "application";
+
+    /**
+     * Sign in step of the try it application.
+     */
+    public static readonly TRY_IT_SIGNIN_TAB: number = 2;
+
+    /**
+     * Sign in step of other applications.
+     */
+    public static readonly APPLICATION_SIGNIN_TAB: number = 3;
 }
 
 export enum ShareWithOrgStatus {

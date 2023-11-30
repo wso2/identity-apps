@@ -1532,7 +1532,7 @@ TODO : Move values to separate variables and cleanup styles.
 }
 
 /*-------------------------------
-    Diagnostic Logs Page
+    Monitoring Logs Page
 --------------------------------*/
 
 .diagnostic-logs {
@@ -1743,6 +1743,11 @@ TODO : Move values to separate variables and cleanup styles.
     }
 }
 
+.download-data-button {
+    color: @primaryColor !important;
+    cursor: "pointer";
+}
+
 .custom-portal-wrapper {
     float: left;
     position: absolute !important;
@@ -1881,4 +1886,17 @@ TODO : Move values to separate variables and cleanup styles.
     background: none !important;
     color: @primaryColor !important;
     text-transform: capitalize !important;
+}
+
+/*-------------------------------
+         Sign-in methods
+     Add Authenticator Modal
+--------------------------------*/
+
+.add-authenticator-modal {
+    .authenticator-container {
+        .resource-grid-wrapper .ui.cards.resource-grid .ui.card.info-card {
+            width: 290px;
+        }
+    }
 }

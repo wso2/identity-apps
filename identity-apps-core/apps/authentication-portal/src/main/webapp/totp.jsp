@@ -317,7 +317,7 @@
                                         AuthenticationEndpointUtil.isValidURL(multiOptionURI) &&
                                         isMultiAuthAvailable(multiOptionURI)) {
                                 %>
-                                    <a class="ui fluid large button secondary mt-2" id="goBackLink"
+                                    <a class="ui primary basic button link-button" id="goBackLink"
                                         href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "choose.other.option")%>
                                     </a>

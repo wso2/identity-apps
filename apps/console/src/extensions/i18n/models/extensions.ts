@@ -324,6 +324,10 @@ export interface Extensions {
                     message: string;
                 };
             };
+            managementAPI: {
+                header: string;
+                description: string;
+            }
             notifications: {
                 deleteAPIResource: {
                     unauthorizedError: {
@@ -416,6 +420,10 @@ export interface Extensions {
                     };
                 };
             };
+            organizationAPI: {
+                header: string;
+                description: string;
+            }
             table: {
                 name: {
                     column: string;
@@ -1756,7 +1764,7 @@ export interface Extensions {
             };
         };
         emailProviders: {
-            configureEmailProvider: string;
+            configureEmailTemplates: string;
             heading: string;
             subHeading: string;
             description: string;
@@ -1849,10 +1857,22 @@ export interface Extensions {
                 }
             };
         };
-        notificationChannel: {
-            heading: string;
-            title: string;
-            description: string;
+        emailAndSMS: {
+            heading: {
+                heading: string;
+                onlySMSProvider: string;
+                onlyEmailProvider: string;
+            },
+            title: {
+                heading: string;
+                onlySMSProvider: string;
+                onlyEmailProvider: string;
+            },
+            description: {
+                description: string;
+                onlySMSProvider: string;
+                onlyEmailProvider: string;
+            }
         };
         smsProviders: {
             heading: string;
@@ -2394,6 +2414,28 @@ export interface Extensions {
                             content: string;
                             heading: string;
                         };
+                        configureParameters: {
+                            heading: string;
+                            content: {
+                                parameters: {
+                                    progressiveEnrollment: {
+                                        description: string;
+                                        label: string;
+                                        note: string;
+                                    };
+                                    usernamelessAuthentication: {
+                                        description: string;
+                                        label: string;
+                                    };
+                                };
+                                steps: {
+                                    info: string;
+                                    1: string;
+                                    2: string;
+                                    3: string;
+                                }
+                            };
+                        };
                     };
                     subHeading: string;
                 };
@@ -2478,7 +2520,8 @@ export interface Extensions {
                     };
                 };
                 searchBar: {
-                    placeholder: string;
+                    placeholderDiagnostic: string;
+                    placeholderAudit: string;
                 };
                 refreshMessage: {
                     text: string;
@@ -2489,6 +2532,9 @@ export interface Extensions {
                 };
                 queryButton: {
                     label: string;
+                };
+                downloadButton: {
+                    label : string;
                 };
                 delayMessage: {
                     text: string;
@@ -2715,10 +2761,14 @@ export interface Extensions {
                 usernameType: string;
                 usernameTypeHint: string;
                 emailType: string;
-                alphanumericType: string;
-                usernameLength: string;
-                usernameLengthMin: string;
-                usernameLengthMax: string;
+                customType: string;
+                usernameLength: {
+                    0: string;
+                    1: string;
+                    2: string;
+                };
+                usernameAlphanumeric: string;
+                usernameSpecialCharsHint: string;
             };
             alternativeLoginIdentifierPage: {
                 pageTitle: string;
@@ -3031,8 +3081,10 @@ export interface Extensions {
                             passwordValidation: string;
                         };
                         usernameHint: string;
+                        usernameSpecialCharHint: string;
                         usernameLength: string;
                         usernameSymbols: string;
+                        usernameSpecialCharSymbols: string;
                     };
                     summary: {
                         invitation: string;

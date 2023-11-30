@@ -41,10 +41,10 @@ import {
     ConnectedAppsInterface,
     ConnectionInterface
 } from "../../../models/connection";
-import { 
+import {
     handleConnectionDeleteError,
     handleConnectionUpdateError,
-    handleGetConnectionListCallError 
+    handleGetConnectionListCallError
 } from "../../../utils/connection-utils";
 import { GeneralDetailsForm } from "../forms";
 

@@ -90,6 +90,10 @@ export type AuthenticationFlowContextProps = {
      */
     isLegacyEditorEnabled: boolean;
     /**
+     * Flag to determine if the updated application a system application.
+     */
+    isSystemApplication?: boolean;
+    /**
      * Callback to be fired when the conditional authentication toggle is switched.
      * @param enabled - Is conditional authentication enabled or not.
      */

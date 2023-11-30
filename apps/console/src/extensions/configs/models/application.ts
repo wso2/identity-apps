@@ -31,6 +31,7 @@ export interface ApplicationConfig {
     advancedConfigurations: {
         showEnableAuthorization: boolean;
         showMyAccount: boolean;
+        showDefaultMyAccountApplicationEditPage: boolean;
         showSaaS: boolean;
         showReturnAuthenticatedIdPs: boolean;
     };
@@ -98,8 +99,8 @@ export interface ApplicationConfig {
         getStrongAuthenticationFlowTabIndex: (
             clientId: string,
             tenantDomain: string,
-            templateId: string,
-            customApplicationTemplateId: string
+            templateId?: string,
+            customApplicationTemplateId?: string
         ) => number
     };
     inboundOIDCForm: {

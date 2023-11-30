@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -141,6 +141,7 @@ export const getIdentityProviderList = (
  * @param offset - Offset for get to start.
  * @param filter - Search filter.
  * @param requiredAttributes - Extra attribute to be included in the list response. ex:`isFederationHub`
+ * @param shouldFetch - Should fetch the data.
  *
  * @returns Requested IDPs
  */
@@ -148,7 +149,8 @@ export const useIdentityProviderList = <Data = IdentityProviderListResponseInter
     limit?: number,
     offset?: number,
     filter?: string,
-    requiredAttributes?: string
+    requiredAttributes?: string,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -166,7 +168,7 @@ export const useIdentityProviderList = <Data = IdentityProviderListResponseInter
         url: store.getState().config.endpoints.identityProviders
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,

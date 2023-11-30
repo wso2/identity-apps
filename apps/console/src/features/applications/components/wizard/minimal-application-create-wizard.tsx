@@ -15,8 +15,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { Show } from "@wso2is/access-control";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
@@ -53,14 +55,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Card, Checkbox, CheckboxProps, Dimmer, Divider, Grid } from "semantic-ui-react";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
+import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
 import { applicationConfig } from "../../../../extensions";
 import { AccessControlConstants } from "../../../access-control/constants/access-control";
+import useAuthorization from "../../../authorization/hooks/use-authorization";
 import {
     AppConstants,
     AppState,
     CORSOriginsListInterface,
     EventPublisher,
+    FeatureConfigInterface,
     ModalWithSidePanel,
     getCORSOrigins,
     getTechnologyLogos,
@@ -69,7 +74,8 @@ import {
 } from "../../../core";
 import { TierLimitReachErrorModal } from "../../../core/components/tier-limit-reach-error-modal";
 import { OrganizationType } from "../../../organizations/constants";
-import { OrganizationUtils } from "../../../organizations/utils";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { RoleAudienceTypes, RoleConstants } from "../../../roles/constants/role-constants";
 import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api";
 import { getInboundProtocolLogos } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
@@ -82,6 +88,7 @@ import {
     ApplicationTemplateIdTypes,
     ApplicationTemplateInterface,
     ApplicationTemplateLoadingStrategies,
+    ApplicationTemplateNames,
     MainApplicationInterface,
     SAMLConfigModes,
     SupportedAuthProtocolTypes,
@@ -150,13 +157,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
 
     const tenantName: string = store.getState().config.deployment.tenant;
 
     const [ submit, setSubmit ] = useTrigger();
     const [ submitProtocolForm, setSubmitProtocolForm ] = useTrigger();
+    const { legacyAuthzRuntime } = useAuthorization();
 
     const reservedAppPattern: string = useSelector((state: AppState) => {
         return state.config?.deployment?.extensions?.asgardeoReservedAppRegex as string;
@@ -165,7 +173,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         state.config.ui.isClientSecretHashEnabled);
     const orgType: OrganizationType = useSelector((state: AppState) =>
         state?.organization?.organizationType);
-
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const isFAPIAppCreationEnabled: boolean = isFeatureEnabled(featureConfig?.applications,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("FAPI_APP_CREATION"));
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
@@ -210,7 +220,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         // Stop fetching CORS origins if the selected template is `Expert Mode`.
         if (!selectedTemplate
             || selectedTemplate.id === CustomApplicationTemplate.id
-            || !OrganizationUtils.isCurrentOrganizationRoot()) {
+            || !isSuperOrganization()) {
             return;
         }
 
@@ -258,6 +268,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     useEffect(() => {
 
         handleError("all", false);
+
+        if (selectedTemplate.id === CustomApplicationTemplate.id &&
+            customApplicationProtocol === SupportedAuthProtocolTypes.WS_FEDERATION) {
+            return;
+        }
 
         // If both `protocolFormValues` & `generalFormValues` are undefined, return.
         if (!protocolFormValues && !generalFormValues) {
@@ -315,12 +330,23 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         application.name = generalFormValues.get("name").toString();
         application.templateId = selectedTemplate.id;
         // If the application is a OIDC standard-based application
-        if (customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
-            && (selectedTemplate?.templateId === "custom-application" 
+        if (legacyAuthzRuntime && customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+            && (selectedTemplate?.templateId === "custom-application"
                 || selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)) {
             application.isManagementApp = generalFormValues.get("isManagementApp").length >= 2
                 ? true
                 : false;
+        }
+
+        // Adding `APPLICATION` as the default audience for the associated roles,
+        // if a value is not set from the template.
+        if (!legacyAuthzRuntime) {
+            if (isEmpty(application.associatedRoles)) {
+                application.associatedRoles = {
+                    allowedAudience: RoleConstants.DEFAULT_ROLE_AUDIENCE as RoleAudienceTypes,
+                    roles: []
+                };
+            }
         }
 
         // If the selected template is Custom, assign the proper `template ids`.
@@ -332,11 +358,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     oidc: {
                         grantTypes: [
                             "client_credentials"
-                        ]
+                        ],
+                        isFAPIApplication: generalFormValues.get("isFAPIApp")?.length >= 2
                     }
                 };
             } else if (customApplicationProtocol === SupportedAuthProtocolTypes.SAML) {
-                
+
                 application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_SAML;
 
                 if (samlConfigureMode === SAMLConfigModes.MANUAL) {
@@ -350,9 +377,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         }
                     );
                 }
-
-            } else if (customApplicationProtocol === SupportedAuthProtocolTypes.WS_FEDERATION) {
-                application.templateId = ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS;
             }
         }
 
@@ -361,14 +385,36 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             application.inboundProtocolConfiguration = {
                 oidc: {
                     grantTypes: [
-                        "client_credentials"
+                        ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
                     ]
                 }
             };
         }
 
         setIsSubmitting(true);
+        createApp(application);
 
+    }, [ generalFormValues, protocolFormValues ]);
+
+    useEffect(() => {
+        if (!protocolFormValues) {
+            return;
+        }
+
+        const application: MainApplicationInterface = cloneDeep({
+            ...templateSettings?.application,
+            ...protocolFormValues,
+            name: generalFormValues.get("name").toString(),
+            templateId:  ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS
+        });
+
+        if (customApplicationProtocol === SupportedAuthProtocolTypes.WS_FEDERATION && protocolFormValues) {
+            createApp(application);
+        }
+
+    }, [ protocolFormValues ]);
+
+    const createApp = (application: MainApplicationInterface): void => {
         createApplication(application)
             .then((response: AxiosResponse) => {
                 eventPublisher.compute(() => {
@@ -409,8 +455,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             .catch((error: AxiosError) => {
 
                 if (error?.response?.status === 403 &&
-                    error?.response?.data?.code ===
-                    ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
+                error?.response?.data?.code ===
+                ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
                     setOpenLimitReachedModal(true);
 
                     return;
@@ -480,7 +526,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 handleProtocolValueChange(false);
                 handleError("all", false);
             });
-    }, [ generalFormValues, protocolFormValues ]);
+    };
 
     const handleAppCreationComplete = (createdAppID: string): void => {
         // The created resource's id is sent as a location header.
@@ -690,12 +736,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
              *
              * @example
              * SAMLProtocolSettingsWizardForm
-             *     fields= [ "issuer", "assertionConsumerURLs" ] 
-             *     hideFieldHints= true 
-             *     triggerSubmit= submitProtocolForm 
-             *     templateValues= templateSettings?.application 
-             *     onSubmit= (values): void = setProtocolFormValues(values) 
-             *     data-testid= `${ testId }-saml-protocol-settings-form` 
+             *     fields= [ "issuer", "assertionConsumerURLs" ]
+             *     hideFieldHints= true
+             *     triggerSubmit= submitProtocolForm
+             *     templateValues= templateSettings?.application
+             *     onSubmit= (values): void = setProtocolFormValues(values)
+             *     data-testid= `${ testId }-saml-protocol-settings-form`
              * /
              */
             return (
@@ -714,6 +760,16 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     data-testid={ `${ testId }-saml-protocol-settings-form` }
                 />
             );
+        } else if (selectedProtocol === SupportedAuthProtocolTypes.WS_FEDERATION) {
+            return (
+                <PassiveStsProtocolSettingsWizardForm
+                    triggerSubmit={ submitProtocolForm }
+                    initialValues={ null }
+                    templateValues={ templateSettings }
+                    onSubmit={ (values: Record<string, any>): void => setProtocolFormValues(values) }
+                    data-testid={ `${ testId }-passive-sts-protocol-settings-form` }
+                />
+            );
         }
     };
 
@@ -727,7 +783,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     };
 
     const scrollToNotification = () => {
-        document.getElementById("notification-div").scrollIntoView({ behavior: "smooth" });
+        document.getElementById("notification-div")?.scrollIntoView({ behavior: "smooth" });
     };
 
     /**
@@ -1036,8 +1092,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     </Grid.Row>
                     {
                         // The Management App checkbox is only present in OIDC Standard-Based apps
-                        (customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC && 
-                            (selectedTemplate?.templateId === "custom-application" || 
+                        (legacyAuthzRuntime && customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC &&
+                            (selectedTemplate?.templateId === "custom-application" ||
                             selectedTemplate?.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION)
                         ) && (
                             <div className="pt-0 mt-0">
@@ -1064,6 +1120,34 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         )
                     }
                     {
+                        // The FAPI App creation checkbox is only present in OIDC Standard-Based apps
+                        customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                        && selectedTemplate?.name === ApplicationTemplateNames.STANDARD_BASED_APPLICATION
+                        && isFAPIAppCreationEnabled
+                        && (
+                            <div className="pt-0 mt-0">
+                                <Field
+                                    data-componentid={ `${ testId }-fapi-app-checkbox` }
+                                    name={ "isFAPIApp" }
+                                    required={ false }
+                                    type="checkbox"
+                                    value={ [ "isFAPIApp" ] }
+                                    children={ [
+                                        {
+                                            label: t("console:develop.features.applications.forms.generalDetails" +
+                                                ".fields.isFapiApp.label" ),
+                                            value: "fapiApp"
+                                        }
+                                    ] }
+                                />
+                                <Hint compact>
+                                    { t("console:develop.features.applications.forms.generalDetails.fields" +
+                                        ".isFapiApp.hint" ) }
+                                </Hint>
+                            </div>
+                        )
+                    }
+                    {
                         isOrganizationManagementEnabled
                         && applicationConfig.editApplication.showApplicationShare
                         && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
@@ -1076,9 +1160,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                         <div className="pt-0 mt-0">
-                                            <Checkbox 
+                                            <Checkbox
                                                 onChange={ (
-                                                    event: React.FormEvent<HTMLInputElement>, 
+                                                    event: React.FormEvent<HTMLInputElement>,
                                                     data: CheckboxProps
                                                 ) => {
                                                     setIsAppSharingEnabled(data.checked);

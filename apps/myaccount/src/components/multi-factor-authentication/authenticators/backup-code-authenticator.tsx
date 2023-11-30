@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -57,7 +57,6 @@ import { AppState } from "../../../store";
 interface BackupCodeProps extends IdentifiableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
     initBackupCodeFlow: boolean;
-    isBackupCodeForced: boolean;
     onBackupFlowCompleted: () => void;
     /**
      * This callback function handles the visibility of the
@@ -84,7 +83,6 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
         isBackupCodesConfigured,
         enabledAuthenticators,
         backupCodeAuthenticatorName,
-        isBackupCodeForced,
         isSuperTenantLogin,
         onEnabledAuthenticatorsUpdated
     } = props;
@@ -162,14 +160,14 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
 
         switch(action) {
             case EnabledAuthenticatorUpdateAction.ADD : {
-                if (isBackupCodeForced && !authenticatorsList.includes(backupCodeAuthenticatorName)) {
+                if (!authenticatorsList.includes(backupCodeAuthenticatorName)) {
                     authenticatorsList.push(backupCodeAuthenticatorName);
                 }
 
                 break;
             }
             case EnabledAuthenticatorUpdateAction.REMOVE : {
-                if (isBackupCodeForced && authenticatorsList.includes(backupCodeAuthenticatorName)) {
+                if (authenticatorsList.includes(backupCodeAuthenticatorName)) {
                     authenticatorsList.splice(authenticatorsList.indexOf(backupCodeAuthenticatorName), 1);
                 }
 
@@ -662,7 +660,7 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                                             size="small"
                                             color="grey"
                                             name="add"
-                                            disabled={ isLoading || (!isMFAConfigured && isSuperTenantLogin) }
+                                            disabled={ isLoading }
                                             data-testid={ `${componentid}-init-button` }
                                         />)
                                     }
@@ -673,21 +671,6 @@ export const BackupCodeAuthenticator : FunctionComponent<BackupCodeProps> = (
                         </List.Content>
                     </Grid.Column>
                 </Grid.Row>
-                { !isMFAConfigured && isSuperTenantLogin ? (
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 1 } className="first-column" verticalAlign="middle">
-                        </Grid.Column>
-                        <Grid.Column width={ 12 } className="first-column" verticalAlign="middle">
-                            <Message className="display-flex" size="tiny" info>
-                                <Icon name="info" color="teal" corner />
-                                <Message.Content className="tiny">
-                                    { t(translateKey + "messages.disabledMessage") }
-                                </Message.Content>
-                            </Message>
-                        </Grid.Column>
-                    </Grid.Row>) :
-                    null
-                }
             </Grid>
         </>
     );

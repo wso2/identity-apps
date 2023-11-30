@@ -460,6 +460,10 @@ export const extensions: Extensions = {
                         "Veuillez procéder avec prudence."
                 }
             },
+            managementAPI: {
+                header: "API de gestion",
+                description: "API pour gérer les ressources de votre organisation (racine)"
+            },
             notifications: {
                 deleteAPIResource: {
                     unauthorizedError: {
@@ -551,6 +555,10 @@ export const extensions: Extensions = {
                         message: "Ressource API créée"
                     }
                 }
+            },
+            organizationAPI: {
+                header: "API d'organisation",
+                description: "API pour gérer les ressources de vos autres organisations"
             },
             table: {
                 name: {
@@ -2014,14 +2022,14 @@ export const extensions: Extensions = {
             }
         },
         emailProviders: {
-            configureEmailProvider: "Configurer le fournisseur de messagerie",
-            heading: "Fournisseur de messagerie",
+            configureEmailTemplates: "Configurer les modèles d'e-mail",
+            heading: "Fournisseur de messagerie personnalisé",
             subHeading: "Configurez des serveurs SMTP personnalisés pour envoyer des e-mails avec votre propre adresse e-mail.",
-            description: "Configurez les paramètres suivants en fonction de votre serveur SMTP.",
+            description: "Configurez les paramètres du fournisseur de messagerie en fonction de votre serveur SMTP.",
             info: "Vous pouvez personnaliser le contenu des e-mails à l'aide de <1>Modèles d'e-mails</1>.",
             updateButton: "Mise à jour",
             sendTestMailButton: "Envoyer un e-mail test",
-            goBack: "Revenir aux canaux de notification",
+            goBack: "Revenir à E-mail et SMS",
             confirmationModal: {
                 assertionHint: "Veuillez confirmer votre action.",
                 content: "Si vous supprimez cette configuration, les e-mails seront envoyés à partir de l'adresse e-mail Asgardeo. " +
@@ -2115,19 +2123,31 @@ export const extensions: Extensions = {
                 }
             }
         },
-        notificationChannel: {
-            heading: "Canal de notification",
-            title: "Canal de notification",
-            description: "Configurez les canaux de notification pour envoyer des notifications à vos utilisateurs."
+        emailAndSMS: {
+            heading: {
+                heading: "Fournisseurs Email & SMS",
+                onlySMSProvider: "Fournisseur de SMS",
+                onlyEmailProvider: "Fournisseur de messagerie"
+            },
+            title: {
+                heading: "Fournisseurs Email & SMS",
+                onlySMSProvider: "Fournisseur de SMS",
+                onlyEmailProvider: "Fournisseur de messagerie"
+            },
+            description: {
+                description: "Configurez les SMS et les fournisseurs de messagerie pour votre organisation.",
+                onlySMSProvider: "Configurez le fournisseur SMS pour votre organisation.",
+                onlyEmailProvider: "Configurez les fournisseurs Email et SMS pour votre organisation."
+            }
         },
         smsProviders: {
-            heading: "Fournisseur SMS",
+            heading: "Fournisseur de SMS personnalisé",
             subHeading: "Configurez un fournisseur SMS personnalisé pour envoyer des SMS à vos utilisateurs.",
-            description: "Configurez les paramètres suivants en fonction de votre fournisseur SMS.",
+            description: "Configurez les paramètres du fournisseur SMS en fonction de votre fournisseur SMS.",
             info: "Vous pouvez personnaliser le contenu du SMS à l'aide des <1>Modèles de SMS</1>.",
             updateButton: "Mise à jour",
             sendTestSMSButton: "Envoyer un SMS test",
-            goBack: "Revenir aux canaux de notification",
+            goBack: "Revenir à E-mail et SMS",
             confirmationModal: {
                 assertionHint: "Veuillez confirmer votre action.",
                 content: "Si vous supprimez cette configuration, vous ne recevrez pas de SMS." +
@@ -2754,6 +2774,40 @@ export const extensions: Extensions = {
                                 "<3>Ajouter une connexion par clé d'accès</3> pour configurer " +
                                 " un flux de clé d'accès de base.",
                             heading: "Sélectionnez <1>Ajouter une connexion par mot de passe</1>."
+                        },
+                        configureParameters: {
+                            heading: "Configurer les options de clé d'accès",
+                            content: {
+                                parameters: {
+                                    progressiveEnrollment: {
+                                        description: "Activez cette option pour permettre aux utilisateurs " +
+                                        "de s'inscrire pour obtenir un mot de passe lors de la connexion.",
+                                        label: "Inscription progressive du mot de passe:",
+                                        note: "Si la clé d'accès est définie comme premier facteur, " +
+                                        "le <1> script adaptatif</1> suivant doit être ajouté " +
+                                        "sous l'onglet <3>Méthode de connexion</3> de l'application. " +
+                                        "Ce script est ajouté automatiquement avec la configuration de " +
+                                        "la clé d'accès basée sur un modèle et est utilisé pour vérifier " +
+                                        "l'identité de l'utilisateur avant d'inscrire les " +
+                                        "clés d'accès. Toutefois, si vous " +
+                                        "configurez des mots de passe sans modèle, n'oubliez " +
+                                        "pas d'ajouter le script manuellement."
+                                    },
+                                    usernamelessAuthentication: {
+                                        description: "L'activation de cette fonctionnalité permet aux " +
+                                        "utilisateurs de se connecter avec un mot de passe sans saisir " +
+                                        "de nom d'utilisateur, créant ainsi une expérience de " +
+                                        "connexion plus rationalisée.",
+                                        label: "Authentification sans nom d'utilisateur:"
+                                    }
+                                },
+                                steps: {
+                                    info: "Pour configurer, veuillez suivre les étapes ci-dessous:",
+                                    1: "Accédez à la zone <1>Connexions</1>.",
+                                    2: "Recherchez et sélectionnez la connexion <1>Passkey</1>.",
+                                    3: "Accédez à l'onglet <1>Paramètres</1>."
+                                }
+                            }
                         }
                     },
                     subHeading:
@@ -2846,7 +2900,9 @@ export const extensions: Extensions = {
                     }
                 },
                 searchBar: {
-                    placeholder: "Rechercher des journaux par ID de suivi, ID d'action, ID client, message de résultat ou état de résultat"
+                    placeholderDiagnostic: "Rechercher des journaux par ID de suivi, ID d'action, ID client, message de résultat ou état de résultat",
+                    placeholderAudit: "Rechercher les journaux par action, ID cible, ID initiateur, ID de demande"
+
                 },
                 refreshMessage: {
                     text: "Derniers journaux récupérés à",
@@ -2857,6 +2913,9 @@ export const extensions: Extensions = {
                 },
                 queryButton: {
                     label: "Exécuter la requête"
+                },
+                downloadButton : {
+                    label : "Télécharger les données du journal"
                 },
                 delayMessage: {
                     text: "Certaines requêtes peuvent prendre plus de temps à charger."
@@ -2870,7 +2929,7 @@ export const extensions: Extensions = {
             notifications: {
                 genericError: {
                     subtitle: {
-                        0: "Impossible de récupérer les journaux de diagnostic.",
+                        0: "Impossible de récupérer les journaux.",
                         1: "Veuillez réessayer."
                     },
                     title: "Quelque chose s'est mal passé"
@@ -2900,8 +2959,8 @@ export const extensions: Extensions = {
                 }
             },
             pageHeader: {
-                description: "Interrogez vos journaux pour résoudre les problèmes d'application de production.",
-                title: "Journaux de diagnostic"
+                description: "Interrogez vos journaux pour résoudre les problèmes et surveiller les activités des ressources.",
+                title: "Journaux"
             },
             tooltips: {
                 copy: "Copier dans le presse-papier"
@@ -3084,10 +3143,14 @@ export const extensions: Extensions = {
                 usernameType: "Sélectionnez le type de nom d'utilisateur",
                 usernameTypeHint: "Autoriser les utilisateurs à définir une adresse e-mail ou une combinaison de caractères alphanumériques pour le nom d'utilisateur.",
                 emailType: "Email",
-                alphanumericType: "Alphanumérique (a-z, A-Z, 0-9)",
-                usernameLength: "Définir la longueur du nom d'utilisateur",
-                usernameLengthMin: "Min",
-                usernameLengthMax: "Max"
+                customType: "Coutume",
+                usernameLength: {
+                    0: "Doit contenir entre",
+                    1: "et",
+                    2: "caractères."
+                },
+                usernameAlphanumeric: "Restreindre aux caractères alphanumériques (a-z, A-Z, 0-9).",
+                usernameSpecialCharsHint: "Toute combinaison de lettres (a-z, A-Z), de chiffres (0-9) et des caractères suivants : !@#$%&'*+\\=?^_`.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "Identifiants de connexion alternatifs",
@@ -3338,9 +3401,12 @@ export const extensions: Extensions = {
                         },
                         usernameHint: "Doit être une chaîne alphanumérique (a-z, A-Z, 0-9) entre {{minLength}} et {{maxLength}} caractères comprenant " +
                             "au moins une lettre.",
+                        usernameSpecialCharHint: "Doit contenir entre {minLength}} et {{maxLength}} caractères et ne peut contenir qu'une " +
+                            "combinaison de lettres (a-z, A-Z), de chiffres (0-9) et des caractères suivants: !@#$%&'*+\\=?^_`.{|}~-.",
                         usernameLength: "La longueur du nom d'utilisateur doit être comprise " +
                             "entre {{minLength}} et {{maxLength}}.",
-                        usernameSymbols: "Le nom d'utilisateur doit être composé de caractères alphanumériques (a-z, A-Z, 0-9) et doit inclure au moins une lettre."
+                        usernameSymbols: "Le nom d'utilisateur doit être composé de caractères alphanumériques (a-z, A-Z, 0-9) et doit inclure au moins une lettre.",
+                        usernameSpecialCharSymbols: "Veuillez choisir un nom d'utilisateur valide qui respecte les directives données."
                     }
                 }
             },

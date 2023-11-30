@@ -26,7 +26,7 @@ import {
     IdentityProviderManagementConstants
 } from "../../../../identity-providers/constants/identity-provider-management-constants";
 import { OrganizationType } from "../../../../organizations/constants";
-import { useGetOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import { getAuthenticatorIcons } from "../../../configs/ui";
 import { LoginFlowTypes } from "../../../models";
 
@@ -79,7 +79,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -244,12 +244,12 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     imageSize="mini"
                                     header={ t(
                                         "console:develop.features.applications.edit.sections.signOnMethod" +
-                                        ".sections.landing.flowBuilder.types.usernameless.heading")
+                                        ".sections.landing.flowBuilder.types.passkey.heading")
                                     }
                                     description={ t(
                                         "console:develop.features.applications.edit.sections" +
                                             ".signOnMethod.sections.landing.flowBuilder." +
-                                            "types.usernameless.description"
+                                            "types.passkey.description"
                                     ) }
                                     onClick={ () => {
                                         eventPublisher.publish(

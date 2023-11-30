@@ -53,7 +53,10 @@ import deleteOrganizationDiscoveryConfig from "../api/delete-organization-discov
 import useGetOrganizationDiscovery from "../api/use-get-organization-discovery";
 import useGetOrganizationDiscoveryConfig from "../api/use-get-organization-discovery-config";
 import DiscoverableOrganizationsList from "../components/discoverable-organizations-list";
-import { OrganizationDiscoveryConfigInterface } from "../models/organization-discovery";
+import {
+    OrganizationDiscoveryConfigInterface,
+    OrganizationListWithDiscoveryInterface
+} from "../models/organization-discovery";
 
 const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -329,6 +332,23 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
         );
     };
 
+    /**
+     * Checks if the `Next` page nav button should be shown.
+     *
+     * @param orgList - List of discoverable organizations.
+     * @returns `true` if `Next` page nav button should be shown.
+     */
+    const shouldShowNextPageNavigation = (orgList: OrganizationListWithDiscoveryInterface): boolean => {
+        return orgList?.startIndex + orgList?.count !== orgList?.totalResults + 1;
+    };
+
+    /**
+     * Handle back button click.
+     */
+    const handleBackButtonClick = () => {
+        history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
+    };
+
     return (
         <PageLayout
             action={
@@ -362,6 +382,11 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
             title={ t("console:manage.pages.emailDomainDiscovery.title") }
             description={ t("console:manage.pages.emailDomainDiscovery.subTitle") }
             data-componentid={ `${ testId }-page-layout` }
+            backButton={ {
+                "data-testid": `${ testId }-page-back-button`,
+                onClick: handleBackButtonClick,
+                text: t("console:manage.features.governanceConnectors.goBackLoginAndRegistration")
+            } }
         >
             { discoveryToggle() }
             <Divider hidden />
@@ -408,7 +433,6 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                     onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                     onPageChange={ handlePaginationChange }
                     onSortStrategyChange={ handleListSortingStrategyOnChange }
-                    showPagination={ false }
                     showTopActionPanel={
                         isDiscoverableOrganizationsFetchRequestLoading ||
                                 !(!searchQuery && discoverableOrganizations?.organizations?.length <= 0)
@@ -418,7 +442,11 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
                     totalPages={ 10 }
                     totalListSize={ discoverableOrganizations?.organizations?.length }
                     isLoading={ isDiscoverableOrganizationsFetchRequestLoading }
+                    paginationOptions={ {
+                        disableNextButton: !shouldShowNextPageNavigation(discoverableOrganizations)
+                    } }
                     data-componentid={ `${ testId }-list-layout` }
+                    showPagination
                 >
                     <DiscoverableOrganizationsList
                         list={ discoverableOrganizations }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -32,13 +33,12 @@ import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
 import { SIWEAuthenticationProviderCreateWizardContent } from "./swe-authentication-provider-create-wizard-content";
+import { CommonPluggableComponentPropertyInterface } from "../../../../../features/connections";
 import { ModalWithSidePanel, TierLimitReachErrorModal } from "../../../../../features/core/components";
-import { AppConstants } from "../../../../../features/core/constants";
-import { AppState } from "../../../../../features/core/store";
 import { EventPublisher } from "../../../../../features/core/utils";
 import { createIdentityProvider } from "../../../../../features/identity-providers/api";
 import { getIdPIcons } from "../../../../../features/identity-providers/configs/ui";
@@ -123,8 +123,6 @@ export const SIWEAuthenticationProviderCreateWizard: FunctionComponent<
 
         const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
-        const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
-
         const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
         const [ wizStep, setWizStep ] = useState<number>(0);
         const [ totalStep, setTotalStep ] = useState<number>(0);
@@ -187,7 +185,7 @@ export const SIWEAuthenticationProviderCreateWizard: FunctionComponent<
                     error?.response?.data?.code ===
                     identityAppsError.getErrorCode()) {
                         setOpenLimitReachedModal(true);
-        
+
                         return;
                     }
 
@@ -247,6 +245,12 @@ export const SIWEAuthenticationProviderCreateWizard: FunctionComponent<
             identityProvider.description = template.description;
             identityProvider.templateId = template.templateId;
 
+            identityProvider.federatedAuthenticators.authenticators[ 0 ].properties =
+                identityProvider?.federatedAuthenticators?.authenticators[ 0 ]?.properties?.filter(
+                    (item: CommonPluggableComponentPropertyInterface) =>
+                        item.key !== "ClientId" && item.key !== "ClientSecret" && item.key !== "callbackUrl"
+                );
+
             identityProvider.federatedAuthenticators.authenticators[ 0 ].properties = [
                 ...identityProvider.federatedAuthenticators.authenticators[ 0 ].properties,
                 {
@@ -263,18 +267,7 @@ export const SIWEAuthenticationProviderCreateWizard: FunctionComponent<
                 }
             ];
 
-            // TODO: Refactor the usage of absolute image paths once Media Service is available.
-            // Tracked here - https://github.com/wso2/product-is/issues/12396
-            if (AppConstants.getClientOrigin()) {
-                if (AppConstants.getAppBasename()) {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                    "/" + AppConstants.getAppBasename() +
-                    `/libs/themes/${ theme }/assets/images/identity-providers/ethereum.svg`;
-                } else {
-                    identityProvider.image = AppConstants.getClientOrigin() +
-                    `/libs/themes/${ theme }/assets/images/identity-providers/ethereum.svg`;
-                }
-            }
+            identityProvider.image = "assets/images/logos/ethereum.svg";
 
             createNewIdentityProvider(identityProvider);
         };
@@ -403,7 +396,7 @@ export const SIWEAuthenticationProviderCreateWizard: FunctionComponent<
                         "tierLimitReachedError.emptyPlaceholder.subtitles"
                         ) }
                         message={ t(
-                            "console:develop.features.idp.notifications." + 
+                            "console:develop.features.idp.notifications." +
                         "tierLimitReachedError.emptyPlaceholder.title"
                         ) }
                         openModal={ openLimitReachedModal }

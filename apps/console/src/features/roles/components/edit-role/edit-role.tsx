@@ -30,7 +30,7 @@ import { RoleGroupsList } from "./edit-role-groups";
 import { UpdatedRolePermissionDetails } from "./edit-role-permission";
 import { RoleUsersList } from "./edit-role-users";
 import { AppState, FeatureConfigInterface } from "../../../core";
-import { useGetOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { RoleAudienceTypes } from "../../constants";
 
 /**
@@ -70,12 +70,13 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     } = props;
 
     const { t } = useTranslation();
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
+    const [ isEveryoneRole, setIsEveryoneRole ] = useState<boolean>(false);
 
     const isSubOrg: boolean = organizationType === OrganizationType.SUBORGANIZATION;
 
@@ -86,6 +87,8 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         if(roleObject) {
             setIsAdminRole(roleObject.displayName === RoleConstants.ADMIN_ROLE ||
                 roleObject.displayName === RoleConstants.ADMIN_GROUP);
+            setIsEveryoneRole(roleObject.displayName === RoleConstants.EVERYONE_ROLE ||
+                roleObject.displayName === RoleConstants.EVERYONE_GROUP);
         }
     }, [ roleObject ]);
 
@@ -96,7 +99,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <BasicRoleDetails
-                            isReadOnly={ isSubOrg || isAdminRole
+                            isReadOnly={ isSubOrg || isAdminRole || isEveryoneRole
                                 || !hasRequiredScopes(
                                     featureConfig?.roles, featureConfig?.roles?.scopes?.update, allowedScopes) }
                             role={ roleObject }

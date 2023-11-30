@@ -28,5 +28,6 @@ export const userConfig: User = {
     },
     deleteUser: (user: ProfileInfoInterface): Promise<any> => {
         return deleteUser(user.id);
-    }
+    },
+    disableManagedByColumn: true
 };

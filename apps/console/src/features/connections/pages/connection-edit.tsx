@@ -285,6 +285,10 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return;
         }
 
+        if (!connector.templateId) {
+            connector.templateId = ConnectionManagementConstants.EXPERT_MODE_TEMPLATE_ID;
+        }
+
         let template: ConnectionTemplateInterface = {};
         let templateId: string = connector.templateId;
 
@@ -671,8 +675,16 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             return (
                 <div className="with-label ellipsis" ref={ idpDescElement }>
                     {
-                        identityProviderTemplate?.name &&
-                        <Label size="small">{ identityProviderTemplate.name }</Label>
+                        identityProviderTemplate?.name 
+                        && (
+                            <Label size="small">
+                                { 
+                                    identityProviderTemplate.name === "Expert Mode"
+                                        ? "Custom Connector"
+                                        : identityProviderTemplate.name 
+                                }
+                            </Label>
+                        )
                     }
                     <Popup
                         disabled={ !isDescTruncated }

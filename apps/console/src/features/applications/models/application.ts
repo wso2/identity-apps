@@ -217,6 +217,32 @@ export interface CertificateInterface {
 }
 
 /**
+ *  Captures Attestation data related configuration.
+ */
+export interface AttestationMetaDataInterface {
+    enableClientAttestation?: boolean;
+    androidPackageName?: string;
+    appleAppId?: string;
+    androidAttestationServiceCredentials?: JSON;
+}
+
+/**
+ *  Captures application advanced configuration related configuration.
+ */
+export interface ApplicationAdvancedConfigurationsViewInterface {
+    saas?: boolean;
+    skipConsentLogin?: boolean;
+    skipConsentLogout?: boolean;
+    returnAuthenticatedIdpList?: boolean;
+    enableAuthorization?: boolean;
+    enableAPIBasedAuthentication?: boolean;
+    enableClientAttestation?: boolean;
+    androidPackageName?: string;
+    appleAppId?: string;
+    androidAttestationServiceCredentials?: string;
+}
+
+/**
  *  Captures application related configuration.
  */
 export interface AdvancedConfigurationsInterface {
@@ -227,6 +253,8 @@ export interface AdvancedConfigurationsInterface {
     skipLogoutConsent?: boolean;
     returnAuthenticatedIdpList?: boolean;
     enableAuthorization?: boolean;
+    enableAPIBasedAuthentication?: boolean;
+    attestationMetaData?: AttestationMetaDataInterface;
     fragment?: boolean;
     additionalSpProperties?: additionalSpProperty[]
 }
@@ -746,6 +774,15 @@ export enum ApplicationTemplateIdTypes {
     SAML_WEB_APPLICATION = "saml-web-application",
     MOBILE_APPLICATION = "mobile-application",
     M2M_APPLICATION = "m2m-application"
+}
+
+/**
+ * Enum for application template names.
+ *
+ * @readonly
+ */
+export enum ApplicationTemplateNames {
+    STANDARD_BASED_APPLICATION = "Standard-Based Application"
 }
 
 /**

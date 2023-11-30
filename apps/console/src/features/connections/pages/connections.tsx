@@ -51,7 +51,7 @@ import {
     history
 } from "../../core";
 import { OrganizationType } from "../../organizations/constants";
-import { useGetOrganizationType } from "../../organizations/hooks/use-get-organization-type";
+import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { useGetAuthenticatorTags, useGetAuthenticators } from "../api/authenticators";
 import { useGetConnections } from "../api/connections";
 import { AuthenticatorGrid } from "../components/authenticator-grid";
@@ -90,7 +90,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-    const { organizationType } = useGetOrganizationType();
+    const { organizationType } = useGetCurrentOrganizationType();
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -105,7 +105,9 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
     const [ connectionsList, setConnectionsList ] = useState<ConnectionListResponseInterface>({});
     const [ authenticatorList, setAuththenticatorList ] = useState<AuthenticatorInterface[]>([]);
     const [ localAuthenticatorList, setLocalAuthenticatorList ] = useState<AuthenticatorInterface[]>([]);
+    const [ filteredAuthenticatorList, setFilteredAuthenticatorList ] = useState<AuthenticatorInterface[]>([]);
     const [ filter, setFilter ] = useState<string>(null);
+    const [ filterAuthenticatorsOnly, setFilterAuthenticatorsOnly ] = useState<boolean>(false);
     const [ appendConnections, setAppendConnections ] = useState<boolean>(false);
     const isPaginating: boolean = false;
 
@@ -121,7 +123,14 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         isLoading: isConnectionsFetchRequestLoading,
         error: connectionsFetchRequestError,
         mutate: mutateConnectionsFetchRequest
-    } = useGetConnections(listItemLimit, listOffset, filter, "federatedAuthenticators");
+    } = useGetConnections(
+        listItemLimit, 
+        listOffset, 
+        filter, 
+        "federatedAuthenticators", 
+        !filterAuthenticatorsOnly, 
+        filterAuthenticatorsOnly
+    );
 
     const {
         data: authenticatorTags,
@@ -239,6 +248,26 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         setLocalAuthenticatorList(moderated);
         setListItemLimit(UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT - moderated.length);
     }, [ authenticators ]);
+
+    /**
+     * Filters the filtered authenticator list based on the configurable local authenticator list.
+     */
+    useEffect(() => {
+        const filtered: AuthenticatorInterface[] = authenticatorList.filter((authenticator: AuthenticatorInterface) => {
+
+            // Filtered authenticator list should only contain local authenticators that are configurable.
+            if (authenticator.type === AuthenticatorTypes.LOCAL) {
+
+                return localAuthenticatorList.some((localAuthenticator: AuthenticatorInterface) => {
+                    return localAuthenticator.id === authenticator.id;
+                });
+            }
+
+            return true;
+        });
+
+        setFilteredAuthenticatorList(filtered);
+    }, [ authenticatorList, localAuthenticatorList ]);
 
     /**
      * Fetches the local authenticators and stores them in the internal state.
@@ -360,6 +389,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
 
         setSelectedFilterTags(filterTags);
         setFilter(ConnectionsManagementUtils.buildAuthenticatorsFilterQuery(query, filterTags));
+        setFilterAuthenticatorsOnly(filterTags && filterTags.length > 0);
 
         if (isEmpty(query) && isEmpty(filterTags)) {
             setShowFilteredList(false);
@@ -495,7 +525,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
             >
                 <AuthenticatorGrid
                     isLoading= { isConnectionsFetchRequestLoading || isAuthenticatorsFetchRequestLoading }
-                    authenticators={ showFilteredList ? authenticatorList : connectionsList?.identityProviders }
+                    authenticators={ showFilteredList ? filteredAuthenticatorList : connectionsList?.identityProviders }
                     onEmptyListPlaceholderActionClick={ () => {
                         eventPublisher.publish("connections-click-new-connection-button");
                         history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));

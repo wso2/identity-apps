@@ -27,33 +27,33 @@ import {
     AlertInterface,
     AlertLevels,
     IdentifiableComponentInterface,
+    LinkInterface,
     RolePermissionInterface,
     RolesInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
 import { EmphasizedSegment, Heading } from "@wso2is/react-components";
-import debounce, { DebouncedFunc } from "lodash-es/debounce";
-import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
     ReactElement,
     ReactNode,
     SyntheticEvent,
-    useCallback,
     useEffect,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownProps } from "semantic-ui-react";
+import { DropdownItemProps, DropdownProps } from "semantic-ui-react";
 import { RenderChip } from "./edit-role-common/render-chip";
 import { RoleAPIResourcesListItem } from "./edit-role-common/role-api-resources-list-item";
-import { getAPIResourceDetailsBulk, updateRoleDetails, useAPIResourceDetails, useAPIResourcesList } from "../../api";
-import { RoleConstants } from "../../constants/role-constants";
+import { useAPIResources } from "../../../api-resources/api";
+import { useGetAuthorizedAPIList } from "../../../api-resources/api/useGetAuthorizedAPIList";
+import { APIResourcesConstants } from "../../../api-resources/constants";
+import { getAPIResourceDetailsBulk, updateRoleDetails, useAPIResourceDetails } from "../../api";
+import { RoleAudienceTypes } from "../../constants/role-constants";
 import { PatchRoleDataInterface, PermissionUpdateInterface, SelectedPermissionsInterface } from "../../models";
-import { APIResourceInterface, ScopeInterface } from "../../models/apiResources";
+import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../models/apiResources";
 
 /**
  * Interface to capture permission edit props.
@@ -82,7 +82,7 @@ interface RolePermissionDetailProps extends IdentifiableComponentInterface {
  */
 export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetailProps> = (props:
     RolePermissionDetailProps): ReactElement => {
-    
+
     const {
         isReadOnly,
         role,
@@ -95,21 +95,22 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     const dispatch: Dispatch = useDispatch();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ isAPIResourcesSearching, setAPIResourcesSearching ] = useState<boolean>(false);
-    const [ apiResourceSearchQuery, setAPIResourceSearchQuery ] = useState<string>(undefined);
     const [ selectedAPIResourceId, setSelectedAPIResourceId ] = useState<string>(undefined);
-    const [ apiResourcesListOptions, setAPIResourcesListOptions ] = useState<DropdownProps[]>([]);
     const [ selectedAPIResources, setSelectedAPIResources ] = useState<APIResourceInterface[]>([]);
     const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface[]>([]);
     const [ initialSelectedPermissions, setInitialSelectedPermissions ] = useState<SelectedPermissionsInterface[]>([]);
     const [ initialAPIResourceIds, setInitialAPIResourceIds ] = useState<string[]>([]);
+    const [ isAPIResourcesListLoading, setIsAPIResourcesListLoading ] = useState<boolean>(false);
+    const [ allAPIResourcesDropdownOptions, setAllAPIResourcesDropdownOptions ] = useState<DropdownItemProps[]>([]);
+    const [ allAPIResourcesListData, setAllAPIResourcesListData ] = useState<APIResourceInterface[]>([]);
+    const [ apiCallNextAfterValue, setAPICallNextAfterValue ] = useState<string>(null);
 
     const {
-        data: apiResourcesList,
-        isLoading: isAPIResourcesListFetchRequestLoading,
-        error: apiResourcsListFetchRequestError,
-        mutate: mutateAPIResourcesListFetchRequest
-    } = useAPIResourcesList(apiResourceSearchQuery, !isReadOnly);
+        data: currentAPIResourcesListData,
+        isLoading: iscurrentAPIResourcesListLoading,
+        error: currentAPIResourcesFetchRequestError,
+        mutate: mutatecurrentAPIResourcesList
+    } = useAPIResources(apiCallNextAfterValue);
 
     const {
         data: selectedAPIResource,
@@ -118,17 +119,28 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         error: selectedAPIResourceFetchRequestError
     } = useAPIResourceDetails(selectedAPIResourceId);
 
+    const {
+        data: authorizedAPIListForApplication,
+        isLoading: isAuthorizedAPIListForApplicationLoading,
+        error: authorizedAPIListForApplicationError
+    } = useGetAuthorizedAPIList(
+        role.audience.type.toUpperCase() === RoleAudienceTypes.APPLICATION ? role.audience.value : null
+    );
+
     useEffect(() => {
-        !isReadOnly 
+        !isReadOnly
             ? getExistingAPIResources()
             : null;
     }, [ role ]);
 
     /**
      * Show error if the API resource fetch request failed.
-     */ 
+     */
     useEffect(() => {
-        if ( selectedAPIResourceFetchRequestError ||  apiResourcsListFetchRequestError) {
+        if (
+            selectedAPIResourceFetchRequestError ||
+            authorizedAPIListForApplicationError
+        ) {
             dispatch(
                 addAlert({
                     description: t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
@@ -139,33 +151,68 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 })
             );
         }
-    }, [ selectedAPIResourceFetchRequestError, apiResourcsListFetchRequestError ]);
+    }, [ selectedAPIResourceFetchRequestError ]);
 
     useEffect(() => {
-        const options: DropdownProps[] = [];
+        const options: DropdownItemProps[] = [];
 
-        apiResourcesList?.apiResources?.map((apiResource: APIResourceInterface) => {
-            if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) => 
-                selectedAPIResource?.id === apiResource?.id)) {
-                options.push({
-                    key: apiResource?.id,
-                    text: apiResource?.name,
-                    value: apiResource?.id
-                });
-            }
-        });
+        if (role.audience.type.toUpperCase() === RoleAudienceTypes.APPLICATION) {
+            // API resources list options when role audience is "application".
+            authorizedAPIListForApplication?.map((api: AuthorizedAPIListItemInterface) => {
+                if (
+                    !selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
+                        selectedAPIResource?.id === api?.id)) {
+                    options.push({
+                        key: api.id,
+                        text: api.displayName,
+                        value: api.id
+                    });
+                }
+            });
 
-        setAPIResourcesListOptions(options);
-    }, [ apiResourcesList, selectedAPIResources ]);
+            setAllAPIResourcesDropdownOptions(options);
+        }
+
+    }, [ authorizedAPIListForApplication, selectedAPIResources ]);
+
+    useEffect(() => {
+        const options: DropdownItemProps[] = [];
+
+        if(role.audience.type.toUpperCase() === RoleAudienceTypes.ORGANIZATION) {
+            // API resources list options when role audience is "organization".
+            allAPIResourcesListData.map((api: APIResourceInterface) => {
+                if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
+                    selectedAPIResource?.id === api?.id)) {
+                    options.push({
+                        key: api.id,
+                        text: api.name,
+                        type: api.type,
+                        value: api.id
+                    });
+                }
+            });
+
+            // Filter out duplicate options
+            // ToDo: Remove this once the duplicate issue is fixed.
+            const filteredOptions: DropdownItemProps[] = options.filter((
+                option: DropdownItemProps, index: number, self: DropdownItemProps[]) =>
+                index === self.findIndex((t: DropdownItemProps) => (
+                    t.key === option.key
+                ))
+            );
+
+            setAllAPIResourcesDropdownOptions(filteredOptions);
+        }
+    }, [ selectedAPIResources ]);
 
     /**
      * Add API resource to the selected API resources list.
      */
     useEffect(() => {
-        if (selectedAPIResource 
-            && !isSelectedAPIResourceFetchRequestLoading 
+        if (selectedAPIResource
+            && !isSelectedAPIResourceFetchRequestLoading
             && !isSelectedAPIResourceFetchRequestValidating) {
-            
+
             if (!selectedAPIResources.find(
                 (apiResource: APIResourceInterface) => selectedAPIResource?.id === apiResource?.id)) {
                 setSelectedAPIResources([ selectedAPIResource, ...selectedAPIResources ]);
@@ -177,8 +224,93 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
 
     useEffect(() => {
         getAPIResourceById(initialAPIResourceIds);
-    }, [ initialAPIResourceIds ]);
-        
+    }, [ initialAPIResourceIds, authorizedAPIListForApplication ]);
+
+    /**
+     * Assign all the API resources to the dropdown options if the after value is not null.
+     */
+    useEffect(() => {
+        if (!isAPIResourcesListLoading) {
+            setIsAPIResourcesListLoading(true);
+        }
+
+        let afterValue: string;
+
+        if (currentAPIResourcesListData) {
+            const filteredDropdownItemOptions: DropdownItemProps[] =
+            (currentAPIResourcesListData?.apiResources.reduce(function (filtered: DropdownItemProps[],
+                apiResource: APIResourceInterface) {
+
+                const isCurrentAPIResourceSubscribed: boolean = selectedAPIResources?.length === 0
+                    || !selectedAPIResources?.some(
+                        (subscribedAPIResource: AuthorizedAPIListItemInterface) =>
+                            subscribedAPIResource.identifier === apiResource.identifier);
+
+                if (isCurrentAPIResourceSubscribed) {
+                    const isCurrentAPIResourceAlreadyAdded: boolean = allAPIResourcesDropdownOptions.length === 0
+                        || !allAPIResourcesDropdownOptions?.some(
+                            (dropdownOption: DropdownItemProps) => dropdownOption.key === apiResource.id);
+
+                    if (isCurrentAPIResourceAlreadyAdded) {
+                        filtered.push({
+                            key: apiResource.id,
+                            text: apiResource.name,
+                            type: apiResource.type,
+                            value: apiResource.id
+                        });
+                    }
+                }
+
+                return filtered;
+            }, []));
+
+            if (role.audience.type.toUpperCase() === RoleAudienceTypes.ORGANIZATION) {
+                setAllAPIResourcesDropdownOptions([
+                    ...allAPIResourcesDropdownOptions,
+                    ...filteredDropdownItemOptions ? filteredDropdownItemOptions : []
+                ]);
+            }
+
+            // Add the current API resources to the all API resources list.
+            setAllAPIResourcesListData([ ...allAPIResourcesListData, ...currentAPIResourcesListData.apiResources ]);
+
+            // Check if there are more API resources to be fetched.
+            let isAfterValueExists: boolean = false;
+
+            currentAPIResourcesListData?.links?.forEach((value: LinkInterface) => {
+                if (value.rel === APIResourcesConstants.NEXT_REL) {
+                    afterValue = value.href.split(`${APIResourcesConstants.AFTER}=`)[1];
+
+                    if (afterValue !== apiCallNextAfterValue) {
+                        setAPICallNextAfterValue(afterValue);
+                        isAfterValueExists = true;
+                    }
+                }
+            });
+
+            if (isAfterValueExists) {
+                mutatecurrentAPIResourcesList();
+            } else {
+                setIsAPIResourcesListLoading(false);
+            }
+        }
+    }, [ currentAPIResourcesListData ]);
+
+    /**
+     * The following useEffect is used to handle if any error occurs while fetching API resources.
+     */
+    useEffect(() => {
+        if (currentAPIResourcesFetchRequestError) {
+            dispatch(addAlert<AlertInterface>({
+                description: t("extensions:develop.apiResource.notifications.getAPIResources" +
+                    ".genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("extensions:develop.apiResource.notifications.getAPIResources" +
+                    ".genericError.message")
+            }));
+        }
+    }, [ currentAPIResourcesFetchRequestError ]);
+
     const getAPIResourceById = async (initialAPIResourceIds: string[]): Promise<void> => {
         const apiResourceIds: string[] = initialAPIResourceIds;
 
@@ -188,7 +320,27 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
 
         getAPIResourceDetailsBulk(apiResourceIds)
             .then((response: APIResourceInterface[]) => {
-                setSelectedAPIResources(response);
+                if (role.audience.type.toUpperCase() === RoleAudienceTypes.ORGANIZATION) {
+                    setSelectedAPIResources(response);
+                } else {
+                    const selectedAPIResourcesList: APIResourceInterface[] = [];
+
+                    response.map((apiResource: APIResourceInterface) => {
+                        const selectedAPIResource: AuthorizedAPIListItemInterface =
+                            authorizedAPIListForApplication?.find(
+                                (api: AuthorizedAPIListItemInterface) => api.id === apiResource.id
+                            );
+
+                        if (selectedAPIResource) {
+                            selectedAPIResourcesList.push({
+                                id: selectedAPIResource.id,
+                                name: selectedAPIResource.displayName,
+                                scopes: selectedAPIResource.authorizedScopes
+                            });
+                        }
+                    });
+                    setSelectedAPIResources(selectedAPIResourcesList);
+                }
             })
             .catch(() => {
                 handleAlerts({
@@ -213,9 +365,9 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 // Populate the selected permissions list.
                 if (!currentPermissions.find((selectedPermission: SelectedPermissionsInterface) =>
                     selectedPermission.apiResourceId === apiResourceId)) {
-                    // Found a new API resource id.                 
+                    // Found a new API resource id.
                     uniqueAPIResourceIds.push(apiResourceId);
-                    
+
                     // Add it to the selected API resources list.
                     currentPermissions.push({
                         apiResourceId: apiResourceId,
@@ -228,7 +380,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 } else {
                     // Found a matching API resource id
                     const index: number = currentPermissions.findIndex(
-                        (selectedPermission: SelectedPermissionsInterface) => 
+                        (selectedPermission: SelectedPermissionsInterface) =>
                             selectedPermission.apiResourceId === apiResourceId
                     );
 
@@ -241,7 +393,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 }
             }
         });
-        
+
         setInitialAPIResourceIds(uniqueAPIResourceIds);
         setSelectedPermissions(currentPermissions);
         setInitialSelectedPermissions(currentPermissions);
@@ -301,43 +453,37 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     };
 
     /**
-     * The following function handles the search query for the groups list.
-     */
-    const searchAPIResources: DebouncedFunc<(query: string) => void> = 
-        useCallback(debounce((query: string) => {
-            setAPIResourceSearchQuery(
-                !isEmpty(query) 
-                    ? `name co ${query}` 
-                    : null
-            );
-            mutateAPIResourcesListFetchRequest().finally(() => {
-                setAPIResourcesSearching(false);
-            });
-        }, RoleConstants.DEBOUNCE_TIMEOUT), []);
-
-    /**
      * Handles the selection of an API resource.
+     *
+     * Only retrieve the API resource details when the role audience is "organization",
+     * else add the API resource to the selected API resources list from the authorized API list.
      */
     const onAPIResourceSelected = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
         event.preventDefault();
-        setSelectedAPIResourceId(data.value.toString());
-        setAPIResourceSearchQuery(undefined);
-    };
+        if (role?.audience?.type?.toUpperCase() === RoleAudienceTypes.ORGANIZATION) {
+            setSelectedAPIResourceId(data?.value?.toString());
+        } else {
+            const selectedAPIResource: AuthorizedAPIListItemInterface = authorizedAPIListForApplication?.find(
+                (api: AuthorizedAPIListItemInterface) => api?.id === data?.value?.toString()
+            );
 
-    /**
-     * Handles the change of the search query of application list.
-     */
-    const onSearchChangeAPIResources = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-        setAPIResourcesSearching(true);
-        searchAPIResources(data?.searchQuery?.toString().trim());
+            setSelectedAPIResources([
+                {
+                    id: selectedAPIResource?.id,
+                    name: selectedAPIResource?.displayName,
+                    scopes: selectedAPIResource?.authorizedScopes
+                },
+                ...selectedAPIResources
+            ]);
+        }
     };
 
     const onChangeScopes = (apiResource: APIResourceInterface, scopes: ScopeInterface[]): void => {
         const selectedScopes: SelectedPermissionsInterface[] = selectedPermissions.filter(
-            (selectedPermission: SelectedPermissionsInterface) => 
+            (selectedPermission: SelectedPermissionsInterface) =>
                 selectedPermission.apiResourceId !== apiResource.id
         );
-        
+
         selectedScopes.push(
             {
                 apiResourceId: apiResource.id,
@@ -367,37 +513,55 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     const editablePermissionList = (): ReactNode => (
         <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={ 2 }>
             <Grid xs={ 8 }>
-                <Form
-                    id={ componentId } 
-                    uncontrolledForm={ false } 
-                    onSubmit={ undefined }
-                >
-                    <Field.Dropdown
-                        search
-                        selection
-                        selectOnNavigation={ false }
-                        ariaLabel="assignedApplication"
-                        name="assignedApplication"
-                        label={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
-                            "apiResource.label") }
-                        options={ apiResourcesListOptions }
-                        data-componentid={ `${componentId}-typography-font-family-dropdown` }
-                        placeholder={ t("console:manage.features.roles.addRoleWizard." +
-                            "forms.rolePermission.apiResource.placeholder") }
-                        noResultsMessage={
-                            isAPIResourcesListFetchRequestLoading
-                                ? t("common:searching")
-                                : t("common:noResultsFound")
+                <Autocomplete
+                    disableCloseOnSelect
+                    fullWidth
+                    aria-label="API resource selection"
+                    componentsProps={ {
+                        paper: {
+                            elevation: 2
+                        },
+                        popper: {
+                            modifiers: [
+                                {
+                                    enabled: false,
+                                    name: "flip"
+                                },
+                                {
+                                    enabled: false,
+                                    name: "preventOverflow"
+                                }
+                            ]
                         }
-                        loading={ isAPIResourcesSearching }
-                        onSearchChange={ onSearchChangeAPIResources }
-                        onChange={ onAPIResourceSelected }
-                    />
-                </Form>
+                    } }
+                    getOptionLabel={ (apiResourcesListOption: DropdownProps) =>
+                        apiResourcesListOption.text }
+                    groupBy={ (apiResourcesListOption: DropdownProps) => apiResourcesListOption.type }
+                    isOptionEqualToValue={
+                        (option: DropdownProps, value: DropdownProps) =>
+                            option.value === value.value
+                    }
+                    loading={ iscurrentAPIResourcesListLoading }
+                    onChange={ onAPIResourceSelected }
+                    options={ allAPIResourcesDropdownOptions
+                        .sort((a: DropdownItemProps, b: DropdownItemProps) =>
+                            -b?.type?.localeCompare(a?.type)) }
+                    noOptionsText={ t("common:noResultsFound") }
+                    renderInput={ (params: AutocompleteRenderInputParams) => (
+                        <TextField
+                            { ...params }
+                            label={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
+                                "apiResource.label") }
+                            placeholder={ t("console:manage.features.roles.addRoleWizard.forms." +
+                                "rolePermission.apiResource.placeholder") }
+                            size="small"
+                        />
+                    ) }
+                />
             </Grid>
             <Grid xs={ 12 }>
                 {
-                    selectedAPIResources?.length > 0 
+                    selectedAPIResources?.length > 0
                         ? (
                             <div className="role-permission-list field">
                                 <label className="form-label">
@@ -408,16 +572,17 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                                     className="mt-2"
                                     data-componentid={ componentId }
                                     basic
-                                    loading={ 
+                                    loading={
                                         selectedAPIResourceId &&
-                                        (isSelectedAPIResourceFetchRequestLoading 
-                                            || isSelectedAPIResourceFetchRequestValidating) 
+                                        (isSelectedAPIResourceFetchRequestLoading
+                                            || isSelectedAPIResourceFetchRequestValidating
+                                            || isAuthorizedAPIListForApplicationLoading)
                                     }
                                 >
                                     {
                                         selectedAPIResources?.map((apiResource: APIResourceInterface) => {
                                             return (
-                                                <RoleAPIResourcesListItem 
+                                                <RoleAPIResourcesListItem
                                                     key={ apiResource?.id }
                                                     apiResource={ apiResource }
                                                     onChangeScopes={ onChangeScopes }
@@ -432,7 +597,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                                                             selectedPermission.apiResourceId === apiResource?.id)
                                                         ?.scopes
                                                     }
-                                                /> 
+                                                />
                                             );
                                         })
                                     }
@@ -458,10 +623,10 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 />
             ) }
             renderTags={ (
-                value: RolePermissionInterface[], 
+                value: RolePermissionInterface[],
                 getTagProps: AutocompleteRenderGetTagProps
             ) => value.map((option: RolePermissionInterface, index: number) => (
-                <RenderChip 
+                <RenderChip
                     { ...getTagProps({ index }) }
                     key={ index }
                     className="pt-5 m-1"

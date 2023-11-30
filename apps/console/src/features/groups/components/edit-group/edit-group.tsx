@@ -17,12 +17,16 @@
  */
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 // TODO: Move to shared components.
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { TabProps } from "semantic-ui-react";
 import { BasicGroupDetails } from "./edit-group-basic";
 import { EditGroupRoles } from "./edit-group-roles";
 import { GroupUsersList } from "./edit-group-users";
@@ -33,6 +37,7 @@ import { OrganizationUtils } from "../../../organizations/utils";
 import { getUsersList } from "../../../users/api";
 import { UserBasicInterface, UserListInterface } from "../../../users/models";
 import { GroupConstants } from "../../constants";
+import useGroupManagement from "../../hooks/use-group-management";
 import { GroupsInterface, GroupsMemberInterface } from "../../models";
 
 /**
@@ -78,6 +83,9 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     } = props;
 
     const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
+
+    const { activeTab, updateActiveTab } = useGroupManagement();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
@@ -87,8 +95,8 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
 
     const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
-    const isRootOrganization: boolean = useMemo(() =>
-        OrganizationUtils.isRootOrganization(currentOrganization), [ currentOrganization ]);
+    const isSuperOrganization: boolean = useMemo(() =>
+        OrganizationUtils.isSuperOrganization(currentOrganization), [ currentOrganization ]);
 
     useEffect(() => {
 
@@ -125,6 +133,27 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
             .then((response: UserListInterface) => {
                 setUsersList(response.Resources);
                 setSelectedUsersList(filterUsersList([ ...response.Resources ]));
+            })
+            .catch((error: AxiosError) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.description ?? error?.response?.data?.detail
+                        ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.response?.data?.message
+                        ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
+                    "description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
+                }));
+
             })
             .finally(() => {
                 setIsUsersFetchRequestLoading(false);
@@ -198,7 +227,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                 )
             },
             // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
-            isRootOrganization ? {
+            isSuperOrganization ? {
                 menuItem: t("console:manage.features.roles.edit.menuItems.roles"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -213,7 +242,12 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
 
     return (
         <ResourceTab
-            isLoading={ isLoading } 
-            panes={ resolveResourcePanes() } />
+            activeIndex={ activeTab }
+            isLoading={ isLoading }
+            onTabChange={ (event: React.MouseEvent<HTMLDivElement>, data: TabProps) => {
+                updateActiveTab(data.activeIndex as number);
+            } }
+            panes={ resolveResourcePanes() }
+        />
     );
 };

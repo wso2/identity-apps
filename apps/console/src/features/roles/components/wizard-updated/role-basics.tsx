@@ -154,7 +154,9 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                                 onClick={ () => navigateToApplicationEdit(application?.id) }
                                                 external={ false }
                                             >
-                                                Change the audience
+                                                { t("console:manage.features.roles.addRoleWizard.forms." +
+                                                "roleBasicDetails.assignedApplication.applicationSubTitle." +
+                                                "changeAudience") }
                                             </Link>
                                         </>
                                     ) : t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." + 

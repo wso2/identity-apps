@@ -37,6 +37,7 @@
         "userIdleTimeOut": 1800,
         "checkSessionInterval": 5
     },
+    "legacyAuthzRuntime": false,
     "ui": {
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
@@ -107,6 +108,7 @@
             }
         },
         "isCookieConsentBannerEnabled": true,
+        "isPasswordInputValidationEnabled": true,
         "cookiePolicyUrl": "/authenticationendpoint/cookie_policy.do",
         "isHeaderAvatarLabelAllowed": false,
         "i18nConfigs": {

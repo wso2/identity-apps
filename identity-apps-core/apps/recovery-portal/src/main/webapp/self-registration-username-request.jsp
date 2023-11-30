@@ -85,6 +85,7 @@
     String GITHUB_AUTHENTICATOR = "GithubAuthenticator";
     String FACEBOOK_AUTHENTICATOR = "FacebookAuthenticator";
     String OIDC_AUTHENTICATOR = "OpenIDConnectAuthenticator";
+    String SSO_AUTHENTICATOR = "OrganizationAuthenticator";
     String commonauthURL = "../commonauth";
 
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -534,7 +535,7 @@
                         </div>
                     </div>
                     <br>
-                    <% } else {
+                    <% } else if (!StringUtils.equals(type, SSO_AUTHENTICATOR)) {
 
                         String logoPath = imageURL;
                         if (!imageURL.isEmpty() && imageURL.contains("/")) {
@@ -1211,6 +1212,8 @@
     <% } %>
 
     <script>
+        const ALPHANUMERIC_USERNAME_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/;
+        const USERNAME_WITH_SPECIAL_CHARS_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%&'*+\\=?^_`.{|}~-]+$/;
         var registrationDataKey = "registrationData";
         var passwordField = $("#passwordUserInput");
         var $registerForm = $("#register");
@@ -1276,13 +1279,23 @@
 
         // Prepare the alphanumeric username message text.
         var alphanumericUsernameText = $("#alphanumeric-username-msg-text");
-        alphanumericUsernameText.text(
-            "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.alphanumeric")%>"
-            + " " + (usernameConfig?.minLength ?? 3) + " "
-            + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "to")%>"
-            + " " + (usernameConfig.maxLength ?? 255) + " "
-            + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters.including.one.letter")%>"
-        );
+        if (usernameConfig.enableSpecialCharacters) {
+            alphanumericUsernameText.html(
+                "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.between")%>"
+                + " " + (usernameConfig?.minLength ?? 3) + " "
+                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "to")%>"
+                + " " + (usernameConfig.maxLength ?? 255) + " "
+                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters.may.contain")%>"
+            );
+        } else {
+            alphanumericUsernameText.text(
+                "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "must.be.alphanumeric")%>"
+                + " " + (usernameConfig?.minLength ?? 3) + " "
+                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "to")%>"
+                + " " + (usernameConfig.maxLength ?? 255) + " "
+                + "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "characters.including.one.letter")%>"
+            );
+        }
         if (!<%=isUsernameValidationEnabled%>) {
             $("#alphanumeric-username-msg").hide();
         }
@@ -1806,6 +1819,18 @@
 
                 return false;
             }
+            if (element.type === 'text' && element.value != null && !element.checkValidity()) {
+                $("#" + error_msg_txt).text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                    "Please.enter.valid.input")%>");
+                $("#" + error_msg_element).show();
+                $("#" + element_field).addClass("error");
+                var error_msg_txt_element = document.getElementById(error_msg_txt);
+                if (error_msg_txt_element) {
+                    $("html, body").animate({scrollTop: $("#" + error_msg_txt).offset().top}, 'slow');
+                }
+
+                return false;
+            }
 
             return true;
         }
@@ -1881,7 +1906,14 @@
                     alphanumeric_username_error_msg.show();
                     alphanumericUsernameField.addClass("error");
 
-                } else if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/.test(alphanumericUsernameUserInput.value.trim())) {
+                } else if (usernameConfig.enableSpecialCharacters
+                    && !USERNAME_WITH_SPECIAL_CHARS_REGEX.test(alphanumericUsernameUserInput.value.trim())) {
+                    alphanumeric_username_error_msg_text.text(
+                        "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.with.special.character.symbols")%>");
+                    alphanumeric_username_error_msg.show();
+                    alphanumericUsernameField.addClass("error");
+                } else if (!usernameConfig.enableSpecialCharacters
+                    && !ALPHANUMERIC_USERNAME_REGEX.test(alphanumericUsernameUserInput.value.trim())) {
                     alphanumeric_username_error_msg_text.text(
                         "<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.with.symbols")%>");
                     alphanumeric_username_error_msg.show();
