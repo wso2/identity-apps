@@ -2561,6 +2561,18 @@ export interface ConsoleNS {
                             certificatePEM: FormAttributes;
                             certificateJWKS: FormAttributes;
                         };
+                        implicitAssociation: {
+                            enable: {
+                                label: string;
+                                hint: string;
+                            };
+                            attributes: {
+                                label: string;
+                                placeholder: string;
+                                hint: string;
+                            };
+                            warning: string;
+                        };
                     };
                     attributeSettings: {
                         attributeMapping: {

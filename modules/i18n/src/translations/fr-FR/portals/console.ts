@@ -3994,6 +3994,20 @@ export const console: ConsoleNS = {
                             hint: "Entrez l'identifiant du domaine d'identité pour ce connexion",
                             label: " Identifiant du domaine local",
                             placeholder: "Entrez la valeur de l'identifiant du royaume d'origine."
+                        },
+                        implicitAssociation: {
+                            enable: {
+                                label: "Association implicite des comptes",
+                                hint: "Lors de l'échange de jetons, si un compte local correspondant est trouvé," +
+                                    " il sera lié implicitement"
+                            },
+                            attributes: {
+                                label: "Sélectionnez les attributs à vérifier",
+                                hint: "Sélectionnez jusqu'à trois attributs qui seront utilisés pour vérifier si" +
+                                    " il existe un compte utilisateur local correspondant",
+                                placeholder: "Aucun attribut sélectionné"
+                            },
+                            warning: "Assurez-vous que les attributs sélectionnés sont vérifiés par l'émetteur du jeton"
                         }
                     },
                     attributeSettings: {
