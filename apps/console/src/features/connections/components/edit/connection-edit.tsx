@@ -143,14 +143,14 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         tabIdentifier,
         [ "data-testid" ]: testId
     } = props;
-    
+
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
-    
+
     /**
-     * This is placed as a temporary fix until the dynamic tab loading is implemented. 
+     * This is placed as a temporary fix until the dynamic tab loading is implemented.
      * (https://github.com/wso2-enterprise/iam-engineering/issues/575)
      */
     const [ isTrustedTokenIssuer, setIsTrustedTokenIssuer ] = useState<boolean>(false);
@@ -159,7 +159,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const isOrganizationEnterpriseAuthenticator: boolean = identityProvider.federatedAuthenticators
         .defaultAuthenticatorId === ConnectionManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID;
     const isEnterpriseConnection: boolean = identityProvider?.federatedAuthenticators
-        .defaultAuthenticatorId === AuthenticatorManagementConstants.SAML_AUTHENTICATOR_ID || 
+        .defaultAuthenticatorId === AuthenticatorManagementConstants.SAML_AUTHENTICATOR_ID ||
         identityProvider?.federatedAuthenticators
             .defaultAuthenticatorId === AuthenticatorManagementConstants.OIDC_AUTHENTICATOR_ID;
 
@@ -311,8 +311,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
     const IdentityProviderGroupsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
-            <IdentityProviderGroupsTab 
-                editingIDP={ identityProvider } 
+            <IdentityProviderGroupsTab
+                editingIDP={ identityProvider }
                 isReadOnly={ isReadOnly }
                 isLoading={ isLoading }
                 loader={ Loader }
@@ -320,7 +320,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             />
         </ResourceTab.Pane>
     );
-    
+
     useEffect(() => {
         setIsTrustedTokenIssuer(type === "trusted-token-issuer");
         setIsExpertMode(type === "expert-mode-idp");
@@ -337,15 +337,15 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
             return;
         }
-       
+
         let extensions: ResourceTabPaneInterface[] = [];
 
         if (typeof connectionSettingsMetaData?.edit?.tabs?.quickStart === "string") {
             extensions = identityProviderConfig
                 .editIdentityProvider.getTabExtensions({
                     content: lazy(
-                        () => import(`../../resources/guides/${ 
-                            connectionSettingsMetaData?.edit?.tabs?.quickStart 
+                        () => import(`../../resources/guides/${
+                            connectionSettingsMetaData?.edit?.tabs?.quickStart
                         }/quick-start`)
                     ),
                     identityProvider: identityProvider,
@@ -390,7 +390,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
         }
 
-        if (shouldShowTab(type, ConnectionTabTypes.SETTINGS) && !isOrganizationEnterpriseAuthenticator) { 
+        if (shouldShowTab(type, ConnectionTabTypes.SETTINGS) && !isOrganizationEnterpriseAuthenticator) {
             panes.push({
                 "data-tabid": ConnectionManagementConstants.SETTINGS_TAB_ID,
                 menuItem: "Settings",
@@ -426,9 +426,9 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
                 render: ConnectedAppsTabPane
             });
         }
-    
-        if (shouldShowTab(type, ConnectionTabTypes.IDENTITY_PROVIDER_GROUPS) && 
-        featureConfig?.identityProviderGroups?.enabled && 
+
+        if (shouldShowTab(type, ConnectionTabTypes.IDENTITY_PROVIDER_GROUPS) &&
+        featureConfig?.identityProviderGroups?.enabled &&
         !isOrganizationEnterpriseAuthenticator) {
             panes.push({
                 "data-tabid": ConnectionManagementConstants.IDENTITY_PROVIDER_GROUPS_TAB_ID,
@@ -437,7 +437,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
         }
 
-        if (shouldShowTab(type, ConnectionTabTypes.OUTBOUND_PROVISIONING) && 
+        if (shouldShowTab(type, ConnectionTabTypes.OUTBOUND_PROVISIONING) &&
         identityProviderConfig.editIdentityProvider.showOutboundProvisioning &&
         !isOrganizationEnterpriseAuthenticator) {
             panes.push({
@@ -447,7 +447,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
         }
 
-        if (shouldShowTab(type, ConnectionTabTypes.JIT_PROVISIONING) && 
+        if (shouldShowTab(type, ConnectionTabTypes.JIT_PROVISIONING) &&
         identityProviderConfig.editIdentityProvider.showJitProvisioning &&
         !isOrganizationEnterpriseAuthenticator) {
             panes.push({
@@ -457,7 +457,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             });
         }
 
-        if (shouldShowTab(type, ConnectionTabTypes.ADVANCED) && 
+        if (shouldShowTab(type, ConnectionTabTypes.ADVANCED) &&
         identityProviderConfig.editIdentityProvider.showAdvancedSettings &&
         !isOrganizationEnterpriseAuthenticator) {
             panes.push({
@@ -488,8 +488,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             : true;
     };
 
-    if (!identityProvider || isLoading || 
-        ((!isOrganizationEnterpriseAuthenticator && !isTrustedTokenIssuer 
+    if (!identityProvider || isLoading ||
+        ((!isOrganizationEnterpriseAuthenticator && !isTrustedTokenIssuer
         && !isEnterpriseConnection && !isExpertMode) && !tabPaneExtensions)) {
 
         return <Loader />;

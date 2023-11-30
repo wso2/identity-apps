@@ -140,13 +140,13 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
 
     /**
      * Handles the deletion of a certificate.
-     * 
+     *
      * @param certificateIndex - Index of the certificate to be deleted.
      */
     const handleDeletePEMCertificate = async (certificateIndex: number): Promise<void> => {
         setDeletingCertificateIndex(certificateIndex);
 
-        if (templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER 
+        if (templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
             && displayingCertificates.length === 1 && !currentlyEditingIdP?.certificate?.jwksUri) {
             setShowPEMCertificateDeleteConfirmationModal(true);
         } else {
@@ -169,12 +169,12 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
 
         const index: number = certificateIndex ?? deletingCertificateIndex;
 
-        const PATCH_OBJECT: CertificatePatchRequestInterface[] = [ 
+        const PATCH_OBJECT: CertificatePatchRequestInterface[] = [
             {
                 "operation": "REMOVE",
                 "path": "/certificate/certificates/" + index,
                 "value": null
-            } 
+            }
         ];
 
         const doOnSuccess = () => {
@@ -416,7 +416,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
                 show={ showCertificateModal }
                 certificateToDisplay={ certificateDisplay }
                 onCloseClicked={ (): void => setShowCertificateModal(false) }
-            /> 
+            />
             <ConfirmationModal
                 primaryActionLoading={ isLoading }
                 onClose={ (): void => setShowPEMCertificateDeleteConfirmationModal(false) }
@@ -443,14 +443,14 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
                     { t("console:develop.features.authenticationProvider.confirmations.deleteCertificate.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content data-componentid={ `${ testId }-delete-certificate-confirmation-content` }>
-                    <Trans 
-                        i18nKey= { 
-                            "console:develop.features.authenticationProvider.confirmations.deleteCertificate." + 
+                    <Trans
+                        i18nKey= {
+                            "console:develop.features.authenticationProvider.confirmations.deleteCertificate." +
                             "content"
                         }
                         values={ { productName: config.ui.productName } }
                     >
-                        If this certificate is deleted, productName will no longer be able to validate  
+                        If this certificate is deleted, productName will no longer be able to validate
                         tokens issued from this issuer.<b> Proceed with caution.</b>
                     </Trans>
                 </ConfirmationModal.Content>

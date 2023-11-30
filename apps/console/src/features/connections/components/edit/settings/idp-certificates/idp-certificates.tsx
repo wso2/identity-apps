@@ -201,12 +201,12 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
 
         const operation: string = editingIDP?.certificate?.jwksUri ? "REPLACE" : "ADD";
 
-        const PATCH_OBJECT: CertificatePatchRequestInterface[] = [ 
+        const PATCH_OBJECT: CertificatePatchRequestInterface[] = [
             {
                 "operation": operation,
                 "path": "/certificate/jwksUri",
                 "value": values.jwks_endpoint
-            } 
+            }
         ];
 
         setIsSubmitting(true);
@@ -259,7 +259,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
             uncontrolledForm={ true }
             initialValues={ { jwks_endpoint: editingIDP?.certificate?.jwksUri } }
             onSubmit={ onJWKSFormSubmit }
-        > 
+        >
             <Field.Input
                 required
                 hint={ (
@@ -370,10 +370,10 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
 
     /**
      * Checks if the IDP is a trusted token issuer and has no certificates to display an alert.
-     * 
+     *
      * @returns `true` if the IDP is a trusted token issuer and has no certificates, `false` otherwise.
      */
-    const shouldShowNoCertificatesAlert = (): boolean => templateType === 
+    const shouldShowNoCertificatesAlert = (): boolean => templateType ===
         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER && !editingIDP?.certificate;
 
     if (!isJWKSEnabled && !isPEMEnabled) {
@@ -387,7 +387,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                     shouldShowNoCertificatesAlert() && (
                         <Grid xs={ 12 }>
                             <Alert severity="error">
-                                { t("console:develop.features.authenticationProvider.forms.certificateSection." + 
+                                { t("console:develop.features.authenticationProvider.forms.certificateSection." +
                                     "noCertificateAlert", { productName: config.ui.productName } ) }
                             </Alert>
                         </Grid>
@@ -404,12 +404,12 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                                 onChange={ onSelectionChange }
                                 options={ [
                                     {
-                                        label: t("console:develop.features.authenticationProvider.forms." + 
+                                        label: t("console:develop.features.authenticationProvider.forms." +
                                             "certificateSection.certificateEditSwitch.jwks"),
                                         value: ("jwks" as CertificateConfigurationMode)
                                     },
                                     {
-                                        label: t("console:develop.features.authenticationProvider.forms." + 
+                                        label: t("console:develop.features.authenticationProvider.forms." +
                                             "certificateSection.certificateEditSwitch.pem"),
                                         value: ("certificates" as CertificateConfigurationMode)
                                     }

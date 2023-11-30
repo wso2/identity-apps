@@ -294,7 +294,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                         readOnly={ isReadOnly }
                     />
                     {
-                        (identityProviderConfig?.editIdentityProvider?.showIssuerSettings || 
+                        (identityProviderConfig?.editIdentityProvider?.showIssuerSettings ||
                             templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER)
                             && !isIDPOrganizationSSO()
                             && (
@@ -322,7 +322,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             )
                     }
                     {
-                        (identityProviderConfig?.editIdentityProvider?.showIssuerSettings || 
+                        (identityProviderConfig?.editIdentityProvider?.showIssuerSettings ||
                             templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER)
                             && !isIDPOrganizationSSO()
                             && (

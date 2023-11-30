@@ -47,7 +47,7 @@ interface TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface extends Iden
 
 }
 
-export const TrustedTokenIssuerAdvanceConfigurationsForm: 
+export const TrustedTokenIssuerAdvanceConfigurationsForm:
 FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
     props: TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface
 ): ReactElement => {
@@ -67,14 +67,14 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
     const [ isClaimListRequestLoading, setClaimListRequestLoading ] = useState<boolean>(false);
 
     /**
-     * This function process the form values and returns the request body of the API call to update the 
+     * This function process the form values and returns the request body of the API call to update the
      * implicit association configuration.
      *
      * @param values - Form values.
      */
     const updateConfiguration = (values: ImplicitAssociaionConfigInterface): any => {
 
-        if (selectedClaims.length > 5) { 
+        if (selectedClaims.length > 5) {
             dispatch(
                 addAlert({
                     description:
@@ -210,8 +210,8 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
                 defaultValue={ config.isEnabled }
             />
             <div className="ml-6">
-                <Text 
-                    size={ 13 } 
+                <Text
+                    size={ 13 }
                     muted={ !implicitAssociationEnabled }
                 >
                     { t("console:develop.features.idp.forms.advancedConfigs." +

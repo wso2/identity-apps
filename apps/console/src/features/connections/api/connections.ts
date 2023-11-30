@@ -30,14 +30,14 @@ import useRequest, {
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
 import { ConnectionManagementConstants } from "../constants/connection-constants";
 import { NotificationSenderSMSInterface } from "../models/authenticators";
-import { 
-    ApplicationBasicInterface, 
-    ConnectedAppsInterface, 
-    ConnectionClaimsInterface, 
-    ConnectionGroupInterface, 
-    ConnectionInterface, 
-    ConnectionListResponseInterface, 
-    ConnectionRolesInterface, 
+import {
+    ApplicationBasicInterface,
+    ConnectedAppsInterface,
+    ConnectionClaimsInterface,
+    ConnectionGroupInterface,
+    ConnectionInterface,
+    ConnectionListResponseInterface,
+    ConnectionRolesInterface,
     ConnectionTemplateInterface,
     FederatedAuthenticatorListItemInterface,
     FederatedAuthenticatorListResponseInterface,
@@ -64,7 +64,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 export const createConnection = (
     connection: ConnectionInterface
 ): Promise<AxiosResponse<ConnectionInterface>> => {
-    
+
     const requestConfig: AxiosRequestConfig = {
         data: connection,
         headers: {
@@ -74,7 +74,7 @@ export const createConnection = (
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.identityProviders
     };
-    
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if ((response.status !== 201)) {
@@ -107,7 +107,7 @@ export const useGetConnections = <Data = ConnectionListResponseInterface, Error 
     shouldFetch: boolean = true,
     expectEmpty: boolean = false
 ): RequestResultInterface<Data, Error> => {
-    
+
     const { resourceEndpoints } = useResourceEndpoints();
 
     const requestConfig: RequestConfigInterface = {
@@ -146,9 +146,9 @@ export const useGetConnections = <Data = ConnectionListResponseInterface, Error 
 export const useGetApplicationDetails = <Data = ApplicationBasicInterface, Error = RequestErrorInterface>(
     id?: string
 ): RequestResultInterface<Data, Error> => {
-    
+
     const { resourceEndpoints } = useResourceEndpoints();
-    
+
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -173,15 +173,15 @@ export const useGetApplicationDetails = <Data = ApplicationBasicInterface, Error
  * Hook to get connected apps of the connection.
  *
  * @param idpId - ID of the Connection.
- * 
+ *
  * @returns requested connected apps.
  */
 export const useGetConnectionConnectedApps = <Data = ConnectedAppsInterface, Error = RequestErrorInterface>(
     idpId: string
 ): RequestResultInterface<Data, Error> => {
-    
+
     const { resourceEndpoints } = useResourceEndpoints();
-    
+
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -235,16 +235,16 @@ export const deleteConnection = (id: string): Promise<any> => {
  * Hook to get the connection template.
  *
  * @param templateId - Id value of the template.
- * 
+ *
  * @returns Requested connection template.
  */
 export const useGetConnectionTemplate = <Data = ConnectionTemplateInterface, Error = RequestErrorInterface>(
     templateId: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
-    
+
     const { resourceEndpoints } = useResourceEndpoints();
-    
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
@@ -279,7 +279,7 @@ export const useGetConnectionTemplates = <Data = any, Error = RequestErrorInterf
     offset?: number,
     filter?: string
 ): RequestResultInterface<Data, Error> => {
-    
+
     const { resourceEndpoints } = useResourceEndpoints();
 
     const requestConfig: RequestConfigInterface = {
@@ -313,7 +313,7 @@ export const useGetConnectionTemplates = <Data = any, Error = RequestErrorInterf
  * @param limit - Maximum Limit of the connection templates.
  * @param offset - Offset for get to start.
  * @param filter - Search filter.
- * 
+ *
  * @returns Requested connections.
  */
 export const getConnectionTemplates = (
@@ -359,7 +359,7 @@ export const useGetConnectionMetaData = <Data = any, Error = RequestErrorInterfa
     extensionId?: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
-    
+
     const { resourceEndpoints } = useResourceEndpoints();
 
     const requestConfig: RequestConfigInterface = {
@@ -762,7 +762,7 @@ export const updateIdentityProviderDetails = (connection: ConnectionInterface): 
  * @returns A promise containing the response.
  */
 export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId: string): Promise<any> => {
-    
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
@@ -819,7 +819,7 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
 /**
  * Update a federated authenticators list of a specified IDP.
  *
- * @param authenticatorList - 
+ * @param authenticatorList -
  * @param idpId - ID of the Identity Provider.
  * @returns A promise containing the response.
  */
@@ -1006,10 +1006,10 @@ export const updateClaimsConfigs = (
  * @returns A promise containing the response.
  */
 export const updateImplicitAssociationConfig = (
-    idpId: string, 
+    idpId: string,
     configs: ImplicitAssociaionConfigInterface
 ): Promise<ConnectionInterface> => {
-    
+
     const requestConfig: RequestConfigInterface = {
         data: configs,
         headers: {
@@ -1019,11 +1019,11 @@ export const updateImplicitAssociationConfig = (
         method: HttpMethods.PUT,
         url: store.getState().config.endpoints.identityProviders + "/" + idpId + "/implicit-association"
     };
-    
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to update implicit association" + 
+                return Promise.reject(new Error("Failed to update implicit association" +
                 " configs for identity provider: " + idpId));
             }
 

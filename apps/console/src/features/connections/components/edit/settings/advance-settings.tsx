@@ -74,8 +74,8 @@ interface AdvanceSettingsPropsInterface extends TestableComponentInterface {
 /**
  *  Advance settings component.
  *
- * @param {AdvanceSettingsPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Advance settings component.
  */
 export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> = (
     props: AdvanceSettingsPropsInterface
@@ -155,13 +155,13 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
 
     return (
         <EmphasizedSegment padded="very" className="advanced-configuration-section">
-            { templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ? 
+            { templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ?
                 (<TrustedTokenIssuerAdvanceConfigurationsForm
-                    config={ implicitAssociationConfig } 
+                    config={ implicitAssociationConfig }
                     onSubmit={ handleImplicitAssociationConfigFormSubmit }
                     isSubmitting={ isSubmitting }
 
-                />) : 
+                />) :
                 (<AdvanceConfigurationsForm
                     config={ advancedConfigurations }
                     onSubmit={ handleAdvancedConfigFormSubmit }
