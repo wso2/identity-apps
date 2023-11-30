@@ -1066,6 +1066,17 @@ export interface ConsoleNS {
                 forms: {
                     advancedAttributeSettings: {
                         sections: {
+                            linkedAccounts: {
+                                errorAlert: {
+                                    message: string;
+                                    description: string;
+                                }
+                                heading: string;
+                                fields: {
+                                    validateLocalAccount: FormAttributes;
+                                    mandateLocalAccount: FormAttributes;
+                                }
+                            }
                             subject: {
                                 fields: {
                                     subjectAttribute: FormAttributes;

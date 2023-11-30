@@ -160,6 +160,7 @@ export interface SubjectInterface {
     includeUserDomain: boolean;
     includeTenantDomain: boolean;
     useMappedLocalSubject: boolean;
+    mappedLocalSubjectMandatory: boolean;
 }
 
 export interface RoleInterface {
@@ -189,6 +190,7 @@ export interface SubjectConfigInterface {
     includeUserDomain?: boolean;
     includeTenantDomain?: boolean;
     useMappedLocalSubject?: boolean;
+    mappedLocalSubjectMandatory?: boolean;
 }
 
 /**

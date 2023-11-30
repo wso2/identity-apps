@@ -1631,6 +1631,24 @@ export const console: ConsoleNS = {
                 forms: {
                     advancedAttributeSettings: {
                         sections: {
+                            linkedAccounts: {
+                                errorAlert: {
+                                    message: "Configuration invalide",
+                                    description: "La validation du compte local lié doit être activée pour mandater un compte local lié"
+                                },
+                                heading: "Comptes liés",
+                                fields: {
+                                    validateLocalAccount: {
+                                        label: "Valider le compte local lié",
+                                        hint: "Cette option décidera si le compte d'utilisateur local lié est validé avec l'identité authentifiée."
+                                    },
+                                    mandateLocalAccount: {
+                                        label: "Mandater le compte local lié",
+                                        hint: "Ces options détermineront comment le compte utilisateur local lié est validé avec " +
+                                            "l'identité authentifiée."
+                                    }
+                                }
+                            },
                             role: {
                                 fields: {
                                     role: {

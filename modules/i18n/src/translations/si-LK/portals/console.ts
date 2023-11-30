@@ -1601,6 +1601,23 @@ export const console: ConsoleNS = {
                 forms: {
                     advancedAttributeSettings: {
                         sections: {
+                            linkedAccounts: {
+                                errorAlert: {
+                                    message: "වලංගු නොවන වින්‍යාසය",
+                                    description: "සම්බන්ධිත දේශීය ගිණුමක් අනිවාර්ය කිරීම සඳහා සම්බන්ධිත දේශීය ගිණුම් වලංගු කිරීම සක්‍රීය කළ යුතුය"
+                                },
+                                heading: "සම්බන්ධිත ගිණුම්",
+                                fields: {
+                                    validateLocalAccount: {
+                                        label: "සම්බන්ධිත දේශීය ගිණුම වලංගු කරන්න",
+                                        hint: "මෙම විකල්පය සම්බන්ධිත දේශීය පරිශීලක ගිණුම සත්‍යාපනය කළ අනන්‍යතාවය සමඟ වලංගු වේද යන්න තීරණය කරයි."
+                                    },
+                                    mandateLocalAccount: {
+                                        label: "සම්බන්ධිත දේශීය ගිණුම අනිවාර්ය කරන්න",
+                                        hint: "මෙම විකල්ප සම්බන්ධිත පරිශීලක ගිණුම පරීක්ෂා කරන්නේ කෙසේද යන්න තීරණය කරයි"
+                                    }
+                                }
+                            },
                             role: {
                                 fields: {
                                     role: {

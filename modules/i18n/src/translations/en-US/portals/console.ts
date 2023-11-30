@@ -1604,6 +1604,25 @@ export const console: ConsoleNS = {
                 forms: {
                     advancedAttributeSettings: {
                         sections: {
+                            linkedAccounts: {
+                                errorAlert: {
+                                    message: "Invalid configuration",
+                                    description: "Linked local account validation should be enabled to mandate a linked local account"
+                                },
+                                heading: "Linked Accounts",
+                                fields: {
+                                    validateLocalAccount: {
+                                        label: "Validate linked local account",
+                                        hint: "This option will decide whether the linked local user account is validated with the " +
+                                        "authenticated identity."
+                                    },
+                                    mandateLocalAccount: {
+                                        label: "Mandate linked local account",
+                                        hint: "These options will decide how the linked local user account is validated with the " +
+                                            "authenticated identity."
+                                    }
+                                }
+                            },
                             role: {
                                 fields: {
                                     role: {
