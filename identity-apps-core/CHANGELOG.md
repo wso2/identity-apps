@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.73
+
+### Patch Changes
+
+- [#4857](https://github.com/wso2/identity-apps/pull/4857) [`069594a834`](https://github.com/wso2/identity-apps/commit/069594a834b651dcec7ddcdee7d0758c664eb5b1) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Improve core url building.
+
 ## 2.0.72
 
 ### Patch Changes
