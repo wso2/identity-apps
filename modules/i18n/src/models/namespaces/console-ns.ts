@@ -1091,6 +1091,29 @@ export interface ConsoleNS {
                             skipConsentLogout: FormAttributes;
                         };
                         sections: {
+                            applicationNativeAuthentication: {
+                                heading: string;
+                                alerts: {
+                                    clientAttestation: string;
+                                },
+                                fields: {
+                                    enableAPIBasedAuthentication: FormAttributes;
+                                    enableClientAttestation: FormAttributes;
+                                    android: {
+                                        heading: string;
+                                        fields: {
+                                            androidPackageName: FormAttributes;
+                                            androidAttestationServiceCredentials: FormAttributes;
+                                        }
+                                    },
+                                    apple: {
+                                        heading: string;
+                                        fields: {
+                                            appleAppId: FormAttributes;
+                                        }
+                                    }
+                                }
+                            },
                             certificate: {
                                 heading: string;
                                 hint?: {

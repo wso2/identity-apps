@@ -1735,6 +1735,53 @@ export const console: ConsoleNS = {
                             }
                         },
                         sections: {
+                            applicationNativeAuthentication: {
+                                heading: "අයදුම්පත ස්වදේශීය සත්යාපනය",
+                                alerts: {
+                                    clientAttestation: "සේවාලාභී සහතික කිරීම සඳහා, දේශීය සත්යාපන API විසින් සත්යාපනය කළ යුතුය."
+                                },
+                                fields: {
+                                    enableAPIBasedAuthentication: {
+                                        hint: "යෙදුම දේශීය සත්යාපන API හරහා බ්රව්සිං රහිත, යෙදුම් සත්යාපනය කිරීම සඳහා යෙදුමට අවසර දීමට තෝරන්න.",
+                                        label: "යෙදුම්-ස්වදේශීය සත්යාපන API සක්රීය කරන්න"
+                                    },
+                                    enableClientAttestation: {
+                                        hint: "සත්කාරක වේදිකාවේ සහතික කිරීමේ සේවාව අමතා අයදුම්පතේ අඛණ්ඩතාව සත්යාපනය කිරීමට තෝරන්න.",
+                                        label: "සේවාලාභී සහතික කිරීම සක්රීය කරන්න"
+                                    },
+                                    android: {
+                                        heading: "ඇන්ඩ්රොයිඩ්",
+                                        fields: {
+                                            androidPackageName: {
+                                                hint: "ඔබේ ඇන්ඩ්රොයිඩ් යෙදුම සඳහා අද්විතීය හඳුනාගැනීමක් වන ඇන්ඩ්රොයිඩ් පැකේජයේ නම ඇතුළත් කරන්න, සාමාන්යයෙන් ප්රතිලෝම වසම් ආකෘතියෙන්.",
+                                                label: "ඇන්ඩ්රොයිඩ් පැකේජයේ නම",
+                                                placeholder: "com.example.myapp",
+                                                validations: {
+                                                    empty: "ඇන්ඩ්රොයිඩ් සඳහා සේවාදායක සහතික කිරීම සක්රීය කිරීම සඳහා ඇන්ඩ්රොයිඩ් යෙදුම් පැකේජයේ නම අවශ්ය වේ."
+                                                }
+                                            },
+                                            androidAttestationServiceCredentials: {
+                                                hint: "Google play integrity සේවාවට පිවිසීමට ගූගල් සේවා ගිණුම් අක්තපත්ර සඳහා JSON යතුරු අන්තර්ගතය ලබා දෙන්න.",
+                                                label: "සේවා ගිණුම් අක්තපත්ර",
+                                                placeholder: "ගූගල් සේවා ගිණුම් අක්තපත්ර සඳහා JSON යතුරු ගොනුවේ අන්තර්ගතය",
+                                                validations: {
+                                                    empty: "ඇන්ඩ්රොයිඩ් සඳහා සේවාදායක සහතික කිරීම සක්රීය කිරීම සඳහා ගූගල් සේවා ගිණුම අක්තපත්ර අවශ්ය වේ."
+                                                }
+                                            }
+                                        }
+                                    },
+                                    apple: {
+                                        heading: "ඇපල්",
+                                        fields: {
+                                            appleAppId: {
+                                                hint: "ඔබේ යෙදුමට ඇපල් විසින් පවරා ඇති අද්විතීය හඳුනාගැනීමක් වන ඇපල් යෙදුම් හැඳුනුම්පත ඇතුළත් කරන්න, සාමාන්යයෙන් 'com.'හෝ 'bundle.'.",
+                                                label: "ඇපල් යෙදුම් යෙදුම් හැඳුනුම්පත",
+                                                placeholder: "com.example.myapp"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
                             certificate: {
                                 fields: {
                                     jwksValue: {
