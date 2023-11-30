@@ -16,15 +16,13 @@
  * under the License.
  */
 
+import Avatar from "@oxygen-ui/react/Avatar";
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
-import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { GenericIcon, useMediaContext } from "@wso2is/react-components";
-import classNames from "classnames";
+import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactNode } from "react";
-// import { Card, Grid, Header, Icon, List, Menu, Message, SemanticICONS } from "semantic-ui-react";
 
 /**
  * Prop-types for the settings section component. See also
@@ -78,7 +76,19 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                 <div className="">
                     <GenericIcon
                         size="micro"
-                        icon={ icon }
+                        icon={
+                            (
+                                <Avatar
+                                    variant="square"
+                                    randomBackgroundColor={ connectorEnabled }
+                                    backgroundColorRandomizer={ "notificationChannels" }
+                                    className="notification-channel-icon-container"
+                                >
+                                    { icon }
+
+                                </Avatar>
+                            )
+                        }
                         inline
                         transparent
                         shape={ "square" }
@@ -96,22 +106,10 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
             </CardContent>
             <CardContent className="notification-channel-description">
                 <Typography variant="body2" color="text.secondary">
-                    { description }
+                    { placeholder ?? description }
                 </Typography>
             </CardContent>
-
-            { placeholder && (
-                <Paper
-                    className="notification-channel-note"
-                >
-                    <Typography variant="body1">
-                        { placeholder }
-                    </Typography>
-                </Paper>
-            ) }
         </Card>
-
-
     );
 };
 

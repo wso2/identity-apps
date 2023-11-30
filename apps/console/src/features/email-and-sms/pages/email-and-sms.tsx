@@ -82,14 +82,9 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
                               data-testid={ "account-login-page-section" }
                               description={ t("extensions:develop.emailProviders.description") }
                               icon={
-                                  (<Avatar
-                                      variant="square"
-                                      randomBackgroundColor
-                                      backgroundColorRandomizer={ "notificationChannels" }
-                                      className="notification-channel-icon-container"
-                                  >
+                                  (
                                       <EnvelopeIcon size="small" className="icon"/>
-                                  </Avatar>) }
+                                  ) }
                               header={ t("extensions:develop.emailProviders.heading") }
                               onPrimaryActionClick={ isSuperOrganization() ? null : handleEmailSelection }
                               primaryAction={ isSuperOrganization() ? null : t("common:configure") }
@@ -115,14 +110,9 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
                             data-testid={ "account-login-page-section" }
                             description={ t("extensions:develop.smsProviders.description") }
                             icon={
-                                (<Avatar
-                                    variant="square"
-                                    randomBackgroundColor
-                                    backgroundColorRandomizer={ "notificationChannels" }
-                                    className="notification-channel-icon-container"
-                                >
+                                (
                                     <SMSIcon fill="white" />
-                                </Avatar>)
+                                )
                             }
                             header={
                                 t("extensions:develop.smsProviders.heading")

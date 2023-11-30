@@ -2026,7 +2026,7 @@ export const extensions: Extensions = {
             heading: "Fournisseur de messagerie personnalisé",
             subHeading: "Configurez des serveurs SMTP personnalisés pour envoyer des e-mails avec votre propre adresse e-mail.",
             description: "Configurez les paramètres du fournisseur de messagerie en fonction de votre serveur SMTP.",
-            note: "Les configurations du fournisseur de messagerie pour la super-organisation ne peuvent être mises à jour que via <1>deployment.toml</1>.",
+            note: "Le fournisseur de messagerie de la super-organisation ne peut être configuré que via <1>deployment.toml</1>.",
             info: "Vous pouvez personnaliser le contenu des e-mails à l'aide de <1>Modèles d'e-mails</1>.",
             updateButton: "Mise à jour",
             sendTestMailButton: "Envoyer un e-mail test",

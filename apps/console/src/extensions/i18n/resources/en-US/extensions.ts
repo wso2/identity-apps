@@ -1993,7 +1993,7 @@ export const extensions: Extensions = {
             heading: "Email Provider",
             subHeading: "Configure a SMTP server to send emails to your users with your own email address.",
             description: "Configure the email provider settings according to your SMTP server.",
-            note: "Email provider configurations for the super organization can only be updated through <1>deployment.toml</1>",
+            note: "Email provider for the super organization can only be configured through <1>deployment.toml</1>",
             info: "You can customize the email content using <1>Email Templates</1>.",
             updateButton: "Update",
             sendTestMailButton: "Send Test Email",
