@@ -16,23 +16,35 @@
  * under the License.
  */
 
-import { AlertInterface,
+import Alert from "@oxygen-ui/react/Alert";
+import {
+    AlertInterface,
     AlertLevels,
-    TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Form, FormValue } from "@wso2is/form";
-import { Heading } from "@wso2is/react-components";
+    TestableComponentInterface
+} from "@wso2is/core/models";
+import { Field, Form, FormPropsInterface } from "@wso2is/form";
+import { GenericIcon, Heading } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import useUIConfig from "modules/common/src/hooks/use-ui-configs";
-import React, { FunctionComponent,
-    ReactElement } from "react";
+import React, {
+    FunctionComponent,
+    MutableRefObject,
+    ReactElement,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
+import { getTechnologyLogos } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
-import SAMLWebApplicationTemplate
-    from "../../data/application-templates/templates/saml-web-application/saml-web-application.json";
-import { AdvancedConfigurationsInterface,
-    ApplicationTemplateListItemInterface } from "../../models";
+import SAMLWebApplicationTemplate from
+    "../../data/application-templates/templates/saml-web-application/saml-web-application.json";
+import {
+    AdvancedConfigurationsInterface,
+    ApplicationTemplateListItemInterface
+} from "../../models";
+import "./advanced-configurations-form.scss";
 
 /**
  *  Advanced Configurations for the Application.
@@ -84,13 +96,23 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
 
     const { UIConfig } = useUIConfig();
 
+    const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
+
+    const [ isEnableAPIBasedAuthentication, setIsEnableAPIBasedAuthentication ] = useState<boolean>(
+        config?.enableAPIBasedAuthentication
+    );
+    const [ isEnableClientAttestation, setIsEnableClientAttestation ] = useState<boolean>(
+        config?.attestationMetaData?.enableClientAttestation
+    );
+    const [ isUserClickedClientAttestationWhenDisabled, setIsUserClickedClientAttestationWhenDisabled ] =
+        useState<boolean>(false);
+
     /**
      * Update configuration.
      *
      * @param values - Form values.
      */
-    const updateConfiguration = (values: any): void => {
-
+    const updateConfiguration = (values: AdvancedConfigurationsInterface): void => {
         let androidAttestationServiceCredentialsObject : JSON;
 
         try {
@@ -107,13 +129,18 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
             return;
         }
 
+        // if apiBasedAuthentication is disabled, then disable clientAttestation as well.
+        const enableClientAttestation: boolean = values.enableAPIBasedAuthentication
+            ? values.enableClientAttestation
+            : false;
+
         const data:any = {
             advancedConfigurations: {
                 attestationMetaData: {
                     androidAttestationServiceCredentials: androidAttestationServiceCredentialsObject,
                     androidPackageName: values.androidPackageName,
                     appleAppId: values.appleAppId,
-                    enableClientAttestation: !!values.enableClientAttestation
+                    enableClientAttestation: enableClientAttestation
                 },
                 enableAPIBasedAuthentication: !!values.enableAPIBasedAuthentication,
                 enableAuthorization: !!values.enableAuthorization,
@@ -133,11 +160,69 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
         onSubmit(data);
     };
 
+    /**
+     * To check if the client attestation UI checkbox should be disabled.
+     */
+    const isClientAttestationUIDisabled: boolean = !isEnableAPIBasedAuthentication;
+
+    /**
+     * To check if the client attestation methods UIs should be disabled.
+     */
+    const isClientAttestationMethodsUiDisabled: boolean = !isEnableClientAttestation || isClientAttestationUIDisabled;
+
+    /**
+     * To handle the enableAPIBasedAuthentication checkbox.
+     *
+     * @param value - Value of the enableAPIBasedAuthentication checkbox.
+     */
+    const handleEnableAPIBasedAuthentication = (value: boolean) => {
+        setIsEnableAPIBasedAuthentication(value);
+        setIsUserClickedClientAttestationWhenDisabled(!value && isEnableClientAttestation);
+    };
+
+    /**
+     * To handle the client attestation checkbox and related UIs when the client attestation checkbox is disabled.
+     */
+    const handleWhenClientAttestationClickedWhenDisabled = () =>
+        setIsUserClickedClientAttestationWhenDisabled(isClientAttestationUIDisabled);
+
+    /**
+     * Validate the form values.
+     */
+    const validateForm = (values: AdvancedConfigurationsInterface): AdvancedConfigurationsInterface => {
+
+        const errors: AdvancedConfigurationsInterface = {
+            androidAttestationServiceCredentials: undefined,
+            androidPackageName: undefined
+        };
+
+        // Validate the android package name and the android attestation service credentials if one of them is empty for
+        // the client attestation to be enabled for Android.
+        if (!values.androidPackageName?.toString().trim()
+            && values.androidAttestationServiceCredentials?.toString().trim()) {
+
+            errors.androidPackageName = t("console:develop.features.applications.forms.advancedConfig." +
+                "sections.applicationNativeAuthentication.fields." +
+                "android.fields.androidPackageName.validations.empty");
+        } else if (values.androidPackageName?.toString().trim()
+            && !values.androidAttestationServiceCredentials?.toString().trim()) {
+
+            errors.androidAttestationServiceCredentials = t("console:develop.features.applications.forms." +
+                "advancedConfig.sections.applicationNativeAuthentication.fields." +
+                "android.fields.androidAttestationServiceCredentials.validations.empty");
+        }
+
+        return errors;
+    };
+
     return (
         <Form
             id={ FORM_ID }
             uncontrolledForm={ true }
-            onSubmit={ (values: Map<string,FormValue>) => {
+            ref={ formRef }
+            validate={ validateForm }
+            validateOnBlur={ false }
+            onSubmit={ (values: AdvancedConfigurationsInterface) => {
                 updateConfiguration(values);
             } }
         >
@@ -148,7 +233,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 required={ false }
                 value={ config?.saas ? [ "saas" ] : [] }
                 readOnly={ readOnly }
-                data-testid={ `${testId}-sass-checkbox` }
+                data-testid={ `${ testId }-sass-checkbox` }
+                data-componentid={ `${ testId }-sass-checkbox` }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.saas.hint") }
                 hidden={ !applicationConfig.advancedConfigurations.showSaaS }
             />
@@ -160,7 +246,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 required={ false }
                 value={ config?.skipLoginConsent ? [ "skipLoginConsent" ] : [] }
                 readOnly={ readOnly }
-                data-testid={ `${testId}-skip-login-consent-checkbox` }
+                data-testid={ `${ testId }-skip-login-consent-checkbox` }
+                data-componentid={ `${ testId }-skip-login-consent-checkbox` }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogin.hint") }
             />
             {
@@ -176,7 +263,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                         required={ false }
                         value={ config?.skipLogoutConsent ? [ "skipLogoutConsent" ] : [] }
                         readOnly={ readOnly }
-                        data-testid={ `${testId}-skip-logout-consent-checkbox` }
+                        data-testid={ `${ testId }-skip-logout-consent-checkbox` }
+                        data-componentid={ `${ testId }-skip-logout-consent-checkbox` }
                         hint={ t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogout" +
                             ".hint"
                         ) }
@@ -192,7 +280,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 required={ false }
                 value={ config?.returnAuthenticatedIdpList ? [ "returnAuthenticatedIdpList" ] : [] }
                 readOnly={ readOnly }
-                data-testid={ `${testId}-return-authenticated-idp-list-checkbox` }
+                data-testid={ `${ testId }-return-authenticated-idp-list-checkbox` }
+                data-componentid={ `${ testId }-return-authenticated-idp-list-checkbox` }
                 hidden={ !applicationConfig.advancedConfigurations.showReturnAuthenticatedIdPs }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields" +
                     ".returnAuthenticatedIdpList.hint"
@@ -207,134 +296,198 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 required={ false }
                 value={ config?.enableAuthorization ? [ "enableAuthorization" ] : [] }
                 readOnly={ readOnly }
-                data-testid={ `${testId}-enable-authorization-checkbox` }
+                data-testid={ `${ testId }-enable-authorization-checkbox` }
+                data-componentid={ `${ testId }-enable-authorization-checkbox` }
                 hidden={
                     !applicationConfig.advancedConfigurations.showEnableAuthorization
                     || !UIConfig?.classicFeatures?.isXacmlAuthorizationEnabled }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.enableAuthorization.hint") }
             />
             {
-                (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION
-                    || template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-                    || template?.id === ApplicationManagementConstants.MOBILE) &&
                 (
+                    template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
+                    template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
+                    template?.id === ApplicationManagementConstants.MOBILE
+                ) && (
                     <>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <Divider />
-                            <Divider hidden />
-                        </Grid.Column>
-                        <Heading as="h4">
-                            { "Application native authentication" }
-                        </Heading>
+                        <Grid>
+                            <Grid.Row columns={ 2 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Divider />
+                                    <Divider hidden />
+                                </Grid.Column>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Heading as="h4">
+                                        { "Application native authentication" }
+                                    </Heading>
 
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column className="pb-3">
-                                <Field.CheckboxLegacy
-                                    ariaLabel="Enable apiBasedAuthentication"
-                                    name="enableAPIBasedAuthentication"
-                                    label={ "Enable app-native authentication API" }
-                                    required={ false }
-                                    value={ config?.enableAPIBasedAuthentication 
-                                        ? [ "enableAPIBasedAuthentication" ] 
-                                        : [] 
+                                    {
+                                        (
+                                            isClientAttestationUIDisabled &&
+                                            isUserClickedClientAttestationWhenDisabled
+                                        ) && (
+                                            <Alert severity="info" className="client-attestation-info-alert">
+                                                { t("console:develop.features.applications.forms.advancedConfig." +
+                                                 "sections.applicationNativeAuthentication.alerts.clientAttestation") }
+                                            </Alert>
+                                        )
                                     }
-                                    data-testid={ `${testId}-enable-api-based-authentication` }
-                                    hidden={ !applicationConfig.advancedConfigurations.showEnableAuthorization }
-                                    hint={
-                                        "Select to authorize the application to use app-native authentication API" + 
-                                " to implement browserless in-app authentication"
-                                    }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        
-                        <Field.CheckboxLegacy
-                            ariaLabel="Enable attestation"
-                            name="enableClientAttestation"
-                            label={ "Enable Client Attesstation" }
-                            required={ false }
-                            value={ config?.attestationMetaData?.enableClientAttestation ?
-                                [ "enableClientAttestation" ] : [] }
-                            data-testid={ `${testId}-enable-client-attestation` }
-                            hidden={ !applicationConfig.advancedConfigurations.showEnableAuthorization }
-                        />
-
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column className="pb-3">
-                                <Field.Input
-                                    ariaLabel="Android package name"
-                                    inputType="default"
-                                    name="androidPackageName"
-                                    label={ "Android application package name" }
-                                    required={ false }
-                                    value={ config?.attestationMetaData?.androidPackageName ? 
-                                        config?.attestationMetaData?.androidPackageName : "" }
-                                    placeholder={ "Android application package name" }
-                                    hint={
-                                        "Enter the Android Package Name, a unique identifier for your Android app," +
-                                "typically in reverse domain format (e.g., com.example.myapp)."
-                                    }
-                                    maxLength={ 200 }
-                                    minLength={ 3 }
-                                    width={ 16 }
-                                    data-testid={ `${testId}-client-attestation-android-package-name` }
-                                />
-                            </Grid.Column>                        
-                        </Grid.Row>    
-                        
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column className="pb-3">
-                                <Field.Textarea
-                                    ariaLabel="Android service account credentials"
-                                    inputType="description"
-                                    name="androidAttestationServiceCredentials"
-                                    label={
-                                        "Enter Service Account Credential"
-                                    }
-                                    placeholder={
-                                        "Enter Service Account Credential"
-                                    }
-                                    value={ config?.attestationMetaData?.androidAttestationServiceCredentials ? 
-                                        [ JSON.stringify(
-                                            config?.attestationMetaData?.androidAttestationServiceCredentials,
-                                            null, 4) 
-                                        ] : [] 
-                                    }
-                                    hint={
-                                        "Provide the JSON key content for the Android service account " +
-                                " credentials to access the Google Play Integrity Service."
-                                    }
-                                    type="text"
-                                    maxLength={ 5000 }
-                                    minLength={ 30 }
-                                    width={ 30 }
-                                    data-testid={ `${testId}-client-attestation-android-account-credentials` }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        
-                        <Field.Input
-                            ariaLabel="Apple App Id"
-                            inputType="default"
-                            name="appleAppId"
-                            label={
-                                "Apple applicaiton App Id"
-                            }
-                            required={ false }
-                            placeholder={
-                                "Apple applicaiton App Id"
-                            }
-                            value={ config?.attestationMetaData?.appleAppId ?
-                                config?.attestationMetaData?.appleAppId  : "" }
-                            hint={
-                                "Enter the Apple App ID, a unique identifier assigned " +
-                                " by Apple to your app, usually starting with 'com.' or 'bundle.'"
-                            }
-                            maxLength={ 200 }
-                            minLength={ 3 }
-                            width={ 16 }
-                            data-testid={ `${testId}-client-attestation-apple=app=id` }
-                        />
+                                    <Field.CheckboxLegacy
+                                        ariaLabel="Enable apiBasedAuthentication"
+                                        name="enableAPIBasedAuthentication"
+                                        label={ t("console:develop.features.applications.forms.advancedConfig." +
+                                            "sections.applicationNativeAuthentication.fields." +
+                                            "enableAPIBasedAuthentication.label") }
+                                        required={ false }
+                                        value={
+                                            isEnableAPIBasedAuthentication
+                                                ? [ "enableAPIBasedAuthentication" ]
+                                                : []
+                                        }
+                                        listen={ handleEnableAPIBasedAuthentication }
+                                        data-testid={ `${ testId }-enable-api-based-authentication` }
+                                        data-componentid={ `${ testId }-enable-api-based-authentication` }
+                                        hidden={ !applicationConfig.advancedConfigurations.showEnableAuthorization }
+                                        hint={ t("console:develop.features.applications.forms.advancedConfig." +
+                                            "sections.applicationNativeAuthentication.fields." +
+                                            "enableAPIBasedAuthentication.hint") }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 1 } onClick={ handleWhenClientAttestationClickedWhenDisabled }>
+                                <Grid.Column>
+                                    <Field.CheckboxLegacy
+                                        ariaLabel="Enable attestation"
+                                        name="enableClientAttestation"
+                                        label={ t("console:develop.features.applications.forms.advancedConfig." +
+                                            "sections.applicationNativeAuthentication.fields." +
+                                            "enableClientAttestation.label") }
+                                        required={ false }
+                                        value={
+                                            config?.attestationMetaData?.enableClientAttestation
+                                                ? [ "enableClientAttestation" ]
+                                                : []
+                                        }
+                                        listen={ setIsEnableClientAttestation }
+                                        data-testid={ `${ testId }-enable-client-attestation` }
+                                        data-componentid={ `${ testId }-enable-api-based-authentication` }
+                                        disabled={ isClientAttestationUIDisabled }
+                                        hint={ t("console:develop.features.applications.forms.advancedConfig." +
+                                            "sections.applicationNativeAuthentication.fields." +
+                                            "enableClientAttestation.hint") }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 1 } onClick={ handleWhenClientAttestationClickedWhenDisabled }>
+                                <Grid.Column >
+                                    <Heading as="h5" bold="500">
+                                        <GenericIcon
+                                            size="micro"
+                                            icon={ getTechnologyLogos().android }
+                                            verticalAlign="middle"
+                                            floated="left"
+                                        />
+                                        { t("console:develop.features.applications.forms.advancedConfig." +
+                                            "sections.applicationNativeAuthentication.fields." +
+                                            "android.heading") }
+                                    </Heading>
+                                    <Field.Input
+                                        ariaLabel="Android package name"
+                                        inputType="default"
+                                        name="androidPackageName"
+                                        label={ t("console:develop.features.applications.forms.advancedConfig." +
+                                            "sections.applicationNativeAuthentication.fields." +
+                                            "android.fields.androidPackageName.label") }
+                                        required={ false }
+                                        value={ config?.attestationMetaData?.androidPackageName ?
+                                            config?.attestationMetaData?.androidPackageName : "" }
+                                        placeholder={ t("console:develop.features.applications.forms.advancedConfig." +
+                                            "sections.applicationNativeAuthentication.fields." +
+                                            "android.fields.androidPackageName.placeholder") }
+                                        hint={ t("console:develop.features.applications.forms.advancedConfig." +
+                                            "sections.applicationNativeAuthentication.fields." +
+                                            "android.fields.androidPackageName.hint") }
+                                        maxLength={ 200 }
+                                        minLength={ 3 }
+                                        width={ 16 }
+                                        data-testid={ `${ testId }-client-attestation-android-package-name` }
+                                        data-componentid={ `${ testId }-client-attestation-android-package-name` }
+                                        disabled={ isClientAttestationMethodsUiDisabled }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 1 } onClick={ handleWhenClientAttestationClickedWhenDisabled }>
+                                <Grid.Column>
+                                    <Field.Textarea
+                                        ariaLabel="Android service account credentials"
+                                        inputType="description"
+                                        name="androidAttestationServiceCredentials"
+                                        label={ t("console:develop.features.applications.forms.advancedConfig." +
+                                            "sections.applicationNativeAuthentication.fields." +
+                                            "android.fields.androidAttestationServiceCredentials.label") }
+                                        placeholder={ t("console:develop.features.applications.forms.advancedConfig." +
+                                            "sections.applicationNativeAuthentication.fields." +
+                                            "android.fields.androidAttestationServiceCredentials.placeholder") }
+                                        value={ config?.attestationMetaData?.androidAttestationServiceCredentials ?
+                                            [ JSON.stringify(
+                                                config?.attestationMetaData?.androidAttestationServiceCredentials,
+                                                null, 4)
+                                            ] : []
+                                        }
+                                        hint={ t("console:develop.features.applications.forms.advancedConfig." +
+                                            "sections.applicationNativeAuthentication.fields." +
+                                            "android.fields.androidAttestationServiceCredentials.hint") }
+                                        type="text"
+                                        maxLength={ 5000 }
+                                        minLength={ 30 }
+                                        width={ 16 }
+                                        data-testid={ `${ testId }-client-attestation-android-account-credentials` }
+                                        data-componentid={
+                                            `${ testId }-client-attestation-android-account-credentials`
+                                        }
+                                        disabled={ isClientAttestationMethodsUiDisabled }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 1 } onClick={ handleWhenClientAttestationClickedWhenDisabled }>
+                                <Grid.Column>
+                                    <Heading as="h5" bold="500">
+                                        <GenericIcon
+                                            size="micro"
+                                            icon={ getTechnologyLogos().apple }
+                                            floated="left"
+                                            verticalAlign="middle"
+                                        />
+                                        { t("console:develop.features.applications.forms.advancedConfig." +
+                                            "sections.applicationNativeAuthentication.fields." +
+                                            "apple.heading") }
+                                    </Heading>
+                                    <Field.Input
+                                        ariaLabel="Apple App Id"
+                                        inputType="default"
+                                        name="appleAppId"
+                                        label={ t("console:develop.features.applications.forms.advancedConfig." +
+                                            "sections.applicationNativeAuthentication.fields." +
+                                            "apple.fields.appleAppId.label") }
+                                        required={ false }
+                                        placeholder={ t("console:develop.features.applications.forms.advancedConfig." +
+                                            "sections.applicationNativeAuthentication.fields." +
+                                            "apple.fields.appleAppId.placeholder") }
+                                        value={ config?.attestationMetaData?.appleAppId ?
+                                            config?.attestationMetaData?.appleAppId  : "" }
+                                        hint={ t("console:develop.features.applications.forms.advancedConfig." +
+                                            "sections.applicationNativeAuthentication.fields." +
+                                            "apple.fields.appleAppId.hint") }
+                                        maxLength={ 200 }
+                                        minLength={ 3 }
+                                        width={ 16 }
+                                        data-testid={ `${ testId }-client-attestation-apple=app=id` }
+                                        data-componentid={ `${ testId }-client-attestation-apple=app=id` }
+                                        disabled={ isClientAttestationMethodsUiDisabled }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
                     </>
                 ) }
             <Field.Button
@@ -344,6 +497,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 ariaLabel="Update button"
                 name="update-button"
                 data-testid={ `${ testId }-submit-button` }
+                data-componentid={ `${ testId }-submit-button` }
                 disabled={ isSubmitting }
                 loading={ isSubmitting }
                 hidden={ readOnly }
