@@ -20,9 +20,17 @@ import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, SetStateAction, useEffect, useState } from "react";
+import React, {
+    FunctionComponent,
+    Dispatch as ReactDispatch,
+    ReactElement,
+    SetStateAction,
+    useEffect,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
-import Dispatch, { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Divider, Grid, Header, Placeholder } from "semantic-ui-react";
 import { attributeConfig } from "../../../extensions";
 import { getAllExternalClaims } from "../../claims/api";
@@ -55,7 +63,7 @@ interface ExternalDialectEditPageInterface extends TestableComponentInterface {
     /**
      * Update mapped claims on delete or edit
      */
-    updateMappedClaims?: Dispatch<SetStateAction<boolean>>;
+    updateMappedClaims?: ReactDispatch<SetStateAction<boolean>>;
 }
 
 /**
