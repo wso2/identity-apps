@@ -32,7 +32,7 @@ import { ConfirmationModal, ContentLoader, EmphasizedSegment } from "@wso2is/rea
 import { useOIDCScopesList } from "apps/console/src/features/oidc-scopes/api/oidc-scopes";
 import {
     OIDCScopesClaimsListInterface,
-    OIDCScopesListInterface 
+    OIDCScopesListInterface
 } from "apps/console/src/features/oidc-scopes/models/oidc-scopes";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
@@ -208,7 +208,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     const [ scopes, setScopes ] = useState<OIDCScopesListInterface[]>(null);
     const [ externalClaimsGroupedByScopes, setExternalClaimsGroupedByScopes ]
         = useState<OIDCScopesClaimsListInterface[]>(null);
-    const [ unfilteredExternalClaimsGroupedByScopes, setUnfilteredExternalClaimsGroupedByScopes ] 
+    const [ unfilteredExternalClaimsGroupedByScopes, setUnfilteredExternalClaimsGroupedByScopes ]
         = useState<OIDCScopesClaimsListInterface[]>([]);
 
     // Manage available claims in local and external dialects.
@@ -551,7 +551,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                     }
                 };
 
-                if (!(claimMappingList.some((claimMapping: ExtendedClaimMappingInterface) => 
+                if (!(claimMappingList.some((claimMapping: ExtendedClaimMappingInterface) =>
                     claimMapping.localClaim.uri === claim.claimURI))) {
                     claimMappingList.push(newClaimMapping);
                 }
@@ -650,7 +650,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
      * @param claimURI - URI of the mapping updated
      * @param mappedValue - mapped claims value
      * @param isUpdatingOnInputChange - whether the updating happens on mapping attribute input change
-     * 
+     *
      */
     const updateClaimMapping = (claimURI: string, mappedValue: string, isUpdatingOnInputChange?: boolean) => {
         const claimMappingList: ExtendedClaimMappingInterface[] = [ ...claimMapping ];
@@ -664,7 +664,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             }
 
             /**
-             * Detect duplicate values only when updating the mapping attributes. 
+             * Detect duplicate values only when updating the mapping attributes.
              * This check will not be executed on initial loading of mapping attributes.
              */
             if (isUpdatingOnInputChange) {
@@ -676,7 +676,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
             }
         });
 
-        /** 
+        /**
          * Update state with duplicate values for mapping attributes.
          * This state is passed to children components for identifying duplicate values.
          */
@@ -862,8 +862,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                 }
             });
             if (!usernameAdded) {
-                const allExternalClaims: ExtendedExternalClaimInterface[] = [ 
-                    ...externalClaims, ...selectedExternalClaims 
+                const allExternalClaims: ExtendedExternalClaimInterface[] = [
+                    ...externalClaims, ...selectedExternalClaims
                 ];
                 const userclaim: ExtendedExternalClaimInterface = allExternalClaims.filter(
                     (element: ExtendedExternalClaimInterface) =>
@@ -1014,7 +1014,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                             mandatory: claim.mandatory
                         };
 
-                        if (!RequestedClaims.find((claimRequested: RequestedClaimConfigurationInterface) => 
+                        if (!RequestedClaims.find((claimRequested: RequestedClaimConfigurationInterface) =>
                             claimRequested.claim.uri === requestedClaim.claim.uri)) {
                             RequestedClaims.push(requestedClaim);
                         }
@@ -1024,7 +1024,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         }
 
         if (claimMappingFinal
-            .findIndex((mapping: ExtendedClaimMappingInterface) => 
+            .findIndex((mapping: ExtendedClaimMappingInterface) =>
                 mapping.localClaim.uri === DefaultSubjectAttribute) < 0
             && subjectClaim && subjectClaim.toString() === DefaultSubjectAttribute) {
             isSubjectSelectedWithoutMapping = true;
@@ -1096,7 +1096,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         };
 
         /**
-         * Handles the successful claim configuration update scenario by executing the `onUpdate` callback and 
+         * Handles the successful claim configuration update scenario by executing the `onUpdate` callback and
          * displaying a success alert.
          */
         const onSuccessfulClaimConfigUpdate = () => {
@@ -1108,8 +1108,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                 message: t("console:develop.features.applications.notifications.updateClaimConfig.success.message")
             }));
         };
-        
-        const isProtocolOAuth: boolean = !!technology?.find((protocol: InboundProtocolListItemInterface) => 
+
+        const isProtocolOAuth: boolean = !!technology?.find((protocol: InboundProtocolListItemInterface) =>
             protocol.type === SupportedAuthProtocolTypes.OAUTH2);
 
         updateClaimConfiguration(appId, submitValue)
@@ -1154,17 +1154,17 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                         <div className="form-container with-max-width">
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                                 {
-                                    onlyOIDCConfigured 
+                                    onlyOIDCConfigured
                                         ? (
                                             <AttributeSelectionOIDC
                                                 claims={ claims }
                                                 externalClaims={ externalClaims }
                                                 externalClaimsGroupedByScopes = { externalClaimsGroupedByScopes }
                                                 setExternalClaimsGroupedByScopes = { setExternalClaimsGroupedByScopes }
-                                                unfilteredExternalClaimsGroupedByScopes = { 
-                                                    unfilteredExternalClaimsGroupedByScopes 
+                                                unfilteredExternalClaimsGroupedByScopes = {
+                                                    unfilteredExternalClaimsGroupedByScopes
                                                 }
-                                                setUnfilteredExternalClaimsGroupedByScopes = { 
+                                                setUnfilteredExternalClaimsGroupedByScopes = {
                                                     setUnfilteredExternalClaimsGroupedByScopes
                                                 }
                                                 setExternalClaims={ setExternalClaims }

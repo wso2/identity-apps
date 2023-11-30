@@ -724,7 +724,7 @@ export interface FederatedConflictWithSMSOTPArgsInterface {
  */
 export interface FederatedConflictWithSMSOTPReturnValueInterface {
     /**
-     * Specifies whether there is any conflict between the 
+     * Specifies whether there is any conflict between the
      * federated authenticators and the SMS OTP.
      */
     conflicting: boolean;
