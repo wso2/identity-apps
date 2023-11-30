@@ -52,11 +52,11 @@ interface RoleAPIResourcesListItemProp extends IdentifiableComponentInterface {
      */
     onRemoveAPIResource: (apiResourceId: string) => void;
     /**
-     * Whether the Autocomplete field has an error or not. Passed down to the PermissionsList component.
+     * Whether the has an error or not. Passed down to the `PermissionsList` component.
      */
     hasError?: boolean;
     /**
-     * Error message for the Autocomplete field. Passed down to the PermissionsList component.
+     * Error message. Passed down to the `PermissionsList` component.
      */
     errorMessage?: string;
 }

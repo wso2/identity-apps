@@ -46,11 +46,11 @@ interface PermissionsListPropsInterface extends  IdentifiableComponentInterface 
      */
     onChangeScopes: (apiResource: APIResourceInterface, scopes: ScopeInterface[]) => void;
     /**
-     * Whether the Autocomplete field has an error or not.
+     * Whether has an error or not.
      */
     hasError?: boolean;
     /**
-     * Error message for the Autocomplete field.
+     * Error message.
      */
     errorMessage?: string;
 }
@@ -71,11 +71,6 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
         const { t } = useTranslation();
 
         const [ activeOption, setActiveOption ] = useState<ScopeInterface>(undefined);
-        const [ hasErrorState, setHasErrorState ] = useState<boolean>(hasError);
-
-        useEffect(() => {
-            setHasErrorState(hasError);
-        }, [ hasError ]);
 
         /**
          * Handles the select scope action.
@@ -103,8 +98,8 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
                             data-componentid={ `${componentId}-textfield` }
                             placeholder= { t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
                                 "permissions.placeholder") }
-                            error={ hasErrorState }
-                            helperText={ hasErrorState && errorMessage }
+                            error={ hasError }
+                            helperText={ hasError && errorMessage }
                         />
                     ) }
                     onChange={ (event: SyntheticEvent, scopes: ScopeInterface[]) => handleScopeSelection(scopes) }
