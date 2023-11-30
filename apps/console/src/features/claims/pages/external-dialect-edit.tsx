@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,9 +20,9 @@ import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
-import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import React, { FunctionComponent, ReactElement, SetStateAction, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Dispatch, { useDispatch } from "react-redux";
 import { Divider, Grid, Header, Placeholder } from "semantic-ui-react";
 import { attributeConfig } from "../../../extensions";
 import { getAllExternalClaims } from "../../claims/api";
@@ -81,7 +81,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
     const [ isLoading, setIsLoading ] = useState(true);
     const [ confirmDelete, setConfirmDelete ] = useState(false);
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -95,7 +95,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 /**
                  * TODO: Trans component with strong tags doesn't seem to
                  * work here properly, hence removed for now.
-                 * 
+                 *
                  * Need to find the root cause and fix this.
                  */
                 <p>
@@ -135,10 +135,10 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
      */
     const getDialect = (id?: string) => {
         getADialect(id ?? dialectId)
-            .then((response) => {
+            .then((response: any) => {
                 setDialect(response);
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 dispatch(
                     addAlert({
                         description:
@@ -181,7 +181,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 offset,
                 sort
             })
-                .then((response) => {
+                .then((response: ExternalClaim[]) => {
                     // Hide identity claims in SCIM
                     const claims: ExternalClaim[] = attributeConfig.attributeMappings.getExternalAttributes(
                         attributeType,
@@ -190,7 +190,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
                     setClaims(sortList(claims, "claimURI", true));
                 })
-                .catch((error) => {
+                .catch((error: any) => {
                     dispatch(
                         addAlert({
                             description:
@@ -241,7 +241,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                     })
                 );
             })
-            .catch((error) => {
+            .catch((error: any) => {
                 dispatch(
                     addAlert({
                         description:
