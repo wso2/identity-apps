@@ -2715,14 +2715,11 @@ export const extensions: Extensions = {
                                         description: "Activate this option to allow users to enroll for a " +
                                         "passkey during login.",
                                         label: "Progressive Passkey Enrollment:",
-                                        note: "If Passkey is set as a first factor, the following " +
-                                        "<1> adaptive script</1> should be added under " +
-                                        "the <3>Sign-In-Method</3> tab of the application. " +
-                                        "This script is added automatically with the template-based " +
-                                        "Passkey setup and is used to verify the user's " +
-                                        "identity before enrolling passkeys. " +
-                                        "However, if you're configuring Passkey " +
-                                        "without a template, remember to add the script manually."
+                                        note: "When the Passkey is set as a <1>first factor</1> option, " +
+                                        "users need to add an <3>adaptive script</3> to verify the user's " +
+                                        "identity prior to passkey enrollment. To include the script, users " +
+                                        "can use the <5>Passkeys Progressive Enrollment</5> template available " +
+                                        "in the <7>Sign-In-Method</7> tab of the application."
                                     },
                                     usernamelessAuthentication: {
                                         description: "Enabling this feature allows users to log in with a passkey " +

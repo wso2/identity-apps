@@ -36,7 +36,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Grid, Icon } from "semantic-ui-react";
+import { Divider, Grid, Icon  } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
@@ -63,6 +63,7 @@ import {
 } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
 import { ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from "../../../utils/sign-in-method-utils";
+import "./sign-in-method-customization.scss";
 
 /**
  * Proptypes for the sign in methods customization entry point component.
@@ -669,6 +670,97 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         );
     };
 
+    const renderPasskeyWarnMessages = (): ReactElement => {
+        const isPasskeyIncludedInAnyStep: boolean = authenticationSequence?.steps.some(
+            (step: AuthenticationStepInterface) =>
+                !!step?.options.find(
+                    (authenticator: AuthenticatorInterface) =>
+                        authenticator?.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
+                )
+        );
+
+        if (isPasskeyIncludedInAnyStep) {
+            if (isPasskeyProgressiveEnrollmentEnabled) {
+                const isPasskeyIncludedAsAFirstFatorOption: boolean = !!authenticationSequence?.steps[0]?.options.find(
+                    (authenticator: AuthenticatorInterface) =>
+                        authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
+                );
+
+                if (isPasskeyIncludedAsAFirstFatorOption) {
+                    return (
+                        <Message
+                            type="info"
+                            content={
+                                (
+                                    <>
+                                        Passkey progressive enrollment is enabled.
+                                        <p>
+                                            <strong>Note : </strong> For on-the-fly user enrollment with passkeys,
+                                            use the <strong>Passkeys Progressive Enrollment</strong> template in
+                                            <strong> Conditional Authentication</strong> section.
+                                        </p>
+                                    </>
+                                )
+                            }
+                        />
+                    );
+                } else {
+                    return (
+                        <Message
+                            type="info"
+                            content={
+                                (<>
+                                    <Trans
+                                        i18nKey={
+                                            t("console:develop.features.applications.edit.sections" +
+                                            ".signOnMethod.sections.landing.flowBuilder." +
+                                            "types.passkey.info.progressiveEnrollmentEnabled")
+                                        }
+                                    >
+                                    Passkey progressive enrollment is enabled. Users can enroll passkeys
+                                    on-the-fly.
+                                    </Trans>
+                                    <DocumentationLink
+                                        link={ getLink("develop.applications.editApplication.signInMethod.fido") }
+                                        showEmptyLink={ false }
+                                    >
+                                        { t("common:learnMore") }
+                                    </DocumentationLink>
+                                </>)
+                            }
+                        />
+                    );
+                }
+            } else {
+                return (
+                    <Message
+                        type="info"
+                        content={
+                            (<>
+                                <Trans
+                                    i18nKey={
+                                        t("console:develop.features.applications.edit.sections" +
+                                        ".signOnMethod.sections.landing.flowBuilder." +
+                                        "types.passkey.info.progressiveEnrollmentDisabled")
+                                    }
+                                >
+                                Passkey progressive enrollment is disabled. Users must enroll
+                                their passkeys through MyAccount to use passwordless sign-in.
+                                </Trans>
+                                <DocumentationLink
+                                    link={ getLink("develop.applications.editApplication.signInMethod.fido") }
+                                    showEmptyLink={ false }
+                                >
+                                    { t("common:learnMore") }
+                                </DocumentationLink>
+                            </>)
+                        }
+                    />
+                );
+            }
+        }
+    };
+
     return (
         <div>
             <div>
@@ -715,64 +807,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 }
             </div>
             <Divider hidden />
-            {
-                authenticationSequence.steps.some((step: AuthenticationStepInterface) =>
-                    step.options.find((authenticator: AuthenticatorInterface) =>
-                        authenticator.authenticator === IdentityProviderManagementConstants.FIDO_AUTHENTICATOR))
-                && (
-                    isPasskeyProgressiveEnrollmentEnabled
-                        ? (
-                            <Message
-                                type="warning"
-                                content={
-                                    (<>
-                                        <Trans
-                                            i18nKey={
-                                                t("console:develop.features.applications.edit.sections" +
-                                                ".signOnMethod.sections.landing.flowBuilder." +
-                                                "types.passkey.info.progressiveEnrollmentEnabled")
-                                            }
-                                        >
-                                        Passkey progressive enrollment is enabled. Users can enroll passkeys
-                                        on-the-fly. If they wish to enroll multiple passkeys they should do
-                                        so via MyAccount.
-                                        </Trans>
-                                        <DocumentationLink
-                                            link={ getLink("develop.applications.editApplication.signInMethod.fido") }
-                                            showEmptyLink={ false }
-                                        >
-                                            { t("common:learnMore") }
-                                        </DocumentationLink>
-                                    </>)
-                                }
-                            />
-                        ):(
-                            <Message
-                                type="warning"
-                                content={
-                                    (<>
-                                        <Trans
-                                            i18nKey={
-                                                t("console:develop.features.applications.edit.sections" +
-                                                ".signOnMethod.sections.landing.flowBuilder." +
-                                                "types.passkey.info.progressiveEnrollmentDisabled")
-                                            }
-                                        >
-                                        Passkey progressive enrollment is disabled. Users must enroll
-                                        their passkeys through MyAccount to use passwordless sign-in.
-                                        </Trans>
-                                        <DocumentationLink
-                                            link={ getLink("develop.applications.editApplication.signInMethod.fido") }
-                                            showEmptyLink={ false }
-                                        >
-                                            { t("common:learnMore") }
-                                        </DocumentationLink>
-                                    </>)
-                                }
-                            />
-                        )
-                )
-            }
+            { renderPasskeyWarnMessages() }
             { !validationResult?.conflicting && smsValidationResult?.conflicting && smsValidationResult?.idpList.length
                 ? SMSOTPConflictMessage()
                 : null
