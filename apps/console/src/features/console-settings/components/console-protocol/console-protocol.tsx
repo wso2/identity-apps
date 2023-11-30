@@ -61,7 +61,7 @@ const ConsoleProtocol: FunctionComponent<ConsoleProtocolInterface> = (
     return (
         <div className="console-login-flow" data-componentid={ componentId }>
             <AccessConfiguration
-                isSystemApplication={ true }
+                isSystemApplication
                 application={ consoleConfigurations }
                 appId={ consoleConfigurations?.id }
                 appName={ consoleConfigurations?.name }
