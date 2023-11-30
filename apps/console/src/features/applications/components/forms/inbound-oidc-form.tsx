@@ -703,7 +703,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             } else {
                 metadataProp.options.map((ele: any, index: number) => {
                     if (!ele.displayName) {
-                        allowedList.push({ text: ele, value: ele });
+                        allowedList.push({ text: ele, value: ele !== "Select Option" ? ele : "" });
                     } else {
                         allowedList.push({
                             content: (
@@ -1040,8 +1040,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             values.get("method") : metadata?.idTokenEncryptionMethod?.defaultValue
                     },
                     expiryInSeconds: Number(values.get("idExpiryInSeconds")),
-                    idTokenSignedResponseAlg: values.get("idTokenSignedResponseAlg") !== "None" ?
-                        values.get("idTokenSignedResponseAlg") : null
+                    idTokenSignedResponseAlg: values.get("idTokenSignedResponseAlg")
                 },
                 logout: {
                     backChannelLogoutUrl: values.get("backChannelLogoutUrl"),
@@ -1125,8 +1124,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 ...inboundConfigFormValues,
                 clientAuthentication: {
                     tlsClientAuthSubjectDn: subjectDN,
-                    tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod") !== "None" ?
-                        values.get("tokenEndpointAuthMethod") : null,
+                    tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod"),
                     tokenEndpointAuthSigningAlg: values.get("tokenEndpointAuthSigningAlg")
                 },
                 pushAuthorizationRequest: {
@@ -1134,13 +1132,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 },
                 requestObject: {
                     encryption: {
-                        algorithm: values.get("requestObjectEncryptionAlgorithm") !== "None" ?
-                            values.get("requestObjectEncryptionAlgorithm") : null,
-                        method: values.get("requestObjectEncryptionMethod") !== "None" ?
-                            values.get("requestObjectEncryptionMethod") : null
+                        algorithm: values.get("requestObjectEncryptionAlgorithm"),
+                        method: values.get("requestObjectEncryptionMethod")
                     },
-                    requestObjectSigningAlg: values.get("requestObjectSigningAlg") !== "None" ?
-                        values.get("requestObjectSigningAlg") : null
+                    requestObjectSigningAlg: values.get("requestObjectSigningAlg")
                 },
                 subject: {
                     sectorIdentifierUri: initialValues?.subject?.sectorIdentifierUri,
