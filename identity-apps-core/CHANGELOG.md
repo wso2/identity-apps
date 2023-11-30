@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.72
+
+### Patch Changes
+
+- [#4861](https://github.com/wso2/identity-apps/pull/4861) [`58c5ec4b35`](https://github.com/wso2/identity-apps/commit/58c5ec4b3532eb486ea12d9b4ae68beded7143f5) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix possible index out of bound issue
+
 ## 2.0.71
 
 ### Patch Changes
