@@ -369,7 +369,7 @@ export const applicationConfig: ApplicationConfig = {
             }
         },
         getTabExtensions: (
-            props: Record<string, unknown>, 
+            props: Record<string, unknown>,
             features: FeatureConfigInterface
         ): ResourceTabPaneInterface[] => {
             const extendedFeatureConfig: ExtendedFeatureConfigInterface = features as ExtendedFeatureConfigInterface;
@@ -377,7 +377,7 @@ export const applicationConfig: ApplicationConfig = {
             const applicationRolesFeatureEnabled: boolean = extendedFeatureConfig?.applicationRoles?.enabled;
 
             const application: ApplicationInterface = props?.application as ApplicationInterface;
-    
+
             const onApplicationUpdate: () => void = props?.onApplicationUpdate as () => void;
 
             const tabExtensions: ResourceTabPaneInterface[] = [];
@@ -397,8 +397,8 @@ export const applicationConfig: ApplicationConfig = {
                 tabExtensions.push(
                     {
                         componentId: "api-authorization",
-                        index: application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID 
-                            ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length 
+                        index: application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
+                            ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length
                             : API_AUTHORIZATION_INDEX + tabExtensions.length,
                         menuItem: I18n.instance.t(
                             "extensions:develop.applications.edit.sections.apiAuthorization.title"
@@ -416,7 +416,7 @@ export const applicationConfig: ApplicationConfig = {
             if (apiResourceFeatureEnabled
                 && applicationRolesFeatureEnabled
                 && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
-                    applicationRoles?.enabled) 
+                    applicationRoles?.enabled)
                 && (
                     application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
                     || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
@@ -436,7 +436,7 @@ export const applicationConfig: ApplicationConfig = {
                         ),
                         render: () => (
                             <ResourceTab.Pane controlledSegmentation>
-                                <ApplicationRoles 
+                                <ApplicationRoles
                                     onUpdate={ onApplicationUpdate }
                                 />
                             </ResourceTab.Pane>
