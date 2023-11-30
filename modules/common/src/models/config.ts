@@ -250,6 +250,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     selfAppIdentifier: string;
     /**
+     * Show API based authentication.
+     */
+    showAPIBasedAuthentication?: boolean;
+    /**
      * System apps list.
      */
     systemAppsIdentifiers: string[];
