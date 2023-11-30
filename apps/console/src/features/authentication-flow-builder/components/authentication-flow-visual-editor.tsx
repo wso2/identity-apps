@@ -69,7 +69,7 @@ import {
     AdaptiveScriptUtils
 } from "../../applications/utils/adaptive-script-utils";
 import { AuthenticatorManagementConstants } from "../../connections";
-import { useMultiFactorAuthenticatorDetails } from "../../connections/api/authenticators";
+import useMultiFactorAuthenticatorDetails from "../../connections/api/use-multi-factor-authentication-details";
 import { IdentityProviderManagementConstants } from "../../identity-providers/constants";
 import { ConnectorPropertyInterface } from "../../server-configurations";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
