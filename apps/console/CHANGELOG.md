@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.9.31
+
+### Patch Changes
+
+- [#4867](https://github.com/wso2/identity-apps/pull/4867) [`f522ec7d09`](https://github.com/wso2/identity-apps/commit/f522ec7d09bc8dd5c7abde6753876a2c9855dea0) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with user invitation mutation
+
 ## 2.9.30
 
 ### Patch Changes
