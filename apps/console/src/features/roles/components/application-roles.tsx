@@ -111,7 +111,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const [ initialSelectedRoles, setInitialSelectedRoles ] =
         useState<BasicRoleInterface[]>(application?.associatedRoles?.roles ?? []);
     const [ activeOption, setActiveOption ] = useState<BasicRoleInterface>(undefined);
-    const [ removedRolesOptions, setRemovedRolesOptions ] = useState<BasicRoleInterface[]>(undefined);
 
     const isReadOnly: boolean = organizationType === OrganizationType.SUBORGANIZATION;
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -149,18 +148,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
         }
         updateRoles();
     }, [ shouldUpdateRoleAudience, roleAudience, selectedRoles ]);
-
-    /**
-     * Set removed roles
-     */
-    useEffect(() => {
-        if (initialSelectedRoles && selectedRoles) {
-            setRemovedRolesOptions(initialSelectedRoles?.filter((role: BasicRoleInterface) => {
-                return selectedRoles?.find(
-                    (selectedRole: BasicRoleInterface) => selectedRole.id === role.id) === undefined;
-            }));
-        }
-    }, [ initialSelectedRoles, selectedRoles ]);
 
     /**
      * Handles the click event of the New Role button.
@@ -274,26 +261,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 setIsSubmitting(false);
                 setShouldUpdateRoleAudience(false);
             });
-    };
-
-    /**
-     * Handle the restore roles.
-     *
-     * @param remainingRoles - remaining roles
-     */
-    const handleRestoreUsers = (remainingRoles: BasicRoleInterface[]) => {
-        const removedRoles: BasicRoleInterface[] = [];
-
-        removedRolesOptions.forEach((user: BasicRoleInterface) => {
-            if (!remainingRoles?.find((newUser: BasicRoleInterface) => newUser.id === user.id)) {
-                removedRoles.push(user);
-            }
-        });
-
-        setSelectedRoles([
-            ...selectedRoles,
-            ...removedRoles
-        ]);
     };
 
     /**
@@ -477,67 +444,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     />
                                 ) }
                             />
-                            {
-                                removedRolesOptions?.length > 0
-                                    ? (
-                                        <Autocomplete
-                                            className="mt-3"
-                                            multiple
-                                            disableCloseOnSelect
-                                            loading={ isLoading }
-                                            options={ removedRolesOptions }
-                                            value={ removedRolesOptions }
-                                            getOptionLabel={
-                                                (role: BasicRoleInterface) => role.name
-                                            }
-                                            onChange={ (
-                                                event: SyntheticEvent,
-                                                remainingRoles: BasicRoleInterface[]
-                                            ) => {
-                                                handleRestoreUsers(remainingRoles);
-                                            } }
-                                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                <TextField
-                                                    { ...params }
-                                                    label={ t("extensions:develop.applications.edit.sections." +
-                                                        "rolesV2.removedRoles") }
-                                                    placeholder={ t("extensions:develop.applications.edit.sections." +
-                                                        "rolesV2.searchPlaceholder") }
-                                                />
-                                            ) }
-                                            renderTags={ (
-                                                value: BasicRoleInterface[],
-                                                getTagProps: AutocompleteRenderGetTagProps
-                                            ) => value.map((option: BasicRoleInterface, index: number) => (
-                                                <Chip
-                                                    { ...getTagProps({ index }) }
-                                                    key={ index }
-                                                    label={ option.name }
-                                                    option={ option }
-                                                    activeOption={ activeOption }
-                                                    setActiveOption={ setActiveOption }
-                                                    variant="outlined"
-                                                    onDelete={ () => {
-                                                        setSelectedRoles([
-                                                            ...selectedRoles,
-                                                            option
-                                                        ]);
-                                                    } }
-                                                />
-                                            ) ) }
-                                            renderOption={ (
-                                                props: HTMLAttributes<HTMLLIElement>,
-                                                option: BasicRoleInterface
-                                            ) => (
-                                                <AutoCompleteRenderOption
-                                                    displayName={ option.name }
-                                                    renderOptionProps={ props }
-                                                />
-                                            ) }
-                                        />
-                                    ) : null
-                            }
-
                         </Grid.Column>
                     </Grid.Row>
                     {

@@ -8452,7 +8452,10 @@ export const console: ConsoleNS = {
                         rolePermission: {
                             apiResource: {
                                 label: "API සම්පත් තෝරන්න",
-                                placeholder: "අවසර ලබා දීම සඳහා API සම්පතක් තෝරන්න (විෂය පදක්කම්)"
+                                placeholder: "අවසර ලබා දීම සඳහා API සම්පතක් තෝරන්න (විෂය පදක්කම්)",
+                                hint: {
+                                    empty: "තෝරාගත් අයදුම්පත සඳහා API සම්පත් නොමැත. API සම්පත් <1>හරහා</1> බලය ලබා ගත හැකිය."
+                                }
                             },
                             permissions: {
                                 label: "තෝරාගත් API සම්පත් වලින් අවසර (විෂය පද) තෝරන්න",
@@ -8461,6 +8464,9 @@ export const console: ConsoleNS = {
                                     noScopes: "තෝරාගත් API සම්පත සඳහා විෂය පදක් නොමැත",
                                     selectAllScopes: "සියලුම අවසර (විෂය පද) තෝරන්න",
                                     removeAPIResource: "API සම්පත ඉවත් කරන්න"
+                                },
+                                validation: {
+                                    empty: "අවසර(විෂය පද) ලැයිස්තුව හිස් විය නොහැක. අවම වශයෙන් එක් අවසරයක්වත්(විෂය පථය) තෝරන්න."
                                 }
                             },
                             notes: {
@@ -8733,9 +8739,9 @@ export const console: ConsoleNS = {
                             message: "මෙම ක්‍රියාව ආපසු හැරවිය නොහැකි අතර තෝරාගත් {{type}} ස්ථිරවම මකා දමනු ඇත."
                         },
                         deleteItemError: {
-                            content: "Remove the associations from following application before deleting:",
-                            header: "Unable to Delete",
-                            message: "There is an application using this role."
+                            content: "මකා දැමීමට පෙර ආශ්රිතයන් පහත යෙදුමේ සිට ඉවත් කරන්න:",
+                            header: "මකා දැමීමට නොහැකි විය",
+                            message: "මෙම භූමිකාව භාවිතා කරමින් අයදුම්පතක් තිබේ."
                         }
                     },
                     emptyPlaceholders: {

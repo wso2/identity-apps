@@ -8632,7 +8632,10 @@ export const console: ConsoleNS = {
                         rolePermission: {
                             apiResource: {
                                 label: "Sélectionnez la ressource API",
-                                placeholder: "Sélectionnez une ressource API pour attribuer des autorisations (lunettes)"
+                                placeholder: "Sélectionnez une ressource API pour attribuer des autorisations (lunettes)",
+                                hint: {
+                                    empty: "Aucune ressource API n'est autorisée pour l'application sélectionnée. Les ressources de l'API peuvent être autorisées via <1>ici</1>."
+                                }
                             },
                             permissions: {
                                 label: "Sélectionnez autorisations (lunettes) dans les ressources API sélectionnées",
@@ -8641,6 +8644,9 @@ export const console: ConsoleNS = {
                                     noScopes: "Aucune portée disponible pour la ressource API sélectionnée",
                                     selectAllScopes: "Sélectionnez toutes les autorisations (lunettes)",
                                     removeAPIResource: "Supprimer la ressource API"
+                                },
+                                validation: {
+                                    empty: "La liste des autorisations(lunettes) ne peut pas être vide. Sélectionnez au moins une autorisation(lunettes)."
                                 }
                             },
                             notes: {
@@ -8923,9 +8929,9 @@ export const console: ConsoleNS = {
                                 "sélectionné"
                         },
                         deleteItemError: {
-                            content: "Remove the associations from following application before deleting:",
-                            header: "Unable to Delete",
-                            message: "There is an application using this role."
+                            content: "Supprimer les associations de la demande suivante avant de supprimer:",
+                            header: "Impossible de supprimer",
+                            message: "Il existe une application utilisant ce rôle."
                         }
                     },
                     emptyPlaceholders: {
