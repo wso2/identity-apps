@@ -26,8 +26,8 @@ export const DOMAIN_SEPARATOR: string = "/";
  * Role audience interface.
  */
 export enum RoleAudienceTypes {
-    ORGANIZATION = "ORGANIZATION",
-    APPLICATION = "APPLICATION"
+    APPLICATION = "APPLICATION",
+    ORGANIZATION = "ORGANIZATION"
 }
 
 /**

@@ -706,6 +706,9 @@ export const console: ConsoleNS = {
         loginFlow: {
             tabLabel: "Flux de connexion"
         },
+        protocol: {
+            tabLabel: "Protocole"
+        },
         roles: {
             tabLabel: "Les rôles",
             permissionLevels: {
@@ -7577,7 +7580,23 @@ export const console: ConsoleNS = {
                     heading: "Inviter un utilisateur parent",
                     description: "Invitez un utilisateur de l’organisation parente.",
                     hint: "Les utilisateurs invités sont gérés par l'organisation parente.",
-                    usernameHint: "Le nom d'utilisateur doit appartenir à un utilisateur de l'organisation parente."
+                    username: {
+                        label: "nom d'utilisateur",
+                        placeholder: "Entrez le nom d'utilisateur",
+                        hint: "Le nom d'utilisateur doit appartenir à un utilisateur de l'organisation parente.",
+                        validations: {
+                            required: "Le nom d'utilisateur est un champ obligatoire."
+                        }
+                    },
+                    roles: {
+                        label: "Les rôles",
+                        placeholder: "Sélectionnez des rôles",
+                        hint: "Attribuez des rôles à l'utilisateur invité.",
+                        validations: {
+                            required: "Les rôles sont un champ obligatoire."
+                        }
+                    },
+                    inviteButton: "Inviter"
                 },
                 tab: {
                     usersTab: "Utilisateurs",
@@ -8579,6 +8598,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Saisir un nom de {{type}}",
                                 validations: {
                                     duplicate: "Un {{type}} avec ce nom existe déjà.",
+                                    duplicateInAudience: "Un rôle portant ce nom existe déjà dans l'audience sélectionnée.",
                                     empty: "Le nom de {{type}} est obligatoire",
                                     invalid: "Un nom {{type}} ne peut contenir que des caractères " +
                                         "alphanumériques, - et _. Et doit avoir une longueur comprise entre 3 " +
@@ -8616,7 +8636,10 @@ export const console: ConsoleNS = {
                         rolePermission: {
                             apiResource: {
                                 label: "Sélectionnez la ressource API",
-                                placeholder: "Sélectionnez une ressource API pour attribuer des autorisations (lunettes)"
+                                placeholder: "Sélectionnez une ressource API pour attribuer des autorisations (lunettes)",
+                                hint: {
+                                    empty: "Aucune ressource API n'est autorisée pour l'application sélectionnée. Les ressources de l'API peuvent être autorisées via <1>ici</1>."
+                                }
                             },
                             permissions: {
                                 label: "Sélectionnez autorisations (lunettes) dans les ressources API sélectionnées",
@@ -8625,6 +8648,9 @@ export const console: ConsoleNS = {
                                     noScopes: "Aucune portée disponible pour la ressource API sélectionnée",
                                     selectAllScopes: "Sélectionnez toutes les autorisations (lunettes)",
                                     removeAPIResource: "Supprimer la ressource API"
+                                },
+                                validation: {
+                                    empty: "La liste des autorisations(lunettes) ne peut pas être vide. Sélectionnez au moins une autorisation(lunettes)."
                                 }
                             },
                             notes: {
@@ -8905,6 +8931,11 @@ export const console: ConsoleNS = {
                             header: "Êtes-vous sûr ?",
                             message: "Cette action est irréversible et supprimera définitivement le {{type}} " +
                                 "sélectionné"
+                        },
+                        deleteItemError: {
+                            content: "Supprimer les associations de la demande suivante avant de supprimer:",
+                            header: "Impossible de supprimer",
+                            message: "Il existe une application utilisant ce rôle."
                         }
                     },
                     emptyPlaceholders: {
@@ -10150,7 +10181,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Rechercher par e-mail"
+                    placeholder: "Rechercher par Nom d'utilisateur"
                 },
                 all: {
                     heading: "Utilisateurs",
@@ -10187,8 +10218,9 @@ export const console: ConsoleNS = {
                     addMultipleUser: {
                         header: "Avant de continuer",
                         message: "L'option Inviter des utilisateurs est désactivée",
-                        content: "L’option Inviter des utilisateurs doit être activée pour ajouter plusieurs " +
-                            "utilisateurs. Veuillez l'activer et réessayer.",
+                        content: "Inviter l'utilisateur à définir le mot de passe doit être activé pour ajouter " +
+                            "plusieurs utilisateurs. Veuillez activer la vérification des e-mails dans les paramètres" +
+                            " de connexion et d'inscription.",
                         assertionHint: "Veuillez confirmer votre action."
                     }
                 },

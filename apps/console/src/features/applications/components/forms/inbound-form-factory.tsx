@@ -82,6 +82,16 @@ interface InboundFormFactoryInterface extends TestableComponentInterface {
     isLoading?: boolean;
     setIsLoading?: any;
     containerRef?: MutableRefObject<HTMLElement>;
+    /**
+     * Flag to determine if the updated application a default application.
+     * ex: My Account
+     */
+    isDefaultApplication?: boolean;
+    /**
+     * Flag to determine if the updated application a system application.
+     * ex: Console
+     */
+    isSystemApplication?: boolean;
 }
 
 /**
@@ -114,6 +124,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         isLoading,
         setIsLoading,
         containerRef,
+        isDefaultApplication,
+        isSystemApplication,
         [ "data-testid" ]: testId
     } = props;
 
@@ -137,6 +149,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     template={ template }
                     data-testid={ testId }
                     containerRef={ containerRef }
+                    isDefaultApplication={ isDefaultApplication }
+                    isSystemApplication={ isSystemApplication }
                 />
             );
         case SupportedAuthProtocolTypes.OAUTH2_OIDC:
@@ -158,6 +172,8 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                     template={ template }
                     data-testid={ testId }
                     containerRef={ containerRef }
+                    isDefaultApplication={ isDefaultApplication }
+                    isSystemApplication={ isSystemApplication }
                 />
             );
         case SupportedAuthProtocolTypes.SAML:

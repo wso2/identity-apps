@@ -967,6 +967,16 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {}
+            },
+            "server": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [],
+                    "read": [],
+                    "update": [],
+                    "delete": []
+                }
             }
         },
         "gravatarConfig": {

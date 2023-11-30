@@ -1,5 +1,33 @@
 # @wso2is/i18n
 
+## 2.0.63
+
+### Patch Changes
+
+- [#4838](https://github.com/wso2/identity-apps/pull/4838) [`88e753d8de`](https://github.com/wso2/identity-apps/commit/88e753d8dedeca61d3c1dde98d56bd95af990c54) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Update the message when multiple user addition feature is disabled
+
+## 2.0.62
+
+### Patch Changes
+
+- [#4856](https://github.com/wso2/identity-apps/pull/4856) [`442bac7b10`](https://github.com/wso2/identity-apps/commit/442bac7b10dd1dac14fcd3459d2d9ead5fb00471) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve UX in Application Roles assignment
+
+* [#4868](https://github.com/wso2/identity-apps/pull/4868) [`d7615d4be1`](https://github.com/wso2/identity-apps/commit/d7615d4be17d618d954bd1277d5be21b38bad927) Thanks [@Rashmini](https://github.com/Rashmini)! - Fix duplicate error in role creation wizard
+
+## 2.0.61
+
+### Patch Changes
+
+- [#4827](https://github.com/wso2/identity-apps/pull/4827) [`f85d74e442`](https://github.com/wso2/identity-apps/commit/f85d74e44253cf0c37c2b520ad47b0fd028b8eaa) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the user creation wizard
+
+## 2.0.60
+
+### Patch Changes
+
+- [#4830](https://github.com/wso2/identity-apps/pull/4830) [`783a812ee5`](https://github.com/wso2/identity-apps/commit/783a812ee578e9f823c463196476a6af2ed50686) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve the role deletion flow
+
+* [#4836](https://github.com/wso2/identity-apps/pull/4836) [`3147be47e0`](https://github.com/wso2/identity-apps/commit/3147be47e04f398fc8eb78a613b95aa48b50bada) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Add the capability to specify roles in the invite parent org user flow.
+
 ## 2.0.59
 
 ### Patch Changes

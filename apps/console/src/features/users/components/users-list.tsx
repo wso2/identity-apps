@@ -280,7 +280,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 id: "name",
                 key: "name",
                 render: (user: UserBasicInterface): ReactNode => {
-                    const header: string = UserManagementUtils.resolveUserListHeader(user);
+                    const header: string = getUserNameWithoutDomain(user?.userName);
                     const subHeader: string = UserManagementUtils.resolveUserListSubheader(user);
                     const isNameAvailable: boolean = user.name?.familyName === undefined &&
                         user.name?.givenName === undefined;
@@ -453,6 +453,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
+                    || user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg
                         ? t("common:view")
                         : t("common:edit");
                 },

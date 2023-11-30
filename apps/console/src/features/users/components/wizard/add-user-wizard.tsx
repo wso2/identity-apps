@@ -42,16 +42,13 @@ import { AddUserType } from "./steps/add-user-type";
 import { AddUserWizardSummary } from "./user-wizard-summary";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { UsersConstants } from "../../../../extensions/components/users/constants";
-import {
-    InternalAdminFormDataInterface,
-    UserInviteInterface } from "../../../../extensions/components/users/models";
 import { administratorConfig } from "../../../../extensions/configs/administrator";
 import { SCIMConfigs } from "../../../../extensions/configs/scim";
 import { UserStoreDetails, UserStoreProperty } from "../../../core/models";
 import { AppState } from "../../../core/store";
 import { GroupsInterface } from "../../../groups";
 import { getGroupList, updateGroupDetails } from "../../../groups/api";
-import { getUserStores } from "../../../userstores/api";
+import { getAUserStore, getUserStores } from "../../../userstores/api";
 import { useValidationConfigData } from "../../../validation/api";
 import { ValidationFormInterface } from "../../../validation/models";
 import { addUser } from "../../api";
@@ -61,6 +58,7 @@ import {
     HiddenFieldNames,
     PasswordOptionTypes,
     UserAccountTypesMain,
+    UserManagementConstants,
     WizardStepsFormTypes
 } from "../../constants";
 import {
@@ -70,7 +68,6 @@ import {
     WizardStepInterface,
     createEmptyUserDetails } from "../../models";
 import { generatePassword, getConfiguration, getUsernameConfiguration } from "../../utils";
-import { sendParentOrgUserInvite } from "../guests/api/invite";
 import { InviteParentOrgUser } from "../guests/pages/invite-parent-org-user";
 
 interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, TestableComponentInterface {
@@ -129,7 +126,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
-    const [ submitParentUserInvite, setSubmitParentUserInvite ] = useTrigger();
     const [ submitGroupList, setSubmitGroupList ] = useTrigger();
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
@@ -146,7 +142,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ initialTempGroupList, setInitialTempGroupList ] = useState<GroupsInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isAlphanumericUsername, setIsAlphanumericUsername ] = useState<boolean>(false);
-    const [ isFinishButtonDisabled, setFinishButtonDisabled ] = useState<boolean>(false);
     const [ isBasicDetailsLoading, setBasicDetailsLoading ] = useState<boolean>(false);
     const [ isStepsUpdated, setIsStepsUpdated ] = useState<boolean>(false);
     const [ isFirstNameRequired, setFirstNameRequired ] = useState<boolean>(true);
@@ -301,6 +296,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     setFixedGroupsList(response.data.Resources);
                 }
             }).catch((error: AxiosError) => {
+                setGroupsList([]);
+                setInitialGroupList([]);
+                setFixedGroupsList([]);
+
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
@@ -338,9 +337,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
         getUserStores(null)
             .then((response: UserStoreDetails[]) => {
-                response?.forEach((item: UserStoreDetails, index: number) => {
+                response?.forEach(async (item: UserStoreDetails, index: number) => {
                     // Set read/write enabled userstores based on the type.
-                    if (checkReadWriteUserStore(item)) {
+                    if (await checkReadWriteUserStore(item)) {
                         userStoreArray.push({
                             key: index,
                             text: item.name.toUpperCase(),
@@ -354,20 +353,20 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("console:manage.features.users.notifications.fetchUserStores.error.description"),
+                            ?? t("console:manage.features.userstores.notifications.fetchUserstores.error.description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message
-                            ?? t("console:manage.features.users.notifications.fetchUserStores.error.message")
+                            ?? t("console:manage.features.userstores.notifications.fetchUserstores.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("console:manage.features.users.notifications.fetchUserStores.genericError." +
-                        "description"),
+                    description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError" +
+                        ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.users.notifications.fetchUserStores.genericError.message")
+                    message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
                 }));
 
                 setUserStoreError(true);
@@ -385,13 +384,29 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      * @param userStore - Userstore
      * @returns If the given userstore is read only or not
      */
-    const checkReadWriteUserStore = (userStore: UserStoreDetails): boolean => {
-        if( userStore.typeName === UsersConstants.DEFAULT_USERSTORE_TYPE_NAME ) {
-            return true;
-        } else {
-            return  userStore.enabled && userStore.properties.filter((property: UserStoreProperty)=>
-                property.name===UsersConstants.USER_STORE_PROPERTY_READ_ONLY)[0].value==="false";
-        }
+    const checkReadWriteUserStore = (userStore: UserStoreDetails): Promise<boolean> => {
+        let isReadWriteUserStore: boolean = false;
+
+        return getAUserStore(userStore?.id).then((response: UserStoreDetails) => {
+            response?.properties?.some((property: UserStoreProperty) => {
+                if (property.name === UsersConstants.USER_STORE_PROPERTY_READ_ONLY) {
+                    isReadWriteUserStore = property.value === "false";
+
+                    return true;
+                }
+            });
+
+            return isReadWriteUserStore;
+        }).catch(() => {
+            dispatch(addAlert({
+                description: t("console:manage.features.users.notifications.fetchUserStores.genericError." +
+                    "description"),
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.users.notifications.fetchUserStores.genericError.message")
+            }));
+
+            return false;
+        });
     };
 
     const resolveNamefieldAttributes = (profileSchemas: ProfileSchemaInterface[]) => {
@@ -474,8 +489,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     filteredSteps.push(getUserModeStep());
                 } else if (step === WizardStepsFormTypes.BASIC_DETAILS) {
                     filteredSteps.push(getUserBasicWizardStep());
-                } else if (step === WizardStepsFormTypes.INVITE_BASIC_DETAILS) {
-                    filteredSteps.push(getInviteParentOrgUserStep());
                 } else if (step === WizardStepsFormTypes.GROUP_LIST) {
                     filteredSteps.push(getUserGroupsWizardStep());
                 } else if (step === WizardStepsFormTypes.USER_SUMMARY) {
@@ -509,6 +522,15 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         setInitialTempGroupList(newGroupList);
     };
 
+    /**
+     * Triggers a form submit event for the form in the InviteParentOrgUser component.
+     */
+    const submitParentUserInviteForm = () => {
+        document
+            .getElementById(UserManagementConstants.INVITE_PARENT_ORG_USER_FORM_ID)
+            .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+    };
+
     const navigateToNext = () => {
         if (wizardSteps[ currentWizardStep ]?.name === WizardStepsFormTypes.USER_MODE) {
             handleWizardFormSubmit(wizardState[ WizardStepsFormTypes.USER_MODE ], WizardStepsFormTypes.USER_MODE);
@@ -517,7 +539,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         if (wizardSteps[ currentWizardStep ]?.name === WizardStepsFormTypes.BASIC_DETAILS) {
             userTypeSelection === AdminAccountTypes.EXTERNAL
                 ? setSubmitGeneralSettings()
-                : setSubmitParentUserInvite();
+                : submitParentUserInviteForm();
         }
 
         if (wizardSteps[ currentWizardStep ]?.name === WizardStepsFormTypes.GROUP_LIST) {
@@ -958,11 +980,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             />
                         ) : (
                             <InviteParentOrgUser
-                                triggerSubmit={ submitParentUserInvite }
-                                onSubmit={ (values: InternalAdminFormDataInterface | UserInviteInterface) =>
-                                    sendParentOrgInvitation(values as UserInviteInterface)
-                                }
-                                setFinishButtonDisabled={ (setFinishButtonDisabled) }
+                                closeWizard={ closeWizard }
+                                setIsSubmitting={ setIsSubmitting }
                             />
                         )
                     }
@@ -970,27 +989,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             ),
             icon: getUserWizardStepIcons().general,
             name: WizardStepsFormTypes.BASIC_DETAILS,
-            title: t("console:manage.features.user.modals.addUserWizard.steps.basicDetails")
-        };
-    };
-
-    /**
-     * Basic Wizard Step.
-     * @returns Basic details wizard step.
-     */
-    const getInviteParentOrgUserStep = (): WizardStepInterface => {
-        return {
-            content: (
-                <InviteParentOrgUser
-                    triggerSubmit={ submitParentUserInvite }
-                    onSubmit={ (values: InternalAdminFormDataInterface | UserInviteInterface) =>
-                        sendParentOrgInvitation(values as UserInviteInterface)
-                    }
-                    setFinishButtonDisabled={ (setFinishButtonDisabled) }
-                />
-            ),
-            icon: getUserWizardStepIcons().general,
-            name: WizardStepsFormTypes.INVITE_BASIC_DETAILS,
             title: t("console:manage.features.user.modals.addUserWizard.steps.basicDetails")
         };
     };
@@ -1061,87 +1059,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     };
 
     /**
-     * This function handles sending the invitation to the external admin user.
-     */
-    const sendParentOrgInvitation = (invite: UserInviteInterface) => {
-        if (invite != null) {
-            setIsSubmitting(true);
-
-            sendParentOrgUserInvite(invite)
-                .then(() => {
-                    dispatch(addAlert({
-                        description: t(
-                            "console:manage.features.invite.notifications.sendInvite.success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "console:manage.features.invite.notifications.sendInvite.success.message"
-                        )
-                    }));
-                    closeWizard();
-                })
-                .catch((error: AxiosError) => {
-                    /**
-                     * Axios throws a generic `Network Error` for 401 status.
-                     * As a temporary solution, a check to see if a response
-                     * is available has be used.
-                     */
-                    if (!error.response || error.response.status === 401) {
-                        closeWizard();
-                        dispatch(addAlert({
-                            description: t(
-                                "console:manage.features.invite.notifications.sendInvite.error.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:manage.features.invite.notifications.sendInvite.error.message"
-                            )
-                        }));
-                    } else if (error.response.status === 403 &&
-                            error?.response?.data?.code === UsersConstants.ERROR_COLLABORATOR_USER_LIMIT_REACHED) {
-                        closeWizard();
-                        dispatch(addAlert({
-                            description: t(
-                                "extensions:manage.invite.notifications.sendInvite.limitReachError.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "extensions:manage.invite.notifications.sendInvite.limitReachError.message"
-                            )
-                        }));
-                    } else if (error?.response?.data?.description) {
-                        closeWizard();
-                        dispatch(addAlert({
-                            description: t(
-                                "console:manage.features.invite.notifications.sendInvite.error.description",
-                                { description: error.response.data.description }
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:manage.features.invite.notifications.sendInvite.error.message"
-                            )
-                        }));
-                    } else {
-                        closeWizard();
-                        // Generic error message
-                        dispatch(addAlert({
-                            description: t(
-                                "console:manage.features.invite.notifications.sendInvite.genericError.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "console:manage.features.invite.notifications.sendInvite.genericError.message"
-                            )
-                        }));
-                    }
-                })
-                .finally(() => {
-                    setIsSubmitting(false);
-                });
-        }
-    };
-
-    /**
      * Resolves the step content.
      *
      * @returns Step content.
@@ -1152,8 +1069,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 return getUserModeStep()?.content;
             case WizardStepsFormTypes.BASIC_DETAILS:
                 return getUserBasicWizardStep()?.content;
-            case WizardStepsFormTypes.INVITE_BASIC_DETAILS:
-                return getInviteParentOrgUserStep()?.content;
             case WizardStepsFormTypes.GROUP_LIST:
                 return getUserGroupsWizardStep()?.content;
             case WizardStepsFormTypes.USER_SUMMARY:
@@ -1223,7 +1138,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                     floated="right"
                                     onClick={ navigateToNext }
                                     loading={ isSubmitting }
-                                    disabled={ isSubmitting || isFinishButtonDisabled }
+                                    disabled={ isSubmitting }
                                 >
                                     { resolveWizardPrimaryButtonText() }
                                 </PrimaryButton>

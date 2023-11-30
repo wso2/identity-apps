@@ -451,9 +451,11 @@ export const AppUtils: any = (function() {
                 const tenantName: string = paths[tenantIndex + 1];
 
                 return (tenantName) ? tenantName : "";
-            } else {
-                return "";
             }
+
+            return (_config.requireSuperTenantInUrls)
+                ? this.getSuperTenant()
+                : "";
         },
 
         /**
@@ -538,6 +540,7 @@ export const AppUtils: any = (function() {
                 "clientOrigin": window.location.origin,
                 "contextPath": _args.contextPath,
                 "legacyAuthzRuntime": _args.legacyAuthzRuntime || false,
+                "requireSuperTenantInUrls" : _args.requireSuperTenantInUrls || false,
                 "serverOrigin": _args.serverOrigin || fallbackServerOrigin
             };
 

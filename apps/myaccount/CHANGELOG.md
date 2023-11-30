@@ -1,5 +1,38 @@
 # @wso2is/myaccount
 
+## 2.2.46
+
+### Patch Changes
+
+- [#4838](https://github.com/wso2/identity-apps/pull/4838) [`88e753d8de`](https://github.com/wso2/identity-apps/commit/88e753d8dedeca61d3c1dde98d56bd95af990c54) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Update the message when multiple user addition feature is disabled
+
+- Updated dependencies [[`88e753d8de`](https://github.com/wso2/identity-apps/commit/88e753d8dedeca61d3c1dde98d56bd95af990c54)]:
+  - @wso2is/i18n@2.0.63
+
+## 2.2.45
+
+### Patch Changes
+
+- [#4856](https://github.com/wso2/identity-apps/pull/4856) [`442bac7b10`](https://github.com/wso2/identity-apps/commit/442bac7b10dd1dac14fcd3459d2d9ead5fb00471) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve UX in Application Roles assignment
+
+- Updated dependencies [[`442bac7b10`](https://github.com/wso2/identity-apps/commit/442bac7b10dd1dac14fcd3459d2d9ead5fb00471), [`d7615d4be1`](https://github.com/wso2/identity-apps/commit/d7615d4be17d618d954bd1277d5be21b38bad927)]:
+  - @wso2is/i18n@2.0.62
+
+## 2.2.44
+
+### Patch Changes
+
+- [#4828](https://github.com/wso2/identity-apps/pull/4828) [`b9a44a77fb`](https://github.com/wso2/identity-apps/commit/b9a44a77fbd30029aac10aa1a7520b8bacf53101) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Improve url building
+
+## 2.2.43
+
+### Patch Changes
+
+- [#4830](https://github.com/wso2/identity-apps/pull/4830) [`783a812ee5`](https://github.com/wso2/identity-apps/commit/783a812ee578e9f823c463196476a6af2ed50686) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bump i18n module
+
+- Updated dependencies [[`783a812ee5`](https://github.com/wso2/identity-apps/commit/783a812ee578e9f823c463196476a6af2ed50686), [`3147be47e0`](https://github.com/wso2/identity-apps/commit/3147be47e04f398fc8eb78a613b95aa48b50bada)]:
+  - @wso2is/i18n@2.0.60
+
 ## 2.2.42
 
 ### Patch Changes

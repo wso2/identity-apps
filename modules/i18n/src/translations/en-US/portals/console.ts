@@ -708,6 +708,9 @@ export const console: ConsoleNS = {
         loginFlow: {
             tabLabel: "Login Flow"
         },
+        protocol: {
+            tabLabel: "Protocol"
+        },
         roles: {
             tabLabel: "Roles",
             permissionLevels: {
@@ -7564,7 +7567,7 @@ export const console: ConsoleNS = {
                     confirmations: {
                         action: "Confirm",
                         content: "If you delete this attribute mapping, all the associated {{type}} attributes will "
-                            + "also be deleted.Please proceed with caution.",
+                            + "also be deleted. Please proceed with caution.",
                         header: "Are you sure?",
                         hint: "Please type <1>{{confirm}}</1> to confirm.",
                         message: "This action is irreversible and will permanently delete the selected attribute " +
@@ -9334,8 +9337,23 @@ export const console: ConsoleNS = {
                     heading: "Invite Parent User",
                     description: "Invite a user from the parent organization.",
                     hint: "Invited users are managed by the parent organization.",
-                    usernameHint: "Username should belong to a user " +
-                        "from the parent organization."
+                    username: {
+                        label: "Username",
+                        placeholder: "Enter the username",
+                        hint: "Username should belong to a user from the parent organization.",
+                        validations: {
+                            required: "Username is a required field."
+                        }
+                    },
+                    roles: {
+                        label: "Roles",
+                        placeholder: "Select roles",
+                        hint: "Assign roles for the user that is being invited.",
+                        validations: {
+                            required: "Roles is a required field."
+                        }
+                    },
+                    inviteButton: "Invite"
                 },
                 tab: {
                     usersTab: "Users",
@@ -10353,6 +10371,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Enter {{type}} name",
                                 validations: {
                                     duplicate: "A {{type}} already exists with the given {{type}} name.",
+                                    duplicateInAudience: "A role with this name already exists in the selected audience.",
                                     empty: "{{type}} Name is required to proceed.",
                                     invalid: "A {{type}} name can only contain alphanumeric characters, -, and _. "
                                         + "And must be of length between 3 to 30 characters."
@@ -10389,7 +10408,10 @@ export const console: ConsoleNS = {
                         rolePermission: {
                             apiResource: {
                                 label: "Select API Resource",
-                                placeholder: "Select an API resource to assign permissions(scopes)"
+                                placeholder: "Select an API resource to assign permissions(scopes)",
+                                hint: {
+                                    empty: "There are no API resources authorized for the selected application. API Resources can be authorized through <1>here</1>."
+                                }
                             },
                             permissions: {
                                 label: "Select permissions(scopes) from the selected API resources",
@@ -10398,6 +10420,9 @@ export const console: ConsoleNS = {
                                     noScopes: "No scopes available for the selected API resource",
                                     selectAllScopes: "Select all permissions(scopes)",
                                     removeAPIResource: "Remove API resource"
+                                },
+                                validation: {
+                                    empty: "Permissions(scopes) list cannot be empty. Select at least one permission(scope)."
                                 }
                             },
                             notes: {
@@ -10672,6 +10697,11 @@ export const console: ConsoleNS = {
                                 "intended actions which were previously allowed. Please proceed with caution.",
                             header: "Are you sure?",
                             message: "This action is irreversible and will permanently delete the selected {{type}}"
+                        },
+                        deleteItemError: {
+                            content: "Remove the associations from following application before deleting:",
+                            header: "Unable to Delete",
+                            message: "There is an application using this role."
                         }
                     },
                     emptyPlaceholders: {
@@ -11860,7 +11890,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Search by Email"
+                    placeholder: "Search by Username"
                 },
                 all: {
                     heading: "Users",
@@ -11893,8 +11923,8 @@ export const console: ConsoleNS = {
                     addMultipleUser: {
                         header: "Before you proceed",
                         message: "Invite users option is disabled",
-                        content: "Invite users option should be enabled to add multiple users. Please enable it and " +
-                            "try again.",
+                        content: "Invite User to Set Password should be enabled to add multiple users. " +
+                            "Please enable email verification from Login & Registration settings.",
                         assertionHint: "Please confirm your action."
                     }
                 },
