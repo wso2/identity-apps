@@ -3981,6 +3981,18 @@ export const extensions: Extensions = {
                         "<1>Create an account</1> link on the application’s login page. This creates a new " +
                         "<3>user</3> account in the organization."
                 },
+                inviteUserToSetPassword: {
+                    notification: {
+                        error: {
+                            description: "Failed to update the configuration for inviting user to set password connector.",
+                            message: "Error updating configuration"
+                        },
+                        success: {
+                            description: "Successfully updated the configuration for inviting user to set password connector.",
+                            message: "Update successful"
+                        }
+                    }
+                },
                 subHeading: "Self Registration related settings."
             }
         },
