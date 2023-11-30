@@ -1528,11 +1528,15 @@ export const console: ConsoleNS = {
                                                 "biometrics.",
                                                 heading: "Add Passkey Login",
                                                 info: {
-                                                    progressiveEnrollmentEnabled: "Passkey progressive enrollment is enabled. " +
-                                                    "Users can enroll passkeys on-the-fly. If they wish to enroll multiple passkeys " +
-                                                    "they should do so via MyAccount.",
-                                                    progressiveEnrollmentDisabled: "On-the-fly passkey enrollment is disabled. " +
-                                                    "Users must enroll their passkeys through MyAccount to use passwordless sign-in."
+                                                    progressiveEnrollmentEnabled: "Passkey progressive enrollment is enabled.",
+                                                    passkeyAsFirstStepWhenprogressiveEnrollmentEnabled: "<0>Note : </0> For " +
+                                                    "on-the-fly user enrollment with passkeys, use the <2>Passkeys Progressive " +
+                                                    "Enrollment</2> template in <4>Conditional Authentication</4> section.",
+                                                    passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled: "Users can enroll " +
+                                                    "passkeys on-the-fly. If users wish to enroll multiple passkeys they should do " +
+                                                    "so via <1>My Account</1>.",
+                                                    progressiveEnrollmentDisabled: "Passkey progressive enrollment is disabled. " +
+                                                    "Users must enroll their passkeys through <1>My Account</1> to use passwordless sign-in."
                                                 }
                                             },
                                             emailOTP: {

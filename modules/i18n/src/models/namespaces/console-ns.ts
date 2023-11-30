@@ -990,6 +990,8 @@ export interface ConsoleNS {
                                                 heading: string;
                                                 info: {
                                                     progressiveEnrollmentEnabled: string;
+                                                    passkeyAsFirstStepWhenprogressiveEnrollmentEnabled: string;
+                                                    passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled: string;
                                                     progressiveEnrollmentDisabled: string;
                                                 }
                                             }

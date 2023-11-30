@@ -1552,13 +1552,16 @@ export const console: ConsoleNS = {
                                                 "de passe, d'une clé de sécurité FIDO ou de données biométriques.",
                                                 heading: "Ajouter une connexion par mot de passe",
                                                 info: {
-                                                    progressiveEnrollmentEnabled: "L1inscription progressive par mot de passe " +
-                                                    "est activée. Les utilisateurs peuvent enregistrer des clés d'accès à " +
-                                                    "la volée. S’ils souhaitent enregistrer plusieurs mots de passe, ils " +
-                                                    "doivent le faire via Mon compte.",
+                                                    progressiveEnrollmentEnabled: "L’inscription progressive par mot de passe est activée.",
+                                                    passkeyAsFirstStepWhenprogressiveEnrollmentEnabled: "<0>note : </0> Pour " +
+                                                    "Inscription utilisateur à la volée avec PassKeys, utilisez le <2>Passkeys progressif " +
+                                                    "Inscription</2> modèle <4>Authentification conditionnelle</4> section.",
+                                                    passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled: "Les utilisateurs peuvent s'inscrire " +
+                                                    "Passkeys à la volée. Si les utilisateurs souhaitent inscrire plusieurs clés de pass " +
+                                                    "Je sais via <1>My Account</1>.",
                                                     progressiveEnrollmentDisabled: "L'inscription du mot de passe à la volée " +
                                                     "est désactivée. Les utilisateurs doivent enregistrer leurs clés d'accès " +
-                                                    "via MyAccount pour utiliser la connexion sans mot de passe."
+                                                    "via <1>My Account</1> pour utiliser la connexion sans mot de passe."
                                                 }
                                             },
                                             emailOTP: {
