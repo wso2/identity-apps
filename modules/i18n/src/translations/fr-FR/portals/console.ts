@@ -1788,19 +1788,19 @@ export const console: ConsoleNS = {
                                         heading: "Android",
                                         fields: {
                                             androidPackageName: {
-                                                hint: "Entrez le nom du package Android, un identifiant unique pour votre application Android, généralement au format de domaine inverse.",
-                                                label: "Nom du package Android",
+                                                hint: "Entrez le nom du package de votre application.C'est l'identifiant unique de votre application et se trouve généralement dans le format de domaine inverse.",
+                                                label: "Nom du package",
                                                 placeholder: "com.example.myapp",
                                                 validations: {
-                                                    empty: "Le nom du package d'application Android est requis pour permettre l'attestation du client pour Android."
+                                                    empty: "Le nom du package d'application est requis pour l'attestation du client."
                                                 }
                                             },
                                             androidAttestationServiceCredentials: {
-                                                hint: "Provide the JSON key content for the Google service account credentials to access the Google Play Integrity Service.",
+                                                hint: "Fournissez les informations d'identification du compte Google Service au format JSON.Ceci sera utilisé pour accéder au service Google Play Integrity.",
                                                 label: "Informations sur le compte de service",
                                                 placeholder: "Contenu du fichier clé JSON pour les informations d'identification du compte Google Service",
                                                 validations: {
-                                                    empty: "Les informations d'identification du compte Google Service sont nécessaires pour permettre l'attestation du client pour Android."
+                                                    empty: "Les informations d'identification du compte Google Service sont requises pour l'attestation du client."
                                                 }
                                             }
                                         }
@@ -1810,7 +1810,7 @@ export const console: ConsoleNS = {
                                         fields: {
                                             appleAppId: {
                                                 hint: "Entrez l'ID d'application Apple, un identifiant unique attribué par Apple à votre application, en commençant généralement par 'com.' ou 'bundle.",
-                                                label: "ID d'application Apple Application App",
+                                                label: "Identifiant d'application",
                                                 placeholder: "com.example.myapp"
                                             }
                                         }

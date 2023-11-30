@@ -1758,19 +1758,19 @@ export const console: ConsoleNS = {
                                         heading: "Android",
                                         fields: {
                                             androidPackageName: {
-                                                hint: "Enter the Android Package Name, a unique identifier for your Android app, typically in reverse domain format.",
-                                                label: "Android Package Name",
+                                                hint: "Enter the package name of your application. It is the unique identifier of your application and is typically in the reverse domain format.",
+                                                label: "Package name",
                                                 placeholder: "com.example.myapp",
                                                 validations: {
-                                                    empty: "Android application package name is required to enable client attestation for Android."
+                                                    empty: "Application package name is required for client attestation."
                                                 }
                                             },
                                             androidAttestationServiceCredentials: {
-                                                hint: "Provide the JSON key content for the Google service account credentials to access the Google Play Integrity Service.",
-                                                label: "Service Account Credential",
+                                                hint: "Provide the Google service account credentials in the JSON format. This will be used to access the  Google Play Integrity Service.",
+                                                label: "Service account credentials",
                                                 placeholder: "Content of the JSON key file for the Google service account credentials",
                                                 validations: {
-                                                    empty: "Google service account credential is required to enable client attestation for Android."
+                                                    empty: "Google service account credentials are required for client attestation."
                                                 }
                                             }
                                         }
@@ -1779,8 +1779,8 @@ export const console: ConsoleNS = {
                                         heading: "Apple",
                                         fields: {
                                             appleAppId: {
-                                                hint: "Enter the Apple App ID, a unique identifier assigned by Apple to your app, usually starting with 'com.' or 'bundle.'.",
-                                                label: "Apple applicaiton App Id",
+                                                hint: "Enter the Apple app ID, the unique identifier assigned by Apple to your app.",
+                                                label: "App id",
                                                 placeholder: "com.example.myapp"
                                             }
                                         }
