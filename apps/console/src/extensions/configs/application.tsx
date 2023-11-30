@@ -54,7 +54,9 @@ import { AppConstants } from "../../features/core/constants";
 import { ApplicationRoles } from "../../features/roles/components/application-roles";
 import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
-import SinglePageAppTemplate from 
+import SamlWebAppTemplate
+    from "../application-templates/templates/saml-web-application/saml-web-application.json";
+import SinglePageAppTemplate from
     "../application-templates/templates/single-page-application/single-page-application.json";
 import { getTryItClientId } from "../components/application/utils/try-it-utils";
 import { getGettingStartedCardIllustrations } from "../components/getting-started/configs";
@@ -421,6 +423,7 @@ export const applicationConfig: ApplicationConfig = {
                     || application?.templateId === MobileAppTemplate?.id
                     || application?.templateId === OIDCWebAppTemplate?.id
                     || application?.templateId === SinglePageAppTemplate?.id
+                    || application?.templateId === SamlWebAppTemplate?.id
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
