@@ -193,7 +193,7 @@ export const attributeConfig: AttributeConfig = {
         hideDeleteIcon: (claim: ExternalClaim): boolean => {
             return claim?.claimURI === "sub" || isIdentityClaims(claim);
         },
-        isAttributeEditable: false,
+        isAttributeEditable: true,
         isEditActionClickable: (claim: ExternalClaim): boolean => {
             if (isIdentityClaims(claim)) {
                 return false;
