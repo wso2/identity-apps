@@ -131,7 +131,7 @@
         }
     }
 
-    identityServerEndpointContextParam = ServiceURLBuilder.create().build().getAbsolutePublicURL();
+    identityServerEndpointContextParam = ServiceURLBuilder.create().setTenant(tenantDomain).build().getAbsolutePublicURL();
 
     if (StringUtils.isNotBlank(identityServerEndpointContextParam)) {
 
