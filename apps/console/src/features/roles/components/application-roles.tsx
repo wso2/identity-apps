@@ -138,16 +138,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             return;
         }
 
-        /**
-         * Ideally, the selectedRoles list should be cleared immediately when the current roleAudience is not allowed
-         * for the application. This does not happen in some cases due to the asynchronous nature of the
-         * setSelectedRoles() method. This if block prevents the roles from being updated with stale data in such cases.
-         */
-        if (roleAudience !== application?.associatedRoles?.allowedAudience && selectedRoles?.length !== 0) {
-            return;
-        }
         updateRoles();
-    }, [ shouldUpdateRoleAudience, roleAudience, selectedRoles ]);
+    }, [ shouldUpdateRoleAudience, roleAudience ]);
 
     /**
      * Handles the click event of the New Role button.
@@ -211,13 +203,16 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
      */
     const updateRoles = (): void => {
         setIsSubmitting(true);
+        const isRoleAudienceChanged: boolean = roleAudience !== application?.associatedRoles?.allowedAudience;
         const data: AssociatedRolesPatchObjectInterface = {
             allowedAudience: roleAudience,
-            roles: selectedRoles ? selectedRoles.map((role: BasicRoleInterface) => {
-                return {
-                    id: role.id
-                };
-            }) : []
+            roles: (isRoleAudienceChanged || !selectedRoles)
+                ? []
+                : selectedRoles.map((role: BasicRoleInterface) => {
+                    return {
+                        id: role.id
+                    };
+                })
         };
 
         const updatedApplication: ApplicationInterface = {
