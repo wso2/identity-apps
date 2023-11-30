@@ -453,6 +453,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     || !isFeatureEnabled(featureConfig?.users,
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
+                    || user[SCIMConfigs.scim.enterpriseSchema]?.managedOrg
                         ? t("common:view")
                         : t("common:edit");
                 },
