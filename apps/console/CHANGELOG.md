@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.9.33
+
+### Patch Changes
+
+- [#4862](https://github.com/wso2/identity-apps/pull/4862) [`7ce89e87a9`](https://github.com/wso2/identity-apps/commit/7ce89e87a908c25a25109eb923d653f7a757c277) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add mandatory reply to logout URL field to passive STS application create wizard
+
 ## 2.9.32
 
 ### Patch Changes
