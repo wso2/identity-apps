@@ -26,8 +26,8 @@ import { SCIMConfigs } from "../../../extensions/configs/scim";
 import { UserBasicInterface, UserListInterface, UserRoleInterface } from "../../core/models/users";
 import { AppState } from "../../core/store";
 import { useUsersList } from "../../users/api/users";
+import { useGetParentOrgUserInvites } from "../../users/components/guests/api/use-get-parent-org-user-invites";
 import { InvitationsInterface } from "../../users/components/guests/models/invite";
-import { useGetParentOrgUserInvites } from "../../users/components/guests/pages/use-get-parent-org-user-invites";
 import { UserAccountTypes } from "../../users/constants/user-management-constants";
 import { UserManagementUtils } from "../../users/utils/user-management-utils";
 
