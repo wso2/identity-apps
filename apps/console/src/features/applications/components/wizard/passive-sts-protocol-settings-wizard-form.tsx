@@ -150,7 +150,6 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
                                         t("console:develop.features.applications.forms.inboundSTS.fields." +
                                           "replyToLogout.label")
                                     }
-                                    required
                                     requiredErrorMessage={
                                         t("console:develop.features.applications.forms.inboundSTS.fields." +
                                           "replyToLogout.validations.empty")
@@ -171,6 +170,7 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
                                     type="text"
                                     value={ initialValues?.replyToLogout ?? templateValues?.replyToLogout }
                                     data-testid={ `${ testId }-reply-to-logout-url-input` }
+                                    required
                                 />
                                 <Hint>
                                     { t("console:develop.features.applications.forms.inboundSTS.fields." +
