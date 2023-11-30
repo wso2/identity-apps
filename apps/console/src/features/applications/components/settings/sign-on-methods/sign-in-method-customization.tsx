@@ -21,7 +21,6 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import {
     Code,
-    CodeEditor,
     DocumentationLink,
     Heading,
     Hint,
@@ -33,15 +32,14 @@ import {
 import { AxiosError, AxiosResponse } from "axios";
 import kebabCase from "lodash-es/kebabCase";
 import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Accordion, AccordionTitleProps, Divider, Grid, Icon  } from "semantic-ui-react";
+import { Divider, Grid, Icon  } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
-import PasskeyLoginSequenceJSON from "./templates/passkey-login-sequence.json";
 import useAuthenticationFlow from "../../../../authentication-flow-builder/hooks/use-authentication-flow";
 import { AuthenticatorManagementConstants } from "../../../../connections";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
@@ -165,10 +163,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const [ updatedSteps, setUpdatedSteps ] = useState<AuthenticationStepInterface[]>();
     const [ isPasskeyProgressiveEnrollmentEnabled, setIsPasskeyProgressiveEnrollmentEnabled ] =
         useState<boolean>(false);
-    const [
-        passkeyAdaptiveScriptAccordionActiveIndex,
-        setPasskeyAdaptiveScriptAccordionActiveIndex
-    ] = useState<string | number>(undefined);
 
     const [ validationResult, setValidationResult ] =
         useState<ConnectionsJITUPConflictWithMFAReturnValue | undefined>(undefined);
@@ -695,24 +689,17 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 if (isPasskeyIncludedAsAFirstFatorOption) {
                     return (
                         <Message
-                            type="warning"
+                            type="info"
                             content={
                                 (
-                                    (<>
-                                        Passkey progressive enrollment is enabled
+                                    <>
+                                        Passkey progressive enrollment is enabled.
                                         <p>
-                                            Users can enroll passkeys on-the-fly. If they wish to enroll
-                                            multiple passkeys they should do so via MyAccount.
+                                            <strong>Note : </strong> For on-the-fly user enrollment with passkeys,
+                                            use the <strong>Passkeys Progressive Enrollment</strong> template in
+                                            <strong> Conditional Authentication</strong> section.
                                         </p>
-                                        <p>
-                                            <strong>Note : </strong> Since the Passkey is set as a <strong>first
-                                            factor</strong>, the following <strong> adaptive script</strong> should
-                                            be added into the <strong>Conditional Authentication</strong> script editor.
-                                        </p>
-                                        <p>
-                                            { passkeyAdaptiveScriptAccordion() }
-                                        </p>
-                                    </>)
+                                    </>
                                 )
                             }
                         />
@@ -720,7 +707,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 } else {
                     return (
                         <Message
-                            type="warning"
+                            type="info"
                             content={
                                 (<>
                                     <Trans
@@ -731,8 +718,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                                         }
                                     >
                                     Passkey progressive enrollment is enabled. Users can enroll passkeys
-                                    on-the-fly. If they wish to enroll multiple passkeys they should do
-                                    so via MyAccount.
+                                    on-the-fly.
                                     </Trans>
                                     <DocumentationLink
                                         link={ getLink("develop.applications.editApplication.signInMethod.fido") }
@@ -748,7 +734,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             } else {
                 return (
                     <Message
-                        type="warning"
+                        type="info"
                         content={
                             (<>
                                 <Trans
@@ -773,73 +759,6 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 );
             }
         }
-    };
-
-    /**
-     * Handles passkey adaptive script accordion title click.
-     *
-     * @param e - Click event.
-     * @param accordionTitleProps - Clicked title.
-     */
-    const handlePasskeyAdaptiveScriptAccordionOnClick = (e: MouseEvent<HTMLDivElement>,
-        accordionTitleProps: AccordionTitleProps): void => {
-        if (!accordionTitleProps) {
-            return;
-        }
-        const newIndex: string | number = passkeyAdaptiveScriptAccordionActiveIndex === accordionTitleProps.index
-            ? -1
-            : accordionTitleProps.index;
-
-        setPasskeyAdaptiveScriptAccordionActiveIndex(newIndex);
-    };
-
-    /**
-     * Renders accordion with the passkey adaptive script information.
-     *
-     * @returns Passkey adaptive script info Accordion.
-     */
-    const passkeyAdaptiveScriptAccordion = (): ReactElement => {
-
-        return (
-            <Accordion
-                data-componentid={ `${ componentId }-passkey-adaptive-script-accordion` }
-            >
-                <Accordion.Title
-                    index={ 0 }
-                    active={ passkeyAdaptiveScriptAccordionActiveIndex === 0 }
-                    onClick={ handlePasskeyAdaptiveScriptAccordionOnClick }
-                    content={ <strong>Passkey Adaptive Script</strong> }
-                />
-                <Accordion.Content
-                    active={ passkeyAdaptiveScriptAccordionActiveIndex === 0 }
-                    className="passkey-adaptive-script-accordion-content"
-                >
-                    This script is added automatically with the template-based
-                    Passkey setup. Its purpose is to verify the user&apos;s
-                    identity before enrolling in passkeys. During the authentication
-                    flow, if a user initiates passkey enrollment, the user is
-                    prompted with first-factor authentication methods, excluding
-                    Passkey. Once the user successfully authenticates using one
-                    of these methods, they are guided to the passkey enrollment
-                    stage. Successful enrollment in passkeys results in the user
-                    being authenticated within the system.  However, if you&apos;re
-                    configuring Passkey without a template, remember to add the
-                    following script manually.
-                    <div className="code-segment">
-                        <CodeEditor
-                            height="300px"
-                            showLineNumbers
-                            withClipboardCopy
-                            language="typescript"
-                            sourceCode={ PasskeyLoginSequenceJSON.script }
-                            options={ { lineWrapping: true } }
-                            theme="dark"
-                            readOnly
-                        />
-                    </div>
-                </Accordion.Content>
-            </Accordion>
-        );
     };
 
     return (

@@ -49,4 +49,11 @@
             max-height: 32px;
         }
     }
+
+    .visual-editor-info-message {
+        position: absolute;
+        z-index: 9;
+        width: 100%;
+        border-radius: 0;
+    }
 }

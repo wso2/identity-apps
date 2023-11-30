@@ -19,8 +19,7 @@
 import { Typography } from "@oxygen-ui/react";
 import Alert from "@oxygen-ui/react/Alert";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { 
-    CodeEditor,
+import {
     GenericIcon,
     Heading,
     Link,
@@ -30,13 +29,11 @@ import {
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import PasskeyLoginSequenceJSON from 
-    "../../../../features/applications/components/settings/sign-on-methods/templates/passkey-login-sequence.json";
-import BuildLoginFlowIllustration from 
+import BuildLoginFlowIllustration from
     "../../../../features/connections/components/authenticators/fido/assets/build-login-flow.png";
-import ConfigureParametersIllustration from 
+import ConfigureParametersIllustration from
     "../../../../features/connections/components/authenticators/fido/assets/configure-parameters.png";
-import CustomizeStepsIllustration from 
+import CustomizeStepsIllustration from
     "../../../../features/connections/components/authenticators/fido/assets/customize-steps.png";
 import { VerticalStepper, VerticalStepperStepInterface } from "../../component-extensions";
 import ApplicationSelectionModal from "../../shared/application-selection-modal";
@@ -67,7 +64,7 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
 
     /**
      * Vertical Stepper steps.
-     * 
+     *
      * @returns VerticalStepperStepInterface List.
      */
     const steps: VerticalStepperStepInterface[] = [
@@ -162,7 +159,7 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                                 </Grid.Column>
                                 <Grid.Row>
                                     <Grid.Column>
-                                        <GenericIcon 
+                                        <GenericIcon
                                             inline
                                             transparent
                                             icon={ ConfigureParametersIllustration }
@@ -174,48 +171,30 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                                 <Grid.Column>
                                     <Typography variant="h6">
                                         { t("extensions:develop.identityProviders.fido.quickStart.steps." +
-                                        "configureParameters.content.parameters.progressiveEnrollment.label") } 
+                                        "configureParameters.content.parameters.progressiveEnrollment.label") }
                                     </Typography>
-                                    { t("extensions:develop.identityProviders.fido.quickStart." + 
-                                        "steps.configureParameters.content.parameters." + 
+                                    { t("extensions:develop.identityProviders.fido.quickStart." +
+                                        "steps.configureParameters.content.parameters." +
                                         "progressiveEnrollment.description") }
                                 </Grid.Column>
                             </Grid.Row>
                             <Grid.Row>
                                 <Grid.Column>
                                     <Alert severity="info">
-                                        <span>
-                                            <Trans
-                                                i18nKey={ "extensions:develop.identityProviders.fido." +
-                                                "quickStart.steps.configureParameters.content.parameters." +
-                                                "progressiveEnrollment.note" }
-                                            >
-                                                If Passkey is set as a first factor, the following 
-                                                <strong> adaptive script</strong> should be added under 
-                                                the <strong>Sign-In-Method</strong> tab of the application.
-                                                This script is added automatically with the template-based 
-                                                Passkey setup and is used to verify the user&apos;s identity 
-                                                before enrolling passkeys. However, if you&apos;re configuring 
-                                                Passkey without a template, remember to add the script manually.
-                                            </Trans>
-                                        </span>
+                                        <Trans
+                                            i18nKey={ "extensions:develop.identityProviders.fido." +
+                                            "quickStart.steps.configureParameters.content.parameters." +
+                                            "progressiveEnrollment.note" }
+                                        >
+                                            If Passkey is set as a first factor, the following
+                                            <strong> adaptive script</strong> should be added under
+                                            the <strong>Sign-In-Method</strong> tab of the application.
+                                            This script is added automatically with the template-based
+                                            Passkey setup and is used to verify the user&apos;s identity
+                                            before enrolling passkeys. However, if you&apos;re configuring
+                                            Passkey without a template, remember to add the script manually.
+                                        </Trans>
                                     </Alert>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row>
-                                <Grid.Column>
-                                    <div className="code-segment">
-                                        <CodeEditor
-                                            height="100%"
-                                            showLineNumbers
-                                            withClipboardCopy
-                                            language="typescript"
-                                            sourceCode={ PasskeyLoginSequenceJSON.script }
-                                            options={ { lineWrapping: true } }
-                                            theme="dark"
-                                            readOnly
-                                        />
-                                    </div>
                                 </Grid.Column>
                             </Grid.Row>
                             <Grid.Row>
@@ -223,10 +202,10 @@ const FIDOQuickStart: FunctionComponent<FIDOQuickStartPropsInterface> = (
                                     <Typography variant="h6">
                                         { t("extensions:develop.identityProviders.fido.quickStart." +
                                         "steps.configureParameters.content.parameters." +
-                                        "usernamelessAuthentication.label") } 
+                                        "usernamelessAuthentication.label") }
                                     </Typography>
-                                    { t("extensions:develop.identityProviders.fido.quickStart.steps." + 
-                                        "configureParameters.content.parameters.usernamelessAuthentication." + 
+                                    { t("extensions:develop.identityProviders.fido.quickStart.steps." +
+                                        "configureParameters.content.parameters.usernamelessAuthentication." +
                                         "description") }
                                 </Grid.Column>
                             </Grid.Row>

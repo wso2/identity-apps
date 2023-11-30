@@ -150,17 +150,15 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                         }) }
                     >
                         <Message
-                            type="warning"
+                            type="info"
                             content={
                                 (<>
                                     Passkey progressive enrollment is enabled
                                     <p>
-                                        <strong>Note : </strong> If the Passkey is set as a <strong>first
-                                        factor</strong>, you need to add an <strong> adaptive script</strong> under
-                                        the <strong>Sign-In-Method</strong> tab of the application. For details, please
-                                        refer the <strong>Progressive Passkey Enrollment</strong> section under the
-                                        <strong> Configure Passkey Options</strong> in the <strong>Quick Start </strong>
-                                        guide.
+                                        <strong>Note : </strong> When setting the Passkey in the <strong>first
+                                        step</strong>, users need to add an adaptive script. Use the <strong>Passkeys
+                                        Progressive Enrollment</strong> template in the <strong>Sign-In-Method </strong>
+                                        tab of the application.
                                     </p>
                                 </>)
                             }
