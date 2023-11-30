@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import Autocomplete, {  
-    AutocompleteRenderGetTagProps, 
-    AutocompleteRenderInputParams 
+import Autocomplete, {
+    AutocompleteRenderGetTagProps,
+    AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
-import { 
-    IdentifiableComponentInterface, 
-    ProfileInfoInterface, 
-    RoleGroupsInterface, 
-    RolesMemberInterface 
+import {
+    IdentifiableComponentInterface,
+    ProfileInfoInterface,
+    RoleGroupsInterface,
+    RolesMemberInterface
 } from "@wso2is/core/models";
 import { EmphasizedSegment, EmptyPlaceholder, Heading } from "@wso2is/react-components";
 import React, {
@@ -62,7 +62,7 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
     const [ activeOption, setActiveOption ] = useState<RolesMemberInterface>(undefined);
     const [ showEmptyRolesListPlaceholder, setShowEmptyRolesListPlaceholder ] = useState<boolean>(false);
 
-    const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) => 
+    const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
     /**
@@ -70,7 +70,7 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
      */
     useEffect(() => {
         let userRoles: RolesMemberInterface[];
-        
+
         if (isGroupAndRoleSeparationEnabled && user?.roles?.length > 0) {
             userRoles = user.roles;
         } else {
@@ -87,17 +87,17 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
     /**
      * When Group and Role Separation is enabled, the groups section of the user will contain both roles and groups.
      * This method can be used to extract roles from the groups section.
-     * 
+     *
      * @param groups - Groups of the user
      * @returns Roles of the user
      */
     const extractUserRolesFromGroups = (groups: RoleGroupsInterface[]): RolesMemberInterface[] => {
 
         const userRoles: RolesMemberInterface[] = [];
-        
+
         groups?.forEach((group: RoleGroupsInterface) => {
             const [ domain, displayName ]: string[] = group?.display?.split(DOMAIN_SEPARATOR);
-            
+
             if (domain && displayName && [ APPLICATION_DOMAIN, INTERNAL_DOMAIN ].includes(domain)) {
                 userRoles.push({
                     $ref: group.$ref,
@@ -108,24 +108,24 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
                 });
             }
         });
-        
+
         return userRoles;
     };
 
     /**
      * Get the place holder components.
-     * 
+     *
      * @returns place holder components
      */
     const getPlaceholders = () => {
         if (showEmptyRolesListPlaceholder) {
             return (
                 <EmptyPlaceholder
-                    subtitle={ 
-                        [ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.emptyPlaceholder" + 
+                    subtitle={
+                        [ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.emptyPlaceholder" +
                             ".subtitles") ]
                     }
-                    title={ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.emptyPlaceholder" + 
+                    title={ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.emptyPlaceholder" +
                         ".title") }
                     image={ getEmptyPlaceholderIllustrations().emptyList }
                     imageSize="tiny"
@@ -155,12 +155,12 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
                             renderInput={ (params: AutocompleteRenderInputParams) => (
                                 <TextField
                                     { ...params }
-                                    placeholder= { t("console:manage.features.user.updateUser.roles.editRoles" + 
+                                    placeholder= { t("console:manage.features.user.updateUser.roles.editRoles" +
                                         ".searchPlaceholder") }
                                 />
                             ) }
                             renderTags={ (
-                                value: RolesMemberInterface[], 
+                                value: RolesMemberInterface[],
                                 getTagProps: AutocompleteRenderGetTagProps
                             ) => value.map((option: RolesMemberInterface, index: number) => (
                                 <RenderRoleChip
@@ -176,7 +176,7 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
                                 />
                             )) }
                             renderOption={ (
-                                props: HTMLAttributes<HTMLLIElement>, 
+                                props: HTMLAttributes<HTMLLIElement>,
                                 option: RolesMemberInterface
                             ) => (
                                 <AutoCompleteRenderOption
