@@ -1553,12 +1553,16 @@ export const console: ConsoleNS = {
                                                 heading: "Ajouter une connexion par mot de passe",
                                                 info: {
                                                     progressiveEnrollmentEnabled: "L’inscription progressive par mot de passe est activée.",
-                                                    passkeyAsFirstStepWhenprogressiveEnrollmentEnabled: "<0>note : </0> Pour " +
+                                                    passkeyAsFirstStepWhenprogressiveEnrollmentEnabled: "<0>Note : </0> Pour " +
                                                     "Inscription utilisateur à la volée avec PassKeys, utilisez le <2>Passkeys progressif " +
                                                     "Inscription</2> modèle <4>Authentification conditionnelle</4> section.",
                                                     passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled: "Les utilisateurs peuvent s'inscrire " +
                                                     "Passkeys à la volée. Si les utilisateurs souhaitent inscrire plusieurs clés de pass " +
                                                     "Je sais via <1>My Account</1>.",
+                                                    progressiveEnrollmentEnabledCheckbox: "<0>Note : </0> Lors de la définition de " +
+                                                    "la clé d'accès lors de la <2>première étape</2>, les utilisateurs doivent ajouter " +
+                                                    "un script adaptatif. Utilisez le modèle <4>Inscription progressive des clés d'accès</4> " +
+                                                    "dans l'onglet <6>Méthode de connexion</6> de l'application.",
                                                     progressiveEnrollmentDisabled: "L'inscription du mot de passe à la volée " +
                                                     "est désactivée. Les utilisateurs doivent enregistrer leurs clés d'accès " +
                                                     "via <1>My Account</1> pour utiliser la connexion sans mot de passe."
