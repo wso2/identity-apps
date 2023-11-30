@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.9.32
+
+### Patch Changes
+
+- [#4886](https://github.com/wso2/identity-apps/pull/4886) [`93ab682a06`](https://github.com/wso2/identity-apps/commit/93ab682a0690bc7a4818cbec198487f97c7accbc) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce autocomplete for organization name field in email domain add form
+
+* [#4875](https://github.com/wso2/identity-apps/pull/4875) [`3e8b711800`](https://github.com/wso2/identity-apps/commit/3e8b711800944ab395927e83f02f14b9a80b0d26) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Remove logic to hide delete option for system roles
+
 ## 2.9.31
 
 ### Patch Changes
