@@ -176,7 +176,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                         "console:manage.features.invite.notifications.sendInvite.success.message"
                     )
                 }));
-                onUserInviteSuccess();
+                onUserInviteSuccess && onUserInviteSuccess();
                 closeWizard();
             })
             .catch((error: AxiosError) => {
