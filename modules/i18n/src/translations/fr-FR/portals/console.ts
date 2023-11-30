@@ -1773,6 +1773,53 @@ export const console: ConsoleNS = {
                             }
                         },
                         sections: {
+                            applicationNativeAuthentication: {
+                                heading: "Authentification native de l'application",
+                                alerts: {
+                                    clientAttestation: "Pour que l'attestation du client fonctionne, l'API d'authentification native de l'application doit être activée."
+                                },
+                                fields: {
+                                    enableAPIBasedAuthentication: {
+                                        hint: "Sélectionnez pour autoriser l'application à effectuer une authentification sans navigation et sans application via l'API d'authentification native de l'application.",
+                                        label: "Activer l'API d'authentification d'application-Native"
+                                    },
+                                    enableClientAttestation: {
+                                        hint: "Sélectionnez pour vérifier l'intégrité de l'application en appelant le service d'attestation de la plate-forme d'hébergement.",
+                                        label: "Activer l'attestation du client"
+                                    },
+                                    android: {
+                                        heading: "Android",
+                                        fields: {
+                                            androidPackageName: {
+                                                hint: "Entrez le nom du package de votre application.C'est l'identifiant unique de votre application et se trouve généralement dans le format de domaine inverse.",
+                                                label: "Nom du package",
+                                                placeholder: "com.example.myapp",
+                                                validations: {
+                                                    empty: "Le nom du package d'application est requis pour l'attestation du client."
+                                                }
+                                            },
+                                            androidAttestationServiceCredentials: {
+                                                hint: "Fournissez les informations d'identification du compte Google Service au format JSON.Ceci sera utilisé pour accéder au service Google Play Integrity.",
+                                                label: "Informations sur le compte de service",
+                                                placeholder: "Contenu du fichier clé JSON pour les informations d'identification du compte Google Service",
+                                                validations: {
+                                                    empty: "Les informations d'identification du compte Google Service sont requises pour l'attestation du client."
+                                                }
+                                            }
+                                        }
+                                    },
+                                    apple: {
+                                        heading: "Apple",
+                                        fields: {
+                                            appleAppId: {
+                                                hint: "Entrez l'ID d'application Apple, un identifiant unique attribué par Apple à votre application, en commençant généralement par 'com.' ou 'bundle.",
+                                                label: "Identifiant d'application",
+                                                placeholder: "com.example.myapp"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
                             certificate: {
                                 fields: {
                                     jwksValue: {

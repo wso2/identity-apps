@@ -256,7 +256,13 @@ export interface AdvancedConfigurationsInterface {
     enableAPIBasedAuthentication?: boolean;
     attestationMetaData?: AttestationMetaDataInterface;
     fragment?: boolean;
-    additionalSpProperties?: additionalSpProperty[]
+    additionalSpProperties?: additionalSpProperty[];
+    enableClientAttestation?: boolean;
+    androidPackageName?: string;
+    androidAttestationServiceCredentials?: string;
+    appleAppId?: string;
+    skipConsentLogin?: boolean;
+    skipConsentLogout?: boolean;
 }
 /**
  * Interface for the additional sp properties.
@@ -722,7 +728,7 @@ export interface FederatedConflictWithSMSOTPArgsInterface {
  */
 export interface FederatedConflictWithSMSOTPReturnValueInterface {
     /**
-     * Specifies whether there is any conflict between the 
+     * Specifies whether there is any conflict between the
      * federated authenticators and the SMS OTP.
      */
     conflicting: boolean;

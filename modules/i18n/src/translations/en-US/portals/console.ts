@@ -1743,6 +1743,53 @@ export const console: ConsoleNS = {
                             }
                         },
                         sections: {
+                            applicationNativeAuthentication: {
+                                heading: "Application native authentication",
+                                alerts: {
+                                    clientAttestation: "For client attestation to work, the application native authentication API must be enabled."
+                                },
+                                fields: {
+                                    enableAPIBasedAuthentication: {
+                                        hint: "Select to authorize application to perform browserless, in-app authentication via application native authentication API.",
+                                        label: "Enable app-native authentication API"
+                                    },
+                                    enableClientAttestation: {
+                                        hint: "Select to verify the integrity of the application by calling the attestation service of the hosting platform.",
+                                        label: "Enable client attestation"
+                                    },
+                                    android: {
+                                        heading: "Android",
+                                        fields: {
+                                            androidPackageName: {
+                                                hint: "Enter the package name of your application. It is the unique identifier of your application and is typically in the reverse domain format.",
+                                                label: "Package name",
+                                                placeholder: "com.example.myapp",
+                                                validations: {
+                                                    empty: "Application package name is required for client attestation."
+                                                }
+                                            },
+                                            androidAttestationServiceCredentials: {
+                                                hint: "Provide the Google service account credentials in the JSON format. This will be used to access the  Google Play Integrity Service.",
+                                                label: "Service account credentials",
+                                                placeholder: "Content of the JSON key file for the Google service account credentials",
+                                                validations: {
+                                                    empty: "Google service account credentials are required for client attestation."
+                                                }
+                                            }
+                                        }
+                                    },
+                                    apple: {
+                                        heading: "Apple",
+                                        fields: {
+                                            appleAppId: {
+                                                hint: "Enter the Apple app ID, the unique identifier assigned by Apple to your app.",
+                                                label: "App id",
+                                                placeholder: "com.example.myapp"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
                             certificate: {
                                 fields: {
                                     jwksValue: {
