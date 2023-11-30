@@ -81,22 +81,13 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
         }
     }, [ basicDetails ]);
 
-    useEffect(() => {
-        if (userStore && initialValues?.basicDetails?.groupName) {
-            const input: HTMLInputElement = groupName.current.children[0].children[1].children[0] as HTMLInputElement;
-
-            input.focus();
-            input.blur();
-        }
-    }, [ userStore ]);
-
     /**
      * The following function change of the user stores.
      *
      * @param values - contains values from form elements
      */
     const handleDomainChange = (values: Map<string, FormValue>) => {
-        const domain: string = values.get("domain").toString();
+        const domain: string = values?.get("domain")?.toString();
 
         setUserStore(domain);
     };
@@ -187,7 +178,7 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
     const getFormValues = (values: any): CreateGroupFormData => {
         return {
             domain: userStore,
-            groupName: values.get("groupName").toString()
+            groupName: values?.get("groupName")?.toString()
         };
     };
 
@@ -277,7 +268,7 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
                                 });
 
                             } }
-                            value={ initialValues && initialValues.groupName }
+                            value={  initialValues?.basicDetails?.groupName }
                             loading={ isRegExLoading }
                         />
                         <Hint>

@@ -51,7 +51,7 @@ import { deleteGroupById, useGroupList } from "../api";
 import { GroupList } from "../components";
 import { CreateGroupWizardUpdated } from "../components/wizard/create-group-wizard-updated";
 import { GroupConstants } from "../constants";
-import { GroupsInterface } from "../models";
+import { GroupsInterface, WizardStepsFormTypes } from "../models";
 
 const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -332,7 +332,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                             options={ userStoreOptions && userStoreOptions }
                             placeholder={ t("console:manage.features.groups.list.storeOptions") }
                             onChange={ handleDomainChange }
-                            defaultValue={ GroupConstants.PRIMARY_USER_STORE_OPTION_VALUE }
+                            defaultValue={ PRIMARY_USERSTORE }
                         />
                     </RootOnlyComponent>
                 ) }
@@ -400,6 +400,11 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         data-testid="group-mgt-create-group-wizard"
                         closeWizard={ () => setShowWizard(false) }
                         updateList={ () => mutate() }
+                        requiredSteps={ [
+                            WizardStepsFormTypes.BASIC_DETAILS,
+                            WizardStepsFormTypes.ROLE_LIST
+                        ] }
+                        showStepper={ isSuperOrganization() }
                     />
                 )
             }

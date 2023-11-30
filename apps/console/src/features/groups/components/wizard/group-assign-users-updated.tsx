@@ -114,6 +114,12 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
         }
     }, [ listOffset, listItemLimit, selectedUserStore ]);
 
+    useEffect(() => {
+        if (initialValues?.users) {
+            setCheckedAssignedListItems(initialValues?.users);
+        }
+    }, [ initialValues ]);
+
     const getList = (limit: number, offset: number, filter: string, attribute: string, userStore: string) => {
 
         setIsUsersFetchRequestLoading(true);
@@ -149,27 +155,6 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
                             (userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>
                                 userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                         );
-                    }
-                }
-
-                if (initialValues && initialValues.users && initialValues.users instanceof Array) {
-                    const selectedUserList: UserBasicInterface[] = [];
-
-                    if (responseUsers && responseUsers instanceof Array) {
-                        responseUsers.forEach((user: UserBasicInterface) => {
-                            initialValues.users.forEach((assignedUser: UserBasicInterface) => {
-                                if (user.id === assignedUser.id) {
-                                    selectedUserList.push(user);
-                                }
-                            });
-                        });
-                        selectedUserList.sort(
-                            (userObject: UserBasicInterface, comparedUserObject: UserBasicInterface) =>
-                                userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
-                        );
-                        setUsersList(responseUsers.filter(function (user: UserBasicInterface) {
-                            return selectedUserList.indexOf(user) == -1;
-                        }));
                     }
                 }
             })
@@ -313,7 +298,10 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
                                                 } }
                                                 listItemId={ user.id }
                                                 listItemIndex={ index }
-                                                isItemChecked={ checkedAssignedListItems.includes(user) }
+                                                isItemChecked={
+                                                    checkedAssignedListItems?.filter((item: UserBasicInterface) =>
+                                                        item?.id === user?.id).length > 0
+                                                }
                                                 showSecondaryActions={ false }
                                                 showListSubItem={ true }
                                                 listSubItem={ subHeader && header !== subHeader && (

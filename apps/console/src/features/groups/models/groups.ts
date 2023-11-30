@@ -166,7 +166,7 @@ export interface SearchGroupInterface {
  */
 export enum WizardStepsFormTypes {
     BASIC_DETAILS = "BasicDetails",
-    SUMMARY = "summary"
+    ROLE_LIST = "RoleList"
 }
 
 /**
@@ -190,13 +190,20 @@ export interface WizardStepInterface {
  * Interface for group creation.
  */
 export interface GroupCreateInterface {
+    BasicDetails: GroupCreateBasicDetailsInterface;
+    RoleList?: {
+        roles: BasicRoleInterface[]
+    }
+}
+
+/**
+ * Interface to capture group creation basic data.
+ */
+export interface GroupCreateBasicDetailsInterface {
     basic?: {
         basicDetails: CreateGroupFormData
     },
     domain?: string;
     groupName?: string;
     users?: UserBasicInterface[]
-    RoleList?: {
-        roles: BasicRoleInterface[]
-    }
 }

@@ -16,23 +16,32 @@
  * under the License.
  */
 
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import intersection from "lodash-es/intersection";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, Grid, Icon, Modal } from "semantic-ui-react";
+import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddGroupUsersUpdated } from "./group-assign-users-updated";
 import { commonConfig } from "../../../../extensions/configs";
-import { AppConstants, history } from "../../../core";
+import useAuthorization from "../../../authorization/hooks/use-authorization";
+import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "../../../core";
 import { EventPublisher } from "../../../core/utils";
-import { updateRole } from "../../../roles/api";
-import { BasicRoleInterface, PatchRoleDataInterface } from "../../../roles/models";
+import { getOrganizationRoles } from "../../../organizations/api";
+import { OrganizationRoleManagementConstants } from "../../../organizations/constants";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
+import {
+    GenericOrganization,
+    OrganizationRoleListItemInterface,
+    OrganizationRoleListResponseInterface
+} from "../../../organizations/models";
+import { getRolesList, updateRole } from "../../../roles/api";
+import { BasicRoleInterface, PatchRoleDataInterface, RolesV2ResponseInterface } from "../../../roles/models";
 import { UserBasicInterface } from "../../../users/models";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../../userstores/constants";
 import { createGroup } from "../../api";
@@ -40,6 +49,7 @@ import { getGroupsWizardStepIcons } from "../../configs";
 import {
     CreateGroupInterface,
     CreateGroupMemberInterface,
+    GroupCreateBasicDetailsInterface,
     GroupCreateInterface,
     WizardStateInterface,
     WizardStepInterface,
@@ -55,7 +65,6 @@ interface CreateGroupProps extends IdentifiableComponentInterface {
     initStep?: number;
     requiredSteps?: WizardStepsFormTypes[] | string[];
     showStepper?: boolean;
-    submitStep?: WizardStepsFormTypes | string;
 }
 
 /**
@@ -69,12 +78,19 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
     const {
         closeWizard,
         initStep,
+        showStepper,
         requiredSteps,
-        [ "data-componentid" ]: componentid
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+    const { legacyAuthzRuntime } = useAuthorization();
+
+    const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
+    const [ submitRoleList, setSubmitRoleList ] = useTrigger();
 
     const [ currentStep, setCurrentWizardStep ] = useState<number>(initStep);
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
@@ -83,17 +99,59 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>(
         commonConfig?.primaryUserstoreOnly ? PRIMARY_USERSTORE : CONSUMER_USERSTORE);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-
-    const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
-
+    const [ roleList, setRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>([]);
+    const [ tempRoleList, setTempRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>([]);
+    const [ initialRoleList, setInitialRoleList ] = useState<RolesInterface[]
+        | OrganizationRoleListItemInterface[]>([]);
+    const [ initialTempRoleList, setInitialTempRoleList ] = useState<RolesInterface[]
+        | OrganizationRoleListItemInterface[]>([]);
     const [ isWizardActionDisabled, setIsWizardActionDisabled ] = useState<boolean>(true);
+    const [ selectedRoleId, setSelectedRoleId ] = useState<string>();
+    const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
+    const [ viewRolePermissions, setViewRolePermissions ] = useState<boolean>(false);
+    const [ submitStep, setSubmitStep ] = useState<WizardStepsFormTypes>(undefined);
 
-    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+    const currentOrganization: GenericOrganization = useSelector((state: AppState) => state.organization.organization);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     useEffect(() => {
-        setWizardSteps(filterSteps([ WizardStepsFormTypes.BASIC_DETAILS ]));
+        if (isSuperOrganization()) {
+            setWizardSteps(filterSteps([
+                WizardStepsFormTypes.BASIC_DETAILS,
+                WizardStepsFormTypes.ROLE_LIST
+            ]));
+
+            setSubmitStep(WizardStepsFormTypes.ROLE_LIST);
+        } else {
+            setWizardSteps(filterSteps([
+                WizardStepsFormTypes.BASIC_DETAILS
+            ]));
+
+            setSubmitStep(WizardStepsFormTypes.BASIC_DETAILS);
+        }
+
+        if (roleList?.length < 1) {
+            if (isSuperOrganization() || isFirstLevelOrganization() || !legacyAuthzRuntime) {
+                getRolesList(null)
+                    .then((response: AxiosResponse<RolesV2ResponseInterface>) => {
+                        setRoleList(response?.data?.Resources);
+                    });
+            } else {
+                getOrganizationRoles(currentOrganization.id, null, 100, null)
+                    .then((response: OrganizationRoleListResponseInterface) => {
+                        if (!response.Resources) {
+                            return;
+                        }
+
+                        const roles: OrganizationRoleListItemInterface[] = response.Resources
+                            .filter((role: OrganizationRoleListItemInterface) =>
+                                role.displayName !== OrganizationRoleManagementConstants.ORG_CREATOR_ROLE_NAME);
+
+                        setRoleList(roles);
+                    });
+            }
+        }
     }, []);
 
     /**
@@ -109,6 +167,37 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         setPartiallyCompletedStep(undefined);
     }, [ partiallyCompletedStep ]);
 
+    useEffect(() => {
+        if (!selectedRoleId) {
+            return;
+        }
+
+        if (isRoleSelected) {
+            setViewRolePermissions(true);
+        }
+    }, [ isRoleSelected ]);
+
+    const handleRoleIdSet = (roleId: string) => {
+        setSelectedRoleId(roleId);
+        setRoleSelection(true);
+    };
+
+    const handleRoleListChange = (roleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
+        setRoleList(roleList);
+    };
+
+    const handleInitialRoleListChange = (roleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
+        setInitialRoleList(roleList);
+    };
+
+    const handleAddedRoleListChange = (newRoleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
+        setTempRoleList(newRoleList);
+    };
+
+    const handleAddedRoleInitialListChange = (newRoleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
+        setInitialTempRoleList(newRoleList);
+    };
+
     /**
      * Method to handle create group action when create group wizard finish action is triggered.
      *
@@ -117,18 +206,20 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
     const addGroup = (groupDetails: GroupCreateInterface): void => {
         let groupName: string = "";
 
+        const basicWizardData: GroupCreateBasicDetailsInterface = groupDetails.BasicDetails;
+
         if (selectedUserStore === PRIMARY_USERSTORE) {
-            groupName = groupDetails?.basic?.basicDetails
-                ? groupDetails?.basic?.basicDetails?.groupName
-                : groupDetails?.groupName;
+            groupName = basicWizardData?.basic?.basicDetails
+                ? basicWizardData?.basic?.basicDetails?.groupName
+                : basicWizardData?.groupName;
         } else {
-            groupName = groupDetails?.basic?.basicDetails
-                ? groupDetails?.basic?.basicDetails?.domain + "/" + groupDetails?.basic?.basicDetails?.groupName
-                : groupDetails?.domain + "/" + groupDetails?.groupName;
+            groupName = basicWizardData?.basic?.basicDetails
+                ? basicWizardData?.basic?.basicDetails?.domain + "/" + basicWizardData?.basic?.basicDetails?.groupName
+                : basicWizardData?.domain + "/" + basicWizardData?.groupName;
         }
 
         const members: CreateGroupMemberInterface[] = [];
-        const users: UserBasicInterface[] = groupDetails?.users;
+        const users: UserBasicInterface[] = basicWizardData?.users;
 
         if (users?.length > 0) {
             users?.forEach((user: UserBasicInterface) => {
@@ -258,8 +349,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
             }
         }).finally(() => {
             setIsSubmitting(false);
-        })
-        ;
+        });
     };
 
     /**
@@ -267,7 +357,8 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
      */
     const handleGroupWizardFinish = (values: any) => {
         eventPublisher.publish("manage-groups-finish-create-new-group");
-        addGroup(values?.BasicDetails);
+
+        addGroup(values);
     };
 
     /**
@@ -277,10 +368,14 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
      * @param formType - Type of the form.
      */
     const handleWizardSubmit = (values: any, formType: WizardStepsFormTypes) => {
-        if (WizardStepsFormTypes.BASIC_DETAILS === formType) {
-            setWizardState({ ...wizardState, [ formType ]: values });
+        if (formType === submitStep) {
             handleGroupWizardFinish({ ...wizardState, [ formType ]: values });
+
+            return;
         }
+
+        setWizardState({ ...wizardState, [ formType ]: values });
+        setCurrentWizardStep(currentStep + 1);
     };
 
     /**
@@ -292,6 +387,10 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                 setSubmitGeneralSettings();
 
                 break;
+            case 1:
+                setSubmitRoleList();
+
+                break;
         }
     };
 
@@ -299,8 +398,9 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         setPartiallyCompletedStep(currentStep);
     };
 
-    const handleFinishFlow = () => {
-        setSubmitGeneralSettings();
+    const handleViewRolePermission = () => {
+        setViewRolePermissions(!viewRolePermissions);
+        setRoleSelection(false);
     };
 
     /**
@@ -316,12 +416,15 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                 if (step === WizardStepsFormTypes.BASIC_DETAILS) {
                     filteredSteps.push(getBasicDetailsWizardStep());
                 }
+                if (step === WizardStepsFormTypes.ROLE_LIST) {
+                    filteredSteps.push(getRoleAssignmentWizardStep());
+                }
             });
 
             return filteredSteps;
         };
 
-        if (!requiredSteps) {
+        if (requiredSteps?.length < 1) {
             return getStepContent(steps);
         }
 
@@ -354,6 +457,54 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
     };
 
     /**
+     * Get the wizard role assignment step
+     *
+     * @returns wizard role assignment step.
+     */
+    const getRoleAssignmentWizardStep = (): WizardStepInterface => {
+        return {
+            content: (
+                viewRolePermissions
+                    ? (
+                        <RolePermissions
+                            data-componentid={ `${ componentId }-group-permission` }
+                            handleNavigateBack={ handleViewRolePermission }
+                            roleId={ selectedRoleId }
+                        />
+                    )
+                    : (
+                        <AssignRoles
+                            triggerSubmit={ submitRoleList }
+                            onSubmit={ (values: any) => handleWizardSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
+                            initialValues={
+                                {
+                                    initialRoleList: initialRoleList,
+                                    initialTempRoleList: initialTempRoleList,
+                                    roleList: roleList,
+                                    tempRoleList: tempRoleList
+                                }
+                            }
+                            handleRoleListChange={ (roles: RolesInterface[] | OrganizationRoleListItemInterface[]) =>
+                                handleRoleListChange(roles) }
+                            handleTempListChange={ (roles: RolesInterface[] | OrganizationRoleListItemInterface[]) =>
+                                handleAddedRoleListChange(roles) }
+                            handleInitialTempListChange={
+                                (roles: RolesInterface[] | OrganizationRoleListItemInterface[]) =>
+                                    handleAddedRoleInitialListChange(roles) }
+                            handleInitialRoleListChange={
+                                (roles: RolesInterface[] | OrganizationRoleListItemInterface[]) =>
+                                    handleInitialRoleListChange(roles) }
+                            handleSetRoleId={ (roleId: string) => handleRoleIdSet(roleId) }
+                        />
+                    )
+            ),
+            icon: getGroupsWizardStepIcons().roles,
+            name: WizardStepsFormTypes.ROLE_LIST,
+            title: t("console:manage.features.roles.addRoleWizard.wizardSteps.5")
+        };
+    };
+
+    /**
      * Resolves the step content.
      *
      * @returns step content.
@@ -366,8 +517,14 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         switch (wizardSteps[currentStep]?.name) {
             case WizardStepsFormTypes.BASIC_DETAILS:
                 return getBasicDetailsWizardStep()?.content;
+            case WizardStepsFormTypes.ROLE_LIST:
+                return getRoleAssignmentWizardStep()?.content;
         }
     };
+
+    const WIZARD_STEPS: WizardStepInterface[] = isSuperOrganization()
+        ? [ getBasicDetailsWizardStep(), getRoleAssignmentWizardStep() ]
+        : [ getBasicDetailsWizardStep() ];
 
     return (
         <Modal
@@ -378,7 +535,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
             onClose={ closeWizard }
             closeOnDimmerClick={ false }
             closeOnEscape= { false }
-            data-componentid={ componentid }
+            data-componentid={ componentId }
         >
             <Modal.Header className="wizard-header">
                 {
@@ -391,6 +548,23 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                 }
                 <Heading as="h6">Create new group and add users to the group.</Heading>
             </Modal.Header>
+            {
+                showStepper && (
+                    <Modal.Content className="steps-container">
+                        <Steps.Group
+                            current={ currentStep }
+                        >
+                            { WIZARD_STEPS.map((step: WizardStepInterface, index: number) => (
+                                <Steps.Step
+                                    key={ index }
+                                    icon={ step.icon }
+                                    title={ step.title }
+                                />
+                            )) }
+                        </Steps.Group>
+                    </Modal.Content>
+                )
+            }
             <Modal.Content className="content-container" scrolling>
                 { alert && alertComponent }
                 { resolveStepContent() }
@@ -402,7 +576,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                             <LinkButton
                                 floated="left"
                                 onClick={ () => closeWizard() }
-                                data-componentid={ `${ componentid }-cancel-button` }
+                                data-componentid={ `${ componentId }-cancel-button` }
                             >
                                 { t("common:cancel") }
                             </LinkButton>
@@ -413,29 +587,17 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                                     floated="right"
                                     onClick={ changeStepToNext }
                                     disabled={ isWizardActionDisabled }
-                                    data-componentid={ `${ componentid }-next-button` }
+                                    data-componentid={ `${ componentId }-next-button` }
                                 >
                                     { t("console:manage.features.roles.addRoleWizard.buttons.next") }
-                                    <Icon name="arrow right" data-componentid={ `${ componentid }-next-button-icon` }/>
+                                    <Icon name="arrow right" data-componentid={ `${ componentId }-next-button-icon` }/>
                                 </PrimaryButton>
-                            ) }
-                            { (wizardSteps?.length > 1 && currentStep === 0) && (
-                                <Button
-                                    basic
-                                    color="orange"
-                                    floated="right"
-                                    onClick={ handleFinishFlow }
-                                    disabled={ isWizardActionDisabled }
-                                    data-componentid={ `${ componentid }-initial-finish-button` }
-                                >
-                                    { t("console:manage.features.roles.addRoleWizard.buttons.finish") }
-                                </Button>
                             ) }
                             { currentStep === wizardSteps?.length - 1 && (
                                 <PrimaryButton
                                     floated="right"
                                     onClick={ changeStepToNext }
-                                    data-componentid={ `${ componentid }-finish-button` }
+                                    data-componentid={ `${ componentId }-finish-button` }
                                     disabled={ isWizardActionDisabled || isSubmitting }
                                     loading={ isSubmitting }
                                 >
@@ -446,12 +608,12 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                                 <LinkButton
                                     floated="right"
                                     onClick={ navigateToPrevious }
-                                    data-componentid={ `${ componentid }-previous-button` }
+                                    data-componentid={ `${ componentId }-previous-button` }
                                     disabled={ isWizardActionDisabled }
                                 >
                                     <Icon
                                         name="arrow left"
-                                        data-componentid={ `${ componentid }-previous-button-icon` }
+                                        data-componentid={ `${ componentId }-previous-button-icon` }
                                     />
                                     { t("console:manage.features.roles.addRoleWizard.buttons.previous") }
                                 </LinkButton>
@@ -466,7 +628,5 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
 
 CreateGroupWizardUpdated.defaultProps = {
     initStep: 0,
-    requiredSteps: [ WizardStepsFormTypes.BASIC_DETAILS ],
-    showStepper: false,
-    submitStep: WizardStepsFormTypes.BASIC_DETAILS
+    showStepper: false
 };
