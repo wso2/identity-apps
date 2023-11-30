@@ -90,6 +90,10 @@ interface AddUserWizardPropsInterface extends IdentifiableComponentInterface, Te
     requiredSteps?: WizardStepsFormTypes[] | string[];
     userStore?: string;
     requestedPasswordOption?: PasswordOptionTypes;
+    /**
+     * The Callback to trigger on user invite success.
+     */
+    onUserInviteSuccess?: () => void;
 }
 
 /**
@@ -118,6 +122,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         onSuccessfulUserAddition,
         userStore,
         requiredSteps,
+        onUserInviteSuccess,
         [ "data-testid" ]: testId
     } = props;
 
@@ -982,6 +987,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             <InviteParentOrgUser
                                 closeWizard={ closeWizard }
                                 setIsSubmitting={ setIsSubmitting }
+                                onUserInviteSuccess={ onUserInviteSuccess }
                             />
                         )
                     }

@@ -63,6 +63,10 @@ interface InviteParentOrgUserPropsInterface extends IdentifiableComponentInterfa
      * Callback method for setting the isSubmitting state.
      */
     setIsSubmitting: (isSubmitting: boolean) => void;
+    /**
+     * The Callback method for when the user invite is successful.
+     */
+    onUserInviteSuccess: () => void;
 }
 
 /**
@@ -77,6 +81,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
     const {
         closeWizard,
         setIsSubmitting,
+        onUserInviteSuccess,
         [ "data-componentid"]: componentId
     } = props;
 
@@ -171,6 +176,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                         "console:manage.features.invite.notifications.sendInvite.success.message"
                     )
                 }));
+                onUserInviteSuccess();
                 closeWizard();
             })
             .catch((error: AxiosError) => {

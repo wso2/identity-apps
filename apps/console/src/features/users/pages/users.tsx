@@ -185,8 +185,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const {
         data: parentOrgUserInviteList,
-        isLoading: isParentOrgUserInviteFetchRequestLoading,
-        mutate: mutateParentOrgUserListFetchRequest
+        isLoading: isParentOrgUserInviteListLoading,
+        mutate: mutateParentOrgUserInviteList
     } = useGetParentOrgUserInvites();
 
     /**
@@ -831,7 +831,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 } }
                 emailVerificationEnabled={ emailVerificationEnabled }
                 onSuccessfulUserAddition={ (id: string) => {
-                    mutateParentOrgUserListFetchRequest();
+                    mutateParentOrgUserInviteList();
                     eventPublisher.publish("manage-users-finish-creating-user");
                     history.push(UsersConstants.getPaths().get("CUSTOMER_USER_EDIT_PATH")
                         .replace(":id", id));
@@ -842,6 +842,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 listItemLimit={ listItemLimit }
                 updateList={ () => setListUpdated(true) }
                 userStore= { userStore }
+                onUserInviteSuccess={ () => mutateParentOrgUserInviteList() }
             />
         );
     };
@@ -880,7 +881,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 totalListSize={ usersList?.totalResults }
                 isLoading={
                     isUserListRequestLoading
-                    || isParentOrgUserInviteFetchRequestLoading
+                    || isParentOrgUserInviteListLoading
                 }
                 paginationOptions={ {
                     disableNextButton: !isUsersNextPageAvailable,
@@ -901,7 +902,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                 +  invitationStatusOption
                             }
                             disabled={
-                                isParentOrgUserInviteFetchRequestLoading
+                                isParentOrgUserInviteListLoading
                             }
                         />
                     )
@@ -925,7 +926,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                 onboardedGuestUserList={ usersList }
                                 onSearchQueryClear={ handleSearchQueryClear }
                                 guestUsersList={ finalGuestList }
-                                getGuestUsersList={ () => mutateParentOrgUserListFetchRequest() }
+                                getGuestUsersList={ () => mutateParentOrgUserInviteList() }
                                 searchQuery={ searchQuery }
                                 userTypeSelection={ UserAccountTypesMain.EXTERNAL }
                                 data-testid={ testId }
@@ -987,7 +988,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         <PageLayout
             action={
                 !isUserListRequestLoading
-                && !isParentOrgUserInviteFetchRequestLoading
+                && !isParentOrgUserInviteListLoading
                 && (
                     <Show when={ AccessControlConstants.USER_WRITE }>
                         { renderUserDropDown() }
