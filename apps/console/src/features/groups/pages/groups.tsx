@@ -31,6 +31,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { commonConfig } from "../../../extensions/configs";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
@@ -44,6 +45,7 @@ import {
 import { RootOnlyComponent } from "../../organizations/components";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getUserStoreList } from "../../userstores/api";
+import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../userstores/constants";
 import { UserStorePostData } from "../../userstores/models/user-stores";
 import { deleteGroupById, useGroupList } from "../api";
 import { GroupList } from "../components";
@@ -84,7 +86,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ userStoreOptions, setUserStoresList ] = useState<DropdownItemProps[]>([]);
-    const [ userStore, setUserStore ] = useState(GroupConstants.PRIMARY_USER_STORE_OPTION_VALUE);
+    const [ userStore, setUserStore ] = useState(
+        commonConfig?.primaryUserstoreOnly ? PRIMARY_USERSTORE : CONSUMER_USERSTORE);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
     const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
@@ -144,7 +147,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
             {
                 key: -1,
                 text: "Primary",
-                value: "primary"
+                value: PRIMARY_USERSTORE
             }
         ];
 

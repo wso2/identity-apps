@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ContentLoader,
     Heading,
@@ -47,7 +47,7 @@ import { GroupsMemberInterface } from "../../models";
 /**
  * Proptypes for the application consents list component.
  */
-interface AddGroupUserProps extends TestableComponentInterface {
+interface AddGroupUserProps extends IdentifiableComponentInterface {
     triggerSubmit?: boolean;
     onSubmit?: ({ basic, users }: { basic: any; users: UserBasicInterface[]; }) => void;
     assignedUsers?: GroupsMemberInterface[];
@@ -67,7 +67,7 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
         selectedUserStore,
         setSelectedUserStore,
         onUserFetchRequestFinish,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -82,7 +82,6 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
     const [ isSelectAllAssignedUsers ] = useState<boolean>(false);
 
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<UserBasicInterface[]>([]);
-
 
     useEffect(() => {
         setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -247,11 +246,10 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
         );
     };
 
-
     return (
         <>
             <GroupBasicsUpdated
-                data-testid="add-group-form"
+                data-componentid="add-group-form"
                 triggerSubmit={ triggerSubmit }
                 initialValues={ initialValues?.basic }
                 userStore={ selectedUserStore }
@@ -287,7 +285,7 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
                                 { value }: { value: string; }) => {
                                 handleSearchFieldChange(e, value, initialUserList, setUsersList);
                             } }
-                            data-testid={ `${ testId }-transfer-component` }
+                            data-componentid={ `${ componentId }-transfer-component` }
                         >
                             <TransferList
                                 selectionComponent
@@ -296,7 +294,7 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
                                 listType="unselected"
                                 emptyPlaceholderContent = { "We couldn't find any results for search. "+
                                     "Please try a different search term." }
-                                data-testid={ `${ testId }-unselected-transfer-list` }
+                                data-componentid={ `${ componentId }-unselected-transfer-list` }
                                 emptyPlaceholderDefaultContent={ t("console:manage.features.transferList.list."
                                     + "emptyPlaceholders.default") }
                             >
@@ -322,14 +320,16 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
                                                     <Header as="h6">
                                                         <Header.Content>
                                                             <Header.Subheader
-                                                                data-testid={ `${ testId }-item-sub-heading` }
+                                                                data-componentid={ `${ componentId }-item-sub-heading` }
                                                             >
                                                                 { subHeader }
                                                             </Header.Subheader>
                                                         </Header.Content>
                                                     </Header>
                                                 ) }
-                                                data-testid={ `${ testId }-unselected-transfer-list-item-${ index }` }
+                                                data-componentid={
+                                                    `${ componentId }-unselected-transfer-list-item-${ index }`
+                                                }
                                             />
                                         );
                                     } )

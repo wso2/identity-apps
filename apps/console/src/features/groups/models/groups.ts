@@ -17,6 +17,10 @@
  */
 
 import { RolesMemberInterface } from "@wso2is/core/models";
+import { GenericIconProps } from "@wso2is/react-components";
+import { ReactElement } from "react";
+import { BasicRoleInterface } from "../../roles/models";
+import { UserBasicInterface } from "../../users/models";
 
 /**
  * Interface to store data for create group api.
@@ -153,4 +157,46 @@ export interface SearchGroupInterface {
     domain?: string;
     startIndex: number;
     filter: string;
+}
+
+
+/**
+ * Enum for wizard steps form types.
+ * @readonly
+ */
+export enum WizardStepsFormTypes {
+    BASIC_DETAILS = "BasicDetails",
+    SUMMARY = "summary"
+}
+
+/**
+ * Interface to capture current wizard state
+ */
+export interface WizardStateInterface {
+    [ key: string ]: any;
+}
+
+/**
+ * Interface for wizard step.
+ */
+export interface WizardStepInterface {
+    content: ReactElement;
+    icon: GenericIconProps | any;
+    name: string;
+    title: string;
+}
+
+/**
+ * Interface for group creation.
+ */
+export interface GroupCreateInterface {
+    basic?: {
+        basicDetails: CreateGroupFormData
+    },
+    domain?: string;
+    groupName?: string;
+    users?: UserBasicInterface[]
+    RoleList?: {
+        roles: BasicRoleInterface[]
+    }
 }

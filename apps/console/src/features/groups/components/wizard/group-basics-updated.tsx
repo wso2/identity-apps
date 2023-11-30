@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Code, Hint } from "@wso2is/react-components";
@@ -30,12 +30,13 @@ import { SharedUserStoreConstants, SharedUserStoreUtils, UserStoreDetails } from
 import { RootOnlyComponent } from "../../../organizations/components/root-only-component";
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { getUserStoreList } from "../../../userstores/api/user-stores";
+import { PRIMARY_USERSTORE } from "../../../userstores/constants";
 import { UserStoreProperty } from "../../../userstores/models";
 
 /**
  * Interface to capture group basics props.
  */
-interface GroupBasicProps extends TestableComponentInterface {
+interface GroupBasicProps extends IdentifiableComponentInterface {
     dummyProp?: string;
     triggerSubmit: boolean;
     initialValues: any;
@@ -56,7 +57,7 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
         initialValues,
         setUserStore,
         userStore,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -101,7 +102,6 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
     };
 
     /**
-    /**
      * The following function validates role name against the user store regEx.
      */
     const validateGroupNamePattern = async (): Promise<string> => {
@@ -145,9 +145,10 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
             {
                 key: -1,
                 text: "Primary",
-                value: "primary"
+                value: PRIMARY_USERSTORE
             }
         ];
+
         let storeOption: DropdownItemProps = {
             key: null,
             text: "",
@@ -192,7 +193,7 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
 
     return (
         <Forms
-            data-testid={ testId }
+            data-componentid={ componentId }
             onSubmit={ (values: any) => {
                 setBasicDetails(getFormValues(values));
             } }
@@ -203,7 +204,7 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
                     <RootOnlyComponent>
                         <GridColumn mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Field
-                                data-testid={ `${ testId }-domain-dropdown` }
+                                data-componentid={ `${ componentId }-domain-dropdown` }
                                 type="dropdown"
                                 label={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
                                     "domain.label.group") }
@@ -225,7 +226,7 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
                     <GridColumn mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Field
                             ref={ groupName }
-                            data-testid={ `${ testId }-role-name-input` }
+                            data-componentid={ `${ componentId }-role-name-input` }
                             type="text"
                             name="groupName"
                             label={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +

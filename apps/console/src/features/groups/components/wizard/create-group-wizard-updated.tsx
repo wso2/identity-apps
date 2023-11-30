@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { GenericIconProps, Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import intersection from "lodash-es/intersection";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -32,51 +32,30 @@ import { commonConfig } from "../../../../extensions/configs";
 import { AppConstants, history } from "../../../core";
 import { EventPublisher } from "../../../core/utils";
 import { updateRole } from "../../../roles/api";
-import { PatchRoleDataInterface } from "../../../roles/models";
+import { BasicRoleInterface, PatchRoleDataInterface } from "../../../roles/models";
+import { UserBasicInterface } from "../../../users/models";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../../userstores/constants";
 import { createGroup } from "../../api";
 import { getGroupsWizardStepIcons } from "../../configs";
 import {
     CreateGroupInterface,
-    CreateGroupMemberInterface
+    CreateGroupMemberInterface,
+    GroupCreateInterface,
+    WizardStateInterface,
+    WizardStepInterface,
+    WizardStepsFormTypes
 } from "../../models";
 
 /**
  * Interface which captures create group props.
  */
-interface CreateGroupProps extends TestableComponentInterface {
+interface CreateGroupProps extends IdentifiableComponentInterface {
     closeWizard: () => void;
     updateList: () => void;
     initStep?: number;
     requiredSteps?: WizardStepsFormTypes[] | string[];
     showStepper?: boolean;
     submitStep?: WizardStepsFormTypes | string;
-}
-
-/**
- * Enum for wizard steps form types.
- * @readonly
- */
-enum WizardStepsFormTypes {
-    BASIC_DETAILS = "BasicDetails",
-    SUMMARY = "summary"
-}
-
-/**
- * Interface to capture current wizard state
- */
-interface WizardStateInterface {
-    [ key: string ]: any;
-}
-
-/**
- * Interface for wizard step.
- */
-interface WizardStepInterface {
-    content: ReactElement;
-    icon: GenericIconProps | any;
-    name: string;
-    title: string;
 }
 
 /**
@@ -91,7 +70,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         closeWizard,
         initStep,
         requiredSteps,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentid
     } = props;
 
     const { t } = useTranslation();
@@ -135,22 +114,24 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
      *
      * @param groupDetails - basic data required to create group.
      */
-    const addGroup = (groupDetails: any): void => {
+    const addGroup = (groupDetails: GroupCreateInterface): void => {
         let groupName: string = "";
 
-        selectedUserStore !== "primary"
-            ? groupName = groupDetails?.basic.basicDetails
-                ? groupDetails?.basic?.basicDetails?.domain + "/" + groupDetails?.basic?.basicDetails?.groupName
-                : groupDetails?.domain + "/" + groupDetails?.groupName
-            : groupName = groupDetails?.basic?.basicDetails
+        if (selectedUserStore === PRIMARY_USERSTORE) {
+            groupName = groupDetails?.basic?.basicDetails
                 ? groupDetails?.basic?.basicDetails?.groupName
                 : groupDetails?.groupName;
+        } else {
+            groupName = groupDetails?.basic?.basicDetails
+                ? groupDetails?.basic?.basicDetails?.domain + "/" + groupDetails?.basic?.basicDetails?.groupName
+                : groupDetails?.domain + "/" + groupDetails?.groupName;
+        }
 
         const members: CreateGroupMemberInterface[] = [];
-        const users: any = groupDetails?.users;
+        const users: UserBasicInterface[] = groupDetails?.users;
 
         if (users?.length > 0) {
-            users?.forEach((user: any) => {
+            users?.forEach((user: UserBasicInterface) => {
                 members?.push({
                     display: user.userName,
                     value: user.id
@@ -178,7 +159,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                 const rolesList: string[] = [];
 
                 if (groupDetails?.RoleList?.roles) {
-                    groupDetails?.RoleList?.roles.forEach((role: any) => {
+                    groupDetails?.RoleList?.roles.forEach((role: BasicRoleInterface) => {
                         rolesList?.push(role.id);
                     });
                 }
@@ -196,7 +177,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                     "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
                 };
 
-                if (rolesList && rolesList.length > 0) {
+                if (rolesList?.length > 0) {
                     for (const roleId of rolesList) {
                         updateRole(roleId, roleData)
                             .catch((error: AxiosError) => {
@@ -283,11 +264,9 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
 
     /**
      * Method to handle the create group wizard finish action.
-     *
      */
     const handleGroupWizardFinish = (values: any) => {
         eventPublisher.publish("manage-groups-finish-create-new-group");
-
         addGroup(values?.BasicDetails);
     };
 
@@ -301,7 +280,6 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         if (WizardStepsFormTypes.BASIC_DETAILS === formType) {
             setWizardState({ ...wizardState, [ formType ]: values });
             handleGroupWizardFinish({ ...wizardState, [ formType ]: values });
-
         }
     };
 
@@ -327,13 +305,12 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
 
     /**
      * Filters the steps evaluating the requested steps.
-     *
      */
     const filterSteps = (steps: WizardStepsFormTypes[]): WizardStepInterface[] => {
 
         const getStepContent = (stepsToFilter: WizardStepsFormTypes[] | string[]) => {
 
-            const filteredSteps: any[] = [];
+            const filteredSteps: WizardStepInterface[] = [];
 
             stepsToFilter.forEach((step: WizardStepsFormTypes) => {
                 if (step === WizardStepsFormTypes.BASIC_DETAILS) {
@@ -354,13 +331,13 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
     /**
      * Get the wizard basic step.
      *
+     * @returns basic details wizard step.
      */
     const getBasicDetailsWizardStep = (): WizardStepInterface => {
-
         return {
             content: (
                 <AddGroupUsersUpdated
-                    data-testid="new-group"
+                    data-componentid="new-group"
                     isEdit={ false }
                     triggerSubmit={ submitGeneralSettings }
                     selectedUserStore={ selectedUserStore }
@@ -382,7 +359,6 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
      * @returns step content.
      */
     const resolveStepContent = (): ReactElement => {
-
         if (!wizardSteps) {
             return null;
         }
@@ -395,14 +371,14 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
 
     return (
         <Modal
-            open={ true }
+            open
             className="wizard create-role-wizard"
             dimmer="blurring"
             size="small"
             onClose={ closeWizard }
             closeOnDimmerClick={ false }
             closeOnEscape= { false }
-            data-testid={ testId }
+            data-componentid={ componentid }
         >
             <Modal.Header className="wizard-header">
                 {
@@ -426,7 +402,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                             <LinkButton
                                 floated="left"
                                 onClick={ () => closeWizard() }
-                                data-testid={ `${ testId }-cancel-button` }
+                                data-componentid={ `${ componentid }-cancel-button` }
                             >
                                 { t("common:cancel") }
                             </LinkButton>
@@ -437,10 +413,10 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                                     floated="right"
                                     onClick={ changeStepToNext }
                                     disabled={ isWizardActionDisabled }
-                                    data-testid={ `${ testId }-next-button` }
+                                    data-componentid={ `${ componentid }-next-button` }
                                 >
                                     { t("console:manage.features.roles.addRoleWizard.buttons.next") }
-                                    <Icon name="arrow right" data-testid={ `${ testId }-next-button-icon` }/>
+                                    <Icon name="arrow right" data-componentid={ `${ componentid }-next-button-icon` }/>
                                 </PrimaryButton>
                             ) }
                             { (wizardSteps?.length > 1 && currentStep === 0) && (
@@ -450,7 +426,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                                     floated="right"
                                     onClick={ handleFinishFlow }
                                     disabled={ isWizardActionDisabled }
-                                    data-testid={ `${ testId }-initial-finish-button` }
+                                    data-componentid={ `${ componentid }-initial-finish-button` }
                                 >
                                     { t("console:manage.features.roles.addRoleWizard.buttons.finish") }
                                 </Button>
@@ -459,7 +435,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                                 <PrimaryButton
                                     floated="right"
                                     onClick={ changeStepToNext }
-                                    data-testid={ `${ testId }-finish-button` }
+                                    data-componentid={ `${ componentid }-finish-button` }
                                     disabled={ isWizardActionDisabled || isSubmitting }
                                     loading={ isSubmitting }
                                 >
@@ -470,10 +446,13 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                                 <LinkButton
                                     floated="right"
                                     onClick={ navigateToPrevious }
-                                    data-testid={ `${ testId }-previous-button` }
+                                    data-componentid={ `${ componentid }-previous-button` }
                                     disabled={ isWizardActionDisabled }
                                 >
-                                    <Icon name="arrow left" data-testid={ `${ testId }-previous-button-icon` }/>
+                                    <Icon
+                                        name="arrow left"
+                                        data-componentid={ `${ componentid }-previous-button-icon` }
+                                    />
                                     { t("console:manage.features.roles.addRoleWizard.buttons.previous") }
                                 </LinkButton>
                             ) }
