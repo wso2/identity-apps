@@ -200,6 +200,11 @@
         {% if console.ui.show_app_switch_button is defined %}
         "showAppSwitchButton": {{ console.ui.show_app_switch_button }},
         {% endif %}
+        {% if console.ui.show_api_based_authentication is defined %}
+        "showAPIBasedAuthentication": {{ console.ui.show_api_based_authentication }},
+        {% else %}
+        "showAPIBasedAuthentication": true,
+        {% endif %}
         "features": {
             {% if console.extensions.features is defined %}
             {% for name, feature in console.extensions.features.items() %}

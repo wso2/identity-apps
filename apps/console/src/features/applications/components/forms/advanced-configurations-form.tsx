@@ -214,6 +214,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.enableAuthorization.hint") }
             />
             {
+                UIConfig?.showAPIBasedAuthentication && 
                 (template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION
                     || template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
                     || template?.id === ApplicationManagementConstants.MOBILE) &&

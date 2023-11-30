@@ -253,6 +253,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             productName: "",
             productVersionConfig: null,
             selfAppIdentifier: "",
+            showAPIBasedAuthentication: undefined, 
             showAppSwitchButton: undefined,
             systemAppsIdentifiers: [],
             theme: {

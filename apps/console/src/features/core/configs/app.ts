@@ -308,6 +308,7 @@ export class Config {
             productName: window[ "AppUtils" ]?.getConfig()?.ui?.productName,
             productVersionConfig: window[ "AppUtils" ]?.getConfig()?.ui?.productVersionConfig,
             selfAppIdentifier: window[ "AppUtils" ]?.getConfig()?.ui?.selfAppIdentifier,
+            showAPIBasedAuthentication: window[ "AppUtils" ]?.getConfig()?.ui?.showAPIBasedAuthentication,
             showAppSwitchButton: window[ "AppUtils" ]?.getConfig()?.ui?.showAppSwitchButton,
             systemAppsIdentifiers: window[ "AppUtils" ]?.getConfig()?.ui?.systemAppsIdentifiers,
             theme: window[ "AppUtils" ]?.getConfig()?.ui?.theme
