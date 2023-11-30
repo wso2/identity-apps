@@ -123,7 +123,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         }
         else if (values.roleName?.toString().trim().length >= RoleConstants.ROLE_NAME_MIN_LENGTH) {
             setIsUpdateButtonDisabled(false);
-            setRoleNameSearchQuery(`displayName eq ${values.roleName?.toString().trim()}`);
+            setRoleNameSearchQuery("displayName eq ".concat(
+                values.roleName?.toString().trim(), " and audience.value eq ").concat(role.audience.value));
 
             if (!isRolesListLoading || !isRolesListValidating) {
                 if (rolesList?.totalResults > 0 || rolesListError) {
