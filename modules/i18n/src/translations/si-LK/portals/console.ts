@@ -2892,9 +2892,14 @@ export const console: ConsoleNS = {
                     },
                     authenticationStepDeleteErrorDueToSecondFactors: {
                         genericError: {
-                            description: "Second factor authenticators need basic authenticator or identifier " +
-                                "first in a prior step.",
-                            message: "Step Delete error"
+                            description: "දෙවන සාධක සත්යාපකයන්ට පෙර පියවරකින් පළමුව මූලික සත්යාපකය හෝ හඳුනාගැනීමක් අවශ්ය වේ.",
+                            message: "ඉවත් කිරීමේ දෝෂයකි"
+                        }
+                    },
+                    authenticationStepDeleteErrorDueToAppShared: {
+                        genericError: {
+                            description: "බෙදාගත් යෙදුම සඳහා මෙම සත්යාපකය අවශ්ය වේ.",
+                            message: "මෙම සත්යාපනය මකා දැමිය නොහැක"
                         }
                     },
                     authenticationStepMin: {

@@ -2934,6 +2934,12 @@ export const console: ConsoleNS = {
                             message: "Step cannot be deleted"
                         }
                     },
+                    authenticationStepDeleteErrorDueToAppShared: {
+                        genericError: {
+                            description: "This authenticator is required for the shared application.",
+                            message: "Cannot delete this authenticator"
+                        }
+                    },
                     authenticationStepMin: {
                         genericError: {
                             description: "At least one authentication step is required.",

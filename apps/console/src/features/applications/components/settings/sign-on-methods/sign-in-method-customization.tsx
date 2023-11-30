@@ -79,6 +79,10 @@ interface SignInMethodCustomizationPropsInterface extends SBACInterface<FeatureC
      */
     applicationName?: string;
     /**
+     * Whether the application is shared between organizations or not.
+     */
+    isApplicationShared: boolean;
+    /**
      * All authenticators in the system.
      */
     authenticators: GenericAuthenticatorInterface[][];
@@ -136,6 +140,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         onReset,
         onUpdate,
         readOnly,
+        isApplicationShared,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -778,6 +783,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 : null
             }
             <StepBasedFlow
+                isApplicationShared={ isApplicationShared }
                 authenticators={ authenticators }
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }

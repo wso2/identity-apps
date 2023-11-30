@@ -2973,6 +2973,12 @@ export const console: ConsoleNS = {
                             message: "Erreur de suppression"
                         }
                     },
+                    authenticationStepDeleteErrorDueToAppShared: {
+                        genericError: {
+                            description: "Cet authentificateur est requis pour l'application partagée.",
+                            message: "Impossible de supprimer cet authentificateur"
+                        }
+                    },
                     authenticationStepMin: {
                         genericError: {
                             description: "Au moins une étape d'authentification est requise.",
