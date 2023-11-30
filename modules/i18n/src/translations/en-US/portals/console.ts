@@ -5418,7 +5418,8 @@ export const console: ConsoleNS = {
                                 hint: "Select up to three attributes that will be used to cross check if" + 
                                     " there is a matching local user account",
                                 placeholder: "No attributes are selected"
-                            }
+                            },
+                            warning: "Ensure that the selected attributes are verified by the token issuer"
                         }
                     },
                     attributeSettings: {

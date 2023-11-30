@@ -3770,7 +3770,8 @@ export const console: ConsoleNS = {
                                 hint: "Sélectionnez jusqu'à trois attributs qui seront utilisés pour vérifier si" +
                                     " il existe un compte utilisateur local correspondant",
                                 placeholder: "Aucun attribut sélectionné"
-                            }
+                            },
+                            warning: "Assurez-vous que les attributs sélectionnés sont vérifiés par l'émetteur du jeton"
                         }
                     },
                     attributeSettings: {

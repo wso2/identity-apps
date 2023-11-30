@@ -2396,6 +2396,7 @@ export interface ConsoleNS {
                                 placeholder: string;
                                 hint: string;
                             };
+                            warning: string;
                         };
                     };
                     attributeSettings: {

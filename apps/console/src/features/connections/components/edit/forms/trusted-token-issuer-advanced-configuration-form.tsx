@@ -19,7 +19,7 @@
 import { AlertLevels, ClaimDialect, ExternalClaim, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
-import { Code, Hint, Text } from "@wso2is/react-components";
+import { Code, Hint, Message, Text } from "@wso2is/react-components";
 import { getDialects, getExternalClaims } from "apps/console/src/features/claims/api";
 import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 import React, { Dispatch, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
@@ -239,6 +239,12 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
                         "implicitAssociation.attributes.hint") }
                 </Hint>
             </div>
+            <Message
+                type="warning"
+                content={ t("console:develop.features.idp.forms.advancedConfigs." +
+                "implicitAssociation.warning") }
+                hidden={ !implicitAssociationEnabled }
+            />
             <Field.Button
                 form={ FORM_ID }
                 size="small"
