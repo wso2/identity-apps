@@ -45,7 +45,13 @@ import { Dispatch } from "redux";
 import { Divider, Grid, Ref } from "semantic-ui-react";
 import { serverConfigurationConfig } from "../../../extensions";
 import { AppConstants, AppState, history } from "../../core";
-import { GovernanceConnectorUtils, ServerConfigurationsConstants } from "../../server-configurations";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface,
+    GovernanceConnectorUtils,
+    ServerConfigurationsConstants,
+    getConnectorDetails
+} from "../../server-configurations";
 import { getConfiguration } from "../../users/utils/generate-password.utils";
 import { updateValidationConfigData, useValidationConfigData } from "../api";
 import { ValidationConfigConstants } from "../constants/validation-config-constants";
@@ -92,11 +98,16 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const [ currentValues, setCurrentValues ] = useState<ValidationFormInterface>(
         undefined
     );
+
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
     const [ passwordHistoryEnabled, setPasswordHistoryEnabled ] = useState<
         boolean
     >(false);
     const [ passwordExpiryEnabled, setPasswordExpiryEnabled ] = useState<boolean>(false);
+
+    // State variables required to support legacy password policies.
+    const [ isLegacyPasswordPolicyEnabled, setIsLegacyPasswordPolicyEnabled ] = useState<boolean>(false);
+    const [ legacyPasswordPolicies, setLegacyPasswordPolicies ] = useState<ConnectorPropertyInterface[]>([]);
 
     const {
         data: passwordHistoryCountData,
@@ -118,6 +129,38 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         error: ValidationConfigStatusFetchRequestError,
         mutate: mutateValidationConfigFetchRequest
     } = useValidationConfigData();
+
+    useEffect(() => {
+        if (!isPasswordInputValidationEnabled) {
+            getLegacyPasswordPolicyProperties();
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!isPasswordInputValidationEnabled) {
+
+            if (!initialFormValues) {
+                return;
+            }
+
+            let currentInitialValues: any = initialFormValues;
+
+            currentInitialValues = (legacyPasswordPolicies ?? []).reduce(
+                (formValues: ValidationFormInterface, property: ConnectorPropertyInterface) => {
+
+                    return {
+                        ...formValues,
+                        [ GovernanceConnectorUtils.encodeConnectorPropertyName(property.name) ]: property.value
+                    };
+                }, currentInitialValues);
+
+            setInitialFormValues(currentInitialValues);
+            setIsLegacyPasswordPolicyEnabled(currentInitialValues?.[
+                GovernanceConnectorUtils.encodeConnectorPropertyName(
+                    ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE) ] === "true"
+            );
+        }
+    }, [ initialFormValues, legacyPasswordPolicies ]);
 
     useEffect(() => {
         if (isValidationLoading || isPasswordCountLoading || isPasswordExpiryLoading) {
@@ -261,6 +304,49 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         );
     };
 
+    const getLegacyPasswordPolicyProperties = (): void => {
+        getConnectorDetails(
+            ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID,
+            ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID
+        )
+            .then((response: GovernanceConnectorInterface) => {
+                setLegacyPasswordPolicies(response?.properties);
+            })
+            .catch((error: AxiosError) => {
+                if (error.response && error.response.data && error.response.data.detail) {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "getConnector.error.description",
+                                { description: error.response.data.description }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "getConnector.error.message"
+                            )
+                        })
+                    );
+                } else {
+                    // Generic error message
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "getConnector.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "getConnector.genericError.message"
+                            )
+                        })
+                    );
+                }
+            });
+    };
+
     /**
      * Handle back button click.
      */
@@ -354,7 +440,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         const processedFormValues: ValidationFormInterface = { ...values };
 
         const updatePasswordPolicies: Promise<void> = serverConfigurationConfig.processPasswordPoliciesSubmitData(
-            processedFormValues
+            processedFormValues,
+            !isPasswordInputValidationEnabled
         );
 
         if (
@@ -381,9 +468,16 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             updateValidationConfigData(processedFormValues, null, validationData[0])
         ])
             .then(() => {
-                mutateValidationConfigFetchRequest();
                 mutatePasswordHistoryCount();
                 mutatePasswordExpiry();
+
+                if (!isPasswordInputValidationEnabled) {
+                    getLegacyPasswordPolicyProperties();
+
+                    return;
+                }
+
+                mutateValidationConfigFetchRequest();
                 dispatch(
                     addAlert({
                         description: t(
@@ -440,69 +534,171 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                 <Field.Checkbox
                     className="toggle mb-4"
                     ariaLabel="passwordPolicy.enable"
-                    name="passwordPolicy.enable"
+                    name={ GovernanceConnectorUtils.encodeConnectorPropertyName("passwordPolicy.enable") }
                     required={ false }
                     label={ GovernanceConnectorUtils.resolveFieldLabel(
                         "Password Policies",
                         "passwordPolicy.enable",
                         "Validate passwords based on a policy pattern") }
-                    defaultValue={ initialFormValues?.[
-                        "passwordPolicy.enable" ] === "true" }
+                    initialValue={ initialFormValues?.[
+                        GovernanceConnectorUtils.encodeConnectorPropertyName(
+                            ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE) ] === "true" }
                     width={ 16 }
                     data-componentid={ `${ componentId }-enable-password-policy` }
+                    listen={ (data) => setIsLegacyPasswordPolicyEnabled(data) }
                 />
-                <Field.Input
-                    className="mb-4"
-                    ariaLabel="passwordPolicy.min.length"
-                    inputType="number"
-                    name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                        "passwordPolicy.min.length"
-                    ) }
-                    type="number"
-                    width={ 12 }
-                    required={ true }
-                    labelPosition="top"
-                    minLength={ 1 }
-                    maxLength={ 100 }
-                    initialValue={ initialFormValues?.[
-                        "passwordPolicy.min.length" ] }
-                    data-componentid={ `${ componentId }-password-policy-min-length` }
-                    label={ GovernanceConnectorUtils.resolveFieldLabel(
-                        "Password Policies",
-                        "passwordPolicy.min.length",
-                        "Minimum number of characters")
-                    }
-                />
-                <Field.Input
-                    className="mb-4"
-                    ariaLabel="passwordPolicy.max.length"
-                    inputType="number"
-                    name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                        "passwordPolicy.max.length"
-                    ) }
-                    type="number"
-                    width={ 12 }
-                    required={ true }
-                    labelPosition="top"
-                    minLength={ 1 }
-                    maxLength={ 100 }
-                    initialValue={ initialFormValues?.[
-                        "passwordPolicy.max.length" ] }
-                    data-componentid={ `${ componentId }-password-policy-max-length` }
-                    label={ GovernanceConnectorUtils.resolveFieldLabel(
-                        "Password Policies",
-                        "passwordPolicy.max.length",
-                        "Maximum number of characters")
-                    }
-                />
+                <div className="validation-configurations-form mt-3 mb-3">
+                    <div className="criteria">
+                        <label>Must be between</label>
+                        <Field.Input
+                            ariaLabel="Minimum length of the password"
+                            inputType="number"
+                            name={
+                                GovernanceConnectorUtils.encodeConnectorPropertyName("passwordPolicy.min.length")
+                            }
+                            validation={ (
+                                value: string,
+                                allValues: Record<string, unknown>
+                            ): string | undefined => {
+                                const numValue: number = parseInt(value);
+                                const min: number = ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MIN_VALUE;
+
+                                if (numValue < min) {
+                                    return t("common:minValidation", { min });
+                                }
+                                const max: number = allValues.maxLength
+                                    ? parseInt(allValues.maxLength as string)
+                                    : ValidationConfigConstants
+                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                        .PASSWORD_MAX_VALUE;
+
+                                if (numValue > max) {
+                                    return t("common:maxValidation", { max });
+                                }
+                            } }
+                            min={
+                                ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MIN_VALUE
+                            }
+                            max={
+                                currentValues.maxLength
+                                    ? currentValues.maxLength
+                                    : ValidationConfigConstants
+                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                        .PASSWORD_MAX_VALUE
+                            }
+                            listen={ (
+                                value: string
+                            ) => {
+                                setCurrentValues(
+                                    {
+                                        ...currentValues,
+                                        [ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                            "passwordPolicy.min.length") ]: value
+                                    }
+                                );
+                            } }
+                            width={ 2 }
+                            required={ true }
+                            hidden={ false }
+                            placeholder={ "min" }
+                            maxLength={
+                                ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_LENGTH
+                            }
+                            minLength={
+                                ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MIN_LENGTH
+                            }
+                            readOnly={ false }
+                            disabled={ !isLegacyPasswordPolicyEnabled }
+                            data-testid={ `${ componentId }-min-length` }
+                        />
+                        <label>and</label>
+                        <Field.Input
+                            ariaLabel="Minimum length of the password"
+                            inputType="number"
+                            name={
+                                GovernanceConnectorUtils.encodeConnectorPropertyName("passwordPolicy.max.length")
+                            }
+                            validation={ (
+                                value: string,
+                                allValues: Record<string, unknown>
+                            ): string | undefined => {
+                                const numValue: number = parseInt(value);
+                                const min: number = allValues.minLength
+                                    ? parseInt(allValues.minLength as string)
+                                    : ValidationConfigConstants
+                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                        .PASSWORD_MIN_VALUE;
+
+                                if (numValue < min) {
+                                    return t("common:minValidation", { min });
+                                }
+
+                                const max: number = ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE;
+
+                                if (numValue > max) {
+                                    return t("common:maxValidation", { max });
+                                }
+                            } }
+                            min={
+                                currentValues.minLength
+                                    ? currentValues.minLength
+                                    : ValidationConfigConstants
+                                        .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                        .PASSWORD_MIN_VALUE
+                            }
+                            max={
+                                ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_VALUE
+                            }
+                            width={ 2 }
+                            required={ true }
+                            hidden={ false }
+                            placeholder={ "max" }
+                            listen={ (
+                                value: string
+                            ) => {
+                                setCurrentValues(
+                                    {
+                                        ...currentValues,
+                                        [ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                            "passwordPolicy.max.length") ]: value
+                                    }
+                                );
+                            } }
+                            maxLength={
+                                ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MAX_LENGTH
+                            }
+                            labelPosition="top"
+                            minLength={
+                                ValidationConfigConstants
+                                    .VALIDATION_CONFIGURATION_FORM_FIELD_CONSTRAINTS
+                                    .PASSWORD_MIN_LENGTH
+                            }
+                            readOnly={ false }
+                            disabled={ !isLegacyPasswordPolicyEnabled  }
+                            data-testid={ `${ componentId }-max-length` }
+                        />
+                        <label>characters</label>
+                    </div>
+                </div>
                 <Field.Input
                     ariaLabel="passwordPolicy.pattern"
                     inputType="text"
                     name={
-                        GovernanceConnectorUtils
-                            .encodeConnectorPropertyName(
-                                "passwordPolicy.pattern"
-                            )
+                        GovernanceConnectorUtils.encodeConnectorPropertyName("passwordPolicy.pattern")
                     }
                     type="text"
                     width={ 12 }
@@ -512,9 +708,17 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     minLength={ 3 }
                     maxLength={ 100 }
                     readOnly={ false }
-                    initialValue={
-                        initialFormValues?.[ "passwordPolicy.pattern" ]
-                    }
+                    listen={ (
+                        value: string
+                    ) => {
+                        setCurrentValues(
+                            {
+                                ...currentValues,
+                                [ GovernanceConnectorUtils
+                                    .encodeConnectorPropertyName("passwordPolicy.pattern") ]: value
+                            }
+                        );
+                    } }
                     data-componentid={ `${ componentId }-password-pattern-regex` }
                     label={
                         GovernanceConnectorUtils.resolveFieldLabel(
@@ -522,7 +726,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                             "passwordPolicy.pattern",
                             "Password pattern regex")
                     }
-                    disabled={ false }
+                    disabled={ !isLegacyPasswordPolicyEnabled }
                 />
                 <Hint className="mb-4">
                     {
@@ -530,7 +734,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                             "Password Validation",
                             "passwordPolicy.pattern",
                             "Length of the OTP for SMS and" +
-                            "e-mail verifications. OTP length" +
+                            " e-mail verifications. OTP length" +
                             " must be 4-10."
                         )
                     }
@@ -539,10 +743,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     ariaLabel="passwordPolicy.errorMsg"
                     inputType="text"
                     name={
-                        GovernanceConnectorUtils
-                            .encodeConnectorPropertyName(
-                                "passwordPolicy.errorMsg"
-                            )
+                        GovernanceConnectorUtils.encodeConnectorPropertyName("passwordPolicy.errorMsg")
                     }
                     type="text"
                     width={ 12 }
@@ -552,11 +753,17 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     minLength={ 3 }
                     maxLength={ 100 }
                     readOnly={ false }
-                    initialValue={
-                        initialFormValues?.[
-                            "passwordPolicy.errorMsg"
-                        ]
-                    }
+                    listen={ (
+                        value: string
+                    ) => {
+                        setCurrentValues(
+                            {
+                                ...currentValues,
+                                [ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                    "passwordPolicy.errorMsg") ]: value
+                            }
+                        );
+                    } }
                     data-componentid={ `${ componentId }-password-policy-error-msg` }
                     label={
                         GovernanceConnectorUtils.resolveFieldLabel(
@@ -564,7 +771,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                             "passwordPolicy.errorMsg",
                             "Error message on pattern violation")
                     }
-                    disabled={ false }
+                    disabled={ !isLegacyPasswordPolicyEnabled }
                 />
                 <Hint>
                     {

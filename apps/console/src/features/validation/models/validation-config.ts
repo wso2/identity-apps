@@ -55,4 +55,5 @@ export interface ValidationFormInterface {
     maxConsecutiveCharacters?: string;
     enableValidator?: string;
     isAlphanumericOnly?: boolean;
+    [key: string]: any;
 }
