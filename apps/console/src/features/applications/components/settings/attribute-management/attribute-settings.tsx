@@ -1311,7 +1311,6 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                             featureConfig?.applications?.scopes?.update,
                                             allowedScopes)
                                     }
-                                    onlyOIDCConfigured={ onlyOIDCConfigured }
                                     data-testid={ `${ componentId }-role-mapping` }
                                 />
                             ) }

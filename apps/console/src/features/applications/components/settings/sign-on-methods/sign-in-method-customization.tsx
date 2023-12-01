@@ -856,7 +856,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 )
             }
             {
-                (config?.ui?.classicFeatures?.isRequestPathAuthenticationEnabled && requestPathAuthenticators)
+                (config?.ui?.legacyFeatures?.applicationRequestPathAuthenticationEnabled && requestPathAuthenticators)
                     ? showRequestPathAuthenticators
                     : null
             }

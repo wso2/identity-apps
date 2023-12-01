@@ -210,10 +210,9 @@ export interface SVGRLoadedInterface {
     default: string;
 }
 
-export interface ClassicFeaturesInterface {
-    isRequestPathAuthenticationEnabled: boolean;
-    isXacmlAuthorizationEnabled: boolean;
-    isOIDCSubjectIdentifierEnabled: boolean;
-    isApplicationLevelRoleAttributeEnabled: boolean;
-    isOIDCRoleMappingEnabled: boolean;
+export interface LegacyFeaturesInterface {
+    applicationRequestPathAuthenticationEnabled: boolean;
+    applicationXacmlAuthorizationEnabled: boolean;
+    applicationOIDCSubjectIdentifierEnabled: boolean;
+    applicationRoleEnabled: boolean;
 }

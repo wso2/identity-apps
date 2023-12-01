@@ -1028,12 +1028,11 @@
             "Console",
             "My Account"
         ],
-        "classicFeatures": {
-            "isRequestPathAuthenticationEnabled": false,
-            "isXacmlAuthorizationEnabled": false,
-            "isOIDCSubjectIdentifierEnabled": false,
-            "isApplicationLevelRoleAttributeEnabled": false,
-            "isOIDCRoleMappingEnabled": false
+        "legacyFeatures": {
+            "applicationRequestPathAuthenticationEnabled": false,
+            "applicationXacmlAuthorizationEnabled": false,
+            "applicationOIDCSubjectIdentifierEnabled": false,
+            "applicationRoleEnabled": false
         },
         "theme": {
             "name": "wso2is"
