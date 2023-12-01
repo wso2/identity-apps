@@ -19,9 +19,9 @@ import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/mode
 import { Heading, InfoCard, useMediaContext } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Grid, Segment } from "semantic-ui-react";
-import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
+import useAuthenticationFlow from "../../../../authentication-flow-builder/hooks/use-authentication-flow";
+import { EventPublisher, FeatureConfigInterface } from "../../../../core";
 import {
     IdentityProviderManagementConstants
 } from "../../../../identity-providers/constants/identity-provider-management-constants";
@@ -76,8 +76,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
 
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
-
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const { hiddenAuthenticators } = useAuthenticationFlow();
 
     const { organizationType } = useGetCurrentOrganizationType();
 
@@ -234,7 +233,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 ) }
                             </Heading>
                             { !hiddenOptions?.includes(LoginFlowTypes.FIDO_LOGIN) &&
-                                !config.ui?.hiddenAuthenticators.includes(
+                                !hiddenAuthenticators?.includes(
                                     IdentityProviderManagementConstants.FIDO_AUTHENTICATOR
                                 ) && (
                                 <InfoCard
@@ -263,7 +262,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 />
                             ) }
                             { !hiddenOptions?.includes(LoginFlowTypes.MAGIC_LINK) &&
-                                !config.ui?.hiddenAuthenticators.includes(
+                                !hiddenAuthenticators?.includes(
                                     IdentityProviderManagementConstants.MAGIC_LINK_AUTHENTICATOR
                                 ) && (
                                 <InfoCard
@@ -293,7 +292,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                 />
                             ) }
                             { !hiddenOptions?.includes(LoginFlowTypes.EMAIL_OTP) &&
-                                !config.ui?.hiddenAuthenticators.includes(
+                                !hiddenAuthenticators?.includes(
                                     IdentityProviderManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID
                                 ) && (
                                 <InfoCard
@@ -313,7 +312,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     ) }
                                     onClick={ () => {
                                         eventPublisher.publish(
-                                            "application-begin-sign-in-email-otp-password-less", 
+                                            "application-begin-sign-in-email-otp-password-less",
                                             { "client-id": clientId }
                                         );
                                         onLoginFlowSelect(LoginFlowTypes.EMAIL_OTP);

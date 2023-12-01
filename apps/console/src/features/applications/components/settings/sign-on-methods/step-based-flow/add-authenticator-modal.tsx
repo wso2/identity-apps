@@ -61,6 +61,7 @@ import {
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
 import { authenticatorConfig } from "../../../../../../extensions/configs/authenticator";
+import useAuthenticationFlow from "../../../../../authentication-flow-builder/hooks/use-authentication-flow";
 import { ConnectionManagementConstants } from "../../../../../connections";
 import { ConnectionsManagementUtils } from "../../../../../connections/utils/connection-utils";
 import { getEmptyPlaceholderIllustrations } from "../../../../../core/configs/ui";
@@ -176,8 +177,9 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+    const { hiddenAuthenticators } = useAuthenticationFlow();
+
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
-    const hiddenAuthenticators: string[] = useSelector((state: AppState) => state.config?.ui?.hiddenAuthenticators);
     const groupedIDPTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state.identityProvider?.groupedTemplates
     );
