@@ -17,12 +17,12 @@
  */
 
 import { Field, Form } from "@wso2is/form";
-import { Message } from "@wso2is/react-components";
+import { DocumentationLink, Message, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
 import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import {
     CommonAuthenticatorFormFieldMetaInterface,
     CommonAuthenticatorFormInitialValuesInterface,
@@ -56,6 +56,8 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
     } = props;
 
     const { t } = useTranslation();
+
+    const { getLink } = useDocumentation();
 
     const [ initialValues, setInitialValues ] = useState<FIDOAuthenticatorFormInitialValuesInterface>(undefined);
     const [
@@ -153,12 +155,30 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                             type="info"
                             content={
                                 (<>
-                                    Passkey progressive enrollment is enabled
+                                    {
+                                        t("console:develop.features.applications.edit.sections" +
+                                        ".signOnMethod.sections.landing.flowBuilder." +
+                                        "types.passkey.info.progressiveEnrollmentEnabled")
+                                    }
                                     <p>
-                                        <strong>Note : </strong> When setting the Passkey in the <strong>first
-                                        step</strong>, users need to add an adaptive script. Use the <strong>Passkeys
-                                        Progressive Enrollment</strong> template in the <strong>Sign-In-Method </strong>
-                                        tab of the application.
+                                        <Trans
+                                            i18nKey={
+                                                t("console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections.landing.flowBuilder.types.passkey." +
+                                                "info.progressiveEnrollmentEnabledCheckbox")
+                                            }
+                                        >
+                                            <strong>Note : </strong> When setting the Passkey in the <strong>first
+                                            step</strong>, users need to add an adaptive script. Use the <strong>
+                                            Passkeys Progressive Enrollment</strong> template in the <strong>
+                                            Sign-In-Method</strong> tab of the application.
+                                        </Trans>
+                                        <DocumentationLink
+                                            link={ getLink("develop.applications.editApplication.signInMethod.fido") }
+                                            showEmptyLink={ false }
+                                        >
+                                            { t("common:learnMore") }
+                                        </DocumentationLink>
                                     </p>
                                 </>)
                             }
