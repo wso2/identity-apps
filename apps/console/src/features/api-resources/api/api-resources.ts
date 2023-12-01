@@ -87,13 +87,16 @@ export const getAPIResourcesForIdenitifierValidation = (
  *
  * @param after - after.
  * @param before - before.
+ * @param filter - filter.
+ * @param shouldFetch - whether to fetch or not.
  * @returns `Promise<APIResourcesListInterface>`
  * @throws `IdentityAppsApiException`
  */
 export const useAPIResources = <Data = APIResourcesListInterface, Error = RequestErrorInterface>(
     after?: string,
     before?: string,
-    filter?: string
+    filter?: string,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: AxiosRequestConfig = {
@@ -110,7 +113,7 @@ export const useAPIResources = <Data = APIResourcesListInterface, Error = Reques
         url: `${store.getState().config.endpoints.apiResources}`
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
 
     return {
         data,
