@@ -131,7 +131,11 @@
         }
     }
 
-    identityServerEndpointContextParam = ServiceURLBuilder.create().setTenant(tenantDomain).build().getAbsolutePublicURL();
+    if (Boolean.parseBoolean(application.getInitParameter("IsHostedExternally"))) {
+        identityServerEndpointContextParam = application.getInitParameter("IdentityServerEndpointContextURL");
+    } else {
+        identityServerEndpointContextParam = ServiceURLBuilder.create().setTenant(tenantDomain).build().getAbsolutePublicURL();
+    }    
 
     if (StringUtils.isNotBlank(identityServerEndpointContextParam)) {
 
