@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -450,6 +450,7 @@ export class IdentityProviderManagementConstants {
     public static readonly FIDO_AUTHENTICATOR: string = "FIDOAuthenticator";
     public static readonly BASIC_AUTHENTICATOR: string = "BasicAuthenticator";
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR: string = "IdentifierExecutor";
+    public static readonly ORGANIZATION_AUTHENTICATOR: string = "SSO";
     public static readonly SMS_OTP_AUTHENTICATOR: string = authenticatorConfig?.overriddenAuthenticatorNames?.
         SMS_OTP_AUTHENTICATOR ?? "sms-otp";
 
