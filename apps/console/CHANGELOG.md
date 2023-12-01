@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.9.34
+
+### Patch Changes
+
+- [#4879](https://github.com/wso2/identity-apps/pull/4879) [`96ffe3a45d`](https://github.com/wso2/identity-apps/commit/96ffe3a45d5263f31f14f71beb70a9fd7b198f60) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add validation for deleting SSO authenticator from sign in options
+
+* [#4884](https://github.com/wso2/identity-apps/pull/4884) [`fdf0a7faa0`](https://github.com/wso2/identity-apps/commit/fdf0a7faa04e372e2ecc7187d8668872c629f6c0) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix role not visible issue in saml traditional web app
+
+- [#4851](https://github.com/wso2/identity-apps/pull/4851) [`278880209a`](https://github.com/wso2/identity-apps/commit/278880209aa08eb8e1617849f76799eada517003) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show email provider section for super tenant with a note
+
+- Updated dependencies [[`96ffe3a45d`](https://github.com/wso2/identity-apps/commit/96ffe3a45d5263f31f14f71beb70a9fd7b198f60)]:
+  - @wso2is/i18n@2.0.65
+
 ## 2.9.33
 
 ### Patch Changes
