@@ -36,7 +36,7 @@ interface RoleMappingPropsInterface extends TestableComponentInterface {
     submitState?: boolean;
     /**
      * Function to be called on submission.
-     * 
+     *
      * @param roleMappings - list of role mappings.
      */
     onSubmit?: (roleMappings: RoleMappingInterface[]) => void;
@@ -50,10 +50,14 @@ interface RoleMappingPropsInterface extends TestableComponentInterface {
     readOnly?: boolean;
     /**
      * Function to be called on value changes.
-     * 
+     *
      * @param data - list of role mappings.
      */
     onChange?: (data: RoleMappingInterface[]) => void;
+    /**
+     * True only OIDC is configured.
+     */
+    onlyOIDCConfigured?: boolean;
 }
 
 /**
@@ -71,6 +75,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
         initialMappings,
         readOnly,
         onChange,
+        onlyOIDCConfigured,
         [ "data-testid" ]: testId
     } = props;
 
@@ -117,13 +122,13 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
 
     return (
         <>
-            { UIConfig?.classicFeatures?.isApplicationLevelRoleMappingEnabled 
+            { (!onlyOIDCConfigured || UIConfig?.classicFeatures?.isOIDCRoleMappingEnabled)
                 ? (
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Divider />
                             <Heading as="h4">
-                                { t("console:develop.features.applications.edit.sections.attributes.roleMapping." + 
+                                { t("console:develop.features.applications.edit.sections.attributes.roleMapping." +
                                     "heading") }
                             </Heading>
                             <DynamicField
@@ -131,8 +136,8 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                                     initialMappings ?
                                         initialMappings.map((mapping: RoleMappingInterface) => {
                                             return {
-                                                key: mapping.localRole.includes("/") 
-                                                    ? mapping.localRole.split("/")[1] 
+                                                key: mapping.localRole.includes("/")
+                                                    ? mapping.localRole.split("/")[1]
                                                     : mapping.localRole,
                                                 value: mapping.applicationRole
                                             };
@@ -141,34 +146,34 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                                 keyType="dropdown"
                                 keyData={ roleList ? getFilteredRoles() : [] }
                                 keyName={
-                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields." + 
+                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields." +
                                     "dynamic.localRole.label")
                                 }
                                 valueName={
-                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields." + 
+                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields." +
                                     "dynamic.applicationRole.label")
                                 }
                                 keyRequiredMessage={
-                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields." + 
+                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields." +
                                     "dynamic.localRole.validations.empty")
                                 }
                                 valueRequiredErrorMessage={
-                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields." + 
+                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields." +
                                     "dynamic.applicationRole.validations.empty")
                                 }
                                 duplicateKeyErrorMsg={
-                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields." + 
+                                    t("console:develop.features.applications.edit.sections.attributes.forms.fields." +
                                     "dynamic.applicationRole.validations.duplicate")
                                 }
                                 readOnly={ readOnly }
-                                data-testid={ `${ testId }-dynamic-field` } 
+                                data-testid={ `${ testId }-dynamic-field` }
                                 listen={ (data: KeyValue[]) => {
                                     if (onChange) {
                                         const finalData: RoleMappingInterface[] = data?.map((mapping: KeyValue) => {
                                             return {
                                                 applicationRole: mapping.value,
-                                                localRole: mapping.key.includes("/") 
-                                                    ? mapping.key 
+                                                localRole: mapping.key.includes("/")
+                                                    ? mapping.key
                                                     : "Internal/" + mapping.key
                                             };
                                         }) ?? [];
@@ -178,7 +183,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                                 } }
                             />
                         </Grid.Column>
-                    </Grid.Row>) 
+                    </Grid.Row>)
                 : null }
         </>
     );

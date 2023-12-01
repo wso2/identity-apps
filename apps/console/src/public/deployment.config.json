@@ -1030,11 +1030,10 @@
         ],
         "classicFeatures": {
             "isRequestPathAuthenticationEnabled": false,
-            "isApplicationLevelRoleMappingEnabled": false,
             "isXacmlAuthorizationEnabled": false,
-            "isIncludeOrgNameInSubjectEnabled": false,
-            "isUseMappedLocalSubjectEnabled": false,
-            "isSubjectIdentifierEnabled": false
+            "isOIDCSubjectIdentifierEnabled": false,
+            "isApplicationLevelRoleAttributeEnabled": false,
+            "isOIDCRoleMappingEnabled": false
         },
         "theme": {
             "name": "wso2is"

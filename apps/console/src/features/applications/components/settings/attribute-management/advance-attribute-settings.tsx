@@ -352,10 +352,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                 >
                     <Divider />
                     <Heading
-                        hidden={
-                            onlyOIDCConfigured &&
-                            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute
-                        }
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showSubjectAttribute ||
+                            (onlyOIDCConfigured && !UIConfig?.classicFeatures?.isOIDCSubjectIdentifierEnabled) }
                         as="h4"
                     >
                         { t("console:develop.features.applications.forms.advancedAttributeSettings." +
@@ -372,11 +371,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         required={ claimMappingOn }
                         value={ selectedSubjectValue }
                         options={ dropDownOptions }
-                        hidden={
-                            onlyOIDCConfigured &&
-                            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute ||
-                            !UIConfig?.classicFeatures?.isSubjectIdentifierEnabled
-                        }
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showSubjectAttribute ||
+                            (onlyOIDCConfigured && !UIConfig?.classicFeatures?.isOIDCSubjectIdentifierEnabled) }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-subject-attribute-dropdown` }
                         listen={ subjectAttributeChangeListener }
@@ -392,10 +389,9 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         value={ initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-subject-iInclude-user-domain-checkbox` }
-                        hidden={
-                            !applicationConfig.attributeSettings.advancedAttributeSettings.
-                                showIncludeUserstoreDomainSubject
-                        }
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings.
+                            showIncludeUserstoreDomainSubject ||
+                            (onlyOIDCConfigured && !UIConfig?.classicFeatures?.isOIDCSubjectIdentifierEnabled) }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeUserDomain.hint")
@@ -412,16 +408,17 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         value={ initialSubject?.includeTenantDomain ? [ "includeTenantDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-subject-include-tenant-domain-checkbox` }
-                        hidden={
-                            !applicationConfig.attributeSettings.advancedAttributeSettings
-                                .showIncludeTenantDomain || !UIConfig?.classicFeatures?.isIncludeOrgNameInSubjectEnabled
-                        }
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showIncludeTenantDomain ||
+                            (onlyOIDCConfigured && !UIConfig?.classicFeatures?.isOIDCSubjectIdentifierEnabled) }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeTenantDomain.hint")
                         }
                     />
-                    <Divider />
+                    <Divider
+                        hidden={ onlyOIDCConfigured && !UIConfig?.classicFeatures?.isOIDCSubjectIdentifierEnabled }
+                    />
                     <Heading
                         as="h4"
                     >
@@ -559,7 +556,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     )
                     }
                     {
-                        applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute && (
+                        applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute &&
+                        UIConfig?.classicFeatures?.isApplicationLevelRoleAttributeEnabled && (
                             <>
                                 <Heading as="h4">
                                     { t("console:develop.features.applications.forms.advancedAttributeSettings" +
@@ -580,30 +578,30 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         options={ dropDownOptions }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-role-attribute-dropdown` }
-                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute }
+                        hidden={  !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showRoleAttribute || !UIConfig?.classicFeatures?.isApplicationLevelRoleAttributeEnabled }
                         hint={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
-                                "role.fields.roleAttribute.hint")
+                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                "sections.role.fields.roleAttribute.hint")
                         }
                     />
                     <Field.CheckboxLegacy
                         ariaLabel="Role"
                         name="role"
                         label={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
-                                "role.fields.role.label")
+                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                "sections.role.fields.role.label")
                         }
                         required={ false }
                         value={ initialRole?.includeUserDomain ? [ "includeUserDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-role-checkbox` }
-                        hidden={
-                            !applicationConfig.attributeSettings.advancedAttributeSettings
-                                .showIncludeUserstoreDomainRole
-                        }
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showIncludeUserstoreDomainRole ||
+                            !UIConfig?.classicFeatures?.isApplicationLevelRoleAttributeEnabled }
                         hint={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
-                                "role.fields.role.hint")
+                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                "sections.role.fields.role.hint")
                         }
                     />
                 </Form>
