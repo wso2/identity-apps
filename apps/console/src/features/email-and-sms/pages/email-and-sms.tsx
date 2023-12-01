@@ -23,7 +23,6 @@ import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-
 import { ReactComponent as SMSIcon } from "../../../themes/default/assets/images/icons/sms-icon.svg";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
@@ -73,15 +72,12 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
                 { featureConfig.emailProviders?.enabled
                   && !(featureConfig?.emailProviders?.disabledFeatures?.includes("superTenantProvider"))
                   && (
-                      <Grid xs={ 12 } md={ 4 } lg={ 4 } xl={ 4 }>
+                      <Grid xs={ 12 } md={ 4 }>
                           <SettingsSection
                               data-componentid={ "account-login-page-section" }
                               data-testid={ "account-login-page-section" }
                               description={ t("extensions:develop.emailProviders.description") }
-                              icon={
-                                  (
-                                      <EnvelopeIcon size="small" className="icon"/>
-                                  ) }
+                              icon={ <EnvelopeIcon size="small" className="icon"/> }
                               header={ t("extensions:develop.emailProviders.heading") }
                               onPrimaryActionClick={ isSuperOrganization() ? null : handleEmailSelection }
                               primaryAction={ isSuperOrganization() ? null : t("common:configure") }
@@ -101,16 +97,12 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
                   ) }
 
                 { featureConfig.smsProviders?.enabled && (
-                    <Grid xs={ 12 } md={ 4 } lg={ 4 } xl={ 4 }>
+                    <Grid xs={ 12 } md={ 4 }>
                         <SettingsSection
                             data-componentid={ "account-login-page-section" }
                             data-testid={ "account-login-page-section" }
                             description={ t("extensions:develop.smsProviders.description") }
-                            icon={
-                                (
-                                    <SMSIcon fill="white" />
-                                )
-                            }
+                            icon={ <SMSIcon fill="white" /> }
                             header={
                                 t("extensions:develop.smsProviders.heading")
                             }
