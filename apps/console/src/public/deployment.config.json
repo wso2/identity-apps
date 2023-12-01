@@ -1029,10 +1029,10 @@
             "My Account"
         ],
         "legacyFeatures": {
-            "applicationRequestPathAuthenticationEnabled": false,
-            "applicationXacmlAuthorizationEnabled": false,
             "applicationOIDCSubjectIdentifierEnabled": false,
-            "applicationRoleEnabled": false
+            "applicationRequestPathAuthenticationEnabled": false,
+            "applicationRoleEnabled": false,
+            "applicationXacmlAuthorizationEnabled": false
         },
         "theme": {
             "name": "wso2is"
