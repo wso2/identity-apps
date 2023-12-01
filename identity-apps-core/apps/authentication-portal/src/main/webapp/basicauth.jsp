@@ -267,17 +267,22 @@
         isEmailUsernameEnabled = isEmailUsernameEnabled();
     }
 
-    try {
-        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
-        isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantForTheming);
-        allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantForTheming);
-    } catch (PreferenceRetrievalClientException e) {
-        request.setAttribute("error", true);
-        request.setAttribute("errorMsg", AuthenticationEndpointUtil
-                .i18n(resourceBundle, "something.went.wrong.contact.admin"));
-        IdentityManagementEndpointUtil.addErrorInformation(request, e);
-        request.getRequestDispatcher("error.jsp").forward(request, response);
-        return;
+    if (Boolean.parseBoolean(application.getInitParameter("IsHostedExternally"))) {
+        isMultiAttributeLoginEnabledInTenant = false;
+        allowedAttributes = "";
+    } else {
+        try {
+            PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+            isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantForTheming);
+            allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantForTheming);
+        } catch (PreferenceRetrievalClientException e) {
+            request.setAttribute("error", true);
+            request.setAttribute("errorMsg", AuthenticationEndpointUtil
+                    .i18n(resourceBundle, "something.went.wrong.contact.admin"));
+            IdentityManagementEndpointUtil.addErrorInformation(request, e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
     }
 
     if (isEmailUsernameEnabled == true) {
@@ -589,7 +594,13 @@
             }
 
             // For self sign-up build the normal callback URL.
-            String srURI = ServiceURLBuilder.create().addPath(AUTHENTICATION_ENDPOINT_LOGIN).build().getAbsolutePublicURL();
+            String srURI;
+
+            if (Boolean.parseBoolean(application.getInitParameter("IsHostedExternally"))) {
+                srURI = application.getInitParameter("IdentityManagementEndpointLoginURL");
+            } else {
+                srURI = ServiceURLBuilder.create().addPath(AUTHENTICATION_ENDPOINT_LOGIN).build().getAbsolutePublicURL();
+            }
             String srprmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
             String srURLWithoutEncoding = srURI + "?" + srprmstr;
             srURLEncodedURL= URLEncoder.encode(srURLWithoutEncoding, UTF_8);
