@@ -241,10 +241,14 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
-                    "update": [],
-                    "read": [],
-                    "create": [],
-                    "delete": []
+                    "delete": [],
+                    "update": [
+                        "internal_governance_update"
+                    ],
+                    "read": [
+                        "internal_governance_view"
+                    ],
+                    "create": []
                 }
             },
             "apiResources": {
@@ -473,6 +477,24 @@
                     ],
                     "delete": [
                         "internal_guest_mgt_invite_delete"
+                    ]
+                }
+            },
+            "notificationChannels": {
+                "disabledFeatures": [ ],
+                "enabled": true,
+                "scopes": {
+                    "update": [
+                        "internal_config_mgt_update"
+                    ],
+                    "delete": [
+                        "internal_config_mgt_delete"
+                    ],
+                    "create": [
+                        "internal_config_mgt_add"
+                    ],
+                    "read": [
+                        "internal_config_mgt_view"
                     ]
                 }
             },
@@ -750,30 +772,22 @@
                 },
                 "disabledFeatures": []
             },
-            "manageGettingStarted": {
+            "gettingStarted": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
                     "delete": [],
-                    "create": [],
-                    "read": [
+                    "create": [
+                        "internal_application_mgt_create",
+                        "internal_idp_create",
                         "internal_user_mgt_create",
                         "internal_group_mgt_create"
                     ],
-                    "update": []
-                }
-            },
-            "developerGettingStarted": {
-                "disabledFeatures": [],
-                "enabled": true,
-                "scopes": {
-                    "delete": [],
-                    "create": [],
-                    "update": [],
-                    "read": [
-                        "internal_application_mgt_create",
-                        "internal_idp_create",
+                    "update": [
                         "internal_application_mgt_update"
+                    ],
+                    "read": [
+                        "internal_application_mgt_view"   
                     ]
                 }
             },
@@ -859,7 +873,21 @@
                     ]
                 }
             },
-            "roles": {
+            "loginAndRegistration": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "delete": [],
+                    "create": [],
+                    "read": [
+                        "internal_governance_view"
+                    ],
+                    "update": [
+                        "internal_governance_update"
+                    ]
+                }
+            },
+            "userRoles": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
@@ -939,9 +967,9 @@
                 "enabled": false,
                 "scopes": {}
             },
-            "diagnosticLogs": {
+            "logs": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "update": [
                         "internal_application_mgt_view"

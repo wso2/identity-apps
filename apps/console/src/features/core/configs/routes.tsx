@@ -510,7 +510,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ),
                         exact: true,
                         icon: { icon: <EnvelopeIcon fill="black" className="icon" /> },
-                        id: "communication-management",
+                        id: "emailTemplates",
                         name: "Email Templates",
                         order: 14,
                         path: `${ AppConstants.getDeveloperViewBasePath() }/email-management`,
@@ -524,7 +524,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         ),
                         exact: true,
                         icon: { icon: <EnvelopeGearIcon fill="black" className="icon" /> },
-                        id: "email-and-sms",
+                        id: "notificationChannels",
                         name: "Email & SMS",
                         order: 15,
                         path: `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms`,
@@ -706,58 +706,6 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         path: AppConstants.getPaths()
                             .get("GOVERNANCE_CONNECTOR")
                             .replace(":id", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID),
-                        protected: true,
-                        showOnSidePanel: false
-                    },
-                    {
-                        category: "extensions:manage.sidePanel.categories.AccountManagement",
-                        children: [
-                            {
-                                component: lazy(() =>
-                                    import(
-                                        "../../../extensions/components/account-login/" +
-                                        "pages/username-validation-edit"
-                                    )
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "account-login",
-                                name: "Account Login",
-                                path: AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"),
-                                protected: true,
-                                showOnSidePanel: false
-                            },
-                            {
-                                component: lazy(() =>
-                                    import(
-                                        "../../../extensions/components/account-login/" +
-                                        "pages/alternative-login-identifier-edit"
-                                    )
-                                ),
-                                exact: true,
-                                icon: {
-                                    icon: getSidePanelIcons().childIcon
-                                },
-                                id: "account-login",
-                                name: "Account Login",
-                                path: AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
-                                protected: true,
-                                showOnSidePanel: false
-                            }
-                        ],
-                        component: lazy(() =>
-                            import("../../../extensions/components/" + "account-login/pages/account-login")
-                        ),
-                        exact: true,
-                        icon: {
-                            icon: import("../../../extensions/assets/images/icons/account-login-icon.svg")
-                        },
-                        id: "accountLogin",
-                        name: "Account Login",
-                        order: 19,
-                        path: AppConstants.getPaths().get("ACCOUNT_LOGIN"),
                         protected: true,
                         showOnSidePanel: false
                     },
