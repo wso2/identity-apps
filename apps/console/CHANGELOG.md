@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.9.36
+
+### Patch Changes
+
+- [#4901](https://github.com/wso2/identity-apps/pull/4901) [`b620d47000`](https://github.com/wso2/identity-apps/commit/b620d47000ed95e2de67399c58ff5ee0c026fbd3) Thanks [@Achintha444](https://github.com/Achintha444)! - (improvement) add new label to the connections.
+
 ## 2.9.35
 
 ### Patch Changes
