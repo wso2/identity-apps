@@ -1846,7 +1846,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* Client Authentication*/ }
             { !isPublicClient
-                && ApplicationTemplateNames.STANDARD_BASED_APPLICATION === template?.name
+                && (ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
+                || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId)
                 && !isSystemApplication
                 && !isDefaultApplication
                 && (
@@ -1969,7 +1970,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             { /* Pushed Authorization Requests*/ }
-            { ApplicationTemplateNames.STANDARD_BASED_APPLICATION === template?.name
+            { (ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
+                || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId)
                 && !isSystemApplication
                 && !isDefaultApplication
                 && (
@@ -2009,7 +2011,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 ) }
 
             { /* Request Object*/ }
-            { ApplicationTemplateNames.STANDARD_BASED_APPLICATION === template?.name
+            { (ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
+                || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId)
                 && !isSystemApplication
                 && !isDefaultApplication
                 && (
