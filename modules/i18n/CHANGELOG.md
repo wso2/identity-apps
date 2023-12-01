@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.67
+
+### Patch Changes
+
+- [#4889](https://github.com/wso2/identity-apps/pull/4889) [`144b485698`](https://github.com/wso2/identity-apps/commit/144b485698b58b7b4812e0b2a2ae7c589ff5b2b8) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix UX issues in Passkey based login
+
 ## 2.0.66
 
 ### Patch Changes

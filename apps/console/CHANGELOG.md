@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.9.37
+
+### Patch Changes
+
+- [#4889](https://github.com/wso2/identity-apps/pull/4889) [`144b485698`](https://github.com/wso2/identity-apps/commit/144b485698b58b7b4812e0b2a2ae7c589ff5b2b8) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix UX issues in Passkey based login
+
+* [#4897](https://github.com/wso2/identity-apps/pull/4897) [`edf7d2c41d`](https://github.com/wso2/identity-apps/commit/edf7d2c41d676b14b20d50abd36b564efb11d2f7) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Update Password Validation connector ID
+
+* Updated dependencies [[`144b485698`](https://github.com/wso2/identity-apps/commit/144b485698b58b7b4812e0b2a2ae7c589ff5b2b8)]:
+  - @wso2is/i18n@2.0.67
+
 ## 2.9.36
 
 ### Patch Changes
