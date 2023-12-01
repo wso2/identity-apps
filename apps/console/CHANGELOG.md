@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.9.38
+
+### Patch Changes
+
+- [#4915](https://github.com/wso2/identity-apps/pull/4915) [`f0f9930189`](https://github.com/wso2/identity-apps/commit/f0f9930189d1c1e3844196366caf28bfad163b55) Thanks [@Achintha444](https://github.com/Achintha444)! - (improvement) add `APIAuth` label to the authenticators in the application sign in method connections
+
+* [#4916](https://github.com/wso2/identity-apps/pull/4916) [`01e6bafd9c`](https://github.com/wso2/identity-apps/commit/01e6bafd9c0cca842ba799b60ef6c324fbba7c91) Thanks [@brionmario](https://github.com/brionmario)! - Fix groups view placeholder
+
+- [#4902](https://github.com/wso2/identity-apps/pull/4902) [`8a13e28839`](https://github.com/wso2/identity-apps/commit/8a13e288390862d83a7b9ce5129f251a3dc19359) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add enterprise idp logo with the idp name
+
+* [#4825](https://github.com/wso2/identity-apps/pull/4825) [`76b2453f2c`](https://github.com/wso2/identity-apps/commit/76b2453f2c8689ed65951b891e1f3c419c81055a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show unauthorized page when non-admin users with insufficient privileges log into super tenant
+
+* Updated dependencies [[`8a13e28839`](https://github.com/wso2/identity-apps/commit/8a13e288390862d83a7b9ce5129f251a3dc19359)]:
+  - @wso2is/theme@2.0.44
+
 ## 2.9.37
 
 ### Patch Changes

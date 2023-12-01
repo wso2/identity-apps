@@ -1,5 +1,14 @@
 # @wso2is/identity-apps-core
 
+## 2.0.78
+
+### Patch Changes
+
+- [#4902](https://github.com/wso2/identity-apps/pull/4902) [`8a13e28839`](https://github.com/wso2/identity-apps/commit/8a13e288390862d83a7b9ce5129f251a3dc19359) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add enterprise idp logo with the idp name
+
+- Updated dependencies [[`8a13e28839`](https://github.com/wso2/identity-apps/commit/8a13e288390862d83a7b9ce5129f251a3dc19359)]:
+  - @wso2is/theme@2.0.44
+
 ## 2.0.77
 
 ### Patch Changes
