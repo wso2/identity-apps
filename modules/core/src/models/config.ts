@@ -348,12 +348,7 @@ export interface FeatureAccessConfigInterface {
     /**
      * Enable the tour option
      */
-    tryittourenabled?: boolean; 
-}
-
-interface DeprecatedFeature {
-    name: string;
-    deprecatedProperties: string[];
+    tryittourenabled?: boolean;
 }
 
 export interface DeprecatedFeatureInterface {
