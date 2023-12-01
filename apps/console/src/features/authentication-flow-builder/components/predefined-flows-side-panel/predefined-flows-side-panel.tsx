@@ -31,7 +31,9 @@ import { addAlert } from "@wso2is/core/store";
 import {
     ContentLoader,
     GenericIcon,
-    Heading
+    Heading,
+    LinkButton,
+    PrimaryButton
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import classNames from "classnames";
@@ -39,7 +41,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, SVGProps, useState }
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Modal } from "semantic-ui-react";
+import { Grid, Modal } from "semantic-ui-react";
 import AdaptiveAuthTemplateChangeConfirmationModal from "./adaptive-auth-template-change-confimation-modal";
 import AdaptiveAuthTemplateInfoModal from "./adaptive-auth-template-info-modal";
 import BasicLoginFlowTemplateChangeConfirmationModal from "./basic-login-flow-template-change-confimation-modal";
@@ -424,6 +426,8 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
 
     const handleSubmit = (values: Record<string, unknown>) => {
 
+        // submitAuthorization();
+
         const data: UpdateGovernanceConnectorConfigInterface = {
             operation: "UPDATE",
             properties: []
@@ -511,6 +515,8 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
         setELKAnalyticsModalOpen(true);
     };
 
+    let submitAuthorization: () => void;
+
     const elkAnalyticsConfigutationsModal = (): ReactElement => {
         return (
             <Modal
@@ -543,14 +549,43 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                             : (
                                 <AnalyticsConfigurationForm
                                     onSubmit={ handleSubmit }
+                                    triggerSubmission={ (submitFunctionCb: () => void) => {
+                                        submitAuthorization = submitFunctionCb;
+                                    } }
                                     initialValues={ connector }
                                     isConnectorEnabled={ true }
                                     isSubmitting={ isSubmitting }
+                                    hideUpdateButton
                                     isModalForm
                                 />
                             )
                     }
                 </Modal.Content>
+                <Modal.Actions>
+                    <Grid>
+                        <Grid.Row column={ 1 }>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                <LinkButton
+                                    data-testid={ `${componentId}-cancel-button` }
+                                    floated="left"
+                                    onClick={ () => handleELKAnalyticsModalClose() }
+                                >
+                                    { t("console:apiResources.tabs.scopes.form.cancelButton") }
+                                </LinkButton>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                <PrimaryButton
+                                    data-testid={ `${componentId}-finish-button` }
+                                    floated="right"
+                                    onClick={ () => submitAuthorization() }
+                                    loading={ isSubmitting }
+                                >
+                                    { t("common:update") }
+                                </PrimaryButton>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Modal.Actions>
             </Modal>
         );
     };

@@ -39,6 +39,10 @@ import { GovernanceConnectorConstants } from "../constants/governance-connector-
  */
 interface AnalyticsConfigurationFormPropsInterface extends IdentifiableComponentInterface {
     /**
+     * Hide the Update button in the form.
+     */
+    hideUpdateButton?: boolean;
+    /**
      * Connector's initial values.
      */
     initialValues: GovernanceConnectorInterface;
@@ -63,6 +67,10 @@ interface AnalyticsConfigurationFormPropsInterface extends IdentifiableComponent
      * Specifies if the form is submitting.
      */
     isSubmitting?: boolean;
+    /**
+     * Trigger form submit externally.
+     */
+    triggerSubmission?: (submitFunctionCb: () => void) => void;
 }
 
 const FORM_ID: string = "governance-connectors-analytics-form";
@@ -78,12 +86,14 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
 ): ReactElement => {
 
     const {
+        hideUpdateButton,
         initialValues,
         onSubmit,
         readOnly,
         isConnectorEnabled,
         isModalForm,
         isSubmitting,
+        triggerSubmission,
         ["data-componentid"]: componentId
     } = props;
 
@@ -197,6 +207,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                 initialValues={ initialConnectorValues }
                 onSubmit={ (values: AnalyticsFormValuesInterface) => onSubmit(getUpdatedConfigurations(values)) }
                 uncontrolledForm={ false }
+                triggerSubmit={ (submitFunction: () => void) => triggerSubmission(submitFunction) }
             >
                 <Field.Input
                     ariaLabel="Analytics Host URL"
@@ -392,7 +403,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     disabled={ isSubmitting }
                     loading={ isSubmitting }
                     label={ t("common:update") }
-                    hidden={ !isConnectorEnabled || readOnly }
+                    hidden={ !isConnectorEnabled || readOnly || hideUpdateButton }
                 />
             </Form>
         </div>
@@ -403,5 +414,6 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
  * Default props for the component.
  */
 AnalyticsConfigurationForm.defaultProps = {
-    "data-componentid": "analytics-edit-form"
+    "data-componentid": "analytics-edit-form",
+    hideUpdateButton: false
 };
