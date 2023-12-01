@@ -343,7 +343,7 @@ export class ServerConstants {
 	public static readonly ANALYTICS_BASIC_AUTH_ENABLE: string = "adaptive_authentication.elastic.basicAuth.enabled";
 	public static readonly ANALYTICS_BASIC_AUTH_USERNAME: string = "adaptive_authentication.elastic.basicAuth.username";
 	public static readonly ANALYTICS_BASIC_AUTH_PASSWORD: string =
-	"__secret__adaptive_authentication.elastic.basicAuth.password";
+		"__secret__adaptive_authentication.elastic.basicAuth.password";
 
 	public static readonly ANALYTICS_HTTP_CONNECTION_TIMEOUT: string =
 		"adaptive_authentication.elastic.HTTPConnectionTimeout";
