@@ -359,7 +359,7 @@ export interface DeprecatedFeatureInterface {
     /**
      * An array of deprecated properties.
      */
-    deprecatedProperties?: string[];
+    deprecatedProperties?: string[]; asdsad
 }
 
 /**
