@@ -18,7 +18,9 @@
 
 import Chip, { ChipProps } from "@oxygen-ui/react/Chip";
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
+import { RolesInterface } from "modules/core/src/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
+import { RoleAudienceTypes } from "../../../roles/constants";
 
 interface RenderChipInterface extends IdentifiableComponentInterface, ChipProps {
     /**
@@ -28,7 +30,7 @@ interface RenderChipInterface extends IdentifiableComponentInterface, ChipProps 
     /**
      * Callback to set the active option.
      */
-    setActiveOption: (option: RolesMemberInterface) => void;
+    setActiveOption: (option: RolesMemberInterface | RolesInterface) => void;
     /**
      * Display name of the role
      */
@@ -44,7 +46,7 @@ interface RenderChipInterface extends IdentifiableComponentInterface, ChipProps 
     /**
      * Option object.
      */
-    option: RolesMemberInterface;
+    option: RolesMemberInterface | RolesInterface;
 }
 
 export const RenderChipRolesInGroups: FunctionComponent<RenderChipInterface> = (
@@ -63,7 +65,7 @@ export const RenderChipRolesInGroups: FunctionComponent<RenderChipInterface> = (
 
     /**
      * Handles the mouse enter event of the chip.
-     * 
+     *
      * @param event - Mouse event
      * @param option - Group or user object
      */
@@ -71,7 +73,7 @@ export const RenderChipRolesInGroups: FunctionComponent<RenderChipInterface> = (
         event.stopPropagation();
         setActiveOption(option);
     };
-    
+
     /**
      * Handles the mouse leave event of the chip.
      */
@@ -84,12 +86,16 @@ export const RenderChipRolesInGroups: FunctionComponent<RenderChipInterface> = (
             <Chip
                 { ...props }
                 key={ key }
-                label={ 
+                size="mini"
+                label={
                     (<>
-                        <i> { audienceType } </i> 
-                        <i> { audienceType === "application" && ( " : " + audienceDisplay ) } </i>
-                        { " | " }
-                        <strong> { displayName } </strong>
+                        <b >{ displayName }</b>
+                        <i>
+                            { " (" + audienceType }
+                            { audienceType.toUpperCase() === RoleAudienceTypes.APPLICATION
+                                && ( " | " + audienceDisplay ) }
+                            { ") " }
+                        </i>
                     </>)
                 }
                 onMouseEnter={ handleChipMouseEnter }

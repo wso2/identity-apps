@@ -27,7 +27,9 @@ import React, {
     HTMLAttributes,
     ReactElement
 } from "react";
+import { Label } from "semantic-ui-react";
 import { getSidePanelIcons } from "../../../../core/configs/ui";
+import { RoleAudienceTypes } from "../../../constants";
 
 interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
     /**
@@ -55,6 +57,10 @@ interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
      */
     ternarySubTitle?: string;
     /**
+     * Is the option a role.
+     */
+    isRole?: boolean;
+    /**
      * The props passed to the option.
      */
     renderOptionProps: HTMLAttributes<HTMLLIElement>
@@ -71,6 +77,7 @@ export const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOptio
         ternaryTitle,
         ternarySubTitle,
         userstore,
+        isRole,
         renderOptionProps
     } = props;
 
@@ -85,31 +92,50 @@ export const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOptio
                             )
                         }
                     </Grid>
-                    <Grid xs={ 5 }>
-                        <ListItemText primary={ displayName } secondary={ subTitle } />  
-                    </Grid>
                     {
-                        ( ternaryTitle && ternarySubTitle ) 
+                        !isRole
+                            ? (
+                                <Grid xs={ 5 }>
+                                    <ListItemText primary={ displayName } secondary={ subTitle } />
+                                </Grid>
+                            ) : (
+                                <>
+                                    <Grid xs={ 5 } columns={ 2 }>
+                                        { displayName }
+                                    </Grid>
+                                    <Grid xs={ 5 }>
+                                        <Label
+                                            size="mini"
+                                        >
+                                            { subTitle }
+                                            { subTitle.toUpperCase() === RoleAudienceTypes.APPLICATION ? " | " : "" }
+                                            { userstore }
+                                        </Label>
+                                    </Grid>
+                                </>
+                            )
+                    }
+                    {
+                        ( ternaryTitle && ternarySubTitle )
                             ? (
                                 <Grid>
                                     <ListItemText primary={ ternaryTitle } secondary={ ternarySubTitle } />
                                 </Grid>
-                            )
-                            : null
+                            ) : null
                     }
                 </Grid>
                 <Grid justifyContent="flex-end">
                     {
-                        userstore ? (
-                            <Chip 
-                                icon={ ( 
+                        (!isRole && userstore) ? (
+                            <Chip
+                                icon={ (
                                     <GenericIcon
                                         inline
                                         size="default"
                                         transparent
                                         icon={ getSidePanelIcons().userStore }
                                         verticalAlign="middle"
-                                    /> 
+                                    />
                                 ) }
                                 label={ userstore }
                             />

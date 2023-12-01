@@ -16,13 +16,14 @@
  * under the License.
  */
 
-import Autocomplete, {  
-    AutocompleteRenderGetTagProps, 
-    AutocompleteRenderInputParams 
+import Autocomplete, {
+    AutocompleteRenderGetTagProps,
+    AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import { EmphasizedSegment, EmptyPlaceholder, Heading } from "@wso2is/react-components";
+import { RolesInterface } from "modules/core/src/models";
 import React, {
     FunctionComponent,
     HTMLAttributes,
@@ -52,7 +53,7 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
     const { t } = useTranslation();
 
     const [ initialSelectedRolesOptions, setInitialSelectedRolesOptions ] = useState<RolesMemberInterface[]>([]);
-    const [ activeOption, setActiveOption ] = useState<RolesMemberInterface>(undefined);
+    const [ activeOption, setActiveOption ] = useState<RolesMemberInterface | RolesInterface>(undefined);
     const [ showEmptyRolesListPlaceholder, setShowEmptyRolesListPlaceholder ] = useState<boolean>(false);
 
     /**
@@ -68,14 +69,14 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
 
     /**
      * Get the place holder components.
-     * 
+     *
      * @returns place holder components
      */
     const getPlaceholders = () => {
         if (showEmptyRolesListPlaceholder) {
             return (
                 <EmptyPlaceholder
-                    subtitle={ 
+                    subtitle={
                         [ t("console:manage.features.groups.edit.roles.placeHolders.emptyListPlaceholder.subtitles") ]
                     }
                     title={ t("console:manage.features.groups.edit.roles.placeHolders.emptyListPlaceholder.title") }
@@ -112,10 +113,10 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
                                 />
                             ) }
                             renderTags={ (
-                                value: RolesMemberInterface[], 
+                                value: RolesMemberInterface[],
                                 getTagProps: AutocompleteRenderGetTagProps
                             ) => value.map((option: RolesMemberInterface, index: number) => (
-                                <RenderChipRolesInGroups 
+                                <RenderChipRolesInGroups
                                     { ...getTagProps({ index }) }
                                     key={ index }
                                     displayName={ option.display }
@@ -128,7 +129,7 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
                                 />
                             )) }
                             renderOption={ (
-                                props: HTMLAttributes<HTMLLIElement>, 
+                                props: HTMLAttributes<HTMLLIElement>,
                                 option: RolesMemberInterface
                             ) => (
                                 <AutoCompleteRenderOption
