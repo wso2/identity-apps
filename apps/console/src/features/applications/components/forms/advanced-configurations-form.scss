@@ -16,10 +16,6 @@
  * under the License.
  */
 
-export * from "./general-details-form";
-export * from "./advanced-configurations-form";
-export * from "./factories";
-export * from "./authenticators";
-export * from "./outbound-provisioning-connectors";
-export * from "./jit-provisioning-configuration-form";
-export * from "./trusted-token-issuer-advanced-configuration-form";
+.client-attestation-info-alert {
+    margin-bottom: 1rem;
+}

@@ -155,10 +155,11 @@ export const applicationConfig: ApplicationConfig = {
             showIncludeTenantDomain: true,
             showIncludeUserstoreDomainRole: true,
             showIncludeUserstoreDomainSubject: true,
+            showMandateLinkedLocalAccount: false,
             showRoleAttribute: true,
             showRoleMapping: true,
             showSubjectAttribute: true,
-            showUseMappedLocalSubject: true
+            showValidateLinkedLocalAccount: true
         },
         attributeSelection: {
             getClaims: (claims: ExtendedClaimInterface[]): ExtendedClaimInterface[] => {
@@ -544,7 +545,7 @@ export const applicationConfig: ApplicationConfig = {
         showProvisioningSettings: true
     },
     excludeIdentityClaims: true,
-    excludeSubjectClaim: true,
+    excludeSubjectClaim: false,
     generalSettings: {
         getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string): boolean => {
             let isEnterpriseLoginMgt: string;

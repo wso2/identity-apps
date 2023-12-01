@@ -873,7 +873,7 @@ export const myAccount: MyAccountNS = {
                 "descriptions": {
                     "hint": "Sie erhalten eine SMS mit einem einmaligen Bestätigungscode"
                 },
-                "heading": "SMS-Nummer",
+                "heading": "Handynummer",
                 "notifications": {
                     "updateMobile": {
                         "error": {

@@ -214,6 +214,46 @@ export const identityProviderConfig: IdentityProviderConfig = {
                         IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
                         SIWEIdPTemplate.templateId
                     ])
+                ],
+                [
+                    IdentityProviderTabTypes.SETTINGS, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                    ])
+                ],
+                [
+                    IdentityProviderTabTypes.ATTRIBUTES, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                    ])
+                ],
+                [
+                    IdentityProviderTabTypes.CONNECTED_APPS, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                    ])
+                ],
+                [
+                    IdentityProviderTabTypes.CONNECTED_APPS, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                    ])
+                ],
+                [
+                    IdentityProviderTabTypes.IDENTITY_PROVIDER_GROUPS, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                    ])
+                ],
+                [
+                    IdentityProviderTabTypes.OUTBOUND_PROVISIONING, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                    ])
+                ],
+                [
+                    IdentityProviderTabTypes.JIT_PROVISIONING, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                    ])
+                ],
+                [
+                    IdentityProviderTabTypes.ADVANCED, new Set([
+                        IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                    ])
                 ]
             ]);
 

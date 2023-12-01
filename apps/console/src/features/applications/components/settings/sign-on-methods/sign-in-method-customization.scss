@@ -16,10 +16,10 @@
  * under the License.
  */
 
-export * from "./general-details-form";
-export * from "./advanced-configurations-form";
-export * from "./factories";
-export * from "./authenticators";
-export * from "./outbound-provisioning-connectors";
-export * from "./jit-provisioning-configuration-form";
-export * from "./trusted-token-issuer-advanced-configuration-form";
+.passkey-adaptive-script-accordion-content {
+    padding-left: calc(1.25em + 0.25rem) !important;
+
+    .code-segment {
+        margin-top: 10px;
+    }
+}

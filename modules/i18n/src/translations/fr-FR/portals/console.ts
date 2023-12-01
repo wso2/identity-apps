@@ -1631,6 +1631,24 @@ export const console: ConsoleNS = {
                 forms: {
                     advancedAttributeSettings: {
                         sections: {
+                            linkedAccounts: {
+                                errorAlert: {
+                                    message: "Configuration invalide",
+                                    description: "La validation du compte local lié doit être activée pour mandater un compte local lié"
+                                },
+                                heading: "Comptes liés",
+                                fields: {
+                                    validateLocalAccount: {
+                                        label: "Valider le compte local lié",
+                                        hint: "Cette option décidera si le compte d'utilisateur local lié est validé avec l'identité authentifiée."
+                                    },
+                                    mandateLocalAccount: {
+                                        label: "Mandater le compte local lié",
+                                        hint: "Ces options détermineront comment le compte utilisateur local lié est validé avec " +
+                                            "l'identité authentifiée."
+                                    }
+                                }
+                            },
                             role: {
                                 fields: {
                                     role: {
@@ -1773,6 +1791,53 @@ export const console: ConsoleNS = {
                             }
                         },
                         sections: {
+                            applicationNativeAuthentication: {
+                                heading: "Authentification native de l'application",
+                                alerts: {
+                                    clientAttestation: "Pour que l'attestation du client fonctionne, l'API d'authentification native de l'application doit être activée."
+                                },
+                                fields: {
+                                    enableAPIBasedAuthentication: {
+                                        hint: "Sélectionnez pour autoriser l'application à effectuer une authentification sans navigation et sans application via l'API d'authentification native de l'application.",
+                                        label: "Activer l'API d'authentification d'application-Native"
+                                    },
+                                    enableClientAttestation: {
+                                        hint: "Sélectionnez pour vérifier l'intégrité de l'application en appelant le service d'attestation de la plate-forme d'hébergement.",
+                                        label: "Activer l'attestation du client"
+                                    },
+                                    android: {
+                                        heading: "Android",
+                                        fields: {
+                                            androidPackageName: {
+                                                hint: "Entrez le nom du package de votre application.C'est l'identifiant unique de votre application et se trouve généralement dans le format de domaine inverse.",
+                                                label: "Nom du package",
+                                                placeholder: "com.example.myapp",
+                                                validations: {
+                                                    empty: "Le nom du package d'application est requis pour l'attestation du client."
+                                                }
+                                            },
+                                            androidAttestationServiceCredentials: {
+                                                hint: "Fournissez les informations d'identification du compte Google Service au format JSON.Ceci sera utilisé pour accéder au service Google Play Integrity.",
+                                                label: "Informations sur le compte de service",
+                                                placeholder: "Contenu du fichier clé JSON pour les informations d'identification du compte Google Service",
+                                                validations: {
+                                                    empty: "Les informations d'identification du compte Google Service sont requises pour l'attestation du client."
+                                                }
+                                            }
+                                        }
+                                    },
+                                    apple: {
+                                        heading: "Apple",
+                                        fields: {
+                                            appleAppId: {
+                                                hint: "Entrez l'ID d'application Apple, un identifiant unique attribué par Apple à votre application, en commençant généralement par 'com.' ou 'bundle.",
+                                                label: "Identifiant d'application",
+                                                placeholder: "com.example.myapp"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
                             certificate: {
                                 fields: {
                                     jwksValue: {
@@ -2976,6 +3041,12 @@ export const console: ConsoleNS = {
                             message: "Erreur de suppression"
                         }
                     },
+                    authenticationStepDeleteErrorDueToAppShared: {
+                        genericError: {
+                            description: "Cet authentificateur est requis pour l'application partagée.",
+                            message: "Impossible de supprimer cet authentificateur"
+                        }
+                    },
                     authenticationStepMin: {
                         genericError: {
                             description: "Au moins une étape d'authentification est requise.",
@@ -3929,6 +4000,20 @@ export const console: ConsoleNS = {
                             hint: "Entrez l'identifiant du domaine d'identité pour ce connexion",
                             label: " Identifiant du domaine local",
                             placeholder: "Entrez la valeur de l'identifiant du royaume d'origine."
+                        },
+                        implicitAssociation: {
+                            enable: {
+                                label: "Association implicite des comptes",
+                                hint: "Lors de l'échange de jetons, si un compte local correspondant est trouvé," +
+                                    " il sera lié implicitement"
+                            },
+                            attributes: {
+                                label: "Sélectionnez les attributs à vérifier",
+                                hint: "Sélectionnez jusqu'à trois attributs qui seront utilisés pour vérifier si" +
+                                    " il existe un compte utilisateur local correspondant",
+                                placeholder: "Aucun attribut sélectionné"
+                            },
+                            warning: "Assurez-vous que les attributs sélectionnés sont vérifiés par l'émetteur du jeton"
                         }
                     },
                     attributeSettings: {

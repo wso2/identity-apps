@@ -1604,6 +1604,25 @@ export const console: ConsoleNS = {
                 forms: {
                     advancedAttributeSettings: {
                         sections: {
+                            linkedAccounts: {
+                                errorAlert: {
+                                    message: "Invalid configuration",
+                                    description: "Linked local account validation should be enabled to mandate a linked local account"
+                                },
+                                heading: "Linked Accounts",
+                                fields: {
+                                    validateLocalAccount: {
+                                        label: "Validate linked local account",
+                                        hint: "This option will decide whether the linked local user account is validated with the " +
+                                        "authenticated identity."
+                                    },
+                                    mandateLocalAccount: {
+                                        label: "Mandate linked local account",
+                                        hint: "These options will decide how the linked local user account is validated with the " +
+                                            "authenticated identity."
+                                    }
+                                }
+                            },
                             role: {
                                 fields: {
                                     role: {
@@ -1743,6 +1762,53 @@ export const console: ConsoleNS = {
                             }
                         },
                         sections: {
+                            applicationNativeAuthentication: {
+                                heading: "Application native authentication",
+                                alerts: {
+                                    clientAttestation: "For client attestation to work, the application native authentication API must be enabled."
+                                },
+                                fields: {
+                                    enableAPIBasedAuthentication: {
+                                        hint: "Select to authorize application to perform browserless, in-app authentication via application native authentication API.",
+                                        label: "Enable app-native authentication API"
+                                    },
+                                    enableClientAttestation: {
+                                        hint: "Select to verify the integrity of the application by calling the attestation service of the hosting platform.",
+                                        label: "Enable client attestation"
+                                    },
+                                    android: {
+                                        heading: "Android",
+                                        fields: {
+                                            androidPackageName: {
+                                                hint: "Enter the package name of your application. It is the unique identifier of your application and is typically in the reverse domain format.",
+                                                label: "Package name",
+                                                placeholder: "com.example.myapp",
+                                                validations: {
+                                                    empty: "Application package name is required for client attestation."
+                                                }
+                                            },
+                                            androidAttestationServiceCredentials: {
+                                                hint: "Provide the Google service account credentials in the JSON format. This will be used to access the  Google Play Integrity Service.",
+                                                label: "Service account credentials",
+                                                placeholder: "Content of the JSON key file for the Google service account credentials",
+                                                validations: {
+                                                    empty: "Google service account credentials are required for client attestation."
+                                                }
+                                            }
+                                        }
+                                    },
+                                    apple: {
+                                        heading: "Apple",
+                                        fields: {
+                                            appleAppId: {
+                                                hint: "Enter the Apple app ID, the unique identifier assigned by Apple to your app.",
+                                                label: "App id",
+                                                placeholder: "com.example.myapp"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
                             certificate: {
                                 fields: {
                                     jwksValue: {
@@ -2935,6 +3001,12 @@ export const console: ConsoleNS = {
                             description: "Second factor authenticators require having a Username & "
                                 + "Password authenticator in a prior step.",
                             message: "Step cannot be deleted"
+                        }
+                    },
+                    authenticationStepDeleteErrorDueToAppShared: {
+                        genericError: {
+                            description: "This authenticator is required for the shared application.",
+                            message: "Cannot delete this authenticator"
                         }
                     },
                     authenticationStepMin: {
@@ -5580,6 +5652,20 @@ export const console: ConsoleNS = {
                         homeRealmIdentifier: {
                             hint: "Enter the home realm identifier for this connection",
                             label: "Home Realm Identifier"
+                        },
+                        implicitAssociation: {
+                            enable: {
+                                label: "Implicit account linking",
+                                hint: "During token exchange if there is a matching local account found," +
+                                    " it will be linked implicitly"
+                            },
+                            attributes: {
+                                label: "Select attributes to cross check",
+                                hint: "Select up to three attributes that will be used to cross check if" +
+                                    " there is a matching local user account",
+                                placeholder: "No attributes are selected"
+                            },
+                            warning: "Ensure that the selected attributes are verified by the token issuer"
                         }
                     },
                     attributeSettings: {
@@ -7567,7 +7653,7 @@ export const console: ConsoleNS = {
                     confirmations: {
                         action: "Confirm",
                         content: "If you delete this attribute mapping, all the associated {{type}} attributes will "
-                            + "also be deleted.Please proceed with caution.",
+                            + "also be deleted. Please proceed with caution.",
                         header: "Are you sure?",
                         hint: "Please type <1>{{confirm}}</1> to confirm.",
                         message: "This action is irreversible and will permanently delete the selected attribute " +

@@ -27,6 +27,7 @@ import { Dispatch } from "redux";
 import { AddAuthenticatorModal } from "./add-authenticator-modal";
 import { AuthenticationStep } from "./authentication-step";
 import { applicationConfig, identityProviderConfig } from "../../../../../../extensions";
+import { AuthenticatorManagementConstants } from "../../../../../connections/constants/autheticator-constants";
 import { EventPublisher } from "../../../../../core";
 import {
     IdentityProviderManagementConstants
@@ -50,7 +51,10 @@ import { SignInMethodUtils } from "../../../../utils/sign-in-method-utils";
  * Proptypes for the applications settings component.
  */
 interface AuthenticationFlowPropsInterface extends IdentifiableComponentInterface {
-
+    /**
+     * Whether the application is shared between organizations or not.
+     */
+    isApplicationShared: boolean;
     /**
      * All authenticators in the system.
      */
@@ -110,6 +114,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         triggerUpdate,
         updateSteps,
         onAuthenticationSequenceChange,
+        isApplicationShared,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -419,6 +424,23 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
 
         const currentStep: AuthenticationStepInterface = steps[stepIndex];
         const currentAuthenticator: string = currentStep.options[optionIndex].authenticator;
+
+        // Do not allow deleting SSO authenticator if the application is shared.
+        if (stepIndex === 0
+            && currentAuthenticator === AuthenticatorManagementConstants.ORGANIZATION_SSO_AUTHENTICATOR_NAME
+            && isApplicationShared) {
+            dispatch(
+                addAlert({
+                    description: t("console:develop.features.applications.notifications" +
+                        ".authenticationStepDeleteErrorDueToAppShared.genericError.description"),
+                    level: AlertLevels.WARNING,
+                    message: t("console:develop.features.applications.notifications" +
+                        ".authenticationStepDeleteErrorDueToAppShared.genericError.message")
+                })
+            );
+
+            return;
+        }
 
         // check whether the authenticator to be deleted is a 2FA
         if (currentAuthenticator === IdentityProviderManagementConstants.TOTP_AUTHENTICATOR ||

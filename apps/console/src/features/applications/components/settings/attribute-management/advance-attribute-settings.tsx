@@ -16,13 +16,15 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { Code, Heading, Hint, Text } from "@wso2is/react-components";
 import useUIConfig from "modules/common/src/hooks/use-ui-configs";
-import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { Dispatch, FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
 import { applicationConfig } from "../../../../../extensions";
@@ -90,6 +92,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
     const [ selectedSubjectValueLocalClaim, setSelectedSubjectValueLocalClaim ] =
@@ -201,6 +204,17 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
     const submitValues = (values: Record<string, any>) => {
 
+        if (!!values.mandateLinkedLocalAccount && !values.validateLinkedLocalAccount) {
+            dispatch(addAlert({
+                description: t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                "sections.linkedAccounts.errorAlert.description"),
+                level: AlertLevels.WARNING,
+                message: t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                "sections.linkedAccounts.errorAlert.message")
+            }));
+
+            return;
+        }
         const settingValues: {
             role: RoleInterface;
             subject: SubjectInterface
@@ -222,7 +236,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                 claim: getDefaultDropDownValue(dropDownOptions, values.subjectAttribute),
                 includeTenantDomain: !!values.subjectIncludeTenantDomain,
                 includeUserDomain: !!values.subjectIncludeUserDomain,
-                useMappedLocalSubject: !!values.subjectUseMappedLocalSubject
+                mappedLocalSubjectMandatory: !!values.mandateLinkedLocalAccount,
+                useMappedLocalSubject: !!values.validateLinkedLocalAccount
             }
         };
 
@@ -230,15 +245,17 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             showIncludeTenantDomain: boolean;
             showIncludeUserstoreDomainRole: boolean;
             showIncludeUserstoreDomainSubject: boolean;
+            showMandateLinkedLocalAccount: boolean;
             showRoleAttribute: boolean;
             showRoleMapping: boolean;
-            showUseMappedLocalSubject: boolean;
+            showValidateLinkedLocalAccount: boolean;
             showSubjectAttribute: boolean;
         } = applicationConfig.attributeSettings.advancedAttributeSettings;
 
         !config.showIncludeUserstoreDomainSubject && delete settingValues.subject.includeUserDomain;
         !config.showIncludeTenantDomain && delete settingValues.subject.includeTenantDomain;
-        !config.showUseMappedLocalSubject && delete settingValues.subject.useMappedLocalSubject;
+        !config.showValidateLinkedLocalAccount && delete settingValues.subject.useMappedLocalSubject;
+        !config.showMandateLinkedLocalAccount && delete settingValues.subject.mappedLocalSubjectMandatory;
 
         !config.showRoleMapping && delete settingValues.role.mappings;
         !config.showIncludeUserstoreDomainRole && settingValues.role.includeUserDomain;
@@ -404,29 +421,79 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 ".sections.subject.fields.subjectIncludeTenantDomain.hint")
                         }
                     />
+                    <Divider />
+                    <Heading
+                        as="h4"
+                    >
+                        { t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                            "sections.linkedAccounts.heading") }
+                    </Heading>
+                    <Divider hidden/>
+                    { !applicationConfig.attributeSettings.advancedAttributeSettings.showMandateLinkedLocalAccount ?
+                        (<Field.CheckboxLegacy
+                            ariaLabel="Validate linked local account"
+                            name="validateLinkedLocalAccount"
+                            label={
+                                t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                "sections.linkedAccounts.fields.validateLocalAccount.label")
+                            }
+                            required={ false }
+                            value={
+                                initialSubject?.useMappedLocalSubject
+                                    ? [ "useMappedLocalSubject" ]
+                                    : []
+                            }
+                            readOnly={ readOnly }
+                            data-testid={ `${ testId }-validate-linked-local-account-checkbox` }
+                            hidden={
+                                !applicationConfig.attributeSettings.advancedAttributeSettings
+                                    .showValidateLinkedLocalAccount
+                            }
+                            hint={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                            "sections.linkedAccounts.fields.validateLocalAccount.hint") }
+                        />):
+                        (<Field.CheckboxLegacy
+                            ariaLabel="Validate linked local account"
+                            name="validateLinkedLocalAccount"
+                            label={
+                                t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                "sections.linkedAccounts.fields.validateLocalAccount.label")
+                            }
+                            required={ false }
+                            value={
+                                initialSubject?.useMappedLocalSubject
+                                    ? [ "useMappedLocalSubject" ]
+                                    : []
+                            }
+                            readOnly={ readOnly }
+                            data-testid={ `${ testId }-validate-linked-local-account-checkbox` }
+                            hidden={
+                                !applicationConfig.attributeSettings.advancedAttributeSettings
+                                    .showValidateLinkedLocalAccount
+                            }
+                        />)
+                    }
                     <Field.CheckboxLegacy
-                        ariaLabel="Subject use mapped local subject"
-                        name="subjectUseMappedLocalSubject"
+                        ariaLabel="Mandate linked local account"
+                        name="mandateLinkedLocalAccount"
                         label={
                             t("console:develop.features.applications.forms.advancedAttributeSettings." +
-                                "sections.subject.fields.subjectUseMappedLocalSubject.label")
+                            "sections.linkedAccounts.fields.mandateLocalAccount.label")
                         }
                         required={ false }
                         value={
-                            initialSubject?.useMappedLocalSubject
-                                ? [ "useMappedLocalSubject" ]
+                            initialSubject?.mappedLocalSubjectMandatory
+                                ? [ "mappedLocalSubjectMandatory" ]
                                 : []
                         }
                         readOnly={ readOnly }
-                        data-testid={ `${ testId }-subject-use-mapped-local-subject-checkbox` }
+                        data-testid={ `${ testId }-mandate-linked-local-account-checkbox` }
                         hidden={
                             !applicationConfig.attributeSettings.advancedAttributeSettings
-                                .showUseMappedLocalSubject || !UIConfig?.classicFeatures?.isUseMappedLocalSubjectEnabled
+                                .showMandateLinkedLocalAccount
                         }
-                        hint={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
-                            "sections.subject.fields.subjectUseMappedLocalSubject.hint")
-                        }
+                        hint={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                        "sections.linkedAccounts.fields.mandateLocalAccount.hint") }
                     />
                     <Divider />
 

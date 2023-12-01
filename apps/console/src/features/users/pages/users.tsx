@@ -77,9 +77,9 @@ import { getUserStoreList } from "../../userstores/api";
 import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "../../userstores/constants/user-store-constants";
 import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "../../userstores/models/user-stores";
 import { getUsersList } from "../api";
+import { useGetParentOrgUserInvites } from "../components/guests/api/use-get-parent-org-user-invites";
 import { UserInviteInterface } from "../components/guests/models/invite";
 import { GuestUsersList } from "../components/guests/pages/guest-users-list";
-import { useGetParentOrgUserInvites } from "../components/guests/pages/use-get-parent-org-user-invites";
 import { UsersList } from "../components/users-list";
 import { AddUserWizard } from "../components/wizard/add-user-wizard";
 import { BulkImportUserWizard } from "../components/wizard/bulk-import-user-wizard";
@@ -185,8 +185,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const {
         data: parentOrgUserInviteList,
-        isLoading: isParentOrgUserInviteFetchRequestLoading,
-        mutate: mutateParentOrgUserListFetchRequest
+        isLoading: isParentOrgUserInviteListLoading,
+        mutate: mutateParentOrgUserInviteList
     } = useGetParentOrgUserInvites();
 
     /**
@@ -831,7 +831,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 } }
                 emailVerificationEnabled={ emailVerificationEnabled }
                 onSuccessfulUserAddition={ (id: string) => {
-                    mutateParentOrgUserListFetchRequest();
+                    mutateParentOrgUserInviteList();
                     eventPublisher.publish("manage-users-finish-creating-user");
                     history.push(UsersConstants.getPaths().get("CUSTOMER_USER_EDIT_PATH")
                         .replace(":id", id));
@@ -842,6 +842,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 listItemLimit={ listItemLimit }
                 updateList={ () => setListUpdated(true) }
                 userStore= { userStore }
+                onUserInviteSuccess={ () => mutateParentOrgUserInviteList() }
             />
         );
     };
@@ -880,7 +881,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 totalListSize={ usersList?.totalResults }
                 isLoading={
                     isUserListRequestLoading
-                    || isParentOrgUserInviteFetchRequestLoading
+                    || isParentOrgUserInviteListLoading
                 }
                 paginationOptions={ {
                     disableNextButton: !isUsersNextPageAvailable,
@@ -901,7 +902,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                 +  invitationStatusOption
                             }
                             disabled={
-                                isParentOrgUserInviteFetchRequestLoading
+                                isParentOrgUserInviteListLoading
                             }
                         />
                     )
@@ -925,7 +926,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                 onboardedGuestUserList={ usersList }
                                 onSearchQueryClear={ handleSearchQueryClear }
                                 guestUsersList={ finalGuestList }
-                                getGuestUsersList={ () => mutateParentOrgUserListFetchRequest() }
+                                getGuestUsersList={ () => mutateParentOrgUserInviteList() }
                                 searchQuery={ searchQuery }
                                 userTypeSelection={ UserAccountTypesMain.EXTERNAL }
                                 data-testid={ testId }
@@ -987,7 +988,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         <PageLayout
             action={
                 !isUserListRequestLoading
-                && !isParentOrgUserInviteFetchRequestLoading
+                && !isParentOrgUserInviteListLoading
                 && (
                     <Show when={ AccessControlConstants.USER_WRITE }>
                         { renderUserDropDown() }

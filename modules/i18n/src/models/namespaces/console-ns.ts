@@ -1066,6 +1066,17 @@ export interface ConsoleNS {
                 forms: {
                     advancedAttributeSettings: {
                         sections: {
+                            linkedAccounts: {
+                                errorAlert: {
+                                    message: string;
+                                    description: string;
+                                }
+                                heading: string;
+                                fields: {
+                                    validateLocalAccount: FormAttributes;
+                                    mandateLocalAccount: FormAttributes;
+                                }
+                            }
                             subject: {
                                 fields: {
                                     subjectAttribute: FormAttributes;
@@ -1095,6 +1106,29 @@ export interface ConsoleNS {
                             skipConsentLogout: FormAttributes;
                         };
                         sections: {
+                            applicationNativeAuthentication: {
+                                heading: string;
+                                alerts: {
+                                    clientAttestation: string;
+                                },
+                                fields: {
+                                    enableAPIBasedAuthentication: FormAttributes;
+                                    enableClientAttestation: FormAttributes;
+                                    android: {
+                                        heading: string;
+                                        fields: {
+                                            androidPackageName: FormAttributes;
+                                            androidAttestationServiceCredentials: FormAttributes;
+                                        }
+                                    },
+                                    apple: {
+                                        heading: string;
+                                        fields: {
+                                            appleAppId: FormAttributes;
+                                        }
+                                    }
+                                }
+                            },
                             certificate: {
                                 heading: string;
                                 hint?: {
@@ -1434,6 +1468,7 @@ export interface ConsoleNS {
                     apiLimitReachedError: Notification;
                     authenticationStepMin: Notification;
                     authenticationStepDeleteErrorDueToSecondFactors: Notification;
+                    authenticationStepDeleteErrorDueToAppShared: Notification;
                     deleteApplication: Notification;
                     deleteOptionErrorDueToSecondFactorsOnRight: Notification;
                     deleteProtocolConfig: Notification;
@@ -2526,6 +2561,18 @@ export interface ConsoleNS {
                             hint: string;
                             certificatePEM: FormAttributes;
                             certificateJWKS: FormAttributes;
+                        };
+                        implicitAssociation: {
+                            enable: {
+                                label: string;
+                                hint: string;
+                            };
+                            attributes: {
+                                label: string;
+                                placeholder: string;
+                                hint: string;
+                            };
+                            warning: string;
                         };
                     };
                     attributeSettings: {

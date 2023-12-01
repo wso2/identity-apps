@@ -1,5 +1,38 @@
 # @wso2is/console
 
+## 2.9.33
+
+### Patch Changes
+
+- [#4862](https://github.com/wso2/identity-apps/pull/4862) [`7ce89e87a9`](https://github.com/wso2/identity-apps/commit/7ce89e87a908c25a25109eb923d653f7a757c277) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add mandatory reply to logout URL field to passive STS application create wizard
+
+## 2.9.32
+
+### Patch Changes
+
+- [#4886](https://github.com/wso2/identity-apps/pull/4886) [`93ab682a06`](https://github.com/wso2/identity-apps/commit/93ab682a0690bc7a4818cbec198487f97c7accbc) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce autocomplete for organization name field in email domain add form
+
+* [#4875](https://github.com/wso2/identity-apps/pull/4875) [`3e8b711800`](https://github.com/wso2/identity-apps/commit/3e8b711800944ab395927e83f02f14b9a80b0d26) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Remove logic to hide delete option for system roles
+
+## 2.9.31
+
+### Patch Changes
+
+- [#4867](https://github.com/wso2/identity-apps/pull/4867) [`f522ec7d09`](https://github.com/wso2/identity-apps/commit/f522ec7d09bc8dd5c7abde6753876a2c9855dea0) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with user invitation mutation
+
+## 2.9.30
+
+### Patch Changes
+
+- [#4863](https://github.com/wso2/identity-apps/pull/4863) [`5836726baf`](https://github.com/wso2/identity-apps/commit/5836726baf6da6074a0fa3988f54a4cf523e121d) Thanks [@brionmario](https://github.com/brionmario)! - Fix sub org refresh issues
+
+* [#4870](https://github.com/wso2/identity-apps/pull/4870) [`6e0950b93e`](https://github.com/wso2/identity-apps/commit/6e0950b93e79627e878b86b3149c8a6e5f50d3ad) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Make OIDC attributes editable
+
+- [#4878](https://github.com/wso2/identity-apps/pull/4878) [`c7f7826c7b`](https://github.com/wso2/identity-apps/commit/c7f7826c7b613e6da9ad87654a482562d3c3c248) Thanks [@Achintha444](https://github.com/Achintha444)! - (improvement) revamp the UI of the Application native authentication
+
+- Updated dependencies [[`c7f7826c7b`](https://github.com/wso2/identity-apps/commit/c7f7826c7b613e6da9ad87654a482562d3c3c248)]:
+  - @wso2is/i18n@2.0.64
+
 ## 2.9.29
 
 ### Patch Changes
