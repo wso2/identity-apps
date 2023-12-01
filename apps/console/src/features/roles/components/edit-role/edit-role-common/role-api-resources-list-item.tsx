@@ -148,7 +148,6 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                         <ListItemText
                             secondary={ (
                                 <Label
-                                    // pointing="left"
                                     size="mini"
                                     className= "info-label"
                                 >
