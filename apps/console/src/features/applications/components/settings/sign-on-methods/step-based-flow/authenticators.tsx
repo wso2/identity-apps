@@ -358,7 +358,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             return [];
         }
 
-        return AuthenticatorMeta.getAuthenticatorLabels(authenticator) ?? [];
+        return AuthenticatorMeta.getAuthenticatorLabels(authenticator?.defaultAuthenticator) ?? [];
     };
 
     /**

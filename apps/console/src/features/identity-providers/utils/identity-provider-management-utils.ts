@@ -202,7 +202,10 @@ export class IdentityProviderManagementUtils {
                         defaultAuthenticator: {
                             authenticatorId: authenticator.id,
                             isEnabled: authenticator.isEnabled,
-                            name: authenticator.name
+                            name: authenticator.name,
+                            tags: authenticator.tags
+                                ? authenticator.tags
+                                : []
                         },
                         description: AuthenticatorMeta.getAuthenticatorDescription(authenticator.id),
                         displayName: authenticator.displayName,
@@ -210,10 +213,7 @@ export class IdentityProviderManagementUtils {
                         idp: IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER,
                         image: AuthenticatorMeta.getAuthenticatorIcon(authenticator.id),
                         isEnabled: authenticator.isEnabled,
-                        name: authenticator.name,
-                        tags: authenticator.tags
-                            ? authenticator.tags
-                            : []
+                        name: authenticator.name
                     });
                 });
 
@@ -239,15 +239,6 @@ export class IdentityProviderManagementUtils {
                                     authenticator.federatedAuthenticators.defaultAuthenticatorId);
                             });
 
-                        const tags: string[] = authenticator?.federatedAuthenticators?.authenticators.map(
-                            (item: FederatedAuthenticatorListItemInterface) => {
-                                if (item.tags) {
-                                    return item.tags;
-                                }
-                            })
-                            .flat()
-                            .filter((tag: string | undefined) => tag !== undefined) || [];
-
                         federatedAuthenticators.push({
                             authenticators: authenticator.federatedAuthenticators.authenticators,
                             defaultAuthenticator: defaultAuthenticator,
@@ -263,8 +254,7 @@ export class IdentityProviderManagementUtils {
                                 : AuthenticatorMeta.getAuthenticatorIcon(authenticator.id),
                             isEnabled: authenticator.isEnabled,
                             name: authenticator.name,
-                            provisioning: authenticator[ "provisioning" ] as ProvisioningInterface,
-                            tags: tags
+                            provisioning: authenticator[ "provisioning" ] as ProvisioningInterface
                         } as any);
                     });
 
@@ -318,8 +308,8 @@ export class IdentityProviderManagementUtils {
      */
     public static getAuthenticatorLabels(authenticator: GenericAuthenticatorInterface): string[] {
 
-        return AuthenticatorMeta.getAuthenticatorLabels(authenticator)
-            ? AuthenticatorMeta.getAuthenticatorLabels(authenticator)
+        return AuthenticatorMeta.getAuthenticatorLabels(authenticator?.defaultAuthenticator)
+            ? AuthenticatorMeta.getAuthenticatorLabels(authenticator?.defaultAuthenticator)
             : [];
     }
 

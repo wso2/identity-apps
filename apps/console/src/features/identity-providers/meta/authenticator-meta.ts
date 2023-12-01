@@ -21,7 +21,7 @@ import { ReactNode } from "react";
 import { identityProviderConfig } from "../../../extensions";
 import { getAuthenticatorIcons } from "../configs/ui";
 import { IdentityProviderManagementConstants } from "../constants";
-import { AuthenticatorCategories, AuthenticatorLabels, GenericAuthenticatorInterface } from "../models";
+import { AuthenticatorCategories, AuthenticatorLabels, FederatedAuthenticatorInterface } from "../models";
 
 export class AuthenticatorMeta {
 
@@ -86,9 +86,9 @@ export class AuthenticatorMeta {
      *
      * @returns Authenticator labels.
      */
-    public static getAuthenticatorLabels(authenticator: GenericAuthenticatorInterface): string[] {
+    public static getAuthenticatorLabels(authenticator: FederatedAuthenticatorInterface): string[] {
 
-        const authenticatorId: string = authenticator?.defaultAuthenticator?.authenticatorId;
+        const authenticatorId: string = authenticator?.authenticatorId;
 
         const authenticatorLabels: string[] = get({
             [ IdentityProviderManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: [ AuthenticatorLabels.HANDLERS ],
@@ -134,8 +134,8 @@ export class AuthenticatorMeta {
             ]
         }, authenticatorId);
 
-        if ( authenticator?.tags?.includes(AuthenticatorLabels.API_AUTHENTICATION) ) {
-            if ( authenticatorLabels ) {
+        if (authenticator?.tags?.includes(AuthenticatorLabels.API_AUTHENTICATION)) {
+            if (authenticatorLabels) {
                 return [ ...authenticatorLabels, AuthenticatorLabels.API_AUTHENTICATION ];
             } else {
                 return [ AuthenticatorLabels.API_AUTHENTICATION ];
