@@ -212,10 +212,6 @@ export interface CommonUIConfigInterface<T = Record<string, unknown>> {
      * Theme configs.
      */
     theme: AppThemeConfigInterface;
-    /**
-     * Enable/Disable API Based Authenticaiton Config.
-     */
-    showAPIBasedAuthentication?: boolean;
 }
 
 /**
