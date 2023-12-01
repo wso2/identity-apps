@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.65
+
+### Patch Changes
+
+- [#4879](https://github.com/wso2/identity-apps/pull/4879) [`96ffe3a45d`](https://github.com/wso2/identity-apps/commit/96ffe3a45d5263f31f14f71beb70a9fd7b198f60) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add validation for deleting SSO authenticator from sign in options
+
 ## 2.0.64
 
 ### Patch Changes

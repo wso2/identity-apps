@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.76
+
+### Patch Changes
+
+- [#4881](https://github.com/wso2/identity-apps/pull/4881) [`ee87522bdd`](https://github.com/wso2/identity-apps/commit/ee87522bddb2785e48c6e5b4490067b5de671641) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Fix authentication endpoint externally hosting issues
+
 ## 2.0.75
 
 ### Patch Changes
