@@ -162,9 +162,16 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 if (
                     !selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                         selectedAPIResource?.id === api?.id)) {
+                    // Remove this once the backend improvement is done to send the type of the API resource.
+                    let type: string = APIResourcesConstants.SYSTEM;
+
+                    if (api?.identifier?.startsWith("/o/")) {
+                        type = APIResourcesConstants.SYSTEM_ORG;
+                    }
                     options.push({
                         key: api.id,
                         text: api.displayName,
+                        type: api.type ?? type,
                         value: api.id
                     });
                 }
