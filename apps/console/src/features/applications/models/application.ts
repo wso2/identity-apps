@@ -791,8 +791,7 @@ export enum ApplicationTemplateIdTypes {
  * @readonly
  */
 export enum ApplicationTemplateNames {
-    STANDARD_BASED_APPLICATION = "Standard-Based Application",
-    TRADITIONAL_APPLICATION = "Standard-Based Application"
+    STANDARD_BASED_APPLICATION = "Standard-Based Application"
 }
 
 /**
