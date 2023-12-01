@@ -320,16 +320,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 tempProfileInfo.set(
                                     schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
                                 );
-    
+
                                 return;
                             }
-    
+
                             if (schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]
                                 && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA][schemaNames[0]]) {
                                 tempProfileInfo.set(
                                     schema.name, userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
                                 );
-    
+
                                 return;
                             }
                             tempProfileInfo.set(schema.name, userInfo[schemaName]);
@@ -404,16 +404,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 tempProfileInfo.set(
                                     schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
                                 );
-    
+
                                 return;
                             }
-    
+
                             if (schema.extended && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA]
                                 && userInfo[ProfileConstants.SCIM2_WSO2_USER_SCHEMA][schemaNames[0]]) {
                                 tempProfileInfo.set(
                                     schema.name, userInfo[ProfileConstants.SCIM2_WSO2_CUSTOM_SCHEMA][schemaNames[0]]
                                 );
-    
+
                                 return;
                             }
                             tempProfileInfo.set(schema.name, userInfo[schemaName]);
@@ -717,8 +717,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         } else {
                             if (schemaNames.length === 1) {
                                 if (schema.extended) {
-                                    const schemaId: string = schema?.schemaId 
-                                        ? schema.schemaId 
+                                    const schemaId: string = schema?.schemaId
+                                        ? schema.schemaId
                                         : ProfileConstants.SCIM2_ENT_USER_SCHEMA;
 
                                     opValue = {
@@ -736,8 +736,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 }
                             } else {
                                 if(schema.extended) {
-                                    const schemaId: string = schema?.schemaId 
-                                        ? schema.schemaId 
+                                    const schemaId: string = schema?.schemaId
+                                        ? schema.schemaId
                                         : ProfileConstants.SCIM2_ENT_USER_SCHEMA;
 
                                     opValue = {
@@ -798,7 +798,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         } else {
             profileSchema.forEach((schema: ProfileSchemaInterface) => {
-
                 if (schema.mutability === ProfileConstants.READONLY_SCHEMA) {
                     return;
                 }
@@ -848,10 +847,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         } else {
                             if (schemaNames.length === 1) {
                                 if (schema.extended) {
-                                    const schemaId: string = schema?.schemaId 
-                                        ? schema.schemaId 
+                                    const schemaId: string = schema?.schemaId
+                                        ? schema.schemaId
                                         : ProfileConstants.SCIM2_ENT_USER_SCHEMA;
-                                    
+
                                     opValue = {
                                         [schemaId]: {
                                             [schemaNames[0]]: schema.type.toUpperCase() === "BOOLEAN" ?
@@ -867,8 +866,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 }
                             } else {
                                 if(schema.extended) {
-                                    const schemaId: string = schema?.schemaId 
-                                        ? schema.schemaId 
+                                    const schemaId: string = schema?.schemaId
+                                        ? schema.schemaId
                                         : ProfileConstants.SCIM2_ENT_USER_SCHEMA;
 
                                     opValue = {
@@ -882,11 +881,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     };
                                 } else if (schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY
                                     .get("NAME")) {
-                                    values.get(schema.name) && (
-                                        opValue = {
-                                            name: { [schemaNames[1]]: values.get(schema.name) }
-                                        }
-                                    );
+                                    opValue = {
+                                        name: { [schemaNames[1]]: values.get(schema.name) }
+                                    };
                                 } else {
                                     if (schemaNames[0] === "addresses") {
                                         opValue = {
@@ -1180,9 +1177,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     )
                                 }
                                 {
-                                    !isPrivilegedUser && 
-                                    adminUserType === AdminAccountTypes.INTERNAL && 
-                                    associationType !== GUEST_ADMIN_ASSOCIATION_TYPE && 
+                                    !isPrivilegedUser &&
+                                    adminUserType === AdminAccountTypes.INTERNAL &&
+                                    associationType !== GUEST_ADMIN_ASSOCIATION_TYPE &&
                                     (
                                         <DangerZone
                                             data-testid={ `${ testId }-revoke-admin-privilege-danger-zone` }
@@ -1315,7 +1312,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         +  supportedI18nLanguages[key].code as string,
                                     flag: supportedI18nLanguages[key].flag,
                                     key: supportedI18nLanguages[key].code as string,
-                                    text: `${supportedI18nLanguages[key].name as string}, 
+                                    text: `${supportedI18nLanguages[key].name as string},
                                                 ${supportedI18nLanguages[key].code as string}`,
                                     value: supportedI18nLanguages[key].code as string
                                 };

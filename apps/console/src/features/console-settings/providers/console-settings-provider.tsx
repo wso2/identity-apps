@@ -19,6 +19,7 @@
 import React, { PropsWithChildren, ReactElement, useMemo } from "react";
 import { updateApplicationConfigurations, useApplicationList } from "../../applications/api/application";
 import { useGetApplication } from "../../applications/api/use-get-application";
+import useGetApplicationInboundConfigs from "../../applications/api/use-get-application-inbound-configs";
 import { ApplicationManagementConstants } from "../../applications/constants";
 import { AuthenticationSequenceInterface } from "../../applications/models/application";
 import ConsoleSettingsContext from "../context/console-settings-context";
@@ -49,6 +50,12 @@ const ConsoleSettingsProvider = (props: PropsWithChildren<ConsoleSettingsProvide
         isLoading: isConsoleConfigurationsFetchRequestLoading
     } = useGetApplication(consoleId, !!consoleId);
 
+    const {
+        data: consoleApplicationInboundConfigs,
+        mutate: mutateConsoleApplicationInboundConfigs,
+        isLoading: isConsoleApplicationInboundConfigsFetchRequestLoading
+    } = useGetApplicationInboundConfigs(consoleId, "oidc", !!consoleId);
+
     /**
      * Function to update the console login flow sequence.
      *
@@ -69,7 +76,10 @@ const ConsoleSettingsProvider = (props: PropsWithChildren<ConsoleSettingsProvide
                 consoleConfigurations: consoleApplication,
                 consoleDisplayName: consoleApplication?.name,
                 consoleId,
+                consoleInboundConfigurations: consoleApplicationInboundConfigs,
+                isConsoleApplicationInboundConfigsFetchRequestLoading,
                 isConsoleConfigurationsFetchRequestLoading,
+                mutateConsoleApplicationInboundConfigs,
                 mutateConsoleConfigurations: mutateConsoleApplication,
                 updateConsoleLoginFlow
             } }

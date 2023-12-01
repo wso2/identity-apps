@@ -31,11 +31,11 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    AutocompleteFieldAdapter,
     FinalForm,
     FinalFormField,
     FormRenderProps,
-    FormSpy,
-    SelectFieldAdapter
+    FormSpy
 } from "@wso2is/form";
 import { EmphasizedSegment, Hint, PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -52,9 +52,9 @@ import { OrganizationInterface } from "../../organizations/models/organizations"
 import addOrganizationEmailDomain from "../api/add-organization-email-domains";
 import checkEmailDomainAvailable from "../api/check-email-domain-available";
 import useGetOrganizationDiscovery from "../api/use-get-organization-discovery";
-import { 
-    OrganizationDiscoveryCheckResponseInterface, 
-    OrganizationDiscoveryInterface 
+import {
+    OrganizationDiscoveryCheckResponseInterface,
+    OrganizationDiscoveryInterface
 } from "../models/organization-discovery";
 import "./add-organization-discovery-domains.scss";
 
@@ -95,7 +95,7 @@ const FORM_ID: string = "edit-organization-email-domains-form";
 const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscoveryDomainsPropsInterface> = (
     props: AddOrganizationDiscoveryDomainsPropsInterface
 ): ReactElement => {
-    const { 
+    const {
         isReadOnly,
         ["data-componentid"]: componentId
     } = props;
@@ -222,7 +222,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
             emailDomainList.pop();
 
             return;
-        } 
+        }
 
         const isEmailDomainAvailable: boolean = await checkEmailDomainAvailability(emailDomainList[
             emailDomainList.length-1]);
@@ -243,7 +243,11 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                 } }
                 render={ ({ handleSubmit, submitting }: FormRenderProps) => {
                     return (
-                        <form id={ FORM_ID } onSubmit={ handleSubmit } className="add-organization-email-domain-form">
+                        <form
+                            id={ FORM_ID }
+                            onSubmit={ handleSubmit }
+                            className="add-organization-email-domain-form"
+                        >
                             <FinalFormField
                                 displayEmpty
                                 fullWidth
@@ -251,7 +255,6 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                     margin: "dense"
                                 } }
                                 ariaLabel="Organization name field"
-                                required={ false }
                                 data-componentid={ `${componentId}-form-organization-name-field` }
                                 name="organizationName"
                                 type="text"
@@ -283,7 +286,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                         ) }
                                     </Hint>
                                 ) }
-                                component={ SelectFieldAdapter }
+                                component={ AutocompleteFieldAdapter }
                                 options={
                                     filteredDiscoverableOrganizations?.map((organization: OrganizationInterface) => {
                                         return organization.name;
@@ -305,6 +308,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
 
                                     return selected;
                                 } }
+                                required
                             />
                             <Autocomplete
                                 fullWidth
@@ -340,7 +344,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                             { ...params }
                                             margin="dense"
                                             error={ isEmailDomainDataError || isEmailDomainAvailableError }
-                                            helperText= { 
+                                            helperText= {
                                                 isEmailDomainDataError
                                                     ? t(
                                                         "console:manage.features.organizationDiscovery.assign.form." +

@@ -17,12 +17,15 @@
  */
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, SBACInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 // TODO: Move to shared components.
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
 import { BasicGroupDetails } from "./edit-group-basic";
 import { EditGroupRoles } from "./edit-group-roles";
@@ -80,6 +83,8 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     } = props;
 
     const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
+
     const { activeTab, updateActiveTab } = useGroupManagement();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -128,6 +133,27 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
             .then((response: UserListInterface) => {
                 setUsersList(response.Resources);
                 setSelectedUsersList(filterUsersList([ ...response.Resources ]));
+            })
+            .catch((error: AxiosError) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.description ?? error?.response?.data?.detail
+                        ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.response?.data?.message
+                        ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
+                    "description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
+                }));
+
             })
             .finally(() => {
                 setIsUsersFetchRequestLoading(false);

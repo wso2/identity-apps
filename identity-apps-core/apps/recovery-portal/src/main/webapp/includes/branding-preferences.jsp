@@ -416,7 +416,8 @@
                     if (customTextPreferenceResponse.has(PREFERENCE_KEY)) {
                         if (customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY) != null && customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY).has(TEXT_KEY)) {
                             if (customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY).getJSONObject(TEXT_KEY) != null) {
-                                for (String key : customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY).getJSONObject(TEXT_KEY).keySet()) {
+                                for (Object key : customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY).getJSONObject(TEXT_KEY).keySet()) {
+                                    String key = (String) keyObj;
                                     customText.put(key, customTextPreferenceResponse.getJSONObject(PREFERENCE_KEY).getJSONObject(TEXT_KEY).getString(key));
                                 }
                             }

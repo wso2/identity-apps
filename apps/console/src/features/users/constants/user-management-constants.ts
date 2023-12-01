@@ -126,6 +126,9 @@ export class UserManagementConstants {
     public static readonly INVALID_STATUS_CODE_ERROR: string = "Invalid Status Code. Expected Code 200.";
     // Error message text for resources not found.
     public static readonly RESOURCE_NOT_FOUND_ERROR_MESSAGE: string = "Resource not found.";
+
+    // ID of the form used in the invite parent organization user component.
+    public static readonly  INVITE_PARENT_ORG_USER_FORM_ID: string = "invite-parent-org-user-form";
 }
 
 /**

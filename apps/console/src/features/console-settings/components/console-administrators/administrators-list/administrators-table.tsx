@@ -182,7 +182,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                 id: "name",
                 key: "name",
                 render: (user: UserBasicInterface): ReactNode => {
-                    const header: string = UserManagementUtils.resolveUserListHeader(user);
+                    const header: string = getUserNameWithoutDomain(user?.userName);
                     const subHeader: string = UserManagementUtils.resolveUserListSubheader(user);
                     const isNameAvailable: boolean = user.name?.familyName !== undefined ||
                         user.name?.givenName !== undefined;
@@ -238,7 +238,8 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                             F: 300
                         };
 
-                        const hash: number = display.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+                        const hash: number = display.split("").reduce((acc: number, char: string) =>
+                            acc + char.charCodeAt(0), 0);
                         const baseHue: number = hash % 360;
 
                         const firstChar: string = display[0].toUpperCase();

@@ -462,7 +462,7 @@ export const extensions: Extensions = {
             },
             managementAPI: {
                 header: "Management APIs",
-                description: "APIs to manage resources in your self organization"
+                description: "APIs to manage resources in your organization (root)"
             },
             notifications: {
                 deleteAPIResource: {
@@ -558,7 +558,7 @@ export const extensions: Extensions = {
             },
             organizationAPI: {
                 header: "Organization APIs",
-                description: "APIs to manage resources your other organizations"
+                description: "APIs to manage resources in your other organizations"
             },
             table: {
                 name: {
@@ -1990,9 +1990,10 @@ export const extensions: Extensions = {
         },
         emailProviders: {
             configureEmailTemplates: "Configure Email Templates",
-            heading: "Custom Email Provider",
-            subHeading: "Configure a custom SMTP server to send emails to your users with your own email address.",
+            heading: "Email Provider",
+            subHeading: "Configure a SMTP server to send emails to your users with your own email address.",
             description: "Configure the email provider settings according to your SMTP server.",
+            note: "Email provider for the super organization can only be configured through <1>deployment.toml</1>",
             info: "You can customize the email content using <1>Email Templates</1>.",
             updateButton: "Update",
             sendTestMailButton: "Send Test Email",
@@ -2089,26 +2090,14 @@ export const extensions: Extensions = {
                 }
             }
         },
-        emailAndSMS: {
-            heading: {
-                heading: "Email & SMS Providers",
-                onlySMSProvider: "SMS Provider",
-                onlyEmailProvider: "Email Provider"
-            },
-            title: {
-                heading: "Email & SMS Providers",
-                onlySMSProvider: "SMS Provider",
-                onlyEmailProvider: "Email Provider"
-            },
-            description: {
-                description: "Configure the Email and SMS providers for your organization.",
-                onlySMSProvider: "Configure the SMS provider for your organization.",
-                onlyEmailProvider: "Configure the Email provider for your organization."
-            }
+        notificationChannel: {
+            heading: "SMS / Email Providers",
+            title: "SMS / Email Providers",
+            description: "Configure the SMS and Email providers for your organization."
         },
         smsProviders: {
-            heading: "Custom SMS Provider",
-            subHeading: "Configure a custom SMS provider to send SMS to your users.",
+            heading: "SMS Provider",
+            subHeading: "Configure a SMS provider to send SMS to your users.",
             description: "Configure the SMS provider settings according to your SMS provider.",
             info: "You can customize the SMS content using <1>SMS Templates</1>.",
             updateButton: "Update",
@@ -2715,14 +2704,11 @@ export const extensions: Extensions = {
                                         description: "Activate this option to allow users to enroll for a " +
                                         "passkey during login.",
                                         label: "Progressive Passkey Enrollment:",
-                                        note: "If Passkey is set as a first factor, the following " +
-                                        "<1> adaptive script</1> should be added under " +
-                                        "the <3>Sign-In-Method</3> tab of the application. " +
-                                        "This script is added automatically with the template-based " +
-                                        "Passkey setup and is used to verify the user's " +
-                                        "identity before enrolling passkeys. " +
-                                        "However, if you're configuring Passkey " +
-                                        "without a template, remember to add the script manually."
+                                        note: "When the Passkey is set as a <1>first factor</1> option, " +
+                                        "users need to add an <3>adaptive script</3> to verify the user's " +
+                                        "identity prior to passkey enrollment. To include the script, users " +
+                                        "can use the <5>Passkeys Progressive Enrollment</5> template available " +
+                                        "in the <7>Sign-In-Method</7> tab of the application."
                                     },
                                     usernamelessAuthentication: {
                                         description: "Enabling this feature allows users to log in with a passkey " +

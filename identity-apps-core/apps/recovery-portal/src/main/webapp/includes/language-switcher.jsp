@@ -35,8 +35,12 @@
         // Set current lang value coming from cookie
         const urlParams = new URLSearchParams(window.location.search);
         const localeFromCookie = getCookie("ui_lang");
-        const localeFromUrlParams = urlParams.get('ui_locales');
-        const computedLocale = computeLocale(localeFromCookie, localeFromUrlParams);
+        var localeFromUrlParams = null;
+        if (urlParams.has('ui_locales')) {
+            localeFromUrlParams = encodeURIComponent(urlParams.get('ui_locales'));
+        }
+        const browserLocale = "<%= userLocale %>"
+        const computedLocale = computeLocale(localeFromCookie, localeFromUrlParams, browserLocale);
 
         languageSelectionInput.val(computedLocale);
 
@@ -97,12 +101,14 @@
         window.location.reload();
     }
 
-    function computeLocale(localeFromCookie, localeFromUrlParams) {
+    function computeLocale(localeFromCookie, localeFromUrlParams, browserLocale) {
         if (localeFromCookie) {
             return localeFromCookie;
         } else if (localeFromUrlParams) {
             const firstLangFromUrlParams = localeFromUrlParams.split(" ")[0];
             return firstLangFromUrlParams;
+        } else if (browserLocale) {
+            return browserLocale;
         } else {
             return "en_US";
         }
@@ -179,7 +185,7 @@
             <i class="cn flag"></i>
             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lang.switcher.chinese")%>
         </div>
-        
+
         <div class="item"
              data-value="ja_JP"
              style="background-color: var(--language-selector-background-color) !important;

@@ -462,7 +462,7 @@ export const extensions: Extensions = {
             },
             managementAPI: {
                 header: "API de gestion",
-                description: "API pour gérer les ressources dans votre auto-organisation"
+                description: "API pour gérer les ressources de votre organisation (racine)"
             },
             notifications: {
                 deleteAPIResource: {
@@ -2026,6 +2026,7 @@ export const extensions: Extensions = {
             heading: "Fournisseur de messagerie personnalisé",
             subHeading: "Configurez des serveurs SMTP personnalisés pour envoyer des e-mails avec votre propre adresse e-mail.",
             description: "Configurez les paramètres du fournisseur de messagerie en fonction de votre serveur SMTP.",
+            note: "Le fournisseur de messagerie de la super-organisation ne peut être configuré que via <1>deployment.toml</1>.",
             info: "Vous pouvez personnaliser le contenu des e-mails à l'aide de <1>Modèles d'e-mails</1>.",
             updateButton: "Mise à jour",
             sendTestMailButton: "Envoyer un e-mail test",
@@ -2123,22 +2124,10 @@ export const extensions: Extensions = {
                 }
             }
         },
-        emailAndSMS: {
-            heading: {
-                heading: "Fournisseurs Email & SMS",
-                onlySMSProvider: "Fournisseur de SMS",
-                onlyEmailProvider: "Fournisseur de messagerie"
-            },
-            title: {
-                heading: "Fournisseurs Email & SMS",
-                onlySMSProvider: "Fournisseur de SMS",
-                onlyEmailProvider: "Fournisseur de messagerie"
-            },
-            description: {
-                description: "Configurez les SMS et les fournisseurs de messagerie pour votre organisation.",
-                onlySMSProvider: "Configurez le fournisseur SMS pour votre organisation.",
-                onlyEmailProvider: "Configurez les fournisseurs Email et SMS pour votre organisation."
-            }
+        notificationChannel: {
+            heading: "Fournisseurs SMS/e-mail",
+            title: "Fournisseurs SMS/e-mail",
+            description: "Configurez les fournisseurs SMS et Email pour votre organisation."
         },
         smsProviders: {
             heading: "Fournisseur de SMS personnalisé",
@@ -2783,15 +2772,11 @@ export const extensions: Extensions = {
                                         description: "Activez cette option pour permettre aux utilisateurs " +
                                         "de s'inscrire pour obtenir un mot de passe lors de la connexion.",
                                         label: "Inscription progressive du mot de passe:",
-                                        note: "Si la clé d'accès est définie comme premier facteur, " +
-                                        "le <1> script adaptatif</1> suivant doit être ajouté " +
-                                        "sous l'onglet <3>Méthode de connexion</3> de l'application. " +
-                                        "Ce script est ajouté automatiquement avec la configuration de " +
-                                        "la clé d'accès basée sur un modèle et est utilisé pour vérifier " +
-                                        "l'identité de l'utilisateur avant d'inscrire les " +
-                                        "clés d'accès. Toutefois, si vous " +
-                                        "configurez des mots de passe sans modèle, n'oubliez " +
-                                        "pas d'ajouter le script manuellement."
+                                        note: "Lorsque la clé d'accès est définie comme <1>première option de facteur</1>, " +
+                                        "les utilisateurs doivent ajouter un <3>script adaptatif</3> pour vérifier l'identité" +
+                                        " de l'utilisateur avant l'inscription de la clé d'accès. Pour inclure le script, les " +
+                                        "utilisateurs peuvent utiliser le modèle <5>d'inscription progressive des</5> clés " +
+                                        "d'accès disponible dans l'onglet <7>Méthode de connexion<7> de l'application."
                                     },
                                     usernamelessAuthentication: {
                                         description: "L'activation de cette fonctionnalité permet aux " +

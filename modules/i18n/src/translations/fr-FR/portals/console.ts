@@ -706,6 +706,9 @@ export const console: ConsoleNS = {
         loginFlow: {
             tabLabel: "Flux de connexion"
         },
+        protocol: {
+            tabLabel: "Protocole"
+        },
         roles: {
             tabLabel: "Les rôles",
             permissionLevels: {
@@ -1628,6 +1631,24 @@ export const console: ConsoleNS = {
                 forms: {
                     advancedAttributeSettings: {
                         sections: {
+                            linkedAccounts: {
+                                errorAlert: {
+                                    message: "Configuration invalide",
+                                    description: "La validation du compte local lié doit être activée pour mandater un compte local lié"
+                                },
+                                heading: "Comptes liés",
+                                fields: {
+                                    validateLocalAccount: {
+                                        label: "Valider le compte local lié",
+                                        hint: "Cette option décidera si le compte d'utilisateur local lié est validé avec l'identité authentifiée."
+                                    },
+                                    mandateLocalAccount: {
+                                        label: "Mandater le compte local lié",
+                                        hint: "Ces options détermineront comment le compte utilisateur local lié est validé avec " +
+                                            "l'identité authentifiée."
+                                    }
+                                }
+                            },
                             role: {
                                 fields: {
                                     role: {
@@ -1770,6 +1791,53 @@ export const console: ConsoleNS = {
                             }
                         },
                         sections: {
+                            applicationNativeAuthentication: {
+                                heading: "Authentification native de l'application",
+                                alerts: {
+                                    clientAttestation: "Pour que l'attestation du client fonctionne, l'API d'authentification native de l'application doit être activée."
+                                },
+                                fields: {
+                                    enableAPIBasedAuthentication: {
+                                        hint: "Sélectionnez pour autoriser l'application à effectuer une authentification sans navigation et sans application via l'API d'authentification native de l'application.",
+                                        label: "Activer l'API d'authentification d'application-Native"
+                                    },
+                                    enableClientAttestation: {
+                                        hint: "Sélectionnez pour vérifier l'intégrité de l'application en appelant le service d'attestation de la plate-forme d'hébergement.",
+                                        label: "Activer l'attestation du client"
+                                    },
+                                    android: {
+                                        heading: "Android",
+                                        fields: {
+                                            androidPackageName: {
+                                                hint: "Entrez le nom du package de votre application.C'est l'identifiant unique de votre application et se trouve généralement dans le format de domaine inverse.",
+                                                label: "Nom du package",
+                                                placeholder: "com.example.myapp",
+                                                validations: {
+                                                    empty: "Le nom du package d'application est requis pour l'attestation du client."
+                                                }
+                                            },
+                                            androidAttestationServiceCredentials: {
+                                                hint: "Fournissez les informations d'identification du compte Google Service au format JSON.Ceci sera utilisé pour accéder au service Google Play Integrity.",
+                                                label: "Informations sur le compte de service",
+                                                placeholder: "Contenu du fichier clé JSON pour les informations d'identification du compte Google Service",
+                                                validations: {
+                                                    empty: "Les informations d'identification du compte Google Service sont requises pour l'attestation du client."
+                                                }
+                                            }
+                                        }
+                                    },
+                                    apple: {
+                                        heading: "Apple",
+                                        fields: {
+                                            appleAppId: {
+                                                hint: "Entrez l'ID d'application Apple, un identifiant unique attribué par Apple à votre application, en commençant généralement par 'com.' ou 'bundle.",
+                                                label: "Identifiant d'application",
+                                                placeholder: "com.example.myapp"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
                             certificate: {
                                 fields: {
                                     jwksValue: {
@@ -2973,6 +3041,12 @@ export const console: ConsoleNS = {
                             message: "Erreur de suppression"
                         }
                     },
+                    authenticationStepDeleteErrorDueToAppShared: {
+                        genericError: {
+                            description: "Cet authentificateur est requis pour l'application partagée.",
+                            message: "Impossible de supprimer cet authentificateur"
+                        }
+                    },
                     authenticationStepMin: {
                         genericError: {
                             description: "Au moins une étape d'authentification est requise.",
@@ -3926,6 +4000,20 @@ export const console: ConsoleNS = {
                             hint: "Entrez l'identifiant du domaine d'identité pour ce connexion",
                             label: " Identifiant du domaine local",
                             placeholder: "Entrez la valeur de l'identifiant du royaume d'origine."
+                        },
+                        implicitAssociation: {
+                            enable: {
+                                label: "Association implicite des comptes",
+                                hint: "Lors de l'échange de jetons, si un compte local correspondant est trouvé," +
+                                    " il sera lié implicitement"
+                            },
+                            attributes: {
+                                label: "Sélectionnez les attributs à vérifier",
+                                hint: "Sélectionnez jusqu'à trois attributs qui seront utilisés pour vérifier si" +
+                                    " il existe un compte utilisateur local correspondant",
+                                placeholder: "Aucun attribut sélectionné"
+                            },
+                            warning: "Assurez-vous que les attributs sélectionnés sont vérifiés par l'émetteur du jeton"
                         }
                     },
                     attributeSettings: {
@@ -7577,7 +7665,23 @@ export const console: ConsoleNS = {
                     heading: "Inviter un utilisateur parent",
                     description: "Invitez un utilisateur de l’organisation parente.",
                     hint: "Les utilisateurs invités sont gérés par l'organisation parente.",
-                    usernameHint: "Le nom d'utilisateur doit appartenir à un utilisateur de l'organisation parente."
+                    username: {
+                        label: "nom d'utilisateur",
+                        placeholder: "Entrez le nom d'utilisateur",
+                        hint: "Le nom d'utilisateur doit appartenir à un utilisateur de l'organisation parente.",
+                        validations: {
+                            required: "Le nom d'utilisateur est un champ obligatoire."
+                        }
+                    },
+                    roles: {
+                        label: "Les rôles",
+                        placeholder: "Sélectionnez des rôles",
+                        hint: "Attribuez des rôles à l'utilisateur invité.",
+                        validations: {
+                            required: "Les rôles sont un champ obligatoire."
+                        }
+                    },
+                    inviteButton: "Inviter"
                 },
                 tab: {
                     usersTab: "Utilisateurs",
@@ -8579,6 +8683,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Saisir un nom de {{type}}",
                                 validations: {
                                     duplicate: "Un {{type}} avec ce nom existe déjà.",
+                                    duplicateInAudience: "Un rôle portant ce nom existe déjà dans l'audience sélectionnée.",
                                     empty: "Le nom de {{type}} est obligatoire",
                                     invalid: "Un nom {{type}} ne peut contenir que des caractères " +
                                         "alphanumériques, - et _. Et doit avoir une longueur comprise entre 3 " +
@@ -8616,7 +8721,10 @@ export const console: ConsoleNS = {
                         rolePermission: {
                             apiResource: {
                                 label: "Sélectionnez la ressource API",
-                                placeholder: "Sélectionnez une ressource API pour attribuer des autorisations (lunettes)"
+                                placeholder: "Sélectionnez une ressource API pour attribuer des autorisations (lunettes)",
+                                hint: {
+                                    empty: "Aucune ressource API n'est autorisée pour l'application sélectionnée. Les ressources de l'API peuvent être autorisées via <1>ici</1>."
+                                }
                             },
                             permissions: {
                                 label: "Sélectionnez autorisations (lunettes) dans les ressources API sélectionnées",
@@ -8625,6 +8733,9 @@ export const console: ConsoleNS = {
                                     noScopes: "Aucune portée disponible pour la ressource API sélectionnée",
                                     selectAllScopes: "Sélectionnez toutes les autorisations (lunettes)",
                                     removeAPIResource: "Supprimer la ressource API"
+                                },
+                                validation: {
+                                    empty: "La liste des autorisations(lunettes) ne peut pas être vide. Sélectionnez au moins une autorisation(lunettes)."
                                 }
                             },
                             notes: {
@@ -8905,6 +9016,11 @@ export const console: ConsoleNS = {
                             header: "Êtes-vous sûr ?",
                             message: "Cette action est irréversible et supprimera définitivement le {{type}} " +
                                 "sélectionné"
+                        },
+                        deleteItemError: {
+                            content: "Supprimer les associations de la demande suivante avant de supprimer:",
+                            header: "Impossible de supprimer",
+                            message: "Il existe une application utilisant ce rôle."
                         }
                     },
                     emptyPlaceholders: {
@@ -10150,7 +10266,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Rechercher par e-mail"
+                    placeholder: "Rechercher par Nom d'utilisateur"
                 },
                 all: {
                     heading: "Utilisateurs",
@@ -10187,8 +10303,9 @@ export const console: ConsoleNS = {
                     addMultipleUser: {
                         header: "Avant de continuer",
                         message: "L'option Inviter des utilisateurs est désactivée",
-                        content: "L’option Inviter des utilisateurs doit être activée pour ajouter plusieurs " +
-                            "utilisateurs. Veuillez l'activer et réessayer.",
+                        content: "Inviter l'utilisateur à définir le mot de passe doit être activé pour ajouter " +
+                            "plusieurs utilisateurs. Veuillez activer la vérification des e-mails dans les paramètres" +
+                            " de connexion et d'inscription.",
                         assertionHint: "Veuillez confirmer votre action."
                     }
                 },

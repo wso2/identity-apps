@@ -19,13 +19,19 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import { IdentityProviderManagementConstants } from "apps/console/src/features/identity-providers/constants";
+import { AxiosError } from "axios";
+import React, { Dispatch, FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { updateIdentityProviderDetails } from "../../../api/connections";
-import { ConnectionAdvanceInterface, ConnectionInterface } from "../../../models/connection";
-import { AdvanceConfigurationsForm } from "../forms";
+import { updateIdentityProviderDetails, updateImplicitAssociationConfig } from "../../../api/connections";
+import {
+    ConnectionAdvanceInterface,
+    ConnectionInterface,
+    ImplicitAssociaionConfigInterface
+} from "../../../models/connection";
 import { handleConnectionUpdateError } from "../../../utils/connection-utils";
+import { AdvanceConfigurationsForm, TrustedTokenIssuerAdvanceConfigurationsForm } from "../forms";
 
 /**
  * Proptypes for the advance settings component.
@@ -55,13 +61,21 @@ interface AdvanceSettingsPropsInterface extends TestableComponentInterface {
      * Loading Component.
      */
     loader: () => ReactElement;
+    /**
+     * Type of the template
+     */
+    templateType: string;
+    /**
+     * Implicit association configuration of the connection.
+     */
+    implicitAssociationConfig: ImplicitAssociaionConfigInterface;
 }
 
 /**
  *  Advance settings component.
  *
- * @param {AdvanceSettingsPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns Advance settings component.
  */
 export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> = (
     props: AdvanceSettingsPropsInterface
@@ -74,10 +88,13 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
         isReadOnly,
         isLoading,
         loader: Loader,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        templateType,
+        implicitAssociationConfig
+
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
@@ -102,7 +119,29 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
                 }));
                 onUpdate(editingIDP.id);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
+                handleConnectionUpdateError(error);
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
+    };
+
+    const handleImplicitAssociationConfigFormSubmit = (values: any): void => {
+        setIsSubmitting(true);
+
+        updateImplicitAssociationConfig(editingIDP.id, values)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("console:develop.features.authenticationProvider.notifications." +
+                        "updateIDP.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("console:develop.features.authenticationProvider.notifications." +
+                        "updateIDP.success.message")
+                }));
+                onUpdate(editingIDP.id);
+            })
+            .catch((error: AxiosError) => {
                 handleConnectionUpdateError(error);
             })
             .finally(() => {
@@ -115,14 +154,20 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
     }
 
     return (
-        <EmphasizedSegment className="advanced-configuration-section">
-            <AdvanceConfigurationsForm
-                config={ advancedConfigurations }
-                onSubmit={ handleAdvancedConfigFormSubmit }
-                data-testid={ testId }
-                isReadOnly={ isReadOnly }
-                isSubmitting={ isSubmitting }
-            />
+        <EmphasizedSegment padded="very" className="advanced-configuration-section">
+            { templateType === IdentityProviderManagementConstants.IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ?
+                (<TrustedTokenIssuerAdvanceConfigurationsForm
+                    config={ implicitAssociationConfig }
+                    onSubmit={ handleImplicitAssociationConfigFormSubmit }
+                    isSubmitting={ isSubmitting }
+
+                />) :
+                (<AdvanceConfigurationsForm
+                    config={ advancedConfigurations }
+                    onSubmit={ handleAdvancedConfigFormSubmit }
+                    data-testid={ testId }
+                    isReadOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }/>) }
         </EmphasizedSegment>
     );
 };

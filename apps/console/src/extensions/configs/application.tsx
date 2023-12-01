@@ -54,7 +54,9 @@ import { AppConstants } from "../../features/core/constants";
 import { ApplicationRoles } from "../../features/roles/components/application-roles";
 import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
-import SinglePageAppTemplate from 
+import SamlWebAppTemplate
+    from "../application-templates/templates/saml-web-application/saml-web-application.json";
+import SinglePageAppTemplate from
     "../application-templates/templates/single-page-application/single-page-application.json";
 import { getTryItClientId } from "../components/application/utils/try-it-utils";
 import { getGettingStartedCardIllustrations } from "../components/getting-started/configs";
@@ -153,10 +155,11 @@ export const applicationConfig: ApplicationConfig = {
             showIncludeTenantDomain: true,
             showIncludeUserstoreDomainRole: true,
             showIncludeUserstoreDomainSubject: true,
+            showMandateLinkedLocalAccount: false,
             showRoleAttribute: true,
             showRoleMapping: true,
             showSubjectAttribute: true,
-            showUseMappedLocalSubject: true
+            showValidateLinkedLocalAccount: true
         },
         attributeSelection: {
             getClaims: (claims: ExtendedClaimInterface[]): ExtendedClaimInterface[] => {
@@ -367,7 +370,7 @@ export const applicationConfig: ApplicationConfig = {
             }
         },
         getTabExtensions: (
-            props: Record<string, unknown>, 
+            props: Record<string, unknown>,
             features: FeatureConfigInterface
         ): ResourceTabPaneInterface[] => {
             const extendedFeatureConfig: ExtendedFeatureConfigInterface = features as ExtendedFeatureConfigInterface;
@@ -375,7 +378,7 @@ export const applicationConfig: ApplicationConfig = {
             const applicationRolesFeatureEnabled: boolean = extendedFeatureConfig?.applicationRoles?.enabled;
 
             const application: ApplicationInterface = props?.application as ApplicationInterface;
-    
+
             const onApplicationUpdate: () => void = props?.onApplicationUpdate as () => void;
 
             const tabExtensions: ResourceTabPaneInterface[] = [];
@@ -395,8 +398,8 @@ export const applicationConfig: ApplicationConfig = {
                 tabExtensions.push(
                     {
                         componentId: "api-authorization",
-                        index: application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID 
-                            ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length 
+                        index: application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
+                            ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length
                             : API_AUTHORIZATION_INDEX + tabExtensions.length,
                         menuItem: I18n.instance.t(
                             "extensions:develop.applications.edit.sections.apiAuthorization.title"
@@ -414,13 +417,14 @@ export const applicationConfig: ApplicationConfig = {
             if (apiResourceFeatureEnabled
                 && applicationRolesFeatureEnabled
                 && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
-                    applicationRoles?.enabled) 
+                    applicationRoles?.enabled)
                 && (
                     application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
                     || application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_SAML
                     || application?.templateId === MobileAppTemplate?.id
                     || application?.templateId === OIDCWebAppTemplate?.id
                     || application?.templateId === SinglePageAppTemplate?.id
+                    || application?.templateId === SamlWebAppTemplate?.id
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
@@ -433,7 +437,7 @@ export const applicationConfig: ApplicationConfig = {
                         ),
                         render: () => (
                             <ResourceTab.Pane controlledSegmentation>
-                                <ApplicationRoles 
+                                <ApplicationRoles
                                     onUpdate={ onApplicationUpdate }
                                 />
                             </ResourceTab.Pane>
@@ -541,7 +545,7 @@ export const applicationConfig: ApplicationConfig = {
         showProvisioningSettings: true
     },
     excludeIdentityClaims: true,
-    excludeSubjectClaim: true,
+    excludeSubjectClaim: false,
     generalSettings: {
         getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string): boolean => {
             let isEnterpriseLoginMgt: string;

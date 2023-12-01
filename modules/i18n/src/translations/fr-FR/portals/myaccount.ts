@@ -928,7 +928,7 @@ export const myAccount: MyAccountNS = {
                 descriptions: {
                     hint: "Vous recevrez un SMS contenant un code de vérification à usage unique"
                 },
-                heading: "à l'aide d'un SMS",
+                heading: "Mobile number",
                 notifications: {
                     updateMobile: {
                         error: {

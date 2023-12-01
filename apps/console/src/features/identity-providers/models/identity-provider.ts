@@ -849,6 +849,11 @@ export enum IdentityProviderTabTypes {
     SETTINGS ="settings",
     USER_ATTRIBUTES = "user-attributes",
     ADVANCED = "advanced",
+    ATTRIBUTES = "attributes",
+    CONNECTED_APPS = "connected-apps",
+    IDENTITY_PROVIDER_GROUPS = "identity-provider-groups",
+    OUTBOUND_PROVISIONING = "outbound-provisioning",
+    JIT_PROVISIONING = "jit-provisioning",
 }
 
 /**

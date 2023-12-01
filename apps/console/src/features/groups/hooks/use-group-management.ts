@@ -31,7 +31,7 @@ export type UseGroupManagementInterface = GroupManagementContextProps;
 const useGroupManagement = (): UseGroupManagementInterface => {
     const context: GroupManagementContextProps = useContext(GroupManagementContext);
 
-    if (context === undefined) {
+    if (!context) {
         throw new Error("useGroupManagement must be used within a GroupManagementProvider");
     }
 

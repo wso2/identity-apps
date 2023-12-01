@@ -31,7 +31,7 @@ export type UseUserManagementInterface = UserManagementContextProps;
 const useUserManagement = (): UseUserManagementInterface => {
     const context: UserManagementContextProps = useContext(UserManagementContext);
 
-    if (context === undefined) {
+    if (!context) {
         throw new Error("useUserManagement must be used within a UserManagementProvider");
     }
 

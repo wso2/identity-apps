@@ -418,6 +418,8 @@ export const getOIDCData = (id: string): Promise<any> => {
  * when the path provided in the `self` attribute of the application
  * response is passed in.
  *
+ * @deprecated Use `useGetApplicationInboundConfigs` SWR hook instead.
+ *
  * @param applicationId - ID of the application.
  * @param inboundProtocolId - Protocol ID.
  * @returns Response as a promise.

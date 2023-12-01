@@ -1,5 +1,53 @@
 # @wso2is/identity-apps-core
 
+## 2.0.76
+
+### Patch Changes
+
+- [#4881](https://github.com/wso2/identity-apps/pull/4881) [`ee87522bdd`](https://github.com/wso2/identity-apps/commit/ee87522bddb2785e48c6e5b4490067b5de671641) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Fix authentication endpoint externally hosting issues
+
+## 2.0.75
+
+### Patch Changes
+
+- [#4843](https://github.com/wso2/identity-apps/pull/4843) [`b69811591d`](https://github.com/wso2/identity-apps/commit/b69811591d951232db956bded1a84e4171aa267c) Thanks [@thanujalk](https://github.com/thanujalk)! - Introduce AppPortalRoleManagementListener
+
+## 2.0.74
+
+### Patch Changes
+
+- [#4826](https://github.com/wso2/identity-apps/pull/4826) [`ad330b10d1`](https://github.com/wso2/identity-apps/commit/ad330b10d14e922f586f4c0cab86e7e712efef9e) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - encode locale url parameter before processing due to security concerns.
+
+## 2.0.73
+
+### Patch Changes
+
+- [#4857](https://github.com/wso2/identity-apps/pull/4857) [`069594a834`](https://github.com/wso2/identity-apps/commit/069594a834b651dcec7ddcdee7d0758c664eb5b1) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Improve core url building.
+
+## 2.0.72
+
+### Patch Changes
+
+- [#4861](https://github.com/wso2/identity-apps/pull/4861) [`58c5ec4b35`](https://github.com/wso2/identity-apps/commit/58c5ec4b3532eb486ea12d9b4ae68beded7143f5) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix possible index out of bound issue
+
+## 2.0.71
+
+### Patch Changes
+
+- [#4828](https://github.com/wso2/identity-apps/pull/4828) [`b9a44a77fb`](https://github.com/wso2/identity-apps/commit/b9a44a77fbd30029aac10aa1a7520b8bacf53101) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Improve url building
+
+## 2.0.70
+
+### Patch Changes
+
+- [#4845](https://github.com/wso2/identity-apps/pull/4845) [`cde7a2d52b`](https://github.com/wso2/identity-apps/commit/cde7a2d52bb9bbd4b42f1b8d9a3eaba5285f1469) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Temporarily add logs for debugging localize.jsp
+
+## 2.0.69
+
+### Patch Changes
+
+- [#4840](https://github.com/wso2/identity-apps/pull/4840) [`4b6ea42524`](https://github.com/wso2/identity-apps/commit/4b6ea425240c2681bb19511c4718e2122b1706e3) Thanks [@dhaura](https://github.com/dhaura)! - Fix Internal Hostname not Honored Issue in dynamic_prompt.js
+
 ## 2.0.68
 
 ### Patch Changes

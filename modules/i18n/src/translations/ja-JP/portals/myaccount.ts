@@ -872,7 +872,7 @@ export const myAccount: MyAccountNS = {
                 "descriptions": {
                     "hint": "1回限りの検証コードを含むテキストメッセージが届きます"
                 },
-                "heading": "SMS番号",
+                "heading": "Mobile number",
                 "notifications": {
                     "updateMobile": {
                         "error": {

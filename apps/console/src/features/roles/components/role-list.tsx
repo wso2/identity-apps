@@ -17,7 +17,6 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     IdentifiableComponentInterface,
@@ -40,6 +39,7 @@ import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
+import { RoleDeleteErrorConfirmation } from "./wizard/role-delete-error-confirmation";
 import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
 import { AppConstants } from "../../core/constants/app-constants";
 import { history } from "../../core/helpers/history";
@@ -98,9 +98,26 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
 
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
+    const [ showDeleteErrorConnectedAppsModal, setShowDeleteErrorConnectedAppsModal ] = useState<boolean>(false);
 
     const handleRoleEdit = (roleId: string) => {
         history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", roleId));
+    };
+
+    /**
+     * Function to handle role deletion button click.
+     * If the role is in Application audience type, Info Modal will be shown
+     * to inform the user that the role is connected to applications.
+     *
+     * @param role - Role to be deleted.
+     */
+    const onRoleDeleteClicked = (role: RolesInterface) => {
+        setCurrentDeletedRole(role);
+        if (role?.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION) {
+            setShowDeleteErrorConnectedAppsModal(true);
+        } else {
+            setShowDeleteConfirmationModal(true);
+        }
     };
 
     /**
@@ -270,17 +287,11 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 renderer: "semantic-icon"
             },
             {
-                hidden: (role: RolesInterface) => isSubOrg
-                    || (role?.displayName === RoleConstants.ADMIN_ROLE
-                    || role?.displayName === RoleConstants.ADMIN_GROUP)
-                    || (role?.displayName === RoleConstants.EVERYONE_ROLE
-                    || role?.displayName === RoleConstants.EVERYONE_GROUP)
-                    || (role?.audience?.display + "/" + role?.displayName === RoleConstants.CONSOLE_ADMIN_ROLE)
+                hidden: () => isSubOrg
                     || !hasRequiredScopes(featureConfig?.roles, featureConfig?.roles?.scopes?.delete, allowedScopes),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
-                    setCurrentDeletedRole(role);
-                    setShowDeleteConfirmationModal(!showRoleDeleteConfirmation);
+                    onRoleDeleteClicked(role);
                 },
                 popupText: (): string => t("console:manage.features.roles.list.popups.delete",
                     { type: "Role" }),
@@ -334,6 +345,19 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                 { type: "role" }) }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
+                )
+            }
+            {
+                showDeleteErrorConnectedAppsModal && (
+                    <RoleDeleteErrorConfirmation
+                        isOpen={ showDeleteErrorConnectedAppsModal }
+                        onClose={ (): void => {
+                            setShowDeleteErrorConnectedAppsModal(false);
+                            setCurrentDeletedRole(undefined);
+                        } }
+                        selectedRole={ currentDeletedRole }
+                        data-componentid={ `${ componentId }-role-delete-error-confirmation-modal` }
+                    />
                 )
             }
         </>

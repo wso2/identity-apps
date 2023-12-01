@@ -873,7 +873,7 @@ export const myAccount: MyAccountNS = {
                 "descriptions": {
                     "hint": "Recibirás un mensaje de texto que contiene un código de verificación único"
                 },
-                "heading": "Número SMS",
+                "heading": "Número de teléfono móvil",
                 "notifications": {
                     "updateMobile": {
                         "error": {

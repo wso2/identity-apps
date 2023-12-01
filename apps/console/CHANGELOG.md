@@ -1,5 +1,120 @@
 # @wso2is/console
 
+## 2.9.34
+
+### Patch Changes
+
+- [#4879](https://github.com/wso2/identity-apps/pull/4879) [`96ffe3a45d`](https://github.com/wso2/identity-apps/commit/96ffe3a45d5263f31f14f71beb70a9fd7b198f60) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add validation for deleting SSO authenticator from sign in options
+
+* [#4884](https://github.com/wso2/identity-apps/pull/4884) [`fdf0a7faa0`](https://github.com/wso2/identity-apps/commit/fdf0a7faa04e372e2ecc7187d8668872c629f6c0) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix role not visible issue in saml traditional web app
+
+- [#4851](https://github.com/wso2/identity-apps/pull/4851) [`278880209a`](https://github.com/wso2/identity-apps/commit/278880209aa08eb8e1617849f76799eada517003) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show email provider section for super tenant with a note
+
+- Updated dependencies [[`96ffe3a45d`](https://github.com/wso2/identity-apps/commit/96ffe3a45d5263f31f14f71beb70a9fd7b198f60)]:
+  - @wso2is/i18n@2.0.65
+
+## 2.9.33
+
+### Patch Changes
+
+- [#4862](https://github.com/wso2/identity-apps/pull/4862) [`7ce89e87a9`](https://github.com/wso2/identity-apps/commit/7ce89e87a908c25a25109eb923d653f7a757c277) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add mandatory reply to logout URL field to passive STS application create wizard
+
+## 2.9.32
+
+### Patch Changes
+
+- [#4886](https://github.com/wso2/identity-apps/pull/4886) [`93ab682a06`](https://github.com/wso2/identity-apps/commit/93ab682a0690bc7a4818cbec198487f97c7accbc) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce autocomplete for organization name field in email domain add form
+
+* [#4875](https://github.com/wso2/identity-apps/pull/4875) [`3e8b711800`](https://github.com/wso2/identity-apps/commit/3e8b711800944ab395927e83f02f14b9a80b0d26) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Remove logic to hide delete option for system roles
+
+## 2.9.31
+
+### Patch Changes
+
+- [#4867](https://github.com/wso2/identity-apps/pull/4867) [`f522ec7d09`](https://github.com/wso2/identity-apps/commit/f522ec7d09bc8dd5c7abde6753876a2c9855dea0) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with user invitation mutation
+
+## 2.9.30
+
+### Patch Changes
+
+- [#4863](https://github.com/wso2/identity-apps/pull/4863) [`5836726baf`](https://github.com/wso2/identity-apps/commit/5836726baf6da6074a0fa3988f54a4cf523e121d) Thanks [@brionmario](https://github.com/brionmario)! - Fix sub org refresh issues
+
+* [#4870](https://github.com/wso2/identity-apps/pull/4870) [`6e0950b93e`](https://github.com/wso2/identity-apps/commit/6e0950b93e79627e878b86b3149c8a6e5f50d3ad) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Make OIDC attributes editable
+
+- [#4878](https://github.com/wso2/identity-apps/pull/4878) [`c7f7826c7b`](https://github.com/wso2/identity-apps/commit/c7f7826c7b613e6da9ad87654a482562d3c3c248) Thanks [@Achintha444](https://github.com/Achintha444)! - (improvement) revamp the UI of the Application native authentication
+
+- Updated dependencies [[`c7f7826c7b`](https://github.com/wso2/identity-apps/commit/c7f7826c7b613e6da9ad87654a482562d3c3c248)]:
+  - @wso2is/i18n@2.0.64
+
+## 2.9.29
+
+### Patch Changes
+
+- [#4859](https://github.com/wso2/identity-apps/pull/4859) [`997c8bd727`](https://github.com/wso2/identity-apps/commit/997c8bd727ecf35055eb8c561ca7c08d0c5a583b) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Use unified group creation wizard
+
+* [#4844](https://github.com/wso2/identity-apps/pull/4844) [`7ac506f731`](https://github.com/wso2/identity-apps/commit/7ac506f731c9434b530a22f147603107f99070cf) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Fix issues in role name uniqueness checker in role name update
+
+- [#4838](https://github.com/wso2/identity-apps/pull/4838) [`88e753d8de`](https://github.com/wso2/identity-apps/commit/88e753d8dedeca61d3c1dde98d56bd95af990c54) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Update the message when multiple user addition feature is disabled
+
+* [#4871](https://github.com/wso2/identity-apps/pull/4871) [`c70511360f`](https://github.com/wso2/identity-apps/commit/c70511360fcd04ffc10c30811714ba6f6dce16bd) Thanks [@Rashmini](https://github.com/Rashmini)! - Fix UI issue in suborganization users page
+
+- [#4876](https://github.com/wso2/identity-apps/pull/4876) [`c9b7ef9815`](https://github.com/wso2/identity-apps/commit/c9b7ef9815221d7d1e42c0ac5c697c740a4afee8) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix role update being invoked twice
+
+- Updated dependencies [[`88e753d8de`](https://github.com/wso2/identity-apps/commit/88e753d8dedeca61d3c1dde98d56bd95af990c54)]:
+  - @wso2is/i18n@2.0.63
+
+## 2.9.28
+
+### Patch Changes
+
+- [#4856](https://github.com/wso2/identity-apps/pull/4856) [`442bac7b10`](https://github.com/wso2/identity-apps/commit/442bac7b10dd1dac14fcd3459d2d9ead5fb00471) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve UX in Application Roles assignment
+
+* [#4868](https://github.com/wso2/identity-apps/pull/4868) [`d7615d4be1`](https://github.com/wso2/identity-apps/commit/d7615d4be17d618d954bd1277d5be21b38bad927) Thanks [@Rashmini](https://github.com/Rashmini)! - Fix duplicate error in role creation wizard
+
+* Updated dependencies [[`442bac7b10`](https://github.com/wso2/identity-apps/commit/442bac7b10dd1dac14fcd3459d2d9ead5fb00471), [`d7615d4be1`](https://github.com/wso2/identity-apps/commit/d7615d4be17d618d954bd1277d5be21b38bad927)]:
+  - @wso2is/i18n@2.0.62
+
+## 2.9.27
+
+### Patch Changes
+
+- [#4854](https://github.com/wso2/identity-apps/pull/4854) [`6e107e959e`](https://github.com/wso2/identity-apps/commit/6e107e959e6967abbdeaced7ed0280b09f7942be) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix bugs in the role edit permission dropdown
+
+* [#4850](https://github.com/wso2/identity-apps/pull/4850) [`faa8642b71`](https://github.com/wso2/identity-apps/commit/faa8642b7165b19e0e1773fe225dae41a5857cf5) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Conditionally render email domain discovery based on the feature configs in deployment.config.json.
+
+- [#4837](https://github.com/wso2/identity-apps/pull/4837) [`0e18410bdd`](https://github.com/wso2/identity-apps/commit/0e18410bdd2c92ab721df8dc90cf57da0b171d19) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Change the precendence of role types
+
+* [#4858](https://github.com/wso2/identity-apps/pull/4858) [`9327f1df46`](https://github.com/wso2/identity-apps/commit/9327f1df46eb1e6f2cd37b131fd715c7d1d5046e) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix selected API resources in Role view Permissions tab
+
+## 2.9.26
+
+### Patch Changes
+
+- [#4828](https://github.com/wso2/identity-apps/pull/4828) [`b9a44a77fb`](https://github.com/wso2/identity-apps/commit/b9a44a77fbd30029aac10aa1a7520b8bacf53101) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Improve url building
+
+## 2.9.25
+
+### Patch Changes
+
+- [#4827](https://github.com/wso2/identity-apps/pull/4827) [`f85d74e442`](https://github.com/wso2/identity-apps/commit/f85d74e44253cf0c37c2b520ad47b0fd028b8eaa) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the user creation wizard
+
+- Updated dependencies [[`f85d74e442`](https://github.com/wso2/identity-apps/commit/f85d74e44253cf0c37c2b520ad47b0fd028b8eaa)]:
+  - @wso2is/i18n@2.0.61
+
+## 2.9.24
+
+### Patch Changes
+
+- [#4830](https://github.com/wso2/identity-apps/pull/4830) [`783a812ee5`](https://github.com/wso2/identity-apps/commit/783a812ee578e9f823c463196476a6af2ed50686) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve the role deletion flow
+
+* [#4841](https://github.com/wso2/identity-apps/pull/4841) [`e3f90ff7cd`](https://github.com/wso2/identity-apps/commit/e3f90ff7cd743e5769c21a3dad3d963e4e179187) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Fix wording of API resource category
+
+- [#4836](https://github.com/wso2/identity-apps/pull/4836) [`3147be47e0`](https://github.com/wso2/identity-apps/commit/3147be47e04f398fc8eb78a613b95aa48b50bada) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Add the capability to specify roles in the invite parent org user flow.
+
+- Updated dependencies [[`783a812ee5`](https://github.com/wso2/identity-apps/commit/783a812ee578e9f823c463196476a6af2ed50686), [`3147be47e0`](https://github.com/wso2/identity-apps/commit/3147be47e04f398fc8eb78a613b95aa48b50bada)]:
+  - @wso2is/i18n@2.0.60
+  - @wso2is/form@2.0.15
+
 ## 2.9.23
 
 ### Patch Changes
