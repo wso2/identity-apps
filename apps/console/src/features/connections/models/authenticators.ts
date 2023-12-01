@@ -17,9 +17,9 @@
  */
 
 import { ReactNode } from "react";
-import { 
-    CommonPluggableComponentInterface, 
-    CommonPluggableComponentMetaInterface, 
+import {
+    CommonPluggableComponentInterface,
+    CommonPluggableComponentMetaInterface,
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "./connection";
@@ -117,7 +117,8 @@ export enum AuthenticatorLabels {
     PASSWORDLESS = "Passwordless",
     HANDLERS = "Handlers",
     USERNAMELESS = "Usernameless",
-    PASSKEY = "Passkey"
+    PASSKEY = "Passkey",
+    API_AUTHENTICATION = "APIAuth"
 }
 
 export interface ConnectorPropertyInterface {
