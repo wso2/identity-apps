@@ -7278,7 +7278,7 @@ export const console: ConsoleNS = {
                             elasticAnalyticsEngine: {
                                 friendlyName: "Analytique des wapitis",
                                 warningModal: {
-                                    configure: "<1>Configure</1> Paramètres d'analyse des wapitis pour une fonctionnalité appropriée.",
+                                    configure: "<1>Configurer</1> les paramètres ELK Analytics pour une fonctionnalité appropriée.",
                                     reassure: "Vous pouvez mettre à jour vos paramètres à tout moment."
                                 },
                                 properties: {

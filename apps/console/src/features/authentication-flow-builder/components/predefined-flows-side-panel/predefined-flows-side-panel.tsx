@@ -30,7 +30,6 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import {
     ContentLoader,
-    GenericIcon,
     Heading,
     LinkButton,
     PrimaryButton
@@ -47,7 +46,6 @@ import AdaptiveAuthTemplateInfoModal from "./adaptive-auth-template-info-modal";
 import BasicLoginFlowTemplateChangeConfirmationModal from "./basic-login-flow-template-change-confimation-modal";
 import PredefinedSocialFlowHandlerModalFactory from "./predefined-social-flow-handler-modal-factory";
 import { serverConfigurationConfig } from "../../../../extensions/configs/server-configuration";
-import { ReactComponent as CrossIcon } from "../../../../themes/default/assets/images/icons/cross-icon.svg";
 import {
     AdaptiveAuthTemplateCategoryInterface,
     AdaptiveAuthTemplateInterface,
@@ -71,6 +69,7 @@ import {
     UpdateGovernanceConnectorConfigInterface
 } from "../../../server-configurations/models/governance-connectors";
 import { GovernanceConnectorUtils } from "../../../server-configurations/utils/governance-connector-utils";
+import { ELK_RISK_BASED_TEMPLATE_NAME } from "../../constants/template-constants";
 import * as FlowSequences from "../../data/flow-sequences";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import { PredefinedFlowCategories, SocialIdPPlaceholders } from "../../models/predefined-flows";
@@ -528,14 +527,6 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
             >
                 <Modal.Header>
                     { connector?.friendlyName }
-                    <GenericIcon
-                        icon={ CrossIcon }
-                        size="nano"
-                        floated="right"
-                        onClick={ handleELKAnalyticsModalClose }
-                        inline
-                        link
-                    />
                     <Heading subHeading ellipsis as="h6">
                         { t("console:manage.features.governanceConnectors.connectorSubHeading", {
                             name: connector?.friendlyName })
@@ -615,7 +606,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                                         </div>
                                         <div className="actions">
                                             {
-                                                template.name === "ELK-Risk-Based" && (
+                                                template.name === ELK_RISK_BASED_TEMPLATE_NAME && (
                                                     <IconButton
                                                         size="small"
                                                         onClick={ () => {
