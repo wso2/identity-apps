@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -14,7 +14,6 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -22,7 +21,7 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import camelCase from "lodash-es/camelCase";
 import isEmpty from "lodash-es/isEmpty";
 import { identityProviderConfig } from "../../../extensions/configs/identity-provider";
@@ -63,12 +62,12 @@ export class IdentityProviderManagementUtils {
      */
     public static getAuthenticators(): Promise<void> {
         return getFederatedAuthenticatorsList()
-            .then((response): void => {
+            .then((response: FederatedAuthenticatorListItemInterface[]): void => {
                 store.dispatch(
                     setAvailableAuthenticatorsMeta(response)
                 );
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     store.dispatch(
                         addAlert({
@@ -126,10 +125,10 @@ export class IdentityProviderManagementUtils {
             let offset: number = 0;
 
             const getIdPs = ():Promise<IdentityProviderListResponseInterface> => {
-                const attrs = "federatedAuthenticators,provisioning";
+                const attrs: string = "federatedAuthenticators,provisioning";
 
                 return getIdentityProviderList(limit, offset, "isEnabled eq \"true\"", attrs)
-                    .then((response) => {
+                    .then((response: IdentityProviderListResponseInterface) => {
                         if (!isEmpty(idp)) {
                             idp = {
                                 ...idp,
@@ -211,7 +210,10 @@ export class IdentityProviderManagementUtils {
                         idp: IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER,
                         image: AuthenticatorMeta.getAuthenticatorIcon(authenticator.id),
                         isEnabled: authenticator.isEnabled,
-                        name: authenticator.name
+                        name: authenticator.name,
+                        tags: authenticator.tags
+                            ? authenticator.tags
+                            : []
                     });
                 });
 
@@ -232,10 +234,19 @@ export class IdentityProviderManagementUtils {
                         const defaultAuthenticator: FederatedAuthenticatorInterface = authenticator
                             .federatedAuthenticators
                             .authenticators
-                            .find((item) => {
-                                return (item.authenticatorId === 
+                            .find((item: FederatedAuthenticatorListItemInterface) => {
+                                return (item.authenticatorId ===
                                     authenticator.federatedAuthenticators.defaultAuthenticatorId);
                             });
+
+                        const tags: string[] = authenticator?.federatedAuthenticators?.authenticators.map(
+                            (item: FederatedAuthenticatorListItemInterface) => {
+                                if (item.tags) {
+                                    return item.tags;
+                                }
+                            })
+                            .flat()
+                            .filter((tag: string | undefined) => tag !== undefined) || [];
 
                         federatedAuthenticators.push({
                             authenticators: authenticator.federatedAuthenticators.authenticators,
@@ -252,7 +263,8 @@ export class IdentityProviderManagementUtils {
                                 : AuthenticatorMeta.getAuthenticatorIcon(authenticator.id),
                             isEnabled: authenticator.isEnabled,
                             name: authenticator.name,
-                            provisioning: authenticator[ "provisioning" ] as ProvisioningInterface
+                            provisioning: authenticator[ "provisioning" ] as ProvisioningInterface,
+                            tags: tags
                         } as any);
                     });
 
@@ -260,7 +272,7 @@ export class IdentityProviderManagementUtils {
 
                 return Promise.resolve([ localAuthenticators, federatedAuthenticators ]);
             }))
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 throw new IdentityAppsApiException(
                     IdentityProviderManagementConstants.COMBINED_AUTHENTICATOR_FETCH_ERROR,
                     error.stack,
@@ -306,8 +318,8 @@ export class IdentityProviderManagementUtils {
      */
     public static getAuthenticatorLabels(authenticator: GenericAuthenticatorInterface): string[] {
 
-        return AuthenticatorMeta.getAuthenticatorLabels(authenticator?.defaultAuthenticator?.authenticatorId)
-            ? AuthenticatorMeta.getAuthenticatorLabels(authenticator.defaultAuthenticator.authenticatorId)
+        return AuthenticatorMeta.getAuthenticatorLabels(authenticator)
+            ? AuthenticatorMeta.getAuthenticatorLabels(authenticator)
             : [];
     }
 
@@ -350,7 +362,7 @@ export class IdentityProviderManagementUtils {
                 return image;
             }
         }
-        const match = Object.keys(icons).find(key => key.toString() === image);
+        const match: string = Object.keys(icons).find((key: string) => key.toString() === image);
 
         return match ? icons[ match ] : icons[ "default" ] ?? image;
     }
@@ -367,13 +379,13 @@ export class IdentityProviderManagementUtils {
 
         return (connector as IdentityProviderInterface)?.federatedAuthenticators !== undefined;
     }
-    
+
     public static buildAuthenticatorsFilterQuery(searchQuery: string, filters: string[]): string {
-        
+
         if (isEmpty(filters) || !Array.isArray(filters) || filters.length <= 0) {
             return searchQuery;
         }
-        
+
         let query: string = searchQuery
             ? `${ searchQuery } and (`
             : "(";
