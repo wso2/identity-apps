@@ -2033,6 +2033,9 @@ export const console: ConsoleNS = {
                                 "can access this application from the <1>{{ myAccount }}</1> portal.",
                             mobileAppPlaceholder: "myapp://oauth2"
                         },
+                        dropdowns: {
+                            selectOption: "Select Option"
+                        },
                         sections: {
                             accessToken: {
                                 fields: {

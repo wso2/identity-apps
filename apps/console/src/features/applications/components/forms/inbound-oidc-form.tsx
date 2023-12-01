@@ -703,7 +703,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             } else {
                 metadataProp.options.map((ele: any, index: number) => {
                     if (!ele.displayName) {
-                        allowedList.push({ text: ele, value: ele !== "Select Option" ? ele : "" });
+                        allowedList.push({ text: ele, value: ele !== t( "console:develop.features.applications" +
+                            ".forms.inboundOIDC.dropdowns.selectOption" ) ? ele : "" });
                     } else {
                         allowedList.push({
                             content: (

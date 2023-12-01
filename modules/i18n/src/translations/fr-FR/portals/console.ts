@@ -2067,6 +2067,9 @@ export const console: ConsoleNS = {
                                 "application à partir du portail <1>{{ myAccount }}</1>.",
                             mobileAppPlaceholder: "myapp://oauth2"
                         },
+                        dropdowns: {
+                            selectOption: "Sélectionner une option"
+                        },
                         sections: {
                             accessToken: {
                                 fields: {
