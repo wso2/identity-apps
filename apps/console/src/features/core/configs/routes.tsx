@@ -1013,7 +1013,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID
                             ),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: false
                     },
                     {
                         category: "extensions:manage.sidePanel.categories.settings",

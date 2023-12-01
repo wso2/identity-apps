@@ -19,7 +19,6 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
-import { Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -43,6 +42,10 @@ interface AnalyticsConfigurationFormPropsInterface extends IdentifiableComponent
      * Connector's initial values.
      */
     initialValues: GovernanceConnectorInterface;
+    /**
+     * Is the form in a modal.
+     */
+    isModalForm?: boolean;
     /**
      * Callback for form submit.
      * @param values - Resolved Form Values.
@@ -79,6 +82,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
         onSubmit,
         readOnly,
         isConnectorEnabled,
+        isModalForm,
         isSubmitting,
         ["data-componentid"]: componentId
     } = props;
@@ -187,7 +191,7 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
     }
 
     return (
-        <div className={ "connector-form" }>
+        <div className={ "connector-form analytics" }>
             <Form
                 id={ FORM_ID }
                 initialValues={ initialConnectorValues }
@@ -206,16 +210,14 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     maxLength={ null }
                     minLength={ null }
                     readOnly={ readOnly }
-                    width={ 12 }
+                    width={ isModalForm ? 16 : 12 }
                     disabled={ !isConnectorEnabled }
                     data-componentid={ `${componentId}-analytics-host-url` }
-                />
-                <Hint className={ "mb-5" }>
-                    {
+                    hint={
                         t("extensions:manage.serverConfigurations.analytics." +
                             "form.fields.hostUrl.hint")
                     }
-                </Hint>
+                />
                 <Field.Checkbox
                     ariaLabel="Analytics Enable Basic Auth"
                     name="basicAuthEnabled"
@@ -223,17 +225,15 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                         "form.fields.hostBasicAuthEnable.label") }
                     required={ false }
                     readOnly={ readOnly }
-                    width={ 12 }
+                    width={ isModalForm ? 16 : 12 }
                     disabled={ !isConnectorEnabled }
                     data-componentid={ `${componentId}-analytics-success` }
-                    toggle
-                />
-                <Hint className={ "mb-5" }>
-                    {
+                    hint={
                         t("extensions:manage.serverConfigurations.analytics." +
                             "form.fields.hostBasicAuthEnable.hint")
                     }
-                </Hint>
+                    toggle
+                />
                 <Field.Input
                     ariaLabel="Analytics Host Username"
                     inputType="default"
@@ -246,16 +246,14 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     maxLength={ null }
                     minLength={ null }
                     readOnly={ readOnly }
-                    width={ 12 }
+                    width={ isModalForm ? 16 : 12 }
                     disabled={ !isConnectorEnabled }
                     data-componentid={ `${componentId}-host-username` }
-                />
-                <Hint className={ "mb-5" }>
-                    {
+                    hint={
                         t("extensions:manage.serverConfigurations.analytics." +
                             "form.fields.hostUsername.hint")
                     }
-                </Hint>
+                />
                 <Field.Input
                     ariaLabel="Analytics Host Password"
                     inputType="password"
@@ -269,16 +267,14 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     maxLength={ null }
                     minLength={ null }
                     readOnly={ readOnly }
-                    width={ 12 }
+                    width={ isModalForm ? 16 : 12 }
                     disabled={ !isConnectorEnabled }
-                    data-componentid={ `${componentId}-host-password` }
-                />
-                <Hint className={ "mb-5" }>
-                    {
+                    hint={
                         t("extensions:manage.serverConfigurations.analytics." +
                             "form.fields.hostPassword.hint")
                     }
-                </Hint>
+                    data-componentid={ `${componentId}-host-password` }
+                />
                 <Field.Input
                     ariaLabel="Analytics HTTP Connection Timeout"
                     inputType="number"
@@ -294,9 +290,13 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     minLength={ GovernanceConnectorConstants.ANALYTICS_FORM_FIELD_CONSTRAINTS
                         .TIMEOUT_MIN_LENGTH }
                     readOnly={ readOnly }
-                    width={ 12 }
+                    width={ isModalForm ? 16 : 12 }
                     labelPosition="right"
                     disabled={ !isConnectorEnabled }
+                    hint={
+                        t("extensions:manage.serverConfigurations.analytics." +
+                            "form.fields.hostConnectionTimeout.hint")
+                    }
                     data-componentid={ `${componentId}-host-connection-timeout` }
                 >
                     <input/>
@@ -304,12 +304,6 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                         content={ "milliseconds" }
                     />
                 </Field.Input>
-                <Hint className={ "mb-5" }>
-                    {
-                        t("extensions:manage.serverConfigurations.analytics." +
-                            "form.fields.hostConnectionTimeout.hint")
-                    }
-                </Hint>
                 <Field.Input
                     ariaLabel="Analytics HTTP Read Timeout"
                     inputType="number"
@@ -325,9 +319,13 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     minLength={ GovernanceConnectorConstants.ANALYTICS_FORM_FIELD_CONSTRAINTS
                         .TIMEOUT_MIN_LENGTH }
                     readOnly={ readOnly }
-                    width={ 12 }
+                    width={ isModalForm ? 16 : 12 }
                     labelPosition="right"
                     disabled={ !isConnectorEnabled }
+                    hint={
+                        t("extensions:manage.serverConfigurations.analytics." +
+                            "form.fields.hostReadTimeout.hint")
+                    }
                     data-componentid={ `${componentId}-host-read-timeout` }
                 >
                     <input/>
@@ -335,12 +333,6 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                         content={ "milliseconds" }
                     />
                 </Field.Input>
-                <Hint className={ "mb-5" }>
-                    {
-                        t("extensions:manage.serverConfigurations.analytics." +
-                            "form.fields.hostReadTimeout.hint")
-                    }
-                </Hint>
                 <Field.Input
                     ariaLabel="Analytics HTTP Connection Request Timeout"
                     inputType="number"
@@ -356,9 +348,13 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     minLength={ GovernanceConnectorConstants.ANALYTICS_FORM_FIELD_CONSTRAINTS
                         .TIMEOUT_MIN_LENGTH }
                     readOnly={ readOnly }
-                    width={ 12 }
+                    width={ isModalForm ? 16 : 12 }
                     labelPosition="right"
                     disabled={ !isConnectorEnabled }
+                    hint={
+                        t("extensions:manage.serverConfigurations.analytics." +
+                            "form.fields.hostConnectionRequestTimeout.hint")
+                    }
                     data-componentid={ `${componentId}-host-connection-request-timeout` }
                 >
                     <input/>
@@ -366,12 +362,6 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                         content={ "milliseconds" }
                     />
                 </Field.Input>
-                <Hint className={ "mb-5" }>
-                    {
-                        t("extensions:manage.serverConfigurations.analytics." +
-                            "form.fields.hostConnectionRequestTimeout.hint")
-                    }
-                </Hint>
                 <Field.Input
                     ariaLabel="Analytics Host Name Verification"
                     inputType="default"
@@ -384,16 +374,14 @@ export const AnalyticsConfigurationForm: FunctionComponent<AnalyticsConfiguratio
                     maxLength={ null }
                     minLength={ null }
                     readOnly={ readOnly }
-                    width={ 12 }
+                    width={ isModalForm ? 16 : 12 }
                     disabled={ !isConnectorEnabled }
-                    data-componentid={ `${componentId}-host-name-verifier` }
-                />
-                <Hint className={ "mb-5" }>
-                    {
+                    hint={
                         t("extensions:manage.serverConfigurations.analytics." +
                             "form.fields.hostNameVerification.hint")
                     }
-                </Hint>
+                    data-componentid={ `${componentId}-host-name-verifier` }
+                />
                 <Field.Button
                     form={ FORM_ID }
                     size="small"

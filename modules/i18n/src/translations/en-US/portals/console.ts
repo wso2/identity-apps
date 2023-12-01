@@ -8904,6 +8904,10 @@ export const console: ConsoleNS = {
                             },
                             elasticAnalyticsEngine: {
                                 friendlyName: "ELK Analytics",
+                                warningModal: {
+                                    configure: "<1>Configure</1> ELK Analytics settings for proper functionality.",
+                                    reassure: "You can update your settings anytime."
+                                },
                                 properties: {
                                     adaptiveAuthenticationElasticReceiver: {
                                         hint: "Elasticsearch Host",

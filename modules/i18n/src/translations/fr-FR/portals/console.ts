@@ -7277,6 +7277,10 @@ export const console: ConsoleNS = {
                             },
                             elasticAnalyticsEngine: {
                                 friendlyName: "Analytique des wapitis",
+                                warningModal: {
+                                    configure: "<1>Configure</1> Paramètres d'analyse des wapitis pour une fonctionnalité appropriée.",
+                                    reassure: "Vous pouvez mettre à jour vos paramètres à tout moment."
+                                },
                                 properties: {
                                     adaptiveAuthenticationElasticReceiver: {
                                         hint: "Hôte elasticsearch",

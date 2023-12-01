@@ -16,8 +16,9 @@
  * under the License.
  */
 
+import { GearIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Code, ConfirmationModal, ConfirmationModalPropsInterface } from "@wso2is/react-components";
+import { Code, ConfirmationModal, ConfirmationModalPropsInterface, Link, Text } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { AdaptiveAuthTemplateInterface } from "../../../applications/models/application";
@@ -29,9 +30,17 @@ export interface AdaptiveAuthTemplateChangeConfirmationModalPropsInterface
     extends Partial<ConfirmationModalPropsInterface>,
         IdentifiableComponentInterface {
     /**
+     * Is the template ELK risk based.
+     */
+    isELKRiskBased?: boolean;
+    /**
      * Selected adaptive auth template to be changed.
      */
     selectedTemplate: AdaptiveAuthTemplateInterface;
+    /**
+     * Callback to be fired on ELK configure click.
+     */
+    onELKConfigureClick: () => void;
     /**
      * Callback to be fired on template change.
      */
@@ -49,7 +58,15 @@ const AdaptiveAuthTemplateChangeConfirmationModal: FunctionComponent<
 > = (
     props: AdaptiveAuthTemplateChangeConfirmationModalPropsInterface
 ) => {
-    const { selectedTemplate, onTemplateChange, onClose, ["data-componentid"]: componentId, ...rest } = props;
+    const {
+        isELKRiskBased,
+        selectedTemplate,
+        onELKConfigureClick,
+        onTemplateChange,
+        onClose,
+        ["data-componentid"]: componentId,
+        ...rest
+    } = props;
 
     const { t } = useTranslation();
 
@@ -82,6 +99,38 @@ const AdaptiveAuthTemplateChangeConfirmationModal: FunctionComponent<
                 { t("console:loginFlow.adaptiveLoginFlowSelectConfirmationModal.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content data-componentid={ `${componentId}-content` }>
+                {
+                    isELKRiskBased && (
+                        <>
+                            <Text>
+                                <Trans
+                                    i18nKey={
+                                        "console:manage.features.governanceConnectors.connectorCategories." +
+                                        "otherSettings.connectors.elasticAnalyticsEngine.warningModal.configure"
+                                    }
+                                >
+                                   Configure <Link
+                                        onClick={ onELKConfigureClick }
+                                        external={ false }
+                                    >
+                                        Configure
+                                    </Link>
+                                    ELK Analytics settings for proper functionality.
+                                </Trans>
+                            </Text>
+                            <Text>
+                                <Trans
+                                    i18nKey={
+                                        "console:manage.features.governanceConnectors.connectorCategories." +
+                                        "otherSettings.connectors.elasticAnalyticsEngine.warningModal.reassure"
+                                    }
+                                >
+                                    You can update your settings anytime.
+                                </Trans> (<Code><GearIcon size={ 14 } /></Code>)
+                            </Text>
+                        </>
+                    )
+                }
                 <Trans
                     i18nKey={
                         "console:loginFlow.adaptiveLoginFlowSelectConfirmationModal.content"
