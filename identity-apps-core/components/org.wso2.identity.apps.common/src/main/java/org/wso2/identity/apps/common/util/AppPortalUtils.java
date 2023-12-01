@@ -45,6 +45,7 @@ import org.wso2.carbon.identity.organization.management.service.constant.Organiz
 import org.wso2.carbon.identity.organization.management.service.exception.OrganizationManagementException;
 import org.wso2.carbon.identity.role.v2.mgt.core.exception.IdentityRoleManagementException;
 import org.wso2.carbon.identity.role.v2.mgt.core.model.Permission;
+import org.wso2.carbon.identity.role.v2.mgt.core.model.RoleBasicInfo;
 import org.wso2.carbon.stratos.common.beans.TenantInfoBean;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
@@ -65,6 +66,7 @@ import static org.wso2.carbon.identity.organization.management.application.const
 import static org.wso2.carbon.identity.role.v2.mgt.core.RoleConstants.ADMINISTRATOR;
 import static org.wso2.carbon.identity.role.v2.mgt.core.RoleConstants.APPLICATION;
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.AppPortal.CONSOLE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.CONSOLE_APP;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_URI;
@@ -305,6 +307,31 @@ public class AppPortalUtils {
                 AppPortalUtils.createApplication(appPortal.getName(), tenantInfoBean.getAdmin(),
                     appPortal.getDescription(), consumerKey, consumerSecret, tenantInfoBean.getTenantDomain(),
                     tenantInfoBean.getTenantId(), appPortal.getPath());
+            } else if (StringUtils.equalsIgnoreCase(CONSOLE_APP, appPortal.getName())) {
+                try {
+                    String userId = getUserId(tenantInfoBean.getAdmin(), tenantInfoBean.getTenantId());
+                    List<RoleBasicInfo> assignedRoles = AppsCommonDataHolder.getInstance().getRoleManagementServiceV2()
+                        .getRoleListOfUser(userId, tenantInfoBean.getTenantDomain());
+                    String audienceId = AppsCommonDataHolder.getInstance().getApplicationManagementService()
+                        .getApplicationResourceIDByInboundKey(CONSOLE.getConsumerKey(), INBOUND_AUTH2_TYPE,
+                            tenantInfoBean.getTenantDomain());
+
+                    for (RoleBasicInfo roleBasicInfo : assignedRoles) {
+                        if (ADMINISTRATOR.equalsIgnoreCase(roleBasicInfo.getName())
+                            && APPLICATION.equalsIgnoreCase(roleBasicInfo.getAudience())
+                            && audienceId.equals(roleBasicInfo.getAudienceId())) {
+                            return;
+                        }
+                    }
+                    //Assign administrator role to the admin user in case of admin username got changed.
+                    String roleId = getAdministratorRoleId(ADMINISTRATOR, APPLICATION, audienceId,
+                        tenantInfoBean.getTenantDomain());
+                    assignAdministratorRole(userId, roleId, tenantInfoBean.getTenantId(),
+                        tenantInfoBean.getTenantDomain());
+                } catch (org.wso2.carbon.user.api.UserStoreException | IdentityRoleManagementException e) {
+                    throw new IdentityApplicationManagementException("Error occured while assigning administrator " +
+                        "role to the admin user.", e);
+                }
             }
         }
     }
@@ -399,6 +426,25 @@ public class AppPortalUtils {
                 "console", e);
         } catch (org.wso2.carbon.user.api.UserStoreException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static String getAdministratorRoleId(String roleName, String audience, String audienceId,
+                                                 String tenantDomain) throws IdentityRoleManagementException {
+
+            return AppsCommonDataHolder.getInstance().getRoleManagementServiceV2().getRoleIdByName(roleName, audience,
+                audienceId, tenantDomain);
+    }
+
+    private static void assignAdministratorRole(String userId, String roleId, int tenantId, String tenantDomain)
+        throws IdentityApplicationManagementException {
+
+        try {
+            AppsCommonDataHolder.getInstance().getRoleManagementServiceV2().updateUserListOfRole(roleId,
+                Collections.singletonList(userId), Collections.emptyList(), tenantDomain);
+        } catch (IdentityRoleManagementException e) {
+            throw new IdentityApplicationManagementException("Failed to assign Administrator role of the console to :" +
+                userId, e);
         }
     }
 
