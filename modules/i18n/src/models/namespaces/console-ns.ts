@@ -1468,6 +1468,7 @@ export interface ConsoleNS {
                     apiLimitReachedError: Notification;
                     authenticationStepMin: Notification;
                     authenticationStepDeleteErrorDueToSecondFactors: Notification;
+                    authenticationStepDeleteErrorDueToAppShared: Notification;
                     deleteApplication: Notification;
                     deleteOptionErrorDueToSecondFactorsOnRight: Notification;
                     deleteProtocolConfig: Notification;
