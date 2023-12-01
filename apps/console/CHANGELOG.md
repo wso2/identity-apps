@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.9.39
+
+### Patch Changes
+
+- [#4909](https://github.com/wso2/identity-apps/pull/4909) [`602d416e42`](https://github.com/wso2/identity-apps/commit/602d416e427d19a8249f0613e8f17dace77dcfba) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Unify UI in connection create page and add authenticator modal in the application sign-in method tab
+
 ## 2.9.38
 
 ### Patch Changes
