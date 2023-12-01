@@ -180,6 +180,10 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const { hiddenAuthenticators } = useAuthenticationFlow();
 
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
+
+    const hiddenConnectionTemplates: string[] = useSelector(
+        (state: AppState) => state.config?.ui?.hiddenConnectionTemplates
+    );
     const groupedIDPTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state.identityProvider?.groupedTemplates
     );
@@ -545,7 +549,8 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                                 ConnectionManagementConstants.IDP_TEMPLATE_IDS.LINKEDIN,
                                                 ConnectionManagementConstants.IDP_TEMPLATE_IDS
                                                     .ORGANIZATION_ENTERPRISE_IDP,
-                                                ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID
+                                                ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID,
+                                                ...hiddenConnectionTemplates
                                             ];
 
                                             if (hiddenTemplates.includes(template?.templateId)) {
