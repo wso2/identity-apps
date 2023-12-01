@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,7 +30,7 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import moment from "moment";
+import moment, { Moment } from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -63,7 +63,7 @@ interface GroupListProps extends SBACInterface<FeatureConfigInterface>,
     groupList: GroupsInterface[];
     /**
      * Group delete callback.
-     * @param {GroupsInterface} group - Deleting group.
+     * @param group - Deleting group.
      */
     handleGroupDelete?: (group: GroupsInterface) => void;
     /**
@@ -103,7 +103,8 @@ interface GroupListProps extends SBACInterface<FeatureConfigInterface>,
 /**
  * List component for Group Management list
  *
- * @param props contains the role list as a prop to populate
+ * @param props - Props injected to the component.
+ * @returns Groups list component.
  */
 export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupListProps): ReactElement => {
 
@@ -132,7 +133,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
     const [ showGroupDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedGroup, setCurrentDeletedGroup ] = useState<GroupsInterface>();
 
-    const handleGroupEdit = (groupId: string) => {
+    const handleGroupEdit = (groupId: string): void => {
         history.push(AppConstants.getPaths().get("GROUP_EDIT").replace(":id", groupId));
     };
 
@@ -176,7 +177,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
     /**
      * Shows list placeholders.
      *
-     * @return {React.ReactElement}
+     * @returns Empty placeholders.
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
@@ -204,7 +205,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
             );
         }
 
-        if (groupList?.length === 0) {
+        if (!groupList || groupList?.length === 0) {
             return (
                 <EmptyPlaceholder
                     data-testid={ `${ testId }-empty-list-empty-placeholder` }
@@ -242,7 +243,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
     /**
      * Resolves data table columns.
      *
-     * @return {TableColumnInterface[]}
+     * @returns Table Columns.
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
@@ -284,8 +285,8 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 id: "lastModified",
                 key: "lastModified",
                 render: (group: GroupsInterface): ReactNode => {
-                    const now = moment(new Date());
-                    const receivedDate = moment(group.meta.created);
+                    const now: Moment = moment(new Date());
+                    const receivedDate: Moment = moment(group.meta.created);
 
                     return t("console:common.dateTime.humanizedDateString", {
                         date: moment.duration(now.diff(receivedDate)).humanize()
@@ -307,7 +308,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
     /**
      * Resolves data table actions.
      *
-     * @return {TableActionsInterface[]}
+     * @returns Table Actions.
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
@@ -319,11 +320,11 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.groups,
                     GroupConstants.FEATURE_DICTIONARY.get("GROUP_READ")),
                 icon: (group: GroupsInterface): SemanticICONS => {
-                    const userStore = group?.displayName?.split("/").length > 1
+                    const userStore: string = group?.displayName?.split("/").length > 1
                         ? group?.displayName?.split("/")[0]
                         : "PRIMARY";
 
-                    return !isFeatureEnabled(featureConfig?.groups, 
+                    return !isFeatureEnabled(featureConfig?.groups,
                         GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
                     || !hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.update, allowedScopes)
                     || readOnlyUserStores?.includes(userStore.toString())
@@ -333,7 +334,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 onClick: (e: SyntheticEvent, group: GroupsInterface): void =>
                     handleGroupEdit(group.id),
                 popupText: (group: GroupsInterface): string => {
-                    const userStore = group?.displayName?.split("/").length > 1
+                    const userStore: string = group?.displayName?.split("/").length > 1
                         ? group?.displayName?.split("/")[0]
                         : "PRIMARY";
 
@@ -350,7 +351,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
 
         actions.push({
             hidden: (group: GroupsInterface): boolean => {
-                const userStore = group?.displayName?.split("/").length > 1
+                const userStore: string = group?.displayName?.split("/").length > 1
                     ? group?.displayName?.split("/")[0]
                     : "PRIMARY";
 
