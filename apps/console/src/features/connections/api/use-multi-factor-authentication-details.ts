@@ -28,7 +28,7 @@ import {
 } from "../models/authenticators";
 
 /**
- * Hook to get multi factor authenticatro details.
+ * Hook to get multi factor authenticator details.
  *
  * @param id - Authenticator id.
  *
