@@ -17,6 +17,7 @@
  */
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { Heading, InfoCard, useMediaContext } from "@wso2is/react-components";
+import { authenticatorConfig } from "apps/console/src/extensions";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -196,7 +197,8 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             ) }
                             {
                                 (!hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_SMS_OTP) &&
-                                    organizationType !== OrganizationType.SUBORGANIZATION) && (
+                                    !(organizationType === OrganizationType.SUBORGANIZATION &&
+                                    authenticatorConfig.disableSMSOTPInSubOrgs)) && (
                                     <InfoCard
                                         fluid
                                         data-componentid="sms-otp-mfa-flow-card"
@@ -313,7 +315,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                                     ) }
                                     onClick={ () => {
                                         eventPublisher.publish(
-                                            "application-begin-sign-in-email-otp-password-less", 
+                                            "application-begin-sign-in-email-otp-password-less",
                                             { "client-id": clientId }
                                         );
                                         onLoginFlowSelect(LoginFlowTypes.EMAIL_OTP);

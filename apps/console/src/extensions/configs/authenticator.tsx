@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,11 +21,12 @@ import { AuthenticatorConfig } from "./models";
 import { ChoreoButton } from "../components/shared/button/choreo-navigation-button";
 
 export const authenticatorConfig : AuthenticatorConfig = {
+    disableSMSOTPInSubOrgs: false,
     externalResourceButton: <ChoreoButton />,
     overriddenAuthenticatorIds: {
         SMS_OTP_AUTHENTICATOR_ID: "c21zLW90cC1hdXRoZW50aWNhdG9y"
     },
     overriddenAuthenticatorNames: {
         SMS_OTP_AUTHENTICATOR: "sms-otp-authenticator"
-    } 
+    }
 };
