@@ -782,13 +782,12 @@
                         "internal_idp_create",
                         "internal_user_mgt_create",
                         "internal_group_mgt_create"
-
                     ],
                     "update": [
                         "internal_application_mgt_update"
                     ],
                     "read": [
-                        
+                        "internal_application_mgt_view"   
                     ]
                 }
             },
