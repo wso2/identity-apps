@@ -679,13 +679,17 @@
                     ]
                 }
             },
-            "residentIdp": {
+            "server": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
-                    "update": [],
-                    "read": [],
                     "create": [],
+                    "read": [
+                        "internal_governance_view"
+                    ],
+                    "update": [
+                        "internal_governance_update"
+                    ],
                     "delete": []
                 }
             },
@@ -787,7 +791,7 @@
                         "internal_application_mgt_update"
                     ],
                     "read": [
-                        "internal_application_mgt_view"   
+                        "internal_application_mgt_view"
                     ]
                 }
             },
@@ -994,16 +998,6 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {}
-            },
-            "server": {
-                "disabledFeatures": [],
-                "enabled": true,
-                "scopes": {
-                    "create": [],
-                    "read": [],
-                    "update": [],
-                    "delete": []
-                }
             }
         },
         "gravatarConfig": {

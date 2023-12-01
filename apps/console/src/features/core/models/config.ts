@@ -152,7 +152,7 @@ export interface FeatureConfigInterface {
     /**
      * Resident IDP Config management feature.
      */
-    residentIdp?: FeatureAccessConfigInterface;
+    server?: FeatureAccessConfigInterface;
     /**
      * Role management feature.
      */
