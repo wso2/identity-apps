@@ -251,40 +251,6 @@ export const getMultiFactorAuthenticatorDetails = (id: string): Promise<MultiFac
 };
 
 /**
- * Hook to get multi factor authenticatro details.
- *
- * @param filter - Search filter.
- * @param type - Authenticator Type.
- *
- * @returns Response as a promise.
- */
-export const useMultiFactorAuthenticatorDetails = <
-    Data = MultiFactorAuthenticatorInterface,
-    Error = RequestErrorInterface>(
-        id: string
-    ): RequestResultInterface<Data, Error> => {
-
-    const requestConfig: AxiosRequestConfig = {
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.multiFactorAuthenticators }/connectors/${ id }`
-    };
-
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
-
-    return {
-        data,
-        error: error,
-        isLoading: !error && !data,
-        isValidating,
-        mutate
-    };
-};
-
-/**
  * Get federated authenticator metadata.
  *
  * @param idpId - ID of the Identity Provider.

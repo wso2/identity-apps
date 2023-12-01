@@ -1,5 +1,16 @@
 # @wso2is/i18n
 
+## 2.0.66
+
+### Patch Changes
+
+- [#4885](https://github.com/wso2/identity-apps/pull/4885) [`143df44dd3`](https://github.com/wso2/identity-apps/commit/143df44dd3ac1ba44c46e34590c436f38fd3c143) Thanks [@Achintha444](https://github.com/Achintha444)! - (improvement) Adding config for API Based Authn configuration
+
+* [#4885](https://github.com/wso2/identity-apps/pull/4885) [`614bc01dc7`](https://github.com/wso2/identity-apps/commit/614bc01dc7631402b61756a8583f6eff0bd8a6ff) Thanks [@Achintha444](https://github.com/Achintha444)! - config for api based authn
+
+* Updated dependencies [[`143df44dd3`](https://github.com/wso2/identity-apps/commit/143df44dd3ac1ba44c46e34590c436f38fd3c143), [`614bc01dc7`](https://github.com/wso2/identity-apps/commit/614bc01dc7631402b61756a8583f6eff0bd8a6ff)]:
+  - @wso2is/core@2.0.20
+
 ## 2.0.65
 
 ### Patch Changes

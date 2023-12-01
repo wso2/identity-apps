@@ -157,8 +157,8 @@ export class AuthenticatorMeta {
             [ AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID ]: getConnectionIcons()?.smsOTP,
             [ AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID ]: getConnectionIcons()?.magicLink,
             [ AuthenticatorManagementConstants.BACKUP_CODE_AUTHENTICATOR_ID ]: getConnectionIcons()?.backupCode,
-            [ 
-            AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID 
+            [
+            AuthenticatorManagementConstants.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
             ]: getConnectionIcons()?.organizationSSO
         }, authenticatorId);
 
@@ -202,7 +202,8 @@ export class AuthenticatorMeta {
             AuthenticatorLabels.OIDC,
             AuthenticatorLabels.SOCIAL,
             AuthenticatorLabels.SAML,
-            AuthenticatorLabels.PASSKEY
+            AuthenticatorLabels.PASSKEY,
+            AuthenticatorLabels.API_AUTHENTICATION
         ];
     }
 

@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.43
+
+### Patch Changes
+
+- [#4885](https://github.com/wso2/identity-apps/pull/4885) [`614bc01dc7`](https://github.com/wso2/identity-apps/commit/614bc01dc7631402b61756a8583f6eff0bd8a6ff) Thanks [@Achintha444](https://github.com/Achintha444)! - config for api based authn
+
 ## 2.0.42
 
 ### Patch Changes

@@ -1,5 +1,32 @@
 # @wso2is/console
 
+## 2.9.36
+
+### Patch Changes
+
+- [#4901](https://github.com/wso2/identity-apps/pull/4901) [`b620d47000`](https://github.com/wso2/identity-apps/commit/b620d47000ed95e2de67399c58ff5ee0c026fbd3) Thanks [@Achintha444](https://github.com/Achintha444)! - (improvement) add new label to the connections.
+
+## 2.9.35
+
+### Patch Changes
+
+- [#4905](https://github.com/wso2/identity-apps/pull/4905) [`2c4f045822`](https://github.com/wso2/identity-apps/commit/2c4f04582275a085ef6f6b450e12c8f7ea1b3b0e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove `Organization SSO` from `Console Settings` login flow
+
+* [#4885](https://github.com/wso2/identity-apps/pull/4885) [`143df44dd3`](https://github.com/wso2/identity-apps/commit/143df44dd3ac1ba44c46e34590c436f38fd3c143) Thanks [@Achintha444](https://github.com/Achintha444)! - (improvement) Adding config for API Based Authn configuration
+
+- [#4885](https://github.com/wso2/identity-apps/pull/4885) [`614bc01dc7`](https://github.com/wso2/identity-apps/commit/614bc01dc7631402b61756a8583f6eff0bd8a6ff) Thanks [@Achintha444](https://github.com/Achintha444)! - config for api based authn
+
+- Updated dependencies [[`143df44dd3`](https://github.com/wso2/identity-apps/commit/143df44dd3ac1ba44c46e34590c436f38fd3c143), [`614bc01dc7`](https://github.com/wso2/identity-apps/commit/614bc01dc7631402b61756a8583f6eff0bd8a6ff)]:
+  - @wso2is/react-components@2.0.24
+  - @wso2is/common@2.0.12
+  - @wso2is/core@2.0.20
+  - @wso2is/form@2.0.16
+  - @wso2is/i18n@2.0.66
+  - @wso2is/access-control@2.0.9
+  - @wso2is/dynamic-forms@2.0.15
+  - @wso2is/forms@2.0.6
+  - @wso2is/theme@2.0.43
+
 ## 2.9.34
 
 ### Patch Changes
