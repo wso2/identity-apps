@@ -93,7 +93,7 @@ export const RenderChipRolesInGroups: FunctionComponent<RenderChipInterface> = (
                         <i>
                             { " (" + audienceType }
                             { audienceType.toUpperCase() === RoleAudienceTypes.APPLICATION
-                                && ( " | " + audienceDisplay ) }
+                                && (" | " + audienceDisplay) }
                             { ") " }
                         </i>
                     </>)
