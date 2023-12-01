@@ -459,7 +459,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "console:manage.features.governanceConnectors.notifications." + 
+                            "console:manage.features.governanceConnectors.notifications." +
                             "updateConnector.success.message"
                         )
                     })
@@ -776,8 +776,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                     } }
                 />
             ) }
-            {elkAnalyticsConfigutationsModal()}
-
+            { elkAnalyticsConfigutationsModal() }
         </div>
     );
 };
