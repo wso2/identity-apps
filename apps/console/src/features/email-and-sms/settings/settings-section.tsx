@@ -69,7 +69,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
 
         <Card
             position="relative"
-            className={ connectorEnabled ? "notification-channel" : "notification-channel-disabled" }
+            className={ `notification-channel ${!connectorEnabled && "disabled"}` }
             onClick={ onPrimaryActionClick }
         >
             <CardContent className="notification-channel-header">
