@@ -109,6 +109,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
 
     const shouldFetchAPIResources: boolean = role?.audience?.type?.
         toUpperCase() === RoleAudienceTypes.ORGANIZATION && !isSubOrganization();
+
     const {
         data: currentAPIResourcesListData,
         isLoading: iscurrentAPIResourcesListLoading,
