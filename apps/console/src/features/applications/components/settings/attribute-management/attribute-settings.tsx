@@ -41,7 +41,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, Grid } from "semantic-ui-react";
+import { Button, Divider, Grid } from "semantic-ui-react";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { AttributeSelectionOIDC } from "./attribute-selection-oidc";
@@ -1321,6 +1321,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                     <Show
                                         when={ AccessControlConstants.APPLICATION_EDIT }
                                     >
+                                        <Divider hidden/>
                                         <Grid.Row>
                                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                 <Button

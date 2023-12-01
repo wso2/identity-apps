@@ -353,8 +353,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     <Divider />
                     <Heading
                         hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
-                            .showSubjectAttribute ||
-                            (onlyOIDCConfigured && !UIConfig?.classicFeatures?.isOIDCSubjectIdentifierEnabled) }
+                            .showSubjectAttribute }
                         as="h4"
                     >
                         { t("console:develop.features.applications.forms.advancedAttributeSettings." +
@@ -416,9 +415,70 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                 ".sections.subject.fields.subjectIncludeTenantDomain.hint")
                         }
                     />
-                    <Divider
-                        hidden={ onlyOIDCConfigured && !UIConfig?.classicFeatures?.isOIDCSubjectIdentifierEnabled }
-                    />
+                    <Divider hidden />
+                    { onlyOIDCConfigured && (
+                        <div>
+                            <Text>
+                                {
+                                    t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                        ".sections.subject.fields.subjectType.label")
+                                }
+                            </Text>
+                            {
+                                Object.keys(SubjectTypes)
+                                    .map((subjectTypeKey: SubjectTypes, index: number) => {
+                                        const subjectType: SubjectTypes
+                                            = SubjectTypes[subjectTypeKey];
+
+                                        return (
+                                            <>
+                                                <Field.Radio
+                                                    key={ index }
+                                                    ariaLabel={ `Subject type ${subjectType}` }
+                                                    name={ "subjectType" }
+                                                    value={ subjectType }
+                                                    label={ t("console:develop.features.applications.forms" +
+                                                        ".advancedAttributeSettings.sections.subject.fields" +
+                                                        ".subjectType." + subjectType + ".label") }
+                                                    hint={ subjectType === SubjectTypes.PAIRWISE &&
+                                                            t("console:develop.features.applications.forms" +
+                                                        ".advancedAttributeSettings.sections.subject.fields" +
+                                                        ".subjectType." + subjectType + ".hint") }
+                                                    checked={ selectedSubjectType === subjectType }
+                                                    listen={ () => {
+                                                        setSelectedSubjectType(subjectType);
+                                                    } }
+                                                />
+                                            </>
+                                        );
+                                    })
+                            }
+                        </div>
+                    ) }
+                    { selectedSubjectType === SubjectTypes.PAIRWISE && (
+                        <Field.Input
+                            ariaLabel="Sector Identifier URI"
+                            inputType="url"
+                            name="sectorIdentifierURI"
+                            label={ t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                ".sections.subject.fields.sectorIdentifierURI.label")
+                            }
+                            required={ false }
+                            placeholder={
+                                t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                    ".sections.subject.fields.sectorIdentifierURI.placeholder")
+                            }
+                            hint={ t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                ".sections.subject.fields.sectorIdentifierURI.hint") }
+                            readOnly={ readOnly }
+                            maxLength={ 200 }
+                            minLength={ 3 }
+                            width={ 16 }
+                            initialValue={ oidcInitialValues?.subject?.sectorIdentifierUri }
+                        />
+                    )
+                    }
+                    <Divider />
                     <Heading
                         as="h4"
                     >
@@ -492,69 +552,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         hint={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
                         "sections.linkedAccounts.fields.mandateLocalAccount.hint") }
                     />
-                    <Divider />
-                    { onlyOIDCConfigured && (
-                        <div>
-                            <Text>
-                                {
-                                    t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                        ".sections.subject.fields.subjectType.label")
-                                }
-                            </Text>
-                            {
-                                Object.keys(SubjectTypes)
-                                    .map((subjectTypeKey: SubjectTypes, index: number) => {
-                                        const subjectType: SubjectTypes
-                                            = SubjectTypes[subjectTypeKey];
-
-                                        return (
-                                            <>
-                                                <Field.Radio
-                                                    key={ index }
-                                                    ariaLabel={ `Subject type ${subjectType}` }
-                                                    name={ "subjectType" }
-                                                    value={ subjectType }
-                                                    label={ t("console:develop.features.applications.forms" +
-                                                        ".advancedAttributeSettings.sections.subject.fields" +
-                                                        ".subjectType." + subjectType + ".label") }
-                                                    hint={ subjectType === SubjectTypes.PAIRWISE &&
-                                                            t("console:develop.features.applications.forms" +
-                                                        ".advancedAttributeSettings.sections.subject.fields" +
-                                                        ".subjectType." + subjectType + ".hint") }
-                                                    checked={ selectedSubjectType === subjectType }
-                                                    listen={ () => {
-                                                        setSelectedSubjectType(subjectType);
-                                                    } }
-                                                />
-                                            </>
-                                        );
-                                    })
-                            }
-                        </div>
-                    ) }
-                    { selectedSubjectType === SubjectTypes.PAIRWISE && (
-                        <Field.Input
-                            ariaLabel="Sector Identifier URI"
-                            inputType="url"
-                            name="sectorIdentifierURI"
-                            label={ t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                ".sections.subject.fields.sectorIdentifierURI.label")
-                            }
-                            required={ false }
-                            placeholder={
-                                t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                    ".sections.subject.fields.sectorIdentifierURI.placeholder")
-                            }
-                            hint={ t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                ".sections.subject.fields.sectorIdentifierURI.hint") }
-                            readOnly={ readOnly }
-                            maxLength={ 200 }
-                            minLength={ 3 }
-                            width={ 16 }
-                            initialValue={ oidcInitialValues?.subject?.sectorIdentifierUri }
-                        />
-                    )
-                    }
+                    <Divider
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showRoleAttribute || !UIConfig?.classicFeatures?.isApplicationLevelRoleAttributeEnabled }
+                    />
                     {
                         applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute &&
                         UIConfig?.classicFeatures?.isApplicationLevelRoleAttributeEnabled && (

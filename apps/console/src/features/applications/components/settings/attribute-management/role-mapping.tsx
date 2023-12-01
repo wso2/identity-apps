@@ -132,6 +132,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                                     "heading") }
                             </Heading>
                             <DynamicField
+                                bottomMargin={ false }
                                 data={
                                     initialMappings ?
                                         initialMappings.map((mapping: RoleMappingInterface) => {
