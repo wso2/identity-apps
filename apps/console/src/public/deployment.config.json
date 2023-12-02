@@ -1050,13 +1050,11 @@
             "Console",
             "My Account"
         ],
-        "classicFeatures": {
-            "isRequestPathAuthenticationEnabled": false,
-            "isApplicationLevelRoleMappingEnabled": false,
-            "isXacmlAuthorizationEnabled": false,
-            "isIncludeOrgNameInSubjectEnabled": false,
-            "isUseMappedLocalSubjectEnabled": false,
-            "isSubjectIdentifierEnabled": false
+        "legacyFeatures": {
+            "applicationOIDCSubjectIdentifierEnabled": false,
+            "applicationRequestPathAuthenticationEnabled": false,
+            "applicationRoleEnabled": false,
+            "applicationXacmlAuthorizationEnabled": false
         },
         "theme": {
             "name": "wso2is"

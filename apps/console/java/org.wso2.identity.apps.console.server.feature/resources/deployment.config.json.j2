@@ -1663,9 +1663,9 @@
                 {% endfor %}
             {% endif %}
         ],
-        "classicFeatures": {
-            {% if console.ui.classic_features.items() is defined %}
-            {% for key, value in console.ui.classic_features.items() %}
+        "legacyFeatures": {
+            {% if console.ui.legacy_features.items() is defined %}
+            {% for key, value in console.ui.legacy_features.items() %}
             {% if value is string %}
                 "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
             {% else %}
