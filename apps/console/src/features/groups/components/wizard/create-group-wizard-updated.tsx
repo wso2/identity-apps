@@ -177,6 +177,13 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         }
     }, [ isRoleSelected ]);
 
+    useEffect(() => {
+        if (wizardState?.BasicDetails?.basic?.basicDetails?.domain) {
+            setSelectedUserStore(wizardState?.BasicDetails?.basic?.basicDetails?.domain);
+        }
+    }, [ wizardState ]);
+
+
     const handleRoleIdSet = (roleId: string) => {
         setSelectedRoleId(roleId);
         setRoleSelection(true);
