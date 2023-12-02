@@ -451,6 +451,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                                     listen={ () => {
                                                         setSelectedSubjectType(subjectType);
                                                     } }
+                                                    readOnly={ readOnly }
                                                 />
                                             </>
                                         );

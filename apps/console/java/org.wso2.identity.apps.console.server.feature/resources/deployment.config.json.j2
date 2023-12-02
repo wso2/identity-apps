@@ -161,6 +161,9 @@
     {% if legacy_authz_runtime.enable is defined %}
         "legacyAuthzRuntime": {{ legacy_authz_runtime.enable }},
     {% endif %}
+    {% if console.legacy_mode is defined %}
+    "legacyMode": {{ console.legacy_mode }},
+    {% endif %}
     "ui": {
         "announcements": [
             {% if console.ui.announcements is defined %}
@@ -1669,7 +1672,11 @@
             {% if value is string %}
                 "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
             {% else %}
+            {% if console.legacy_mode == true %}
+                "{{ key }}": {{ true }}{{ "," if not loop.last }}
+            {% else %}
                 "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% endif %}
             {% endif %}
             {% endfor %}
             {% endif %}

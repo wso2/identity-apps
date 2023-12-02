@@ -211,6 +211,7 @@
     "getProfileInfoFromIDToken": true,
     "superTenantProxy": "",
     "legacyAuthzRuntime": false,
+    "legacyMode": false,
     "ui": {
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
@@ -401,7 +402,7 @@
             },
             "approvals": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "update": [
                         "internal_humantask_view"
@@ -704,7 +705,7 @@
                 }
             },
             "secretsManagement": {
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "create": [
                         "internal_secret_mgt_add"
@@ -1051,10 +1052,18 @@
             "My Account"
         ],
         "legacyFeatures": {
+            "apiResourcesDisabled": false,
             "applicationOIDCSubjectIdentifierEnabled": false,
             "applicationRequestPathAuthenticationEnabled": false,
+            "applicationListSystemApps": false,
+            "applicationSystemAppsSettings": false,
             "applicationRoleEnabled": false,
-            "applicationXacmlAuthorizationEnabled": false
+            "applicationXacmlAuthorizationEnabled": false,
+            "approvalsEnabled": false,
+            "certificatesEnabled": false,
+            "organizationsDisabled": false,
+            "secretsManagementEnabled": false,
+            "rolesV1Enabled": false
         },
         "theme": {
             "name": "wso2is"

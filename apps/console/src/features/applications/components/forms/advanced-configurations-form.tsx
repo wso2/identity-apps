@@ -312,6 +312,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
             {
                 (
                     isApplicationNativeAuthenticationEnabled &&
+                    !UIConfig?.legacyFeatures?.applicationSystemAppsSettings &&
                     template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
                     template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
                     template?.id === ApplicationManagementConstants.MOBILE
