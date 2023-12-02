@@ -1990,9 +1990,10 @@ export const extensions: Extensions = {
         },
         emailProviders: {
             configureEmailTemplates: "Configure Email Templates",
-            heading: "Custom Email Provider",
-            subHeading: "Configure a custom SMTP server to send emails to your users with your own email address.",
+            heading: "Email Provider",
+            subHeading: "Configure a SMTP server to send emails to your users with your own email address.",
             description: "Configure the email provider settings according to your SMTP server.",
+            note: "Email provider for the super organization can only be configured through <1>deployment.toml</1>",
             info: "You can customize the email content using <1>Email Templates</1>.",
             updateButton: "Update",
             sendTestMailButton: "Send Test Email",
@@ -2089,26 +2090,14 @@ export const extensions: Extensions = {
                 }
             }
         },
-        emailAndSMS: {
-            heading: {
-                heading: "Email & SMS Providers",
-                onlySMSProvider: "SMS Provider",
-                onlyEmailProvider: "Email Provider"
-            },
-            title: {
-                heading: "Email & SMS Providers",
-                onlySMSProvider: "SMS Provider",
-                onlyEmailProvider: "Email Provider"
-            },
-            description: {
-                description: "Configure the Email and SMS providers for your organization.",
-                onlySMSProvider: "Configure the SMS provider for your organization.",
-                onlyEmailProvider: "Configure the Email provider for your organization."
-            }
+        notificationChannel: {
+            heading: "SMS / Email Providers",
+            title: "SMS / Email Providers",
+            description: "Configure the SMS and Email providers for your organization."
         },
         smsProviders: {
-            heading: "Custom SMS Provider",
-            subHeading: "Configure a custom SMS provider to send SMS to your users.",
+            heading: "SMS Provider",
+            subHeading: "Configure a SMS provider to send SMS to your users.",
             description: "Configure the SMS provider settings according to your SMS provider.",
             info: "You can customize the SMS content using <1>SMS Templates</1>.",
             updateButton: "Update",

@@ -64,7 +64,8 @@ import {
     AuthenticationSequenceInterface,
     AuthenticationSequenceType,
     AuthenticatorInterface,
-    LoginFlowTypes
+    LoginFlowTypes,
+    additionalSpProperty
 } from "../../../models";
 import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
 
@@ -104,6 +105,10 @@ interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterfa
      * Flag to determine if the updated application a system application.
      */
     isSystemApplication?: boolean;
+    /**
+     * List of hidden authenticators.
+     */
+    hiddenAuthenticators: string[];
 }
 
 /**
@@ -132,6 +137,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         onUpdate,
         readOnly,
         isSystemApplication,
+        hiddenAuthenticators,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -139,6 +145,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const { UIConfig } = useUIConfig();
 
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
+    const isApplicationShared: boolean = application?.advancedConfigurations?.additionalSpProperties?.find(
+        (property: additionalSpProperty) => property?.name === "isAppShared")?.value === "true";
 
     const [ loginFlow, setLoginFlow ] = useState<LoginFlowTypes>(undefined);
     const [ socialDisclaimerModalType, setSocialDisclaimerModalType ] = useState<LoginFlowTypes>(undefined);
@@ -856,6 +864,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             application={ cloneDeep(application) }
             isSystemApplication={ isSystemApplication }
             authenticators={ authenticators }
+            hiddenAuthenticators={ hiddenAuthenticators }
             onAuthenticatorsRefetch={ () => fetchAndCategorizeAuthenticators() }
             onUpdate={ onUpdate }
             isLoading={ isAuthenticatorsFetchRequestLoading }
@@ -885,6 +894,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                 <SignInMethodCustomization
                                     appId={ appId }
                                     applicationName={ application?.name }
+                                    isApplicationShared={ isApplicationShared }
                                     authenticators={ authenticators }
                                     clientId={ clientId }
                                     authenticationSequence={ moderatedAuthenticationSequence }

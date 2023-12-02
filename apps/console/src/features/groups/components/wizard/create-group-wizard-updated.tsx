@@ -60,10 +60,25 @@ import {
  * Interface which captures create group props.
  */
 interface CreateGroupProps extends IdentifiableComponentInterface {
+    /**
+     * Callback for the wizard close event.
+     */
     closeWizard: () => void;
-    updateList: () => void;
+    /**
+     * Callback for the group create event.
+     */
+    onCreate: () => void;
+    /**
+     * Initial step of the wizard.
+     */
     initStep?: number;
+    /**
+     * Required steps for the wizard.
+     */
     requiredSteps?: WizardStepsFormTypes[] | string[];
+    /**
+     * Should the wizard show the steps.
+     */
     showStepper?: boolean;
 }
 
@@ -80,6 +95,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         initStep,
         showStepper,
         requiredSteps,
+        onCreate,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -176,6 +192,13 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
             setViewRolePermissions(true);
         }
     }, [ isRoleSelected ]);
+
+    useEffect(() => {
+        if (wizardState?.BasicDetails?.basic?.basicDetails?.domain) {
+            setSelectedUserStore(wizardState?.BasicDetails?.basic?.basicDetails?.domain);
+        }
+    }, [ wizardState ]);
+
 
     const handleRoleIdSet = (roleId: string) => {
         setSelectedRoleId(roleId);
@@ -316,6 +339,8 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                     });
                 }
             }
+
+            onCreate();
         }).catch((error: AxiosError)  => {
             if (!error.response || error.response.status === 401) {
                 dispatch(

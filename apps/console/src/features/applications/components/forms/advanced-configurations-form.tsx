@@ -17,6 +17,7 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -34,9 +35,10 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { applicationConfig } from "../../../../extensions";
-import { getTechnologyLogos } from "../../../core";
+import { AppState, FeatureConfigInterface, getTechnologyLogos } from "../../../core";
 import { ApplicationManagementConstants } from "../../constants";
 import SAMLWebApplicationTemplate from
     "../../data/application-templates/templates/saml-web-application/saml-web-application.json";
@@ -95,6 +97,10 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
     const { t } = useTranslation();
 
     const { UIConfig } = useUIConfig();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const isApplicationNativeAuthenticationEnabled: boolean = isFeatureEnabled(featureConfig?.applications,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_NATIVE_AUTHENTICATION"));
 
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
 
@@ -300,11 +306,12 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 data-componentid={ `${ testId }-enable-authorization-checkbox` }
                 hidden={
                     !applicationConfig.advancedConfigurations.showEnableAuthorization
-                    || !UIConfig?.classicFeatures?.isXacmlAuthorizationEnabled }
+                    || !UIConfig?.legacyFeatures?.applicationXacmlAuthorizationEnabled }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.enableAuthorization.hint") }
             />
             {
                 (
+                    isApplicationNativeAuthenticationEnabled &&
                     template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
                     template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
                     template?.id === ApplicationManagementConstants.MOBILE

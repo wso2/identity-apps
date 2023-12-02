@@ -16,19 +16,18 @@
  * under the License.
  */
 
+import { EnvelopeIcon } from "@oxygen-ui/react-icons";
 import Grid from "@oxygen-ui/react/Grid";
-import { OrganizationType } from "@wso2is/common";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider } from "semantic-ui-react";
-import { ReactComponent as EmailIcon } from "../../../themes/default/assets/images/icons/email-icon.svg";
 import { ReactComponent as SMSIcon } from "../../../themes/default/assets/images/icons/sms-icon.svg";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { SettingsSection } from "../settings/settings-section";
+import "./notification-channels.scss";
 
 /**
  * Props for the Server Configurations page.
@@ -36,10 +35,10 @@ import { SettingsSection } from "../settings/settings-section";
 type EmailAndSMSPageInterface = IdentifiableComponentInterface;
 
 /**
- * Governance connector listing page.
+ * Notification channel listing page.
  *
  * @param props - Props injected to the component.
- * @returns Governance connector listing page component.
+ * @returns Notification channels listing page component.
  */
 export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
     props: EmailAndSMSPageInterface
@@ -47,21 +46,9 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
     const { ["data-componentid"]: componentid } = props;
 
     const { t } = useTranslation();
-    const { organizationType } = useGetCurrentOrganizationType();
+    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
-    /**
-     * Check if the email provider is enabled for the tenant.
-     */
-    const isEmailProviderEnabled: boolean = featureConfig?.emailProviders?.enabled
-        && !(featureConfig?.emailProviders?.disabledFeatures?.includes("superTenantProvider")
-        && organizationType === OrganizationType.SUPER_ORGANIZATION);
-
-    /**
-     * Check if the SMS provider is enabled for the tenant.
-     */
-    const isSMSProviderEnabled: boolean = featureConfig?.smsProviders?.enabled;
 
     /**
      * Handle connector advance setting selection.
@@ -74,73 +61,58 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
         history.push(AppConstants.getPaths().get("EMAIL_PROVIDER"));
     };
 
-    /**
-     * Get the page details based on the enabled providers.
-     */
-    const getPageDetails = (): {
-        description: string;
-        pageTitle: string;
-        title: string;
-    } => {
-        if ((isEmailProviderEnabled && isSMSProviderEnabled) || (!isEmailProviderEnabled && !isSMSProviderEnabled)) {
-            return {
-                description: t("extensions:develop.emailAndSMS.description.description"),
-                pageTitle: t("extensions:develop.emailAndSMS.heading.heading"),
-                title: t("extensions:develop.emailAndSMS.title.heading")
-            };
-        } else if (isSMSProviderEnabled) {
-            return {
-                description: t("extensions:develop.emailAndSMS.description.onlySMSProvider"),
-                pageTitle: t("extensions:develop.emailAndSMS.heading.onlySMSProvider"),
-                title: t("extensions:develop.emailAndSMS.title.onlySMSProvider")
-            };
-        } else if (isEmailProviderEnabled) {
-            return {
-                description: t("extensions:develop.emailAndSMS.description.onlyEmailProvider"),
-                pageTitle: t("extensions:develop.emailAndSMS.heading.onlyEmailProvider"),
-                title: t("extensions:develop.emailAndSMS.title.onlyEmailProvider")
-            };
-        }
-    };
-
     return (
         <PageLayout
-            pageTitle={ getPageDetails().pageTitle }
-            title={ getPageDetails().title }
-            description={ getPageDetails().description }
+            pageTitle={ t("extensions:develop.notificationChannel.heading") }
+            title={ t("extensions:develop.notificationChannel.title") }
+            description={ t("extensions:develop.notificationChannel.description") }
             data-testid={ `${componentid}-page-layout` }
         >
-            { isEmailProviderEnabled && (
-                <>
-                    <Grid xs={ 12 } lg={ 6 }>
+            <Grid container spacing={ 2 }>
+                { featureConfig.emailProviders?.enabled
+                  && !(featureConfig?.emailProviders?.disabledFeatures?.includes("superTenantProvider"))
+                  && (
+                      <Grid xs={ 12 } md={ 4 }>
+                          <SettingsSection
+                              data-componentid={ "account-login-page-section" }
+                              data-testid={ "account-login-page-section" }
+                              description={ t("extensions:develop.emailProviders.description") }
+                              icon={ <EnvelopeIcon size="small" className="icon"/> }
+                              header={ t("extensions:develop.emailProviders.heading") }
+                              onPrimaryActionClick={ isSuperOrganization() ? null : handleEmailSelection }
+                              primaryAction={ isSuperOrganization() ? null : t("common:configure") }
+                              placeholder={
+                                  (<Trans
+                                      i18nKey={
+                                          "extensions:develop.emailProviders.note"
+                                      }
+                                  >
+                                    Email provider configurations for the super organization
+                                    can only be updated through <strong>deployment.toml</strong>
+                                  </Trans>)
+                              }
+                              connectorEnabled={ !isSuperOrganization() }
+                          />
+                      </Grid>
+                  ) }
+
+                { featureConfig.smsProviders?.enabled && (
+                    <Grid xs={ 12 } md={ 4 }>
                         <SettingsSection
                             data-componentid={ "account-login-page-section" }
                             data-testid={ "account-login-page-section" }
-                            description={ t("extensions:develop.emailProviders.description") }
-                            icon={ EmailIcon }
-                            header={ t("extensions:develop.emailProviders.heading") }
-                            onPrimaryActionClick={ handleEmailSelection }
+                            description={ t("extensions:develop.smsProviders.description") }
+                            icon={ <SMSIcon fill="white" /> }
+                            header={
+                                t("extensions:develop.smsProviders.heading")
+                            }
+                            onPrimaryActionClick={ handleSMSSelection }
                             primaryAction={ t("common:configure") }
+                            connectorEnabled
                         />
                     </Grid>
-                    <Divider hidden/>
-                </>
-            ) }
-            { isSMSProviderEnabled && (
-                <Grid xs={ 12 } lg={ 6 }>
-                    <SettingsSection
-                        data-componentid={ "account-login-page-section" }
-                        data-testid={ "account-login-page-section" }
-                        description={ t("extensions:develop.smsProviders.description") }
-                        icon={ SMSIcon }
-                        header={
-                            t("extensions:develop.smsProviders.heading")
-                        }
-                        onPrimaryActionClick={ handleSMSSelection }
-                        primaryAction={ t("common:configure") }
-                    />
-                </Grid>
-            ) }
+                ) }
+            </Grid>
         </PageLayout>
     );
 };

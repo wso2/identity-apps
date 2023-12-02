@@ -125,7 +125,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         data: originalConnectorCategories,
         error: connectorCategoriesFetchRequestError
     } = useGovernanceConnectorCategories(
-        featureConfig?.residentIdp?.enabled && isFirstLevelOrg);
+        featureConfig?.server?.enabled && isFirstLevelOrg);
 
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);

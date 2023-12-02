@@ -39,7 +39,8 @@
         if (urlParams.has('ui_locales')) {
             localeFromUrlParams = encodeURIComponent(urlParams.get('ui_locales'));
         }
-        const computedLocale = computeLocale(localeFromCookie, localeFromUrlParams);
+        const browserLocale = "<%= userLocale %>"
+        const computedLocale = computeLocale(localeFromCookie, localeFromUrlParams, browserLocale);
 
         languageSelectionInput.val(computedLocale);
 
@@ -100,12 +101,14 @@
         window.location.reload();
     }
 
-    function computeLocale(localeFromCookie, localeFromUrlParams) {
+    function computeLocale(localeFromCookie, localeFromUrlParams, browserLocale) {
         if (localeFromCookie) {
             return localeFromCookie;
         } else if (localeFromUrlParams) {
             const firstLangFromUrlParams = localeFromUrlParams.split(" ")[0];
             return firstLangFromUrlParams;
+        } else if (browserLocale) {
+            return browserLocale;
         } else {
             return "en_US";
         }
