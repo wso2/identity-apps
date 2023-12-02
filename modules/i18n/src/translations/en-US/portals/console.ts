@@ -703,6 +703,9 @@ export const console: ConsoleNS = {
     },
     consoleSettings: {
         administrators: {
+            edit: {
+                backButton: "Go back to Administrators"
+            },
             tabLabel: "Administrators"
         },
         loginFlow: {

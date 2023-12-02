@@ -519,6 +519,9 @@ export interface ConsoleNS {
     };
     consoleSettings: {
         administrators: {
+            edit: {
+                backButton: string;
+            };
             tabLabel: string;
         };
         loginFlow: {

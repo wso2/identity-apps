@@ -709,6 +709,9 @@ export const console: ConsoleNS = {
     },
     consoleSettings: {
         administrators: {
+            edit: {
+                backButton: "පරිපාලකයින් වෙත ආපසු යන්න"
+            },
             tabLabel: "පරිපාලකයින්"
         },
         loginFlow: {
