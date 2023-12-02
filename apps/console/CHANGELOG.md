@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.9.42
+
+### Patch Changes
+
+- [#4914](https://github.com/wso2/identity-apps/pull/4914) [`da915ea6a0`](https://github.com/wso2/identity-apps/commit/da915ea6a02efae9d554961e3447c5247adec4d7) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Remove unnecessary information from consent page
+
+* [#4892](https://github.com/wso2/identity-apps/pull/4892) [`aa213c9cc2`](https://github.com/wso2/identity-apps/commit/aa213c9cc2c6082567a19cb24993d188108fa6f5) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the OIDC protocol section (Standard based) issue
+
+* Updated dependencies [[`da915ea6a0`](https://github.com/wso2/identity-apps/commit/da915ea6a02efae9d554961e3447c5247adec4d7)]:
+  - @wso2is/theme@2.0.45
+
 ## 2.9.41
 
 ### Patch Changes
