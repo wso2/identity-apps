@@ -1,5 +1,15 @@
 # @wso2is/react-components
 
+## 2.0.25
+
+### Patch Changes
+
+- [#4900](https://github.com/wso2/identity-apps/pull/4900) [`951c6434c0`](https://github.com/wso2/identity-apps/commit/951c6434c03c45f8d4fa6624f5eff84a492487dd) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the user attributes section
+
+- Updated dependencies [[`951c6434c0`](https://github.com/wso2/identity-apps/commit/951c6434c03c45f8d4fa6624f5eff84a492487dd)]:
+  - @wso2is/core@2.0.21
+  - @wso2is/forms@2.0.7
+
 ## 2.0.24
 
 ### Patch Changes
