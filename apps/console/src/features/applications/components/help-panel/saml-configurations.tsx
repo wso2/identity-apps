@@ -50,9 +50,9 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
         samlConfigurations,
         [ "data-testid" ]: testId
     } = props;
-    
+
     const { t } = useTranslation();
-    
+
     const tenantName: string = store.getState().config.deployment.tenant;
     const featureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features);
@@ -141,7 +141,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                     </Grid.Column>
                 </Grid.Row>
                 {
-                    featureConfig?.residentIdp?.enabled && (
+                    featureConfig?.server?.enabled && (
                         <>
                             <Grid.Row columns={ 2 }>
                                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>

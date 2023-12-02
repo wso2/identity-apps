@@ -341,7 +341,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     </Grid.Column>
                 </Grid.Row>
                 {
-                    featureConfig?.residentIdp?.enabled && (
+                    featureConfig?.server?.enabled && (
                         <>
                             <Grid.Row columns={ 2 }>
                                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
