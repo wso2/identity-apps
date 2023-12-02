@@ -62,7 +62,8 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
         authenticationSequence,
         isConditionalAuthenticationEnabled,
         onConditionalAuthenticationToggle,
-        updateAuthenticationSequence
+        updateAuthenticationSequence,
+        applicationMetaData
     } = useAuthenticationFlow();
 
     const [ showScriptResetWarning, setShowScriptResetWarning ] = useState<boolean>(false);
@@ -72,19 +73,19 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
      * the adaptive script section should be enabled or not.
      */
     useEffect(() => {
-        if (authenticationSequence?.script
+        if (applicationMetaData?.authenticationSequence?.script
                 && !AdaptiveScriptUtils.isDefaultScript(
-                    authenticationSequence.script,
-                    authenticationSequence?.steps?.length
+                    applicationMetaData.authenticationSequence.script,
+                    applicationMetaData.authenticationSequence?.steps?.length
                 )
-                && !AdaptiveScriptUtils.isEmptyScript(authenticationSequence?.script)) {
+                && !AdaptiveScriptUtils.isEmptyScript(applicationMetaData.authenticationSequence?.script)) {
             onConditionalAuthenticationToggle(true);
 
             return;
         }
 
         onConditionalAuthenticationToggle(false);
-    }, [ authenticationSequence.script ]);
+    }, [ applicationMetaData?.authenticationSequence?.script ]);
 
     const handleSwitchChange = () => {
         if (isConditionalAuthenticationEnabled) {
@@ -108,7 +109,7 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                                 md={ 2 }
                                 lg={ 1 }
                                 xl={ 1 }
-                            >    
+                            >
                                 <Switch
                                     checked={ isConditionalAuthenticationEnabled }
                                     onChange={ handleSwitchChange }
@@ -123,14 +124,14 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                                 xl={ 11 }
                             >
                                 <Typography variant="body1">
-                                    { 
+                                    {
                                         t("console:develop.features.applications.edit.sections.signOnMethod." +
                                             "sections.authenticationFlow.sections.scriptBased.accordion." +
-                                            "title.heading") 
+                                            "title.heading")
                                     }
                                 </Typography>
                                 <Typography variant="body2">
-                                    { 
+                                    {
                                         t("console:develop.features.applications.edit.sections.signOnMethod." +
                                             "sections.authenticationFlow.sections.scriptBased.accordion." +
                                             "title.description")
@@ -149,7 +150,7 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                     open={ showScriptResetWarning }
                     onClose={ () => {
                         updateAuthenticationSequence({
-                            script: 
+                            script:
                                 AdaptiveScriptUtils.generateScript(authenticationSequence?.steps?.length + 1).join("\n")
                         });
                         setShowScriptResetWarning(false);
