@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.9.40
+
+### Patch Changes
+
+- [#4908](https://github.com/wso2/identity-apps/pull/4908) [`7890ba578d`](https://github.com/wso2/identity-apps/commit/7890ba578d6174a7e2554ee3474a2f6706ec6718) Thanks [@RivinduM](https://github.com/RivinduM)! - Add option to clear dropdown selection.
+
+* [#4898](https://github.com/wso2/identity-apps/pull/4898) [`645d34c4d9`](https://github.com/wso2/identity-apps/commit/645d34c4d92945992c664479b8da8bf52aecc52e) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add category,identifier to role permissions
+
+* Updated dependencies [[`7890ba578d`](https://github.com/wso2/identity-apps/commit/7890ba578d6174a7e2554ee3474a2f6706ec6718)]:
+  - @wso2is/i18n@2.0.68
+
 ## 2.9.39
 
 ### Patch Changes
