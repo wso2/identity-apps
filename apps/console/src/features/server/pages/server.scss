@@ -26,6 +26,11 @@
     gap: 15px;
     align-content: center;
     align-items: center;
+
+    .theme-icon {
+        display: inline;
+        vertical-align: text-bottom;
+    }
 }
 
 .server-configuration-icon-container {

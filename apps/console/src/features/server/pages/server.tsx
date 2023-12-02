@@ -61,7 +61,7 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
             data-componentid={ `${ componentId }-page-layout` }
         >
             <Ref innerRef={ pageContextRef }>
-                <Grid container rowSpacing={ 2 } columnSpacing={ 3 }>
+                <Grid container rowSpacing={ 3 } columnSpacing={ 3 }>
                     <Grid xs={ 12 } md={ 6 } lg={ 4 }>
                         <Card
                             key="admin-advisory-page-section"
@@ -86,10 +86,6 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
                                         inline
                                         transparent
                                         shape="square"
-                                        style={ {
-                                            "display": "inline",
-                                            "verticalAlign": "text-bottom"
-                                        } }
                                     />
                                 </div>
                                 <Typography variant="h6">
@@ -128,10 +124,6 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
                                         inline
                                         transparent
                                         shape="square"
-                                        style={ {
-                                            "display": "inline",
-                                            "verticalAlign": "text-bottom"
-                                        } }
                                     />
                                 </div>
                                 <div>
@@ -173,10 +165,6 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
                                         inline
                                         transparent
                                         shape="square"
-                                        style={ {
-                                            "display": "inline",
-                                            "verticalAlign": "text-bottom"
-                                        } }
                                     />
                                 </div>
                                 <div>
