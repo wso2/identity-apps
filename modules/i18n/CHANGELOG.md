@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.68
+
+### Patch Changes
+
+- [#4908](https://github.com/wso2/identity-apps/pull/4908) [`7890ba578d`](https://github.com/wso2/identity-apps/commit/7890ba578d6174a7e2554ee3474a2f6706ec6718) Thanks [@RivinduM](https://github.com/RivinduM)! - Add option to clear dropdown selection.
+
 ## 2.0.67
 
 ### Patch Changes
