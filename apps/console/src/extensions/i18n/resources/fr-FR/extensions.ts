@@ -2177,14 +2177,14 @@ export const extensions: Extensions = {
                 vonage: {
                     subHeading: "Paramètres Vonage",
                     accountSID: {
-                        label: "SID du compte Vonage",
-                        placeholder: "Entrez le SID du compte Vonage",
-                        hint: "Identifiant de chaîne de compte Vonage qui fait office de nom d'utilisateur pour le compte"
+                        label: "Clé API Vonage",
+                        placeholder: "Entrez la clé API Vonage",
+                        hint: "Clé API Vonage qui fait office de nom d'utilisateur pour le compte."
                     },
                     authToken: {
-                        label: "Jeton d'authentification Vonage",
-                        placeholder: "Entrez le jeton d'authentification Vonage",
-                        hint: "Le jeton d'accès généré par le serveur d'authentification Vonage"
+                        label: "Secret de l'API Vonage",
+                        placeholder: "Entrez le secret de l'API Vonage",
+                        hint: "Le secret API généré par le serveur d'authentification Vonage."
                     },
                     sender: {
                         label: "Expéditrice",
