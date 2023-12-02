@@ -20,6 +20,7 @@ import CardContent from "@mui/material/CardContent";
 import {
     ArrowLoopRightUserIcon, UserBannerIcon
 } from "@oxygen-ui/react-icons";
+import Avatar from "@oxygen-ui/react/Avatar";
 import Card from "@oxygen-ui/react/Card";
 import Grid from "@oxygen-ui/react/Grid";
 import Typography from "@oxygen-ui/react/Typography";
@@ -31,7 +32,6 @@ import { Ref } from "semantic-ui-react";
 import RemoteLoggingIcon from "../../../themes/default/assets/images/icons/outline-icons/remote-logging.svg";
 import { AppConstants, history } from "../../core";
 import "./server.scss";
-import Avatar from "@oxygen-ui/react/Avatar";
 
 /**
  * Props for the Server Configurations page.
@@ -77,7 +77,7 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
                                             <Avatar
                                                 variant="square"
                                                 randomBackgroundColor
-                                                backgroundColorRandomizer="admin-advisory"
+                                                backgroundColorRandomizer="admin-advisory-banner"
                                                 className="server-configuration-icon-container"
                                             >
                                                 <UserBannerIcon className="icon" />
@@ -156,7 +156,7 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
                                             <Avatar
                                                 variant="square"
                                                 randomBackgroundColor
-                                                backgroundColorRandomizer="server-configuration"
+                                                backgroundColorRandomizer="internal-notification"
                                                 className="server-configuration-icon-container"
                                             >
                                                 <ArrowLoopRightUserIcon className="icon" />
