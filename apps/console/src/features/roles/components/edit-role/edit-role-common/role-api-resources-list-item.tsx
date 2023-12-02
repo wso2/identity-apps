@@ -27,6 +27,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Tooltip } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { Label } from "semantic-ui-react";
 import { PermissionsList } from "./permissions-list";
 import { APIResourceInterface, ScopeInterface } from "../../../models/apiResources";
 
@@ -144,6 +145,30 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                         disablePadding
                     >
                         <ListItemText primary={ apiResource?.name } />
+                        <ListItemText
+                            secondary={ (
+                                <Label
+                                    size="mini"
+                                    className= "info-label"
+                                >
+                                    { apiResource?.type }
+                                </Label>
+                            ) } >
+
+                        </ListItemText>
+                        <ListItemText
+                            secondary={ (<>
+                                { apiResource?.identifier }
+                                <Label
+                                    pointing="left"
+                                    size="mini"
+                                    className= "client-id-label"
+                                >
+                                    { t("extensions:develop.apiResource.table.identifier.label") }
+                                </Label>
+                            </>
+                            ) } >
+                        </ListItemText>
                     </ListItem>
                 </AccordionSummary>
                 {
