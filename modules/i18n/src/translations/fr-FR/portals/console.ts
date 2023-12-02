@@ -701,6 +701,9 @@ export const console: ConsoleNS = {
     },
     consoleSettings: {
         administrators: {
+            edit: {
+                backButton: "Retourner aux administrateurs"
+            },
             tabLabel: "Administratrices"
         },
         loginFlow: {
