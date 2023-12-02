@@ -463,7 +463,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         }
 
         // If the script is untouched, then the script will be generated according to the current
-        // authentication step.
+        // authentication steps.
         if (script && isScriptUntouchedDefaultOne(script)
                 && AdaptiveScriptUtils.minifyScript(internalScript) === AdaptiveScriptUtils.minifyScript(sourceCode)) {
             setInternalStepCount(authenticationSteps);
