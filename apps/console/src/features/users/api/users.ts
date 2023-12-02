@@ -85,7 +85,7 @@ export const getUsersList = (
  * @param startIndex - The index of the first user to be returned.
  * @param filter - The filter to be applied to the users.
  * @param attributes - The attributes to be returned. 
- * @param domain - The domain of the users.
+ * @param domain - The user store domain ID.
  * @param excludedAttributes - The attributes to be excluded. 
  * @returns `RequestResultInterface<Data, Error>`
  */
@@ -94,11 +94,12 @@ export const useUsersList = (
     startIndex: number, 
     filter: string, 
     attributes: string, 
-    domain: string,
+    domainId: string,
     excludedAttributes?: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<UserListInterface, RequestErrorInterface> => {
 
+    console.log(shouldFetch)
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -108,7 +109,7 @@ export const useUsersList = (
         params: {
             attributes,
             count,
-            domain,
+            domain: domainId,
             excludedAttributes,
             filter,
             startIndex
