@@ -559,7 +559,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
             } }>
             <Field.Input
                 ariaLabel="Service provider entity id"
-                inputType="url"
+                inputType="text"
                 name="SPEntityId"
                 label="Service provider entity ID"
                 required={ true }
@@ -604,7 +604,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                         data-componentid={ `${ componentId }-form-wizard-saml-sso-url` }
                     />
                     <Field.Input
-                        inputType="url"
+                        inputType="text"
                         ariaLabel="Identity provider entity ID"
                         name="IdPEntityId"
                         label="Identity provider entity ID"
