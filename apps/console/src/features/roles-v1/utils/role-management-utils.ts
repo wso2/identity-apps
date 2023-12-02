@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import { AppConstants } from "../../../features/core";
 import { getPermissionList, searchRoleList } from "../api";
@@ -30,8 +31,6 @@ export class RoleManagementUtils {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {
@@ -52,7 +51,7 @@ export class RoleManagementUtils {
         };
 
         return searchRoleList(searchData)
-            .then((response) => {
+            .then((response: AxiosResponse) => {
                 return response?.data?.totalResults === 0;
             });
     };
@@ -60,21 +59,21 @@ export class RoleManagementUtils {
     /**
      * Retrieve all permissions from backend.
      *
-     * @param {string[]} permissionsToSkip - Array of permissions to filter out.
-     * @return {Promise<TreeNode[]>}
+     * @param permissionsToSkip - Array of permissions to filter out.
+     * @returns A promise containing the permission list.
      */
-    public static getAllPermissions = (permissionsToSkip?: string[], tenantDomain?: string): Promise<TreeNode[]> => {
-        return getPermissionList().then((response) => {
+    public static getAllPermissions = (permissionsToSkip?: string[]): Promise<TreeNode[]> => {
+        return getPermissionList().then((response: AxiosResponse) => {
             if (response.status === 200 && response.data && response.data instanceof Array) {
 
                 const permissionStringArray: PermissionObject[] = !isEmpty(permissionsToSkip)
-                    ? response.data.filter((permission: { resourcePath: string; }) => 
+                    ? response.data.filter((permission: { resourcePath: string; }) =>
                         !permissionsToSkip.includes(permission.resourcePath))
                     : response.data;
 
                 let permissionTree: TreeNode[] = [];
 
-                permissionTree = permissionStringArray.reduce((arr, path) => {
+                permissionTree = permissionStringArray.reduce((arr: TreeNode[], path: PermissionObject) => {
 
                     let nodes: TreeNode[] = [];
 
@@ -83,14 +82,14 @@ export class RoleManagementUtils {
                         path.resourcePath.replace(/^\/|\/$/g, "").split("/"),
                         arr
                     );
-                    
+
                     return nodes;
                 },[]);
 
                 if (permissionTree[0]?.title !== AppConstants.PERMISSIONS_ROOT_NODE) {
                     return permissionTree[0]?.children;
                 }
- 
+
                 return permissionTree;
             }
         });

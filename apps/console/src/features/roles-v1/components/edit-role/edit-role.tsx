@@ -19,7 +19,7 @@
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { RolesInterface, SBACInterface } from "@wso2is/core/models";
-import { ResourceTab } from "@wso2is/react-components";
+import { ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -90,7 +90,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     }, [ roleObject ]);
 
     const resolveResourcePanes = () => {
-        const panes = [
+        const panes: ResourceTabPaneInterface[] = [
             {
                 menuItem: t("console:manage.features.roles.edit.menuItems.basic"),
                 render: () => (

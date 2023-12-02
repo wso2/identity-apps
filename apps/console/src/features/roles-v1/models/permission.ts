@@ -19,7 +19,7 @@
 import { DataNode } from "rc-tree/lib/interface";
 
 /**
- * Interface extending DataNode to capture tree node 
+ * Interface extending DataNode to capture tree node
  * data for permission tree.
  */
 export interface TreeNode extends DataNode {

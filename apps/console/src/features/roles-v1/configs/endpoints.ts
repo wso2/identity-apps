@@ -21,9 +21,9 @@ import { RolesResourceEndpointsInterface } from "../models";
 /**
  * Get the resource endpoints for the Role Management feature.
  *
- * @param {string} serverHostWithOrgPath - Server Host with Org Path.
- * @param {string} serverHost - Server Host
- * @return {RolesResourceEndpointsInterface}
+ * @param serverHostWithOrgPath - Server Host with Org Path.
+ * @param serverHost - Server Host
+ * @returns Resource endpoints for the Role Management feature.
  */
 export const getRolesResourceEndpoints = (
     serverHostWithOrgPath: string,

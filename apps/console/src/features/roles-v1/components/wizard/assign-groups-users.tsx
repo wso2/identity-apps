@@ -77,9 +77,9 @@ export const AssignGroupsUsers: FunctionComponent<AssignGroupsUsersPropsInterfac
                         initialValues={ initialGroupList }
                         handleGroupListChange={ (groups: GroupsInterface[]) => handleGroupListChange(groups) }
                         handleTempListChange={ (groups: GroupsInterface[]) => handleAddedGroupListChange(groups) }
-                        handleInitialTempListChange={ 
+                        handleInitialTempListChange={
                             (groups: GroupsInterface[]) => handleAddedGroupInitialListChange(groups) }
-                        handleInitialGroupListChange={ 
+                        handleInitialGroupListChange={
                             (groups: GroupsInterface[]) => handleInitialGroupListChange(groups) }
                     />
                 </ResourceTab.Pane>

@@ -20,18 +20,18 @@ import { PermissionObject, TreeNode } from "../models";
 
 /**
   * A Util method to create an array of permission object with heirarchy.
-  * 
+  *
   * @param permissioObject - Permission Object
   * @param pathComponents - Permission Path Array
   * @param permissionTreeArray - Permission Tree array for reference
-  * 
-  * @returns {TreeNode[]} - Permission array with tree structure
+  *
+  * @returns Permission array with tree structure
   */
 export const generatePermissionTree = (permissioObject: PermissionObject, pathComponents: string[],
     permissionTreeArray: TreeNode[]): TreeNode[] => {
 
-    const component = pathComponents.shift();
-    let permissionComponent = permissionTreeArray.find((permission: TreeNode) => {
+    const component: string = pathComponents.shift();
+    let permissionComponent: TreeNode = permissionTreeArray.find((permission: TreeNode) => {
         return permission.name === component;
     });
 
@@ -44,8 +44,8 @@ export const generatePermissionTree = (permissioObject: PermissionObject, pathCo
         permissionTreeArray.push(permissionComponent);
     }
 
-    if (pathComponents.length) { 
-        generatePermissionTree(permissioObject, pathComponents, 
+    if (pathComponents.length) {
+        generatePermissionTree(permissioObject, pathComponents,
             permissionComponent.children || (permissionComponent.children = []));
     }
 

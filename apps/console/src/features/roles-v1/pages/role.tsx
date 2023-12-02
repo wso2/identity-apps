@@ -17,7 +17,7 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { 
+import {
     AlertInterface,
     AlertLevels,
     RoleListInterface,
@@ -35,10 +35,10 @@ import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, UIConstants } from "../../core";
 import { getRolesList } from "../../roles/api";
-import { CreateRoleWizard } from "../components/wizard/create-role-wizard";
 import { getUserStoreList } from "../../userstores/api";
 import { deleteRoleById, searchRoleList } from "../api";
 import { RoleList } from "../components/role-list";
+import { CreateRoleWizard } from "../components/wizard/create-role-wizard";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../constants";
 import { SearchRoleInterface } from "../models";
 

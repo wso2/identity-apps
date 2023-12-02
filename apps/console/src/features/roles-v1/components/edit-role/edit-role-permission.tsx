@@ -18,11 +18,13 @@
 
 import { AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { updateRole } from "../../api";
-import { TreeNode } from "../../models";
+import { PatchRoleDataInterface, TreeNode } from "../../models";
 import { PermissionList } from "../wizard";
 
 /**
@@ -49,13 +51,13 @@ interface RolePermissionDetailProps {
 
 /**
  * Component to update permissions of the selected role.
- * @param props Contains role id to get permission details.
+ * @param props - Contains role id to get permission details.
  */
 export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps> = (props:
     RolePermissionDetailProps): ReactElement => {
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const {
@@ -66,7 +68,7 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
     } = props;
 
     const onPermissionUpdate = (updatedPerms: TreeNode[]) => {
-        const roleData = {
+        const roleData: PatchRoleDataInterface = {
             "Operations": [ {
                 "op": "replace",
                 "path": "permissions",
@@ -92,7 +94,7 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
                 );
                 onRoleUpdate();
             })
-            .catch(error => {
+            .catch((error: AxiosError) => {
                 if (!error.response || error.response.status === 401) {
                     dispatch(
                         addAlert({

@@ -23,8 +23,8 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
-import { EditRole } from "../components/edit-role/edit-role";
 import { getRoleById } from "../api";
+import { EditRole } from "../components/edit-role/edit-role";
 
 const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
 

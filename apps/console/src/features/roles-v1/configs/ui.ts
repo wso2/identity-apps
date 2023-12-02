@@ -35,4 +35,4 @@ export const getRolesWizardStepIcons= (): {
         permissions: KeyIcon,
         summary: ReportIcon
     };
-}; 
+};

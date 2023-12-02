@@ -71,7 +71,7 @@ interface RoleListProps extends LoadableComponentInterface, TestableComponentInt
     roleList: RoleListInterface;
     /**
      * Role delete callback.
-     * @param {RolesInterface} role - Deleting role.
+     * @param role - Deleting role.
      */
     handleRoleDelete?: (role: RolesInterface) => void;
     /**
@@ -115,7 +115,7 @@ interface RoleListProps extends LoadableComponentInterface, TestableComponentInt
 /**
  * List component for Role Management list
  *
- * @param props contains the role list as a prop to populate
+ * @param props - contains the role list as a prop to populate
  */
 export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleListProps): ReactElement => {
 
@@ -201,7 +201,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     /**
      * Shows list placeholders.
      *
-     * @return {React.ReactElement}
+     * @returns List placeholders.
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
@@ -267,7 +267,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     /**
      * Resolves data table columns.
      *
-     * @return {TableColumnInterface[]}
+     * @returns Table columns.
      */
     const resolveTableColumns = (): TableColumnInterface[] => {
         return [
@@ -309,8 +309,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 id: "lastModified",
                 key: "lastModified",
                 render: (role: RolesInterface) => {
-                    const now = moment(new Date());
-                    const receivedDate = moment(role?.meta?.created);
+                    const now: moment.Moment = moment(new Date());
+                    const receivedDate: moment.Moment = moment(role?.meta?.created);
 
                     return t("console:common.dateTime.humanizedDateString", {
                         date: moment.duration(now.diff(receivedDate)).humanize()
@@ -332,7 +332,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     /**
      * Resolves data table actions.
      *
-     * @return {TableActionsInterface[]}
+     * @returns Table actions.
      */
     const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {

@@ -602,7 +602,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                                                 <UserAvatar
                                                                                     data-testid={ `${ testId }-users
                                                                                     -list-${ user.display }-avatar` }
-                                                                                    name={ 
+                                                                                    name={
                                                                                         user.display
                                                                                     }
                                                                                     size="mini"
@@ -614,18 +614,18 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                                             </Table.Cell>
                                                                             <Table.Cell>
                                                                                 {
-                                                                                    user.orgId === 
+                                                                                    user.orgId ===
                                                                                     OrganizationManagementConstants
-                                                                                        .ROOT_ORGANIZATION?.id ? 
+                                                                                        .ROOT_ORGANIZATION?.id ?
                                                                                         productName : user.orgName
                                                                                 }
                                                                             </Table.Cell>
                                                                         </Table.Row>
                                                                     );
                                                                 } else {
-                                                                    const selectedUser: UserBasicInterface = 
+                                                                    const selectedUser: UserBasicInterface =
                                                                     selectedUsers?.find(
-                                                                        (userObj: UserBasicInterface) => 
+                                                                        (userObj: UserBasicInterface) =>
                                                                             userObj.id === user.value
                                                                     );
 
@@ -637,7 +637,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                                                         data-testid={ `${ testId }-users
                                                                                         -list-${ selectedUser.userName }
                                                                                         -avatar` }
-                                                                                        name={ 
+                                                                                        name={
                                                                                             resolveUserDisplayName(
                                                                                                 selectedUser
                                                                                             )

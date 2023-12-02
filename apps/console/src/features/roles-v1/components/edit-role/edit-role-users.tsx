@@ -21,6 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { updateRoleDetails } from "../../api";
 import { PRIMARY_DOMAIN } from "../../constants";
 import { CreateRoleMemberInterface, PatchRoleDataInterface } from "../../models";
@@ -37,7 +38,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
     props: RoleUserDetailsProps
 ): ReactElement => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const {
         roleObject,
@@ -49,7 +50,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
-        const roleName = roleObject.displayName;
+        const roleName: string = roleObject.displayName;
 
         if (roleName.indexOf("/") !== -1) {
             setCurrentUserStore(roleName.split("/")[0]);
@@ -61,7 +62,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
     /**
      * Dispatches the alert object to the redux store.
      *
-     * @param {AlertInterface} alert - Alert object.
+     * @param alert - Alert object.
      */
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert(alert));

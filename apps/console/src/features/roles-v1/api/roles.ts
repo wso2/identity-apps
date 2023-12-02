@@ -16,28 +16,28 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient } from "@asgardeo/auth-react";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { RoleConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods, RoleListInterface } from "@wso2is/core/models";
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { CreateRoleInterface, PatchRoleDataInterface, SearchRoleInterface } from "../models";
 
 /**
  * Initialize an axios Http client.
  */
-const httpClient = AsgardeoSPAClient.getInstance()
+const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Retrieve Role details for a give role id.
  *
- * @param roleId role id to retrieve role details
+ * @param roleId - role id to retrieve role details
  */
 export const getRoleById = (roleId: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
@@ -47,9 +47,9 @@ export const getRoleById = (roleId: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -57,11 +57,11 @@ export const getRoleById = (roleId: string): Promise<any> => {
 /**
  * Update Data of the matched ID or the role
  *
- * @param roleId role id to update role details
- * @param roleData Data that needs to be updated.
+ * @param roleId - Role id to update role details.
+ * @param roleData - Data that needs to be updated.
  */
 export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterface): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         data: roleData,
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -72,9 +72,9 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -85,7 +85,7 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
  * @param searchData - search query data
  */
 export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         data: searchData,
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -96,9 +96,9 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -107,10 +107,10 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
  * Delete a selected role with a given role ID.
  *
  * @param roleId - Id of the role which needs to be deleted.
- * @returns {Promise<any>} a promise containing the status of the delete.
+ * @returns A promise containing the status of the delete.
  */
 export const deleteRoleById = (roleId: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
@@ -120,9 +120,9 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -133,7 +133,7 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
  * @param data - data object used to create the role
  */
 export const createRole = (data: CreateRoleInterface): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         data,
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -144,9 +144,9 @@ export const createRole = (data: CreateRoleInterface): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -158,7 +158,7 @@ export const createRole = (data: CreateRoleInterface): Promise<any> => {
  * @param data - Permission data of the role
  */
 export const updateRolePermissions = (roleId: string, data: unknown): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         data,
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -169,9 +169,9 @@ export const updateRolePermissions = (roleId: string, data: unknown): Promise<an
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -179,10 +179,10 @@ export const updateRolePermissions = (roleId: string, data: unknown): Promise<an
 /**
  * Retrieve a list of all the permissions from the system.
  *
- * @returns {Promise<any>} a promise containing the permission list
+ * @returns A promise containing the permission list
  */
 export const getPermissionList = (): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
@@ -192,9 +192,9 @@ export const getPermissionList = (): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -202,10 +202,10 @@ export const getPermissionList = (): Promise<any> => {
 /**
  * Retrieve the list of permissions available for a given Role Id.
  *
- * @param roleId Role Id to retrieve relevant permissions
+ * @param roleId - Role Id to retrieve relevant permissions
  */
 export const getPermissionsForRole = (roleId: string): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
@@ -215,9 +215,9 @@ export const getPermissionsForRole = (roleId: string): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -225,11 +225,11 @@ export const getPermissionsForRole = (roleId: string): Promise<any> => {
 /**
  * Update Data of the matched ID or the role
  *
- * @param roleId role id to update role details
- * @param roleData Data that needs to be updated.
+ * @param roleId - Role id to update role details
+ * @param roleData - Data that needs to be updated.
  */
 export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Promise<any> => {
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         data: roleData,
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -240,9 +240,9 @@ export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Pr
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error) => {
+        }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });
 };
@@ -251,13 +251,13 @@ export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Pr
  * Retrieve the list of groups that are currently in the system.
  * TODO: Return `response.data` rather than `response` and stop returning any.
  *
- * @param {string} domain - User store domain.
- * @return {Promise<RoleListInterface | any>}
- * @throws {IdentityAppsApiException}
+ * @param domain - User store domain.
+ * @returns Promise containing roles list.
+ * @throws Exception if any error occured while getting the roles list.
  */
 export const getRolesList = (domain: string): Promise<RoleListInterface | any> => {
 
-    const requestConfig = {
+    const requestConfig: AxiosRequestConfig = {
         headers: {
             "Content-Type": "application/json"
         },

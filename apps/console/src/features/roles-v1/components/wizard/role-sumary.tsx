@@ -34,13 +34,13 @@ interface AddUserWizardSummaryProps extends TestableComponentInterface {
 
 /**
  * Component to create a summary of the role which will be created.
- * 
- * @param props props containing summary data for the view.
+ *
+ * @param props - props containing summary data for the view.
  */
 export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
     props: AddUserWizardSummaryProps
 ): ReactElement => {
-    
+
     const {
         summary,
         triggerSubmit,
@@ -50,7 +50,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
     } = props;
 
     const { t } = useTranslation();
-    
+
     const [ permissions, setPermissions ] = useState<TreeNode[]>([]);
     const [ defaultExpandedKeys, setDefaultExpandKeys ] = useState<string[]>([]);
     const [ selectedPermissions, setSelectedPermissions ] = useState<string[]>([]);
@@ -61,9 +61,11 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
             setDefaultExpandKeys( [ permissionTree[0].key.toString() ] );
 
             if (summary && summary.PermissionList) {
-                const permissions = summary.PermissionList;
+                const permissions: any = summary.PermissionList;
 
-                setSelectedPermissions([ ...selectedPermissions, ...permissions.map( permission => permission.key ) ]);
+                setSelectedPermissions(
+                    [ ...selectedPermissions, ...permissions.map( (permission: any) => permission.key ) ]
+                );
             }
         });
     }, [ permissions.length > 0 ]);
@@ -81,11 +83,11 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
 
 
     /**
-     * Util method to get a custom expander icon for 
+     * Util method to get a custom expander icon for
      * the tree nodes.
      * @param eventObject - event object
      */
-    const switcherIcon = eventObject => {
+    const switcherIcon = (eventObject: any) => {
         if (eventObject.isLeaf) {
             return null;
         }
@@ -181,7 +183,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                                 <Label.Group>
                                     {
                                         summary?.UserList
-                                            .map((user, index) => (
+                                            .map((user: any, index: number) => (
                                                 <div key={ index } className="role-summary-user">
                                                     <UserAvatar
                                                         name={ user.userName }
@@ -216,7 +218,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                                 <Label.Group>
                                     {
                                         summary?.GroupList
-                                            .map((group, index) => (
+                                            .map((group: any, index: number) => (
                                                 <Label
                                                     data-testid={
                                                         `${ testId }-permissions-${ index }-label`
