@@ -22,7 +22,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods, RoleListInterface } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
-import { CreateRoleInterface, PatchRoleDataInterface, SearchRoleInterface } from "../models";
+import { CreateRoleInterface, PatchRoleDataInterface, SearchRoleInterface } from "../models/roles";
 
 /**
  * Initialize an axios Http client.

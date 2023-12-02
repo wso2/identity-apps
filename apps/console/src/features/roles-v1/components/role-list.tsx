@@ -50,7 +50,7 @@ import {
     getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
-import { APPLICATION_DOMAIN } from "../constants";
+import { APPLICATION_DOMAIN } from "../constants/role-constants";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
     /**

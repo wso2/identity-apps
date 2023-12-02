@@ -40,8 +40,8 @@ import {
     history
 } from "../../../core";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores/constants/user-store-constants";
-import { deleteRoleById, searchRoleList, updateRoleDetails } from "../../api";
-import { PatchRoleDataInterface, SearchRoleInterface } from "../../models";
+import { deleteRoleById, searchRoleList, updateRoleDetails } from "../../api/roles";
+import { PatchRoleDataInterface, SearchRoleInterface } from "../../models/roles";
 
 /**
  * Interface to contain props needed for component

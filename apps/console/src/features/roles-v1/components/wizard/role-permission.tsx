@@ -26,9 +26,9 @@ import { useSelector } from "react-redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AppState, store } from "../../../core";
 import { ServerConfigurationsInterface, getServerConfigs } from "../../../server-configurations";
-import { RoleConstants } from "../../constants";
-import { TreeNode } from "../../models";
-import { RoleManagementUtils } from "../../utils";
+import { RoleConstants } from "../../constants/role-constants";
+import { TreeNode } from "../../models/permission";
+import { RoleManagementUtils } from "../../utils/role-management-utils";
 
 /**
  * Interface to capture permission list props
@@ -89,7 +89,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     useEffect(() => {
         const checkedNodes: TreeNode[] = [];
 
-        RoleManagementUtils.getAllPermissions(permissionsToHide, tenantDomain)
+        RoleManagementUtils.getAllPermissions(permissionsToHide)
             .then((permissionTree: TreeNode[]) => {
                 disableSuperAdminTreeNode(isSuperAdmin, permissionTree);
                 setPermissions(permissionTree);

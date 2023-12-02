@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { PermissionObject, TreeNode } from "../models";
+import { PermissionObject, TreeNode } from "../models/permission";
 
 /**
   * A Util method to create an array of permission object with heirarchy.

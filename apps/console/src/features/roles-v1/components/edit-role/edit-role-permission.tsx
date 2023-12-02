@@ -23,9 +23,10 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { updateRole } from "../../api";
-import { PatchRoleDataInterface, TreeNode } from "../../models";
-import { PermissionList } from "../wizard";
+import { updateRole } from "../../api/roles";
+import { TreeNode } from "../../models/permission";
+import { PatchRoleDataInterface } from "../../models/roles";
+import { PermissionList } from "../wizard/role-permission";
 
 /**
  * Interface to capture permission edit props.

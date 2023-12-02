@@ -64,7 +64,7 @@ import {
     PatchGroupOpInterface,
     PatchGroupRemoveOpInterface
 } from "../../../groups/models";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../constants";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../constants/role-constants";
 
 interface RoleGroupsPropsInterface extends TestableComponentInterface {
     /**

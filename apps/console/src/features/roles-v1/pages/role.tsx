@@ -34,13 +34,12 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, UIConstants } from "../../core";
-import { getRolesList } from "../../roles/api";
 import { getUserStoreList } from "../../userstores/api";
-import { deleteRoleById, searchRoleList } from "../api";
+import { deleteRoleById, getRolesList, searchRoleList } from "../api/roles";
 import { RoleList } from "../components/role-list";
 import { CreateRoleWizard } from "../components/wizard/create-role-wizard";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../constants";
-import { SearchRoleInterface } from "../models";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../constants/role-constants";
+import { SearchRoleInterface } from "../models/roles";
 
 const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
     {

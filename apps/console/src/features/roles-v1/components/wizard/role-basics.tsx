@@ -29,8 +29,8 @@ import { UserStoreListItem } from "../../../userstores/models/user-stores";
 import { searchRoleList } from "../../api/roles";
 import {
     PRIMARY_DOMAIN
-} from "../../constants";
-import { CreateRoleFormData, SearchRoleInterface } from "../../models";
+} from "../../constants/role-constants";
+import { CreateRoleFormData, SearchRoleInterface } from "../../models/roles";
 
 /**
  * Interface to capture role basics props.

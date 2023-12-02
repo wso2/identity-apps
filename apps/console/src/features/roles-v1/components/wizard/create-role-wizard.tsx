@@ -35,9 +35,10 @@ import { history } from "../../../core/helpers";
 import { getGroupList } from "../../../groups/api";
 import { CreateGroupMemberInterface, GroupsInterface } from "../../../groups/models";
 import { UserBasicInterface } from "../../../users/models/user";
-import { createRole } from "../../api";
-import { getRolesWizardStepIcons } from "../../configs";
-import { CreateRoleInterface, CreateRoleMemberInterface, TreeNode } from "../../models";
+import { createRole } from "../../api/roles";
+import { getRolesWizardStepIcons } from "../../configs/ui";
+import { TreeNode } from "../../models/permission";
+import { CreateRoleInterface, CreateRoleMemberInterface } from "../../models/roles";
 
 /**
  * Interface which captures create role props.
