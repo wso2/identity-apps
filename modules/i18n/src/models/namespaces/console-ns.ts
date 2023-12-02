@@ -1187,6 +1187,9 @@ export interface ConsoleNS {
                             discoverableHint: string;
                             mobileAppPlaceholder: string;
                         },
+                        dropdowns: {
+                            selectOption: string;
+                        },
                         sections: {
                             accessToken: {
                                 heading: string;

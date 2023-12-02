@@ -2047,6 +2047,9 @@ export const console: ConsoleNS = {
                                 "ඇත්නම්, පාරිභෝගිකයින්ට <1>{{ myAccount }}</1> ද්වාරයෙන් මෙම යෙදුමට ප්‍රවේශ විය හැක.",
                             mobileAppPlaceholder: "myapp://oauth2"
                         },
+                        dropdowns: {
+                            selectOption: "විකල්පය තෝරන්න"
+                        },
                         sections: {
                             accessToken: {
                                 fields: {
