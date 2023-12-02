@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- 
+
 .notification-channel {
     display: flex;
     flex-direction: column;
@@ -24,9 +24,11 @@
     border-radius: 10px;
     transition: box-shadow 0.3s ease;
     cursor: pointer;
+    height: 100%;
 
     &.disabled {
         color: gray;
+        cursor: not-allowed;
     }
 
     .notification-channel-header {
@@ -36,7 +38,7 @@
         align-content: center;
         align-items: center;
         padding: 10px 14px;
-    
+
         .notification-channel-icon-container {
             border-radius: var(--oxygen-shape-borderRadius);
         }

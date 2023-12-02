@@ -17,7 +17,7 @@
  */
 
 import CardContent from "@mui/material/CardContent";
-import { 
+import {
     ArrowLoopRightUserIcon, UserBannerIcon
 } from "@oxygen-ui/react-icons";
 import Card from "@oxygen-ui/react/Card";
@@ -31,6 +31,7 @@ import { Ref } from "semantic-ui-react";
 import RemoteLoggingIcon from "../../../themes/default/assets/images/icons/outline-icons/remote-logging.svg";
 import { AppConstants, history } from "../../core";
 import "./server.scss";
+import Avatar from "@oxygen-ui/react/Avatar";
 
 /**
  * Props for the Server Configurations page.
@@ -63,17 +64,32 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
                 <Grid container rowSpacing={ 2 } columnSpacing={ 3 }>
                     <Grid xs={ 12 } md={ 6 } lg={ 4 }>
                         <Card
-                            key="admin-advisory-page-section" 
+                            key="admin-advisory-page-section"
+                            className="server-configuration"
                             data-componentid="admin-advisory-page-section"
                             onClick={ () => history.push(AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT")) }
                         >
                             <CardContent className="server-configuration-header">
-                                <div className="server-configuration-image-container">
+                                <div>
                                     <GenericIcon
                                         size="micro"
-                                        icon={ <UserBannerIcon className="icon" /> }
+                                        icon={ (
+                                            <Avatar
+                                                variant="square"
+                                                randomBackgroundColor
+                                                backgroundColorRandomizer="admin-advisory"
+                                                className="server-configuration-icon-container"
+                                            >
+                                                <UserBannerIcon className="icon" />
+                                            </Avatar>
+                                        ) }
+                                        inline
                                         transparent
-                                        shape={ "square" }
+                                        shape="square"
+                                        style={ {
+                                            "display": "inline",
+                                            "verticalAlign": "text-bottom"
+                                        } }
                                     />
                                 </div>
                                 <Typography variant="h6">
@@ -91,18 +107,31 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
                     </Grid>
                     <Grid xs={ 12 } md={ 6 } lg={ 4 }>
                         <Card
-                            key="remote-logging-page-section" 
+                            key="remote-logging-page-section"
                             data-componentid="remote-logging-page-section"
                             className="server-configuration"
                             onClick={ () => history.push(AppConstants.getPaths().get("REMOTE_LOGGING")) }
                         >
                             <CardContent className="server-configuration-header">
-                                <div className="server-configuration-image-container">
+                                <div>
                                     <GenericIcon
                                         size="micro"
-                                        icon={ RemoteLoggingIcon }
+                                        icon={ (
+                                            <Avatar
+                                                variant="square"
+                                                randomBackgroundColor
+                                                backgroundColorRandomizer="remote-logging"
+                                                icon={ RemoteLoggingIcon }
+                                                className="server-configuration-icon-container"
+                                            />
+                                        ) }
+                                        inline
                                         transparent
-                                        shape={ "square" }
+                                        shape="square"
+                                        style={ {
+                                            "display": "inline",
+                                            "verticalAlign": "text-bottom"
+                                        } }
                                     />
                                 </div>
                                 <div>
@@ -122,18 +151,32 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
                     </Grid>
                     <Grid xs={ 12 } md={ 6 } lg={ 4 }>
                         <Card
-                            key="manage-notifications-sending-page-section" 
+                            key="manage-notifications-sending-page-section"
                             data-componentid="manage-notifications-sending-page-section"
                             className="server-configuration"
                             onClick={ () => history.push(AppConstants.getPaths().get("INTERNAL_NOTIFICATION_SENDING")) }
                         >
                             <CardContent className="server-configuration-header">
-                                <div className="server-configuration-image-container">
+                                <div>
                                     <GenericIcon
                                         size="micro"
-                                        icon={ <ArrowLoopRightUserIcon className="icon" /> }
+                                        icon={ (
+                                            <Avatar
+                                                variant="square"
+                                                randomBackgroundColor
+                                                backgroundColorRandomizer="server-configuration"
+                                                className="server-configuration-icon-container"
+                                            >
+                                                <ArrowLoopRightUserIcon className="icon" />
+                                            </Avatar>
+                                        ) }
+                                        inline
                                         transparent
-                                        shape={ "square" }
+                                        shape="square"
+                                        style={ {
+                                            "display": "inline",
+                                            "verticalAlign": "text-bottom"
+                                        } }
                                     />
                                 </div>
                                 <div>
