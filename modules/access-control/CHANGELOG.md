@@ -1,5 +1,14 @@
 # @wso2is/access-control
 
+## 2.0.10
+
+### Patch Changes
+
+- [#4900](https://github.com/wso2/identity-apps/pull/4900) [`951c6434c0`](https://github.com/wso2/identity-apps/commit/951c6434c03c45f8d4fa6624f5eff84a492487dd) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the user attributes section
+
+- Updated dependencies [[`951c6434c0`](https://github.com/wso2/identity-apps/commit/951c6434c03c45f8d4fa6624f5eff84a492487dd)]:
+  - @wso2is/core@2.0.21
+
 ## 2.0.9
 
 ### Patch Changes

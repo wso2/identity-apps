@@ -1,5 +1,25 @@
 # @wso2is/console
 
+## 2.9.41
+
+### Patch Changes
+
+- [#4900](https://github.com/wso2/identity-apps/pull/4900) [`951c6434c0`](https://github.com/wso2/identity-apps/commit/951c6434c03c45f8d4fa6624f5eff84a492487dd) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the user attributes section
+
+* [#4925](https://github.com/wso2/identity-apps/pull/4925) [`48d4f26ff0`](https://github.com/wso2/identity-apps/commit/48d4f26ff007bf6ce9889678806e0f604a7a09b3) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with Script Editor under Visual Editor
+
+- [#4919](https://github.com/wso2/identity-apps/pull/4919) [`bef937df62`](https://github.com/wso2/identity-apps/commit/bef937df62a194bccc4a8e49331e7ecd1b8b0d85) Thanks [@brionmario](https://github.com/brionmario)! - Add support for server feature to be enabled conditionally
+
+- Updated dependencies [[`951c6434c0`](https://github.com/wso2/identity-apps/commit/951c6434c03c45f8d4fa6624f5eff84a492487dd)]:
+  - @wso2is/core@2.0.21
+  - @wso2is/access-control@2.0.10
+  - @wso2is/common@2.0.13
+  - @wso2is/dynamic-forms@2.0.16
+  - @wso2is/form@2.0.17
+  - @wso2is/forms@2.0.7
+  - @wso2is/i18n@2.0.69
+  - @wso2is/react-components@2.0.25
+
 ## 2.9.40
 
 ### Patch Changes
