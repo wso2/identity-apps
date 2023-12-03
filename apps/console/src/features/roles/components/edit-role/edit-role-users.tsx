@@ -196,26 +196,6 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     }, [ userListFetchRequestError ]);
 
     /**
-     * Handle the restore users.
-     *
-     * @param remainingUsers - remaining users
-     */
-    const handleRestoreUsers = (remainingUsers: UserBasicInterface[]) => {
-        const removedUsers: UserBasicInterface[] = [];
-
-        removedUsersOptions.forEach((user: UserBasicInterface) => {
-            if (!remainingUsers?.find((newUser: UserBasicInterface) => newUser.id === user.id)) {
-                removedUsers.push(user);
-            }
-        });
-
-        setSelectedUsersOption([
-            ...selectedUsersOption,
-            ...removedUsers
-        ]);
-    };
-
-    /**
      * Get the place holder components.
      *
      * @returns - place holder components
@@ -404,8 +384,9 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                     renderInput={ (params: AutocompleteRenderInputParams) => (
                                                         <TextField
                                                             { ...params }
-                                                            placeholder= { t("console:manage.features.roles.edit.users" +
-                                                        ".actions.search.placeholder") }
+                                                            placeholder= {
+                                                                t("console:manage.features.roles.edit.users" +
+                                                                  ".actions.search.placeholder") }
                                                         />
                                                     ) }
                                                     renderTags={ (
@@ -431,8 +412,12 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                     ) => (
                                                         <AutoCompleteRenderOption
                                                             subTitle={ RoleManagementUtils.getUserUsername(option) }
-                                                            displayName={ RoleManagementUtils.getNameToDisplayOfUser(option) }
-                                                            userstore={ RoleManagementUtils.getUserStore(option.userName) }
+                                                            displayName={
+                                                                RoleManagementUtils.getNameToDisplayOfUser(option)
+                                                            }
+                                                            userstore={
+                                                                RoleManagementUtils.getUserStore(option.userName)
+                                                            }
                                                             renderOptionProps={ props }
                                                         />
                                                     ) }
@@ -447,13 +432,15 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                     options={ usersOptions }
                                                     value={ selectedUsersOption ? selectedUsersOption : [] }
                                                     getOptionLabel={
-                                                        (user: UserBasicInterface) => RoleManagementUtils.getUserUsername(user)
+                                                        (user: UserBasicInterface) =>
+                                                            RoleManagementUtils.getUserUsername(user)
                                                     }
                                                     renderInput={ (params: AutocompleteRenderInputParams) => (
                                                         <TextField
                                                             { ...params }
-                                                            placeholder= { t("console:manage.features.roles.edit.users" +
-                                                        ".actions.assign.placeholder") }
+                                                            placeholder= {
+                                                                t("console:manage.features.roles.edit.users" +
+                                                                  ".actions.assign.placeholder") }
                                                         />
                                                     ) }
                                                     onChange={ (event: SyntheticEvent, users: UserBasicInterface[]) => {
@@ -501,8 +488,12 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                                         <AutoCompleteRenderOption
                                                             selected={ selected }
                                                             subTitle={ RoleManagementUtils.getUserUsername(option) }
-                                                            displayName={ RoleManagementUtils.getNameToDisplayOfUser(option) }
-                                                            userstore={ RoleManagementUtils.getUserStore(option.userName) }
+                                                            displayName={
+                                                                RoleManagementUtils.getNameToDisplayOfUser(option)
+                                                            }
+                                                            userstore={
+                                                                RoleManagementUtils.getUserStore(option.userName)
+                                                            }
                                                             renderOptionProps={ props }
                                                         />
                                                     ) }
