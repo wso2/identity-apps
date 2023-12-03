@@ -306,7 +306,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         "generalDetails.issuer.label") }
                                     hint={ t("console:develop.features.authenticationProvider.forms." +
                                         "generalDetails.issuer.hint") }
-                                    required
+                                    required={
+                                        templateType === IdentityProviderManagementConstants
+                                            .IDP_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                                    }
                                     placeholder={
                                         editingIDP?.idpIssuerName ??
                                             t("console:develop.features.authenticationProvider.forms.generalDetails." +
