@@ -64,7 +64,7 @@ export const RenderChipRolesInGroups: FunctionComponent<RenderChipInterface> = (
 
     /**
      * Handles the mouse enter event of the chip.
-     * 
+     *
      * @param event - Mouse event
      * @param option - Group or user object
      */
@@ -72,7 +72,7 @@ export const RenderChipRolesInGroups: FunctionComponent<RenderChipInterface> = (
         event.stopPropagation();
         setActiveOption(option);
     };
-    
+
     /**
      * Handles the mouse leave event of the chip.
      */
@@ -85,12 +85,8 @@ export const RenderChipRolesInGroups: FunctionComponent<RenderChipInterface> = (
             <Chip
                 { ...props }
                 key={ key }
-                label={ 
+                label={
                     (<>
-                        {/* <i> { audienceType } </i> 
-                        <i> { audienceType === "application" && ( " : " + audienceDisplay ) } </i>
-                        { " | " }
-                        <strong> { displayName } </strong> */}
                         <b >{ displayName }</b>
                         <i>
                             { " (" + audienceType }

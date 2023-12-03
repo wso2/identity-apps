@@ -59,11 +59,11 @@ import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState }
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, Grid, Icon, Label } from "semantic-ui-react";
+import { Button, Grid, Icon } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
 import { userConfig } from "../../../../extensions/configs";
 import { ClaimManagementConstants } from "../../../../features/claims/constants";
-import { getGroupList, useGroupList } from "../../../../features/groups/api";
+import { getGroupList } from "../../../../features/groups/api";
 import { GroupsInterface } from "../../../../features/groups/models";
 import { useRolesList } from "../../../../features/roles/api";
 import useAuthorization from "../../../authorization/hooks/use-authorization";
