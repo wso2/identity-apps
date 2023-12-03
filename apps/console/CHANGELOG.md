@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.9.44
+
+### Patch Changes
+
+- [#4938](https://github.com/wso2/identity-apps/pull/4938) [`0103c5941d`](https://github.com/wso2/identity-apps/commit/0103c5941de122c15220e4ba1904953031a596be) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue of creating multiple connections
+
+* [#4930](https://github.com/wso2/identity-apps/pull/4930) [`09c5e3894d`](https://github.com/wso2/identity-apps/commit/09c5e3894daf540736665e86aa93cc70677c6755) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Select users based on the userstore in assigning users to a role
+
 ## 2.9.43
 
 ### Patch Changes
