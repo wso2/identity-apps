@@ -95,6 +95,17 @@
     appProperty.setKey("spId");
     appProperty.setValue(spId);
     properties.add(appProperty);
+    if (!StringUtils.isEmpty(modifiedAccessUrl)) {
+        Property appSpProperty = new Property();
+        appSpProperty.setKey("sp");
+        appSpProperty.setValue(sp);
+        properties.add(appSpProperty);
+
+        Property appAccessUrlProperty = new Property();
+        appAccessUrlProperty.setKey("accessUrl");
+        appAccessUrlProperty.setValue(modifiedAccessUrl);
+        properties.add(appAccessUrlProperty);
+    } 
     recoveryInitiatingRequest.setProperties(properties);
 
     try {

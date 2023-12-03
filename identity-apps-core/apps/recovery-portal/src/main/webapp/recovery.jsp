@@ -27,6 +27,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.RecoveryApiV2" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.UserClaim" %>
 <%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
@@ -68,6 +69,7 @@
     String confirmationKey = request.getParameter("confirmationKey");
     String callback = request.getParameter("callback");
     String userTenantHint = request.getParameter("t");
+    String accessUrl = "";
 
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
@@ -81,9 +83,21 @@
     // Password recovery parameters
     String recoveryOption = request.getParameter("recoveryOption");
 
+    try {
+        String sp = request.getParameter("sp");
+        if (StringUtils.isNotBlank(sp)) {
+            ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+            accessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
+        }
+    } catch (Exception e) {
+        // Ignored.
+    }
+
     Boolean isValidCallBackURL = false;
     try {
-        if (StringUtils.isNotBlank(callback)) {
+        if (StringUtils.isNotBlank(accessUrl)) {
+            isValidCallBackURL = true;
+        } else if (StringUtils.isNotBlank(callback)) {
             PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
             isValidCallBackURL = preferenceRetrievalClient.checkIfRecoveryCallbackURLValid(tenantDomain,callback);
         }
