@@ -90,6 +90,10 @@ export interface AuthenticationFlowProviderProps {
      * Flag to determine if the updated application a system application.
      */
     isSystemApplication?: boolean;
+    /**
+     * List of hidden authenticators.
+     */
+    hiddenAuthenticators: string[];
 }
 
 /**
@@ -99,7 +103,15 @@ export interface AuthenticationFlowProviderProps {
  * @returns Authentication flow provider.
  */
 const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowProviderProps>): ReactElement => {
-    const { application, authenticators, children, isSystemApplication, onUpdate, onAuthenticatorsRefetch } = props;
+    const {
+        application,
+        authenticators,
+        children,
+        isSystemApplication,
+        onUpdate,
+        onAuthenticatorsRefetch,
+        hiddenAuthenticators
+    } = props;
 
     const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config?.ui?.features?.applications;
@@ -748,6 +760,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                 authenticationSequence,
                 authenticators: filteredAuthenticators,
                 defaultAuthenticationSequence,
+                hiddenAuthenticators,
                 isAdaptiveAuthAvailable,
                 isAuthenticationSequenceDefault,
                 isConditionalAuthenticationEnabled,

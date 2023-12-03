@@ -519,6 +519,9 @@ export interface ConsoleNS {
     };
     consoleSettings: {
         administrators: {
+            edit: {
+                backButton: string;
+            };
             tabLabel: string;
         };
         loginFlow: {
@@ -994,6 +997,9 @@ export interface ConsoleNS {
                                                 heading: string;
                                                 info: {
                                                     progressiveEnrollmentEnabled: string;
+                                                    passkeyAsFirstStepWhenprogressiveEnrollmentEnabled: string;
+                                                    passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled: string;
+                                                    progressiveEnrollmentEnabledCheckbox: string;
                                                     progressiveEnrollmentDisabled: string;
                                                 }
                                             }
@@ -1183,6 +1189,9 @@ export interface ConsoleNS {
                         mobileApp: {
                             discoverableHint: string;
                             mobileAppPlaceholder: string;
+                        },
+                        dropdowns: {
+                            selectOption: string;
                         },
                         sections: {
                             accessToken: {

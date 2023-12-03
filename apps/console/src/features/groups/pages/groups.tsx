@@ -100,7 +100,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
         data,
         error: groupsError,
         isLoading: isGroupsListRequestLoading,
-        mutate
+        mutate: mutateGroupsFetchRequest
     } = useGroupList(userStore, "members,roles", searchQuery, true);
 
     useEffect(() => {
@@ -256,7 +256,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     "console:manage.features.groups.notifications.deleteGroup.success.message"
                 )
             });
-            mutate();
+
+            mutateGroupsFetchRequest();
         }).catch(() => {
             handleAlerts({
                 description: t(
@@ -273,7 +274,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     return (
         <PageLayout
             action={
-                (isGroupsListRequestLoading || !(!searchQuery && paginatedGroups?.length <= 0))
+                (!isGroupsListRequestLoading && paginatedGroups?.length > 0)
                 && (
                     <Show when={ AccessControlConstants.GROUP_WRITE }>
                         <PrimaryButton
@@ -337,11 +338,13 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     </RootOnlyComponent>
                 ) }
                 showPagination={ paginatedGroups?.length > 0  }
-                showTopActionPanel={ isGroupsListRequestLoading
-                    || !(!searchQuery
+                showTopActionPanel={
+                    !isGroupsListRequestLoading
+                    && !(!searchQuery
                         && !groupsError
                         && userStoreOptions?.length < 3
-                        && paginatedGroups?.length <= 0) }
+                        && (!paginatedGroups || paginatedGroups?.length <= 0))
+                }
                 totalPages={ Math.ceil(groupList?.length / listItemLimit) }
                 totalListSize={ groupList?.length }
                 isLoading={ isGroupsListRequestLoading }
@@ -399,7 +402,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     <CreateGroupWizardUpdated
                         data-testid="group-mgt-create-group-wizard"
                         closeWizard={ () => setShowWizard(false) }
-                        updateList={ () => mutate() }
+                        onCreate={ () => mutateGroupsFetchRequest() }
                         requiredSteps={ [
                             WizardStepsFormTypes.BASIC_DETAILS,
                             WizardStepsFormTypes.ROLE_LIST

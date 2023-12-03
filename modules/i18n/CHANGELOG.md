@@ -1,5 +1,49 @@
 # @wso2is/i18n
 
+## 2.0.71
+
+### Patch Changes
+
+- [#4890](https://github.com/wso2/identity-apps/pull/4890) [`084d392a3f`](https://github.com/wso2/identity-apps/commit/084d392a3ff932119ca6ea0deae77aa9f224fd17) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues with login and registration section
+
+## 2.0.70
+
+### Patch Changes
+
+- [#4906](https://github.com/wso2/identity-apps/pull/4906) [`cac64194c6`](https://github.com/wso2/identity-apps/commit/cac64194c6613ba352f4d11695dcaaff16ad6283) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Change wording in Vonage sms provider
+
+## 2.0.69
+
+### Patch Changes
+
+- [#4900](https://github.com/wso2/identity-apps/pull/4900) [`951c6434c0`](https://github.com/wso2/identity-apps/commit/951c6434c03c45f8d4fa6624f5eff84a492487dd) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the user attributes section
+
+- Updated dependencies [[`951c6434c0`](https://github.com/wso2/identity-apps/commit/951c6434c03c45f8d4fa6624f5eff84a492487dd)]:
+  - @wso2is/core@2.0.21
+
+## 2.0.68
+
+### Patch Changes
+
+- [#4908](https://github.com/wso2/identity-apps/pull/4908) [`7890ba578d`](https://github.com/wso2/identity-apps/commit/7890ba578d6174a7e2554ee3474a2f6706ec6718) Thanks [@RivinduM](https://github.com/RivinduM)! - Add option to clear dropdown selection.
+
+## 2.0.67
+
+### Patch Changes
+
+- [#4889](https://github.com/wso2/identity-apps/pull/4889) [`144b485698`](https://github.com/wso2/identity-apps/commit/144b485698b58b7b4812e0b2a2ae7c589ff5b2b8) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix UX issues in Passkey based login
+
+## 2.0.66
+
+### Patch Changes
+
+- [#4885](https://github.com/wso2/identity-apps/pull/4885) [`143df44dd3`](https://github.com/wso2/identity-apps/commit/143df44dd3ac1ba44c46e34590c436f38fd3c143) Thanks [@Achintha444](https://github.com/Achintha444)! - (improvement) Adding config for API Based Authn configuration
+
+* [#4885](https://github.com/wso2/identity-apps/pull/4885) [`614bc01dc7`](https://github.com/wso2/identity-apps/commit/614bc01dc7631402b61756a8583f6eff0bd8a6ff) Thanks [@Achintha444](https://github.com/Achintha444)! - config for api based authn
+
+* Updated dependencies [[`143df44dd3`](https://github.com/wso2/identity-apps/commit/143df44dd3ac1ba44c46e34590c436f38fd3c143), [`614bc01dc7`](https://github.com/wso2/identity-apps/commit/614bc01dc7631402b61756a8583f6eff0bd8a6ff)]:
+  - @wso2is/core@2.0.20
+
 ## 2.0.65
 
 ### Patch Changes

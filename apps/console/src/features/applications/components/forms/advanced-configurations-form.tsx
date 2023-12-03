@@ -306,7 +306,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 data-componentid={ `${ testId }-enable-authorization-checkbox` }
                 hidden={
                     !applicationConfig.advancedConfigurations.showEnableAuthorization
-                    || !UIConfig?.classicFeatures?.isXacmlAuthorizationEnabled }
+                    || !UIConfig?.legacyFeatures?.applicationXacmlAuthorizationEnabled }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.enableAuthorization.hint") }
             />
             {

@@ -55,5 +55,6 @@ export interface AuthorizedAPIListItemInterface {
     identifier: string,
     displayName: string,
     policyId: string,
-    authorizedScopes: ScopeInterface[]
+    authorizedScopes: ScopeInterface[],
+    type?: string;
 }

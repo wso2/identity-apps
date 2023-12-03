@@ -288,8 +288,8 @@ export class RouteUtils {
             order: 2
         };
 
-        const settings: NavCategory = {
-            id: "insights",
+        const organizations: NavCategory = {
+            id: "organizations",
             order: 3
         };
 
@@ -298,9 +298,14 @@ export class RouteUtils {
             order: 4
         };
 
+        const settings: NavCategory = {
+            id: "insights",
+            order: 5
+        };
+
         const other: NavCategory = {
             id: "other",
-            order: 5
+            order: 6
         };
 
         const pathsToCheck: string[] = [
@@ -336,6 +341,10 @@ export class RouteUtils {
                 category: build,
                 id: "identityProviders",
                 order: 2
+            },
+            {
+                category: organizations,
+                id: "organizations"
             },
             {
                 category: manage,
@@ -400,6 +409,14 @@ export class RouteUtils {
             {
                 category: settings,
                 id: "administrators"
+            },
+            {
+                category: settings,
+                id: "consoleSettings"
+            },
+            {
+                category: settings,
+                id: "server"
             },
             {
                 category: build,

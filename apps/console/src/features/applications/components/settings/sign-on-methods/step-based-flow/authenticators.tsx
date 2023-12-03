@@ -35,7 +35,6 @@ import {
 import { AuthenticatorMeta } from "../../../../../identity-providers/meta/authenticator-meta";
 import {
     AuthenticatorCategories,
-    FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface
 } from "../../../../../identity-providers/models/identity-provider";
 import { ApplicationManagementConstants } from "../../../../constants/application-management";
@@ -302,7 +301,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                     { InfoLabel }
                     <Text>
                         {
-                            (authenticationSteps[currentStep]?.options?.length !== 0) 
+                            (authenticationSteps[currentStep]?.options?.length !== 0)
                                 ? t(
                                     "console:develop.features.applications.edit.sections" +
                                     ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
@@ -354,12 +353,12 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
      *
      * @returns Authenticator labels.
      */
-    const resolveAuthenticatorLabels = (authenticator: FederatedAuthenticatorInterface): string[] => {
+    const resolveAuthenticatorLabels = (authenticator: GenericAuthenticatorInterface): string[] => {
         if (!authenticator) {
             return [];
         }
 
-        return AuthenticatorMeta.getAuthenticatorLabels(authenticator.authenticatorId) ?? [];
+        return AuthenticatorMeta.getAuthenticatorLabels(authenticator?.defaultAuthenticator) ?? [];
     };
 
     /**
@@ -383,7 +382,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                 />
             );
         }
-    
+
         return null;
     };
 
@@ -421,16 +420,16 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                                 subHeader={ authenticator.categoryDisplayName }
                                 description={ authenticator.description }
                                 featureStatus={ renderFeatureStatusChip(authenticator) }
-                                image={ 
-                                    authenticator.idp === AuthenticatorCategories.LOCAL || 
+                                image={
+                                    authenticator.idp === AuthenticatorCategories.LOCAL ||
                                     authenticator
                                         .defaultAuthenticator?.authenticatorId === AuthenticatorManagementConstants
                                         .ORGANIZATION_ENTERPRISE_AUTHENTICATOR_ID
-                                        ? authenticator.image 
+                                        ? authenticator.image
                                         : ConnectionsManagementUtils
                                             .resolveConnectionResourcePath(connectionResourcesUrl, authenticator.image)
                                 }
-                                tags={ showLabels && resolveAuthenticatorLabels(authenticator?.defaultAuthenticator) }
+                                tags={ showLabels && resolveAuthenticatorLabels(authenticator) }
                                 onClick={ () => {
                                     isFactorEnabled(authenticator) && handleAuthenticatorSelect(authenticator);
                                 } }

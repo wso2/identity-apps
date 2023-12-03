@@ -54,10 +54,10 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
 
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes : string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    
+
     const isReadOnly : boolean = useMemo(() => !hasRequiredScopes(
-        featureConfig?.residentIdp,
-        featureConfig?.residentIdp?.scopes?.update,
+        featureConfig?.server,
+        featureConfig?.server?.scopes?.update,
         allowedScopes
     ), [ featureConfig, allowedScopes ]);
 
@@ -65,7 +65,7 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
 
     const { t } = useTranslation();
 
-    const [ wsFederationConfig , setWSFederationConfig ] = 
+    const [ wsFederationConfig , setWSFederationConfig ] =
         useState<WSFederationConfigFormValuesInterface>(undefined);
 
     const {
@@ -76,7 +76,7 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
     } = useWSFederationConfig();
 
     useEffect(() => {
-        if (originalWSFederationConfig instanceof IdentityAppsApiException 
+        if (originalWSFederationConfig instanceof IdentityAppsApiException
             || wsFederationConfigFetchRequestError) {
             handleRetrieveError();
 
@@ -89,7 +89,7 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
 
         setWSFederationConfig({
             enableRequestSigning: originalWSFederationConfig.enableRequestSigning
-        });      
+        });
     }, [ originalWSFederationConfig ]);
 
     /**
@@ -144,14 +144,14 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
         const data: WSFederationConfigAPIResponseInterface = {
             enableRequestSigning: value
         };
-        
+
         updateWSFederationConfigurations(data).then(() => {
             handleUpdateSuccess();
         }).catch(() => {
             handleUpdateError();
         }).finally(() => {
             mutateWSFederationConfig();
-        });  
+        });
     };
 
     const onBackButtonClick = (): void => {
@@ -214,7 +214,7 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
                         <Grid.Column width={ 16 }>
                             <EmphasizedSegment className="form-wrapper" padded={ "very" }>
                                 { isWSFederationFetchRequestLoading
-                                    ? renderLoadingPlaceholder() 
+                                    ? renderLoadingPlaceholder()
                                     : (
                                         <>
                                             <Form
@@ -237,7 +237,7 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
                                                                     "enableRequestSigning.label") }
                                                                 readOnly={ isReadOnly }
                                                                 width={ 16 }
-                                                                data-componentid={ 
+                                                                data-componentid={
                                                                     `${componentId}-enable-request-signing` }
                                                                 toggle
                                                                 listen={ (value: boolean) => {
@@ -249,13 +249,13 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
                                                 </Grid>
                                             </Form>
                                         </>
-                                    ) 
+                                    )
                                 }
                             </EmphasizedSegment>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </Ref> 
+            </Ref>
         </PageLayout>
     );
 };

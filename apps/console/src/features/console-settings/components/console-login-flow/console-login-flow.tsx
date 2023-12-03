@@ -16,12 +16,14 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { SignOnMethods } from "../../../applications/components/settings/sign-on-methods/sign-on-methods";
 import { AppState } from "../../../core/store";
+import { IdentityProviderManagementConstants } from "../../../identity-providers/constants";
 import useConsoleSettings from "../../hooks/use-console-settings";
 import "./console-login-flow.scss";
 
@@ -40,6 +42,13 @@ const ConsoleLoginFlow: FunctionComponent<ConsoleLoginFlowPropsInterface> = (
     props: ConsoleLoginFlowPropsInterface
 ): ReactElement => {
     const { ["data-componentid"]: componentId } = props;
+    const { UIConfig } = useUIConfig();
+
+    // In Console login flow, Organization authenticator should not be shown.
+    const hiddenAuthenticators: string[] = [
+        ...(UIConfig?.hiddenAuthenticators ?? []),
+        IdentityProviderManagementConstants.ORGANIZATION_AUTHENTICATOR
+    ];
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
@@ -69,6 +78,7 @@ const ConsoleLoginFlow: FunctionComponent<ConsoleLoginFlowPropsInterface> = (
                 } }
                 readOnly={ isReadOnly }
                 isSystemApplication={ true }
+                hiddenAuthenticators={ hiddenAuthenticators }
                 data-componentid={ `${componentId}-sign-on-methods` }
             />
         </div>

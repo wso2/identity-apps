@@ -234,6 +234,36 @@
             },
             {% endfor %}
             {% endif %}
+            {% if console.login_and_registration is defined %}
+            "loginAndRegistration": {
+                "disabledFeatures": [
+                    {% if console.login_and_registration.disabled_features is defined %}
+                    {% for feature in console.login_and_registration.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.login_and_registration.enabled is defined %} {{ console.login_and_registration.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.login_and_registration.scopes is defined %}
+                    {% for operation, scopes in console.login_and_registration.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.account_login is defined %}
             "accountLogin": {
                 "disabledFeatures": [
@@ -654,21 +684,21 @@
                 }
             },
             {% endif %}
-            {% if console.developer_getting_started is defined %}
-            "developerGettingStarted": {
+            {% if console.notification_channels is defined %}
+            "notificationChannels": {
                 "disabledFeatures": [
-                    {% if console.developer_getting_started.disabled_features is defined %}
-                    {% for feature in console.developer_getting_started.disabled_features %}
+                    {% if console.notification_channels.disabled_features is defined %}
+                    {% for feature in console.notification_channels.disabled_features %}
                     "{{ feature }}"{{ "," if not loop.last }}
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.developer_getting_started.enabled is defined %} {{ console.developer_getting_started.enabled }},
+                "enabled": {% if console.notification_channels.enabled is defined %} {{ console.notification_channels.enabled }},
                 {% else %} true,
                 {% endif %}
                 "scopes": {
-                    {% if console.developer_getting_started.scopes is defined %}
-                    {% for operation, scopes in console.developer_getting_started.scopes.items() %}
+                    {% if console.notification_channels.scopes is defined %}
+                    {% for operation, scopes in console.notification_channels.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
@@ -1051,21 +1081,21 @@
                 }
             },
             {% endif %}
-            {% if console.manage_getting_started is defined %}
-            "manageGettingStarted": {
+            {% if console.getting_started is defined %}
+            "gettingStarted": {
                 "disabledFeatures": [
-                    {% if console.manage_getting_started.disabled_features is defined %}
-                    {% for feature in console.manage_getting_started.disabled_features %}
+                    {% if console.getting_started.disabled_features is defined %}
+                    {% for feature in console.getting_started.disabled_features %}
                     "{{ feature }}"{{ "," if not loop.last }}
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.manage_getting_started.enabled is defined %} {{ console.manage_getting_started.enabled }},
+                "enabled": {% if console.getting_started.enabled is defined %} {{ console.getting_started.enabled }},
                 {% else %} true,
                 {% endif %}
                 "scopes": {
-                    {% if console.manage_getting_started.scopes is defined %}
-                    {% for operation, scopes in console.manage_getting_started.scopes.items() %}
+                    {% if console.getting_started.scopes is defined %}
+                    {% for operation, scopes in console.getting_started.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
@@ -1201,21 +1231,21 @@
                 ]
             },
             {% endif %}
-            {% if console.resident_idp is defined %}
-            "residentIdp": {
+            {% if console.server is defined %}
+            "server": {
                 "disabledFeatures": [
-                    {% if console.resident_idp.disabled_features is defined %}
-                    {% for feature in console.resident_idp.disabled_features %}
+                    {% if console.server.disabled_features is defined %}
+                    {% for feature in console.server.disabled_features %}
                     "{{ feature }}"{{ "," if not loop.last }}
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.resident_idp.enabled is defined %} {{ console.resident_idp.enabled }},
+                "enabled": {% if console.server.enabled is defined %} {{ console.server.enabled }},
                 {% else %} true,
                 {% endif %}
                 "scopes": {
-                    {% if console.resident_idp.scopes is defined %}
-                    {% for operation, scopes in console.resident_idp.scopes.items() %}
+                    {% if console.server.scopes is defined %}
+                    {% for operation, scopes in console.server.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
@@ -1411,21 +1441,21 @@
                 }
             },
             {% endif %}
-            {% if console.roles is defined %}
-            "roles": {
+            {% if console.user_roles is defined %}
+            "userRoles": {
                 "disabledFeatures": [
-                    {% if console.roles.disabled_features is defined %}
-                    {% for feature in console.roles.disabled_features %}
+                    {% if console.user_roles.disabled_features is defined %}
+                    {% for feature in console.user_roles.disabled_features %}
                     "{{ feature }}"{{ "," if not loop.last }}
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.roles.enabled is defined %} {{ console.roles.enabled }},
+                "enabled": {% if console.user_roles.enabled is defined %} {{ console.user_roles.enabled }},
                 {% else %} true,
                 {% endif %}
                 "scopes": {
-                    {% if console.roles.scopes is defined %}
-                    {% for operation, scopes in console.roles.scopes.items() %}
+                    {% if console.user_roles.scopes is defined %}
+                    {% for operation, scopes in console.user_roles.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
@@ -1561,8 +1591,8 @@
             {% endif %}
         ],
         "i18nConfigs": {
-            {% if console.i18n_configs.items() is defined %}
-            {% for key, value in console.i18n_configs.items() %}
+            {% if console.ui.i18n_configs.items() is defined %}
+            {% for key, value in console.ui.i18n_configs.items() %}
             {% if value is string %}
                 "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
             {% else %}
@@ -1663,9 +1693,9 @@
                 {% endfor %}
             {% endif %}
         ],
-        "classicFeatures": {
-            {% if console.ui.classic_features.items() is defined %}
-            {% for key, value in console.ui.classic_features.items() %}
+        "legacyFeatures": {
+            {% if console.ui.legacy_features.items() is defined %}
+            {% for key, value in console.ui.legacy_features.items() %}
             {% if value is string %}
                 "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
             {% else %}

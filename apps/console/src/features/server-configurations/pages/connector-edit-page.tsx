@@ -472,6 +472,11 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     "extensions:manage.serverConfigurations.analytics.form." +
                     "notification.success.description"
                 );
+            case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
+                return t(
+                    "extensions:manage.serverConfigurations.userOnboarding.inviteUserToSetPassword." +
+                    "notification.success.description"
+                );
             default:
                 return t(
                     "console:manage.features.governanceConnectors.notifications.updateConnector.success.description",

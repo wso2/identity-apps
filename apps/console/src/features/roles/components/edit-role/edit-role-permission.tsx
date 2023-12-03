@@ -50,6 +50,7 @@ import { RoleAPIResourcesListItem } from "./edit-role-common/role-api-resources-
 import { useAPIResources } from "../../../api-resources/api";
 import { useGetAuthorizedAPIList } from "../../../api-resources/api/useGetAuthorizedAPIList";
 import { APIResourcesConstants } from "../../../api-resources/constants";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { getAPIResourceDetailsBulk, updateRoleDetails, useAPIResourceDetails } from "../../api";
 import { RoleAudienceTypes } from "../../constants/role-constants";
 import { PatchRoleDataInterface, PermissionUpdateInterface, SelectedPermissionsInterface } from "../../models";
@@ -93,6 +94,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ selectedAPIResourceId, setSelectedAPIResourceId ] = useState<string>(undefined);
@@ -105,12 +107,15 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     const [ allAPIResourcesListData, setAllAPIResourcesListData ] = useState<APIResourceInterface[]>([]);
     const [ apiCallNextAfterValue, setAPICallNextAfterValue ] = useState<string>(null);
 
+    const shouldFetchAPIResources: boolean = role?.audience?.type?.
+        toUpperCase() === RoleAudienceTypes.ORGANIZATION && !isSubOrganization();
+
     const {
         data: currentAPIResourcesListData,
         isLoading: iscurrentAPIResourcesListLoading,
         error: currentAPIResourcesFetchRequestError,
         mutate: mutatecurrentAPIResourcesList
-    } = useAPIResources(apiCallNextAfterValue);
+    } = useAPIResources(apiCallNextAfterValue, null, null, shouldFetchAPIResources);
 
     const {
         data: selectedAPIResource,
@@ -162,9 +167,16 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 if (
                     !selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                         selectedAPIResource?.id === api?.id)) {
+                    // Remove this once the backend improvement is done to send the type of the API resource.
+                    const apiResourceType: string = api?.identifier?.startsWith("/o/")
+                        ? APIResourcesConstants.SYSTEM_ORG
+                        : APIResourcesConstants.SYSTEM;
+
                     options.push({
+                        identifier: api.identifier,
                         key: api.id,
                         text: api.displayName,
+                        type: api.type ?? apiResourceType,
                         value: api.id
                     });
                 }
@@ -184,6 +196,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                     selectedAPIResource?.id === api?.id)) {
                     options.push({
+                        identifier: api.identifier,
                         key: api.id,
                         text: api.name,
                         type: api.type,
@@ -253,6 +266,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
 
                     if (isCurrentAPIResourceAlreadyAdded) {
                         filtered.push({
+                            identifier: apiResource.identifier,
                             key: apiResource.id,
                             text: apiResource.name,
                             type: apiResource.type,
@@ -334,8 +348,10 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                         if (selectedAPIResource) {
                             selectedAPIResourcesList.push({
                                 id: selectedAPIResource.id,
+                                identifier: selectedAPIResource.identifier,
                                 name: selectedAPIResource.displayName,
-                                scopes: selectedAPIResource.authorizedScopes
+                                scopes: selectedAPIResource.authorizedScopes,
+                                type: selectedAPIResource.type
                             });
                         }
                     });
@@ -467,11 +483,17 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 (api: AuthorizedAPIListItemInterface) => api?.id === data?.value?.toString()
             );
 
+            const apiResourceType: string = selectedAPIResource?.identifier?.startsWith("/o/")
+                ? APIResourcesConstants.SYSTEM_ORG
+                : APIResourcesConstants.SYSTEM;
+
             setSelectedAPIResources([
                 {
                     id: selectedAPIResource?.id,
+                    identifier: selectedAPIResource?.identifier,
                     name: selectedAPIResource?.displayName,
-                    scopes: selectedAPIResource?.authorizedScopes
+                    scopes: selectedAPIResource?.authorizedScopes,
+                    type: selectedAPIResource?.type ?? apiResourceType
                 },
                 ...selectedAPIResources
             ]);
@@ -541,7 +563,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                         (option: DropdownProps, value: DropdownProps) =>
                             option.value === value.value
                     }
-                    loading={ iscurrentAPIResourcesListLoading }
+                    loading={ shouldFetchAPIResources && iscurrentAPIResourcesListLoading }
                     onChange={ onAPIResourceSelected }
                     options={ allAPIResourcesDropdownOptions
                         .sort((a: DropdownItemProps, b: DropdownItemProps) =>

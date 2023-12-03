@@ -2177,14 +2177,14 @@ export const extensions: Extensions = {
                 vonage: {
                     subHeading: "Paramètres Vonage",
                     accountSID: {
-                        label: "SID du compte Vonage",
-                        placeholder: "Entrez le SID du compte Vonage",
-                        hint: "Identifiant de chaîne de compte Vonage qui fait office de nom d'utilisateur pour le compte"
+                        label: "Clé API Vonage",
+                        placeholder: "Entrez la clé API Vonage",
+                        hint: "Clé API Vonage qui fait office de nom d'utilisateur pour le compte."
                     },
                     authToken: {
-                        label: "Jeton d'authentification Vonage",
-                        placeholder: "Entrez le jeton d'authentification Vonage",
-                        hint: "Le jeton d'accès généré par le serveur d'authentification Vonage"
+                        label: "Secret de l'API Vonage",
+                        placeholder: "Entrez le secret de l'API Vonage",
+                        hint: "Le secret API généré par le serveur d'authentification Vonage."
                     },
                     sender: {
                         label: "Expéditrice",
@@ -4119,6 +4119,20 @@ export const extensions: Extensions = {
                         "Lorsque l'auto-inscription est activée, les utilisateurs peuvent s'inscrire via le " +
                         "lien <1>Créer un compte</1> sur la page de connexion de l'application. " +
                         "Cela crée un nouveau compte <3>client</3> dans l'organisation."
+                },
+                inviteUserToSetPassword: {
+                    notification: {
+                        error: {
+                            description: "Échec de la mise à jour de la configuration du connecteur " +
+                                "Inviter un utilisateur à définir un mot de passe.",
+                            message: "Erreur de mise à jour de la configuration"
+                        },
+                        success: {
+                            description: "Mise à jour réussie de la configuration du connecteur Inviter " +
+                                "un utilisateur à définir un mot de passe",
+                            message: "Mise à jour réussie"
+                        }
+                    }
                 },
                 subHeading: "Paramètres liés à l'auto-enregistrement"
             }

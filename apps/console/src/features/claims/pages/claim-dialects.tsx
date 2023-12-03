@@ -116,7 +116,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     }
 
                     // Filter xml soap dialect and local attribute dialect.
-                    return claim.id !== "local" && 
+                    return claim.id !== "local" &&
                         claim.id !== ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP") &&
                         claim.id != ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("OPENID_NET");
                 });
@@ -234,13 +234,13 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 <GridLayout
                     showTopActionPanel={ false }
                 >
-                    { 
+                    {
                         hasRequiredScopes(
                             featureConfig?.attributeDialects,
                             featureConfig?.attributeDialects?.scopes?.read,
                             allowedScopes
                         ) && (
-                            isLoading 
+                            isLoading
                                 ? (
                                     <>
                                         { renderHeaderPlaceholder() }
@@ -328,11 +328,11 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                 </List.Item>
                                             </List>
                                         </EmphasizedSegment>
-                                        { !isSAASDeployment && 
-                                        featureConfig?.residentIdp?.enabled &&
+                                        { !isSAASDeployment &&
+                                        featureConfig?.server?.enabled &&
                                         hasRequiredScopes(
-                                            featureConfig?.residentIdp,
-                                            featureConfig?.residentIdp?.scopes?.read,
+                                            featureConfig?.server,
+                                            featureConfig?.server?.scopes?.read,
                                             allowedScopes
                                         ) && (
                                             <EmphasizedSegment
@@ -368,7 +368,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                         ) }
                                                                     </List.Header>
                                                                     <List.Description
-                                                                        data-testid={ 
+                                                                        data-testid={
                                                                             `${ testId }-attribute-verification` +
                                                                             "-settings"
                                                                         }
@@ -376,7 +376,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                         { t(
                                                                             "console:manage.features." +
                                                                             "governanceConnectors." +
-                                                                            "connectorSubHeading", 
+                                                                            "connectorSubHeading",
                                                                             { name: t(
                                                                                 "console:manage.features." +
                                                                                 "governanceConnectors." +
@@ -391,7 +391,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                     width={ 4 }
                                                                     verticalAlign="middle"
                                                                     textAlign="right"
-                                                                    data-testid={ 
+                                                                    data-testid={
                                                                         `${ testId }-attribute-verification-` +
                                                                         "settings-edit-icon"
                                                                     }
@@ -428,7 +428,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                         ) }
                                     </>
                                 )
-                        ) 
+                        )
                     }
                     <Divider hidden />
                     <Divider hidden />
@@ -440,19 +440,19 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                 width={ 12 }
                                 verticalAlign="middle"
                             >
-                                { 
-                                    isLoading 
+                                {
+                                    isLoading
                                         ? (
                                             renderHeaderPlaceholder()
                                         ) : (
                                             <Header as="h4">
                                                 { t(
-                                                    "console:manage.features.claims.dialects." + 
+                                                    "console:manage.features.claims.dialects." +
                                                     "sections.manageAttributeMappings.heading"
                                                 ) }
                                             </Header>
                                         )
-                                }                       
+                                }
                             </Grid.Column>
                             <Grid.Column
                                 width={ 4 }
@@ -478,13 +478,13 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                             </PrimaryButton>
                                         </Show>
                                     )
-                                }        
+                                }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
                     <Divider hidden />
                     {
-                        isLoading 
+                        isLoading
                             ? (
                                 renderSegmentPlaceholder()
                             ) : (
@@ -521,7 +521,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                             />
                                                             <List.Header>
                                                                 { t(
-                                                                    "console:manage.features.claims." + 
+                                                                    "console:manage.features.claims." +
                                                                     "dialects.sections." +
                                                                     "manageAttributeMappings.oidc.heading"
                                                                 ) }
@@ -530,7 +530,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 data-testid={ `${ testId }-local-dialect` }
                                                             >
                                                                 { t(
-                                                                    "console:manage.features." + 
+                                                                    "console:manage.features." +
                                                                     "claims.attributeMappings." +
                                                                     "oidc.description"
                                                                 ) }
@@ -574,7 +574,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                             )
                     }
                     {
-                        isLoading 
+                        isLoading
                             ? (
                                 renderSegmentPlaceholder()
                             ) : (
@@ -609,12 +609,12 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                             />
                                                             <List.Header>
                                                                 { t(
-                                                                    "console:manage.features.claims." + 
-                                                                    "dialects.sections." + 
+                                                                    "console:manage.features.claims." +
+                                                                    "dialects.sections." +
                                                                     "manageAttributeMappings.scim.heading"
                                                                 ) }
                                                             </List.Header>
-                                                            <List.Description 
+                                                            <List.Description
                                                                 data-testid={ `${ testId }-local-dialect` }
                                                             >
                                                                 { t(
@@ -623,7 +623,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 ) }
                                                             </List.Description>
                                                         </Grid.Column>
-                                                        <Grid.Column 
+                                                        <Grid.Column
                                                             width={ 4 }
                                                             verticalAlign="middle"
                                                             textAlign="right"
@@ -653,7 +653,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                             )
                     }
                     {
-                        isLoading 
+                        isLoading
                             ? (
                                 renderSegmentPlaceholder()
                             ) : (
@@ -689,7 +689,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                             />
                                                             <List.Header>
                                                                 { t(
-                                                                    "console:manage.features." + 
+                                                                    "console:manage.features." +
                                                                     "claims.attributeMappings." +
                                                                     "axschema.heading"
                                                                 ) }
@@ -698,7 +698,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 data-testid={ `${ testId }-local-dialect` }
                                                             >
                                                                 { t(
-                                                                    "console:manage.features." + 
+                                                                    "console:manage.features." +
                                                                     "claims.attributeMappings." +
                                                                     "axschema.description"
                                                                 ) }
@@ -742,7 +742,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                             )
                     }
                     {
-                        isLoading 
+                        isLoading
                             ? (
                                 renderSegmentPlaceholder()
                             ) : (
@@ -779,7 +779,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                             />
                                                             <List.Header>
                                                                 { t(
-                                                                    "console:manage.features." + 
+                                                                    "console:manage.features." +
                                                                     "claims.attributeMappings." +
                                                                     "eidas.heading"
                                                                 ) }
@@ -788,7 +788,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                 data-testid={ `${ testId }-local-dialect` }
                                                             >
                                                                 { t(
-                                                                    "console:manage.features." + 
+                                                                    "console:manage.features." +
                                                                     "claims.attributeMappings." +
                                                                     "eidas.description"
                                                                 ) }
@@ -833,7 +833,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     }
                     {
                         attributeConfig.showCustomAttributeMapping && (
-                            isLoading 
+                            isLoading
                                 ? (
                                     renderSegmentPlaceholder()
                                 ) : (
@@ -879,19 +879,19 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                     <List.Header>
                                                                         { customAttributeMapping.dialectURI }
                                                                     </List.Header>
-                                                                    <List.Description 
+                                                                    <List.Description
                                                                         data-testid={ `${ testId }-local-dialect` }
                                                                     >
                                                                         { t(
-                                                                            "console:manage.features.claims." + 
+                                                                            "console:manage.features.claims." +
                                                                             "attributeMappings." +
                                                                             "custom.description"
                                                                         ) }
                                                                     </List.Description>
                                                                 </Grid.Column>
-                                                                <Grid.Column 
-                                                                    width={ 4 } 
-                                                                    verticalAlign="middle" 
+                                                                <Grid.Column
+                                                                    width={ 4 }
+                                                                    verticalAlign="middle"
                                                                     textAlign="right"
                                                                 >
                                                                     <Popup

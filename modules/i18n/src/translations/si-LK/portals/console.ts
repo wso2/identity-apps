@@ -709,6 +709,9 @@ export const console: ConsoleNS = {
     },
     consoleSettings: {
         administrators: {
+            edit: {
+                backButton: "පරිපාලකයින් වෙත ආපසු යන්න"
+            },
             tabLabel: "පරිපාලකයින්"
         },
         loginFlow: {
@@ -1527,12 +1530,19 @@ export const console: ConsoleNS = {
                                                     "පරිශීලකයින්ට පුරනය වීමට සබල කරන්න.",
                                                 heading: "මුර යතුර පිවිසුම එක් කරන්න",
                                                 info: {
-                                                    progressiveEnrollmentEnabled: "මුර යතුර ප්‍රගතිශීලී ලියාපදිංචිය සබල කර ඇත. " +
-                                                    "පරිශීලකයින්ට පියාසර කිරීමේදී පාස්කී ලියාපදිංචි කළ හැකිය. ඔවුන්ට මුර යතුරු කිහිපයක් " +
-                                                    "ඇතුළත් කිරීමට අවශ්‍ය නම් ඔවුන් එය MyAccount හරහා කළ යුතුය.",
+                                                    progressiveEnrollmentEnabled: "මුර යතුර ප්‍රගතිශීලී ලියාපදිංචිය සබල කර ඇත.",
+                                                    passkeyAsFirstStepWhenprogressiveEnrollmentEnabled: "<0>සටහන : </0> මුර යතුරු " +
+                                                    "සමඟ පියාසර පරිශීලක ලියාපදිංචිය සඳහා, <2>කොන්දේසි සහිත සත්‍යාපන</2> කොටසේ " +
+                                                    "<4>මුරපද ප්‍රගතිශීලී ඇතුළත් වීමේ</4> අච්චුව භාවිතා කරන්න.",
+                                                    passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled: "පරිශීලකයින්ට " +
+                                                    "සත්‍යාපනය වීමේ දී මුර යතුරු ලියාපදිංචි කළ හැකිය. පරිශීලකයන් බහුවිධ මුර යතුරු ලියාපදිංචි කිරීමට කැමති නම්, " +
+                                                    "ඔවුන් එය <1>My Account</1> හරහා කළ යුතුය.",
+                                                    progressiveEnrollmentEnabledCheckbox: "<0>Note : </0> <2>පළමු පියවර</2> " +
+                                                    "තුළ මුරපදය සැකසීමේදී, පරිශීලකයන්ට අනුවර්තන පිටපතක් එක් කිරීමට අවශ්‍ය වේ. " +
+                                                    "යෙදුමේ <4>පිවිසීමේ ක්‍රමය</4> ටැබය තුළ <6>පාස්කීස් ප්‍රගතිශීලී ලියාපදිංචිය</6> අච්චුව භාවිත කරන්න.",
                                                     progressiveEnrollmentDisabled: "ප්‍රගතිශීලී මුර යතුරු ලියාපදිංචිය " +
                                                     "අවහිර කර ඇත. මුරපද රහිත පුරනය වීම භාවිතා කිරීමට පරිශීලකයන් " +
-                                                    "MyAccount හරහා තම මුර යතුරු ලියාපදිංචි කළ යුතුය."
+                                                    "My Account හරහා තම මුර යතුරු ලියාපදිංචි කළ යුතුය."
                                                 }
                                             },
                                             emailOTP: {
@@ -2039,6 +2049,9 @@ export const console: ConsoleNS = {
                             discoverableHint: "සබල කර ඇති නම් සහ වෙබ් ප්‍රවේශ විය හැකි url (ගැඹුරු සබැඳියක්) ලබා දී " +
                                 "ඇත්නම්, පාරිභෝගිකයින්ට <1>{{ myAccount }}</1> ද්වාරයෙන් මෙම යෙදුමට ප්‍රවේශ විය හැක.",
                             mobileAppPlaceholder: "myapp://oauth2"
+                        },
+                        dropdowns: {
+                            selectOption: "විකල්පය තෝරන්න"
                         },
                         sections: {
                             accessToken: {

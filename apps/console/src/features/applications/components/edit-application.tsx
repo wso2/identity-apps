@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -148,6 +149,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const { t } = useTranslation();
     const { isSuperOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
+    const { UIConfig } = useUIConfig();
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
@@ -188,6 +190,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const isFragmentApp: boolean = application?.advancedConfigurations?.fragment || false;
+    const hiddenAuthenticators: string[] = [ ...(UIConfig?.hiddenAuthenticators ?? []) ];
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
@@ -661,7 +664,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 template={ template }
                 readOnly={ readOnly || applicationConfig.editApplication.getTabPanelReadOnlyStatus(
                     "APPLICATION_EDIT_ACCESS_CONFIG", application) }
-                isDefaultApplication={ application?.name === ApplicationManagementConstants.MY_ACCOUNT_APP_NAME }
+                isDefaultApplication={ ApplicationManagementConstants.DEFAULT_APPS.includes(application?.name) }
+                isSystemApplication={ ApplicationManagementConstants.SYSTEM_APPS.includes(application?.name) }
                 data-componentid={ `${ componentId }-access-settings` }
             />
         </ResourceTab.Pane>
@@ -699,6 +703,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 appId={ application.id }
                 authenticationSequence={ application.authenticationSequence }
                 clientId={ inboundProtocolConfig?.oidc?.clientId }
+                hiddenAuthenticators={ hiddenAuthenticators }
                 isLoading={ isLoading }
                 onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }

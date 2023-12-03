@@ -2115,14 +2115,14 @@ export const extensions: Extensions = {
                 vonage: {
                     subHeading: "Vonage සැකසුම්",
                     accountSID: {
-                        label: "Vonage ගිණුම් SID",
-                        placeholder: "Vonage ගිණුමේ SID ඇතුලත් කරන්න",
-                        hint: "ගිණුම සඳහා පරිශීලක නාමය ලෙස ක්‍රියා කරන Vonage ගිණුම් තන්තු හඳුනාගැනීම"
+                        label: "Vonage API යතුර",
+                        placeholder: "Vonage API යතුර ඇතුලත් කරන්න",
+                        hint: "ගිණුම සඳහා පරිශීලක නාමය ලෙස ක්‍රියා කරන Vonage API යතුර."
                     },
                     authToken: {
-                        label: "Vonage Auth ටෝකනය",
-                        placeholder: "Vonage auth ටෝකනය ඇතුළු කරන්න",
-                        hint: "Vonage auth සේවාදායකය විසින් ජනනය කරන ලද ප්‍රවේශ ටෝකනය."
+                        label: "Vonage API රහස",
+                        placeholder: "Vonage API රහස ඇතුලත් කරන්න",
+                        hint: "Vonage auth සේවාදායකය විසින් ජනනය කරන ලද API රහස."
                     },
                     sender: {
                         label: "යවන්නා",
@@ -3931,6 +3931,18 @@ export const extensions: Extensions = {
                         "ස්වයං ලියාපදිංචිය සක්‍රිය කර ඇති විට, පරිශීලකයින්ට යෙදුමේ පිවිසුම් පිටුවේ " +
                         "<1> ගිණුමක් සාදන්න </ 1> සබැඳිය හරහා ලියාපදිංචි විය හැකිය. මෙය සංවිධානයේ නව " +
                         "<3> ගනුදෙනුකරුවෙකු </ 3> ගිණුමක් නිර්මාණය කරයි."
+                },
+                inviteUserToSetPassword: {
+                    notification: {
+                        error: {
+                            description: "මුරපද සම්බන්ධකය සැකසීමට පරිශීලකයාට ආරාධනා කිරීම සඳහා වින්‍යාසය යාවත්කාලීන කිරීමට අසමත් විය.",
+                            message: "වින්‍යාසය යාවත්කාලීන කිරීමේදී දෝෂයකි"
+                        },
+                        success: {
+                            description: "මුරපදය සම්බන්ධකය සැකසීමට පරිශීලකයාට ආරාධනා කිරීම සඳහා වින්‍යාසය සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                            message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                        }
+                    }
                 },
                 subHeading: "ස්වයං ලියාපදිංචිය හා සම්බන්ධ සැකසුම්"
             }

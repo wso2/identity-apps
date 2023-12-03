@@ -105,6 +105,10 @@ interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterfa
      * Flag to determine if the updated application a system application.
      */
     isSystemApplication?: boolean;
+    /**
+     * List of hidden authenticators.
+     */
+    hiddenAuthenticators: string[];
 }
 
 /**
@@ -133,6 +137,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         onUpdate,
         readOnly,
         isSystemApplication,
+        hiddenAuthenticators,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -859,6 +864,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             application={ cloneDeep(application) }
             isSystemApplication={ isSystemApplication }
             authenticators={ authenticators }
+            hiddenAuthenticators={ hiddenAuthenticators }
             onAuthenticatorsRefetch={ () => fetchAndCategorizeAuthenticators() }
             onUpdate={ onUpdate }
             isLoading={ isAuthenticatorsFetchRequestLoading }
