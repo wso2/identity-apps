@@ -22,6 +22,7 @@ import Autocomplete, {
     AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
 import Button from "@oxygen-ui/react/Button";
+import FormControl from "@oxygen-ui/react/FormControl";
 import Grid from "@oxygen-ui/react/Grid";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
@@ -64,6 +65,7 @@ import { UserStoreListItem } from "../../../userstores/models/user-stores";
 import { RoleConstants, Schemas } from "../../constants";
 import { RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils/role-management-utils";
+import "./edit-role.scss";
 
 type RoleUsersPropsInterface = IdentifiableComponentInterface & RoleEditSectionsInterface;
 
@@ -326,7 +328,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
     // TODO: need to add the details of the managed by to the users list
     return (
-        <EmphasizedSegment padded="very">
+        <EmphasizedSegment padded="very" className="edit-role users">
             <Heading as="h4">
                 { t("console:manage.features.roles.edit.users.heading") }
             </Heading>
@@ -339,36 +341,37 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                     : (
                         <>
                             <Grid container spacing={ 1 }>
-                                <Grid xs={ 12 } sm={ 6 } md={ 2 }>
-                                    <Select
-                                        style={ { width: "100%" } }
-                                        value={ selectedUserStoreDomainId }
-                                        onChange={
-                                            (e: SelectChangeEvent<unknown>) => {
-                                                setSelectedUserStoreDomainId(e.target.value as string);
-                                                setSelectedUsersOption([]);
+                                <Grid xs={ 12 } sm={ 6 } md={ 2 } alignItems="center">
+                                    <FormControl fullWidth size="medium">
+                                        <Select
+                                            value={ selectedUserStoreDomainId }
+                                            onChange={
+                                                (e: SelectChangeEvent<unknown>) => {
+                                                    setSelectedUserStoreDomainId(e.target.value as string);
+                                                    setSelectedUsersOption([]);
+                                                }
                                             }
-                                        }
-                                    >
-                                        { isUserStoresLoading
-                                            ? <p>{ t("common:loading") }</p>
-                                            : [
-                                                {
-                                                    id: RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME,
-                                                    name: t("console:manage.features.users.userstores." +
+                                        >
+                                            { isUserStoresLoading
+                                                ? <p>{ t("common:loading") }</p>
+                                                : [
+                                                    {
+                                                        id: RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME,
+                                                        name: t("console:manage.features.users.userstores." +
                                                         "userstoreOptions.primary")
-                                                },
-                                                ...(userStores ?? [])
-                                            ].map((userstore: UserStoreListItem) =>
-                                                (<MenuItem
-                                                    key={ userstore.id }
-                                                    value={ userstore.id }
-                                                >
-                                                    { userstore.name }
-                                                </MenuItem>)
-                                            )
-                                        }
-                                    </Select>
+                                                    },
+                                                    ...(userStores ?? [])
+                                                ].map((userstore: UserStoreListItem) =>
+                                                    (<MenuItem
+                                                        key={ userstore.id }
+                                                        value={ userstore.id }
+                                                    >
+                                                        { userstore.name }
+                                                    </MenuItem>)
+                                                )
+                                            }
+                                        </Select>
+                                    </FormControl>
                                 </Grid>
                                 <Grid xs={ 12 } sm={ 6 } md={ 10 }>
                                     {
@@ -376,6 +379,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                                             ? (
                                                 <Autocomplete
                                                     multiple
+                                                    size="small"
                                                     disableCloseOnSelect
                                                     options={ selectedUsersOption ? selectedUsersOption : [] }
                                                     value={ selectedUsersOption ? selectedUsersOption : [] }
