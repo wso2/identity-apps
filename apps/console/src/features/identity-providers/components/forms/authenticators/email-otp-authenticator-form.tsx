@@ -97,7 +97,7 @@ interface EmailOTPAuthenticatorFormInitialValuesInterface {
     /**
      * Allow OTP token to have mix of 0-9 and A-Z characters.
      */
-    EmailOTP_OtpRegex_UseAlphanumericChars: boolean;
+    EmailOTP_UseAlphanumericChars: boolean;
 }
 
 /**
@@ -115,7 +115,7 @@ interface EmailOTPAuthenticatorFormFieldsInterface {
     /**
      * Allow OTP token to have 0-9 characters only field.
      */
-    EmailOTP_OtpRegex_UseAlphanumericChars: CommonAuthenticatorFormFieldInterface;
+    EmailOTP_UseAlphanumericChars: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -133,7 +133,7 @@ export interface EmailOTPAuthenticatorFormErrorValidationsInterface {
     /**
      * Allow OTP token to have 0-9 characters only field.
      */
-    EmailOTP_OtpRegex_UseAlphanumericChars: string;
+    EmailOTP_UseAlphanumericChars: string;
 }
 
 const FORM_ID: string = "email-otp-authenticator-form";
@@ -220,7 +220,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
             }
         });
 
-        setIsOTPAlphanumeric(resolvedInitialValues.EmailOTP_OtpRegex_UseAlphanumericChars);
+        setIsOTPAlphanumeric(resolvedInitialValues.EmailOTP_UseAlphanumericChars);
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
     }, [ originalInitialValues ]);
@@ -277,7 +277,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
         const errors: EmailOTPAuthenticatorFormErrorValidationsInterface = {
             EmailOTP_ExpiryTime: undefined,
             EmailOTP_OTPLength: undefined,
-            EmailOTP_OtpRegex_UseAlphanumericChars: undefined
+            EmailOTP_UseAlphanumericChars: undefined
         };
 
         if (!values.EmailOTP_ExpiryTime) {
@@ -380,7 +380,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
             </Field.Input>
             <Field.Checkbox
                 ariaLabel="Use alphanumeric characters for OTP"
-                name="EmailOTP_OtpRegex_UseAlphanumericChars"
+                name="EmailOTP_UseAlphanumericChars"
                 label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".emailOTP.useAlphanumericChars.label")
