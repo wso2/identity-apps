@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.9.46
+
+### Patch Changes
+
+- [#4890](https://github.com/wso2/identity-apps/pull/4890) [`084d392a3f`](https://github.com/wso2/identity-apps/commit/084d392a3ff932119ca6ea0deae77aa9f224fd17) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues with login and registration section
+
+- Updated dependencies [[`084d392a3f`](https://github.com/wso2/identity-apps/commit/084d392a3ff932119ca6ea0deae77aa9f224fd17)]:
+  - @wso2is/i18n@2.0.71
+
 ## 2.9.45
 
 ### Patch Changes

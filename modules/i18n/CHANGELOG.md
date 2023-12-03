@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.71
+
+### Patch Changes
+
+- [#4890](https://github.com/wso2/identity-apps/pull/4890) [`084d392a3f`](https://github.com/wso2/identity-apps/commit/084d392a3ff932119ca6ea0deae77aa9f224fd17) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues with login and registration section
+
 ## 2.0.70
 
 ### Patch Changes
