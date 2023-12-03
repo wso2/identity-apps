@@ -112,20 +112,17 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const {
         data: passwordHistoryCountData,
         error: passwordHistoryCountError,
-        isLoading: isPasswordCountLoading,
         mutate: mutatePasswordHistoryCount
     } = serverConfigurationConfig.usePasswordHistory();
 
     const {
         data: passwordExpiryData,
         error: passwordExpiryError,
-        isLoading: isPasswordExpiryLoading,
         mutate: mutatePasswordExpiry
     } = serverConfigurationConfig.usePasswordExpiry();
 
     const {
         data: validationData,
-        isLoading: isValidationLoading,
         error: ValidationConfigStatusFetchRequestError,
         mutate: mutateValidationConfigFetchRequest
     } = useValidationConfigData(isPasswordInputValidationEnabled);
@@ -541,7 +538,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         "Validate passwords based on a policy pattern") }
                     width={ 16 }
                     data-componentid={ `${ componentId }-enable-password-policy` }
-                    listen={ (data) => setIsLegacyPasswordPolicyEnabled(data) }
+                    listen={ (data: boolean) => setIsLegacyPasswordPolicyEnabled(data) }
                 />
                 <div className="validation-configurations-form mt-3 mb-3">
                     <div className="criteria">
