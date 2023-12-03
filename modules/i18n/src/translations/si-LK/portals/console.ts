@@ -9406,7 +9406,7 @@ export const console: ConsoleNS = {
                             },
                             advanceSearch: {
                                 searchByUsername: "පරිශීලක නාමයෙන් සොයන්න",
-                                searchByRoleOrGroup: "භූමිකාව/කණ්ඩායම් නම අනුව සොයන්න",
+                                searchByGroup: "කණ්ඩායම් නම අනුව සොයන්න",
                                 roleGroupFilterAttributePlaceHolder: "භූමිකාව/කණ්ඩායම් නම"
                             },
                             manualCreation: {
@@ -9425,8 +9425,8 @@ export const console: ConsoleNS = {
                                     description: "CSV ගොනුවක් මෙතැනට ඇද දමන්න."
                                 },
                                 primaryButton: "එකතු කරන්න",
-                                rolesLabel: "භූමිකාවන්",
-                                rolesPlaceholder: "භූමිකාවන් ඇතුළත් කරන්න",
+                                groupsLabel: "කණ්ඩායම්",
+                                groupsPlaceholder: "කණ්ඩායම් ඇතුළත් කරන්න",
                                 warningMessage: "මෙම විකල්පය භාවිතා කළ හැක්කේ ඊමේල් ලිපිනය පරිශීලක නාමය ලෙස වින්‍යාස කර ඇති විට පමණි."
                             },
                             fileBased: {
@@ -9434,7 +9434,7 @@ export const console: ConsoleNS = {
                             },
                             responseOperationType: {
                                 userCreation: "පරිශීලක නිර්මාණය",
-                                roleAssignment: "භූමිකාව/කණ්ඩායම් පැවරුම"
+                                roleAssignment: "කණ්ඩායම් පැවරුම"
                             },
                             userstoreMessage: "සාදන ලද පරිශීලකයින් <1>{{ userstore }}</1> පරිශීලක ගබඩාවට එක් කරනු ලැබේ."
                         },

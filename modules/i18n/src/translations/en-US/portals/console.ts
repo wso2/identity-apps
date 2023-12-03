@@ -11362,7 +11362,7 @@ export const console: ConsoleNS = {
                             },
                             advanceSearch: {
                                 searchByUsername: "Search by Username",
-                                searchByRoleOrGroup: "Search by Role/Group",
+                                searchByGroup: "Search by Group",
                                 roleGroupFilterAttributePlaceHolder: "Role/Group Name"
                             },
                             manualCreation: {
@@ -11381,8 +11381,8 @@ export const console: ConsoleNS = {
                                     description: "Drag and drop a CSV file here."
                                 },
                                 primaryButton: "Add",
-                                rolesLabel: "Roles",
-                                rolesPlaceholder: "Enter roles",
+                                groupsLabel: "Groups",
+                                groupsPlaceholder: "Enter groups",
                                 warningMessage: "This option can only be used when email address is configured " +
                                     "as the username."
                             },
@@ -11391,7 +11391,7 @@ export const console: ConsoleNS = {
                             },
                             responseOperationType: {
                                 userCreation: "User Creation",
-                                roleAssignment: "Role/Group Assignment"
+                                roleAssignment: "Group Assignment"
                             },
                             userstoreMessage: "The created users will be added to the <1>{{ userstore }}</1> user store."
                         },

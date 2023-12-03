@@ -9623,7 +9623,7 @@ export const console: ConsoleNS = {
                             },
                             advanceSearch: {
                                 searchByUsername: "Rechercher par nom d'utilisateur",
-                                searchByRoleOrGroup: "Recherche par nom de rôle/groupe",
+                                searchByGroup: "Recherche par nom de groupe",
                                 roleGroupFilterAttributePlaceHolder: "Nom du rôle/groupe"
                             },
                             manualCreation: {
@@ -9642,8 +9642,8 @@ export const console: ConsoleNS = {
                                     description: "Faites glisser et déposez un fichier CSV ici."
                                 },
                                 primaryButton: "Ajouter",
-                                rolesLabel: "Les rôles",
-                                rolesPlaceholder: "Entrez les rôles",
+                                groupsLabel: "Grupos",
+                                groupsPlaceholder: "Entrar em grupos",
                                 warningMessage: "Cette option ne peut être utilisée que lorsque l'adresse e-mail " +
                                     "est configurée comme nom d'utilisateur."
                             },
@@ -9652,7 +9652,7 @@ export const console: ConsoleNS = {
                             },
                             responseOperationType: {
                                 userCreation: "Création d'utilisateur",
-                                roleAssignment: "Affectation de rôle/groupe"
+                                roleAssignment: "Tarefa de grupo"
                             },
                             userstoreMessage: "Les utilisateurs créés seront ajoutés au magasin d'utilisateurs <1>{{ userstore }></1>."
                         },
