@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.81
+
+### Patch Changes
+
+- [#4860](https://github.com/wso2/identity-apps/pull/4860) [`0724022f4c`](https://github.com/wso2/identity-apps/commit/0724022f4cbd6a0f2711da9648a3bb49dd967bd3) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Allow to update system apps for set of scenarios
+
 ## 2.0.80
 
 ### Patch Changes
