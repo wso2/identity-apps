@@ -109,13 +109,13 @@ const AdaptiveAuthTemplateChangeConfirmationModal: FunctionComponent<
                                         "otherSettings.connectors.elasticAnalyticsEngine.warningModal.configure"
                                     }
                                 >
-                                   Configure <Link
+                                    (<Link
                                         onClick={ onELKConfigureClick }
                                         external={ false }
                                     >
                                         Configure
                                     </Link>
-                                    ELK Analytics settings for proper functionality.
+                                        ELK Analytics settings for proper functionality.)
                                 </Trans>
                             </Text>
                             <Text>

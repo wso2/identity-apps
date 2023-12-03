@@ -425,8 +425,6 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
 
     const handleSubmit = (values: Record<string, unknown>) => {
 
-        // submitAuthorization();
-
         const data: UpdateGovernanceConnectorConfigInterface = {
             operation: "UPDATE",
             properties: []
@@ -467,7 +465,6 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                         )
                     })
                 );
-                loadConnectorDetails();
             })
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.detail) {
@@ -522,7 +519,6 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                 open={ openELKAnalyticsModal }
                 onClose={ handleELKAnalyticsModalClose }
                 size="small"
-                className=""
                 dimmer="blurring"
             >
                 <Modal.Header>
