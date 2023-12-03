@@ -9617,14 +9617,14 @@ export const console: ConsoleNS = {
                                     description: "Problèmes rencontrés dans <1>{{failedUserCreationCount}} " +
                                         "opération(s)</1> de création d'utilisateur et " +
                                         "<3>{{failedUserAssignmentCount}} opération(s) </3> d'attribution de " +
-                                        "rôle/groupe.",
+                                        "groupe.",
                                     message: "Révision requise."
                                 }
                             },
                             advanceSearch: {
                                 searchByUsername: "Rechercher par nom d'utilisateur",
                                 searchByGroup: "Recherche par nom de groupe",
-                                roleGroupFilterAttributePlaceHolder: "Nom du rôle/groupe"
+                                roleGroupFilterAttributePlaceHolder: "Nom du groupe"
                             },
                             manualCreation: {
                                 alerts: {

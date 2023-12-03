@@ -9400,14 +9400,14 @@ export const console: ConsoleNS = {
                                 },
                                 importFailed: {
                                     description: "<1>{{failedUserCreationCount}} පරිශීලක නිර්මාණය</1> කිරීමේ මෙහෙයුම් සහ " +
-                                        "<3>{{failedUserAssignmentCount}} භූමිකාව/කණ්ඩායම් පැවරුම්</3> මෙහෙයුම් තුළ ඇති වූ ගැටළු.",
+                                        "<3>{{failedUserAssignmentCount}} කණ්ඩායම් පැවරුම්</3> මෙහෙයුම් තුළ ඇති වූ ගැටළු.",
                                     message: "ගැටළු සමාලෝචනය අවශ්‍යයි."
                                 }
                             },
                             advanceSearch: {
                                 searchByUsername: "පරිශීලක නාමයෙන් සොයන්න",
                                 searchByGroup: "කණ්ඩායම් නම අනුව සොයන්න",
-                                roleGroupFilterAttributePlaceHolder: "භූමිකාව/කණ්ඩායම් නම"
+                                roleGroupFilterAttributePlaceHolder: "කණ්ඩායම් නම"
                             },
                             manualCreation: {
                                 alerts: {

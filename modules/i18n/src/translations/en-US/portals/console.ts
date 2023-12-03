@@ -11355,7 +11355,7 @@ export const console: ConsoleNS = {
                                 },
                                 importFailed: {
                                     description: "Issues encountered in <1>{{failedUserCreationCount}} user " +
-                                        "creation operations(s)</1> and <3>{{failedUserAssignmentCount}} role/group " +
+                                        "creation operations(s)</1> and <3>{{failedUserAssignmentCount}} group " +
                                         "assignment operation(s)</3>.",
                                     message: "Review Required"
                                 }
@@ -11363,7 +11363,7 @@ export const console: ConsoleNS = {
                             advanceSearch: {
                                 searchByUsername: "Search by Username",
                                 searchByGroup: "Search by Group",
-                                roleGroupFilterAttributePlaceHolder: "Role/Group Name"
+                                roleGroupFilterAttributePlaceHolder: "Group Name"
                             },
                             manualCreation: {
                                 alerts: {

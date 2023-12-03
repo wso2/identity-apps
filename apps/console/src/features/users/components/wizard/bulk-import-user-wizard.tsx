@@ -53,7 +53,7 @@ import {
     useWizardAlert
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import Axios,  { AxiosError, AxiosResponse }from "axios";
+import Axios,  { AxiosResponse }from "axios";
 import camelCase from "lodash-es/camelCase";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -63,7 +63,7 @@ import { Button, Grid, Icon } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
 import { userConfig } from "../../../../extensions/configs";
 import { ClaimManagementConstants } from "../../../../features/claims/constants";
-import { getGroupList } from "../../../../features/groups/api";
+import { getGroupList, useGroupList } from "../../../../features/groups/api";
 import { GroupsInterface } from "../../../../features/groups/models";
 import { useRolesList } from "../../../../features/roles/api";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
@@ -194,7 +194,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ alert, setAlert, alertComponent ] = useWizardAlert({ "data-componentid": `${componentId}-alert` });
     const [ manualInviteAlert, setManualInviteAlert, manualInviteAlertComponent ]
         = useWizardAlert({ "data-componentid": `${componentId}-manual-invite-alert` });
-    const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
+    // const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
 
     const optionsArray: string[] = [];
 
@@ -206,12 +206,23 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         undefined, undefined, ORG_ROLE_FILTER
     );
 
-    /**
-     * Fetch group list for a given user store.
-     */
+    const {
+        data: groupList,
+        error: groupsError,
+        isLoading: isGroupsListRequestLoading
+    } = useGroupList(userstore, "members", null, true);
+
     useEffect(() => {
-        getGroupListForDomain(userstore);
-    }, [ userstore ]);
+        if (groupsError) {
+            dispatch(addAlert({
+                description: groupsError?.response?.data?.description ?? groupsError?.response?.data?.detail
+                    ?? t("console:manage.features.groups.notifications.fetchGroups.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: groupsError?.response?.data?.message
+                    ?? t("console:manage.features.groups.notifications.fetchGroups.genericError.message")
+            }));
+        }
+    },[ groupsError ]);
 
     /**
      * Handle if any error occurs while fetching the roles list.
@@ -245,41 +256,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
         setRoleUserAssociations(newRoles);
     }, [ rolesList ]);
-
-    /**
-     * Fetch group list for a given domain
-     */
-    const getGroupListForDomain = (domain: string) => {
-        getGroupList(domain)
-            .then((response: AxiosResponse) => {
-                setGroupsList(response?.data?.Resources ?? []);
-            }).catch((error: AxiosError) => {
-                setGroupsList([]);
-
-                if (error?.response?.data?.description) {
-                    dispatch(addAlert({
-                        description: error?.response?.data?.description
-                        ?? error?.response?.data?.detail ??
-                            t("console:manage.features.user.updateUser.groups.notifications" +
-                            ".fetchUserGroups.error.description"),
-                        level: AlertLevels.ERROR,
-                        message: error?.response?.data?.message ??
-                            t("console:manage.features.user.updateUser.groups.notifications" +
-                            ".fetchUserGroups.error.message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("console:manage.features.user.updateUser.groups.notifications" +
-                        ".fetchUserGroups.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.user.updateUser.groups.notifications" +
-                        ".fetchUserGroups.genericError.message")
-                }));
-            });
-    };
 
     /**
      * Fetch the group list.
@@ -1449,6 +1425,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             || !emailData
             || emailData?.length === 0
             || !groupsData
+            || isGroupsListRequestLoading
             || groupsData?.length === 0;
     };
 
@@ -1575,7 +1552,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             disablePortal
                                             id="combo-box-demo"
                                             options={
-                                                groupList
+                                                groupList?.Resources
                                             }
                                             getOptionLabel={ (option: GroupsInterface) => option?.displayName }
                                             renderOption={ (
