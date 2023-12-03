@@ -4134,13 +4134,13 @@ export const extensions: Extensions = {
                 inviteUserToSetPassword: {
                     notification: {
                         error: {
-                            description: "Échec de la mise à jour de la configuration pour inviter " +
-                                "l'utilisateur à définir le connecteur de mot de passe.",
+                            description: "Échec de la mise à jour de la configuration du connecteur " +
+                                "Inviter un utilisateur à définir un mot de passe.",
                             message: "Erreur de mise à jour de la configuration"
                         },
                         success: {
-                            description: "Mise à jour réussie de la configuration pour inviter les " +
-                                "utilisateurs à définir le connecteur de mot de passe.",
+                            description: "Mise à jour réussie de la configuration du connecteur Inviter " +
+                                "un utilisateur à définir un mot de passe",
                             message: "Mise à jour réussie"
                         }
                     }

@@ -31,6 +31,7 @@ import {
     GovernanceConnectorUtils,
     ServerConfigurationsConstants,
     UpdateGovernanceConnectorConfigInterface,
+    UpdateGovernanceConnectorConfigPropertyInterface,
     UpdateMultipleGovernanceConnectorsInterface
 } from "../../features/server-configurations";
 import { ValidationFormInterface } from "../../features/validation/models";
@@ -248,41 +249,42 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
             passwordHistoryCount = 1;
         }
 
-        const legacyPasswordPoliciesData: any = {
-            id: ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID,
-            properties: [
-                {
-                    name: ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE,
-                    value: data[
-                        GovernanceConnectorUtils.encodeConnectorPropertyName(
-                            ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE) ]?.toString()
-                },
-                {
-                    name: ServerConfigurationsConstants.PASSWORD_POLICY_MIN_LENGTH,
-                    value: data[
-                        GovernanceConnectorUtils.encodeConnectorPropertyName(
-                            ServerConfigurationsConstants.PASSWORD_POLICY_MIN_LENGTH) ]?.toString()
-                },
-                {
-                    name: ServerConfigurationsConstants.PASSWORD_POLICY_MAX_LENGTH,
-                    value: data[
-                        GovernanceConnectorUtils.encodeConnectorPropertyName(
-                            ServerConfigurationsConstants.PASSWORD_POLICY_MAX_LENGTH) ]?.toString()
-                },
-                {
-                    name: ServerConfigurationsConstants.PASSWORD_POLICY_PATTERN,
-                    value: data[
-                        GovernanceConnectorUtils.encodeConnectorPropertyName(
-                            ServerConfigurationsConstants.PASSWORD_POLICY_PATTERN) ]?.toString()
-                },
-                {
-                    name: ServerConfigurationsConstants.PASSWORD_POLICY_ERROR_MESSAGE,
-                    value: data[
-                        GovernanceConnectorUtils.encodeConnectorPropertyName(
-                            ServerConfigurationsConstants.PASSWORD_POLICY_ERROR_MESSAGE) ]?.toString()
-                }
-            ]
-        };
+        const legacyPasswordPoliciesData: {
+            id: string, properties: UpdateGovernanceConnectorConfigPropertyInterface[] } = {
+                id: ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID,
+                properties: [
+                    {
+                        name: ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE,
+                        value: data[
+                            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE) ]?.toString()
+                    },
+                    {
+                        name: ServerConfigurationsConstants.PASSWORD_POLICY_MIN_LENGTH,
+                        value: data[
+                            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                ServerConfigurationsConstants.PASSWORD_POLICY_MIN_LENGTH) ]?.toString()
+                    },
+                    {
+                        name: ServerConfigurationsConstants.PASSWORD_POLICY_MAX_LENGTH,
+                        value: data[
+                            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                ServerConfigurationsConstants.PASSWORD_POLICY_MAX_LENGTH) ]?.toString()
+                    },
+                    {
+                        name: ServerConfigurationsConstants.PASSWORD_POLICY_PATTERN,
+                        value: data[
+                            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                ServerConfigurationsConstants.PASSWORD_POLICY_PATTERN) ]?.toString()
+                    },
+                    {
+                        name: ServerConfigurationsConstants.PASSWORD_POLICY_ERROR_MESSAGE,
+                        value: data[
+                            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                ServerConfigurationsConstants.PASSWORD_POLICY_ERROR_MESSAGE) ]?.toString()
+                    }
+                ]
+            };
 
         const passwordPoliciesData: UpdateMultipleGovernanceConnectorsInterface = {
             connectors: [

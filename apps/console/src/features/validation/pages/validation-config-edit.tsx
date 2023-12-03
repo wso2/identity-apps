@@ -321,7 +321,6 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         })
                     );
                 } else {
-                    // Generic error message
                     dispatch(
                         addAlert({
                             description: t(
@@ -595,7 +594,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 );
                             } }
                             width={ 2 }
-                            required={ true }
+                            required
                             hidden={ false }
                             placeholder={ "min" }
                             maxLength={
@@ -655,7 +654,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                     .PASSWORD_MAX_VALUE
                             }
                             width={ 2 }
-                            required={ true }
+                            required
                             hidden={ false }
                             placeholder={ "max" }
                             listen={ (
@@ -695,7 +694,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     }
                     type="text"
                     width={ 12 }
-                    required={ true }
+                    required
                     placeholder={ "Enter password pattern regex" }
                     labelPosition="top"
                     minLength={ 3 }
@@ -740,7 +739,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     }
                     type="text"
                     width={ 12 }
-                    required={ true }
+                    required
                     placeholder={ "Enter password pattern regex" }
                     labelPosition="top"
                     minLength={ 3 }
@@ -826,7 +825,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                     .PASSWORD_MAX_VALUE
                         }
                         width={ 2 }
-                        required={ true }
+                        required
                         hidden={ false }
                         placeholder={ "min" }
                         maxLength={
@@ -894,7 +893,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 .PASSWORD_MAX_VALUE
                         }
                         width={ 2 }
-                        required={ true }
+                        required
                         hidden={ false }
                         placeholder={ "max" }
                         listen={ (
@@ -976,7 +975,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                     .PASSWORD_MAX_VALUE
                         }
                         width={ 2 }
-                        required={ true }
+                        required
                         hidden={ false }
                         placeholder={ "min" }
                         listen={ (
@@ -1048,7 +1047,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                     .PASSWORD_MAX_VALUE
                         }
                         width={ 2 }
-                        required={ true }
+                        required
                         hidden={ false }
                         placeholder={ "min" }
                         listen={ (
@@ -1121,7 +1120,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                     .PASSWORD_MAX_VALUE
                         }
                         width={ 2 }
-                        required={ true }
+                        required
                         hidden={ false }
                         placeholder={ "min" }
                         listen={ (
@@ -1194,7 +1193,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                     .PASSWORD_MAX_VALUE
                         }
                         width={ 2 }
-                        required={ true }
+                        required
                         hidden={ false }
                         placeholder={ "min" }
                         listen={ (
@@ -1277,7 +1276,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                     .PASSWORD_MAX_VALUE
                         }
                         width={ 2 }
-                        required={ true }
+                        required
                         hidden={ false }
                         placeholder={ "min" }
                         value={
@@ -1369,7 +1368,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                     .PASSWORD_MAX_VALUE
                         }
                         width={ 2 }
-                        required={ true }
+                        required
                         hidden={ false }
                         placeholder={ "max" }
                         value={

@@ -3984,11 +3984,11 @@ export const extensions: Extensions = {
                 inviteUserToSetPassword: {
                     notification: {
                         error: {
-                            description: "Failed to update the configuration for inviting user to set password connector.",
+                            description: "Failed to update the configuration for the Invite User to Set Password connector.",
                             message: "Error updating configuration"
                         },
                         success: {
-                            description: "Successfully updated the configuration for inviting user to set password connector.",
+                            description: "Successfully updated the configuration for the Invite User to Set Password connector.",
                             message: "Update successful"
                         }
                     }
