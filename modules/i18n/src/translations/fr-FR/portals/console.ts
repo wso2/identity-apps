@@ -9583,7 +9583,7 @@ export const console: ConsoleNS = {
                             successCount: "Nombre de réussites",
                             failedCount: "Nombre d'échecs",
                             totalUserCreationCount: "Nombre total de créations d'utilisateurs",
-                            totalUserAssignmentCount: "Nombre total d'attributions de rôles/groupes",
+                            totalUserAssignmentCount: "Nombre total d'attributions de groupes",
                             tableHeaders: {
                                 username: "Nom d'utilisateur",
                                 status: "Statut",

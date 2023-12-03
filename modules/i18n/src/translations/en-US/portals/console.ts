@@ -11326,7 +11326,7 @@ export const console: ConsoleNS = {
                             successCount: "Successful Imports",
                             failedCount: "Failed Imports",
                             totalUserCreationCount: "Total user creation count",
-                            totalUserAssignmentCount: "Total role/group assigment count ",
+                            totalUserAssignmentCount: "Total group assigment count ",
                             tableHeaders: {
                                 username: "Username",
                                 status: "Status",

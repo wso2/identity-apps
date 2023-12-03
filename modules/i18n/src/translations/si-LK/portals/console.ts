@@ -9372,7 +9372,7 @@ export const console: ConsoleNS = {
                             successCount: "සාර්ථකත්ව ගණන",
                             failedCount: "අසාර්ථක වූ ගණන",
                             totalUserCreationCount: "සම්පූර්ණ පරිශීලක නිර්මාණ ගණන",
-                            totalUserAssignmentCount: "සම්පූර්ණ පරිශීලක භූමිකාව/කණ්ඩායම් පැවරුම් ගණන",
+                            totalUserAssignmentCount: "සම්පූර්ණ පරිශීලක කණ්ඩායම් පැවරුම් ගණන",
                             tableHeaders: {
                                 username: "පරිශීලක නාමය",
                                 status: "තත්ත්වය",
