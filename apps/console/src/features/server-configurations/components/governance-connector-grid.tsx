@@ -20,6 +20,7 @@ import { Avatar, CardContent } from "@oxygen-ui/react";
 import {
     ArrowLoopRightUserIcon,
     BuildingGearIcon,
+    CircleUserIcon,
     EnvelopeAtIcon,
     EnvelopeMagnifyingGlassIcon,
     GearIcon,
@@ -37,12 +38,11 @@ import {
 import Card from "@oxygen-ui/react/Card";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, GenericIcon } from "@wso2is/react-components";
+import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
 import { serverConfigurationConfig } from "../../../extensions";
 import { AppConstants, history } from "../../core";
 import "./governance-connector-grid.scss";
-import { getSettingsSectionIcons } from "../configs/ui";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 
 /**
@@ -143,12 +143,7 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                 );
             case ServerConfigurationsConstants.USERNAME_VALIDATION:
                 return (
-                    <GenericIcon
-                        size="micro"
-                        icon={ getSettingsSectionIcons().usernameValidation }
-                        transparent
-                        shape={ "square" }
-                    />
+                    <CircleUserIcon className="icon" />
                 );
             case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
                 return (
@@ -205,6 +200,7 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                                     key={ connector.id }
                                                     className="governance-connector"
                                                     onClick={ () => handleConnectorSelection(connector.route) }
+                                                    data-componentid={ connector.testId }
                                                 >
                                                     <CardContent className="governance-connector-header">
                                                         <Avatar
