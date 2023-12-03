@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { GearIcon } from "@oxygen-ui/react-icons";
 import Chip from "@oxygen-ui/react/Chip";
 import { FeatureStatus, FeatureTags, useCheckFeatureStatus, useCheckFeatureTags } from "@wso2is/access-control";
 import { UIConstants } from "@wso2is/core/constants";
@@ -31,6 +32,7 @@ import {
     DocumentationLink,
     GenericIcon,
     Heading,
+    Link,
     Popup,
     SegmentedAccordion,
     Text,
@@ -61,6 +63,7 @@ import { Dispatch } from "redux";
 import { Checkbox, Dropdown, Header, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel, ScriptTemplatesSidePanelRefInterface } from "./script-templates-side-panel";
+import { ELK_RISK_BASED_TEMPLATE_NAME } from "../../../../../authentication-flow-builder/constants/template-constants";
 import useAuthenticationFlow from "../../../../../authentication-flow-builder/hooks/use-authentication-flow";
 import { AppUtils, EventPublisher, getOperationIcons } from "../../../../../core";
 import { OrganizationType } from "../../../../../organizations/constants";
@@ -172,6 +175,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const adaptiveFeatureStatus : FeatureStatus = useCheckFeatureStatus("console.application.signIn.adaptiveAuth");
     const adaptiveFeatureTags: string[] = useCheckFeatureTags("console.application.signIn.adaptiveAuth");
     const [ isPremiumFeature, setIsPremiumFeature ] = useState<boolean>(false);
+    const [ isELKConfigureClicked, setIsELKConfigureClicked ] = useState<boolean>(false);
 
     /**
      * List of secrets for the selected `secretType`. It can hold secrets of
@@ -1109,6 +1113,38 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         "sections.scriptBased.editor.resetConfirmation.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content data-componentid={ `${ componentId }-reset-confirmation-modal-content` }>
+                    {
+                        selectedAdaptiveAuthTemplate.name === ELK_RISK_BASED_TEMPLATE_NAME && (
+                            <>
+                                <Text>
+                                    <Trans
+                                        i18nKey={
+                                            "console:manage.features.governanceConnectors.connectorCategories." +
+                                            "otherSettings.connectors.elasticAnalyticsEngine.warningModal.configure"
+                                        }
+                                    >
+                                        (<Link
+                                            onClick={ () => setIsELKConfigureClicked(true) }
+                                            external={ false }
+                                        >
+                                            Configure
+                                        </Link>
+                                            ELK Analytics settings for proper functionality.)
+                                    </Trans>
+                                </Text>
+                                <Text>
+                                    <Trans
+                                        i18nKey={
+                                            "console:manage.features.governanceConnectors.connectorCategories." +
+                                            "otherSettings.connectors.elasticAnalyticsEngine.warningModal.reassure"
+                                        }
+                                    >
+                                        You can update your settings anytime.
+                                    </Trans> (<Code><GearIcon size={ 14 } /></Code>)
+                                </Text>
+                            </>
+                        )
+                    }
                     <Trans
                         i18nKey={
                             "console:develop.features.applications.edit.sections.signOnMethod.sections" +
@@ -1242,6 +1278,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         <Sidebar.Pushable className="script-editor-with-template-panel no-border">
                             { !readOnly && (
                                 <ScriptTemplatesSidePanel
+                                    onELKModalClose={ () => setIsELKConfigureClicked(false) }
+                                    isELKConfigureClicked={ isELKConfigureClicked }
                                     title={
                                         t("console:develop.features.applications.edit.sections" +
                                             ".signOnMethod.sections" +

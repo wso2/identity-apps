@@ -373,8 +373,11 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
         });
     };
 
+    /**
+     * Load ELK analytics connector details.
+     */
     const loadConnectorDetails = () => {
-        const categoryId: string =  ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID;
+        const categoryId: string = ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID;
         const connectorId: string = ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID;
 
         setCategoryId(categoryId);
@@ -386,13 +389,13 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                 setConnector(response);
             })
             .catch((error: AxiosError) => {
-                if (error.response && error.response.data && error.response.data.detail) {
+                if (error?.response && error?.response?.data && error?.response?.data?.detail) {
                     dispatch(
                         addAlert({
                             description: t(
                                 "console:manage.features.governanceConnectors.notifications." +
                                 "getConnector.error.description",
-                                { description: error.response.data.description }
+                                { description: error?.response?.data?.description }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
@@ -423,6 +426,9 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
             });
     };
 
+    /**
+     * Handles ELK analytics configuration form submit.
+     */
     const handleSubmit = (values: Record<string, unknown>) => {
 
         const data: UpdateGovernanceConnectorConfigInterface = {
@@ -467,7 +473,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                 );
             })
             .catch((error: AxiosError) => {
-                if (error.response && error.response.data && error.response.data.detail) {
+                if (error?.response && error?.response?.data && error?.response?.data?.detail) {
                     dispatch(
                         addAlert({
                             description: t(
@@ -511,9 +517,9 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
         setELKAnalyticsModalOpen(true);
     };
 
-    let submitAuthorization: () => void;
+    const elkAnalyticsConfigurationsModal = (): ReactElement => {
+        let submitAuthorization: () => void;
 
-    const elkAnalyticsConfigutationsModal = (): ReactElement => {
         return (
             <Modal
                 open={ openELKAnalyticsModal }
@@ -551,7 +557,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                 <Modal.Actions>
                     <Grid>
                         <Grid.Row column={ 1 }>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            <Grid.Column mobile={ 8 }>
                                 <LinkButton
                                     data-testid={ `${componentId}-cancel-button` }
                                     floated="left"
@@ -560,7 +566,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                                     { t("console:apiResources.tabs.scopes.form.cancelButton") }
                                 </LinkButton>
                             </Grid.Column>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            <Grid.Column mobile={ 8 }>
                                 <PrimaryButton
                                     data-testid={ `${componentId}-finish-button` }
                                     floated="right"
@@ -798,7 +804,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                     } }
                 />
             ) }
-            { elkAnalyticsConfigutationsModal() }
+            { elkAnalyticsConfigurationsModal() }
         </div>
     );
 };
