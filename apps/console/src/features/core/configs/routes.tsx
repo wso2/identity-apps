@@ -71,7 +71,7 @@ import { AppConstants } from "../constants";
 
 export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInterface[] => {
 
-    const legacyFeatures: LegacyFeaturesInterface = window["AppUtils"].getConfig().ui.legacyFeatures;
+    const legacyFeatures: LegacyFeaturesInterface = window["AppUtils"]?.getConfig()?.ui?.legacyFeatures;
 
     const routes: RouteInterface[] = values(
         merge(
@@ -1039,7 +1039,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 26,
                         path: AppConstants.getPaths().get("APPROVALS"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: legacyFeatures?.approvalsEnabled
                     },
                     {
                         category: "console:manage.features.sidePanel.categories.legacy",

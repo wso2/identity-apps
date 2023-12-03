@@ -220,6 +220,7 @@ export interface LegacyFeaturesInterface {
     applicationRoleEnabled: boolean;
     approvalsEnabled: boolean;
     certificatesEnabled: boolean;
+    loginAndRegistrationEmailDomainDiscoveryDisabled: boolean;
     organizationsDisabled: boolean;
     secretsManagementEnabled: boolean;
     rolesV1Enabled: boolean;

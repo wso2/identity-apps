@@ -1053,14 +1053,15 @@
         ],
         "legacyFeatures": {
             "apiResourcesDisabled": false,
+            "applicationListSystemApps": false,
             "applicationOIDCSubjectIdentifierEnabled": false,
             "applicationRequestPathAuthenticationEnabled": false,
-            "applicationListSystemApps": false,
-            "applicationSystemAppsSettings": false,
             "applicationRoleEnabled": false,
+            "applicationSystemAppsSettings": false,
             "applicationXacmlAuthorizationEnabled": false,
             "approvalsEnabled": false,
             "certificatesEnabled": false,
+            "loginAndRegistrationEmailDomainDiscoveryDisabled": false,
             "organizationsDisabled": false,
             "secretsManagementEnabled": false,
             "rolesV1Enabled": false
