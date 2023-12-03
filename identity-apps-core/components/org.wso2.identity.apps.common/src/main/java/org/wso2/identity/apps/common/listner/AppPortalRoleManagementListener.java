@@ -123,6 +123,10 @@ public class AppPortalRoleManagementListener extends AbstractRoleManagementListe
                                             List<Permission> deletedPermissions, String audience, String audienceId,
                                             String tenantDomain) throws IdentityRoleManagementException {
 
+        // Pre update permission check for the administrator role is not required when tenant creation.
+        if (!StringUtils.equals(tenantDomain, PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantDomain())) {
+            return;
+        }
         if (isAdministratorRole(roleId, tenantDomain)) {
             throw new IdentityRoleManagementException(INVALID_REQUEST.getCode(),
                 "Updating permissions of the 'Administrator' role belongs to the 'Console' application is not " +
