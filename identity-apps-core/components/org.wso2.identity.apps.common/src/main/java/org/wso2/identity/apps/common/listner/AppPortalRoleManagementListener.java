@@ -35,6 +35,7 @@ import java.util.List;
 import static org.wso2.carbon.identity.role.v2.mgt.core.RoleConstants.ADMINISTRATOR;
 import static org.wso2.carbon.identity.role.v2.mgt.core.RoleConstants.APPLICATION;
 import static org.wso2.carbon.identity.role.v2.mgt.core.RoleConstants.Error.INVALID_REQUEST;
+import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.CONSOLE_APP;
 
 /**
@@ -125,7 +126,8 @@ public class AppPortalRoleManagementListener extends AbstractRoleManagementListe
 
         // Pre update permission check for the administrator role is not required when tenant creation.
         String requestInitiatedTenantDomain = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantDomain();
-        if (!StringUtils.equals(tenantDomain, requestInitiatedTenantDomain)) {
+        if (SUPER_TENANT_DOMAIN_NAME.equals(requestInitiatedTenantDomain) &&
+                !StringUtils.equals(tenantDomain, requestInitiatedTenantDomain)) {
             return;
         }
         if (isAdministratorRole(roleId, tenantDomain)) {
