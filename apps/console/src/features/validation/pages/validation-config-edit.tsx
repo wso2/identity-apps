@@ -55,7 +55,7 @@ import {
 import { getConfiguration } from "../../users/utils/generate-password.utils";
 import { updateValidationConfigData, useValidationConfigData } from "../api";
 import { ValidationConfigConstants } from "../constants/validation-config-constants";
-import { ValidationFormInterface } from "../models";
+import { ValidationDataInterface, ValidationFormInterface } from "../models";
 
 /**
  * Props for validation configuration page.
@@ -106,7 +106,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const [ passwordExpiryEnabled, setPasswordExpiryEnabled ] = useState<boolean>(false);
 
     // State variables required to support legacy password policies.
-    const [ isLegacyPasswordPolicyEnabled, setIsLegacyPasswordPolicyEnabled ] = useState<boolean>(false);
+    const [ isLegacyPasswordPolicyEnabled, setIsLegacyPasswordPolicyEnabled ] = useState<boolean>(undefined);
     const [ legacyPasswordPolicies, setLegacyPasswordPolicies ] = useState<ConnectorPropertyInterface[]>([]);
 
     const {
@@ -128,7 +128,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         isLoading: isValidationLoading,
         error: ValidationConfigStatusFetchRequestError,
         mutate: mutateValidationConfigFetchRequest
-    } = useValidationConfigData();
+    } = useValidationConfigData(isPasswordInputValidationEnabled);
 
     useEffect(() => {
         if (!isPasswordInputValidationEnabled) {
@@ -137,46 +137,20 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     }, []);
 
     useEffect(() => {
-        if (!isPasswordInputValidationEnabled) {
+        if (!passwordHistoryCountData || !passwordExpiryData ||
+            (isPasswordInputValidationEnabled && !validationData) ||
+            (!isPasswordInputValidationEnabled &&
+            (!legacyPasswordPolicies && legacyPasswordPolicies?.length > 0))) {
 
-            if (!initialFormValues) {
-                return;
-            }
-
-            let currentInitialValues: any = initialFormValues;
-
-            currentInitialValues = (legacyPasswordPolicies ?? []).reduce(
-                (formValues: ValidationFormInterface, property: ConnectorPropertyInterface) => {
-
-                    return {
-                        ...formValues,
-                        [ GovernanceConnectorUtils.encodeConnectorPropertyName(property.name) ]: property.value
-                    };
-                }, currentInitialValues);
-
-            setInitialFormValues(currentInitialValues);
-            setIsLegacyPasswordPolicyEnabled(currentInitialValues?.[
-                GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE) ] === "true"
-            );
-        }
-    }, [ initialFormValues, legacyPasswordPolicies ]);
-
-    useEffect(() => {
-        if (isValidationLoading || isPasswordCountLoading || isPasswordExpiryLoading) {
             return;
         }
 
         initializeForm();
     }, [
-        validationData,
         passwordHistoryCountData,
-        isValidationLoading,
-        isPasswordCountLoading,
         validationData,
         passwordExpiryData,
-        isValidationLoading,
-        isPasswordExpiryLoading
+        legacyPasswordPolicies
     ]);
 
     useEffect(() => {
@@ -287,7 +261,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
      * Initialize the initial form values.
      */
     const initializeForm = (): void => {
-        let updatedInitialFormValues: ValidationFormInterface = serverConfigurationConfig?.processInitialValues(
+        let updatedInitialFormValues: any = serverConfigurationConfig?.processInitialValues(
             getConfiguration(validationData),
             passwordHistoryCountData,
             setPasswordHistoryEnabled
@@ -298,6 +272,27 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             passwordExpiryData,
             setPasswordExpiryEnabled
         );
+
+        if (!isPasswordInputValidationEnabled) {
+
+            updatedInitialFormValues = legacyPasswordPolicies.reduce(
+                (formValues: any, property: ConnectorPropertyInterface) => {
+                    const encodedPropertyName: any = GovernanceConnectorUtils
+                        .encodeConnectorPropertyName(property.name);
+
+                    return {
+                        ...formValues,
+                        [ encodedPropertyName ]: property.value
+                    };
+                },
+                updatedInitialFormValues
+            );
+
+            setIsLegacyPasswordPolicyEnabled(updatedInitialFormValues?.[
+                GovernanceConnectorUtils.encodeConnectorPropertyName(
+                    ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE) ] === "true"
+            );
+        }
 
         setInitialFormValues(
             updatedInitialFormValues
@@ -463,21 +458,24 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         }
 
         setSubmitting(true);
-        Promise.all([
-            updatePasswordPolicies,
-            updateValidationConfigData(processedFormValues, null, validationData[0])
-        ])
+
+        const promises: Promise<void | ValidationDataInterface[]>[] = [ updatePasswordPolicies ];
+
+        if (isPasswordInputValidationEnabled) {
+            promises.push(updateValidationConfigData(processedFormValues, null, validationData[0]));
+        }
+
+        Promise.all(promises)
             .then(() => {
                 mutatePasswordHistoryCount();
                 mutatePasswordExpiry();
 
                 if (!isPasswordInputValidationEnabled) {
                     getLegacyPasswordPolicyProperties();
-
-                    return;
+                } else {
+                    mutateValidationConfigFetchRequest();
                 }
 
-                mutateValidationConfigFetchRequest();
                 dispatch(
                     addAlert({
                         description: t(
@@ -536,13 +534,11 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     ariaLabel="passwordPolicy.enable"
                     name={ GovernanceConnectorUtils.encodeConnectorPropertyName("passwordPolicy.enable") }
                     required={ false }
+                    checked={ isLegacyPasswordPolicyEnabled }
                     label={ GovernanceConnectorUtils.resolveFieldLabel(
                         "Password Policies",
                         "passwordPolicy.enable",
                         "Validate passwords based on a policy pattern") }
-                    initialValue={ initialFormValues?.[
-                        GovernanceConnectorUtils.encodeConnectorPropertyName(
-                            ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE) ] === "true" }
                     width={ 16 }
                     data-componentid={ `${ componentId }-enable-password-policy` }
                     listen={ (data) => setIsLegacyPasswordPolicyEnabled(data) }
@@ -1457,7 +1453,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                 padded={ "very" }
                             >
                                 <div className="validation-configurations password-validation-configurations">
-                                    { !isValidationLoading && !isLoading ? (
+                                    { !isLoading ? (
                                         <Form
                                             id={ FORM_ID }
                                             initialValues={ initialFormValues }

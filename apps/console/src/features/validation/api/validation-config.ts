@@ -100,6 +100,7 @@ export const updateValidationConfigData = (
  * @returns The response of the validation configurations.
  */
 export const useValidationConfigData = <Data = ValidationDataInterface[], Error = RequestErrorInterface>(
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -112,7 +113,7 @@ export const useValidationConfigData = <Data = ValidationDataInterface[], Error 
         url: store.getState().config.endpoints.validationServiceMgt
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig, {
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null, {
         shouldRetryOnError: false
     });
 
