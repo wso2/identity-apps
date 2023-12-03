@@ -124,7 +124,8 @@ public class AppPortalRoleManagementListener extends AbstractRoleManagementListe
                                             String tenantDomain) throws IdentityRoleManagementException {
 
         // Pre update permission check for the administrator role is not required when tenant creation.
-        if (!StringUtils.equals(tenantDomain, PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantDomain())) {
+        String requestInitiatedTenantDomain = PrivilegedCarbonContext.getThreadLocalCarbonContext().getTenantDomain();
+        if (!StringUtils.equals(tenantDomain, requestInitiatedTenantDomain)) {
             return;
         }
         if (isAdministratorRole(roleId, tenantDomain)) {
