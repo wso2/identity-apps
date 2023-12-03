@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.9.43
+
+### Patch Changes
+
+- [#4929](https://github.com/wso2/identity-apps/pull/4929) [`a552a619c2`](https://github.com/wso2/identity-apps/commit/a552a619c2b43a35f956fdce00590e2b96c9aa9a) Thanks [@brionmario](https://github.com/brionmario)! - Fix inconsistencies in card designs
+
+* [#4906](https://github.com/wso2/identity-apps/pull/4906) [`cac64194c6`](https://github.com/wso2/identity-apps/commit/cac64194c6613ba352f4d11695dcaaff16ad6283) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Change wording in Vonage sms provider
+
+- [#4932](https://github.com/wso2/identity-apps/pull/4932) [`e5e1697c37`](https://github.com/wso2/identity-apps/commit/e5e1697c3730102807a28d7f5a56a191cf991ecb) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the adaptive editor updating issue
+
+- Updated dependencies [[`cac64194c6`](https://github.com/wso2/identity-apps/commit/cac64194c6613ba352f4d11695dcaaff16ad6283)]:
+  - @wso2is/i18n@2.0.70
+
 ## 2.9.42
 
 ### Patch Changes
