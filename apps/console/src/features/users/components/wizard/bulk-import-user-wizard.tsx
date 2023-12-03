@@ -290,7 +290,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     message: t("console:manage.features.user.updateUser.groups.notifications" +
                         ".fetchUserGroups.genericError.message")
                 }));
-            }).finally(() => null);
+            });
     };
 
     /**

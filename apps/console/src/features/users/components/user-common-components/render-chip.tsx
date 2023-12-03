@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Typography } from "@oxygen-ui/react";
 import Chip, { ChipProps } from "@oxygen-ui/react/Chip";
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
@@ -84,13 +85,13 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
                 key={ key }
                 label={
                     (<>
-                        <b >{ primaryText }</b>
-                        <i>
+                        <Typography fontWeight={ 500 } sx={ { display: "inline-block" } }>{ primaryText }</Typography>
+                        <Typography sx={ { display: "inline-block", fontStyle:"italic" } } >
                             { " (" + option?.audienceType }
                             { option?.audienceType.toUpperCase() === RoleAudienceTypes.APPLICATION
                                 && (" | " + option?.audienceDisplay) }
                             { ") " }
-                        </i>
+                        </Typography>
                     </>)
                 }
                 onMouseEnter={ handleChipMouseEnter }
