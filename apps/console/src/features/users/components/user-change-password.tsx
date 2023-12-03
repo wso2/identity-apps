@@ -18,21 +18,20 @@
 import { ProfileConstants } from "@wso2is/core/constants";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
-import { EditSection, LinkButton, Message, PrimaryButton } from "@wso2is/react-components";
+import { LinkButton, Message, PrimaryButton } from "@wso2is/react-components";
 import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
 import React,
 {
     FunctionComponent,
     LazyExoticComponent,
     ReactElement,
-    ReactNode,
     Suspense,
     useEffect,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import PasswordStrengthBar from "react-password-strength-bar";
-import { Grid, Icon, List, Modal } from "semantic-ui-react";
+import { Grid, Modal } from "semantic-ui-react";
 import { SharedUserStoreUtils } from "../../core";
 import { PatchRoleDataInterface } from "../../roles/models/roles";
 import {
@@ -164,29 +163,6 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             value: "forceReset"
         }
     ];
-
-    const resolveConfigurationList = (governanceConnectorProperties: ConnectorPropertyInterface[]): ReactNode => {
-        return governanceConnectorProperties?.map((property: ConnectorPropertyInterface, index: number) => {
-            if (property?.name !== ServerConfigurationsConstants.ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT
-                && property?.name !== ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE
-                && property?.name !== ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET_EXPIRY_TIME
-                && property?.name !== ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
-
-                return (
-                    <List.Item key={ index }>
-                        <Icon
-                            color={ property?.value === "true"
-                                ? "green"
-                                : "red" }
-                            name={ property?.value === "true"
-                                ? "check circle"
-                                : "times circle" }/>
-                        { property?.displayName }
-                    </List.Item>
-                );
-            }
-        });
-    };
 
     /**
      * Handle admin initiated password reset.
@@ -444,7 +420,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         } else {
             let passwordPolicyEnabled: boolean = false;
 
-            await getConnectorDetails(ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID, 
+            await getConnectorDetails(ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID,
                 ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID)
                 .then((response: GovernanceConnectorInterface) => {
                     passwordRegex = response?.properties?.filter((property: ConnectorPropertyInterface) => {
