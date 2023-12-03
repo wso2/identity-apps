@@ -83,6 +83,7 @@
     String sessionDataKey = request.getParameter("sessionDataKey");
     String sp = request.getParameter("sp");
     String spId = "";
+    String accessUrl = "";
     JSONObject usernameValidityResponse;
     SelfRegistrationMgtClient selfRegistrationMgtClient = new SelfRegistrationMgtClient();
     String callback = request.getParameter("callback");
@@ -98,9 +99,25 @@
         return;
     }
 
+    try {
+        if (sp.equals("My Account")) {
+            spId = "My_Account";
+        } else {
+            ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+            spId = applicationDataRetrievalClient.getApplicationID(tenantDomain, sp);
+            accessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
+        }
+    } catch (Exception e) {
+        spId = "";
+    }
+    
     Boolean isValidCallBackURL = false;
     try {
-        if (StringUtils.isNotBlank(callback)) {
+        if (StringUtils.isNotBlank(accessUrl)) {
+            // Honour accessUrl over callback url.
+            callback = accessUrl;
+            isValidCallBackURL = true;
+        } else if (StringUtils.isNotBlank(callback)) {
             isValidCallBackURL = preferenceRetrievalClient.checkIfSelfRegCallbackURLValid(tenantDomain,callback);
         }
     } catch (PreferenceRetrievalClientException e) {
@@ -247,17 +264,6 @@
         user.setTenantDomain(tenantDomain);
     }
 
-    try {
-        if (sp.equals("My Account")) {
-            spId = "My_Account";
-        } else {
-            ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
-            spId = applicationDataRetrievalClient.getApplicationID(tenantDomain,sp);
-        }
-    } catch (Exception e) {
-        spId = "";
-    }
-
     Claim[] claims = new Claim[0];
 
     List<Claim> claimsList;
@@ -315,13 +321,22 @@
         consentProperty.setValue(consent);
 
         Property spProperty = new Property();
-        spProperty.setKey("spId");
-        spProperty.setValue(spId);
+        spProperty.setKey("sp");
+        spProperty.setValue(sp);
+
+        Property spIdProperty = new Property();
+        spIdProperty.setKey("spId");
+        spIdProperty.setValue(spId);
+
+        Property spAccessUrlProperty = new Property();
+        spAccessUrlProperty.setKey("accessUrl");
+        spAccessUrlProperty.setValue(URLEncoder.encode(accessUrl, "UTF-8"));
 
         properties.add(sessionKey);
         properties.add(consentProperty);
         properties.add(spProperty);
-
+        properties.add(spIdProperty);
+        properties.add(spAccessUrlProperty);
 
         SelfUserRegistrationRequest selfUserRegistrationRequest = new SelfUserRegistrationRequest();
         selfUserRegistrationRequest.setUser(selfRegistrationUser);

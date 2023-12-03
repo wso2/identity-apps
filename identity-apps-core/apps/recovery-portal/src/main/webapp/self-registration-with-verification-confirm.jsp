@@ -26,6 +26,8 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.SelfRegisterApi" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.CodeValidationRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
@@ -53,10 +55,12 @@
     String AUTO_LOGIN_COOKIE_DOMAIN = "AutoLoginCookieDomain";
     String AUTO_LOGIN_FLOW_TYPE = "SIGNUP";
     String username = null;
+    String accessUrl = "";
 
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
     String httpMethod = request.getMethod();
+    String sp = request.getParameter("sp");
     PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
     Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterSelfRegistrationEnabled(tenantDomain);
 
@@ -74,10 +78,21 @@
         return;
     }
 
+    try {
+        if (StringUtils.isNotBlank(sp)) {
+            ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+            accessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
+        }
+    } catch (ApplicationDataRetrievalClientException e) {
+        // Ignored.
+    }
+
     Boolean isValidCallBackURL = false;
     try {
-        if (StringUtils.isNotBlank(callback)) {
-            isValidCallBackURL = preferenceRetrievalClient.checkIfSelfRegCallbackURLValid(tenantDomain,callback);
+        if (StringUtils.isNotBlank(accessUrl)) {
+            isValidCallBackURL = true;
+        } else if (StringUtils.isNotBlank(callback)) {
+            isValidCallBackURL = preferenceRetrievalClient.checkIfSelfRegCallbackURLValid(tenantDomain, callback);
         }
     } catch (PreferenceRetrievalClientException e) {
         request.setAttribute("error", true);
