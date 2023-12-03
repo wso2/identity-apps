@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.9.45
+
+### Patch Changes
+
+- [#4910](https://github.com/wso2/identity-apps/pull/4910) [`9287ade57a`](https://github.com/wso2/identity-apps/commit/9287ade57a5a61ddfd199d05f733cbc3136823e8) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Avoid sending all API resources request for sub orgs
+
 ## 2.9.44
 
 ### Patch Changes
