@@ -439,9 +439,13 @@
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "continue.with.email")%>
                         </button>
                     </div>
-                    <div class="ui horizontal divider">
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "or")%>
-                    </div>
+
+                    <!-- if federated authenticators are available, in addition to the OrganizationAuthenticator. -->
+                    <% if (federatedAuthenticators.length() > 1) { %>
+                        <div class="ui horizontal divider">
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "or")%>
+                        </div>
+                    <% } %>
                 </div>
 
                 <!-- federated authenticators -->
