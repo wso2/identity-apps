@@ -19,7 +19,7 @@
 import Chip, { ChipProps } from "@oxygen-ui/react/Chip";
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
-import { ChipMoreDetails } from "./chip-more-details";
+import { RoleAudienceTypes } from "../../../roles/constants";
 
 interface RenderChipInterface extends IdentifiableComponentInterface, ChipProps {
     /**
@@ -52,15 +52,14 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
         key,
         setActiveOption,
         primaryText,
-        option,
-        activeOption
+        option
     } = props;
 
-    const [ popoverAnchorEl, setPopoverAnchorEl ] = useState<Element>(null);
+    const [ ,setPopoverAnchorEl ] = useState<Element>(null);
 
     /**
      * Handles the mouse enter event of the chip.
-     * 
+     *
      * @param event - Mouse event
      * @param option - Group or user object
      */
@@ -69,7 +68,7 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
         setPopoverAnchorEl(event.currentTarget);
         setActiveOption(option);
     };
-    
+
     /**
      * Handles the mouse leave event of the chip.
      */
@@ -83,21 +82,20 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
             <Chip
                 { ...props }
                 key={ key }
-                label={ primaryText }
+                label={
+                    (<>
+                        <b >{ primaryText }</b>
+                        <i>
+                            { " (" + option?.audienceType }
+                            { option?.audienceType.toUpperCase() === RoleAudienceTypes.APPLICATION
+                                && (" | " + option?.audienceDisplay) }
+                            { ") " }
+                        </i>
+                    </>)
+                }
                 onMouseEnter={ handleChipMouseEnter }
                 onMouseLeave={ handleChipMouseLeave }
             />
-            {
-                activeOption?.value === option.value
-                    ? (
-                        <ChipMoreDetails 
-                            popoverAnchorEl={ popoverAnchorEl } 
-                            onPopoverClose={ handleChipMouseLeave } 
-                            primaryText={ primaryText } 
-                        />
-                    )
-                    : null
-            }
         </>
     );
 };

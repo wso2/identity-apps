@@ -19,6 +19,7 @@
 import Chip, { ChipProps } from "@oxygen-ui/react/Chip";
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
+import { RoleAudienceTypes } from "../../../roles/constants";
 
 interface RenderChipInterface extends IdentifiableComponentInterface, ChipProps {
     /**
@@ -86,10 +87,17 @@ export const RenderChipRolesInGroups: FunctionComponent<RenderChipInterface> = (
                 key={ key }
                 label={ 
                     (<>
-                        <i> { audienceType } </i> 
+                        {/* <i> { audienceType } </i> 
                         <i> { audienceType === "application" && ( " : " + audienceDisplay ) } </i>
                         { " | " }
-                        <strong> { displayName } </strong>
+                        <strong> { displayName } </strong> */}
+                        <b >{ displayName }</b>
+                        <i>
+                            { " (" + audienceType }
+                            { audienceType.toUpperCase() === RoleAudienceTypes.APPLICATION
+                                && (" | " + audienceDisplay) }
+                            { ") " }
+                        </i>
                     </>)
                 }
                 onMouseEnter={ handleChipMouseEnter }
