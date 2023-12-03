@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,23 +20,23 @@ import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInt
 import { Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
 import { EditSection, LinkButton, Message, PrimaryButton } from "@wso2is/react-components";
 import { IdentityAppsApiException } from "modules/core/dist/types/exceptions";
-import React, 
+import React,
 {
-    FunctionComponent, 
-    LazyExoticComponent, 
-    ReactElement, 
-    ReactNode, 
-    Suspense, 
-    useEffect, 
-    useState 
+    FunctionComponent,
+    LazyExoticComponent,
+    ReactElement,
+    ReactNode,
+    Suspense,
+    useEffect,
+    useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import PasswordStrengthBar from "react-password-strength-bar";
 import { Grid, Icon, List, Modal } from "semantic-ui-react";
 import { SharedUserStoreUtils } from "../../core";
 import { PatchRoleDataInterface } from "../../roles/models/roles";
-import { 
-    ConnectorPropertyInterface, 
+import {
+    ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     ServerConfigurationsConstants,
     getConnectorDetails
@@ -139,9 +139,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             governanceConnectorProperties?.length > 0) {
 
             for (const property of governanceConnectorProperties) {
-                if (property.name === ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET
-                    || property.name === ServerConfigurationsConstants.OTP_PASSWORD_RESET
-                    || property.name === ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET) {
+                if (property.name === ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET) {
 
                     if(property.value === "true") {
                         setForcePasswordReset(property.value);
@@ -333,7 +331,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                 showPassword={ t("common:showPassword") }
                                 type="password"
                                 value=""
-                                validation={ 
+                                validation={
                                     (value: string, validation: Validation, formValues: Map<string, FormValue>) => {
                                         if (formValues.get("newPassword") !== value) {
                                             validation.isValid = false;
@@ -341,7 +339,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                                 t("console:manage.features.user.forms.addUserForm.inputs" +
                                                 ".confirmPassword.validations.mismatch"));
                                         }
-                                    } 
+                                    }
                                 }
                             />
                         </Grid.Column>
@@ -353,19 +351,16 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 <>
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <p>
-                                Following are the password reset options available. Please make sure
-                                you have enabled the required configurations.
-                            </p>
-                            {
-                                governanceConnectorProperties?.length > 1 && (
-                                    <EditSection>
-                                        <List>
-                                            { resolveConfigurationList(governanceConnectorProperties) }
-                                        </List>
-                                    </EditSection>
-                                )
-                            }
+                            <Message
+                                hideDefaultIcon
+                                icon="mail"
+                                content=
+                                    {
+                                        t("extensions:manage.users." +
+                                        "editUserProfile.resetPassword." +
+                                        "changePasswordModal.emailResetWarning")
+                                    }
+                            />
                         </Grid.Column>
                     </Grid.Row>
                 </>
@@ -475,7 +470,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
      */
     const handlePasswordChange = (values: Map<string, FormValue>): void => {
         const password: string = values.get("newPassword").toString();
-        
+
         setPassword(password);
 
         setPasswordRegEx(password)
@@ -585,7 +580,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                 showPassword={ t("common:showPassword") }
                                 type="password"
                                 value=""
-                                validation={ 
+                                validation={
                                     (value: string, validation: Validation, formValues: Map<string, FormValue>) => {
                                         if (formValues.get("newPassword") !== value) {
                                             validation.isValid = false;
