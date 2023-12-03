@@ -190,7 +190,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ isEmailDataError, setIsEmailDataError ] = useState<boolean>(false);
     const [ emailDataError, setEmailDataError ] = useState<string>("");
     const [ roleUserAssociations, setRoleUserAssociations ] = useState<Record<string, RoleUserAssociation>>({});
-    const [ rolesData, setRolesData ] = useState<RolesInterface[]>();
+    const [ groupsData, setGroupsData ] = useState<GroupsInterface[]>();
     const [ alert, setAlert, alertComponent ] = useWizardAlert({ "data-componentid": `${componentId}-alert` });
     const [ manualInviteAlert, setManualInviteAlert, manualInviteAlertComponent ]
         = useWizardAlert({ "data-componentid": `${componentId}-manual-invite-alert` });
@@ -252,11 +252,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const getGroupListForDomain = (domain: string) => {
         getGroupList(domain)
             .then((response: AxiosResponse) => {
-                if (response.data.totalResults == 0) {
-                    setGroupsList([]);
-                } else {
-                    setGroupsList(response.data.Resources);
-                }
+                setGroupsList(response?.data?.Resources ?? []);
             }).catch((error: AxiosError) => {
                 setGroupsList([]);
 
@@ -1110,9 +1106,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             operations.push(SCIMBulkOperation);
         });
 
-        // Create the roles record.
-        rolesData?.map((role: RolesInterface) => {
-            const roleDetails: PatchRoleDataInterface = {
+        // Create the group record.
+        groupsData?.map((group: GroupsInterface) => {
+            const groupDetails: PatchRoleDataInterface = {
                 "Operations":[
                     {
                         op: "add",
@@ -1123,14 +1119,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 ]
             };
 
-            const SCIMRolesOperation: SCIMBulkOperation = {
-                bulkId: `bulkId:${role?.displayName}:${asyncOperationID}`,
-                data: roleDetails,
+            const SCIMGroupsOperation: SCIMBulkOperation = {
+                bulkId: `bulkId:${group?.displayName}:${asyncOperationID}`,
+                data: groupDetails,
                 method: HttpMethods.PATCH,
-                path: `${UserManagementConstants.SCIM_GROUP_PATH}/${role?.id}`
+                path: `${UserManagementConstants.SCIM_GROUP_PATH}/${group?.id}`
             };
 
-            operations.push(SCIMRolesOperation);
+            operations.push(SCIMGroupsOperation);
         });
 
         return {
@@ -1452,8 +1448,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             || hasError
             || !emailData
             || emailData?.length === 0
-            || !rolesData
-            || rolesData?.length === 0;
+            || !groupsData
+            || groupsData?.length === 0;
     };
 
     /**
@@ -1636,7 +1632,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                 event: React.SyntheticEvent<Element, Event>,
                                                 value: RolesInterface[]
                                             ) => {
-                                                setRolesData(value);
+                                                setGroupsData(value);
                                             } }
                                             renderTags={ (
                                                 value: RolesInterface[],
