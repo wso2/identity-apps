@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.9.47
+
+### Patch Changes
+
+- [#4943](https://github.com/wso2/identity-apps/pull/4943) [`6d4c8825a5`](https://github.com/wso2/identity-apps/commit/6d4c8825a58c918ea5979af230332397c1ce59d9) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix UX inconsistencies with password reset flow
+
 ## 2.9.46
 
 ### Patch Changes
