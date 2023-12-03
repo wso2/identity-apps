@@ -1,5 +1,43 @@
 # @wso2is/console
 
+## 2.9.45
+
+### Patch Changes
+
+- [#4910](https://github.com/wso2/identity-apps/pull/4910) [`9287ade57a`](https://github.com/wso2/identity-apps/commit/9287ade57a5a61ddfd199d05f733cbc3136823e8) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Avoid sending all API resources request for sub orgs
+
+## 2.9.44
+
+### Patch Changes
+
+- [#4938](https://github.com/wso2/identity-apps/pull/4938) [`0103c5941d`](https://github.com/wso2/identity-apps/commit/0103c5941de122c15220e4ba1904953031a596be) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue of creating multiple connections
+
+* [#4930](https://github.com/wso2/identity-apps/pull/4930) [`09c5e3894d`](https://github.com/wso2/identity-apps/commit/09c5e3894daf540736665e86aa93cc70677c6755) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Select users based on the userstore in assigning users to a role
+
+## 2.9.43
+
+### Patch Changes
+
+- [#4929](https://github.com/wso2/identity-apps/pull/4929) [`a552a619c2`](https://github.com/wso2/identity-apps/commit/a552a619c2b43a35f956fdce00590e2b96c9aa9a) Thanks [@brionmario](https://github.com/brionmario)! - Fix inconsistencies in card designs
+
+* [#4906](https://github.com/wso2/identity-apps/pull/4906) [`cac64194c6`](https://github.com/wso2/identity-apps/commit/cac64194c6613ba352f4d11695dcaaff16ad6283) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Change wording in Vonage sms provider
+
+- [#4932](https://github.com/wso2/identity-apps/pull/4932) [`e5e1697c37`](https://github.com/wso2/identity-apps/commit/e5e1697c3730102807a28d7f5a56a191cf991ecb) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the adaptive editor updating issue
+
+- Updated dependencies [[`cac64194c6`](https://github.com/wso2/identity-apps/commit/cac64194c6613ba352f4d11695dcaaff16ad6283)]:
+  - @wso2is/i18n@2.0.70
+
+## 2.9.42
+
+### Patch Changes
+
+- [#4914](https://github.com/wso2/identity-apps/pull/4914) [`da915ea6a0`](https://github.com/wso2/identity-apps/commit/da915ea6a02efae9d554961e3447c5247adec4d7) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Remove unnecessary information from consent page
+
+* [#4892](https://github.com/wso2/identity-apps/pull/4892) [`aa213c9cc2`](https://github.com/wso2/identity-apps/commit/aa213c9cc2c6082567a19cb24993d188108fa6f5) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the OIDC protocol section (Standard based) issue
+
+* Updated dependencies [[`da915ea6a0`](https://github.com/wso2/identity-apps/commit/da915ea6a02efae9d554961e3447c5247adec4d7)]:
+  - @wso2is/theme@2.0.45
+
 ## 2.9.41
 
 ### Patch Changes

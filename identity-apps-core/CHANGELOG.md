@@ -1,5 +1,28 @@
 # @wso2is/identity-apps-core
 
+## 2.0.81
+
+### Patch Changes
+
+- [#4860](https://github.com/wso2/identity-apps/pull/4860) [`0724022f4c`](https://github.com/wso2/identity-apps/commit/0724022f4cbd6a0f2711da9648a3bb49dd967bd3) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Allow to update system apps for set of scenarios
+
+## 2.0.80
+
+### Patch Changes
+
+- [#4934](https://github.com/wso2/identity-apps/pull/4934) [`0fd3494829`](https://github.com/wso2/identity-apps/commit/0fd3494829e9386283a9a727f25390616cd89042) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Framework version bump
+
+## 2.0.79
+
+### Patch Changes
+
+- [#4914](https://github.com/wso2/identity-apps/pull/4914) [`da915ea6a0`](https://github.com/wso2/identity-apps/commit/da915ea6a02efae9d554961e3447c5247adec4d7) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Remove unnecessary information from consent page
+
+* [#4928](https://github.com/wso2/identity-apps/pull/4928) [`d520eacfbb`](https://github.com/wso2/identity-apps/commit/d520eacfbb275d5ab5210b4e8f4e37aa204cedac) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Rename duplicate variable
+
+* Updated dependencies [[`da915ea6a0`](https://github.com/wso2/identity-apps/commit/da915ea6a02efae9d554961e3447c5247adec4d7)]:
+  - @wso2is/theme@2.0.45
+
 ## 2.0.78
 
 ### Patch Changes

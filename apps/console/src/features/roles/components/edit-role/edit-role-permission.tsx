@@ -50,6 +50,7 @@ import { RoleAPIResourcesListItem } from "./edit-role-common/role-api-resources-
 import { useAPIResources } from "../../../api-resources/api";
 import { useGetAuthorizedAPIList } from "../../../api-resources/api/useGetAuthorizedAPIList";
 import { APIResourcesConstants } from "../../../api-resources/constants";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { getAPIResourceDetailsBulk, updateRoleDetails, useAPIResourceDetails } from "../../api";
 import { RoleAudienceTypes } from "../../constants/role-constants";
 import { PatchRoleDataInterface, PermissionUpdateInterface, SelectedPermissionsInterface } from "../../models";
@@ -93,6 +94,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ selectedAPIResourceId, setSelectedAPIResourceId ] = useState<string>(undefined);
@@ -105,12 +107,15 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     const [ allAPIResourcesListData, setAllAPIResourcesListData ] = useState<APIResourceInterface[]>([]);
     const [ apiCallNextAfterValue, setAPICallNextAfterValue ] = useState<string>(null);
 
+    const shouldFetchAPIResources: boolean = role?.audience?.type?.
+        toUpperCase() === RoleAudienceTypes.ORGANIZATION && !isSubOrganization();
+
     const {
         data: currentAPIResourcesListData,
         isLoading: iscurrentAPIResourcesListLoading,
         error: currentAPIResourcesFetchRequestError,
         mutate: mutatecurrentAPIResourcesList
-    } = useAPIResources(apiCallNextAfterValue);
+    } = useAPIResources(apiCallNextAfterValue, null, null, shouldFetchAPIResources);
 
     const {
         data: selectedAPIResource,
@@ -558,7 +563,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                         (option: DropdownProps, value: DropdownProps) =>
                             option.value === value.value
                     }
-                    loading={ iscurrentAPIResourcesListLoading }
+                    loading={ shouldFetchAPIResources && iscurrentAPIResourcesListLoading }
                     onChange={ onAPIResourceSelected }
                     options={ allAPIResourcesDropdownOptions
                         .sort((a: DropdownItemProps, b: DropdownItemProps) =>

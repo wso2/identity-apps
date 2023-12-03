@@ -2115,14 +2115,14 @@ export const extensions: Extensions = {
                 vonage: {
                     subHeading: "Vonage සැකසුම්",
                     accountSID: {
-                        label: "Vonage ගිණුම් SID",
-                        placeholder: "Vonage ගිණුමේ SID ඇතුලත් කරන්න",
-                        hint: "ගිණුම සඳහා පරිශීලක නාමය ලෙස ක්‍රියා කරන Vonage ගිණුම් තන්තු හඳුනාගැනීම"
+                        label: "Vonage API යතුර",
+                        placeholder: "Vonage API යතුර ඇතුලත් කරන්න",
+                        hint: "ගිණුම සඳහා පරිශීලක නාමය ලෙස ක්‍රියා කරන Vonage API යතුර."
                     },
                     authToken: {
-                        label: "Vonage Auth ටෝකනය",
-                        placeholder: "Vonage auth ටෝකනය ඇතුළු කරන්න",
-                        hint: "Vonage auth සේවාදායකය විසින් ජනනය කරන ලද ප්‍රවේශ ටෝකනය."
+                        label: "Vonage API රහස",
+                        placeholder: "Vonage API රහස ඇතුලත් කරන්න",
+                        hint: "Vonage auth සේවාදායකය විසින් ජනනය කරන ලද API රහස."
                     },
                     sender: {
                         label: "යවන්නා",

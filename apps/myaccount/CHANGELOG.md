@@ -1,5 +1,23 @@
 # @wso2is/myaccount
 
+## 2.2.54
+
+### Patch Changes
+
+- [#4906](https://github.com/wso2/identity-apps/pull/4906) [`cac64194c6`](https://github.com/wso2/identity-apps/commit/cac64194c6613ba352f4d11695dcaaff16ad6283) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Change wording in Vonage sms provider
+
+- Updated dependencies [[`cac64194c6`](https://github.com/wso2/identity-apps/commit/cac64194c6613ba352f4d11695dcaaff16ad6283)]:
+  - @wso2is/i18n@2.0.70
+
+## 2.2.53
+
+### Patch Changes
+
+- [#4914](https://github.com/wso2/identity-apps/pull/4914) [`da915ea6a0`](https://github.com/wso2/identity-apps/commit/da915ea6a02efae9d554961e3447c5247adec4d7) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Remove unnecessary information from consent page
+
+- Updated dependencies [[`da915ea6a0`](https://github.com/wso2/identity-apps/commit/da915ea6a02efae9d554961e3447c5247adec4d7)]:
+  - @wso2is/theme@2.0.45
+
 ## 2.2.52
 
 ### Patch Changes
