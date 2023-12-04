@@ -331,7 +331,8 @@ export const identityProviderConfig: IdentityProviderConfig = {
         oidc: true,
         organizationEnterprise: true,
         saml: true,
-        trustedTokenIssuer: false
+        trustedTokenIssuer: false,
+        useTemplateExtensions: false
     },
     // Handles backward compatibility with the legacy IDP view & new connections view.
     // TODO: Remove this usage once https://github.com/wso2/product-is/issues/12052 is addressed.

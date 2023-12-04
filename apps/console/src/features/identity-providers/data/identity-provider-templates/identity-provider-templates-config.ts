@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -95,7 +95,9 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                     ],
                     "id"
                 ),
-                keyBy(extensionsManager.getIdentityProviderTemplatesConfig().categories, "id")
+                identityProviderConfig.templates.useTemplateExtensions
+                    ? keyBy(extensionsManager.getIdentityProviderTemplatesConfig().categories, "id")
+                    : {}
             )
         ),
         groups: values(
@@ -107,10 +109,12 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                         resource: EnterpriseIdentityProviderTemplateGroup
                     }
                 ], "id"),
-                keyBy(
-                    extensionsManager.getIdentityProviderTemplatesConfig().groups,
-                    "id"
-                )
+                identityProviderConfig.templates.useTemplateExtensions
+                    ? keyBy(
+                        extensionsManager.getIdentityProviderTemplatesConfig().groups,
+                        "id"
+                    )
+                    : {}
             )
         ),
         templates: values(
@@ -233,7 +237,9 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                     ],
                     "id"
                 ),
-                keyBy(extensionsManager.getIdentityProviderTemplatesConfig().templates, "id")
+                identityProviderConfig.templates.useTemplateExtensions
+                    ? keyBy(extensionsManager.getIdentityProviderTemplatesConfig().templates, "id")
+                    : {}
             )
         )
     };
