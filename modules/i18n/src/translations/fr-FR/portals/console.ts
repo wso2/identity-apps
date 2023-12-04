@@ -7378,6 +7378,10 @@ export const console: ConsoleNS = {
                             },
                             elasticAnalyticsEngine: {
                                 friendlyName: "Analytique des wapitis",
+                                warningModal: {
+                                    configure: "<1>Configurer</1> les paramètres ELK Analytics pour une fonctionnalité appropriée.",
+                                    reassure: "Vous pouvez mettre à jour vos paramètres à tout moment."
+                                },
                                 properties: {
                                     adaptiveAuthenticationElasticReceiver: {
                                         hint: "Hôte elasticsearch",
@@ -9691,7 +9695,7 @@ export const console: ConsoleNS = {
                             successCount: "Nombre de réussites",
                             failedCount: "Nombre d'échecs",
                             totalUserCreationCount: "Nombre total de créations d'utilisateurs",
-                            totalUserAssignmentCount: "Nombre total d'attributions de rôles/groupes",
+                            totalUserAssignmentCount: "Nombre total d'attributions de groupes",
                             tableHeaders: {
                                 username: "Nom d'utilisateur",
                                 status: "Statut",
@@ -9725,14 +9729,14 @@ export const console: ConsoleNS = {
                                     description: "Problèmes rencontrés dans <1>{{failedUserCreationCount}} " +
                                         "opération(s)</1> de création d'utilisateur et " +
                                         "<3>{{failedUserAssignmentCount}} opération(s) </3> d'attribution de " +
-                                        "rôle/groupe.",
+                                        "groupe.",
                                     message: "Révision requise."
                                 }
                             },
                             advanceSearch: {
                                 searchByUsername: "Rechercher par nom d'utilisateur",
-                                searchByRoleOrGroup: "Recherche par nom de rôle/groupe",
-                                roleGroupFilterAttributePlaceHolder: "Nom du rôle/groupe"
+                                searchByGroup: "Recherche par nom de groupe",
+                                roleGroupFilterAttributePlaceHolder: "Nom du groupe"
                             },
                             manualCreation: {
                                 alerts: {
@@ -9750,8 +9754,8 @@ export const console: ConsoleNS = {
                                     description: "Faites glisser et déposez un fichier CSV ici."
                                 },
                                 primaryButton: "Ajouter",
-                                rolesLabel: "Les rôles",
-                                rolesPlaceholder: "Entrez les rôles",
+                                groupsLabel: "Grupos",
+                                groupsPlaceholder: "Entrar em grupos",
                                 warningMessage: "Cette option ne peut être utilisée que lorsque l'adresse e-mail " +
                                     "est configurée comme nom d'utilisateur."
                             },
@@ -9760,7 +9764,7 @@ export const console: ConsoleNS = {
                             },
                             responseOperationType: {
                                 userCreation: "Création d'utilisateur",
-                                roleAssignment: "Affectation de rôle/groupe"
+                                roleAssignment: "Tarefa de grupo"
                             },
                             userstoreMessage: "Les utilisateurs créés seront ajoutés au magasin d'utilisateurs <1>{{ userstore }></1>."
                         },

@@ -54,7 +54,7 @@ import {
     useWizardAlert
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import Axios,  { AxiosError, AxiosResponse }from "axios";
+import Axios,  { AxiosResponse }from "axios";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -64,10 +64,8 @@ import { v4 as uuidv4 } from "uuid";
 import { UsersConstants } from "../../../../extensions/components/users/constants";
 import { userConfig } from "../../../../extensions/configs";
 import { ClaimManagementConstants } from "../../../../features/claims/constants";
-import { getGroupList } from "../../../../features/groups/api";
+import { getGroupList, useGroupList } from "../../../../features/groups/api";
 import { GroupsInterface } from "../../../../features/groups/models";
-import { useRolesList } from "../../../../features/roles/api";
-import useAuthorization from "../../../authorization/hooks/use-authorization";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
 import {
     AppConstants,
@@ -110,6 +108,7 @@ interface BulkImportUserInterface extends TestableComponentInterface {
     userstore: string;
     ["data-componentid"]?: string;
 }
+
 interface CSVAttributeMapping {
     attributeName: string;
     mappedLocalClaimURI: string;
@@ -137,7 +136,6 @@ interface User {
     value: string;
     display: string;
 }
-
 
 interface GroupMemberAssociation {
     id: string;
@@ -188,25 +186,33 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ emailData, setEmailData ] = useState<string[]>();
     const [ isEmailDataError, setIsEmailDataError ] = useState<boolean>(false);
     const [ emailDataError, setEmailDataError ] = useState<string>("");
-    const [ rolesData, setRolesData ] = useState<RolesInterface[]>();
+    const [ groupsData, setGroupsData ] = useState<GroupsInterface[]>();
     const [ alert, setAlert, alertComponent ] = useWizardAlert({ "data-componentid": `${componentId}-alert` });
     const [ manualInviteAlert, setManualInviteAlert, manualInviteAlertComponent ]
         = useWizardAlert({ "data-componentid": `${componentId}-manual-invite-alert` });
-    const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
     const [ readWriteUserStoresList, setReadWriteUserStoresList ] = useState<DropdownItemProps[]>([]);
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>("");
     const [ isUserStoreError, setUserStoreError ] = useState<boolean>(false);
 
     const optionsArray: string[] = [];
 
-    const { legacyAuthzRuntime }  = useAuthorization();
-
     const {
-        data: allRolesList,
-        isLoading: isAllRolesListLoading }
-    = useRolesList(
-        undefined, undefined, undefined, !legacyAuthzRuntime
-    );
+        data: groupList,
+        error: groupsError,
+        isLoading: isGroupsListRequestLoading
+    } = useGroupList(selectedUserStore, "members", null, true);
+
+    useEffect(() => {
+        if (groupsError) {
+            dispatch(addAlert({
+                description: groupsError?.response?.data?.description ?? groupsError?.response?.data?.detail
+                    ?? t("console:manage.features.groups.notifications.fetchGroups.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: groupsError?.response?.data?.message
+                    ?? t("console:manage.features.groups.notifications.fetchGroups.genericError.message")
+            }));
+        }
+    },[ groupsError ]);
 
     /**
      * Set the user store list.
@@ -312,49 +318,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             return readWriteUserStoresList?.length === 0 || (readWriteUserStoresList?.length === 1 &&
                 readWriteUserStoresList[0]?.value === userstore);
         }
-    };
-
-    useEffect(() => {
-        getGroupListForDomain(selectedUserStore);
-    }, [ selectedUserStore ]);
-
-    /**
-     * Function to fetch and update group list for a given domain
-     */
-    const getGroupListForDomain = (domain: string) => {
-        getGroupList(domain)
-            .then((response: AxiosResponse) => {
-                if (response.data.totalResults == 0) {
-                    setGroupsList([]);
-                } else {
-                    setGroupsList(response.data.Resources);
-                }
-            }).catch((error: AxiosError) => {
-                setGroupsList([]);
-
-                if (error?.response?.data?.description) {
-                    dispatch(addAlert({
-                        description: error?.response?.data?.description
-                        ?? error?.response?.data?.detail ??
-                            t("console:manage.features.user.updateUser.groups.notifications" +
-                            ".fetchUserGroups.error.description"),
-                        level: AlertLevels.ERROR,
-                        message: error?.response?.data?.message ??
-                            t("console:manage.features.user.updateUser.groups.notifications" +
-                            ".fetchUserGroups.error.message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("console:manage.features.user.updateUser.groups.notifications" +
-                        ".fetchUserGroups.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.user.updateUser.groups.notifications" +
-                        ".fetchUserGroups.genericError.message")
-                }));
-            });
     };
 
     /**
@@ -1096,9 +1059,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             operations.push(SCIMBulkOperation);
         });
 
-        // Create the roles record.
-        rolesData?.map((role: RolesInterface) => {
-            const roleDetails: PatchRoleDataInterface = {
+        // Create the group record.
+        groupsData?.map((group: GroupsInterface) => {
+            const groupDetails: PatchRoleDataInterface = {
                 "Operations":[
                     {
                         op: "add",
@@ -1109,14 +1072,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 ]
             };
 
-            const SCIMRolesOperation: SCIMBulkOperation = {
-                bulkId: `bulkId:${role?.displayName}:${asyncOperationID}`,
-                data: roleDetails,
+            const SCIMGroupsOperation: SCIMBulkOperation = {
+                bulkId: `bulkId:${group?.displayName}:${asyncOperationID}`,
+                data: groupDetails,
                 method: HttpMethods.PATCH,
-                path: `${UserManagementConstants.SCIM_GROUP_PATH}/${role?.id}`
+                path: `${UserManagementConstants.SCIM_GROUP_PATH}/${group?.id}`
             };
 
-            operations.push(SCIMRolesOperation);
+            operations.push(SCIMGroupsOperation);
         });
 
         return {
@@ -1436,11 +1399,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         return isLoading
             || isSubmitting
             || hasError
-            || isAllRolesListLoading
             || !emailData
             || emailData?.length === 0
-            || !rolesData
-            || rolesData?.length === 0;
+            || !groupsData
+            || isGroupsListRequestLoading
+            || groupsData?.length === 0;
     };
 
     const userStoreDropDown = (): ReactElement => {
@@ -1530,7 +1493,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         ) =>
                                             value.map((option: string, index: number) => (
                                                 <Chip
-                                                    key={ "" }
+                                                    key={ index }
                                                     size="small"
                                                     sx={ { marginLeft: 1 } }
                                                     className="oxygen-chip-beta"
@@ -1592,96 +1555,91 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         ".manualCreation.hint" ) }
                                     </Hint>
                                     {
-                                        allRolesList
-                                        && !legacyAuthzRuntime
-                                        &&  (
-                                            <Autocomplete
-                                                size="small"
-                                                multiple
-                                                fullWidth
-                                                disablePortal
-                                                id="combo-box-demo"
-                                                options={
-                                                    groupList
-                                                }
-                                                getOptionLabel={ (option: GroupsInterface) => option?.displayName }
-                                                renderOption={ (
-                                                    props: React.HTMLAttributes<HTMLLIElement>,
-                                                    option: RolesInterface
-                                                ) => (
-                                                    <Box
-                                                        component="li"
-                                                        { ...props }
+                                        ( <Autocomplete
+                                            size="small"
+                                            multiple
+                                            fullWidth
+                                            disablePortal
+                                            id="combo-box-demo"
+                                            options={
+                                                groupList?.Resources ?? []
+                                            }
+                                            getOptionLabel={ (option: GroupsInterface) => option?.displayName }
+                                            renderOption={ (
+                                                props: React.HTMLAttributes<HTMLLIElement>,
+                                                option: RolesInterface
+                                            ) => (
+                                                <Box
+                                                    component="li"
+                                                    { ...props }
+                                                >
+                                                    <Typography
+                                                        sx={ { fontWeight: 500 } }
                                                     >
-                                                        <Typography
-                                                            sx={ { fontWeight: 500 } }
-                                                        >
-                                                            { option?.displayName }
-                                                        </Typography>
-                                                    </Box>
-                                                ) }
-                                                renderInput={ (params: AutocompleteRenderInputParams) =>
-                                                    (<>
-                                                        <InputLabel
-                                                            htmlFor="tags-filled"
-                                                            disableAnimation
-                                                            shrink={ false }
-                                                            margin="dense"
-                                                            className="mt-2"
-                                                            data-componentid={ `${componentId}-roles-label` }
-                                                        >
-                                                            {
-                                                                t("console:manage.features.user.modals." +
-                                                                "bulkImportUserWizard.wizardSummary." +
-                                                                "manualCreation.groupsLabel")
-                                                            }
-                                                        </InputLabel>
-                                                        <TextField
-                                                            id="tags-filled"
-                                                            margin="normal"
-                                                            InputLabelProps= { {
-                                                                required: true
-                                                            } }
-                                                            { ...params }
-                                                            required
-                                                            variant="outlined"
-                                                            placeholder={
-                                                                t("console:manage.features.user.modals." +
-                                                                "bulkImportUserWizard.wizardSummary." +
-                                                                "manualCreation.groupsPlaceholder")
-                                                            }
-                                                            data-componentid={ `${componentId}-roles-input` }
+                                                        { option?.displayName }
+                                                    </Typography>
+                                                </Box>
+                                            ) }
+                                            renderInput={ (params: AutocompleteRenderInputParams) =>
+                                                (<>
+                                                    <InputLabel
+                                                        htmlFor="tags-filled"
+                                                        disableAnimation
+                                                        shrink={ false }
+                                                        margin="dense"
+                                                        className="mt-2"
+                                                        data-componentid={ `${componentId}-roles-label` }
+                                                    >
+                                                        {
+                                                            t("console:manage.features.user.modals." +
+                                                            "bulkImportUserWizard.wizardSummary." +
+                                                            "manualCreation.groupsLabel")
+                                                        }
+                                                    </InputLabel>
+                                                    <TextField
+                                                        id="tags-filled"
+                                                        margin="normal"
+                                                        InputLabelProps= { {
+                                                            required: true
+                                                        } }
+                                                        { ...params }
+                                                        required
+                                                        variant="outlined"
+                                                        placeholder={
+                                                            t("console:manage.features.user.modals." +
+                                                            "bulkImportUserWizard.wizardSummary." +
+                                                            "manualCreation.groupsPlaceholder")
+                                                        }
+                                                        data-componentid={ `${componentId}-roles-input` }
 
-                                                        />
-                                                    </>)
-                                                }
-                                                onChange={ (
-                                                    event: React.SyntheticEvent<Element, Event>,
-                                                    value: RolesInterface[]
-                                                ) => {
-                                                    setRolesData(value);
-                                                } }
-                                                renderTags={ (
-                                                    value: RolesInterface[],
-                                                    getTagProps: AutocompleteRenderGetTagProps
-                                                ) =>
-                                                    value.map((option: RolesInterface, index: number) => (
-                                                        <Chip
-                                                            key={ index }
-                                                            size="small"
-                                                            className="oxygen-chip-beta"
-                                                            label={
-                                                                (<label>
-                                                                    {
-                                                                        `${option?.displayName}`
-                                                                    }
-                                                                </label>)
-                                                            }
-                                                            { ...getTagProps({ index }) }
-                                                        />
-                                                    ))
-                                                }
-                                            />)
+                                                    />
+                                                </>)
+                                            }
+                                            onChange={ (
+                                                event: React.SyntheticEvent<Element, Event>,
+                                                value: RolesInterface[]
+                                            ) => {
+                                                setGroupsData(value);
+                                            } }
+                                            renderTags={ (
+                                                value: RolesInterface[],
+                                                getTagProps: AutocompleteRenderGetTagProps
+                                            ) =>
+                                                value.map((option: RolesInterface, index: number) => (
+                                                    <Chip
+                                                        key={ index }
+                                                        size="small"
+                                                        className="oxygen-chip-beta"
+                                                        label={
+                                                            (<label>
+                                                                { option?.displayName }
+                                                            </label>)
+                                                        }
+                                                        { ...getTagProps({ index }) }
+                                                    />
+                                                ))
+                                            }
+                                        />)
                                     }
                                 </>
                             )
@@ -1747,7 +1705,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                 )
                             }
                             <Grid.Row columns={ 1 } className="pt-0">
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Grid.Column mobile={ 16 }>
                                     <FilePicker
                                         key={ 1 }
                                         fileStrategy={ CSV_FILE_PROCESSING_STRATEGY }

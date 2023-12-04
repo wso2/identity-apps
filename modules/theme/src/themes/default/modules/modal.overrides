@@ -650,6 +650,10 @@
     }
 
     .content {
+        &.elk-analytics-modal {
+            padding: 30px;
+        }
+
         &.edit-attribute-mapping {
             height: @attributeModalContentHeight;
         }

@@ -4120,6 +4120,20 @@ export const extensions: Extensions = {
                         "lien <1>Créer un compte</1> sur la page de connexion de l'application. " +
                         "Cela crée un nouveau compte <3>client</3> dans l'organisation."
                 },
+                inviteUserToSetPassword: {
+                    notification: {
+                        error: {
+                            description: "Échec de la mise à jour de la configuration du connecteur " +
+                                "Inviter un utilisateur à définir un mot de passe.",
+                            message: "Erreur de mise à jour de la configuration"
+                        },
+                        success: {
+                            description: "Mise à jour réussie de la configuration du connecteur Inviter " +
+                                "un utilisateur à définir un mot de passe",
+                            message: "Mise à jour réussie"
+                        }
+                    }
+                },
                 subHeading: "Paramètres liés à l'auto-enregistrement"
             }
         },

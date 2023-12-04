@@ -116,11 +116,6 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         commonConfig?.primaryUserstoreOnly ? PRIMARY_USERSTORE : CONSUMER_USERSTORE);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ roleList, setRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>([]);
-    const [ tempRoleList, setTempRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>([]);
-    const [ initialRoleList, setInitialRoleList ] = useState<RolesInterface[]
-        | OrganizationRoleListItemInterface[]>([]);
-    const [ initialTempRoleList, setInitialTempRoleList ] = useState<RolesInterface[]
-        | OrganizationRoleListItemInterface[]>([]);
     const [ isWizardActionDisabled, setIsWizardActionDisabled ] = useState<boolean>(true);
     const [ selectedRoleId, setSelectedRoleId ] = useState<string>();
     const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
@@ -203,22 +198,6 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
     const handleRoleIdSet = (roleId: string) => {
         setSelectedRoleId(roleId);
         setRoleSelection(true);
-    };
-
-    const handleRoleListChange = (roleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
-        setRoleList(roleList);
-    };
-
-    const handleInitialRoleListChange = (roleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
-        setInitialRoleList(roleList);
-    };
-
-    const handleAddedRoleListChange = (newRoleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
-        setTempRoleList(newRoleList);
-    };
-
-    const handleAddedRoleInitialListChange = (newRoleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
-        setInitialTempRoleList(newRoleList);
     };
 
     /**
@@ -496,24 +475,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                         <AssignRoles
                             triggerSubmit={ submitRoleList }
                             onSubmit={ (values: any) => handleWizardSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
-                            initialValues={
-                                {
-                                    initialRoleList: initialRoleList,
-                                    initialTempRoleList: initialTempRoleList,
-                                    roleList: roleList,
-                                    tempRoleList: tempRoleList
-                                }
-                            }
-                            handleRoleListChange={ (roles: RolesInterface[] | OrganizationRoleListItemInterface[]) =>
-                                handleRoleListChange(roles) }
-                            handleTempListChange={ (roles: RolesInterface[] | OrganizationRoleListItemInterface[]) =>
-                                handleAddedRoleListChange(roles) }
-                            handleInitialTempListChange={
-                                (roles: RolesInterface[] | OrganizationRoleListItemInterface[]) =>
-                                    handleAddedRoleInitialListChange(roles) }
-                            handleInitialRoleListChange={
-                                (roles: RolesInterface[] | OrganizationRoleListItemInterface[]) =>
-                                    handleInitialRoleListChange(roles) }
+                            initialValues={ { roleList: roleList } }
                             handleSetRoleId={ (roleId: string) => handleRoleIdSet(roleId) }
                         />
                     )

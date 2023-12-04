@@ -17,9 +17,10 @@
  */
 
 import Chip, { ChipProps } from "@oxygen-ui/react/Chip";
+import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
-import { ChipMoreDetails } from "./chip-more-details";
+import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
+import { RoleAudienceTypes } from "../../../roles/constants";
 
 interface RenderChipInterface extends IdentifiableComponentInterface, ChipProps {
     /**
@@ -52,29 +53,24 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
         key,
         setActiveOption,
         primaryText,
-        option,
-        activeOption
+        option
     } = props;
-
-    const [ popoverAnchorEl, setPopoverAnchorEl ] = useState<Element>(null);
 
     /**
      * Handles the mouse enter event of the chip.
-     * 
+     *
      * @param event - Mouse event
      * @param option - Group or user object
      */
     const handleChipMouseEnter = (event: SyntheticEvent) => {
         event.stopPropagation();
-        setPopoverAnchorEl(event.currentTarget);
         setActiveOption(option);
     };
-    
+
     /**
      * Handles the mouse leave event of the chip.
      */
     const handleChipMouseLeave = () => {
-        setPopoverAnchorEl(null);
         setActiveOption(null);
     };
 
@@ -83,21 +79,20 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
             <Chip
                 { ...props }
                 key={ key }
-                label={ primaryText }
+                label={
+                    (<>
+                        <Typography fontWeight={ 500 } sx={ { display: "inline-block" } }>{ primaryText }</Typography>
+                        <Typography sx={ { display: "inline-block", fontStyle:"italic" } } >
+                            { " (" + option?.audienceType }
+                            { option?.audienceType.toUpperCase() === RoleAudienceTypes.APPLICATION
+                                && (" | " + option?.audienceDisplay) }
+                            { ") " }
+                        </Typography>
+                    </>)
+                }
                 onMouseEnter={ handleChipMouseEnter }
                 onMouseLeave={ handleChipMouseLeave }
             />
-            {
-                activeOption?.value === option.value
-                    ? (
-                        <ChipMoreDetails 
-                            popoverAnchorEl={ popoverAnchorEl } 
-                            onPopoverClose={ handleChipMouseLeave } 
-                            primaryText={ primaryText } 
-                        />
-                    )
-                    : null
-            }
         </>
     );
 };
