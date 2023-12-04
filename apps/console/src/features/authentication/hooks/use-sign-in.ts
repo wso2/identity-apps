@@ -29,14 +29,14 @@ import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore
 } from "@wso2is/core/constants";
-import { TenantListInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface, TenantListInterface } from "@wso2is/core/models";
 import { setDeploymentConfigs, setServiceResourceEndpoints, setSignIn } from "@wso2is/core/store";
 import {
     AuthenticateUtils as CommonAuthenticateUtils,
     ContextUtils
 } from "@wso2is/core/utils";
 import axios, { AxiosResponse } from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import useAuthorization from "../../authorization/hooks/use-authorization";
@@ -95,6 +95,10 @@ const useSignIn = (): UseSignInInterface => {
     const { legacyAuthzRuntime }  = useAuthorization();
 
     const { transformTenantDomain } = useOrganizations();
+
+    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state.config?.ui?.features?.branding;
+    });
 
     const onSignIn = async (
         response: BasicUserInfo,
@@ -278,42 +282,50 @@ const useSignIn = (): UseSignInInterface => {
             }
         }
 
-        // FIXME: Skipping /o/ appending from the `getServiceResourceEndpoints` level seems to be not working.
-        const wellKnownEndpoint: string = Config.getServiceResourceEndpoints().wellKnown.replace("/o/", "/");
+        let wellKnownEndpoint: string = Config.getServiceResourceEndpoints().wellKnown;
 
-        // Set configurations related to hostname branding.
-        axios
-            .get(wellKnownEndpoint)
-            .then((response: AxiosResponse) => {
-                // Use token endpoint to extract the host url.
-                const splitted: string[] = response?.data?.token_endpoint?.split("/") ?? [];
+        if (!legacyAuthzRuntime) {
+            // FIXME: Skipping /o/ appending from the `getServiceResourceEndpoints` level seems to be not working.
+            wellKnownEndpoint = wellKnownEndpoint.replace("/o/", "/");
+        }
 
-                let serverHost: string = splitted.slice(0, -2).join("/");
+        const disabledFeatures: string[] = featureConfig?.disabledFeatures;
 
-                if (orgType === OrganizationType.SUBORGANIZATION) {
-                    serverHost = `${Config.getDeploymentConfig().serverOrigin}/${
-                        window["AppUtils"].getConfig().organizationPrefix
-                    }/${window["AppUtils"].getConfig().organizationName}`;
-                }
+        if (legacyAuthzRuntime && !disabledFeatures?.includes("branding.hostnameUrlBranding")) {
+            // Set configurations related to hostname branding.
+            axios
+                .get(wellKnownEndpoint)
+                .then((response: AxiosResponse) => {
+                    // Use token endpoint to extract the host url.
+                    const splitted: string[] = response?.data?.token_endpoint?.split("/") ?? [];
 
-                window["AppUtils"].updateCustomServerHost(serverHost);
-            })
-            .catch((error: any) => {
-                // In case of failure customServerHost is set to the serverHost.
-                window["AppUtils"].updateCustomServerHost(Config.getDeploymentConfig().serverHost);
+                    let serverHost: string = splitted.slice(0, -2).join("/");
 
-                throw error;
-            })
-            .finally(() => {
-                // Update store with custom server host.
-                dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
+                    if (orgType === OrganizationType.SUBORGANIZATION) {
+                        serverHost = `${Config.getDeploymentConfig().serverOrigin}/${
+                            window["AppUtils"].getConfig().organizationPrefix
+                        }/${window["AppUtils"].getConfig().organizationName}`;
+                    }
 
-                // Set the deployment configs in the context.
-                setDeploymentConfig(Config.getDeploymentConfig());
+                    window["AppUtils"].updateCustomServerHost(serverHost);
+                })
+                .catch((error: any) => {
+                    // In case of failure customServerHost is set to the serverHost.
+                    window["AppUtils"].updateCustomServerHost(Config.getDeploymentConfig().serverHost);
 
-                // Update runtime configurations.
-                ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
-            });
+                    throw error;
+                })
+                .finally(() => {
+                    // Update store with custom server host.
+                    dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
+
+                    // Set the deployment configs in the context.
+                    setDeploymentConfig(Config.getDeploymentConfig());
+
+                    // Update runtime configurations.
+                    ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
+                });
+        }
 
         const firstName: string = idToken?.given_name;
         const lastName: string = idToken?.family_name;
