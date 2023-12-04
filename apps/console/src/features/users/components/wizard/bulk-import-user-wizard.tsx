@@ -194,7 +194,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ alert, setAlert, alertComponent ] = useWizardAlert({ "data-componentid": `${componentId}-alert` });
     const [ manualInviteAlert, setManualInviteAlert, manualInviteAlertComponent ]
         = useWizardAlert({ "data-componentid": `${componentId}-manual-invite-alert` });
-    // const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
 
     const optionsArray: string[] = [];
 
@@ -1451,7 +1450,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                             ? (
                                 <>
                                     <Grid.Row columns={ 1 } className="mb-0 pb-0">
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Grid.Column mobile={ 16 }>
                                             <Alert severity="info">
                                                 <Trans
                                                     i18nKey={
@@ -1622,9 +1621,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                         className="oxygen-chip-beta"
                                                         label={
                                                             (<label>
-                                                                {
-                                                                    `${option?.displayName}`
-                                                                }
+                                                                { option?.displayName }
                                                             </label>)
                                                         }
                                                         { ...getTagProps({ index }) }
@@ -1712,7 +1709,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                 )
                             }
                             <Grid.Row columns={ 1 } className="pt-0">
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Grid.Column mobile={ 16 }>
                                     <FilePicker
                                         key={ 1 }
                                         fileStrategy={ CSV_FILE_PROCESSING_STRATEGY }

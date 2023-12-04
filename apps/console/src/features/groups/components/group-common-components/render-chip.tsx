@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { Typography } from "@oxygen-ui/react";
 import Chip, { ChipProps } from "@oxygen-ui/react/Chip";
+import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
 import { RoleAudienceTypes } from "../../../roles/constants";

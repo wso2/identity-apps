@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { Typography } from "@oxygen-ui/react";
 import Chip, { ChipProps } from "@oxygen-ui/react/Chip";
+import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
 import { RoleAudienceTypes } from "../../../roles/constants";
 
 interface RenderChipInterface extends IdentifiableComponentInterface, ChipProps {
@@ -56,8 +56,6 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
         option
     } = props;
 
-    const [ ,setPopoverAnchorEl ] = useState<Element>(null);
-
     /**
      * Handles the mouse enter event of the chip.
      *
@@ -66,7 +64,6 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
      */
     const handleChipMouseEnter = (event: SyntheticEvent) => {
         event.stopPropagation();
-        setPopoverAnchorEl(event.currentTarget);
         setActiveOption(option);
     };
 
@@ -74,7 +71,6 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
      * Handles the mouse leave event of the chip.
      */
     const handleChipMouseLeave = () => {
-        setPopoverAnchorEl(null);
         setActiveOption(null);
     };
 
