@@ -1697,11 +1697,6 @@
             {% endif %}
         ],
         "legacyMode": {
-            {% if console.ui.legacy_mode.items() is defined %}
-            {% for key, value in console.ui.legacy_mode.items() %}
-            {% if value is string %}
-            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
-            {% else %}
             {% if legacy_mode.enable == true %}
             "apiResources": false,
             "applicationListSystemApps": true,
@@ -1717,10 +1712,15 @@
             "roleMapping": true,
             "secretsManagement": true
             {% else %}
+            {% if console.ui.legacy_mode.items() is defined %}
+            {% for key, value in console.ui.legacy_mode.items() %}
+            {% if value is string %}
+            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% else %}
             "{{ key }}": {{ value }}{{ "," if not loop.last }}
             {% endif %}
-            {% endif %}
             {% endfor %}
+            {% endif %}
             {% endif %}
         },
         "theme": {
