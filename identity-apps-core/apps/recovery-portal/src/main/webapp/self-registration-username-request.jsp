@@ -440,12 +440,26 @@
                         </button>
                     </div>
 
-                    <!-- if federated authenticators are available, in addition to the OrganizationAuthenticator. -->
-                    <% if (federatedAuthenticators.length() > 1) { %>
-                        <div class="ui horizontal divider">
-                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "or")%>
-                        </div>
-                    <% } %>
+                    <!-- Do not show the horizontal divider, if the only federated authenticator available is the OrganizationAuthenticator. -->
+                    <% 
+                        if (federatedAuthenticators.length() > 0) { 
+                            Boolean isSSOLoginTheOnlyAuthenticatorConfigured = false;
+
+                            if (federatedAuthenticators.length() == 1) {
+                                JSONObject onlyAvailableFederatedAuthenticator = (JSONObject) federatedAuthenticators.get(0);
+                                String authenticatorType = (String) onlyAvailableFederatedAuthenticator.get("type");
+                                isSSOLoginTheOnlyAuthenticatorConfigured = authenticatorType.equals(SSO_AUTHENTICATOR);
+                            }
+                        
+                            if (!isSSOLoginTheOnlyAuthenticatorConfigured) {
+                    %>
+                                <div class="ui horizontal divider">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "or")%>
+                                </div>
+                    <%       }
+                        } 
+                    %>
+                    
                 </div>
 
                 <!-- federated authenticators -->
