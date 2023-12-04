@@ -927,7 +927,6 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         ApplicationTabTypes.INFO,
                         tenantDomain
                     ) &&
-                    !UIConfig?.legacyFeatures?.applicationSystemAppsSettings &&
                     !UIConfig?.legacyFeatures?.organizationsDisabled &&
                     panes.push({
                         componentId: "shared-access",
