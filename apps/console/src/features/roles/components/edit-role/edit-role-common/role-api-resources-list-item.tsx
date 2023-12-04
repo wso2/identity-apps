@@ -104,6 +104,7 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
             <Accordion disableGutters defaultExpanded elevation={ 0 } variant="elevation">
                 <AccordionSummary expandIcon={ <ChevronDownIcon /> }>
                     <ListItem
+                        className="list-item-text"
                         secondaryAction={ (
                             <Grid container alignItems="center" spacing={ 2 }>
                                 <Grid>
