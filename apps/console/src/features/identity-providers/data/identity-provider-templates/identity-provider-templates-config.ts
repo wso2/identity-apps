@@ -95,7 +95,7 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                     ],
                     "id"
                 ),
-                identityProviderConfig.templates.useTemplateExtensions
+                identityProviderConfig?.templates?.useTemplateExtensions
                     ? keyBy(extensionsManager.getIdentityProviderTemplatesConfig().categories, "id")
                     : {}
             )
