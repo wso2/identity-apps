@@ -11440,7 +11440,7 @@ export const console: ConsoleNS = {
                             successCount: "Successful Imports",
                             failedCount: "Failed Imports",
                             totalUserCreationCount: "Total user creation count",
-                            totalUserAssignmentCount: "Total role/group assigment count ",
+                            totalUserAssignmentCount: "Total group assigment count ",
                             tableHeaders: {
                                 username: "Username",
                                 status: "Status",
@@ -11469,15 +11469,15 @@ export const console: ConsoleNS = {
                                 },
                                 importFailed: {
                                     description: "Issues encountered in <1>{{failedUserCreationCount}} user " +
-                                        "creation operations(s)</1> and <3>{{failedUserAssignmentCount}} role/group " +
+                                        "creation operations(s)</1> and <3>{{failedUserAssignmentCount}} group " +
                                         "assignment operation(s)</3>.",
                                     message: "Review Required"
                                 }
                             },
                             advanceSearch: {
                                 searchByUsername: "Search by Username",
-                                searchByRoleOrGroup: "Search by Role/Group",
-                                roleGroupFilterAttributePlaceHolder: "Role/Group Name"
+                                searchByGroup: "Search by Group",
+                                roleGroupFilterAttributePlaceHolder: "Group Name"
                             },
                             manualCreation: {
                                 alerts: {
@@ -11495,8 +11495,8 @@ export const console: ConsoleNS = {
                                     description: "Drag and drop a CSV file here."
                                 },
                                 primaryButton: "Add",
-                                rolesLabel: "Roles",
-                                rolesPlaceholder: "Enter roles",
+                                groupsLabel: "Groups",
+                                groupsPlaceholder: "Enter groups",
                                 warningMessage: "This option can only be used when email address is configured " +
                                     "as the username."
                             },
@@ -11505,7 +11505,7 @@ export const console: ConsoleNS = {
                             },
                             responseOperationType: {
                                 userCreation: "User Creation",
-                                roleAssignment: "Role/Group Assignment"
+                                roleAssignment: "Group Assignment"
                             },
                             userstoreMessage: "The created users will be added to the <1>{{ userstore }}</1> user store."
                         },

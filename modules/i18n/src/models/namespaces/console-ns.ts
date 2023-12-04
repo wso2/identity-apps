@@ -6148,7 +6148,7 @@ export interface ConsoleNS {
                             };
                             advanceSearch: {
                                 searchByUsername: string;
-                                searchByRoleOrGroup: string;
+                                searchByGroup: string;
                                 roleGroupFilterAttributePlaceHolder: string;
                             };
                             manualCreation: {
@@ -6164,8 +6164,8 @@ export interface ConsoleNS {
                                     description: string;
                                 };
                                 primaryButton: string;
-                                rolesLabel: string;
-                                rolesPlaceholder: string;
+                                groupsLabel: string;
+                                groupsPlaceholder: string;
                                 warningMessage: string;
                             };
                             fileBased: {

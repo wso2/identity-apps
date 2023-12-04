@@ -9481,7 +9481,7 @@ export const console: ConsoleNS = {
                             successCount: "සාර්ථකත්ව ගණන",
                             failedCount: "අසාර්ථක වූ ගණන",
                             totalUserCreationCount: "සම්පූර්ණ පරිශීලක නිර්මාණ ගණන",
-                            totalUserAssignmentCount: "සම්පූර්ණ පරිශීලක භූමිකාව/කණ්ඩායම් පැවරුම් ගණන",
+                            totalUserAssignmentCount: "සම්පූර්ණ පරිශීලක කණ්ඩායම් පැවරුම් ගණන",
                             tableHeaders: {
                                 username: "පරිශීලක නාමය",
                                 status: "තත්ත්වය",
@@ -9509,14 +9509,14 @@ export const console: ConsoleNS = {
                                 },
                                 importFailed: {
                                     description: "<1>{{failedUserCreationCount}} පරිශීලක නිර්මාණය</1> කිරීමේ මෙහෙයුම් සහ " +
-                                        "<3>{{failedUserAssignmentCount}} භූමිකාව/කණ්ඩායම් පැවරුම්</3> මෙහෙයුම් තුළ ඇති වූ ගැටළු.",
+                                        "<3>{{failedUserAssignmentCount}} කණ්ඩායම් පැවරුම්</3> මෙහෙයුම් තුළ ඇති වූ ගැටළු.",
                                     message: "ගැටළු සමාලෝචනය අවශ්‍යයි."
                                 }
                             },
                             advanceSearch: {
                                 searchByUsername: "පරිශීලක නාමයෙන් සොයන්න",
-                                searchByRoleOrGroup: "භූමිකාව/කණ්ඩායම් නම අනුව සොයන්න",
-                                roleGroupFilterAttributePlaceHolder: "භූමිකාව/කණ්ඩායම් නම"
+                                searchByGroup: "කණ්ඩායම් නම අනුව සොයන්න",
+                                roleGroupFilterAttributePlaceHolder: "කණ්ඩායම් නම"
                             },
                             manualCreation: {
                                 alerts: {
@@ -9534,8 +9534,8 @@ export const console: ConsoleNS = {
                                     description: "CSV ගොනුවක් මෙතැනට ඇද දමන්න."
                                 },
                                 primaryButton: "එකතු කරන්න",
-                                rolesLabel: "භූමිකාවන්",
-                                rolesPlaceholder: "භූමිකාවන් ඇතුළත් කරන්න",
+                                groupsLabel: "කණ්ඩායම්",
+                                groupsPlaceholder: "කණ්ඩායම් ඇතුළත් කරන්න",
                                 warningMessage: "මෙම විකල්පය භාවිතා කළ හැක්කේ ඊමේල් ලිපිනය පරිශීලක නාමය ලෙස වින්‍යාස කර ඇති විට පමණි."
                             },
                             fileBased: {
@@ -9543,7 +9543,7 @@ export const console: ConsoleNS = {
                             },
                             responseOperationType: {
                                 userCreation: "පරිශීලක නිර්මාණය",
-                                roleAssignment: "භූමිකාව/කණ්ඩායම් පැවරුම"
+                                roleAssignment: "කණ්ඩායම් පැවරුම"
                             },
                             userstoreMessage: "සාදන ලද පරිශීලකයින් <1>{{ userstore }}</1> පරිශීලක ගබඩාවට එක් කරනු ලැබේ."
                         },
