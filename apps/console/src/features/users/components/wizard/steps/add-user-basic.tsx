@@ -71,8 +71,6 @@ export interface AddUserProps {
 /**
  * Add user basic component.
  *
- * TODO: Add localization support. (https://github.com/wso2-enterprise/asgardeo-product/issues/209)
- *
  * @returns ReactElement
  */
 export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
@@ -848,8 +846,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                         {
                                             emailVerificationEnabled && (
                                                 (
-                                                    isValidEmail
-                                                    && isEmailFilled
+                                                    isEmailFilled
                                                 ) || !isAlphanumericUsernameEnabled()
                                             )
                                                 ? (
