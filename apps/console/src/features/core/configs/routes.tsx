@@ -1645,8 +1645,42 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 path: AppConstants.getPaths().get("USERSTORES"),
                 protected: true,
                 showOnSidePanel: true
-            },
-            {
+            }
+        );
+
+        if (legacyFeatures?.rolesV1Enabled) {
+            // Push the roles v1 routes.
+            routes.push({
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                children: [
+                    {
+                        component: lazy(() => import("../../roles-v1/pages/role-edit")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "rolesV1Edit",
+                        name: "console:manage.features.sidePanel.editRoles",
+                        path: AppConstants.getPaths().get("ROLE_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() => import("../../roles-v1/pages/role")),
+                exact: true,
+                icon: {
+                    icon: getSidePanelIcons().applicationRoles
+                },
+                id: "userV1Roles",
+                name: "console:manage.features.sidePanel.roles",
+                order: 7,
+                path: AppConstants.getPaths().get("ROLES"),
+                protected: true,
+                showOnSidePanel: legacyFeatures?.rolesV1Enabled
+            });
+        } else {
+            // Push the roles v2 routes.
+            routes.push({
                 category: "extensions:manage.sidePanel.categories.userManagement",
                 children: [
                     {
@@ -1684,37 +1718,9 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 order: 7,
                 path: AppConstants.getPaths().get("ROLES"),
                 protected: true,
-                showOnSidePanel: true
-            },
-            {
-                category: "extensions:manage.sidePanel.categories.userManagement",
-                children: [
-                    {
-                        component: lazy(() => import("../../roles-v1/pages/role-edit")),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().childIcon
-                        },
-                        id: "rolesV1Edit",
-                        name: "console:manage.features.sidePanel.editRoles",
-                        path: AppConstants.getPaths().get("ROLE_EDIT"),
-                        protected: true,
-                        showOnSidePanel: false
-                    }
-                ],
-                component: lazy(() => import("../../roles-v1/pages/role")),
-                exact: true,
-                icon: {
-                    icon: getSidePanelIcons().applicationRoles
-                },
-                id: "userV1Roles",
-                name: "console:manage.features.sidePanel.roles",
-                order: 7,
-                path: AppConstants.getPaths().get("ROLES"),
-                protected: true,
-                showOnSidePanel: false
-            }
-        );
+                showOnSidePanel: !legacyFeatures?.rolesV1Enabled
+            });
+        }
     }
 
     routes.push({

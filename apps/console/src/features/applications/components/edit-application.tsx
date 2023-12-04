@@ -928,11 +928,12 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         tenantDomain
                     ) &&
                     !UIConfig?.legacyFeatures?.applicationSystemAppsSettings &&
-                 panes.push({
-                     componentId: "shared-access",
-                     menuItem: t("console:develop.features.applications.edit.sections.sharedAccess.tabName"),
-                     render: SharedAccessTabPane
-                 });
+                    !UIConfig?.legacyFeatures?.organizationsDisabled &&
+                    panes.push({
+                        componentId: "shared-access",
+                        menuItem: t("console:develop.features.applications.edit.sections.sharedAccess.tabName"),
+                        render: SharedAccessTabPane
+                    });
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))

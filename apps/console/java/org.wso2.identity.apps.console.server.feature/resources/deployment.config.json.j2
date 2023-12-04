@@ -156,13 +156,13 @@
         {% endif %}
     },
     {% if console.get_profile_info_from_id_token is defined %}
-        "getProfileInfoFromIDToken": {{ console.get_profile_info_from_id_token }},
+    "getProfileInfoFromIDToken": {{ console.get_profile_info_from_id_token }},
     {% endif %}
     {% if legacy_authz_runtime.enable is defined %}
-        "legacyAuthzRuntime": {{ legacy_authz_runtime.enable }},
+    "legacyAuthzRuntime": {{ legacy_authz_runtime.enable }},
     {% endif %}
-    {% if console.legacy_mode is defined %}
-    "legacyMode": {{ console.legacy_mode }},
+    {% if legacy_mode.enabled is defined %}
+    "legacyMode": {{ legacy_mode.enabled }},
     {% endif %}
     "ui": {
         "announcements": [
@@ -1702,7 +1702,7 @@
             {% if value is string %}
                 "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
             {% else %}
-            {% if console.legacy_mode == true %}
+            {% if legacy_mode.enabled == true %}
                 "{{ key }}": {{ true }}{{ "," if not loop.last }}
             {% else %}
                 "{{ key }}": {{ value }}{{ "," if not loop.last }}
