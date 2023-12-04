@@ -171,7 +171,8 @@ export enum BlockedBulkUserImportAttributes {
     ONETIME_PASSWORD = "oneTimePassword",
     X509CERTIFICATES = "x509Certificates",
     GTALK = "gtalk",
-    SKYPE = "skype"
+    SKYPE = "skype",
+    ROLES = "roles"
 }
 
 /**
