@@ -150,6 +150,7 @@ export interface IdentityProviderConfig {
         oidc: boolean;
         organizationEnterprise: boolean;
         trustedTokenIssuer: boolean;
+        useTemplateExtensions: boolean;
     };
     fidoTags: string[];
     filterFidoTags: (tags: string[]) => string[];
