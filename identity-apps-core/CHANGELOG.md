@@ -1,5 +1,14 @@
 # @wso2is/identity-apps-core
 
+## 2.0.83
+
+### Patch Changes
+
+- [#4954](https://github.com/wso2/identity-apps/pull/4954) [`3a0022b4bd`](https://github.com/wso2/identity-apps/commit/3a0022b4bd4d04f4a19fb07afd14d647e4294c12) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the cookie domain issue
+
+- Updated dependencies [[`6bc38c40e6`](https://github.com/wso2/identity-apps/commit/6bc38c40e697a031f79fafe907750f39a06478fe)]:
+  - @wso2is/theme@2.0.47
+
 ## 2.0.82
 
 ### Patch Changes

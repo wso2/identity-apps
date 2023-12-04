@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.47
+
+### Patch Changes
+
+- [#4903](https://github.com/wso2/identity-apps/pull/4903) [`6bc38c40e6`](https://github.com/wso2/identity-apps/commit/6bc38c40e697a031f79fafe907750f39a06478fe) Thanks [@savindi7](https://github.com/savindi7)! - Support to configure ELK Analytics from the Sign in methods of an App
+
 ## 2.0.46
 
 ### Patch Changes

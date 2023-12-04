@@ -1,5 +1,25 @@
 # @wso2is/console
 
+## 2.9.49
+
+### Patch Changes
+
+- [#4937](https://github.com/wso2/identity-apps/pull/4937) [`d76056b45f`](https://github.com/wso2/identity-apps/commit/d76056b45f83a765d15f30a28c7de0d97c163ed8) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Improve add multiple users wizard
+
+* [#4950](https://github.com/wso2/identity-apps/pull/4950) [`ef3ff69e86`](https://github.com/wso2/identity-apps/commit/ef3ff69e86f1e9c52e6cb98a5670ff4815bc7387) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Logout wreply url should not be mandatory in passive sts
+
+- [#4953](https://github.com/wso2/identity-apps/pull/4953) [`52800f99ef`](https://github.com/wso2/identity-apps/commit/52800f99ef729801c9f9143f441e508ffb678f6f) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add legacy roles UIs
+
+* [#4952](https://github.com/wso2/identity-apps/pull/4952) [`694564ddba`](https://github.com/wso2/identity-apps/commit/694564ddba06e7a3a4053fec2e71d57e03689c9e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the jit provisioning issue
+
+- [#4950](https://github.com/wso2/identity-apps/pull/4950) [`7f7b1f00db`](https://github.com/wso2/identity-apps/commit/7f7b1f00dbeae32aaed2b7279fdd5280796ae2bb) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Logout wreply url should not be mandatory in passive sts
+
+* [#4903](https://github.com/wso2/identity-apps/pull/4903) [`6bc38c40e6`](https://github.com/wso2/identity-apps/commit/6bc38c40e697a031f79fafe907750f39a06478fe) Thanks [@savindi7](https://github.com/savindi7)! - Support to configure ELK Analytics from the Sign in methods of an App
+
+* Updated dependencies [[`d76056b45f`](https://github.com/wso2/identity-apps/commit/d76056b45f83a765d15f30a28c7de0d97c163ed8), [`6bc38c40e6`](https://github.com/wso2/identity-apps/commit/6bc38c40e697a031f79fafe907750f39a06478fe)]:
+  - @wso2is/i18n@2.0.72
+  - @wso2is/theme@2.0.47
+
 ## 2.9.48
 
 ### Patch Changes
