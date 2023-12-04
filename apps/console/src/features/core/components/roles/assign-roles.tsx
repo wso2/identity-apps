@@ -138,7 +138,7 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
      * @param role - Selected role.
      */
     const handleListItemCheckboxChange = (role: RolesInterface) => {
-        const selectedRoleIndex: number = selectedRolesList.findIndex(
+        const selectedRoleIndex: number = selectedRolesList?.findIndex(
             (selectedRole: RolesInterface) => selectedRole.id === role.id);
 
         if (selectedRoleIndex === -1) {
