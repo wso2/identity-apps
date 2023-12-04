@@ -368,6 +368,11 @@ export class RouteUtils {
             },
             {
                 category: manage,
+                id: "userV1Roles",
+                parent: userManagement
+            },
+            {
+                category: manage,
                 id: "roles",
                 parent: userManagement
             },
