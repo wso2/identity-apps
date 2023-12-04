@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.9.50
+
+### Patch Changes
+
+- [#4957](https://github.com/wso2/identity-apps/pull/4957) [`4fe2c6c399`](https://github.com/wso2/identity-apps/commit/4fe2c6c39924f6833a210b769e319d7befc1ca2c) Thanks [@savindi7](https://github.com/savindi7)! - Remove client credential warning from M2M app
+
 ## 2.9.49
 
 ### Patch Changes
