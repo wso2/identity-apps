@@ -109,7 +109,7 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                         resource: EnterpriseIdentityProviderTemplateGroup
                     }
                 ], "id"),
-                identityProviderConfig.templates.useTemplateExtensions
+                identityProviderConfig?.templates?.useTemplateExtensions
                     ? keyBy(
                         extensionsManager.getIdentityProviderTemplatesConfig().groups,
                         "id"
