@@ -21,6 +21,7 @@
 <%@ page import="java.io.File" %>
 <%@ page import="org.apache.commons.collections.map.HashedMap" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.base.IdentityRuntimeException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
@@ -69,7 +70,7 @@
     String confirmationKey = request.getParameter("confirmationKey");
     String callback = request.getParameter("callback");
     String userTenantHint = request.getParameter("t");
-    String accessUrl = "";
+    String applicationAccessUrl = "";
 
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
@@ -84,10 +85,10 @@
     String recoveryOption = request.getParameter("recoveryOption");
 
     try {
-        String sp = request.getParameter("sp");
+        String sp = Encode.forJava(request.getParameter("sp"));
         if (StringUtils.isNotBlank(sp)) {
             ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
-            accessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
+            applicationAccessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
         }
     } catch (Exception e) {
         // Ignored.
@@ -95,7 +96,7 @@
 
     Boolean isValidCallBackURL = false;
     try {
-        if (StringUtils.isNotBlank(accessUrl)) {
+        if (StringUtils.isNotBlank(applicationAccessUrl)) {
             isValidCallBackURL = true;
         } else if (StringUtils.isNotBlank(callback)) {
             PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();

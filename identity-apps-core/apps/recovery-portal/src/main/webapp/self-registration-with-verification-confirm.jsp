@@ -19,6 +19,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.base.MultitenantConstants" %>
 <%@ page import="org.wso2.carbon.core.SameSiteCookie" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
@@ -55,12 +56,12 @@
     String AUTO_LOGIN_COOKIE_DOMAIN = "AutoLoginCookieDomain";
     String AUTO_LOGIN_FLOW_TYPE = "SIGNUP";
     String username = null;
-    String accessUrl = "";
+    String applicationAccessUrl = "";
 
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
     String httpMethod = request.getMethod();
-    String sp = request.getParameter("sp");
+    String sp = Encode.forJava(request.getParameter("sp"));
     PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
     Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterSelfRegistrationEnabled(tenantDomain);
 
@@ -81,7 +82,7 @@
     try {
         if (StringUtils.isNotBlank(sp)) {
             ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
-            accessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
+            applicationAccessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
         }
     } catch (ApplicationDataRetrievalClientException e) {
         // Ignored.
@@ -89,7 +90,7 @@
 
     Boolean isValidCallBackURL = false;
     try {
-        if (StringUtils.isNotBlank(accessUrl)) {
+        if (StringUtils.isNotBlank(applicationAccessUrl)) {
             isValidCallBackURL = true;
         } else if (StringUtils.isNotBlank(callback)) {
             isValidCallBackURL = preferenceRetrievalClient.checkIfSelfRegCallbackURLValid(tenantDomain, callback);

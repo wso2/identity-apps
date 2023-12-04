@@ -67,6 +67,7 @@
     String RECOVERY_TYPE_INVITE = "invite";
     String CONSOLE_APP_NAME = "Console";
     String MY_ACCOUNT_APP_NAME = "My Account";
+    String MY_ACCOUNT_APP_ID = "My_Account";
     String passwordHistoryErrorCode = "22001";
     String passwordPatternErrorCode = "20035";
     String confirmationKey =
@@ -74,7 +75,7 @@
     String newPassword = request.getParameter("reset-password");
     String callback = request.getParameter("callback");
     String spId = request.getParameter("spId");
-    String sp = request.getParameter("sp");
+    String sp = Encode.forJava(request.getParameter("sp"));
     String userStoreDomain = request.getParameter(USERSTORE_DOMAIN);
     String type = request.getParameter("type");
     String username = null;
@@ -102,7 +103,7 @@
     } else {
             if (StringUtils.isNotBlank(spId)) {
             try {
-                if (spId.equals("My_Account")) {
+                if (spId.equals(MY_ACCOUNT_APP_ID)) {
                     applicationName = MY_ACCOUNT_APP_NAME;
                 } else {
                     applicationName = applicationDataRetrieval.getApplicationName(tenantDomain,spId);

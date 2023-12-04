@@ -19,6 +19,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.base.MultitenantConstants" %>
 <%@ page import="org.wso2.carbon.identity.base.IdentityRuntimeException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
@@ -55,7 +56,7 @@
 
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
-    String sp = request.getParameter("sp");
+    String sp = Encode.forJava(request.getParameter("sp"));
     String spAccessUrl = "";
     if (StringUtils.isBlank(callback)) {
         callback = request.getParameter("redirect_uri");

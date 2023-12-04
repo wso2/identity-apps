@@ -83,7 +83,7 @@
     String sessionDataKey = request.getParameter("sessionDataKey");
     String sp = request.getParameter("sp");
     String spId = "";
-    String accessUrl = "";
+    String applicationAccessUrl = "";
     JSONObject usernameValidityResponse;
     SelfRegistrationMgtClient selfRegistrationMgtClient = new SelfRegistrationMgtClient();
     String callback = request.getParameter("callback");
@@ -105,7 +105,7 @@
         } else {
             ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
             spId = applicationDataRetrievalClient.getApplicationID(tenantDomain, sp);
-            accessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
+            applicationAccessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
         }
     } catch (Exception e) {
         spId = "";
@@ -113,9 +113,9 @@
     
     Boolean isValidCallBackURL = false;
     try {
-        if (StringUtils.isNotBlank(accessUrl)) {
+        if (StringUtils.isNotBlank(applicationAccessUrl)) {
             // Honour accessUrl over callback url.
-            callback = accessUrl;
+            callback = applicationAccessUrl;
             isValidCallBackURL = true;
         } else if (StringUtils.isNotBlank(callback)) {
             isValidCallBackURL = preferenceRetrievalClient.checkIfSelfRegCallbackURLValid(tenantDomain,callback);
@@ -330,7 +330,7 @@
 
         Property spAccessUrlProperty = new Property();
         spAccessUrlProperty.setKey("accessUrl");
-        spAccessUrlProperty.setValue(URLEncoder.encode(accessUrl, "UTF-8"));
+        spAccessUrlProperty.setValue(URLEncoder.encode(applicationAccessUrl, "UTF-8"));
 
         properties.add(sessionKey);
         properties.add(consentProperty);

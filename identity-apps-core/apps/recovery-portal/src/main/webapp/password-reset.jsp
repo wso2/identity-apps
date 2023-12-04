@@ -46,7 +46,7 @@
     String userStoreDomain = request.getParameter("userstoredomain");
     String type = request.getParameter("type");
     String spId = request.getParameter("spId");
-    String sp = request.getParameter("sp");
+    String sp = Encode.forJava(request.getParameter("sp"));
     boolean passwordExpired = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("passwordExpired"));
     String tenantDomainFromQuery = (String) request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
     String ASGARDEO_USERSTORE = "ASGARDEO-USER";
