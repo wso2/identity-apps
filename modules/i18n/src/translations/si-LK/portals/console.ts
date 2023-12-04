@@ -7210,6 +7210,10 @@ export const console: ConsoleNS = {
                             },
                             elasticAnalyticsEngine: {
                                 friendlyName: "ELK විශ්ලේෂණය",
+                                warningModal: {
+                                    configure: "නිසි ක්‍රියාකාරීත්වය සඳහා ELK විශ්ලේෂණ සැකසුම් <1>වින්‍යාස කරන්න</1>",
+                                    reassure: "ඔබට ඕනෑම වේලාවක ඔබගේ සැකසීම් යාවත්කාලීන කළ හැක."
+                                },
                                 properties: {
                                     adaptiveAuthenticationElasticReceiver: {
                                         hint: "ඉළුික්සර්ච් සත්කාරකත්වය",

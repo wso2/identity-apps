@@ -5147,6 +5147,10 @@ export interface ConsoleNS {
                             };
                             elasticAnalyticsEngine: {
                                 friendlyName: string;
+                                warningModal: {
+                                    configure: string,
+                                    reassure: string
+                                },
                                 properties: {
                                     adaptiveAuthenticationElasticReceiver: {
                                         hint: string;

@@ -1027,7 +1027,7 @@ TODO : Move values to separate variables and cleanup styles.
   font-size: 1em !important;
 }
 
-.connector-form {
+.connector-form:not(.analytics) {
     .ui.grid {
         .row {
             padding-top: 0;
