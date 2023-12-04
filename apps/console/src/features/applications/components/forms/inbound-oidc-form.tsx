@@ -806,14 +806,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 <>
                     <label>
                         { label }
-                        <GenericIcon
-                            icon={ getGeneralIcons().warning }
-                            defaultIcon
-                            colored
-                            transparent
-                            spaced="left"
-                            floated="right"
-                        />
+                        { !isM2MApplication && (
+                            <GenericIcon
+                                icon={ getGeneralIcons().warning }
+                                defaultIcon
+                                colored
+                                transparent
+                                spaced="left"
+                                floated="right"
+                            />)
+                        }
                     </label>
                 </>
             );
@@ -902,7 +904,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                  */
                 const description: string = getGrantTypeHintDescription(name);
 
-                if (description) {
+                if (description && !isM2MApplication) {
                     grant.hint = {
                         content: description,
                         header: ""
