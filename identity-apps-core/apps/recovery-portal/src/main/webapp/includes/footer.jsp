@@ -24,7 +24,7 @@
     $(document).ready(function () {
         // downtime-banner
         var SHOW_DOWNTIME_BANNER = false;
-        
+
         if (SHOW_DOWNTIME_BANNER) {
             $("#downtime-banner")
             .nag("show");
@@ -46,7 +46,7 @@
      * Get the name of the cookie consent cookie.
      */
     function getCookieConsentCookieName() {
-  
+
         return "accepts-cookies";
     }
 
@@ -112,8 +112,13 @@
         * Ex: If sub.sample.domain.com is parsed, `domain.com` will be set as the domain.
         */
         try {
-            var url = new URL(window.location);
-            domain = url.hostname;
+            var hostnameTokens = window.location.hostname.split('.');
+
+            if (hostnameTokens.length > 1) {
+                domain = hostnameTokens.slice((hostnameTokens.length -2), hostnameTokens.length).join(".");
+            } else if (hostnameTokens.length == 1) {
+                domain = hostnameTokens[0];
+            }
         } catch(e) {
             // Couldn't parse the hostname.
         }
