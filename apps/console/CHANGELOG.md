@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.9.48
+
+### Patch Changes
+
+- [#4946](https://github.com/wso2/identity-apps/pull/4946) [`072749a912`](https://github.com/wso2/identity-apps/commit/072749a91239554bb47df3513d21a850021e1fa4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update Role assignment UI in wizards
+
+* [#4913](https://github.com/wso2/identity-apps/pull/4913) [`392095343a`](https://github.com/wso2/identity-apps/commit/392095343a92ec1af6b83208deeda3e3562093f1) Thanks [@Rashmini](https://github.com/Rashmini)! - Fix alignment issue in roles page
+
+* Updated dependencies [[`392095343a`](https://github.com/wso2/identity-apps/commit/392095343a92ec1af6b83208deeda3e3562093f1)]:
+  - @wso2is/theme@2.0.46
+
 ## 2.9.47
 
 ### Patch Changes
