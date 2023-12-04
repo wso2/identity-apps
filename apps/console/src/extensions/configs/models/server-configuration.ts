@@ -75,7 +75,7 @@ export interface ServerConfigurationConfig {
         setPasswordExpiryEnabled: (state: boolean) => void
     ) => PasswordExpiryInterface;
     processPasswordExpirySubmitData: (data: ValidationFormInterface) => Promise<any>;
-    processPasswordPoliciesSubmitData: (data: ValidationFormInterface) => Promise<void>;
+    processPasswordPoliciesSubmitData: (data: ValidationFormInterface, isLegacy: boolean) => Promise<void>;
 }
 
 export interface PasswordHistoryCountInterface extends ValidationFormInterface {

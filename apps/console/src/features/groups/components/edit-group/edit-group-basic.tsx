@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -135,7 +135,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
         setRegExLoading(false);
 
         return new Promise((
-            resolve: (value: string | PromiseLike<string>) => void, 
+            resolve: (value: string | PromiseLike<string>) => void,
             reject: (reason?: any) => void
         ) => {
             if (userStoreRegEx !== "") {
@@ -222,9 +222,9 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                         updateGroupName(values);
                     } }
                 >
-                    <Grid className="form-container with-max-width">
+                    <Grid className="form-container">
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <Form.Field>
                                     <label
                                         data-testid={
@@ -290,7 +290,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                                             if (response.data.Resources[0]?.id !== groupId) {
                                                                 validation.isValid = false;
                                                                 validation.errorMessages.push(
-                                                                    t("console:manage.features.roles." + 
+                                                                    t("console:manage.features.roles." +
                                                                     "addRoleWizard." +
                                                                     "forms.roleBasicDetails.roleName." +
                                                                     "validations.duplicate",
@@ -301,7 +301,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                                     })
                                                     .catch(() => {
                                                         dispatch(addAlert({
-                                                            description: t("console:manage.features.groups." + 
+                                                            description: t("console:manage.features.groups." +
                                                             "notifications.fetchGroups.genericError.description"),
                                                             level: AlertLevels.ERROR,
                                                             message: t("console:manage.features.groups.notifications." +

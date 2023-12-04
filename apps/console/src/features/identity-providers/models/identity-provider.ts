@@ -56,6 +56,7 @@ export interface StrictIdentityProviderInterface {
     self?: string;
     federatedAuthenticators?: FederatedAuthenticatorListResponseInterface;
     templateId?: string;
+    tags?: string[];
 }
 
 export interface IdentityProviderInterface extends StrictIdentityProviderInterface {
@@ -588,6 +589,10 @@ export interface LocalAuthenticatorInterface extends CommonPluggableComponentInt
      * Details endpoint.
      */
     self?: string;
+    /**
+     * The list of tags that the authenticator can be categorized under.
+     */
+    tags?: string[];
 }
 
 /**
@@ -804,7 +809,8 @@ export enum AuthenticatorLabels {
     PASSWORDLESS = "Passwordless",
     HANDLERS = "Handlers",
     USERNAMELESS = "Usernameless",
-    PASSKEY = "Passkey"
+    PASSKEY = "Passkey",
+    API_AUTHENTICATION = "APIAuth"
 }
 
 /**
@@ -849,6 +855,11 @@ export enum IdentityProviderTabTypes {
     SETTINGS ="settings",
     USER_ATTRIBUTES = "user-attributes",
     ADVANCED = "advanced",
+    ATTRIBUTES = "attributes",
+    CONNECTED_APPS = "connected-apps",
+    IDENTITY_PROVIDER_GROUPS = "identity-provider-groups",
+    OUTBOUND_PROVISIONING = "outbound-provisioning",
+    JIT_PROVISIONING = "jit-provisioning",
 }
 
 /**

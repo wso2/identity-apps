@@ -462,7 +462,7 @@ export const extensions: Extensions = {
             },
             managementAPI: {
                 header: "API de gestion",
-                description: "API pour gérer les ressources dans votre auto-organisation"
+                description: "API pour gérer les ressources de votre organisation (racine)"
             },
             notifications: {
                 deleteAPIResource: {
@@ -2026,6 +2026,7 @@ export const extensions: Extensions = {
             heading: "Fournisseur de messagerie personnalisé",
             subHeading: "Configurez des serveurs SMTP personnalisés pour envoyer des e-mails avec votre propre adresse e-mail.",
             description: "Configurez les paramètres du fournisseur de messagerie en fonction de votre serveur SMTP.",
+            note: "Le fournisseur de messagerie de la super-organisation ne peut être configuré que via <1>deployment.toml</1>.",
             info: "Vous pouvez personnaliser le contenu des e-mails à l'aide de <1>Modèles d'e-mails</1>.",
             updateButton: "Mise à jour",
             sendTestMailButton: "Envoyer un e-mail test",
@@ -2123,22 +2124,10 @@ export const extensions: Extensions = {
                 }
             }
         },
-        emailAndSMS: {
-            heading: {
-                heading: "Fournisseurs Email & SMS",
-                onlySMSProvider: "Fournisseur de SMS",
-                onlyEmailProvider: "Fournisseur de messagerie"
-            },
-            title: {
-                heading: "Fournisseurs Email & SMS",
-                onlySMSProvider: "Fournisseur de SMS",
-                onlyEmailProvider: "Fournisseur de messagerie"
-            },
-            description: {
-                description: "Configurez les SMS et les fournisseurs de messagerie pour votre organisation.",
-                onlySMSProvider: "Configurez le fournisseur SMS pour votre organisation.",
-                onlyEmailProvider: "Configurez les fournisseurs Email et SMS pour votre organisation."
-            }
+        notificationChannel: {
+            heading: "Fournisseurs SMS/e-mail",
+            title: "Fournisseurs SMS/e-mail",
+            description: "Configurez les fournisseurs SMS et Email pour votre organisation."
         },
         smsProviders: {
             heading: "Fournisseur de SMS personnalisé",
@@ -2188,14 +2177,14 @@ export const extensions: Extensions = {
                 vonage: {
                     subHeading: "Paramètres Vonage",
                     accountSID: {
-                        label: "SID du compte Vonage",
-                        placeholder: "Entrez le SID du compte Vonage",
-                        hint: "Identifiant de chaîne de compte Vonage qui fait office de nom d'utilisateur pour le compte"
+                        label: "Clé API Vonage",
+                        placeholder: "Entrez la clé API Vonage",
+                        hint: "Clé API Vonage qui fait office de nom d'utilisateur pour le compte."
                     },
                     authToken: {
-                        label: "Jeton d'authentification Vonage",
-                        placeholder: "Entrez le jeton d'authentification Vonage",
-                        hint: "Le jeton d'accès généré par le serveur d'authentification Vonage"
+                        label: "Secret de l'API Vonage",
+                        placeholder: "Entrez le secret de l'API Vonage",
+                        hint: "Le secret API généré par le serveur d'authentification Vonage."
                     },
                     sender: {
                         label: "Expéditrice",
@@ -2783,15 +2772,11 @@ export const extensions: Extensions = {
                                         description: "Activez cette option pour permettre aux utilisateurs " +
                                         "de s'inscrire pour obtenir un mot de passe lors de la connexion.",
                                         label: "Inscription progressive du mot de passe:",
-                                        note: "Si la clé d'accès est définie comme premier facteur, " +
-                                        "le <1> script adaptatif</1> suivant doit être ajouté " +
-                                        "sous l'onglet <3>Méthode de connexion</3> de l'application. " +
-                                        "Ce script est ajouté automatiquement avec la configuration de " +
-                                        "la clé d'accès basée sur un modèle et est utilisé pour vérifier " +
-                                        "l'identité de l'utilisateur avant d'inscrire les " +
-                                        "clés d'accès. Toutefois, si vous " +
-                                        "configurez des mots de passe sans modèle, n'oubliez " +
-                                        "pas d'ajouter le script manuellement."
+                                        note: "Lorsque la clé d'accès est définie comme <1>première option de facteur</1>, " +
+                                        "les utilisateurs doivent ajouter un <3>script adaptatif</3> pour vérifier l'identité" +
+                                        " de l'utilisateur avant l'inscription de la clé d'accès. Pour inclure le script, les " +
+                                        "utilisateurs peuvent utiliser le modèle <5>d'inscription progressive des</5> clés " +
+                                        "d'accès disponible dans l'onglet <7>Méthode de connexion<7> de l'application."
                                     },
                                     usernamelessAuthentication: {
                                         description: "L'activation de cette fonctionnalité permet aux " +
@@ -4134,6 +4119,20 @@ export const extensions: Extensions = {
                         "Lorsque l'auto-inscription est activée, les utilisateurs peuvent s'inscrire via le " +
                         "lien <1>Créer un compte</1> sur la page de connexion de l'application. " +
                         "Cela crée un nouveau compte <3>client</3> dans l'organisation."
+                },
+                inviteUserToSetPassword: {
+                    notification: {
+                        error: {
+                            description: "Échec de la mise à jour de la configuration du connecteur " +
+                                "Inviter un utilisateur à définir un mot de passe.",
+                            message: "Erreur de mise à jour de la configuration"
+                        },
+                        success: {
+                            description: "Mise à jour réussie de la configuration du connecteur Inviter " +
+                                "un utilisateur à définir un mot de passe",
+                            message: "Mise à jour réussie"
+                        }
+                    }
                 },
                 subHeading: "Paramètres liés à l'auto-enregistrement"
             }

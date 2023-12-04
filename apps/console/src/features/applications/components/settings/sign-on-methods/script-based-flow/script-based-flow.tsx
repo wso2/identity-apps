@@ -397,6 +397,28 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     }, [ authenticationSequence?.steps, authenticationSequence?.script, authenticationSteps ]);
 
     /**
+     * Check whether the script is a user untouched default script.
+     *
+     * @param script - Script passed through props.
+     *
+     * @returns whether the script is a user untouched default script.
+     */
+    const isScriptUntouchedDefaultOne = (script: string): boolean => {
+        let isDefault: boolean = false;
+        const stepsCount: number = internalStepCount > authenticationSteps ? internalStepCount : authenticationSteps;
+
+        for (let localStepsCount: number = stepsCount; localStepsCount > 0; localStepsCount--) {
+            if (AdaptiveScriptUtils.isDefaultScript(script, localStepsCount)) {
+                isDefault = true;
+
+                break;
+            }
+        }
+
+        return isDefault;
+    };
+
+    /**
      * Resolves the adaptive script.
      *
      * @param script - Script passed through props.
@@ -436,6 +458,17 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             setIsScriptFromTemplate(true);
             setSourceCode(JSON.parse(script));
             setIsNewlyAddedScriptTemplate(false);
+
+            return;
+        }
+
+        // If the script is untouched, then the script will be generated according to the current
+        // authentication steps.
+        if (script && isScriptUntouchedDefaultOne(script)
+                && AdaptiveScriptUtils.minifyScript(internalScript) === AdaptiveScriptUtils.minifyScript(sourceCode)) {
+            setInternalStepCount(authenticationSteps);
+            setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
+            setIsScriptFromTemplate(false);
 
             return;
         }

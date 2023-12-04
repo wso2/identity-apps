@@ -41,10 +41,10 @@ import {
     ConnectedAppsInterface,
     ConnectionInterface
 } from "../../../models/connection";
-import { 
+import {
     handleConnectionDeleteError,
     handleConnectionUpdateError,
-    handleGetConnectionListCallError 
+    handleGetConnectionListCallError
 } from "../../../utils/connection-utils";
 import { GeneralDetailsForm } from "../forms";
 
@@ -87,10 +87,9 @@ interface GeneralSettingsInterface extends TestableComponentInterface {
      */
     isOidc?: boolean;
     /**
-     * Explicitly specifies whether the currently displaying
-     * IdP is a trusted token issuer or not.
+     * Type of the template.
      */
-    isTrustedTokenIssuer?: boolean;
+    templateType?: string;
     /**
      * Loading Component.
      */
@@ -116,7 +115,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
         hideIdPLogoEditField,
         isSaml,
         isOidc,
-        isTrustedTokenIssuer,
+        templateType,
         loader: Loader,
         [ "data-testid" ]: testId
     } = props;
@@ -283,7 +282,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                     <GeneralDetailsForm
                         isSaml={ isSaml }
                         isOidc={ isOidc }
-                        isTrustedTokenIssuer={ isTrustedTokenIssuer }
+                        templateType={ templateType }
                         hideIdPLogoEditField={ hideIdPLogoEditField }
                         editingIDP={ editingIDP }
                         onSubmit={ handleFormSubmit }

@@ -21,7 +21,7 @@ import { Forms } from "@wso2is/forms";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 /**
@@ -73,7 +73,7 @@ export const AddUserGroups: FunctionComponent<AddConsumerUserGroupPropsInterface
      * @param e - Click event.
      * @param value - Input value of the field
      */
-    const handleUnselectedListSearch = ({ value }: any) => {
+    const handleUnselectedListSearch = (e: FormEvent<HTMLInputElement>, { value }: { value: string }) => {
         let isMatch: boolean = false;
         const filteredGroupList: any[] = [];
 

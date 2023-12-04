@@ -35,6 +35,7 @@ import {
 } from "@wso2is/core/store";
 import {
     AuthenticateUtils as CommonAuthenticateUtils,
+    SessionStorageUtils,
     StringUtils
 } from "@wso2is/core/utils";
 import {
@@ -124,7 +125,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         data: originalConnectorCategories,
         error: connectorCategoriesFetchRequestError
     } = useGovernanceConnectorCategories(
-        featureConfig?.residentIdp?.enabled && isFirstLevelOrg);
+        featureConfig?.server?.enabled && isFirstLevelOrg);
 
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
@@ -159,7 +160,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             let response: BasicUserInfo = null;
 
             const getOrganizationName = () => {
-                const path: string = window.location.pathname;
+                const path: string = SessionStorageUtils.getItemFromSessionStorage("auth_callback_url_console")
+                    ?? window.location.pathname;
                 const pathChunks: string[] = path.split("/");
 
                 const orgPrefixIndex: number = pathChunks.indexOf(window["AppUtils"].getConfig().organizationPrefix);
@@ -207,7 +209,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
             return;
         }
 
-        setTierName(tenantTier.tierName);        
+        setTierName(tenantTier.tierName);
     }, [ tierName ]);
 
     const loginSuccessRedirect = (idToken: DecodedIDTokenPayload): void => {

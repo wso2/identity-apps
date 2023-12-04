@@ -28,18 +28,18 @@ import useRequest, {
     RequestResultInterface
 } from "../../core/hooks/use-request";
 import { AuthenticatorManagementConstants } from "../constants/autheticator-constants";
-import { 
-    ConnectionManagementConstants 
+import {
+    ConnectionManagementConstants
 } from "../constants/connection-constants";
-import { 
-    AuthenticatorInterface, 
-    MultiFactorAuthenticatorInterface 
+import {
+    AuthenticatorInterface,
+    MultiFactorAuthenticatorInterface
 } from "../models/authenticators";
-import { 
-    ConnectionInterface, 
-    FederatedAuthenticatorListItemInterface, 
-    FederatedAuthenticatorListResponseInterface, 
-    FederatedAuthenticatorMetaInterface 
+import {
+    ConnectionInterface,
+    FederatedAuthenticatorListItemInterface,
+    FederatedAuthenticatorListResponseInterface,
+    FederatedAuthenticatorMetaInterface
 } from "../models/connection";
 
 /**
@@ -50,11 +50,11 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Hook to get all authenticators in the server. 
+ * Hook to get all authenticators in the server.
  *
  * @param filter - Search filter.
  * @param type - Authenticator Type.
- * 
+ *
  * @returns Response as a promise.
  */
 export const useGetAuthenticators = <Data = AuthenticatorInterface[], Error = RequestErrorInterface>(
@@ -93,7 +93,7 @@ export const useGetAuthenticators = <Data = AuthenticatorInterface[], Error = Re
  */
 export const useGetAuthenticatorTags = <Data = string[], Error = RequestErrorInterface>(
 ): RequestResultInterface<Data, Error> => {
-    
+
     const { resourceEndpoints } = useResourceEndpoints();
 
     const requestConfig: AxiosRequestConfig = {

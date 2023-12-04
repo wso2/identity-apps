@@ -186,7 +186,7 @@ export const DiagnosticLogsPage = (props: DiagnosticPagePropsInterface) : ReactE
                         setFromTime={ (value: string): void => setStartTime(value) }
                         setToTime={ (value: string): void => setEndTime(value) }
                         setTimeRange={ (value: number): void => setTimeRange(value) }
-                        data-componentid={ `${ componentId }-diagnostic` }
+                        data-componentid={ componentId }
                     />
                     { showRefreshButton
                         ? (

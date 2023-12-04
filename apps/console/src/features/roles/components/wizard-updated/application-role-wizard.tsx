@@ -19,9 +19,9 @@
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
-import { EmphasizedSegment, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { EmphasizedSegment, Heading, Hint, Link, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
-import React, { 
+import React, {
     FunctionComponent,
     MutableRefObject,
     ReactElement,
@@ -30,11 +30,11 @@ import React, {
     useRef,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Modal } from "semantic-ui-react";
-import { history } from "../../../../features/core";
+import { AppConstants, history } from "../../../../features/core";
 import { APIResourceInterface } from "../../../api-resources/models";
 import useSubscribedAPIResources from "../../../applications/api/use-subscribed-api-resources";
 import { AuthorizedAPIListItemInterface } from "../../../applications/models/api-authorization";
@@ -42,7 +42,7 @@ import { ApplicationInterface } from "../../../applications/models/application";
 import { createRole, useRolesList } from "../../api";
 import { RoleAudienceTypes, RoleConstants } from "../../constants";
 import { ScopeInterface } from "../../models/apiResources";
-import {  
+import {
     CreateRoleFormData,
     CreateRoleInterface,
     CreateRolePermissionInterface,
@@ -84,6 +84,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     const [ selectedApplication, setSelectedApplication ] = useState<DropdownItemProps[]>([]);
     const [ isFormError, setIsFormError ] = useState<boolean>(false);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
+    const [ erroneousAPIResourceFields, setErroneousAPIResourceFields ] = useState<string[]>([]);
 
     const path: string[] = history.location.pathname.split("/");
     const appId: string = path[path.length - 1].split("#")[0];
@@ -149,10 +150,10 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         event.preventDefault();
 
         // Add the selected resource to selectedAPIResources
-        const subscribedApiResourcesList: APIResourceInterface[] =[];
+        const subscribedApiResourcesList: APIResourceInterface[] = [ ...selectedAPIResources ];
 
         const selectedApiResources: AuthorizedAPIListItemInterface[] = subscribedAPIResourcesListData.filter(
-            (permission: AuthorizedAPIListItemInterface) => 
+            (permission: AuthorizedAPIListItemInterface) =>
                 permission?.id === data.value
         );
 
@@ -169,8 +170,9 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     };
 
     const onChangeScopes = (apiResource: APIResourceInterface, scopes: ScopeInterface[]): void => {
+        setErroneousAPIResourceFields([]);
         const selectedScopes: SelectedPermissionsInterface[] = selectedPermissions.filter(
-            (selectedPermission: SelectedPermissionsInterface) => 
+            (selectedPermission: SelectedPermissionsInterface) =>
                 selectedPermission.apiResourceId !== apiResource.id
         );
 
@@ -206,11 +208,34 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
      */
     const addRole = ( role: CreateRoleInterface): void => {
         setIsSubmitting(true);
+
+        const emptyAPIResourceFields: string[] = [];
+
+        selectedAPIResources?.forEach((apiResource: APIResourceInterface) => {
+            const selectedPermission: SelectedPermissionsInterface = selectedPermissions?.find(
+                (selectedPermission: SelectedPermissionsInterface) =>
+                    selectedPermission.apiResourceId === apiResource?.id
+            );
+
+            if (!selectedPermission || selectedPermission?.scopes?.length === 0) {
+                emptyAPIResourceFields.push(apiResource?.id);
+            }
+        });
+
+        // If there are any empty API resources, set the erroneousAPIResourceFields state.
+        // And return from the function.
+        if (emptyAPIResourceFields?.length > 0) {
+            setErroneousAPIResourceFields(emptyAPIResourceFields);
+            setIsSubmitting(false);
+
+            return;
+        }
+
         const selectedPermissionsList: CreateRolePermissionInterface[] = selectedPermissions?.flatMap(
             (permission: SelectedPermissionsInterface) => (
                 permission?.scopes?.map((scope: ScopeInterface) => ({ value: scope?.name })) || []
             )) || [];
-    
+
         const roleData: CreateRoleInterface = {
             audience: {
                 type: RoleAudienceTypes.APPLICATION,
@@ -220,7 +245,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
             permissions: selectedPermissionsList,
             schemas: []
         };
-    
+
         // Create Role API Call.
         createRole(roleData)
             .then((response: AxiosResponse) => {
@@ -231,7 +256,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                         level: AlertLevels.SUCCESS,
                         message: t("console:manage.features.roles.notifications.createRole.success.message")
                     }));
-    
+
                     onRoleCreated();
                 }
             })
@@ -279,7 +304,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         };
 
         const audienceId: string = appId;
-        
+
         // Handle the case where the user has not entered a role name.
         if (!values.displayName?.toString().trim()) {
             errors.displayName = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
@@ -291,7 +316,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                     errors.displayName = t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
                         "roleName.validations.duplicate", { type: "Role" });
                 }
-            }   
+            }
         }
 
         if (errors.displayName) {
@@ -315,13 +340,13 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
             closeOnEscape
         >
             <Modal.Header>
-                { t("console:develop.features.applications.edit." + 
+                { t("console:develop.features.applications.edit." +
                 "sections.roles.createApplicationRoleWizard.title") }
                 <Heading
                     as="h6"
                     subHeading>
-                    { 
-                        t("console:develop.features.applications.edit." + 
+                    {
+                        t("console:develop.features.applications.edit." +
                         "sections.roles.createApplicationRoleWizard.subTitle")
                     }
                 </Heading>
@@ -360,7 +385,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                     <Field.Dropdown
                         ariaLabel="assignedApplicationId"
                         name="assignedApplicationId"
-                        label={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." + 
+                        label={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
                             "assignedApplication.label") }
                         required={ true }
                         options={ selectedApplication }
@@ -368,9 +393,9 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                         search
                         loading = { false }
                         data-componentid={ `${componentId}-typography-font-family-dropdown` }
-                        hint={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." + 
+                        hint={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
                             "assignedApplication.note") }
-                        placeholder={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." + 
+                        placeholder={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
                             "assignedApplication.placeholder") }
                         onChange={ (
                             e: React.ChangeEvent<HTMLInputElement>,
@@ -399,45 +424,69 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                         }
                         loading={ false }
                         onChange={ onAPIResourceSelected }
+                        hint={
+                            !isSubscribedAPIResourcesListLoading
+                            && apiResourcesListOptions?.length === 0
+                            && (
+                                <Hint>
+                                    <Trans
+                                        i18nKey={ "console:manage.features.roles.addRoleWizard.forms.rolePermission" +
+                                            ".apiResource.hint.empty" }
+                                    >
+                                        There are no API resources authorized for the selected application.
+                                        API Resources can be authorized through <Link
+                                            external={ false }
+                                            onClick={ () => {
+                                                history.push(
+                                                    `${ AppConstants.getPaths()
+                                                        .get("APPLICATION_EDIT").replace(":id", appId) }#tab=4`
+                                                );
+                                            } }
+                                        > here </Link>
+                                    </Trans>
+                                </Hint>
+                            )
+                        }
                     />
                 </Form>
-                <Grid xs={ 12 }>
-                    { selectedAPIResources?.length > 0 
-                        ? (
-                            <div className="role-permission-list field">
-                                <label className="form-label">
-                                    { t("console:manage.features.roles.addRoleWizard." +
+                { selectedAPIResources?.length > 0
+                    ? (
+                        <div className="role-permission-list field">
+                            <label className="form-label">
+                                { t("console:manage.features.roles.addRoleWizard." +
                                         "forms.rolePermission.permissions.label") }
-                                </label>
-                                <EmphasizedSegment
-                                    className="mt-2"
-                                    data-componentid={ `${componentId}-segment` }
-                                    basic
-                                    loading={ false }
-                                >
-                                    {
-                                        selectedAPIResources?.map((apiResource: APIResourceInterface) => {
-                                            return (
-                                                <RoleAPIResourcesListItem 
-                                                    key={ apiResource?.id }
-                                                    apiResource={ apiResource }
-                                                    onChangeScopes={ onChangeScopes }
-                                                    onRemoveAPIResource={ onRemoveAPIResource }
-                                                    selectedPermissions={ 
-                                                        selectedPermissions?.find(
-                                                            (selectedPermission: SelectedPermissionsInterface) =>
-                                                                selectedPermission.apiResourceId === apiResource?.id
-                                                        )?.scopes
-                                                    }
-                                                /> 
-                                            );
-                                        })
-                                    }
-                                </EmphasizedSegment>
-                            </div>
-                        ) : null
-                    }
-                </Grid>
+                            </label>
+                            <EmphasizedSegment
+                                className="mt-2"
+                                data-componentid={ `${componentId}-segment` }
+                                basic
+                                loading={ false }
+                            >
+                                {
+                                    selectedAPIResources?.map((apiResource: APIResourceInterface) => {
+                                        return (
+                                            <RoleAPIResourcesListItem
+                                                key={ apiResource?.id }
+                                                apiResource={ apiResource }
+                                                onChangeScopes={ onChangeScopes }
+                                                onRemoveAPIResource={ onRemoveAPIResource }
+                                                selectedPermissions={
+                                                    selectedPermissions?.find(
+                                                        (selectedPermission: SelectedPermissionsInterface) =>
+                                                            selectedPermission.apiResourceId === apiResource?.id
+                                                    )?.scopes
+                                                }
+                                                hasError={ erroneousAPIResourceFields?.includes(apiResource?.id) }
+                                                errorMessage={ t("console:manage.features.roles.addRoleWizard." +
+                                                    "forms.rolePermission.permissions.validation.empty") }
+                                            />
+                                        );
+                                    })
+                                }
+                            </EmphasizedSegment>
+                        </div>
+                    ) : null
+                }
             </Modal.Content>
             <Modal.Actions>
                 <Grid>

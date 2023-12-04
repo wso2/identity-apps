@@ -187,20 +187,23 @@ export class GovernanceConnectorUtils {
                             .replace(":categoryId",
                                 ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID)
                             .replace(":connectorId",
-                                ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID)
+                                ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID),
+                        testId: "mutli-attribute-login-card"
                     },
                     {
                         description: "Configure alternative login identifier settings.",
                         header: "Alternative Login Identifier",
                         id: ServerConfigurationsConstants.ALTERNATIVE_LOGIN_IDENTIFIER,
                         route: AppConstants.getPaths()
-                            .get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT")
+                            .get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
+                        testId: "alternative-login-identifier-card"
                     },
                     {
                         description: "Customize username validation rules for your users.",
                         header: "Username Validation",
                         id: ServerConfigurationsConstants.USERNAME_VALIDATION,
-                        route: AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT")
+                        route: AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"),
+                        testId: "username-validation-card"
                     }
                 ],
                 displayOrder: 1,
@@ -213,7 +216,8 @@ export class GovernanceConnectorUtils {
                         description: "Customize password validation rules for your users.",
                         header: "Password Validation",
                         id: ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID,
-                        route: AppConstants.getPaths().get("VALIDATION_CONFIG_EDIT")
+                        route: AppConstants.getPaths().get("VALIDATION_CONFIG_EDIT"),
+                        testId: "password-validation-card"
                     },
                     {
                         description: "Configure account lock on consecutive failed " +
@@ -229,7 +233,8 @@ export class GovernanceConnectorUtils {
                             .replace(
                                 ":connectorId",
                                 ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID
-                            )
+                            ),
+                        testId: "login-attempts-card"
                     },
                     {
                         description: "Enable reCAPTCHA for the organization.",
@@ -243,19 +248,22 @@ export class GovernanceConnectorUtils {
                             .replace(
                                 ":connectorId",
                                 ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID
-                            )
+                            ),
+                        testId: "bot-detection-card"
                     },
                     {
                         description: "Manage and configure user session settings and preferences.",
                         header: I18n.instance.t("console:sessionManagement.title"),
                         id: ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR_ID,
-                        route: AppConstants.getPaths().get("SESSION_MANAGEMENT")
+                        route: AppConstants.getPaths().get("SESSION_MANAGEMENT"),
+                        testId: "session-management-card"
                     },
                     {
                         description: "Authentication via JWT signed with client's registered key.",
                         header: "Private Key JWT Client Authentication (OIDC)",
                         id: ServerConfigurationsConstants.PRIVATE_KEY_JWT_CLIENT_AUTH,
-                        route: AppConstants.getPaths().get("PRIVATE_KEY_JWT_CONFIG_EDIT")
+                        route: AppConstants.getPaths().get("PRIVATE_KEY_JWT_CONFIG_EDIT"),
+                        testId: "private-key-jwt-client-auth-card"
                     }
                 ],
                 displayOrder: 1,
@@ -271,7 +279,8 @@ export class GovernanceConnectorUtils {
                         route: AppConstants.getPaths()
                             .get("GOVERNANCE_CONNECTOR_EDIT")
                             .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
-                            .replace(":connectorId", ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID)
+                            .replace(":connectorId", ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID),
+                        testId: "self-registration-card"
                     },
                     {
                         description: "Allow users choose passwords in admin-initiated onboarding.",
@@ -281,7 +290,8 @@ export class GovernanceConnectorUtils {
                             .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
                             .replace(
                                 ":connectorId",
-                                ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID)
+                                ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID),
+                        testId: "invite-user-to-set-password-card"
                     }
                 ],
                 displayOrder: 1,
@@ -299,7 +309,8 @@ export class GovernanceConnectorUtils {
                             .replace(":categoryId",
                                 ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID)
                             .replace(":connectorId",
-                                ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID)
+                                ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID),
+                        testId: "password-recovery-card"
                     },
                     {
                         description: "Enable self-service username recovery for users on the login page.",
@@ -314,7 +325,8 @@ export class GovernanceConnectorUtils {
                             .replace(":categoryId",
                                 ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID)
                             .replace(":connectorId",
-                                ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID)
+                                ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID),
+                        testId: "username-recovery-card"
                     },
                     {
                         description: "Enable administrators to initiate password reset process for users.",
@@ -325,7 +337,8 @@ export class GovernanceConnectorUtils {
                             .replace(":categoryId",
                                 ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID)
                             .replace(":connectorId",
-                                ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET)
+                                ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET),
+                        testId: "admin-initiated-password-reset-card"
                     }
                 ],
                 displayOrder: 1,
@@ -338,13 +351,15 @@ export class GovernanceConnectorUtils {
                         description: "Configure settings for SAML2 Web Single Sign-On functionality.",
                         header: I18n.instance.t("console:saml2Config.title"),
                         id: ServerConfigurationsConstants.SAML2_SSO_CONNECTOR_ID,
-                        route: AppConstants.getPaths().get("SAML2_CONFIGURATION")
+                        route: AppConstants.getPaths().get("SAML2_CONFIGURATION"),
+                        testId: "saml2-web-sso-card"
                     },
                     {
                         description: "Manage settings for WS-Federation based single sign-on.",
                         header: I18n.instance.t("console:wsFederationConfig.title"),
                         id: ServerConfigurationsConstants.WS_FEDERATION_CONNECTOR_ID,
-                        route: AppConstants.getPaths().get("WSFED_CONFIGURATION")
+                        route: AppConstants.getPaths().get("WSFED_CONFIGURATION").replace,
+                        testId: "ws-federation-sso-card"
                     }
                 ],
                 displayOrder: 0,
@@ -357,7 +372,8 @@ export class GovernanceConnectorUtils {
                         description: I18n.instance.t("console:manage.pages.emailDomainDiscovery.subTitle"),
                         header: I18n.instance.t("console:manage.pages.emailDomainDiscovery.title"),
                         id: ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY,
-                        route: AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS")
+                        route: AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS"),
+                        testId: "email-domain-discovery-card"
                     }
                 ],
                 displayOrder: 0,

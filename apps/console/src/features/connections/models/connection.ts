@@ -72,6 +72,12 @@ export interface ConnectionInterface extends StrictConnectionInterface {
     provisioning?: ProvisioningInterface;
     docLink?: string;
     type?: string;
+    implicitAssociation?: ImplicitAssociaionConfigInterface;
+}
+
+export interface ImplicitAssociaionConfigInterface {
+    isEnabled: boolean;
+    lookupAttribute: string[];
 }
 
 /**
@@ -606,6 +612,7 @@ export enum SupportedQuickStartTemplateTypes {
 export interface ConnectionAdvanceInterface {
     isFederationHub?: boolean;
     homeRealmIdentifier?: string;
+    issuer?: string;
     alias?: string;
     certificate?: CertificateConfigInterface;
 }
@@ -623,6 +630,11 @@ export enum ConnectionTabTypes {
     SETTINGS ="settings",
     USER_ATTRIBUTES = "user-attributes",
     ADVANCED = "advanced",
+    ATTRIBUTES = "attributes",
+    CONNECTED_APPS = "connected-apps",
+    IDENTITY_PROVIDER_GROUPS = "identity-provider-groups",
+    OUTBOUND_PROVISIONING = "outbound-provisioning",
+    JIT_PROVISIONING = "jit-provisioning",
 }
 
 export interface FederatedAuthenticatorWithMetaInterface {

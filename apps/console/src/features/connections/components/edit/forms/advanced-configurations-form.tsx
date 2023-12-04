@@ -18,7 +18,7 @@
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -28,7 +28,7 @@ import { ConnectionAdvanceInterface } from "../../../models/connection";
 /**
  *  Advance Configurations for the Identity Provider.
  */
-interface AdvanceConfigurationsFormPropsInterface extends 
+interface AdvanceConfigurationsFormPropsInterface extends
     ConnectionAdvanceInterface, TestableComponentInterface {
 
     /**
@@ -52,8 +52,8 @@ interface AdvanceConfigurationsFormPropsInterface extends
 /**
  * Advance configurations form component.
  *
- * @param {AdvanceConfigurationsFormPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns advance configurations form component.
  */
 export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsFormPropsInterface> = (
     props: AdvanceConfigurationsFormPropsInterface
@@ -73,18 +73,19 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
      * Prepare form values for submitting.
      *
      * @param values - Form values.
-     * @return {any} Sanitized form values.
+     * @returns Sanitized form values.
      */
     const updateConfiguration = (values: any): any => {
         return {
             alias: values.get("alias"),
             homeRealmIdentifier: values.get("homeRealmIdentifier"),
+            idpIssuerName: values.get("issuer"),
             isFederationHub: !!values.get("federationHub")?.includes("federationHub")
         };
     };
 
     return (
-        <Forms onSubmit={ (values) => onSubmit(updateConfiguration(values)) }>
+        <Forms onSubmit={ (values: Map<string, FormValue>) => onSubmit(updateConfiguration(values)) }>
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -94,7 +95,7 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
                             required={ false }
                             requiredErrorMessage={ t("console:develop.features.authenticationProvider.forms.common." +
                                 "requiredErrorMessage") }
-                            value={ config?.isFederationHub ? ["federationHub"] : [] }
+                            value={ config?.isFederationHub ? [ "federationHub" ] : [] }
                             type="checkbox"
                             children={ [
                                 {

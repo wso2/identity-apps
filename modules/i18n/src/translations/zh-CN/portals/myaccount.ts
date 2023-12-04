@@ -872,7 +872,7 @@ export const myAccount: MyAccountNS = {
                 "descriptions": {
                     "hint": "您将收到包含一次性验证代码的短信"
                 },
-                "heading": "短信号码",
+                "heading": "手机号码",
                 "notifications": {
                     "updateMobile": {
                         "error": {

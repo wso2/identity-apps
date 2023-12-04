@@ -902,7 +902,7 @@ export const myAccount: MyAccountNS = {
                 descriptions: {
                     hint: "Você receberá uma mensagem de texto contendo o código de verificação"
                 },
-                heading: "SMS OTP",
+                heading: "Número de telemóvel",
                 notifications: {
                     updateMobile: {
                         error: {

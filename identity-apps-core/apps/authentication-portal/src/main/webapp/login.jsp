@@ -96,6 +96,8 @@
     String userType = request.getParameter("utype");
     String consoleURL = application.getInitParameter("ConsoleURL");
 
+    String isHostedExternally = application.getInitParameter("IsHostedExternally");
+
     if ((StringUtils.equals("WSO2_LOGIN_FOR_CONSOLE",appName)
             && !StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT))) {
         idpAuthenticatorMapping.put(ENTERPRISE_USER_LOGIN_ORG,ENTERPRISE_USER_LOGIN_AUTHENTICATOR);
@@ -174,7 +176,6 @@
     if (localAuthenticatorNames.size() > 1 || idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1) {
         String baseURL;
         // Check whether authentication endpoint is hosted externally.
-        String isHostedExternally = application.getInitParameter("IsHostedExternally");
         if (Boolean.parseBoolean(isHostedExternally)) {
             String requestURI = request.getRequestURI();
             if (StringUtils.isNotBlank(requestURI)) {
@@ -322,22 +323,29 @@
     String identityMgtEndpointContextURL = application.getInitParameter("IdentityManagementEndpointContextURL");
     String accountRegistrationEndpointContextURL = application.getInitParameter("AccountRegisterEndpointURL");
     String srURLEncodedURL = "";
-    Boolean isSelfSignUpEnabledInTenant = false;
-    Boolean isUsernameRecoveryEnabledInTenant = false;
-    Boolean isPasswordRecoveryEnabledInTenant = false;
+    Boolean isSelfSignUpEnabledInTenant;
+    Boolean isUsernameRecoveryEnabledInTenant;
+    Boolean isPasswordRecoveryEnabledInTenant;
 
-    try {
-        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
-        isSelfSignUpEnabledInTenant = preferenceRetrievalClient.checkSelfRegistration(userTenant);
-        isUsernameRecoveryEnabledInTenant = preferenceRetrievalClient.checkUsernameRecovery(userTenant);
-        isPasswordRecoveryEnabledInTenant = preferenceRetrievalClient.checkPasswordRecovery(userTenant);
-    } catch (PreferenceRetrievalClientException e) {
-        request.setAttribute("error", true);
-        request.setAttribute("errorMsg", AuthenticationEndpointUtil
-                        .i18n(resourceBundle, "something.went.wrong.contact.admin"));
-        IdentityManagementEndpointUtil.addErrorInformation(request, e);
-        request.getRequestDispatcher("error.jsp").forward(request, response);
-        return;
+    // Check whether authentication endpoint is hosted externally.
+    if (Boolean.parseBoolean(isHostedExternally)) {
+        isSelfSignUpEnabledInTenant = false;
+        isUsernameRecoveryEnabledInTenant = false;
+        isPasswordRecoveryEnabledInTenant = false;
+    } else {
+        try {
+            PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+            isSelfSignUpEnabledInTenant = preferenceRetrievalClient.checkSelfRegistration(userTenant);
+            isUsernameRecoveryEnabledInTenant = preferenceRetrievalClient.checkUsernameRecovery(userTenant);
+            isPasswordRecoveryEnabledInTenant = preferenceRetrievalClient.checkPasswordRecovery(userTenant);
+        } catch (PreferenceRetrievalClientException e) {
+            request.setAttribute("error", true);
+            request.setAttribute("errorMsg", AuthenticationEndpointUtil
+                            .i18n(resourceBundle, "something.went.wrong.contact.admin"));
+            IdentityManagementEndpointUtil.addErrorInformation(request, e);
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
     }
 
     if (isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) {
@@ -358,7 +366,13 @@
             accountRegistrationEndpointContextURL = identityMgtEndpointContextURL + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
         }
         // For self sign-up build the normal callback URL.
-        String srURI = ServiceURLBuilder.create().addPath(AUTHENTICATION_ENDPOINT_LOGIN).build().getAbsolutePublicURL();
+        String srURI;
+
+        if (Boolean.parseBoolean(isHostedExternally)) {
+            srURI = application.getInitParameter("IdentityManagementEndpointLoginURL");
+        } else {
+            srURI = ServiceURLBuilder.create().addPath(AUTHENTICATION_ENDPOINT_LOGIN).build().getAbsolutePublicURL();
+        }
         String srprmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
         String srURLWithoutEncoding = srURI + "?" + srprmstr;
         srURLEncodedURL= URLEncoder.encode(srURLWithoutEncoding, UTF_8);

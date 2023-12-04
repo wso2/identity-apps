@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { Button } from "@oxygen-ui/react";
-import { PlusIcon } from "@oxygen-ui/react-icons";
 import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
@@ -35,6 +33,7 @@ import {
     DocumentationLink,
     EmphasizedSegment,
     Heading,
+    LinkButton,
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
@@ -50,7 +49,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Grid } from "semantic-ui-react";
+import { Grid, Icon } from "semantic-ui-react";
 import { AutoCompleteRenderOption } from "./auto-complete-render-option";
 import { ApplicationRoleWizard } from "./wizard-updated/application-role-wizard";
 import { updateApplicationDetails } from "../../applications/api";
@@ -112,7 +111,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const [ initialSelectedRoles, setInitialSelectedRoles ] =
         useState<BasicRoleInterface[]>(application?.associatedRoles?.roles ?? []);
     const [ activeOption, setActiveOption ] = useState<BasicRoleInterface>(undefined);
-    const [ removedRolesOptions, setRemovedRolesOptions ] = useState<BasicRoleInterface[]>(undefined);
 
     const isReadOnly: boolean = organizationType === OrganizationType.SUBORGANIZATION;
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -140,28 +138,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             return;
         }
 
-        /**
-         * Ideally, the selectedRoles list should be cleared immediately when the current roleAudience is not allowed
-         * for the application. This does not happen in some cases due to the asynchronous nature of the
-         * setSelectedRoles() method. This if block prevents the roles from being updated with stale data in such cases.
-         */
-        if (roleAudience !== application?.associatedRoles?.allowedAudience && selectedRoles?.length !== 0) {
-            return;
-        }
         updateRoles();
-    }, [ shouldUpdateRoleAudience, roleAudience, selectedRoles ]);
-
-    /**
-     * Set removed roles
-     */
-    useEffect(() => {
-        if (initialSelectedRoles && selectedRoles) {
-            setRemovedRolesOptions(initialSelectedRoles?.filter((role: BasicRoleInterface) => {
-                return selectedRoles?.find(
-                    (selectedRole: BasicRoleInterface) => selectedRole.id === role.id) === undefined;
-            }));
-        }
-    }, [ initialSelectedRoles, selectedRoles ]);
+    }, [ shouldUpdateRoleAudience, roleAudience ]);
 
     /**
      * Handles the click event of the New Role button.
@@ -225,13 +203,16 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
      */
     const updateRoles = (): void => {
         setIsSubmitting(true);
+        const isRoleAudienceChanged: boolean = roleAudience !== application?.associatedRoles?.allowedAudience;
         const data: AssociatedRolesPatchObjectInterface = {
             allowedAudience: roleAudience,
-            roles: selectedRoles ? selectedRoles.map((role: BasicRoleInterface) => {
-                return {
-                    id: role.id
-                };
-            }) : []
+            roles: (isRoleAudienceChanged || !selectedRoles)
+                ? []
+                : selectedRoles.map((role: BasicRoleInterface) => {
+                    return {
+                        id: role.id
+                    };
+                })
         };
 
         const updatedApplication: ApplicationInterface = {
@@ -275,26 +256,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                 setIsSubmitting(false);
                 setShouldUpdateRoleAudience(false);
             });
-    };
-
-    /**
-     * Handle the restore roles.
-     *
-     * @param remainingRoles - remaining roles
-     */
-    const handleRestoreUsers = (remainingRoles: BasicRoleInterface[]) => {
-        const removedRoles: BasicRoleInterface[] = [];
-
-        removedRolesOptions.forEach((user: BasicRoleInterface) => {
-            if (!remainingRoles?.find((newUser: BasicRoleInterface) => newUser.id === user.id)) {
-                removedRoles.push(user);
-            }
-        });
-
-        setSelectedRoles([
-            ...selectedRoles,
-            ...removedRoles
-        ]);
     };
 
     /**
@@ -344,41 +305,61 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                 { t("extensions:develop.applications.edit.sections.rolesV2.roleAudience") }
                             </Heading>
                         </Grid.Column>
-                        <Grid.Column width={ 2 }>
+                        <Grid.Column width={ 10 }>
                             <FormGroup>
-                                <FormControlLabel
-                                    checked={ roleAudience === RoleAudienceTypes.ORGANIZATION }
-                                    control={ <Radio size="small"/> }
-                                    onChange={ () => promptAudienceSwitchWarning(RoleAudienceTypes.ORGANIZATION) }
-                                    label={ t("extensions:develop.applications.edit.sections.rolesV2.organization") }
-                                    data-componentid={ `${ componentId }-organization-audience-checkbox` }
-                                    disabled={ isReadOnly }
-                                />
-                                <Grid.Row>
-                                    <FormControlLabel
-                                        checked={ roleAudience === RoleAudienceTypes.APPLICATION }
-                                        control={ <Radio size="small" /> }
-                                        onChange={ () => promptAudienceSwitchWarning(RoleAudienceTypes.APPLICATION) }
-                                        label={ t("extensions:develop.applications.edit.sections.rolesV2.application") }
-                                        data-componentid={ `${ componentId }-application-audience-checkbox` }
-                                        disabled={ isReadOnly }
-                                        className="mr-6"
-                                    />
-                                    {
-                                        roleAudience === RoleAudienceTypes.APPLICATION
-                                            && (
-                                                <Button
-                                                    startIcon={ <PlusIcon/> }
-                                                    variant="text"
-                                                    onClick={ handleAddNewRoleWizardClick }
-                                                    disabled={ isReadOnly }
-                                                >
-                                                    { t("console:develop.features.applications.edit." +
-                                                            "sections.roles.createApplicationRoleWizard.button") }
-                                                </Button>
-                                            )
-                                    }
-                                </Grid.Row>
+                                <Grid>
+                                    <Grid.Row columns={ 2 } className="pb-0">
+                                        <Grid.Column width={ 4 }>
+                                            <FormControlLabel
+                                                checked={ roleAudience === RoleAudienceTypes.APPLICATION }
+                                                control={ <Radio size="small" /> }
+                                                onChange={ () =>
+                                                    promptAudienceSwitchWarning(RoleAudienceTypes.APPLICATION) }
+                                                label={
+                                                    t("extensions:develop.applications.edit.sections." +
+                                                    "rolesV2.application")
+                                                }
+                                                data-componentid={ `${ componentId }-application-audience-checkbox` }
+                                                disabled={ isReadOnly }
+                                            />
+                                        </Grid.Column>
+                                        <Grid.Column width={ 6 }>
+                                            {
+                                                roleAudience === RoleAudienceTypes.APPLICATION
+                                                    && (
+                                                        <LinkButton
+                                                            fluid
+                                                            data-componentid="create-application-role-button"
+                                                            onClick={ handleAddNewRoleWizardClick }
+                                                            disabled={ isReadOnly }
+                                                        >
+                                                            <Icon name="plus"/>
+                                                            {
+                                                                t("console:develop.features.applications.edit." +
+                                                                "sections.roles.createApplicationRoleWizard.button")
+                                                            }
+                                                        </LinkButton>
+                                                    )
+                                            }
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                    <Grid.Row className="pt-0">
+                                        <Grid.Column width={ 6 }>
+                                            <FormControlLabel
+                                                checked={ roleAudience === RoleAudienceTypes.ORGANIZATION }
+                                                control={ <Radio size="small"/> }
+                                                onChange={ () =>
+                                                    promptAudienceSwitchWarning(RoleAudienceTypes.ORGANIZATION) }
+                                                label={
+                                                    t("extensions:develop.applications.edit.sections." +
+                                                    "rolesV2.organization")
+                                                }
+                                                data-componentid={ `${ componentId }-organization-audience-checkbox` }
+                                                disabled={ isReadOnly }
+                                            />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
                             </FormGroup>
                         </Grid.Column>
                     </Grid.Row>
@@ -458,67 +439,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     />
                                 ) }
                             />
-                            {
-                                removedRolesOptions?.length > 0
-                                    ? (
-                                        <Autocomplete
-                                            className="mt-3"
-                                            multiple
-                                            disableCloseOnSelect
-                                            loading={ isLoading }
-                                            options={ removedRolesOptions }
-                                            value={ removedRolesOptions }
-                                            getOptionLabel={
-                                                (role: BasicRoleInterface) => role.name
-                                            }
-                                            onChange={ (
-                                                event: SyntheticEvent,
-                                                remainingRoles: BasicRoleInterface[]
-                                            ) => {
-                                                handleRestoreUsers(remainingRoles);
-                                            } }
-                                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                <TextField
-                                                    { ...params }
-                                                    label={ t("extensions:develop.applications.edit.sections." +
-                                                        "rolesV2.removedRoles") }
-                                                    placeholder={ t("extensions:develop.applications.edit.sections." +
-                                                        "rolesV2.searchPlaceholder") }
-                                                />
-                                            ) }
-                                            renderTags={ (
-                                                value: BasicRoleInterface[],
-                                                getTagProps: AutocompleteRenderGetTagProps
-                                            ) => value.map((option: BasicRoleInterface, index: number) => (
-                                                <Chip
-                                                    { ...getTagProps({ index }) }
-                                                    key={ index }
-                                                    label={ option.name }
-                                                    option={ option }
-                                                    activeOption={ activeOption }
-                                                    setActiveOption={ setActiveOption }
-                                                    variant="outlined"
-                                                    onDelete={ () => {
-                                                        setSelectedRoles([
-                                                            ...selectedRoles,
-                                                            option
-                                                        ]);
-                                                    } }
-                                                />
-                                            ) ) }
-                                            renderOption={ (
-                                                props: HTMLAttributes<HTMLLIElement>,
-                                                option: BasicRoleInterface
-                                            ) => (
-                                                <AutoCompleteRenderOption
-                                                    displayName={ option.name }
-                                                    renderOptionProps={ props }
-                                                />
-                                            ) }
-                                        />
-                                    ) : null
-                            }
-
                         </Grid.Column>
                     </Grid.Row>
                     {

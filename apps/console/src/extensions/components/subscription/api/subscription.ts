@@ -16,12 +16,13 @@
  * under the License.
  */
 
-import useRequest, { 
+import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
-    RequestResultInterface 
+    RequestResultInterface
 } from "apps/console/src/features/core/hooks/use-request";
 import { HttpMethods } from "modules/core/src/models";
+import { Config } from "../../../../features/core";
 import { getDomainQueryParam } from "../../tenants/api/tenants";
 import { getTenantResourceEndpoints } from "../../tenants/configs";
 import { TenantTierRequestResponse } from "../models/subscription";
@@ -31,7 +32,7 @@ import { TenantTierRequestResponse } from "../models/subscription";
  *
  * @returns SWR response object containing the data, error, isValidating, mutate.
  */
-const useTenantTier = <Data = TenantTierRequestResponse, 
+const useTenantTier = <Data = TenantTierRequestResponse,
     Error = RequestErrorInterface> (): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -42,9 +43,12 @@ const useTenantTier = <Data = TenantTierRequestResponse,
         url: getTenantResourceEndpoints().tenantSubscriptionApi + "/tier" + getDomainQueryParam()
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig, {
-        shouldRetryOnError: false
-    });
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(
+        Config.getDeploymentConfig().extensions?.subscriptionApiPath ? requestConfig : null,
+        {
+            shouldRetryOnError: false
+        }
+    );
 
     return {
         data,

@@ -914,7 +914,7 @@ export const myAccount: MyAccountNS = {
                 descriptions: {
                     hint: "நீங்கள் உறுதிப்படுத்தும் குறியீட்டினை குறுஞ் செய்தியினூடாக பெறுவீர்கள்"
                 },
-                heading: "ஒரு முறை கடவுச்சொல்(OTP) குறுஞ் செய்தி",
+                heading: "Mobile number",
                 notifications: {
                     updateMobile: {
                         error: {

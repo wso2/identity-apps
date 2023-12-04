@@ -297,10 +297,11 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             const appList: ApplicationListInterface = cloneDeep(applicationList);
 
             appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
-                !ApplicationManagementConstants.HIDDEN_APPS.includes(item.name)
+                !ApplicationManagementConstants.SYSTEM_APPS.includes(item.name)
+                && !ApplicationManagementConstants.DEFAULT_APPS.includes(item.name)
             );
             appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
-            appList.totalResults = appList.totalResults - 
+            appList.totalResults = appList.totalResults -
                 (applicationList.applications.length - appList.applications.length);
 
             setFilteredApplicationList(appList);
@@ -526,7 +527,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     return (
         <PageLayout
             pageTitle="Applications"
-            action={ (organizationType !== OrganizationType.SUBORGANIZATION && 
+            action={ (organizationType !== OrganizationType.SUBORGANIZATION &&
                 filteredApplicationList?.totalResults > 0) && (
                 <Show when={ AccessControlConstants.APPLICATION_WRITE }>
                     <PrimaryButton
@@ -613,7 +614,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     />
                 ) }
                 currentListSize={ filteredApplicationList?.count }
-                isLoading={ 
+                isLoading={
                     isApplicationListFetchRequestLoading || isMyAccountApplicationDataFetchRequestLoading
                 }
                 listItemLimit={ listItemLimit }
@@ -683,7 +684,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     ) }
                     featureConfig={ featureConfig }
                     isSetStrongerAuth={ strongAuth }
-                    isLoading={ 
+                    isLoading={
                         isApplicationListFetchRequestLoading || isMyAccountApplicationDataFetchRequestLoading
                     }
                     list={ filteredApplicationList }

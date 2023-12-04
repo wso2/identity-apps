@@ -4,15 +4,10 @@
             "id": 1,
             "options": [
                 {
-                    "authenticator": "BasicAuthenticator",
-                    "idp": "LOCAL"
-                },
-                {
                     "authenticator": "FIDOAuthenticator",
                     "idp": "LOCAL"
                 }
             ]
         }
-    ],
-    "script": "var onLoginRequest = function(context) {\n    executeStep(1, {\n        onFail: function (context) {\n            var authenticatorStatus = context.request.params.scenario; \n\n            // If it is a passkey progressive enrollment request trigger the following flow.\n            if (authenticatorStatus != null && authenticatorStatus[0] == 'INIT_FIDO_ENROLL' ) { \n                var filteredAuthenticationOptions = filterAuthenticators(context.steps[1].options, 'FIDOAuthenticator');\n                executeStep(1, {\n                    stepOptions: {\n                        markAsSubjectIdentifierStep: 'true',\n                        markAsSubjectAttributeStep: 'true'\n                    },\n                    authenticationOptions: filteredAuthenticationOptions\n                },{\n                    onSuccess: function (context) {\n                        // If user got successfully authenticated \n                        executeStep(1, { \n                            stepOptions: { \n                                forceAuth: 'true'\n                            },\n                            authenticationOptions: [{authenticator:'FIDOAuthenticator'}]\n                        }, {});\n                    },\n                });\n            }\n        }\n    });\n};\n"   
+    ]
 }

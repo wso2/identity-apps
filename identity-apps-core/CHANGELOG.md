@@ -1,5 +1,106 @@
 # @wso2is/identity-apps-core
 
+## 2.0.82
+
+### Patch Changes
+
+- [#4940](https://github.com/wso2/identity-apps/pull/4940) [`88fde38c4b`](https://github.com/wso2/identity-apps/commit/88fde38c4bc6057e5e3971b237f653ac08f914e5) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix tenant creation issue
+
+## 2.0.81
+
+### Patch Changes
+
+- [#4860](https://github.com/wso2/identity-apps/pull/4860) [`0724022f4c`](https://github.com/wso2/identity-apps/commit/0724022f4cbd6a0f2711da9648a3bb49dd967bd3) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Allow to update system apps for set of scenarios
+
+## 2.0.80
+
+### Patch Changes
+
+- [#4934](https://github.com/wso2/identity-apps/pull/4934) [`0fd3494829`](https://github.com/wso2/identity-apps/commit/0fd3494829e9386283a9a727f25390616cd89042) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Framework version bump
+
+## 2.0.79
+
+### Patch Changes
+
+- [#4914](https://github.com/wso2/identity-apps/pull/4914) [`da915ea6a0`](https://github.com/wso2/identity-apps/commit/da915ea6a02efae9d554961e3447c5247adec4d7) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Remove unnecessary information from consent page
+
+* [#4928](https://github.com/wso2/identity-apps/pull/4928) [`d520eacfbb`](https://github.com/wso2/identity-apps/commit/d520eacfbb275d5ab5210b4e8f4e37aa204cedac) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Rename duplicate variable
+
+* Updated dependencies [[`da915ea6a0`](https://github.com/wso2/identity-apps/commit/da915ea6a02efae9d554961e3447c5247adec4d7)]:
+  - @wso2is/theme@2.0.45
+
+## 2.0.78
+
+### Patch Changes
+
+- [#4902](https://github.com/wso2/identity-apps/pull/4902) [`8a13e28839`](https://github.com/wso2/identity-apps/commit/8a13e288390862d83a7b9ce5129f251a3dc19359) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add enterprise idp logo with the idp name
+
+- Updated dependencies [[`8a13e28839`](https://github.com/wso2/identity-apps/commit/8a13e288390862d83a7b9ce5129f251a3dc19359)]:
+  - @wso2is/theme@2.0.44
+
+## 2.0.77
+
+### Patch Changes
+
+- [#4885](https://github.com/wso2/identity-apps/pull/4885) [`143df44dd3`](https://github.com/wso2/identity-apps/commit/143df44dd3ac1ba44c46e34590c436f38fd3c143) Thanks [@Achintha444](https://github.com/Achintha444)! - (improvement) Adding config for API Based Authn configuration
+
+* [#4899](https://github.com/wso2/identity-apps/pull/4899) [`47c65e6968`](https://github.com/wso2/identity-apps/commit/47c65e69686a2cac6a1d5111e0713d03f2d81d95) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Fix issue with language switcher not picking the browser language
+
+- [#4885](https://github.com/wso2/identity-apps/pull/4885) [`614bc01dc7`](https://github.com/wso2/identity-apps/commit/614bc01dc7631402b61756a8583f6eff0bd8a6ff) Thanks [@Achintha444](https://github.com/Achintha444)! - config for api based authn
+
+* [#4895](https://github.com/wso2/identity-apps/pull/4895) [`6421d44c14`](https://github.com/wso2/identity-apps/commit/6421d44c14ffafc563774151a62715865c998e65) Thanks [@thanujalk](https://github.com/thanujalk)! - Fix permission issue with admin username change
+
+* Updated dependencies [[`614bc01dc7`](https://github.com/wso2/identity-apps/commit/614bc01dc7631402b61756a8583f6eff0bd8a6ff)]:
+  - @wso2is/theme@2.0.43
+
+## 2.0.76
+
+### Patch Changes
+
+- [#4881](https://github.com/wso2/identity-apps/pull/4881) [`ee87522bdd`](https://github.com/wso2/identity-apps/commit/ee87522bddb2785e48c6e5b4490067b5de671641) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Fix authentication endpoint externally hosting issues
+
+## 2.0.75
+
+### Patch Changes
+
+- [#4843](https://github.com/wso2/identity-apps/pull/4843) [`b69811591d`](https://github.com/wso2/identity-apps/commit/b69811591d951232db956bded1a84e4171aa267c) Thanks [@thanujalk](https://github.com/thanujalk)! - Introduce AppPortalRoleManagementListener
+
+## 2.0.74
+
+### Patch Changes
+
+- [#4826](https://github.com/wso2/identity-apps/pull/4826) [`ad330b10d1`](https://github.com/wso2/identity-apps/commit/ad330b10d14e922f586f4c0cab86e7e712efef9e) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - encode locale url parameter before processing due to security concerns.
+
+## 2.0.73
+
+### Patch Changes
+
+- [#4857](https://github.com/wso2/identity-apps/pull/4857) [`069594a834`](https://github.com/wso2/identity-apps/commit/069594a834b651dcec7ddcdee7d0758c664eb5b1) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Improve core url building.
+
+## 2.0.72
+
+### Patch Changes
+
+- [#4861](https://github.com/wso2/identity-apps/pull/4861) [`58c5ec4b35`](https://github.com/wso2/identity-apps/commit/58c5ec4b3532eb486ea12d9b4ae68beded7143f5) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix possible index out of bound issue
+
+## 2.0.71
+
+### Patch Changes
+
+- [#4828](https://github.com/wso2/identity-apps/pull/4828) [`b9a44a77fb`](https://github.com/wso2/identity-apps/commit/b9a44a77fbd30029aac10aa1a7520b8bacf53101) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Improve url building
+
+## 2.0.70
+
+### Patch Changes
+
+- [#4845](https://github.com/wso2/identity-apps/pull/4845) [`cde7a2d52b`](https://github.com/wso2/identity-apps/commit/cde7a2d52bb9bbd4b42f1b8d9a3eaba5285f1469) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Temporarily add logs for debugging localize.jsp
+
+## 2.0.69
+
+### Patch Changes
+
+- [#4840](https://github.com/wso2/identity-apps/pull/4840) [`4b6ea42524`](https://github.com/wso2/identity-apps/commit/4b6ea425240c2681bb19511c4718e2122b1706e3) Thanks [@dhaura](https://github.com/dhaura)! - Fix Internal Hostname not Honored Issue in dynamic_prompt.js
+
 ## 2.0.68
 
 ### Patch Changes

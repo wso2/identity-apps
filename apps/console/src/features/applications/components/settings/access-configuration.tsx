@@ -116,7 +116,7 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
      */
     onUpdate: (id: string) => void;
 
-    onProtocolUpdate: () => void;
+    onProtocolUpdate?: () => void;
     /**
      *  Is inbound protocol config request is still loading.
      */
@@ -149,6 +149,16 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
      * Application template.
      */
     applicationTemplateId?: string;
+    /**
+     * Flag to determine if the updated application a default application.
+     * ex: My Account
+     */
+    isDefaultApplication?: boolean;
+    /**
+     * Flag to determine if the updated application a system application.
+     * ex: Console
+     */
+    isSystemApplication?: boolean;
 }
 
 /**
@@ -180,6 +190,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         template,
         extendedAccessConfig,
         applicationTemplateId,
+        isDefaultApplication,
+        isSystemApplication,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -680,6 +692,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                     template={ template }
                                     data-testid={ `${ componentId }-inbound-${ selectedProtocol }-form` }
                                     containerRef={ emphasizedSegmentRef }
+                                    isDefaultApplication={ isDefaultApplication }
+                                    isSystemApplication={ isSystemApplication }
                                 />
                             )
                             : (

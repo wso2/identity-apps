@@ -16,11 +16,16 @@
  * under the License.
  */
 
-import Autocomplete, {  
-    AutocompleteRenderGetTagProps, 
-    AutocompleteRenderInputParams 
+import { SelectChangeEvent } from "@mui/material/Select";
+import Autocomplete, {
+    AutocompleteRenderGetTagProps,
+    AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
 import Button from "@oxygen-ui/react/Button";
+import FormControl from "@oxygen-ui/react/FormControl";
+import Grid from "@oxygen-ui/react/Grid";
+import MenuItem from "@oxygen-ui/react/MenuItem";
+import Select from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
 import { AlertLevels, IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -43,20 +48,24 @@ import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import { AutoCompleteRenderOption } from "./edit-role-common/auto-complete-render-option";
 import { RenderChip } from "./edit-role-common/render-chip";
+import { RemoteUserStoreConstants } from "../../../../extensions/components/user-stores/constants";
 import { updateResources } from "../../../core/api/bulk-operations";
 import { getEmptyPlaceholderIllustrations } from "../../../core/configs/ui";
 import { GroupsInterface } from "../../../groups/models/groups";
 import { useUsersList } from "../../../users/api";
-import { 
+import {
     PatchBulkUserDataInterface,
-    PatchUserAddOpInterface, 
-    PatchUserOpInterface, 
-    PatchUserRemoveOpInterface, 
-    UserBasicInterface 
+    PatchUserAddOpInterface,
+    PatchUserOpInterface,
+    PatchUserRemoveOpInterface,
+    UserBasicInterface
 } from "../../../users/models";
+import { useUserStores } from "../../../userstores/api";
+import { UserStoreListItem } from "../../../userstores/models/user-stores";
 import { RoleConstants, Schemas } from "../../constants";
 import { RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils/role-management-utils";
+import "./edit-role.scss";
 
 type RoleUsersPropsInterface = IdentifiableComponentInterface & RoleEditSectionsInterface;
 
@@ -83,13 +92,30 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ activeOption, setActiveOption ] = useState<GroupsInterface|UserBasicInterface>(undefined);
     const [ showEmptyRolesListPlaceholder, setShowEmptyRolesListPlaceholder ] = useState<boolean>(false);
+    const [ selectedUserStoreDomainId, setSelectedUserStoreDomainId ] = useState<string>(
+        RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME
+    );
+
+    const {
+        data: userStores,
+        isLoading: isUserStoresLoading
+    } = useUserStores(null);
 
     const {
         data: originalUserList,
         isLoading: isUserListFetchRequestLoading,
         error: userListFetchRequestError,
         mutate: mutateUserListFetchRequest
-    } = useUsersList(null, null, userSearchValue ? `userName co ${ userSearchValue }` : null, null, null);
+    } = useUsersList(
+        null,
+        null,
+        userSearchValue ? `userName co ${ userSearchValue }` : null,
+        null,
+        selectedUserStoreDomainId,
+        null,
+        !!selectedUserStoreDomainId
+    );
+
 
     /**
      * Set initial selected users options
@@ -146,7 +172,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             }));
         }
     }, [ initialSelectedUsersOption, selectedUsersOption ]);
-    
+
     /**
      * Call mutateUserListFetchRequest when the user search value changes
      */
@@ -155,10 +181,10 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             mutateUserListFetchRequest().finally(() => setUserSearchLoading(false));
         }
     }, [ userSearchValue ]);
-    
+
     /**
      * Show error if user list fetch request failed
-     */ 
+     */
     useEffect(() => {
         if ( userListFetchRequestError ) {
             dispatch(
@@ -172,60 +198,28 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     }, [ userListFetchRequestError ]);
 
     /**
-     * Handle the restore users.
-     * 
-     * @param remainingUsers - remaining users
-     */
-    const handleRestoreUsers = (remainingUsers: UserBasicInterface[]) => {
-        const removedUsers: UserBasicInterface[] = [];
-
-        removedUsersOptions.forEach((user: UserBasicInterface) => {
-            if (!remainingUsers?.find((newUser: UserBasicInterface) => newUser.id === user.id)) {
-                removedUsers.push(user);
-            }
-        });
-
-        setSelectedUsersOption([
-            ...selectedUsersOption,
-            ...removedUsers
-        ]);
-    };
-
-    /**
      * Get the place holder components.
-     * 
+     *
      * @returns - place holder components
      */
     const getPlaceholders = () => {
-        if (userListFetchRequestError) {
+        if (showEmptyRolesListPlaceholder) {
             return (
                 <EmptyPlaceholder
-                    subtitle={ 
-                        [ t("console:manage.features.roles.edit.users.placeholders.errorPlaceholder.subtitles.0"),
-                            t("console:manage.features.roles.edit.users.placeholders.errorPlaceholder.subtitles.1") ] 
-                    }
-                    title={ t("console:manage.features.roles.edit.users.placeholders.errorPlaceholder.title") }
-                    image={ getEmptyPlaceholderIllustrations().genericError }
-                    imageSize="tiny"
-                />
-            );
-        } else if (showEmptyRolesListPlaceholder) {
-            return (
-                <EmptyPlaceholder
-                    subtitle={ 
-                        [ t("console:manage.features.roles.edit.users.placeholders.emptyPlaceholder.subtitles.0") ] 
+                    subtitle={
+                        [ t("console:manage.features.roles.edit.users.placeholders.emptyPlaceholder.subtitles.0") ]
                     }
                     title={ t("console:manage.features.roles.edit.users.placeholders.emptyPlaceholder.title") }
                     image={ getEmptyPlaceholderIllustrations().emptyList }
                     imageSize="tiny"
-                    action={ 
-                        !isReadOnly 
+                    action={
+                        !isReadOnly
                             ? (
                                 <PrimaryButton
                                     onClick={ () => setShowEmptyRolesListPlaceholder(false) }
                                 >
                                     <Icon name="plus"/>
-                                    { t("console:manage.features.roles.edit.users.placeholders.emptyPlaceholder" + 
+                                    { t("console:manage.features.roles.edit.users.placeholders.emptyPlaceholder" +
                                         ".action") }
                                 </PrimaryButton>
                             )
@@ -239,7 +233,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     /**
      * Handles the search query for the users list.
      */
-    const searchUsers: DebouncedFunc<(query: string) => void> = 
+    const searchUsers: DebouncedFunc<(query: string) => void> =
         useCallback(debounce((query: string) => {
             query = !isEmpty(query) ? query : null;
             setUserSearchValue(query);
@@ -266,7 +260,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
             method: "PATCH",
             path: "/v2/Roles/" + role.id
         };
-        
+
         removedUsersOptions?.map((user: UserBasicInterface) => {
             removeOperations.push({
                 "op": "remove",
@@ -309,7 +303,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 if (error.response && error.response.data.detail) {
                     dispatch(
                         addAlert({
-                            description: 
+                            description:
                                 t("console:manage.features.roles.edit.groups.notifications.error.description",
                                     { description: error.response.data.detail }),
                             level: AlertLevels.ERROR,
@@ -319,7 +313,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 } else {
                     dispatch(
                         addAlert({
-                            description: t("console:manage.features.roles.edit.groups.notifications.genericError" + 
+                            description: t("console:manage.features.roles.edit.groups.notifications.genericError" +
                                 ".description"),
                             level: AlertLevels.ERROR,
                             message: t("console:manage.features.roles.edit.groups.notifications.genericError.message")
@@ -334,7 +328,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
     // TODO: need to add the details of the managed by to the users list
     return (
-        <EmphasizedSegment padded="very">
+        <EmphasizedSegment padded="very" className="edit-role users">
             <Heading as="h4">
                 { t("console:manage.features.roles.edit.users.heading") }
             </Heading>
@@ -342,198 +336,184 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 { t("console:manage.features.roles.edit.users.subHeading") }
             </Heading>
             {
-                userListFetchRequestError || showEmptyRolesListPlaceholder
+                showEmptyRolesListPlaceholder
                     ? getPlaceholders()
                     : (
                         <>
-                            {
-                                isReadOnly
-                                    ? (
-                                        <Autocomplete
-                                            multiple
-                                            disableCloseOnSelect
-                                            options={ selectedUsersOption ? selectedUsersOption : [] }
-                                            value={ selectedUsersOption ? selectedUsersOption : [] }
-                                            getOptionLabel={ (user: UserBasicInterface) => 
-                                                RoleManagementUtils.getUserUsername(user) }
-                                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                <TextField
-                                                    { ...params }
-                                                    placeholder= { t("console:manage.features.roles.edit.users" + 
-                                                        ".actions.search.placeholder") }
+                            <Grid container spacing={ 1 }>
+                                <Grid xs={ 12 } sm={ 6 } md={ 2 } alignItems="center">
+                                    <FormControl fullWidth size="medium">
+                                        <Select
+                                            value={ selectedUserStoreDomainId }
+                                            onChange={
+                                                (e: SelectChangeEvent<unknown>) => {
+                                                    setSelectedUserStoreDomainId(e.target.value as string);
+                                                    setSelectedUsersOption([]);
+                                                }
+                                            }
+                                        >
+                                            { isUserStoresLoading
+                                                ? <p>{ t("common:loading") }</p>
+                                                : [
+                                                    {
+                                                        id: RemoteUserStoreConstants.PRIMARY_USER_STORE_NAME,
+                                                        name: t("console:manage.features.users.userstores." +
+                                                        "userstoreOptions.primary")
+                                                    },
+                                                    ...(userStores ?? [])
+                                                ].map((userstore: UserStoreListItem) =>
+                                                    (<MenuItem
+                                                        key={ userstore.id }
+                                                        value={ userstore.id }
+                                                    >
+                                                        { userstore.name }
+                                                    </MenuItem>)
+                                                )
+                                            }
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid xs={ 12 } sm={ 6 } md={ 10 }>
+                                    {
+                                        isReadOnly
+                                            ? (
+                                                <Autocomplete
+                                                    multiple
+                                                    size="small"
+                                                    disableCloseOnSelect
+                                                    options={ selectedUsersOption ? selectedUsersOption : [] }
+                                                    value={ selectedUsersOption ? selectedUsersOption : [] }
+                                                    getOptionLabel={ (user: UserBasicInterface) =>
+                                                        RoleManagementUtils.getUserUsername(user) }
+                                                    renderInput={ (params: AutocompleteRenderInputParams) => (
+                                                        <TextField
+                                                            { ...params }
+                                                            placeholder= {
+                                                                t("console:manage.features.roles.edit.users" +
+                                                                  ".actions.search.placeholder") }
+                                                        />
+                                                    ) }
+                                                    renderTags={ (
+                                                        value: UserBasicInterface[],
+                                                        getTagProps: AutocompleteRenderGetTagProps
+                                                    ) => value.map((option: UserBasicInterface, index: number) => (
+                                                        <RenderChip
+                                                            { ...getTagProps({ index }) }
+                                                            key={ index }
+                                                            primaryText={ RoleManagementUtils.getUserUsername(option) }
+                                                            userStore={
+                                                                RoleManagementUtils.getUserStore(option.userName)
+                                                            }
+                                                            option={ option }
+                                                            activeOption={ activeOption }
+                                                            setActiveOption={ setActiveOption }
+                                                            onDelete= { null }
+                                                        />
+                                                    )) }
+                                                    renderOption={ (
+                                                        props: HTMLAttributes<HTMLLIElement>,
+                                                        option: UserBasicInterface
+                                                    ) => (
+                                                        <AutoCompleteRenderOption
+                                                            subTitle={ RoleManagementUtils.getUserUsername(option) }
+                                                            displayName={
+                                                                RoleManagementUtils.getNameToDisplayOfUser(option)
+                                                            }
+                                                            userstore={
+                                                                RoleManagementUtils.getUserStore(option.userName)
+                                                            }
+                                                            renderOptionProps={ props }
+                                                        />
+                                                    ) }
                                                 />
-                                            ) }
-                                            renderTags={ (
-                                                value: UserBasicInterface[], 
-                                                getTagProps: AutocompleteRenderGetTagProps
-                                            ) => value.map((option: UserBasicInterface, index: number) => (
-                                                <RenderChip 
-                                                    { ...getTagProps({ index }) }
-                                                    key={ index }
-                                                    primaryText={ RoleManagementUtils.getUserUsername(option) }
-                                                    userStore={ 
-                                                        RoleManagementUtils.getUserStore(option.userName) 
+                                            ) : (
+                                                <Autocomplete
+                                                    multiple
+                                                    style={ { padding: 0 } }
+                                                    size="small"
+                                                    disableCloseOnSelect
+                                                    loading={ isUserListFetchRequestLoading || isUserSearchLoading }
+                                                    options={ usersOptions }
+                                                    value={ selectedUsersOption ? selectedUsersOption : [] }
+                                                    getOptionLabel={
+                                                        (user: UserBasicInterface) =>
+                                                            RoleManagementUtils.getUserUsername(user)
                                                     }
-                                                    option={ option }
-                                                    activeOption={ activeOption }
-                                                    setActiveOption={ setActiveOption }
-                                                    onDelete= { null }
-                                                />
-                                            )) }
-                                            renderOption={ (
-                                                props: HTMLAttributes<HTMLLIElement>,
-                                                option: UserBasicInterface
-                                            ) => (
-                                                <AutoCompleteRenderOption
-                                                    subTitle={ RoleManagementUtils.getUserUsername(option) }
-                                                    displayName={ RoleManagementUtils.getNameToDisplayOfUser(option) }
-                                                    userstore={ RoleManagementUtils.getUserStore(option.userName) }
-                                                    renderOptionProps={ props }
-                                                />
-                                            ) }
-                                        />
-                                    ) : (
-                                        <Autocomplete
-                                            multiple
-                                            disableCloseOnSelect
-                                            loading={ isUserListFetchRequestLoading || isUserSearchLoading }
-                                            options={ usersOptions }
-                                            value={ selectedUsersOption ? selectedUsersOption : [] }
-                                            getOptionLabel={ 
-                                                (user: UserBasicInterface) => RoleManagementUtils.getUserUsername(user) 
-                                            }
-                                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                <TextField
-                                                    { ...params }
-                                                    placeholder= { t("console:manage.features.roles.edit.users" + 
-                                                        ".actions.assign.placeholder") }
-                                                />
-                                            ) }
-                                            onChange={ (event: SyntheticEvent, users: UserBasicInterface[]) => {
-                                                setSelectedUsersOption(users); 
-                                            } }
-                                            filterOptions={ (users: UserBasicInterface[]) => users }
-                                            onInputChange={ 
-                                                (event: SyntheticEvent, newValue: string) => {
-                                                    setUserSearchLoading(true);
-                                                    searchUsers(newValue);
-                                                } 
-                                            }
-                                            isOptionEqualToValue={ 
-                                                (option: UserBasicInterface, value: UserBasicInterface) => 
-                                                    option.id === value.id 
-                                            }
-                                            renderTags={ (
-                                                value: UserBasicInterface[], 
-                                                getTagProps: AutocompleteRenderGetTagProps
-                                            ) => value.map((option: UserBasicInterface, index: number) => (
-                                                <RenderChip 
-                                                    { ...getTagProps({ index }) }
-                                                    key={ index }
-                                                    primaryText={ RoleManagementUtils.getUserUsername(option) }
-                                                    userStore={ 
-                                                        RoleManagementUtils.getUserStore(option.userName) 
-                                                    }
-                                                    option={ option }
-                                                    activeOption={ activeOption }
-                                                    setActiveOption={ setActiveOption }
-                                                    variant={
-                                                        initialSelectedUsersOption?.find(
-                                                            (user: UserBasicInterface) => user.id === option.id
-                                                        )
-                                                            ? "solid"
-                                                            : "outlined"
-                                                    }
-                                                />
-                                            )) }
-                                            renderOption={ (
-                                                props: HTMLAttributes<HTMLLIElement>,
-                                                option: UserBasicInterface, 
-                                                { selected }: { selected: boolean }
-                                            ) => (
-                                                <AutoCompleteRenderOption
-                                                    selected={ selected }
-                                                    subTitle={ RoleManagementUtils.getUserUsername(option) }
-                                                    displayName={ RoleManagementUtils.getNameToDisplayOfUser(option) }
-                                                    userstore={ RoleManagementUtils.getUserStore(option.userName) }
-                                                    renderOptionProps={ props }
-                                                />
-                                            ) }
-                                        />
-                                    )
-                            }
-
-                            { /* Removing users */ }
-                            {
-                                removedUsersOptions?.length > 0
-                                    ? (
-                                        <Autocomplete
-                                            multiple
-                                            disableCloseOnSelect
-                                            loading={ isUserListFetchRequestLoading || isUserSearchLoading }
-                                            options={ removedUsersOptions }
-                                            value={ removedUsersOptions }
-                                            getOptionLabel={ 
-                                                (user: UserBasicInterface) => 
-                                                    RoleManagementUtils.getUserUsername(user)
-                                            }
-                                            onChange={ (event: SyntheticEvent, remainingUsers: UserBasicInterface[]) => 
-                                                handleRestoreUsers(remainingUsers)
-                                            }
-                                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                <TextField
-                                                    { ...params }
-                                                    placeholder={ t("console:manage.features.roles.edit.users" + 
-                                                        ".actions.remove.placeholder") }
-                                                    label={ t("console:manage.features.roles.edit.users" + 
-                                                        ".actions.remove.label") }
-                                                    margin="dense"
-                                                />
-                                            ) }
-                                            renderTags={ (
-                                                value: UserBasicInterface[], 
-                                                getTagProps: AutocompleteRenderGetTagProps
-                                            ) => value.map((option: UserBasicInterface, index: number) => (
-                                                <RenderChip
-                                                    { ...getTagProps({ index }) }
-                                                    key={ index }
-                                                    primaryText={ RoleManagementUtils.getUserUsername(option) }
-                                                    userStore={ RoleManagementUtils.getUserStore(option.userName) }
-                                                    option={ option }
-                                                    activeOption={ activeOption }
-                                                    setActiveOption={ setActiveOption }
-                                                    variant="outlined"
-                                                    onDelete={ () => {
-                                                        setSelectedUsersOption([
-                                                            ...selectedUsersOption,
-                                                            option
-                                                        ]);
+                                                    renderInput={ (params: AutocompleteRenderInputParams) => (
+                                                        <TextField
+                                                            { ...params }
+                                                            placeholder= {
+                                                                t("console:manage.features.roles.edit.users" +
+                                                                  ".actions.assign.placeholder") }
+                                                        />
+                                                    ) }
+                                                    onChange={ (event: SyntheticEvent, users: UserBasicInterface[]) => {
+                                                        setSelectedUsersOption(users);
                                                     } }
+                                                    filterOptions={ (users: UserBasicInterface[]) => users }
+                                                    onInputChange={
+                                                        (event: SyntheticEvent, newValue: string) => {
+                                                            setUserSearchLoading(true);
+                                                            searchUsers(newValue);
+                                                        }
+                                                    }
+                                                    isOptionEqualToValue={
+                                                        (option: UserBasicInterface, value: UserBasicInterface) =>
+                                                            option.id === value.id
+                                                    }
+                                                    renderTags={ (
+                                                        value: UserBasicInterface[],
+                                                        getTagProps: AutocompleteRenderGetTagProps
+                                                    ) => value.map((option: UserBasicInterface, index: number) => (
+                                                        <RenderChip
+                                                            { ...getTagProps({ index }) }
+                                                            key={ index }
+                                                            primaryText={ RoleManagementUtils.getUserUsername(option) }
+                                                            userStore={
+                                                                RoleManagementUtils.getUserStore(option.userName)
+                                                            }
+                                                            option={ option }
+                                                            activeOption={ activeOption }
+                                                            setActiveOption={ setActiveOption }
+                                                            variant={
+                                                                initialSelectedUsersOption?.find(
+                                                                    (user: UserBasicInterface) => user.id === option.id
+                                                                )
+                                                                    ? "solid"
+                                                                    : "outlined"
+                                                            }
+                                                        />
+                                                    )) }
+                                                    renderOption={ (
+                                                        props: HTMLAttributes<HTMLLIElement>,
+                                                        option: UserBasicInterface,
+                                                        { selected }: { selected: boolean }
+                                                    ) => (
+                                                        <AutoCompleteRenderOption
+                                                            selected={ selected }
+                                                            subTitle={ RoleManagementUtils.getUserUsername(option) }
+                                                            displayName={
+                                                                RoleManagementUtils.getNameToDisplayOfUser(option)
+                                                            }
+                                                            userstore={
+                                                                RoleManagementUtils.getUserStore(option.userName)
+                                                            }
+                                                            renderOptionProps={ props }
+                                                        />
+                                                    ) }
                                                 />
-                                            )) }
-                                            renderOption={ (
-                                                props: HTMLAttributes<HTMLLIElement>, 
-                                                option: UserBasicInterface
-                                            ) => (
-                                                <AutoCompleteRenderOption
-                                                    subTitle={ RoleManagementUtils.getUserUsername(option) }
-                                                    displayName={ RoleManagementUtils.getNameToDisplayOfUser(option) }
-                                                    userstore={ RoleManagementUtils.getUserStore(option.userName) }
-                                                    renderOptionProps={ props }
-                                                />
-                                            ) }
-                                        />
-                                    ) : null
-                            } 
+                                            )
+                                    }
+                                </Grid>
+                            </Grid>
 
-                            { /* Update Button */ }
                             {
-                                !isReadOnly 
+                                !isReadOnly
                                     ? (
                                         <Button
                                             className="role-assigned-button"
-                                            variant="contained" 
-                                            loading={ isSubmitting } 
+                                            variant="contained"
+                                            loading={ isSubmitting }
                                             onClick={ onUsersUpdate }
                                             disabled={ initialSelectedUsersOption === selectedUsersOption }
                                         >

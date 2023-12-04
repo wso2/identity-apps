@@ -72,7 +72,13 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         state?.config?.ui?.isPasswordInputValidationEnabled);
 
     const predefinedCategories: any = useMemo(() => {
-        const originalConnectors: any = GovernanceConnectorUtils.getPredefinedConnectorCategories();
+        let originalConnectors: Array<any> = GovernanceConnectorUtils.getPredefinedConnectorCategories();
+
+        if (!featureConfig?.organizationDiscovery?.enabled) {
+            originalConnectors = originalConnectors.filter(
+                (category: any) => category.id !== ServerConfigurationsConstants.ORGANIZATION_SETTINGS_CATEGORY_ID
+            );
+        }
 
         return originalConnectors.map((category: any) => ({
             ...category,

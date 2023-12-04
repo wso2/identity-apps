@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -407,92 +407,96 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
     };
 
     return (
-        <Grid>
-            {
-                selectedUsers?.length > 0
-                    ? (
-                        <>
-                            <Grid.Row>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                                    <Input
-                                        data-testid={ `${ testId }-users-list-search-input` }
-                                        icon={ <Icon name="search"/> }
-                                        onChange={ (e: FormEvent<HTMLInputElement>,
-                                            { value }: { value: string }) => {
-                                            handleSearchFieldChange(e, value, selectedUsers,
-                                                setSelectedUserList);
-                                        } }
-                                        placeholder={
-                                            t("console:manage.features.roles.addRoleWizard." +
-                                                "users.assignUserModal.list.searchPlaceholder")
-                                        }
-                                        floated="left"
-                                        size="small"
-                                    />
-                                    {
-                                        !isReadOnly && (
-                                            <Button
-                                                data-testid={ `${ testId }-users-list-edit-button` }
-                                                size="medium"
-                                                icon="pencil"
-                                                floated="right"
-                                                onClick={ handleOpenAddNewGroupModal }
-                                            />
-                                        )
-                                    }
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                                    <Table singleLine compact>
-                                        <Table.Body>
-                                            {
-                                                selectedUserList?.map((user: UserBasicInterface) => {
-                                                    return renderUserTableRow(user);
-                                                })
-                                            }
-                                        </Table.Body>
-                                    </Table>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </>
-                    )
-                    : !isLoading
+        <EmphasizedSegment padded="very">
+            <Grid>
+                {
+                    selectedUsers?.length > 0
                         ? (
-                            <Grid.Row>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                                    <EmphasizedSegment>
-                                        <EmptyPlaceholder
-                                            title={ t("console:manage.features.roles.edit.users.list." +
-                                                "emptyPlaceholder.title") }
-                                            subtitle={ [
-                                                t("console:manage.features.roles.edit.users.list." +
-                                                    "emptyPlaceholder.subtitles", { type: "group" })
-                                            ] }
-                                            action={
-                                                !isReadOnly && (
-                                                    <PrimaryButton
-                                                        data-testid={
-                                                            `${ testId }-users-list-empty-assign-users-button`
-                                                        }
-                                                        onClick={ handleOpenAddNewGroupModal }
-                                                    >
-                                                        <Icon name="plus"/>
-                                                        { t("console:manage.features.roles.edit.users.list." +
-                                                            "emptyPlaceholder.action") }
-                                                    </PrimaryButton>
-                                                )
+                            <>
+                                <Grid.Row>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 6 }>
+                                        <Input
+                                            data-testid={ `${ testId }-users-list-search-input` }
+                                            icon={ <Icon name="search"/> }
+                                            onChange={ (e: FormEvent<HTMLInputElement>,
+                                                { value }: { value: string }) => {
+                                                handleSearchFieldChange(e, value, selectedUsers,
+                                                    setSelectedUserList);
+                                            } }
+                                            placeholder={
+                                                t("console:manage.features.roles.addRoleWizard." +
+                                                    "users.assignUserModal.list.searchPlaceholder")
                                             }
-                                            image={ getEmptyPlaceholderIllustrations().emptyList }
-                                            imageSize="tiny"
+                                            floated="left"
+                                            fluid
                                         />
-                                    </EmphasizedSegment>
-                                </Grid.Column>
-                            </Grid.Row>
+                                    </Grid.Column>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 4 }>
+                                        {
+                                            !isReadOnly && (
+                                                <Button
+                                                    data-testid={ `${ testId }-users-list-edit-button` }
+                                                    size="medium"
+                                                    icon="pencil"
+                                                    floated="right"
+                                                    onClick={ handleOpenAddNewGroupModal }
+                                                />
+                                            )
+                                        }
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                        <Table singleLine compact>
+                                            <Table.Body>
+                                                {
+                                                    selectedUserList?.map((user: UserBasicInterface) => {
+                                                        return renderUserTableRow(user);
+                                                    })
+                                                }
+                                            </Table.Body>
+                                        </Table>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </>
                         )
-                        : <ContentLoader/>
-            }
-            { addNewUserModal() }
-        </Grid>
+                        : !isLoading
+                            ? (
+                                <Grid.Row>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                        <EmphasizedSegment>
+                                            <EmptyPlaceholder
+                                                title={ t("console:manage.features.roles.edit.users.list." +
+                                                    "emptyPlaceholder.title") }
+                                                subtitle={ [
+                                                    t("console:manage.features.roles.edit.users.list." +
+                                                        "emptyPlaceholder.subtitles", { type: "group" })
+                                                ] }
+                                                action={
+                                                    !isReadOnly && (
+                                                        <PrimaryButton
+                                                            data-testid={
+                                                                `${ testId }-users-list-empty-assign-users-button`
+                                                            }
+                                                            onClick={ handleOpenAddNewGroupModal }
+                                                        >
+                                                            <Icon name="plus"/>
+                                                            { t("console:manage.features.roles.edit.users.list." +
+                                                                "emptyPlaceholder.action") }
+                                                        </PrimaryButton>
+                                                    )
+                                                }
+                                                image={ getEmptyPlaceholderIllustrations().emptyList }
+                                                imageSize="tiny"
+                                            />
+                                        </EmphasizedSegment>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                            : <ContentLoader/>
+                }
+                { addNewUserModal() }
+            </Grid>
+        </EmphasizedSegment>
     );
 };

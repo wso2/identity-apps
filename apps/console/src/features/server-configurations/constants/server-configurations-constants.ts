@@ -132,7 +132,7 @@ export class ServerConfigurationsConstants {
 	/**
 	 * UUID of the identity governance password expiry connector.
 	 */
-	public static readonly PASSWORD_EXPIRY_CONNECTOR_ID: string = "cGFzc3dvcmRFeHBpcnlWMg";
+	public static readonly PASSWORD_EXPIRY_CONNECTOR_ID: string = "cGFzc3dvcmRFeHBpcnk";
 
 	/**
 	 * UUID of the identity governance captcha for sso login connector.
@@ -392,5 +392,6 @@ export class ServerConfigurationsConstants {
 	/**
 	 * Organization Settings Category Constants.
 	 */
+	public static readonly ORGANIZATION_SETTINGS_CATEGORY_ID: string = "organization-settings";
 	public static readonly EMAIL_DOMAIN_DISCOVERY: string = "ZW1haWwtZG9tYWluLWRpc2NvdmVyeQ==";
 }

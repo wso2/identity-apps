@@ -703,10 +703,16 @@ export const console: ConsoleNS = {
     },
     consoleSettings: {
         administrators: {
+            edit: {
+                backButton: "Go back to Administrators"
+            },
             tabLabel: "Administrators"
         },
         loginFlow: {
             tabLabel: "Login Flow"
+        },
+        protocol: {
+            tabLabel: "Protocol"
         },
         roles: {
             tabLabel: "Roles",
@@ -1528,11 +1534,19 @@ export const console: ConsoleNS = {
                                                 "biometrics.",
                                                 heading: "Add Passkey Login",
                                                 info: {
-                                                    progressiveEnrollmentEnabled: "Passkey progressive enrollment is enabled. " +
-                                                    "Users can enroll passkeys on-the-fly. If they wish to enroll multiple passkeys " +
-                                                    "they should do so via MyAccount.",
-                                                    progressiveEnrollmentDisabled: "On-the-fly passkey enrollment is disabled. " +
-                                                    "Users must enroll their passkeys through MyAccount to use passwordless sign-in."
+                                                    progressiveEnrollmentEnabled: "Passkey progressive enrollment is enabled.",
+                                                    passkeyAsFirstStepWhenprogressiveEnrollmentEnabled: "<0>Note : </0> For " +
+                                                    "on-the-fly user enrollment with passkeys, use the <2>Passkeys Progressive " +
+                                                    "Enrollment</2> template in <4>Conditional Authentication</4> section.",
+                                                    passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled: "Users can enroll " +
+                                                    "passkeys on-the-fly. If users wish to enroll multiple passkeys they should do " +
+                                                    "so via <1>My Account</1>.",
+                                                    progressiveEnrollmentEnabledCheckbox: "<0>Note : </0> When setting " +
+                                                    "the Passkey in the <2>first step</2>, users need to add an adaptive " +
+                                                    "script. Use the <4>Passkeys Progressive Enrollment</4> template in " +
+                                                    "the <6>Sign-In-Method</6> tab of the application.",
+                                                    progressiveEnrollmentDisabled: "Passkey progressive enrollment is disabled. " +
+                                                    "Users must enroll their passkeys through <1>My Account</1> to use passwordless sign-in."
                                                 }
                                             },
                                             emailOTP: {
@@ -1601,6 +1615,25 @@ export const console: ConsoleNS = {
                 forms: {
                     advancedAttributeSettings: {
                         sections: {
+                            linkedAccounts: {
+                                errorAlert: {
+                                    message: "Invalid configuration",
+                                    description: "Linked local account validation should be enabled to mandate a linked local account"
+                                },
+                                heading: "Linked Accounts",
+                                fields: {
+                                    validateLocalAccount: {
+                                        label: "Validate linked local account",
+                                        hint: "This option will decide whether the linked local user account is validated with the " +
+                                        "authenticated identity."
+                                    },
+                                    mandateLocalAccount: {
+                                        label: "Mandate linked local account",
+                                        hint: "These options will decide how the linked local user account is validated with the " +
+                                            "authenticated identity."
+                                    }
+                                }
+                            },
                             role: {
                                 fields: {
                                     role: {
@@ -1740,6 +1773,53 @@ export const console: ConsoleNS = {
                             }
                         },
                         sections: {
+                            applicationNativeAuthentication: {
+                                heading: "Application native authentication",
+                                alerts: {
+                                    clientAttestation: "For client attestation to work, the application native authentication API must be enabled."
+                                },
+                                fields: {
+                                    enableAPIBasedAuthentication: {
+                                        hint: "Select to authorize application to perform browserless, in-app authentication via application native authentication API.",
+                                        label: "Enable app-native authentication API"
+                                    },
+                                    enableClientAttestation: {
+                                        hint: "Select to verify the integrity of the application by calling the attestation service of the hosting platform.",
+                                        label: "Enable client attestation"
+                                    },
+                                    android: {
+                                        heading: "Android",
+                                        fields: {
+                                            androidPackageName: {
+                                                hint: "Enter the package name of your application. It is the unique identifier of your application and is typically in the reverse domain format.",
+                                                label: "Package name",
+                                                placeholder: "com.example.myapp",
+                                                validations: {
+                                                    empty: "Application package name is required for client attestation."
+                                                }
+                                            },
+                                            androidAttestationServiceCredentials: {
+                                                hint: "Provide the Google service account credentials in the JSON format. This will be used to access the  Google Play Integrity Service.",
+                                                label: "Service account credentials",
+                                                placeholder: "Content of the JSON key file for the Google service account credentials",
+                                                validations: {
+                                                    empty: "Google service account credentials are required for client attestation."
+                                                }
+                                            }
+                                        }
+                                    },
+                                    apple: {
+                                        heading: "Apple",
+                                        fields: {
+                                            appleAppId: {
+                                                hint: "Enter the Apple app ID, the unique identifier assigned by Apple to your app.",
+                                                label: "App id",
+                                                placeholder: "com.example.myapp"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
                             certificate: {
                                 fields: {
                                     jwksValue: {
@@ -1982,6 +2062,9 @@ export const console: ConsoleNS = {
                             discoverableHint: "If enabled and a web accessible url(deep link) is given, customers " +
                                 "can access this application from the <1>{{ myAccount }}</1> portal.",
                             mobileAppPlaceholder: "myapp://oauth2"
+                        },
+                        dropdowns: {
+                            selectOption: "Select Option"
                         },
                         sections: {
                             accessToken: {
@@ -2932,6 +3015,12 @@ export const console: ConsoleNS = {
                             description: "Second factor authenticators require having a Username & "
                                 + "Password authenticator in a prior step.",
                             message: "Step cannot be deleted"
+                        }
+                    },
+                    authenticationStepDeleteErrorDueToAppShared: {
+                        genericError: {
+                            description: "This authenticator is required for the shared application.",
+                            message: "Cannot delete this authenticator"
                         }
                     },
                     authenticationStepMin: {
@@ -5415,7 +5504,7 @@ export const console: ConsoleNS = {
                             action: "View Plans",
                             subtitles: "You can contact the organization administrator or (if you are the " +
                                 "administrator) upgrade your subscription to increase the allowed limit.",
-                            title: "You have reached the maximum number of allowed suborganizations."
+                            title: "You have reached the maximum number of allowed organizations."
                         },
                         heading: "You've reached the maximum limit for organizations"
                     },
@@ -5424,13 +5513,13 @@ export const console: ConsoleNS = {
                             action: "View Plans",
                             subtitles: "You can contact the organization administrator or (if you are the " +
                                 "administrator) upgrade your subscription to increase the allowed limit.",
-                            title: "You have reached the maximum number of allowed suborganization levels."
+                            title: "You have reached the maximum number of allowed organization levels."
                         },
-                        heading: "You’ve reached the maximum suborganization levels allowed for the organization."
+                        heading: "You’ve reached the maximum organization levels allowed for the organization."
                     },
                     duplicateOrgError: {
-                        message: "A suborganization with the same name already exists.",
-                        description: "The suborganization you are trying to create already exists."
+                        message: "An organization with the same name already exists.",
+                        description: "The organization you are trying to create already exists."
                     }
                 }
             },
@@ -5577,6 +5666,20 @@ export const console: ConsoleNS = {
                         homeRealmIdentifier: {
                             hint: "Enter the home realm identifier for this connection",
                             label: "Home Realm Identifier"
+                        },
+                        implicitAssociation: {
+                            enable: {
+                                label: "Implicit account linking",
+                                hint: "During token exchange if there is a matching local account found," +
+                                    " it will be linked implicitly"
+                            },
+                            attributes: {
+                                label: "Select attributes to cross check",
+                                hint: "Select up to three attributes that will be used to cross check if" +
+                                    " there is a matching local user account",
+                                placeholder: "No attributes are selected"
+                            },
+                            warning: "Ensure that the selected attributes are verified by the token issuer"
                         }
                     },
                     attributeSettings: {
@@ -7564,7 +7667,7 @@ export const console: ConsoleNS = {
                     confirmations: {
                         action: "Confirm",
                         content: "If you delete this attribute mapping, all the associated {{type}} attributes will "
-                            + "also be deleted.Please proceed with caution.",
+                            + "also be deleted. Please proceed with caution.",
                         header: "Are you sure?",
                         hint: "Please type <1>{{confirm}}</1> to confirm.",
                         message: "This action is irreversible and will permanently delete the selected attribute " +
@@ -9334,8 +9437,23 @@ export const console: ConsoleNS = {
                     heading: "Invite Parent User",
                     description: "Invite a user from the parent organization.",
                     hint: "Invited users are managed by the parent organization.",
-                    usernameHint: "Username should belong to a user " +
-                        "from the parent organization."
+                    username: {
+                        label: "Username",
+                        placeholder: "Enter the username",
+                        hint: "Username should belong to a user from the parent organization.",
+                        validations: {
+                            required: "Username is a required field."
+                        }
+                    },
+                    roles: {
+                        label: "Roles",
+                        placeholder: "Select roles",
+                        hint: "Assign roles for the user that is being invited.",
+                        validations: {
+                            required: "Roles is a required field."
+                        }
+                    },
+                    inviteButton: "Invite"
                 },
                 tab: {
                     usersTab: "Users",
@@ -9667,7 +9785,7 @@ export const console: ConsoleNS = {
                 },
                 assign: {
                     title: "Assign Email Domains",
-                    description: "Assign email domains for sub organizations.",
+                    description: "Assign email domains for organizations.",
                     form: {
                         fields: {
                             emailDomains: {
@@ -10390,7 +10508,10 @@ export const console: ConsoleNS = {
                         rolePermission: {
                             apiResource: {
                                 label: "Select API Resource",
-                                placeholder: "Select an API resource to assign permissions(scopes)"
+                                placeholder: "Select an API resource to assign permissions(scopes)",
+                                hint: {
+                                    empty: "There are no API resources authorized for the selected application. API Resources can be authorized through <1>here</1>."
+                                }
                             },
                             permissions: {
                                 label: "Select permissions(scopes) from the selected API resources",
@@ -10399,6 +10520,9 @@ export const console: ConsoleNS = {
                                     noScopes: "No scopes available for the selected API resource",
                                     selectAllScopes: "Select all permissions(scopes)",
                                     removeAPIResource: "Remove API resource"
+                                },
+                                validation: {
+                                    empty: "Permissions(scopes) list cannot be empty. Select at least one permission(scope)."
                                 }
                             },
                             notes: {
@@ -10673,6 +10797,11 @@ export const console: ConsoleNS = {
                                 "intended actions which were previously allowed. Please proceed with caution.",
                             header: "Are you sure?",
                             message: "This action is irreversible and will permanently delete the selected {{type}}"
+                        },
+                        deleteItemError: {
+                            content: "Remove the associations from following application before deleting:",
+                            header: "Unable to Delete",
+                            message: "There is an application using this role."
                         }
                     },
                     emptyPlaceholders: {
@@ -11861,7 +11990,7 @@ export const console: ConsoleNS = {
                             }
                         }
                     },
-                    placeholder: "Search by Email"
+                    placeholder: "Search by Username"
                 },
                 all: {
                     heading: "Users",
@@ -11894,8 +12023,8 @@ export const console: ConsoleNS = {
                     addMultipleUser: {
                         header: "Before you proceed",
                         message: "Invite users option is disabled",
-                        content: "Invite users option should be enabled to add multiple users. Please enable it and " +
-                            "try again.",
+                        content: "Invite User to Set Password should be enabled to add multiple users. " +
+                            "Please enable email verification from Login & Registration settings.",
                         assertionHint: "Please confirm your action."
                     }
                 },

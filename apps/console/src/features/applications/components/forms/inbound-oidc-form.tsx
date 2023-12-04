@@ -130,6 +130,16 @@ interface InboundOIDCFormPropsInterface extends TestableComponentInterface {
     isLoading?: boolean;
     setIsLoading?: (isLoading: boolean) => void;
     containerRef?: MutableRefObject<HTMLElement>;
+    /**
+     * Flag to determine if the updated application a default application.
+     * ex: My Account
+     */
+    isDefaultApplication?: boolean;
+    /**
+     * Flag to determine if the updated application a system application.
+     * ex: Console
+     */
+    isSystemApplication?: boolean;
 }
 
 /**
@@ -169,6 +179,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         isLoading,
         setIsLoading,
         containerRef,
+        isDefaultApplication,
+        isSystemApplication,
         [ "data-testid" ]: testId
     } = props;
 
@@ -510,7 +522,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     /**
-     * Check whether to enable validate token bindings.  
+     * Check whether to enable validate token bindings.
      */
     const isValidateTokenBindingEnabled = (): boolean => {
 
@@ -691,7 +703,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             } else {
                 metadataProp.options.map((ele: any, index: number) => {
                     if (!ele.displayName) {
-                        allowedList.push({ text: ele, value: ele });
+                        allowedList.push({ text: ele, value: ele !== t( "console:develop.features.applications" +
+                            ".forms.inboundOIDC.dropdowns.selectOption" ) ? ele : "" });
                     } else {
                         allowedList.push({
                             content: (
@@ -1005,12 +1018,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const updateConfiguration = (values: any, url?: string, origin?: string): any => {
         let finalConfiguration: any;
 
-        if (application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME) {
+        if (!isSystemApplication && !isDefaultApplication) {
             let inboundConfigFormValues: any = {
                 accessToken: {
                     applicationAccessTokenExpiryInSeconds: values.get("applicationAccessTokenExpiryInSeconds")
                         ? Number(values.get("applicationAccessTokenExpiryInSeconds"))
-                        : Number(metadata.defaultApplicationAccessTokenExpiryTime),
+                        : Number(metadata?.defaultApplicationAccessTokenExpiryTime),
                     bindingType: values.get("bindingType"),
                     revokeTokensWhenIDPSessionTerminated: values.get("RevokeAccessToken")?.length > 0,
                     type: values.get("type"),
@@ -1022,14 +1035,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     audience: audienceUrls !== "" ? audienceUrls.split(",") : [],
                     encryption: {
                         algorithm: isEncryptionEnabled && isCertAvailableForEncrypt ?
-                            values.get("algorithm") : metadata.idTokenEncryptionAlgorithm.defaultValue,
+                            values.get("algorithm") : metadata?.idTokenEncryptionAlgorithm?.defaultValue,
                         enabled: isCertAvailableForEncrypt && values.get("encryption")?.includes("enableEncryption"),
                         method: isEncryptionEnabled && isCertAvailableForEncrypt ?
-                            values.get("method") : metadata.idTokenEncryptionMethod.defaultValue
+                            values.get("method") : metadata?.idTokenEncryptionMethod?.defaultValue
                     },
                     expiryInSeconds: Number(values.get("idExpiryInSeconds")),
-                    idTokenSignedResponseAlg: values.get("idTokenSignedResponseAlg") !== "None" ?
-                        values.get("idTokenSignedResponseAlg") : null
+                    idTokenSignedResponseAlg: values.get("idTokenSignedResponseAlg")
                 },
                 logout: {
                     backChannelLogoutUrl: values.get("backChannelLogoutUrl"),
@@ -1039,13 +1051,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 refreshToken: {
                     expiryInSeconds: values.get("expiryInSeconds")
                         ? parseInt(values.get("expiryInSeconds"), 10)
-                        : Number(metadata.defaultRefreshTokenExpiryTime),
+                        : Number(metadata?.defaultRefreshTokenExpiryTime),
                     renewRefreshToken: values.get("RefreshToken")?.length > 0
                 },
                 scopeValidators: values.get("scopeValidator"),
                 validateRequestObjectSignature: values.get("enableRequestObjectSignatureValidation")?.length > 0
             };
-    
+
             !applicationConfig.inboundOIDCForm.showFrontChannelLogout
                 && delete inboundConfigFormValues.logout.frontChannelLogoutUrl;
             !applicationConfig.inboundOIDCForm.showScopeValidators
@@ -1056,7 +1068,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             && delete inboundConfigFormValues.logout.backChannelLogoutUrl;
             !applicationConfig.inboundOIDCForm.showRequestObjectSignatureValidation
             && delete inboundConfigFormValues.validateRequestObjectSignature;
-    
+
             // Add the `allowedOrigins` & `callbackURLs` only if the grant types
             // `authorization_code` and `implicit` are selected.
             if (showCallbackURLField) {
@@ -1072,7 +1084,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     callbackURLs: []
                 };
             }
-    
+
             // Add the `PKCE` only if the grant type
             // `authorization_code` is selected.
             if (showPKCEField) {
@@ -1092,7 +1104,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     }
                 };
             }
-    
+
             // Remove fields not applicable for M2M applications.
             if (isM2MApplication) {
                 inboundConfigFormValues = {
@@ -1108,34 +1120,35 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     refreshToken: null
                 };
             }
-    
+
+            if (!isPublicClient) {
+                inboundConfigFormValues = {
+                    ...inboundConfigFormValues,
+                    clientAuthentication: {
+                        tlsClientAuthSubjectDn: subjectDN,
+                        tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod"),
+                        tokenEndpointAuthSigningAlg: values.get("tokenEndpointAuthSigningAlg")
+                    }
+                };
+            }
             inboundConfigFormValues = {
                 ...inboundConfigFormValues,
-                clientAuthentication: {
-                    tlsClientAuthSubjectDn: subjectDN,
-                    tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod") !== "None" ?
-                        values.get("tokenEndpointAuthMethod") : null,
-                    tokenEndpointAuthSigningAlg: values.get("tokenEndpointAuthSigningAlg")
-                },
                 pushAuthorizationRequest: {
                     requirePushAuthorizationRequest: values.get("requirePushAuthorizationRequest")?.length > 0
                 },
                 requestObject: {
                     encryption: {
-                        algorithm: values.get("requestObjectEncryptionAlgorithm") !== "None" ?
-                            values.get("requestObjectEncryptionAlgorithm") : null,
-                        method: values.get("requestObjectEncryptionMethod") !== "None" ?
-                            values.get("requestObjectEncryptionMethod") : null
+                        algorithm: values.get("requestObjectEncryptionAlgorithm"),
+                        method: values.get("requestObjectEncryptionMethod")
                     },
-                    requestObjectSigningAlg: values.get("requestObjectSigningAlg") !== "None" ?
-                        values.get("requestObjectSigningAlg") : null
+                    requestObjectSigningAlg: values.get("requestObjectSigningAlg")
                 },
                 subject: {
                     sectorIdentifierUri: initialValues?.subject?.sectorIdentifierUri,
                     subjectType: initialValues?.subject?.subjectType
                 }
             };
-    
+
             // If the app is not a newly created, add `clientId` & `clientSecret`.
             if (initialValues?.clientId && initialValues?.clientSecret) {
                 inboundConfigFormValues = {
@@ -1160,7 +1173,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     ...inboundConfigFormValues
                 }
             };
-    
+
             !applicationConfig.inboundOIDCForm.showCertificates
             && delete finalConfiguration.general.advancedConfigurations.certificate;
         } else {
@@ -1172,9 +1185,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             };
 
             if (showCallbackURLField) {
-                finalConfiguration.inbound.allowedOrigins = 
+                finalConfiguration.inbound.allowedOrigins =
                     ApplicationManagementUtils.resolveAllowedOrigins(origin ? origin : allowedOrigins);
-                finalConfiguration.inbound.callbackURLs = 
+                finalConfiguration.inbound.callbackURLs =
                     [ ApplicationManagementUtils.buildCallBackUrlWithRegExp(url ? url : callBackUrls) ];
             } else {
                 finalConfiguration.inbound.allowedOrigins = [];
@@ -1197,7 +1210,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const updateConfigurationForSPA = (values: any, url?: string, origin?: string): any => {
         let inboundConfigFormValues: any = {
             accessToken: {
-                applicationAccessTokenExpiryInSeconds: Number(metadata.defaultApplicationAccessTokenExpiryTime),
+                applicationAccessTokenExpiryInSeconds: Number(metadata?.defaultApplicationAccessTokenExpiryTime),
                 bindingType: values.get("bindingType"),
                 revokeTokensWhenIDPSessionTerminated: getRevokeStateForSPA(values),
                 type: values.get("type"),
@@ -1212,7 +1225,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             refreshToken: {
                 expiryInSeconds: values.get("expiryInSeconds")
                     ? parseInt(values.get("expiryInSeconds"), 10)
-                    : Number(metadata.defaultRefreshTokenExpiryTime),
+                    : Number(metadata?.defaultRefreshTokenExpiryTime),
                 renewRefreshToken: values.get("RefreshToken")?.length > 0
             }
         };
@@ -1288,6 +1301,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             setPublicClient(initialValues?.publicClient);
         }, [ initialValues ]
     );
+
+    /**
+    The following function is used to reset the client authentication method if public client is selected
+    *
+    * @param publicClient - is public client
+    */
+    const handleClientAuthenticationChange = (publicClient: boolean):void => {
+        if (publicClient) {
+            setSelectedAuthMethod("");
+        }
+    };
 
     /**
      * The following function handles allowing CORS for a new origin.
@@ -1459,7 +1483,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 )
             }
             {
-                application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME && (
+                !isSystemApplication && !isDefaultApplication && (
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Field
@@ -1474,7 +1498,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     t("console:develop.features.applications.forms.inboundOIDC.fields.grant" +
                                         ".validations.empty")
                                 }
-                                children={ getAllowedGranTypeList(metadata.allowedGrantTypes) }
+                                children={ getAllowedGranTypeList(metadata?.allowedGrantTypes) }
                                 value={ selectedGrantTypes ?? initialValues?.grantTypes }
                                 readOnly={ readOnly }
                                 enableReinitialize={ true }
@@ -1496,61 +1520,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>
-                )
-            }
-            {
-                !isSPAApplication
-                && !isMobileApplication
-                && !isFAPIApplication
-                && (
-                    selectedGrantTypes?.includes(ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
-                    || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
-                    || selectedGrantTypes?.includes(ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)
-                )
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
-                && (
-                    <>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field
-                                    ref={ supportPublicClients }
-                                    name="supportPublicClients"
-                                    label=""
-                                    required={ false }
-                                    requiredErrorMessage={
-                                        t("console:develop.features.applications.forms.inboundOIDC.fields.public" +
-                                            ".validations.empty")
-                                    }
-                                    type="checkbox"
-                                    value={
-                                        initialValues?.publicClient
-                                            ? [ "supportPublicClients" ]
-                                            : []
-                                    }
-                                    children={ [
-                                        {
-                                            label: t("console:develop.features.applications.forms.inboundOIDC" +
-                                                ".fields.public.label"),
-                                            value: "supportPublicClients"
-                                        }
-                                    ] }
-                                    readOnly={ readOnly }
-                                    listen={ (values: Map<string, FormValue>): void => {
-                                        const isPublicClient: boolean = values.get("supportPublicClients")
-                                            .includes("supportPublicClients");
-
-                                        setPublicClient(isPublicClient);
-                                    } }
-                                    data-testid={ `${ testId }-public-client-checkbox` }
-                                />
-                                <Hint>
-                                    { t("console:develop.features.applications.forms.inboundOIDC.fields.public.hint", {
-                                        productName: config.ui?.productName
-                                    }) }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </>
                 )
             }
             {
@@ -1766,7 +1735,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             { /* Form Section: PKCE */ }
             {
                 showPKCEField
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <>
                         <Grid.Row columns={ 2 }>
@@ -1831,9 +1801,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             { /* Client Authentication*/ }
-            { !isPublicClient
-                && ApplicationTemplateNames.STANDARD_BASED_APPLICATION === template?.name
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+            { (ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
+                || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId)
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <>
                         <Grid.Row columns={ 2 }>
@@ -1846,6 +1817,65 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                         ".clientAuthentication.heading") }
                                 </Heading>
+                                {
+                                    !isSPAApplication
+                                    && !isMobileApplication
+                                    && !isFAPIApplication
+                                    && (
+                                        selectedGrantTypes?.includes(
+                                            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
+                                        || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
+                                        || selectedGrantTypes?.includes(
+                                            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)
+                                    )
+                                    && !isSystemApplication
+                                    && !isDefaultApplication
+                                    && (
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                <Field
+                                                    ref={ supportPublicClients }
+                                                    name="supportPublicClients"
+                                                    label=""
+                                                    required={ false }
+                                                    requiredErrorMessage={
+                                                        t("console:develop.features.applications.forms.inboundOIDC" +
+                                                            ".fields.public.validations.empty")
+                                                    }
+                                                    type="checkbox"
+                                                    value={
+                                                        initialValues?.publicClient
+                                                            ? [ "supportPublicClients" ]
+                                                            : []
+                                                    }
+                                                    children={ [
+                                                        {
+                                                            label: t("console:develop.features.applications.forms" +
+                                                                ".inboundOIDC.fields.public.label"),
+                                                            value: "supportPublicClients"
+                                                        }
+                                                    ] }
+                                                    readOnly={ readOnly }
+                                                    listen={ (values: Map<string, FormValue>): void => {
+                                                        const isPublicClient: boolean =
+                                                            values.get("supportPublicClients")
+                                                                .includes("supportPublicClients");
+
+                                                        setPublicClient(isPublicClient);
+                                                        handleClientAuthenticationChange(isPublicClient);
+                                                    } }
+                                                    data-testid={ `${ testId }-public-client-checkbox` }
+                                                />
+                                                <Hint>
+                                                    { t("console:develop.features.applications.forms.inboundOIDC" +
+                                                        ".fields.public.hint", {
+                                                        productName: config.ui?.productName
+                                                    }) }
+                                                </Hint>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    )
+                                }
                                 <Field
                                     ref={ tokenEndpointAuthMethod }
                                     name="tokenEndpointAuthMethod"
@@ -1855,20 +1885,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     required={ false }
                                     type="dropdown"
-                                    disabled={ false }
-                                    default={
-                                        initialValues?.clientAuthentication ?
-                                            initialValues.clientAuthentication.tokenEndpointAuthMethod
-                                            : metadata.tokenEndpointAuthMethod.defaultValue
-                                    }
+                                    disabled={ isPublicClient }
                                     placeholder={
                                         t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                             ".clientAuthentication.fields.authenticationMethod.placeholder")
                                     }
+                                    value={ selectedAuthMethod }
                                     listen={ (values: Map<string, FormValue>) => handleAuthMethodChange(values) }
                                     children={ isFAPIApplication ?
-                                        getAllowedList(metadata.fapiMetadata.tokenEndpointAuthMethod)
-                                        : getAllowedList(metadata.tokenEndpointAuthMethod) }
+                                        getAllowedList(metadata?.fapiMetadata?.tokenEndpointAuthMethod)
+                                        : getAllowedList(metadata?.tokenEndpointAuthMethod) }
                                     readOnly={ readOnly }
                                 />
                                 <Hint>
@@ -1891,19 +1917,19 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             }
                                             required={ false }
                                             type="dropdown"
-                                            disabled={ false }
+                                            disabled={ isPublicClient }
                                             default={
                                                 initialValues?.clientAuthentication ?
                                                     initialValues.clientAuthentication.tokenEndpointAuthSigningAlg
-                                                    : metadata.tokenEndpointSignatureAlgorithm.defaultValue
+                                                    : metadata?.tokenEndpointSignatureAlgorithm?.defaultValue
                                             }
                                             placeholder={
                                                 t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                                     ".clientAuthentication.fields.signingAlgorithm.placeholder")
                                             }
                                             children={ isFAPIApplication ?
-                                                getAllowedList(metadata.fapiMetadata.allowedSignatureAlgorithms) :
-                                                getAllowedList(metadata.tokenEndpointSignatureAlgorithm) }
+                                                getAllowedList(metadata?.fapiMetadata?.allowedSignatureAlgorithms) :
+                                                getAllowedList(metadata?.tokenEndpointSignatureAlgorithm) }
                                             readOnly={ readOnly }
                                         />
                                         <Hint>
@@ -1927,6 +1953,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             label={ t("console:develop.features.applications.forms.inboundOIDC" +
                                                 ".sections.clientAuthentication.fields.subjectDN.label")
                                             }
+                                            disabled = { isPublicClient }
                                             required={ false }
                                             placeholder={
                                                 t("console:develop.features.applications.forms.inboundOIDC.sections" +
@@ -1954,8 +1981,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             { /* Pushed Authorization Requests*/ }
-            { ApplicationTemplateNames.STANDARD_BASED_APPLICATION === template?.name
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+            { (ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
+                || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId)
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -1993,8 +2022,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 ) }
 
             { /* Request Object*/ }
-            { ApplicationTemplateNames.STANDARD_BASED_APPLICATION === template?.name
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+            { (ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
+                || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId)
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <>
                         <Grid.Row columns={ 2 }>
@@ -2026,8 +2057,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".requestObject.fields.requestObjectSigningAlg.placeholder")
                                     }
                                     children={ isFAPIApplication ?
-                                        getAllowedList(metadata.fapiMetadata.allowedSignatureAlgorithms)
-                                        : getAllowedList(metadata.requestObjectSignatureAlgorithm) }
+                                        getAllowedList(metadata?.fapiMetadata?.allowedSignatureAlgorithms)
+                                        : getAllowedList(metadata?.requestObjectSignatureAlgorithm) }
                                     readOnly={ readOnly }
                                 />
                                 <Hint>
@@ -2064,8 +2095,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".requestObject.fields.requestObjectEncryptionAlgorithm.placeholder")
                                     }
                                     children={ isFAPIApplication ?
-                                        getAllowedList(metadata.fapiMetadata.allowedEncryptionAlgorithms) :
-                                        getAllowedList(metadata.requestObjectEncryptionAlgorithm) }
+                                        getAllowedList(metadata?.fapiMetadata?.allowedEncryptionAlgorithms) :
+                                        getAllowedList(metadata?.requestObjectEncryptionAlgorithm) }
                                     readOnly={ readOnly }
                                 />
                                 <Hint>
@@ -2101,7 +2132,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                             ".requestObject.fields.requestObjectEncryptionMethod.placeholder")
                                     }
-                                    children={ getAllowedList(metadata.requestObjectEncryptionMethod) }
+                                    children={ getAllowedList(metadata?.requestObjectEncryptionMethod) }
                                     readOnly={ readOnly }
                                 />
                                 <Hint>
@@ -2122,7 +2153,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* Access Token */ }
             {
-                application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2144,10 +2176,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 default={
                                     initialValues?.accessToken
                                         ? initialValues.accessToken.type
-                                        : metadata.accessTokenType.defaultValue
+                                        : metadata?.accessTokenType?.defaultValue
                                 }
                                 type="radio"
-                                children={ getAllowedListForAccessToken(metadata.accessTokenType, false) }
+                                children={ getAllowedListForAccessToken(metadata?.accessTokenType, false) }
                                 readOnly={ readOnly }
                                 data-testid={ `${ testId }-access-token-type-radio-group` }
                             />
@@ -2157,7 +2189,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
             {
                 !isM2MApplication
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2176,7 +2209,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         ?? SupportedAccessTokenBindingTypes.NONE
                                 }
                                 type="radio"
-                                children={ getAllowedListForAccessToken(metadata.accessTokenBindingType, true) }
+                                children={ getAllowedListForAccessToken(metadata?.accessTokenBindingType, true) }
                                 readOnly={ readOnly || isFAPIApplication }
                                 data-testid={ `${ testId }-access-token-type-radio-group` }
                                 listen={ (values: Map<string, FormValue>) => {
@@ -2209,7 +2242,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 (!isSPAApplication)
                 && !isMobileApplication
                 && isTokenBindingTypeSelected
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <>
                         <Grid.Row columns={ 1 }>
@@ -2283,7 +2317,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
             {
                 !isM2MApplication
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2313,7 +2348,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 value={
                                     initialValues?.accessToken
                                         ? initialValues.accessToken.userAccessTokenExpiryInSeconds.toString()
-                                        : metadata.defaultUserAccessTokenExpiryTime
+                                        : metadata?.defaultUserAccessTokenExpiryTime
                                 }
                                 placeholder={
                                     t("console:develop.features.applications.forms.inboundOIDC.sections" +
@@ -2343,7 +2378,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* Application AccessToken Expiry*/ }
             { selectedGrantTypes?.includes("client_credentials")
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <>
                         <Grid.Row columns={ 1 }>
@@ -2362,7 +2398,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     value={ initialValues.accessToken ?
                                         initialValues.accessToken.applicationAccessTokenExpiryInSeconds.toString() :
-                                        metadata.defaultApplicationAccessTokenExpiryTime }
+                                        metadata?.defaultApplicationAccessTokenExpiryTime }
                                     validation={ async (value: FormValue, validation: Validation) => {
                                         if (!isValidExpiryTime(value.toString())) {
                                             validation.isValid = false;
@@ -2392,7 +2428,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             {
                 isM2MApplication
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } className="field">
@@ -2479,7 +2516,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* Refresh Token */ }
             { selectedGrantTypes?.includes("refresh_token")
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <>
                         <Grid.Row columns={ 2 }>
@@ -2560,7 +2598,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     } }
                                     value={ initialValues?.refreshToken
                                         ? initialValues.refreshToken.expiryInSeconds.toString()
-                                        : metadata.defaultRefreshTokenExpiryTime }
+                                        : metadata?.defaultRefreshTokenExpiryTime }
                                     type="number"
                                     readOnly={ readOnly }
                                     min={ 1 }
@@ -2586,7 +2624,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             { /* ID Token */ }
             {
                 !isM2MApplication
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2684,7 +2723,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 && ApplicationTemplateIdTypes.SPA !== template?.templateId
                 && !isMobileApplication
                 && !isM2MApplication
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <>
                         <Grid.Row columns={ 1 }>
@@ -2760,15 +2800,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     default={
                                         isEncryptionEnabled && isCertAvailableForEncrypt ? (initialValues?.idToken
                                             ? initialValues.idToken.encryption.algorithm
-                                            : metadata.idTokenEncryptionAlgorithm.defaultValue) : ""
+                                            : metadata?.idTokenEncryptionAlgorithm.defaultValue) : ""
                                     }
                                     placeholder={
                                         t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                             ".idToken.fields.algorithm.placeholder")
                                     }
                                     children={ isFAPIApplication ?
-                                        getAllowedList(metadata.fapiMetadata.allowedEncryptionAlgorithms) :
-                                        getAllowedList(metadata.idTokenEncryptionAlgorithm) }
+                                        getAllowedList(metadata?.fapiMetadata?.allowedEncryptionAlgorithms) :
+                                        getAllowedList(metadata?.idTokenEncryptionAlgorithm) }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-encryption-algorithm-dropdown` }
                                 />
@@ -2804,13 +2844,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     default={
                                         isEncryptionEnabled && isCertAvailableForEncrypt ? (initialValues?.idToken
                                             ? initialValues.idToken.encryption.method
-                                            : metadata.idTokenEncryptionMethod.defaultValue) : ""
+                                            : metadata?.idTokenEncryptionMethod?.defaultValue) : ""
                                     }
                                     placeholder={
                                         t("console:develop.features.applications.forms.inboundOIDC.sections.idToken" +
                                             ".fields.method.placeholder")
                                     }
-                                    children={ getAllowedList(metadata.idTokenEncryptionMethod) }
+                                    children={ getAllowedList(metadata?.idTokenEncryptionMethod) }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-encryption-method-dropdown` }
                                 />
@@ -2831,7 +2871,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 )
             }
             { ApplicationTemplateNames.STANDARD_BASED_APPLICATION === template?.name
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2853,8 +2894,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         ".idToken.fields.signing.placeholder")
                                 }
                                 children={ isFAPIApplication ?
-                                    getAllowedList(metadata.fapiMetadata.allowedSignatureAlgorithms) :
-                                    getAllowedList(metadata.idTokenSignatureAlgorithm) }
+                                    getAllowedList(metadata?.fapiMetadata?.allowedSignatureAlgorithms) :
+                                    getAllowedList(metadata?.idTokenSignatureAlgorithm) }
                                 readOnly={ readOnly }
                             />
                             <Hint disabled={ !isEncryptionEnabled || !isCertAvailableForEncrypt }>
@@ -2873,7 +2914,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 ) }
             {
                 !isM2MApplication
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2905,7 +2947,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 value={
                                     initialValues?.idToken
                                         ? initialValues.idToken.expiryInSeconds.toString()
-                                        : metadata.defaultIdTokenExpiryTime
+                                        : metadata?.defaultIdTokenExpiryTime
                                 }
                                 type="number"
                                 readOnly={ readOnly }
@@ -2931,7 +2973,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             {
                 !isSPAApplication
                 && applicationConfig.inboundOIDCForm.showBackChannelLogout
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <>
                         <Grid.Row columns={ 2 }>
@@ -2984,7 +3027,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 )
             }
             { applicationConfig.inboundOIDCForm.showFrontChannelLogout
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -3025,7 +3069,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             {
                 !isSPAApplication
                 && applicationConfig.inboundOIDCForm.showRequestObjectSignatureValidation
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <>
                         <Grid.Row columns={ 2 }>
@@ -3081,7 +3126,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
             { /* Scope Validators */ }
             { applicationConfig.inboundOIDCForm.showScopeValidators
-                && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                && !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <Grid.Row columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -3104,7 +3150,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 }
                                 type="checkbox"
                                 value={ initialValues?.scopeValidators }
-                                children={ getAllowedList(metadata.scopeValidators, true) }
+                                children={ getAllowedList(metadata?.scopeValidators, true) }
                                 readOnly={ readOnly }
                                 data-testid={ `${ testId }-scope-validator-checkbox` }
                             />
@@ -3113,7 +3159,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 ) }
             { /* Certificate Section */ }
             {
-                application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                !isSystemApplication
+                && !isDefaultApplication
                 && (
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -3126,7 +3173,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             i18nKey={ "console:develop.features.applications.forms" +
                                             ".inboundOIDC.sections.certificates.disabledPopup" }
                                         >
-                                            This certificate is used to encrypt the <Code>id_token</Code>. 
+                                            This certificate is used to encrypt the <Code>id_token</Code>.
                                             First, you need to disable <Code>id_token</Code> encryption to proceed.
                                         </Trans>
                                     </Fragment>
@@ -3643,7 +3690,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             && (initialValues?.state !== State.REVOKED)
                             && (!isSPAApplication))
                             && (!isMobileApplication)
-                            && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
+                            && !isSystemApplication
+                            && !isDefaultApplication
                             && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>

@@ -160,6 +160,7 @@ export interface SubjectInterface {
     includeUserDomain: boolean;
     includeTenantDomain: boolean;
     useMappedLocalSubject: boolean;
+    mappedLocalSubjectMandatory: boolean;
 }
 
 export interface RoleInterface {
@@ -189,6 +190,7 @@ export interface SubjectConfigInterface {
     includeUserDomain?: boolean;
     includeTenantDomain?: boolean;
     useMappedLocalSubject?: boolean;
+    mappedLocalSubjectMandatory?: boolean;
 }
 
 /**
@@ -256,7 +258,13 @@ export interface AdvancedConfigurationsInterface {
     enableAPIBasedAuthentication?: boolean;
     attestationMetaData?: AttestationMetaDataInterface;
     fragment?: boolean;
-    additionalSpProperties?: additionalSpProperty[]
+    additionalSpProperties?: additionalSpProperty[];
+    enableClientAttestation?: boolean;
+    androidPackageName?: string;
+    androidAttestationServiceCredentials?: string;
+    appleAppId?: string;
+    skipConsentLogin?: boolean;
+    skipConsentLogout?: boolean;
 }
 /**
  * Interface for the additional sp properties.
@@ -722,7 +730,7 @@ export interface FederatedConflictWithSMSOTPArgsInterface {
  */
 export interface FederatedConflictWithSMSOTPReturnValueInterface {
     /**
-     * Specifies whether there is any conflict between the 
+     * Specifies whether there is any conflict between the
      * federated authenticators and the SMS OTP.
      */
     conflicting: boolean;
@@ -773,7 +781,8 @@ export enum ApplicationTemplateIdTypes {
     OIDC_WEB_APPLICATION = "oidc-web-application",
     SAML_WEB_APPLICATION = "saml-web-application",
     MOBILE_APPLICATION = "mobile-application",
-    M2M_APPLICATION = "m2m-application"
+    M2M_APPLICATION = "m2m-application",
+    CUSTOM_APPLICATION = "custom-application"
 }
 
 /**

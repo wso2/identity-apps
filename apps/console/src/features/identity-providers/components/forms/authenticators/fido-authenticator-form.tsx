@@ -17,10 +17,12 @@
  */
 
 import { Field, Form } from "@wso2is/form";
+import { DocumentationLink, Message, useDocumentation } from "@wso2is/react-components";
+import classNames from "classnames";
 import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import {
     CommonAuthenticatorFormFieldMetaInterface,
     CommonAuthenticatorFormInitialValuesInterface,
@@ -55,7 +57,13 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
 
     const { t } = useTranslation();
 
+    const { getLink } = useDocumentation();
+
     const [ initialValues, setInitialValues ] = useState<FIDOAuthenticatorFormInitialValuesInterface>(undefined);
+    const [
+        isPasskeyProgressiveEnrollmentEnabled,
+        setIsPasskeyProgressiveEnrollmentEnabled
+    ] = useState<boolean>(undefined);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -74,7 +82,7 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                 .find((meta: CommonAuthenticatorFormFieldMetaInterface) => meta.key === value.key);
 
             const moderatedName: string = value.name.replace(/\./g, "_");
-            
+
             resolvedFormFields = {
                 ...resolvedFormFields,
                 [moderatedName]: {
@@ -89,10 +97,11 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                     ? JSON.parse(value.value)
                     : value.value
             };
-            
+
         });
 
         setInitialValues(resolvedInitialValues);
+        setIsPasskeyProgressiveEnrollmentEnabled(resolvedInitialValues.FIDO_EnablePasskeyProgressiveEnrollment);
     }, [ originalInitialValues ]);
 
     /**
@@ -133,10 +142,54 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
             } }
             initialValues={ initialValues }
         >
+            {
+                isPasskeyProgressiveEnrollmentEnabled ? (
+                    <div
+                        style={ { animationDuration: "350ms" } }
+                        className={ classNames("ui image warning scale transition", {
+                            "hidden animating out": !isPasskeyProgressiveEnrollmentEnabled,
+                            "visible animating in": isPasskeyProgressiveEnrollmentEnabled
+                        }) }
+                    >
+                        <Message
+                            type="info"
+                            content={
+                                (<>
+                                    {
+                                        t("console:develop.features.applications.edit.sections" +
+                                        ".signOnMethod.sections.landing.flowBuilder." +
+                                        "types.passkey.info.progressiveEnrollmentEnabled")
+                                    }
+                                    <p>
+                                        <Trans
+                                            i18nKey={
+                                                t("console:develop.features.applications.edit.sections" +
+                                                ".signOnMethod.sections.landing.flowBuilder.types.passkey." +
+                                                "info.progressiveEnrollmentEnabledCheckbox")
+                                            }
+                                        >
+                                            <strong>Note : </strong> When setting the Passkey in the <strong>first
+                                            step</strong>, users need to add an adaptive script. Use the <strong>
+                                            Passkeys Progressive Enrollment</strong> template in the <strong>
+                                            Sign-In-Method</strong> tab of the application.
+                                        </Trans>
+                                        <DocumentationLink
+                                            link={ getLink("develop.applications.editApplication.signInMethod.fido") }
+                                            showEmptyLink={ false }
+                                        >
+                                            { t("common:learnMore") }
+                                        </DocumentationLink>
+                                    </p>
+                                </>)
+                            }
+                        />
+                    </div>
+                ): null
+            }
             <Field.Checkbox
                 ariaLabel="Allow passkey progressive enrollment"
                 name="FIDO_EnablePasskeyProgressiveEnrollment"
-                label={ 
+                label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".fido2.allowProgressiveEnrollment.label")
                 }
@@ -147,11 +200,12 @@ export const FIDOAuthenticatorForm: FunctionComponent<FIDOAuthenticatorFormProps
                 readOnly={ readOnly }
                 width={ 12 }
                 data-testid={ `${ testId }-enable-passkey-progressive-enrollment` }
+                listen={ (value: boolean) => setIsPasskeyProgressiveEnrollmentEnabled(value) }
             />
             <Field.Checkbox
                 ariaLabel="Allow passkey usernameless authentication"
                 name="FIDO_EnableUsernamelessAuthentication"
-                label={ 
+                label={
                     t("console:develop.features.authenticationProvider.forms.authenticatorSettings" +
                         ".fido2.allowUsernamelessAuthentication.label")
                 }

@@ -16,13 +16,15 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { Code, Heading, Hint, Text } from "@wso2is/react-components";
 import useUIConfig from "modules/common/src/hooks/use-ui-configs";
-import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { Dispatch, FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { DropdownOptionsInterface } from "./attribute-settings";
 import { applicationConfig } from "../../../../../extensions";
@@ -90,6 +92,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const [ selectedSubjectValue, setSelectedSubjectValue ] = useState<string>();
     const [ selectedSubjectValueLocalClaim, setSelectedSubjectValueLocalClaim ] =
@@ -201,6 +204,17 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
 
     const submitValues = (values: Record<string, any>) => {
 
+        if (!!values.mandateLinkedLocalAccount && !values.validateLinkedLocalAccount) {
+            dispatch(addAlert({
+                description: t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                "sections.linkedAccounts.errorAlert.description"),
+                level: AlertLevels.WARNING,
+                message: t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                "sections.linkedAccounts.errorAlert.message")
+            }));
+
+            return;
+        }
         const settingValues: {
             role: RoleInterface;
             subject: SubjectInterface
@@ -222,7 +236,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                 claim: getDefaultDropDownValue(dropDownOptions, values.subjectAttribute),
                 includeTenantDomain: !!values.subjectIncludeTenantDomain,
                 includeUserDomain: !!values.subjectIncludeUserDomain,
-                useMappedLocalSubject: !!values.subjectUseMappedLocalSubject
+                mappedLocalSubjectMandatory: !!values.mandateLinkedLocalAccount,
+                useMappedLocalSubject: !!values.validateLinkedLocalAccount
             }
         };
 
@@ -230,15 +245,17 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             showIncludeTenantDomain: boolean;
             showIncludeUserstoreDomainRole: boolean;
             showIncludeUserstoreDomainSubject: boolean;
+            showMandateLinkedLocalAccount: boolean;
             showRoleAttribute: boolean;
             showRoleMapping: boolean;
-            showUseMappedLocalSubject: boolean;
+            showValidateLinkedLocalAccount: boolean;
             showSubjectAttribute: boolean;
         } = applicationConfig.attributeSettings.advancedAttributeSettings;
 
         !config.showIncludeUserstoreDomainSubject && delete settingValues.subject.includeUserDomain;
         !config.showIncludeTenantDomain && delete settingValues.subject.includeTenantDomain;
-        !config.showUseMappedLocalSubject && delete settingValues.subject.useMappedLocalSubject;
+        !config.showValidateLinkedLocalAccount && delete settingValues.subject.useMappedLocalSubject;
+        !config.showMandateLinkedLocalAccount && delete settingValues.subject.mappedLocalSubjectMandatory;
 
         !config.showRoleMapping && delete settingValues.role.mappings;
         !config.showIncludeUserstoreDomainRole && settingValues.role.includeUserDomain;
@@ -335,10 +352,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                 >
                     <Divider />
                     <Heading
-                        hidden={
-                            onlyOIDCConfigured &&
-                            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute
-                        }
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showSubjectAttribute }
                         as="h4"
                     >
                         { t("console:develop.features.applications.forms.advancedAttributeSettings." +
@@ -355,11 +370,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         required={ claimMappingOn }
                         value={ selectedSubjectValue }
                         options={ dropDownOptions }
-                        hidden={
-                            onlyOIDCConfigured &&
-                            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute ||
-                            !UIConfig?.classicFeatures?.isSubjectIdentifierEnabled
-                        }
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showSubjectAttribute ||
+                            (onlyOIDCConfigured &&
+                                !UIConfig?.legacyFeatures?.applicationOIDCSubjectIdentifierEnabled) }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-subject-attribute-dropdown` }
                         listen={ subjectAttributeChangeListener }
@@ -375,10 +389,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         value={ initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-subject-iInclude-user-domain-checkbox` }
-                        hidden={
-                            !applicationConfig.attributeSettings.advancedAttributeSettings.
-                                showIncludeUserstoreDomainSubject
-                        }
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings.
+                            showIncludeUserstoreDomainSubject ||
+                            (onlyOIDCConfigured &&
+                                !UIConfig?.legacyFeatures?.applicationOIDCSubjectIdentifierEnabled) }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeUserDomain.hint")
@@ -395,79 +409,55 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         value={ initialSubject?.includeTenantDomain ? [ "includeTenantDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-subject-include-tenant-domain-checkbox` }
-                        hidden={
-                            !applicationConfig.attributeSettings.advancedAttributeSettings
-                                .showIncludeTenantDomain || !UIConfig?.classicFeatures?.isIncludeOrgNameInSubjectEnabled
-                        }
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showIncludeTenantDomain ||
+                            (onlyOIDCConfigured &&
+                                !UIConfig?.legacyFeatures?.applicationOIDCSubjectIdentifierEnabled) }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeTenantDomain.hint")
                         }
                     />
-                    <Field.CheckboxLegacy
-                        ariaLabel="Subject use mapped local subject"
-                        name="subjectUseMappedLocalSubject"
-                        label={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
-                                "sections.subject.fields.subjectUseMappedLocalSubject.label")
-                        }
-                        required={ false }
-                        value={
-                            initialSubject?.useMappedLocalSubject
-                                ? [ "useMappedLocalSubject" ]
-                                : []
-                        }
-                        readOnly={ readOnly }
-                        data-testid={ `${ testId }-subject-use-mapped-local-subject-checkbox` }
-                        hidden={
-                            !applicationConfig.attributeSettings.advancedAttributeSettings
-                                .showUseMappedLocalSubject || !UIConfig?.classicFeatures?.isUseMappedLocalSubjectEnabled
-                        }
-                        hint={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
-                            "sections.subject.fields.subjectUseMappedLocalSubject.hint")
-                        }
-                    />
-                    <Divider />
-
-                    <div>
-                        <Text>
+                    <Divider hidden />
+                    { onlyOIDCConfigured && (
+                        <div>
+                            <Text>
+                                {
+                                    t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                        ".sections.subject.fields.subjectType.label")
+                                }
+                            </Text>
                             {
-                                t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                    ".sections.subject.fields.subjectType.label")
+                                Object.keys(SubjectTypes)
+                                    .map((subjectTypeKey: SubjectTypes, index: number) => {
+                                        const subjectType: SubjectTypes
+                                            = SubjectTypes[subjectTypeKey];
+
+                                        return (
+                                            <>
+                                                <Field.Radio
+                                                    key={ index }
+                                                    ariaLabel={ `Subject type ${subjectType}` }
+                                                    name={ "subjectType" }
+                                                    value={ subjectType }
+                                                    label={ t("console:develop.features.applications.forms" +
+                                                        ".advancedAttributeSettings.sections.subject.fields" +
+                                                        ".subjectType." + subjectType + ".label") }
+                                                    hint={ subjectType === SubjectTypes.PAIRWISE &&
+                                                            t("console:develop.features.applications.forms" +
+                                                        ".advancedAttributeSettings.sections.subject.fields" +
+                                                        ".subjectType." + subjectType + ".hint") }
+                                                    checked={ selectedSubjectType === subjectType }
+                                                    listen={ () => {
+                                                        setSelectedSubjectType(subjectType);
+                                                    } }
+                                                />
+                                            </>
+                                        );
+                                    })
                             }
-                        </Text>
-                        {
-                            Object.keys(SubjectTypes)
-                                .map((subjectTypeKey: SubjectTypes, index: number) => {
-                                    const subjectType: SubjectTypes
-                                        = SubjectTypes[subjectTypeKey];
-
-                                    return (
-                                        <>
-                                            <Field.Radio
-                                                key={ index }
-                                                ariaLabel={ `Subject type ${subjectType}` }
-                                                name={ "subjectType" }
-                                                value={ subjectType }
-                                                label={ t("console:develop.features.applications.forms" +
-                                                     ".advancedAttributeSettings.sections.subject.fields" +
-                                                     ".subjectType." + subjectType + ".label") }
-                                                hint={ subjectType === SubjectTypes.PAIRWISE &&
-                                                        t("console:develop.features.applications.forms" +
-                                                       ".advancedAttributeSettings.sections.subject.fields" +
-                                                       ".subjectType." + subjectType + ".hint") }
-                                                checked={ selectedSubjectType === subjectType }
-                                                listen={ () => {
-                                                    setSelectedSubjectType(subjectType);
-                                                } }
-                                            />
-                                        </>
-                                    );
-                                })
-                        }
-                    </div>
-
+                        </div>
+                    ) }
                     { selectedSubjectType === SubjectTypes.PAIRWISE && (
                         <Field.Input
                             ariaLabel="Sector Identifier URI"
@@ -491,8 +481,87 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         />
                     )
                     }
+                    <Divider />
+                    <Heading
+                        as="h4"
+                    >
+                        { t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                            "sections.linkedAccounts.heading") }
+                    </Heading>
+                    <Divider hidden/>
+                    { !applicationConfig.attributeSettings.advancedAttributeSettings.showMandateLinkedLocalAccount ?
+                        (<Field.CheckboxLegacy
+                            ariaLabel="Validate linked local account"
+                            name="validateLinkedLocalAccount"
+                            label={
+                                t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                "sections.linkedAccounts.fields.validateLocalAccount.label")
+                            }
+                            required={ false }
+                            value={
+                                initialSubject?.useMappedLocalSubject
+                                    ? [ "useMappedLocalSubject" ]
+                                    : []
+                            }
+                            readOnly={ readOnly }
+                            data-testid={ `${ testId }-validate-linked-local-account-checkbox` }
+                            hidden={
+                                !applicationConfig.attributeSettings.advancedAttributeSettings
+                                    .showValidateLinkedLocalAccount
+                            }
+                            hint={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                            "sections.linkedAccounts.fields.validateLocalAccount.hint") }
+                        />):
+                        (<Field.CheckboxLegacy
+                            ariaLabel="Validate linked local account"
+                            name="validateLinkedLocalAccount"
+                            label={
+                                t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                "sections.linkedAccounts.fields.validateLocalAccount.label")
+                            }
+                            required={ false }
+                            value={
+                                initialSubject?.useMappedLocalSubject
+                                    ? [ "useMappedLocalSubject" ]
+                                    : []
+                            }
+                            readOnly={ readOnly }
+                            data-testid={ `${ testId }-validate-linked-local-account-checkbox` }
+                            hidden={
+                                !applicationConfig.attributeSettings.advancedAttributeSettings
+                                    .showValidateLinkedLocalAccount
+                            }
+                        />)
+                    }
+                    <Field.CheckboxLegacy
+                        ariaLabel="Mandate linked local account"
+                        name="mandateLinkedLocalAccount"
+                        label={
+                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                            "sections.linkedAccounts.fields.mandateLocalAccount.label")
+                        }
+                        required={ false }
+                        value={
+                            initialSubject?.mappedLocalSubjectMandatory
+                                ? [ "mappedLocalSubjectMandatory" ]
+                                : []
+                        }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-mandate-linked-local-account-checkbox` }
+                        hidden={
+                            !applicationConfig.attributeSettings.advancedAttributeSettings
+                                .showMandateLinkedLocalAccount
+                        }
+                        hint={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                        "sections.linkedAccounts.fields.mandateLocalAccount.hint") }
+                    />
+                    <Divider
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showRoleAttribute || !UIConfig?.legacyFeatures?.applicationRoleEnabled }
+                    />
                     {
-                        applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute && (
+                        applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute &&
+                        UIConfig?.legacyFeatures?.applicationRoleEnabled && (
                             <>
                                 <Heading as="h4">
                                     { t("console:develop.features.applications.forms.advancedAttributeSettings" +
@@ -513,30 +582,30 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         options={ dropDownOptions }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-role-attribute-dropdown` }
-                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute }
+                        hidden={  !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showRoleAttribute || !UIConfig?.legacyFeatures?.applicationRoleEnabled }
                         hint={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
-                                "role.fields.roleAttribute.hint")
+                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                "sections.role.fields.roleAttribute.hint")
                         }
                     />
                     <Field.CheckboxLegacy
                         ariaLabel="Role"
                         name="role"
                         label={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
-                                "role.fields.role.label")
+                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                "sections.role.fields.role.label")
                         }
                         required={ false }
                         value={ initialRole?.includeUserDomain ? [ "includeUserDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-role-checkbox` }
-                        hidden={
-                            !applicationConfig.attributeSettings.advancedAttributeSettings
-                                .showIncludeUserstoreDomainRole
-                        }
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showIncludeUserstoreDomainRole ||
+                            !UIConfig?.legacyFeatures?.applicationRoleEnabled }
                         hint={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
-                                "role.fields.role.hint")
+                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                "sections.role.fields.role.hint")
                         }
                     />
                 </Form>

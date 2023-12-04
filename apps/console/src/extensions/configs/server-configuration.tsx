@@ -28,8 +28,10 @@ import {
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
+    GovernanceConnectorUtils,
     ServerConfigurationsConstants,
     UpdateGovernanceConnectorConfigInterface,
+    UpdateGovernanceConnectorConfigPropertyInterface,
     UpdateMultipleGovernanceConnectorsInterface
 } from "../../features/server-configurations";
 import { ValidationFormInterface } from "../../features/validation/models";
@@ -228,7 +230,7 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
 
         return updatePasswordExpiryProperties(passwordExpiryData);
     },
-    processPasswordPoliciesSubmitData: (data: PasswordPoliciesInterface) => {
+    processPasswordPoliciesSubmitData: (data: PasswordPoliciesInterface, isLegacy: boolean) => {
         let passwordExpiryTime: number | undefined = parseInt((data.passwordExpiryTime as string));
         const passwordExpiryEnabled: boolean | undefined = data.passwordExpiryEnabled;
         let passwordHistoryCount: number | undefined = parseInt((data.passwordHistoryCount as string));
@@ -246,6 +248,43 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
         if (passwordHistoryCountEnabled && passwordHistoryCount === 0) {
             passwordHistoryCount = 1;
         }
+
+        const legacyPasswordPoliciesData: {
+            id: string, properties: UpdateGovernanceConnectorConfigPropertyInterface[] } = {
+                id: ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID,
+                properties: [
+                    {
+                        name: ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE,
+                        value: data[
+                            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                ServerConfigurationsConstants.PASSWORD_POLICY_ENABLE) ]?.toString()
+                    },
+                    {
+                        name: ServerConfigurationsConstants.PASSWORD_POLICY_MIN_LENGTH,
+                        value: data[
+                            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                ServerConfigurationsConstants.PASSWORD_POLICY_MIN_LENGTH) ]?.toString()
+                    },
+                    {
+                        name: ServerConfigurationsConstants.PASSWORD_POLICY_MAX_LENGTH,
+                        value: data[
+                            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                ServerConfigurationsConstants.PASSWORD_POLICY_MAX_LENGTH) ]?.toString()
+                    },
+                    {
+                        name: ServerConfigurationsConstants.PASSWORD_POLICY_PATTERN,
+                        value: data[
+                            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                ServerConfigurationsConstants.PASSWORD_POLICY_PATTERN) ]?.toString()
+                    },
+                    {
+                        name: ServerConfigurationsConstants.PASSWORD_POLICY_ERROR_MESSAGE,
+                        value: data[
+                            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                ServerConfigurationsConstants.PASSWORD_POLICY_ERROR_MESSAGE) ]?.toString()
+                    }
+                ]
+            };
 
         const passwordPoliciesData: UpdateMultipleGovernanceConnectorsInterface = {
             connectors: [
@@ -278,6 +317,10 @@ export const serverConfigurationConfig: ServerConfigurationConfig = {
             ],
             operation: "UPDATE"
         };
+
+        if (isLegacy) {
+            passwordPoliciesData.connectors.push(legacyPasswordPoliciesData);
+        }
 
         return updatePasswordPolicyProperties(passwordPoliciesData);
     },

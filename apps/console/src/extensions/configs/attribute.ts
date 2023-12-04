@@ -57,7 +57,7 @@ export const attributeConfig: AttributeConfig = {
 
             return claims;
         },
-        showDangerZone: false,
+        showDangerZone: true,
         showSCIMCore1: false
     },
     attributes: {
@@ -84,7 +84,7 @@ export const attributeConfig: AttributeConfig = {
             .set("urn:ietf:params:scim:schemas:core:2.0:User:active","http://wso2.org/claims/active")
             .set("urn:ietf:params:scim:schemas:core:2.0:User:addresses#home.locality",
                 "http://wso2.org/claims/locality")
-            .set("urn:ietf:params:scim:schemas:core:2.0:User:addresses#home.postalCode", 
+            .set("urn:ietf:params:scim:schemas:core:2.0:User:addresses#home.postalCode",
                 "http://wso2.org/claims/postalcode")
             .set("urn:ietf:params:scim:schemas:core:2.0:User:addresses#home.region",
                 "http://wso2.org/claims/region")
@@ -193,7 +193,7 @@ export const attributeConfig: AttributeConfig = {
         hideDeleteIcon: (claim: ExternalClaim): boolean => {
             return claim?.claimURI === "sub" || isIdentityClaims(claim);
         },
-        isAttributeEditable: false,
+        isAttributeEditable: true,
         isEditActionClickable: (claim: ExternalClaim): boolean => {
             if (isIdentityClaims(claim)) {
                 return false;
@@ -283,7 +283,7 @@ export const attributeConfig: AttributeConfig = {
         customDialectURI: "urn:scim:wso2:schema",
         getDialect: async (dialectURI: string): Promise<Claim | ClaimDialect> => {
             let dialectObject: Claim | ClaimDialect;
-            
+
             await getDialects()
                 .then((response: Claim[] | ClaimDialect[]) => {
                     response.map((dialect: Claim | ClaimDialect) => {
@@ -292,12 +292,12 @@ export const attributeConfig: AttributeConfig = {
                         }
                     });
                 });
-            
+
             return Promise.resolve(dialectObject);
         },
         isSCIMCustomDialectAvailable: async (): Promise<string> => {
             let dialectID: string = "";
-            
+
             await getDialects()
                 .then((response: Claim[] | ClaimDialect[]) => {
                     response.map((dialect: Claim | ClaimDialect) => {
@@ -306,22 +306,22 @@ export const attributeConfig: AttributeConfig = {
                         }
                     });
                 });
-            
+
             return Promise.resolve(dialectID);
         },
         isUserStoresHidden: async (hiddenUserStores: string[]): Promise<UserStoreListItem[]> => {
             const userStores: UserStoreListItem[] = [];
-            
+
             await getUserStoreList().then((response: AxiosResponse) => {
-                
+
                 response.data.map((store: UserStoreListItem) => {
                     if (!hiddenUserStores.includes(store.name)) {
                         userStores.push(store);
                     }
                 });
-                
+
             });
-            
+
             return Promise.resolve(userStores);
         },
         mapClaimToCustomDialect: true,
