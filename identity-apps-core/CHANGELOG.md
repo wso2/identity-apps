@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.82
+
+### Patch Changes
+
+- [#4940](https://github.com/wso2/identity-apps/pull/4940) [`88fde38c4b`](https://github.com/wso2/identity-apps/commit/88fde38c4bc6057e5e3971b237f653ac08f914e5) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix tenant creation issue
+
 ## 2.0.81
 
 ### Patch Changes

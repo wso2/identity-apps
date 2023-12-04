@@ -116,9 +116,9 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
      * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: Record<string, unknown>) => {
-        const data: any = {
-            [ GovernanceConnectorUtils.decodeConnectorPropertyName(
-                "Recovery.AdminPasswordReset.RecoveryLink") ]: values[ "Recovery.AdminPasswordReset.RecoveryLink" ]
+        const data: { [ key:string ]: unknown } = {
+            "Recovery.AdminPasswordReset.RecoveryLink": values[
+                GovernanceConnectorUtils.encodeConnectorPropertyName("Recovery.AdminPasswordReset.RecoveryLink") ]
         };
 
         return data;
@@ -146,7 +146,7 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
                     "Account Management",
                     "Recovery.AdminPasswordReset.RecoveryLink",
                     "Enable password reset via recovery e-mail") }
-                defaultValue={ initialFormValues?.[
+                initialValue={ initialFormValues?.[
                     "Recovery.AdminPasswordReset.RecoveryLink" ] === "true" }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }

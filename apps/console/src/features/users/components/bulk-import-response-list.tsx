@@ -86,7 +86,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     const [ responseOperationType, setResponseOperationType ] =
         useState<BulkImportResponseOperationTypes>(BulkImportResponseOperationTypes.USER_CREATION);
     const [ responseOperationTypeTab, setResponseOperationTypeTab ] = useState<number>(0);
-    
+
     const { t } = useTranslation();
 
     const totalUserCreationCount: number =
@@ -94,7 +94,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     const totalUserAssignmentCount: number =
         bulkResponseSummary.failedUserAssignment + bulkResponseSummary.successUserAssignment;
     const listItemLimit: number = UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT;
-    
+
     const statusOptions: DropdownItemProps[] = [
         { key: 0, text: "All", value: ALL_STATUS },
         {
@@ -130,7 +130,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     useEffect(() => {
         filterResponseListByOperationType();
     }, [ responseList ]);
-    
+
     /**
      * Set the filtered response list based on the response operation type.
      */
@@ -139,7 +139,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
         setSelectedStatus(ALL_STATUS);
         filterResponseListByOperationType();
     }, [ responseOperationType ]);
-    
+
     /**
      * Filter the response list based on the response operation type.
      */
@@ -149,7 +149,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
 
                 return response.operationType === responseOperationType;
             });
-        
+
         setFilteredResponseList(filteredResponse);
     };
 
@@ -220,7 +220,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
 
         return defaultColumns;
     };
-    
+
     /**
      * Filters the response list based on the search query and the selected status.
      */
@@ -232,7 +232,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
 
         if (searchQuery && searchQuery !== "") {
             const [ , condition, value ] = searchQuery.split(" ");
-            
+
             filteredList = filteredList.filter((item: BulkUserImportOperationResponse) => {
                 if (
                     selectedStatus !== ALL_STATUS
@@ -281,7 +281,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
 
     const handleStatusDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         const newStatus: FilterStatus = data.value as FilterStatus;
-        
+
         setSelectedStatus(newStatus);
         setTriggerClearQuery(!triggerClearQuery);
     };
@@ -359,16 +359,16 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
     const isResponseStatusFilterDisabled = (): boolean => {
         const isUserCreation: boolean = responseOperationType === BulkImportResponseOperationTypes.USER_CREATION;
         const isRoleAssignment: boolean = responseOperationType === BulkImportResponseOperationTypes.ROLE_ASSIGNMENT;
-    
+
         const noFailedOrSuccessfulUserCreation: boolean =
             (bulkResponseSummary.failedUserCreation === 0 || bulkResponseSummary.successUserCreation === 0);
         const noFailedOrSuccessfulUserAssignment: boolean =
             (bulkResponseSummary.failedUserAssignment === 0 || bulkResponseSummary.successUserAssignment === 0);
-    
+
         return (isUserCreation && noFailedOrSuccessfulUserCreation) ||
             (isRoleAssignment && noFailedOrSuccessfulUserAssignment);
     };
-    
+
     const advanceSearchFilterOptions: DropdownChild[] =
         responseOperationType === BulkImportResponseOperationTypes.USER_CREATION
             ? [
@@ -394,8 +394,8 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                     {
                         isLoading || hasError
-                            ? null 
-                            : bulkResponseSummary.failedUserCreation === 0 
+                            ? null
+                            : bulkResponseSummary.failedUserCreation === 0
                                 ? (
                                     successAlert ?? (
                                         <Alert severity="success" data-componentid={ `${componentId}-success-alert` }>
@@ -453,7 +453,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                         ? t("console:manage.features.users.advancedSearch.form.dropdown." +
                                             "filterAttributeOptions.username")
                                         : t("console:manage.features.user.modals.bulkImportUserWizard." +
-                                            "wizardSummary.advanceSearch.roleGroupFilterAttributePlaceHolder") 
+                                            "wizardSummary.advanceSearch.roleGroupFilterAttributePlaceHolder")
                                 }
                                 filterConditionsPlaceholder={
                                     t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
@@ -468,7 +468,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                         ? t("console:manage.features.user.modals.bulkImportUserWizard." +
                                             "wizardSummary.advanceSearch.searchByUsername")
                                         : t("console:manage.features.user.modals.bulkImportUserWizard." +
-                                            "wizardSummary.advanceSearch.searchByRoleOrGroup")
+                                            "wizardSummary.advanceSearch.searchByGroup")
                                 }
                                 defaultSearchAttribute="resourceName"
                                 defaultSearchOperator="co"

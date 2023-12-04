@@ -1,5 +1,31 @@
 # @wso2is/console
 
+## 2.9.48
+
+### Patch Changes
+
+- [#4946](https://github.com/wso2/identity-apps/pull/4946) [`072749a912`](https://github.com/wso2/identity-apps/commit/072749a91239554bb47df3513d21a850021e1fa4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update Role assignment UI in wizards
+
+* [#4913](https://github.com/wso2/identity-apps/pull/4913) [`392095343a`](https://github.com/wso2/identity-apps/commit/392095343a92ec1af6b83208deeda3e3562093f1) Thanks [@Rashmini](https://github.com/Rashmini)! - Fix alignment issue in roles page
+
+* Updated dependencies [[`392095343a`](https://github.com/wso2/identity-apps/commit/392095343a92ec1af6b83208deeda3e3562093f1)]:
+  - @wso2is/theme@2.0.46
+
+## 2.9.47
+
+### Patch Changes
+
+- [#4943](https://github.com/wso2/identity-apps/pull/4943) [`6d4c8825a5`](https://github.com/wso2/identity-apps/commit/6d4c8825a58c918ea5979af230332397c1ce59d9) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix UX inconsistencies with password reset flow
+
+## 2.9.46
+
+### Patch Changes
+
+- [#4890](https://github.com/wso2/identity-apps/pull/4890) [`084d392a3f`](https://github.com/wso2/identity-apps/commit/084d392a3ff932119ca6ea0deae77aa9f224fd17) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues with login and registration section
+
+- Updated dependencies [[`084d392a3f`](https://github.com/wso2/identity-apps/commit/084d392a3ff932119ca6ea0deae77aa9f224fd17)]:
+  - @wso2is/i18n@2.0.71
+
 ## 2.9.45
 
 ### Patch Changes

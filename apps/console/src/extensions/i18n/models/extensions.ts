@@ -3249,6 +3249,12 @@ export interface Extensions {
                     };
                     subHeading: string;
                 };
+                inviteUserToSetPassword: {
+                    notification: {
+                        error: NotificationItem;
+                        success: NotificationItem;
+                    };
+                };
             };
         };
         groups: {
