@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { LegacyFeaturesInterface, ProductVersionConfigInterface } from "./core";
+import { LegacyModeInterface, ProductVersionConfigInterface } from "./core";
 import { DocumentationProviders, DocumentationStructureFileTypes } from "./documentation";
 import { GravatarConfig } from "./profile";
 
@@ -205,9 +205,9 @@ export interface CommonUIConfigInterface<T = Record<string, unknown>> {
      */
     productVersionConfig?: ProductVersionConfigInterface;
     /**
-     * Legacy features
+     * Legacy mode
      */
-    legacyFeatures?: LegacyFeaturesInterface;
+    legacyMode?: LegacyModeInterface;
     /**
      * Theme configs.
      */

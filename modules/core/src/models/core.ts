@@ -210,18 +210,18 @@ export interface SVGRLoadedInterface {
     default: string;
 }
 
-export interface LegacyFeaturesInterface {
-    apiResourcesDisabled: boolean;
-    applicationRequestPathAuthenticationEnabled: boolean;
-    applicationXacmlAuthorizationEnabled: boolean;
+export interface LegacyModeInterface {
+    apiResources: boolean;
     applicationListSystemApps: boolean;
+    applicationOIDCSubjectIdentifier: boolean;
+    applicationRequestPathAuthentication: boolean;
     applicationSystemAppsSettings: boolean;
-    applicationOIDCSubjectIdentifierEnabled: boolean;
-    applicationRoleEnabled: boolean;
-    approvalsEnabled: boolean;
-    certificatesEnabled: boolean;
-    loginAndRegistrationEmailDomainDiscoveryDisabled: boolean;
-    organizationsDisabled: boolean;
-    secretsManagementEnabled: boolean;
-    rolesV1Enabled: boolean;
+    applicationXacmlAuthorization: boolean;
+    approvals: boolean;
+    certificates: boolean;
+    loginAndRegistrationEmailDomainDiscovery: boolean;
+    organizations: boolean;
+    rolesV1: boolean;
+    roleMapping: boolean;
+    secretsManagement: boolean;
 }

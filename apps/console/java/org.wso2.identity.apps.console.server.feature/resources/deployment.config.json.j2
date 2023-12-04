@@ -1696,16 +1696,28 @@
                 {% endfor %}
             {% endif %}
         ],
-        "legacyFeatures": {
-            {% if console.ui.legacy_features.items() is defined %}
-            {% for key, value in console.ui.legacy_features.items() %}
+        "legacyMode": {
+            {% if console.ui.legacy_mode.items() is defined %}
+            {% for key, value in console.ui.legacy_mode.items() %}
             {% if value is string %}
-                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
             {% else %}
             {% if legacy_mode.enabled == true %}
-                "{{ key }}": {{ true }}{{ "," if not loop.last }}
+            "apiResources": false,
+            "applicationListSystemApps": true,
+            "applicationOIDCSubjectIdentifier": true,
+            "applicationRequestPathAuthentication": true,
+            "applicationSystemAppsSettings": true,
+            "applicationXacmlAuthorization": true,
+            "approvals": true,
+            "certificates": true,
+            "loginAndRegistrationEmailDomainDiscovery": false,
+            "organizations": false,
+            "rolesV1": true,
+            "roleMapping": true,
+            "secretsManagement": true
             {% else %}
-                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            "{{ key }}": {{ value }}{{ "," if not loop.last }}
             {% endif %}
             {% endif %}
             {% endfor %}

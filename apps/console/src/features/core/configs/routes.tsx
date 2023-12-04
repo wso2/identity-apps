@@ -30,7 +30,7 @@ import {
     UserCircleDotIcon,
     UserGroupIcon
 } from "@oxygen-ui/react-icons";
-import { LegacyFeaturesInterface, RouteInterface } from "@wso2is/core/models";
+import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
 import compact from "lodash-es/compact";
 import keyBy from "lodash-es/keyBy";
 import merge from "lodash-es/merge";
@@ -71,7 +71,7 @@ import { AppConstants } from "../constants";
 
 export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInterface[] => {
 
-    const legacyFeatures: LegacyFeaturesInterface = window["AppUtils"]?.getConfig()?.ui?.legacyFeatures;
+    const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
 
     const routes: RouteInterface[] = values(
         merge(
@@ -442,7 +442,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 12,
                         path: AppConstants.getPaths().get("ORGANIZATIONS"),
                         protected: true,
-                        showOnSidePanel: !legacyFeatures?.organizationsDisabled
+                        showOnSidePanel: legacyMode?.organizations
                     },
                     {
                         children: [
@@ -1039,7 +1039,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 26,
                         path: AppConstants.getPaths().get("APPROVALS"),
                         protected: true,
-                        showOnSidePanel: legacyFeatures?.approvalsEnabled
+                        showOnSidePanel: legacyMode?.approvals
                     },
                     {
                         category: "console:manage.features.sidePanel.categories.legacy",
@@ -1052,7 +1052,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 27,
                         path: AppConstants.getPaths().get("CERTIFICATES"),
                         protected: true,
-                        showOnSidePanel: legacyFeatures?.certificatesEnabled
+                        showOnSidePanel: legacyMode?.certificates
                     },
                     {
                         category: "console:manage.features.sidePanel.categories.legacy",
@@ -1076,7 +1076,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 28,
                         path: AppConstants.getPaths().get("SECRETS"),
                         protected: true,
-                        showOnSidePanel: legacyFeatures?.secretsManagementEnabled
+                        showOnSidePanel: legacyMode?.secretsManagement
                     },
                     {
                         children: [
@@ -1113,7 +1113,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 29,
                         path: AppConstants.getPaths().get("CONSOLE_SETTINGS"),
                         protected: true,
-                        showOnSidePanel: !legacyFeatures?.applicationListSystemApps
+                        showOnSidePanel: !legacyMode?.applicationListSystemApps
                     },
                     // the following routes are not onboarded to the side panel
                     {
@@ -1190,7 +1190,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 order: 2,
                 path: APIResourcesConstants.getPaths().get("API_RESOURCES"),
                 protected: true,
-                showOnSidePanel: !legacyFeatures?.apiResourcesDisabled
+                showOnSidePanel: legacyMode?.apiResources
             },
             {
                 category: "extensions:manage.sidePanel.categories.userManagement",
@@ -1500,7 +1500,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 order: 2,
                 path: APIResourcesConstants.getPaths().get("API_RESOURCES"),
                 protected: true,
-                showOnSidePanel: !legacyFeatures?.apiResourcesDisabled
+                showOnSidePanel: legacyMode?.apiResources
             },
             {
                 category: "extensions:manage.sidePanel.categories.userManagement",
@@ -1648,7 +1648,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
             }
         );
 
-        if (legacyFeatures?.rolesV1Enabled) {
+        if (legacyMode?.rolesV1) {
             // Push the roles v1 routes.
             routes.push({
                 category: "extensions:manage.sidePanel.categories.userManagement",
@@ -1676,7 +1676,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 order: 7,
                 path: AppConstants.getPaths().get("ROLES"),
                 protected: true,
-                showOnSidePanel: legacyFeatures?.rolesV1Enabled
+                showOnSidePanel: legacyMode?.rolesV1
             });
         } else {
             // Push the roles v2 routes.
@@ -1718,7 +1718,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 order: 7,
                 path: AppConstants.getPaths().get("ROLES"),
                 protected: true,
-                showOnSidePanel: !legacyFeatures?.rolesV1Enabled
+                showOnSidePanel: !legacyMode?.rolesV1
             });
         }
     }

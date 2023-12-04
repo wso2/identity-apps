@@ -836,7 +836,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))
                 && !isFragmentApp
                 && !isM2MApplication
-                && (UIConfig?.legacyFeatures?.applicationSystemAppsSettings ||
+                && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
                     application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
@@ -880,7 +880,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))
                 && !isFragmentApp
                 && !isM2MApplication
-                && (UIConfig?.legacyFeatures?.applicationSystemAppsSettings ||
+                && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
                     application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
 
                 applicationConfig.editApplication.isTabEnabledForApp(
@@ -895,7 +895,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))
                 && !isFragmentApp
                 && !isM2MApplication
-                && (UIConfig?.legacyFeatures?.applicationSystemAppsSettings ||
+                && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
                     application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
 
                 applicationConfig.editApplication.
@@ -927,7 +927,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         ApplicationTabTypes.INFO,
                         tenantDomain
                     ) &&
-                    !UIConfig?.legacyFeatures?.organizationsDisabled &&
+                    UIConfig?.legacyMode?.organizations &&
                     panes.push({
                         componentId: "shared-access",
                         menuItem: t("console:develop.features.applications.edit.sections.sharedAccess.tabName"),

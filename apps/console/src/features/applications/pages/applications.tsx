@@ -299,7 +299,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         if (applicationList?.applications) {
             const appList: ApplicationListInterface = cloneDeep(applicationList);
 
-            if (!UIConfig?.legacyFeatures?.applicationListSystemApps) {
+            // Remove the system apps from the application list.
+            if (!UIConfig?.legacyMode?.applicationListSystemApps) {
                 appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
                     !ApplicationManagementConstants.SYSTEM_APPS.includes(item.name)
                     && !ApplicationManagementConstants.DEFAULT_APPS.includes(item.name)
@@ -422,7 +423,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      */
     const renderTenantedMyAccountLink = (): ReactElement => {
         if (!applicationConfig.advancedConfigurations.showMyAccount ||
-            UIConfig?.legacyFeatures?.applicationListSystemApps) {
+            UIConfig?.legacyMode?.applicationListSystemApps) {
             return null;
         }
 
