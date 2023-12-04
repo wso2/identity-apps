@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.46
+
+### Patch Changes
+
+- [#4913](https://github.com/wso2/identity-apps/pull/4913) [`392095343a`](https://github.com/wso2/identity-apps/commit/392095343a92ec1af6b83208deeda3e3562093f1) Thanks [@Rashmini](https://github.com/Rashmini)! - Fix alignment issue in roles page
+
 ## 2.0.45
 
 ### Patch Changes
