@@ -125,9 +125,8 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
 
         const re: RegExp = new RegExp(escapeRegExp(value), "i");
 
-        const filteredRoleList: RolesInterface[] = initialValues?.roleList
-            ? initialValues.roleList.filter((role: RolesInterface) => re.test(role.displayName))
-            : [];
+        const filteredRoleList: RolesInterface[] = initialValues?.roleList?.
+            filter((role: RolesInterface) => re.test(role.displayName)) ?? [];
 
         setFilteredRoleList(filteredRoleList);
     };
