@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.84
+
+### Patch Changes
+
+- [#4956](https://github.com/wso2/identity-apps/pull/4956) [`4e3be8a755`](https://github.com/wso2/identity-apps/commit/4e3be8a755becfd3740efe683df5b1fa3aaef996) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Fix the style of consent page
+
 ## 2.0.83
 
 ### Patch Changes
