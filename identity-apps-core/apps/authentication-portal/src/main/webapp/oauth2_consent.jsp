@@ -335,7 +335,7 @@
                                                 %>
                                                 <div class="item mt-2">
                                                     <i aria-hidden="true" class="circle tiny icon primary consent-item-bullet" id=("<%=scope%>")></i>
-                                                    <div class="content mt-2">
+                                                    <div class="content mt-2 pl-1 consentItem">
                                                         <div class="header light-font">
                                                             <%=Encode.forHtml(scope)%>
                                                         </div>
