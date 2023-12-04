@@ -1702,7 +1702,7 @@
             {% if value is string %}
             "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
             {% else %}
-            {% if legacy_mode.enabled == true %}
+            {% if legacy_mode.enable == true %}
             "apiResources": false,
             "applicationListSystemApps": true,
             "applicationOIDCSubjectIdentifier": true,
