@@ -1552,7 +1552,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             disablePortal
                                             id="combo-box-demo"
                                             options={
-                                                groupList?.Resources
+                                                groupList?.Resources ?? []
                                             }
                                             getOptionLabel={ (option: GroupsInterface) => option?.displayName }
                                             renderOption={ (
