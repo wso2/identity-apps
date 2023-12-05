@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
@@ -40,6 +41,7 @@ import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get
 import { ConnectorPropertyInterface } from "../../server-configurations/models";
 import { UserManagementConstants } from "../constants";
 import useUserManagement from "../hooks/use-user-management";
+import { UserRolesV1List } from "./user-roles-v1-list";
 
 interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
@@ -91,8 +93,12 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const { activeTab, updateActiveTab } = useUserManagement();
     const dispatch: Dispatch = useDispatch();
     const { isSuperOrganization } = useGetCurrentOrganizationType();
+    const { UIConfig } = useUIConfig();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const isGroupAndRoleSeparationEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
+    const roleV1Enabled: boolean = UIConfig?.legacyMode?.rolesV1;
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ isSuperAdmin, setIsSuperAdmin ] = useState<boolean>(false);
@@ -234,8 +240,22 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 </ResourceTab.Pane>
             )
         },
+        isSuperOrganization && roleV1Enabled ? {
+            menuItem: t("console:manage.features.users.editUser.tab.menuItems.2"),
+            render: () => (
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
+                    <UserRolesV1List
+                        isGroupAndRoleSeparationEnabled={ isGroupAndRoleSeparationEnabled }
+                        onAlertFired={ handleAlerts }
+                        user={ user }
+                        handleUserUpdate={ handleUserUpdate }
+                        isReadOnly={ isReadOnly }
+                    />
+                </ResourceTab.Pane>
+            )
+        } : null,
         // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
-        isSuperOrganization ? {
+        isSuperOrganization && !roleV1Enabled ? {
             menuItem: t("console:manage.features.users.editUser.tab.menuItems.2"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
