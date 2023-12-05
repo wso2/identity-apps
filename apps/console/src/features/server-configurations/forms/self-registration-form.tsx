@@ -271,9 +271,8 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             "SelfRegistration.AutoLogin.Enable": values.autoLogin !== undefined
                 ? !!enableAutoLogin
                 : initialConnectorValues?.get("SelfRegistration.AutoLogin.Enable").value,
-            "SelfRegistration.LockOnCreation": (values.accountActivateImmediately !== undefined
-                || enableAccountConfirmation !== undefined)
-                ? !values.accountActivateImmediately && !!enableAccountConfirmation
+            "SelfRegistration.LockOnCreation": enableAccountConfirmation
+                ? !values?.accountActivateImmediately
                 : initialConnectorValues?.get("SelfRegistration.LockOnCreation").value,
             "SelfRegistration.NotifyAccountConfirmation": enableAccountConfirmation !== undefined
                 ? !!enableAccountConfirmation
@@ -307,6 +306,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 "accountActivateImmediately",
                 "verificationLinkExpiryTime",
                 "signUpConfirmation",
+                "SelfRegistration.LockOnCreation",
                 "SelfRegistration.VerificationCode.ExpiryTime",
                 "SelfRegistration.SendConfirmationOnCreation",
                 "SelfRegistration",
@@ -316,7 +316,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             ];
 
             for (const key in values) {
-                if (Object.prototype.hasOwnProperty.call(values, key) && !keysToOmit.includes(key)) {
+                if (!keysToOmit.includes(key)) {
                     data = {
                         ...data,
                         [ GovernanceConnectorUtils.decodeConnectorPropertyName(key) ]: values[ key ]
