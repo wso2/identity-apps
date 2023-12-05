@@ -329,8 +329,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
                                         data-componentid={ "subscribed-api-resources-subcribe-api-resource-button" }
                                         size="medium"
                                         floated="right"
-                                        onClick={ (): void =>
-                                            setIsAuthorizeAPIResourceWizardOpen(true) }
+                                        onClick={ (): void => setIsAuthorizeAPIResourceWizardOpen(true) }
                                     >
                                         <Icon name="add" />
                                         { t("extensions:develop.applications.edit.sections.apiAuthorization." +
