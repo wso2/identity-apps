@@ -85,3 +85,17 @@ export enum APIResourceCategoryPrefixes {
     MANAGEMENT = "TENANT",
     ORGANIZATION = "ORGANIZATION"
 }
+
+/*
+* The API Resource category.
+*/
+export enum APIResourceCategories {
+    BUSINESS = "BUSINESS",
+    CONSOLE_FEATURE = "CONSOLE_FEATURE",
+    ORGANIZATION_ADMIN = "ORGANIZATION_ADMIN",
+    ORGANIZATION_USER = "ORGANIZATION_USER",
+    OTHER = "OTHER",
+    SYSTEM = "SYSTEM",
+    TENANT_ADMIN = "TENANT_ADMIN",
+    TENANT_USER = "TENANT_USER"
+}

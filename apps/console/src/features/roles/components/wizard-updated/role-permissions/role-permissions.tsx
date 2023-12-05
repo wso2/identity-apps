@@ -36,7 +36,8 @@ import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps } from "semantic-ui-react";
 import { RoleAPIResourcesListItem } from "./components/role-api-resources-list-item";
 import { useAPIResources } from "../../../../api-resources/api";
-import { APIResourcesConstants } from "../../../../api-resources/constants";
+import { APIResourceCategories, APIResourcesConstants } from "../../../../api-resources/constants";
+import { APIResourceUtils } from "../../../../api-resources/utils/api-resource-utils";
 import { useAPIResourceDetails, useGetAuthorizedAPIList } from "../../../api";
 import { RoleAudienceTypes } from "../../../constants/role-constants";
 import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../../models/apiResources";
@@ -72,7 +73,7 @@ interface RolePermissionsListProp extends IdentifiableComponentInterface {
     assignedApplicationName?: string;
 }
 
-export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> = 
+export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
     (props: RolePermissionsListProp): ReactElement => {
 
         const {
@@ -84,7 +85,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             assignedApplicationName,
             [ "data-componentid" ]: componentId
         } = props;
-        
+
         const { t } = useTranslation();
         const dispatch: Dispatch = useDispatch();
 
@@ -129,9 +130,9 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
 
         /**
          * Show error if the API resource fetch request failed.
-         */ 
+         */
         useEffect(() => {
-            if ( selectedAPIResourceFetchRequestError 
+            if ( selectedAPIResourceFetchRequestError
                 || authorizedAPIListForApplicationError ) {
                 dispatch(
                     addAlert({
@@ -157,7 +158,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             if(roleAudience === RoleAudienceTypes.APPLICATION) {
                 // API resources list options when role audience is "application".
                 authorizedAPIListForApplication?.map((api: AuthorizedAPIListItemInterface) => {
-                    if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) => 
+                    if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                         selectedAPIResource?.id === api?.id)) {
                         options.push({
                             key: api.id,
@@ -168,7 +169,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                 });
 
                 setAllAPIResourcesDropdownOptions(options);
-            }        
+            }
         }, [ authorizedAPIListForApplication, selectedAPIResources ]);
 
         useEffect(() => {
@@ -177,7 +178,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             if(roleAudience === RoleAudienceTypes.ORGANIZATION) {
                 // API resources list options when role audience is "organization".
                 allAPIResourcesListData.map((api: APIResourceInterface) => {
-                    if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) => 
+                    if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                         selectedAPIResource?.id === api?.id)) {
                         options.push({
                             key: api.id,
@@ -186,7 +187,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                             value: api.id
                         });
                     }
-                    
+
                 });
 
                 // Filter out duplicate options
@@ -203,7 +204,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
         }, [ selectedAPIResources ]);
 
         /**
-         * Assign all the API resources to the dropdown options if the after value is not null. 
+         * Assign all the API resources to the dropdown options if the after value is not null.
          */
         useEffect(() => {
             if (!isAPIResourcesListLoading) {
@@ -261,14 +262,14 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                         }
                     }
                 });
-                
+
                 if (isAfterValueExists) {
                     mutatecurrentAPIResourcesList();
                 } else {
                     setIsAPIResourcesListLoading(false);
                 }
             }
-        }, [ currentAPIResourcesListData ]);        
+        }, [ currentAPIResourcesListData ]);
 
         /**
          * The following useEffect is used to handle if any error occurs while fetching API resources.
@@ -289,10 +290,10 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
          * Add API resource to the selected API resources list.
          */
         useEffect(() => {
-            if (selectedAPIResource 
-                && !isSelectedAPIResourceFetchRequestLoading 
+            if (selectedAPIResource
+                && !isSelectedAPIResourceFetchRequestLoading
                 && !isSelectedAPIResourceFetchRequestValidating) {
-                
+
                 if (!selectedAPIResources.find(
                     (apiResource: APIResourceInterface) => selectedAPIResource?.id === apiResource?.id)) {
                     setSelectedAPIResources([ selectedAPIResource, ...selectedAPIResources ]);
@@ -304,7 +305,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
 
         /**
          * Handles the selection of an API resource.
-         * 
+         *
          * Only retrieve the API resource details when the role audience is "organization",
          * else add the API resource to the selected API resources list from the authorized API list.
          */
@@ -321,13 +322,13 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                     return;
                 }
 
-                setSelectedAPIResources([ 
+                setSelectedAPIResources([
                     {
                         id: selectedAPIResource.id,
                         name: selectedAPIResource.displayName,
                         scopes: selectedAPIResource.authorizedScopes
-                    }, 
-                    ...selectedAPIResources 
+                    },
+                    ...selectedAPIResources
                 ]);
             }
         };
@@ -353,10 +354,10 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
          */
         const onChangeScopes = (apiResource: APIResourceInterface, scopes: ScopeInterface[]): void => {
             const selectedScopes: SelectedPermissionsInterface[] = selectedPermissions.filter(
-                (selectedPermission: SelectedPermissionsInterface) => 
+                (selectedPermission: SelectedPermissionsInterface) =>
                     selectedPermission.apiResourceId !== apiResource.id
             );
-            
+
             selectedScopes.push(
                 {
                     apiResourceId: apiResource.id,
@@ -367,22 +368,24 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             setSelectedPermissions(selectedScopes);
         };
 
+
+
         return (
             <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={ 2 }>
                 {
-                    roleAudience === RoleAudienceTypes.APPLICATION 
+                    roleAudience === RoleAudienceTypes.APPLICATION
                         ? (
                             <Grid xs={ 12 }>
                                 <Alert severity="info">
-                                    <Trans 
-                                        i18nKey= { "console:manage.features.roles.addRoleWizard.forms." + 
+                                    <Trans
+                                        i18nKey= { "console:manage.features.roles.addRoleWizard.forms." +
                                             "rolePermission.notes.applicationRoles" }
                                         tOptions={ { applicationName: assignedApplicationName } }
                                     >
-                                        Only the APIs and the permissions(scopes) that are authorized in the selected 
+                                        Only the APIs and the permissions(scopes) that are authorized in the selected
                                         application (<b>{ assignedApplicationName }</b>) will be listed to select
                                     </Trans>
-                                    
+
                                 </Alert>
                             </Grid>
                         ) : null
@@ -410,16 +413,25 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                         } }
                         getOptionLabel={ (apiResourcesListOption: DropdownProps) =>
                             apiResourcesListOption.text }
-                        groupBy={ (apiResourcesListOption: DropdownProps) => apiResourcesListOption.type }
-                        isOptionEqualToValue={ 
-                            (option: DropdownProps, value: DropdownProps) => 
-                                option.value === value.value 
+                        groupBy={ (apiResourcesListOption: DropdownItemProps) =>
+                            APIResourceUtils.resolveApiResourceGroup(apiResourcesListOption?.type) }
+                        isOptionEqualToValue={
+                            (option: DropdownProps, value: DropdownProps) =>
+                                option.value === value.value
                         }
                         loading={ iscurrentAPIResourcesListLoading }
                         onChange={ onAPIResourceSelected }
                         options={ allAPIResourcesDropdownOptions
-                            .sort((a: DropdownItemProps, b: DropdownItemProps) =>
-                                -b?.type?.localeCompare(a?.type)) }
+                            ?.filter((item: DropdownItemProps) =>
+                                item?.type === APIResourceCategories.TENANT_ADMIN ||
+                                item?.type === APIResourceCategories.TENANT_USER ||
+                                item?.type === APIResourceCategories.ORGANIZATION_ADMIN ||
+                                item?.type === APIResourceCategories.ORGANIZATION_USER ||
+                                item?.type === APIResourceCategories.BUSINESS
+                            ).sort((a: DropdownItemProps, b: DropdownItemProps) =>
+                                -b?.type?.localeCompare(a?.type)
+                            )
+                        }
                         noOptionsText={ t("common:noResultsFound") }
                         renderInput={ (params: AutocompleteRenderInputParams) => (
                             <TextField
@@ -436,7 +448,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                 </Grid>
                 <Grid xs={ 12 }>
                     {
-                        selectedAPIResources?.length > 0 
+                        selectedAPIResources?.length > 0
                             ? (
                                 <div className="role-permission-list field">
                                     <label className="form-label">
@@ -447,17 +459,17 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                                         data-componentid={ componentId }
                                         className="role-permission-list"
                                         basic
-                                        loading={ 
+                                        loading={
                                             selectedAPIResourceId &&
-                                            (isSelectedAPIResourceFetchRequestLoading 
+                                            (isSelectedAPIResourceFetchRequestLoading
                                             || isSelectedAPIResourceFetchRequestValidating
-                                            || isAuthorizedAPIListForApplicationLoading) 
+                                            || isAuthorizedAPIListForApplicationLoading)
                                         }
                                     >
                                         {
-                                            selectedAPIResources?.map((apiResource: APIResourceInterface) => (  
-                                                <RoleAPIResourcesListItem 
-                                                    key={ apiResource?.id } 
+                                            selectedAPIResources?.map((apiResource: APIResourceInterface) => (
+                                                <RoleAPIResourcesListItem
+                                                    key={ apiResource?.id }
                                                     apiResource={ apiResource }
                                                     onChangeScopes={ onChangeScopes }
                                                     onRemoveAPIResource={ onRemoveAPIResource }
@@ -466,7 +478,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                                                             selectedPermission.apiResourceId === apiResource?.id)
                                                         ?.scopes
                                                     }
-                                                /> 
+                                                />
                                             ))
                                         }
                                     </EmphasizedSegment>
