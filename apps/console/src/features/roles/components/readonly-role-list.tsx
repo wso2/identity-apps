@@ -46,9 +46,10 @@ interface ReadOnlyRoleListProps extends LoadableComponentInterface, Identifiable
 }
 
 /**
- * List component for Role Management list
+ * A read only component to display a list of roles. Supports pagination, searching by role name and filtering by
+ * role audience.
  *
- * @param props - contains the role list as a prop to populate
+ * @returns ReadOnlyRoleList component.
  */
 export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = (
     props: ReadOnlyRoleListProps
@@ -69,7 +70,6 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
     const [ roleAudienceFilter, setRoleAudienceFilter ] = useState<string>(undefined);
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     /**
      * Filter options for the roles list.
@@ -127,11 +127,21 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
         setFinalRoleList(getPaginatedRoleList(filteredRoleList));
     }, [ listOffset, listItemLimit, filteredRoleList ]);
 
+    /**
+     * Handles the dropdown change event of the items per page dropdown.
+     * @param event - Mouse event.
+     * @param data - Data from the selected dropdown option.
+     */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
 
         setListItemLimit(data.value as number);
     };
 
+    /**
+     * Handles the pagination change event.
+     * @param event - Mouse event.
+     * @param data - Data from the selected dropdown option.
+     */
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
 
         const activePage: number = data?.activePage as number ?? 1;
@@ -139,12 +149,20 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
         setListOffset((activePage - 1) * listItemLimit);
     };
 
+    /**
+     * Takes a list of roles and returns a paginated list according to the list offset and the list item limit.
+     * @param roleListToPaginate - List of roles to paginate.
+     * @returns Paginated list of roles.
+     */
     const getPaginatedRoleList = (roleListToPaginate: RolesMemberInterface[]): RolesMemberInterface[] => {
 
         return roleListToPaginate?.length >= 0 ? roleListToPaginate.slice(listOffset, listOffset + listItemLimit) : [];
     };
 
-
+    /**
+     * Handles the search role by name event.
+     * @param query - Search query.
+     */
     const handleSearchByRoleName = (query: string) => {
 
         setListOffset(0);
@@ -152,6 +170,11 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
         setRoleNameSearchQuery(query);
     };
 
+    /**
+     * Handles the filter by role audience event.
+     * @param event - Mouse event.
+     * @param data - Data from the selected dropdown option.
+     */
     const handleFilterByRoleAudience = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
 
         setListOffset(0);
@@ -160,10 +183,11 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
     };
 
     /**
-     * Shows list placeholders.
+     * Shows the placeholders when the role list is empty or when there are no matching results for the specified role
+     * name and the role audience combination.
      */
     const showPlaceholders = (): ReactElement => {
-        // When the search returns empty.
+
         if ((roleNameSearchQuery || roleAudienceFilter) && finalRoleList?.length === 0) {
             return (
                 <EmptyPlaceholder
@@ -336,5 +360,5 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
  * Default props for the component.
  */
 ReadOnlyRoleList.defaultProps = {
-    "data-componentid": "role-mgt-roles-list"
+    "data-componentid": "read-only-roles-list"
 };
