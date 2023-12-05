@@ -356,7 +356,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                             value={ property?.value ?? property?.defaultValue }
                                                             type="text"
                                                             key={ index }
-                                                            required={ true }
+                                                            required
                                                             label={ userStorePropertyName }
                                                             requiredErrorMessage={
                                                                 t(
