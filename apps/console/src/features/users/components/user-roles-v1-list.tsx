@@ -269,8 +269,8 @@ export const UserRolesV1List: FunctionComponent<UserRolesV1PropsInterface> = (
     };
 
     const setInitialLists = () => {
-        const roleListCopy: (RolesInterface | OrganizationRoleListItemInterface)[] = primaryRoles 
-            ? [ ...primaryRoles ] 
+        const roleListCopy: (RolesInterface | OrganizationRoleListItemInterface)[] = primaryRoles
+            ? [ ...primaryRoles ]
             : [];
         const addedRoles: (RolesInterface | OrganizationRoleListItemInterface)[] = [];
 

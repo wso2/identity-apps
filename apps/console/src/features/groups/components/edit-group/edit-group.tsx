@@ -30,6 +30,7 @@ import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
 import { BasicGroupDetails } from "./edit-group-basic";
 import { EditGroupRoles } from "./edit-group-roles";
+import { GroupRolesV1List } from "./edit-group-roles-v1";
 import { GroupUsersList } from "./edit-group-users";
 import { FeatureConfigInterface } from "../../../core/models";
 import { AppState } from "../../../core/store";
@@ -40,7 +41,6 @@ import { UserBasicInterface, UserListInterface } from "../../../users/models";
 import { GroupConstants } from "../../constants";
 import useGroupManagement from "../../hooks/use-group-management";
 import { GroupsInterface, GroupsMemberInterface } from "../../models";
-import { GroupRolesV1List } from "./edit-group-roles-v1";
 
 /**
  * Captures props needed for edit group component

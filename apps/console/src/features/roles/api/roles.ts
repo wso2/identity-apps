@@ -486,7 +486,7 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
 /**
  * Hook to get the retrieve the list of groups that are currently in the system.
  *
- * @param, count - Number of records to fetch.
+ * @param count - Number of records to fetch.
  * @param startIndex - Index of the first record to fetch.
  * @param filter - Search filter.
  * @param shouldFetch - Should fetch the data.
