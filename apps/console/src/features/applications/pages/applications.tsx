@@ -17,6 +17,7 @@
  */
 import Chip from "@oxygen-ui/react/Chip";
 import { AccessControlConstants, Show } from "@wso2is/access-control";
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -122,6 +123,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const { getLink } = useDocumentation();
 
     const dispatch: Dispatch = useDispatch();
+
+    const { UIConfig } = useUIConfig();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
@@ -296,13 +299,16 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         if (applicationList?.applications) {
             const appList: ApplicationListInterface = cloneDeep(applicationList);
 
-            appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
-                !ApplicationManagementConstants.SYSTEM_APPS.includes(item.name)
-                && !ApplicationManagementConstants.DEFAULT_APPS.includes(item.name)
-            );
-            appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
-            appList.totalResults = appList.totalResults -
-                (applicationList.applications.length - appList.applications.length);
+            // Remove the system apps from the application list.
+            if (!UIConfig?.legacyMode?.applicationListSystemApps) {
+                appList.applications = appList.applications.filter((item: ApplicationListItemInterface) =>
+                    !ApplicationManagementConstants.SYSTEM_APPS.includes(item.name)
+                    && !ApplicationManagementConstants.DEFAULT_APPS.includes(item.name)
+                );
+                appList.count = appList.count - (applicationList.applications.length - appList.applications.length);
+                appList.totalResults = appList.totalResults -
+                    (applicationList.applications.length - appList.applications.length);
+            }
 
             setFilteredApplicationList(appList);
         }
@@ -416,7 +422,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * @returns My Account link.
      */
     const renderTenantedMyAccountLink = (): ReactElement => {
-        if (!applicationConfig.advancedConfigurations.showMyAccount) {
+        if (!applicationConfig.advancedConfigurations.showMyAccount ||
+            UIConfig?.legacyMode?.applicationListSystemApps) {
             return null;
         }
 

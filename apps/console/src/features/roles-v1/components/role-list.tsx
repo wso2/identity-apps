@@ -387,7 +387,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 onRowClick={
                     (e: SyntheticEvent, role: RolesInterface): void => {
                         handleRoleEdit(role?.id);
-                        onListItemClick(e, role);
+                        onListItemClick && onListItemClick(e, role);
                     }
                 }
                 placeholders={ showPlaceholders() }

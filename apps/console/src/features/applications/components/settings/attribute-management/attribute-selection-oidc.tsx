@@ -33,15 +33,15 @@ import {
 } from "@wso2is/react-components";
 import { OIDCScopesClaimsListInterface } from "apps/console/src/features/oidc-scopes";
 import { IdentifiableComponentInterface } from "modules/core/src/models";
-import React, { 
-    ChangeEvent, 
-    Fragment, 
-    FunctionComponent, 
-    MutableRefObject, 
-    ReactElement, 
-    SyntheticEvent, 
-    useEffect, 
-    useRef, 
+import React, {
+    ChangeEvent,
+    Fragment,
+    FunctionComponent,
+    MutableRefObject,
+    ReactElement,
+    SyntheticEvent,
+    useEffect,
+    useRef,
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -159,11 +159,11 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
 
         claimConfigurations?.claimMappings?.map((claim: ClaimMappingInterface) => {
             if (
-                !filterSelectedExternalClaims.find((selectedExternalClaim: ExtendedExternalClaimInterface) => 
+                !filterSelectedExternalClaims.find((selectedExternalClaim: ExtendedExternalClaimInterface) =>
                     selectedExternalClaim?.mappedLocalClaimURI === claim.localClaim.uri)
             ) {
                 const availableExternalClaim: ExtendedExternalClaimInterface = availableExternalClaims.find(
-                    (availableClaim: ExtendedExternalClaimInterface) => 
+                    (availableClaim: ExtendedExternalClaimInterface) =>
                         availableClaim?.mappedLocalClaimURI === claim.localClaim.uri
                 );
 
@@ -379,7 +379,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                     if (!tempExpandedScopes.includes(scope.name)) {
                         tempExpandedScopes.push(scope.name);
                     }
-                    const updatedScope: OIDCScopesClaimsListInterface = { 
+                    const updatedScope: OIDCScopesClaimsListInterface = {
                         ...scope,
                         claims: matchedClaims
                     };
@@ -456,7 +456,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                         requested: claim.requested
                     };
 
-                    if (!initialSelectedClaims.find((selectedExternalClaim: ExtendedExternalClaimInterface) => 
+                    if (!initialSelectedClaims.find((selectedExternalClaim: ExtendedExternalClaimInterface) =>
                         selectedExternalClaim?.mappedLocalClaimURI === claimMapping?.localClaim?.uri)){
                         initialSelectedClaims.push(option);
                     }
@@ -542,7 +542,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                     data-componentId={ `${ componentId }-item-image` }
                 />
                 {
-                    scope.name === "" 
+                    scope.name === ""
                         ? (
                             <Header.Content className="align-self-center">
                                 <Hint warning={ true } popup compact>
@@ -556,7 +556,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                     { " " + (scope.description ?? "") }
                                 </Header.Subheader>
                             </Header.Content>
-                        ) 
+                        )
                         : (
                             <Header.Content>
                                 { scope.displayName }
@@ -781,45 +781,47 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                                         <Fragment key={ scope.name }>
                                                                             <SegmentedAccordion.Title
                                                                                 id={ scope.name }
-                                                                                data-testid={ 
-                                                                                    `${testId}-${scope.name}-title` 
+                                                                                data-testid={
+                                                                                    `${testId}-${scope.name}-title`
                                                                                 }
-                                                                                data-componentid={ 
+                                                                                data-componentid={
                                                                                     `${componentId}-${scope.name}
-                                                                                    -title` 
+                                                                                    -title`
                                                                                 }
-                                                                                active={ 
+                                                                                active={
                                                                                     expandedScopes?.
                                                                                         includes(scope.name) || false }
                                                                                 accordionIndex={ scope.name }
-                                                                                onClick={ 
-                                                                                    () => 
+                                                                                onClick={
+                                                                                    () =>
                                                                                         handleAccordionTitleClick(scope)
                                                                                 }
                                                                                 content={ (
                                                                                     resolveScopeListItem(scope)
                                                                                 ) }
                                                                                 hideChevron={ false }
-                                                                                actions={ 
-                                                                                    createAccordionTitleAction(scope) 
+                                                                                actions={
+                                                                                    createAccordionTitleAction(scope)
                                                                                 }
+                                                                                disabled={ readOnly }
                                                                             />
                                                                             <SegmentedAccordion.Content
-                                                                                active={ 
+                                                                                active={
                                                                                     expandedScopes?.
                                                                                         includes(scope.name) || false
                                                                                 }
-                                                                                data-testid={ 
-                                                                                    `${testId}-${scope.name}-content` 
+                                                                                data-testid={
+                                                                                    `${testId}-${scope.name}-content`
                                                                                 }
-                                                                                data-componentid={ 
+                                                                                data-componentid={
                                                                                     `${componentId}-${scope.name}
                                                                                     -content`
                                                                                 }
-                                                                                children={ 
+                                                                                children={
                                                                                     resolveUserAttributeList(scope
                                                                                         .claims)
                                                                                 }
+                                                                                disabled={ readOnly }
                                                                             />
                                                                         </Fragment>
                                                                     );
@@ -828,12 +830,12 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                         )
                                                     }
                                                 </SegmentedAccordion>
-                                            ) 
+                                            )
                                             : (
                                                 <EmptyPlaceholder
                                                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                                                     imageSize="tiny"
-                                                    title={ 
+                                                    title={
                                                         t("console:develop.features.applications.edit.sections." +
                                                         "attributes.emptySearchResults.title") }
                                                     subtitle={ [
@@ -875,8 +877,8 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                                     ) }
                                                                     hideChevron={ false }
                                                                     actions={ createAccordionTitleAction(scope) }
+                                                                    disabled={ readOnly }
                                                                 />
-    
                                                                 <SegmentedAccordion.Content
                                                                     active={ expandedScopes?.includes(scope.name)
                                                                             || false }
@@ -884,6 +886,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                                     data-componentid={ `${componentId}-${scope.name}
                                                                     -content` }
                                                                     children={ resolveUserAttributeList(scope.claims) }
+                                                                    disabled={ readOnly }
                                                                 />
                                                             </Fragment>
                                                         );
@@ -910,8 +913,8 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                         } }
                                     > OpenID Connect Scopes
                                     </Link>
-                                            to manage user attribute to a scope. You can add new 
-                                            attributes by navigating to 
+                                            to manage user attribute to a scope. You can add new
+                                            attributes by navigating to
                                     <Link
                                         external={ false }
                                         onClick={ () => {
@@ -921,7 +924,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                                     .replace(":type", ClaimManagementConstants.OIDC)
                                             );
                                         } }
-                                    > 
+                                    >
                                         Attributes.
                                     </Link>
                                 </Trans>
@@ -952,7 +955,7 @@ export const AttributeSelectionOIDC: FunctionComponent<AttributeSelectionOIDCPro
                                            "selection.selectedScopesComponentHint"
                             }
                         >
-                            Request these scopes from your application to retrieve the user attributes 
+                            Request these scopes from your application to retrieve the user attributes
                             you selected.
                         </Trans>
                         {

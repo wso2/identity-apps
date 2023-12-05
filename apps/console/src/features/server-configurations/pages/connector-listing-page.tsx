@@ -17,6 +17,7 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -65,6 +66,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const pageContextRef: MutableRefObject<any> = useRef(null);
 
     const { t } = useTranslation();
+    const { UIConfig } = useUIConfig();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
@@ -74,7 +76,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const predefinedCategories: any = useMemo(() => {
         let originalConnectors: Array<any> = GovernanceConnectorUtils.getPredefinedConnectorCategories();
 
-        if (!featureConfig?.organizationDiscovery?.enabled) {
+        if (!featureConfig?.organizationDiscovery?.enabled ||
+            !UIConfig?.legacyMode?.loginAndRegistrationEmailDomainDiscovery) {
             originalConnectors = originalConnectors.filter(
                 (category: any) => category.id !== ServerConfigurationsConstants.ORGANIZATION_SETTINGS_CATEGORY_ID
             );

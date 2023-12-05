@@ -373,7 +373,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
                             .showSubjectAttribute ||
                             (onlyOIDCConfigured &&
-                                !UIConfig?.legacyFeatures?.applicationOIDCSubjectIdentifierEnabled) }
+                                !UIConfig?.legacyMode?.applicationOIDCSubjectIdentifier) }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-subject-attribute-dropdown` }
                         listen={ subjectAttributeChangeListener }
@@ -392,7 +392,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings.
                             showIncludeUserstoreDomainSubject ||
                             (onlyOIDCConfigured &&
-                                !UIConfig?.legacyFeatures?.applicationOIDCSubjectIdentifierEnabled) }
+                                !UIConfig?.legacyMode?.applicationOIDCSubjectIdentifier) }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeUserDomain.hint")
@@ -412,7 +412,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
                             .showIncludeTenantDomain ||
                             (onlyOIDCConfigured &&
-                                !UIConfig?.legacyFeatures?.applicationOIDCSubjectIdentifierEnabled) }
+                                !UIConfig?.legacyMode?.applicationOIDCSubjectIdentifier) }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeTenantDomain.hint")
@@ -451,6 +451,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                                     listen={ () => {
                                                         setSelectedSubjectType(subjectType);
                                                     } }
+                                                    readOnly={ readOnly }
                                                 />
                                             </>
                                         );
@@ -557,11 +558,11 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                     />
                     <Divider
                         hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
-                            .showRoleAttribute || !UIConfig?.legacyFeatures?.applicationRoleEnabled }
+                            .showRoleAttribute || !UIConfig?.legacyMode?.roleMapping }
                     />
                     {
                         applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute &&
-                        UIConfig?.legacyFeatures?.applicationRoleEnabled && (
+                        UIConfig?.legacyMode?.roleMapping && (
                             <>
                                 <Heading as="h4">
                                     { t("console:develop.features.applications.forms.advancedAttributeSettings" +
@@ -583,7 +584,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-role-attribute-dropdown` }
                         hidden={  !applicationConfig.attributeSettings.advancedAttributeSettings
-                            .showRoleAttribute || !UIConfig?.legacyFeatures?.applicationRoleEnabled }
+                            .showRoleAttribute || !UIConfig?.legacyMode?.roleMapping }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings." +
                                 "sections.role.fields.roleAttribute.hint")
@@ -602,7 +603,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         data-testid={ `${ testId }-role-checkbox` }
                         hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
                             .showIncludeUserstoreDomainRole ||
-                            !UIConfig?.legacyFeatures?.applicationRoleEnabled }
+                            !UIConfig?.legacyMode?.roleMapping }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings." +
                                 "sections.role.fields.role.hint")

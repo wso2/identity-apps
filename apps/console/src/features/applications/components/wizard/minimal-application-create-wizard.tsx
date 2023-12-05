@@ -17,6 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -159,6 +160,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const { getLink } = useDocumentation();
     const { isSuperOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
+    const { UIConfig } = useUIConfig();
 
     const tenantName: string = store.getState().config.deployment.tenant;
 
@@ -1149,6 +1151,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     }
                     {
                         isOrganizationManagementEnabled
+                        && UIConfig?.legacyMode?.organizations
                         && applicationConfig.editApplication.showApplicationShare
                         && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
                         && orgType !== OrganizationType.SUBORGANIZATION

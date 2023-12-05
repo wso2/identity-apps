@@ -306,7 +306,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 data-componentid={ `${ testId }-enable-authorization-checkbox` }
                 hidden={
                     !applicationConfig.advancedConfigurations.showEnableAuthorization
-                    || !UIConfig?.legacyFeatures?.applicationXacmlAuthorizationEnabled }
+                    || !UIConfig?.legacyMode?.applicationXacmlAuthorization }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.enableAuthorization.hint") }
             />
             {
@@ -346,6 +346,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                             "sections.applicationNativeAuthentication.fields." +
                                             "enableAPIBasedAuthentication.label") }
                                         required={ false }
+                                        readOnly={ readOnly }
                                         value={
                                             isEnableAPIBasedAuthentication
                                                 ? [ "enableAPIBasedAuthentication" ]
@@ -370,6 +371,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                             "sections.applicationNativeAuthentication.fields." +
                                             "enableClientAttestation.label") }
                                         required={ false }
+                                        readOnly={ readOnly }
                                         value={
                                             config?.attestationMetaData?.enableClientAttestation
                                                 ? [ "enableClientAttestation" ]
@@ -406,6 +408,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                             "sections.applicationNativeAuthentication.fields." +
                                             "android.fields.androidPackageName.label") }
                                         required={ false }
+                                        readOnly={ readOnly }
                                         value={ config?.attestationMetaData?.androidPackageName ?
                                             config?.attestationMetaData?.androidPackageName : "" }
                                         placeholder={ t("console:develop.features.applications.forms.advancedConfig." +
@@ -453,6 +456,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                             `${ testId }-client-attestation-android-account-credentials`
                                         }
                                         disabled={ isClientAttestationMethodsUiDisabled }
+                                        readOnly={ readOnly }
                                     />
                                 </Grid.Column>
                             </Grid.Row>
@@ -491,6 +495,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                         data-testid={ `${ testId }-client-attestation-apple=app=id` }
                                         data-componentid={ `${ testId }-client-attestation-apple=app=id` }
                                         disabled={ isClientAttestationMethodsUiDisabled }
+                                        readOnly={ readOnly }
                                     />
                                 </Grid.Column>
                             </Grid.Row>

@@ -20,9 +20,9 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    EmptyPlaceholder, 
-    ListLayout, 
-    PageLayout 
+    EmptyPlaceholder,
+    ListLayout,
+    PageLayout
 } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -38,7 +38,7 @@ import {
 } from "../../core";
 import { useAPIResources } from "../api";
 import { APIResourcesList } from "../components";
-import { APIResourceType, APIResourcesConstants } from "../constants";
+import { APIResourceCategoryPrefixes, APIResourceType, APIResourcesConstants } from "../constants";
 import { APIResourceInterface } from "../models";
 
 /**
@@ -76,9 +76,9 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     const [ before, setBefore ] = useState<string>(undefined);
     const [ nextAfter, setNextAfter ] = useState<string>(undefined);
     const [ nextBefore, setNextBefore ] = useState<string>(undefined);
-    const [ filter, setFilter ] = useState<string>(categoryId === APIResourceType.MANAGEMENT 
-        ? `type eq ${ APIResourcesConstants.SYSTEM }`
-        : `type eq ${ APIResourcesConstants.SYSTEM_ORG }`);
+    const [ filter, setFilter ] = useState<string>(categoryId === APIResourceType.MANAGEMENT
+        ? `type sw ${ APIResourceCategoryPrefixes.MANAGEMENT }`
+        : `type sw ${ APIResourceCategoryPrefixes.ORGANIZATION }`);
 
     const {
         data: apiResourcesListData,
@@ -162,8 +162,8 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
      */
     useEffect(() => {
         const typeFilter: string = categoryId === APIResourceType.MANAGEMENT
-            ? `type eq ${ APIResourcesConstants.SYSTEM }`
-            : `type eq ${ APIResourcesConstants.SYSTEM_ORG }`;
+            ? `type sw ${ APIResourceCategoryPrefixes.MANAGEMENT }`
+            : `type sw ${ APIResourceCategoryPrefixes.ORGANIZATION }`;
 
         if (searchQuery) {
             setFilter(`${ searchQuery } and ${ typeFilter }`);
@@ -174,7 +174,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
 
     /**
      * set the after and before values needed for the `mutateAPIResourcesFetchRequest`
-     * 
+     *
      * @param afterValue - after value
      * @param beforeValue - before value
      */
@@ -209,7 +209,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
      *
      * @param query - Search query.
      */
-    const handleApiFilter = (query: string): void => {        
+    const handleApiFilter = (query: string): void => {
         setSearchQuery(query);
     };
 
@@ -230,11 +230,11 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
 
     return (
         <PageLayout
-            pageTitle={ categoryId === APIResourceType.MANAGEMENT 
+            pageTitle={ categoryId === APIResourceType.MANAGEMENT
                 ? t("extensions:develop.apiResource.managementAPI.header")
                 : t("extensions:develop.apiResource.organizationAPI.header")
             }
-            title={ categoryId === APIResourceType.MANAGEMENT 
+            title={ categoryId === APIResourceType.MANAGEMENT
                 ? t("extensions:develop.apiResource.managementAPI.header")
                 : t("extensions:develop.apiResource.organizationAPI.header")
             }

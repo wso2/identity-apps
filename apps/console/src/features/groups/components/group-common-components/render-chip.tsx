@@ -89,12 +89,16 @@ export const RenderChipRolesInGroups: FunctionComponent<RenderChipInterface> = (
                 label={
                     (<>
                         <Typography fontWeight={ 500 } sx={ { display: "inline-block" } }>{ displayName }</Typography>
-                        <Typography sx={ { display: "inline-block", fontStyle:"italic" } } >
-                            { " (" + audienceType }
-                            { audienceType.toUpperCase() === RoleAudienceTypes.APPLICATION
-                                && (" | " + audienceDisplay) }
-                            { ") " }
-                        </Typography>
+                        {
+                            audienceType && (
+                                <Typography sx={ { display: "inline-block", fontStyle:"italic" } } >
+                                    { " (" + audienceType }
+                                    { audienceType?.toUpperCase() === RoleAudienceTypes.APPLICATION
+                                        && (" | " + audienceDisplay) }
+                                    { ") " }
+                                </Typography>
+                            )
+                        }
                     </>)
                 }
                 onMouseEnter={ handleChipMouseEnter }

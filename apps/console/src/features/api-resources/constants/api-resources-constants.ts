@@ -26,7 +26,7 @@ export class APIResourcesConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     * 
+     *
      */
     private constructor() { }
 
@@ -60,7 +60,7 @@ export class APIResourcesConstants {
 
     /**
      * To check whether the given value is a valid permission identifier.
-     * 
+     *
      * @param value - permission identifier
      * @returns boolean - true if the value is a valid permission identifier
      */
@@ -74,4 +74,14 @@ export enum APIResourceType {
     MANAGEMENT = "management",
     ORGANIZATION = "organization",
     CUSTOM = "custom"
+}
+
+/*
+* The API Resource category type prefix.
+* Manamgement API Resources are prefixed with `TENANT`.
+* Organization API Resources are prefixed with `ORGANIZATION`.
+*/
+export enum APIResourceCategoryPrefixes {
+    MANAGEMENT = "TENANT",
+    ORGANIZATION = "ORGANIZATION"
 }

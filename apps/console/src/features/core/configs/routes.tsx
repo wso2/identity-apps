@@ -30,7 +30,7 @@ import {
     UserCircleDotIcon,
     UserGroupIcon
 } from "@oxygen-ui/react-icons";
-import { RouteInterface } from "@wso2is/core/models";
+import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
 import compact from "lodash-es/compact";
 import keyBy from "lodash-es/keyBy";
 import merge from "lodash-es/merge";
@@ -70,6 +70,8 @@ import { AppConstants } from "../constants";
  */
 
 export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInterface[] => {
+
+    const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
 
     const routes: RouteInterface[] = values(
         merge(
@@ -440,7 +442,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         order: 12,
                         path: AppConstants.getPaths().get("ORGANIZATIONS"),
                         protected: true,
-                        showOnSidePanel: true
+                        showOnSidePanel: legacyMode?.organizations
                     },
                     {
                         children: [
@@ -1025,9 +1027,35 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         protected: true,
                         showOnSidePanel: true
                     },
-                    // the following routes are not onboarded to the side panel
                     {
-                        category: "console:develop.features.secrets.routes.category",
+                        category: "console:manage.features.sidePanel.categories.legacy",
+                        component: lazy(() => import("../../workflow-approvals/pages/approvals")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().approvals
+                        },
+                        id: "approvals",
+                        name: "console:manage.features.sidePanel.approvals",
+                        order: 26,
+                        path: AppConstants.getPaths().get("APPROVALS"),
+                        protected: true,
+                        showOnSidePanel: legacyMode?.approvals
+                    },
+                    {
+                        category: "console:manage.features.sidePanel.categories.legacy",
+                        component: lazy(() => import("../../certificates/pages/certificates-keystore")),
+                        icon: {
+                            icon: getSidePanelIcons().certificate
+                        },
+                        id: "certificates",
+                        name: "console:manage.features.sidePanel.certificates",
+                        order: 27,
+                        path: AppConstants.getPaths().get("CERTIFICATES"),
+                        protected: true,
+                        showOnSidePanel: legacyMode?.certificates
+                    },
+                    {
+                        category: "console:manage.features.sidePanel.categories.legacy",
                         children: [
                             {
                                 component: lazy(() => import("../../secrets/pages/secret-edit")),
@@ -1045,39 +1073,49 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         icon: { icon: getSidePanelIcons().secrets },
                         id: "secretsManagement",
                         name: "console:develop.features.secrets.routes.name",
-                        order: 999,
+                        order: 28,
                         path: AppConstants.getPaths().get("SECRETS"),
                         protected: true,
-                        showOnSidePanel: false
+                        showOnSidePanel: legacyMode?.secretsManagement
                     },
                     {
-                        category: "console:manage.features.sidePanel.categories.users",
-                        component: lazy(() => import("../../workflow-approvals/pages/approvals")),
+                        children: [
+                            {
+                                component: lazy(() => import("../../console-settings/pages/console-roles-edit-page")),
+                                exact: false,
+                                icon: { icon: getSidePanelIcons().childIcon },
+                                id: "consoleRolesEdit",
+                                name: "Console Roles Edit",
+                                path: AppConstants.getPaths().get("CONSOLE_ROLES_EDIT"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() => {
+                                    return import("../../console-settings/pages/console-administrator-edit-page");
+                                }),
+                                exact: false,
+                                icon: { icon: getSidePanelIcons().childIcon },
+                                id: "consoleAdministratorsEdit",
+                                name: "Console Administrators Edit",
+                                path: AppConstants.getPaths().get("CONSOLE_ADMINISTRATORS_EDIT"),
+                                protected: true,
+                                showOnSidePanel: false
+                            }
+                        ],
+                        component: lazy(() => import("../../console-settings/pages/console-settings-page")),
                         exact: true,
                         icon: {
-                            icon: getSidePanelIcons().approvals
+                            icon: <GearIcon fill="black" className="icon" />
                         },
-                        id: "approvals",
-                        name: "console:manage.features.sidePanel.approvals",
-                        order: 999,
-                        path: AppConstants.getPaths().get("APPROVALS"),
+                        id: "consoleSettings",
+                        name: "Console Settings",
+                        order: 29,
+                        path: AppConstants.getPaths().get("CONSOLE_SETTINGS"),
                         protected: true,
-                        showOnSidePanel: false
+                        showOnSidePanel: !legacyMode?.applicationListSystemApps
                     },
-                    {
-                        category: "console:manage.features.sidePanel.categories.certificates",
-                        component: lazy(() => import("../../certificates/pages/certificates-keystore")),
-                        icon: {
-                            icon: getSidePanelIcons().certificate
-                        },
-                        id: "certificates",
-                        name: "console:manage.features.sidePanel.certificates",
-                        order: 999,
-                        path: AppConstants.getPaths().get("CERTIFICATES"),
-                        protected: true,
-                        showOnSidePanel: false
-                    },
-
+                    // the following routes are not onboarded to the side panel
                     {
                         category: "console:manage.features.sidePanel.categories.configurations",
                         component: lazy(() =>
@@ -1116,43 +1154,6 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                         path: AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN"),
                         protected: true,
                         showOnSidePanel: false
-                    },
-                    {
-                        children: [
-                            {
-                                component: lazy(() => import("../../console-settings/pages/console-roles-edit-page")),
-                                exact: false,
-                                icon: { icon: getSidePanelIcons().childIcon },
-                                id: "consoleRolesEdit",
-                                name: "Console Roles Edit",
-                                path: AppConstants.getPaths().get("CONSOLE_ROLES_EDIT"),
-                                protected: true,
-                                showOnSidePanel: false
-                            },
-                            {
-                                component: lazy(() => {
-                                    return import("../../console-settings/pages/console-administrator-edit-page");
-                                }),
-                                exact: false,
-                                icon: { icon: getSidePanelIcons().childIcon },
-                                id: "consoleAdministratorsEdit",
-                                name: "Console Administrators Edit",
-                                path: AppConstants.getPaths().get("CONSOLE_ADMINISTRATORS_EDIT"),
-                                protected: true,
-                                showOnSidePanel: false
-                            }
-                        ],
-                        component: lazy(() => import("../../console-settings/pages/console-settings-page")),
-                        exact: true,
-                        icon: {
-                            icon: <GearIcon fill="black" className="icon" />
-                        },
-                        id: "consoleSettings",
-                        name: "Console Settings",
-                        order: 999,
-                        path: AppConstants.getPaths().get("CONSOLE_SETTINGS"),
-                        protected: true,
-                        showOnSidePanel: true
                     }
                 ]),
                 "id"
@@ -1189,7 +1190,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 order: 2,
                 path: APIResourcesConstants.getPaths().get("API_RESOURCES"),
                 protected: true,
-                showOnSidePanel: true
+                showOnSidePanel: legacyMode?.apiResources
             },
             {
                 category: "extensions:manage.sidePanel.categories.userManagement",
@@ -1499,7 +1500,7 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 order: 2,
                 path: APIResourcesConstants.getPaths().get("API_RESOURCES"),
                 protected: true,
-                showOnSidePanel: true
+                showOnSidePanel: legacyMode?.apiResources
             },
             {
                 category: "extensions:manage.sidePanel.categories.userManagement",
@@ -1644,8 +1645,42 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 path: AppConstants.getPaths().get("USERSTORES"),
                 protected: true,
                 showOnSidePanel: true
-            },
-            {
+            }
+        );
+
+        if (legacyMode?.rolesV1) {
+            // Push the roles v1 routes.
+            routes.push({
+                category: "extensions:manage.sidePanel.categories.userManagement",
+                children: [
+                    {
+                        component: lazy(() => import("../../roles-v1/pages/role-edit")),
+                        exact: true,
+                        icon: {
+                            icon: getSidePanelIcons().childIcon
+                        },
+                        id: "rolesV1Edit",
+                        name: "console:manage.features.sidePanel.editRoles",
+                        path: AppConstants.getPaths().get("ROLE_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() => import("../../roles-v1/pages/role")),
+                exact: true,
+                icon: {
+                    icon: getSidePanelIcons().applicationRoles
+                },
+                id: "userV1Roles",
+                name: "console:manage.features.sidePanel.roles",
+                order: 7,
+                path: AppConstants.getPaths().get("ROLES"),
+                protected: true,
+                showOnSidePanel: legacyMode?.rolesV1
+            });
+        } else {
+            // Push the roles v2 routes.
+            routes.push({
                 category: "extensions:manage.sidePanel.categories.userManagement",
                 children: [
                     {
@@ -1683,37 +1718,9 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                 order: 7,
                 path: AppConstants.getPaths().get("ROLES"),
                 protected: true,
-                showOnSidePanel: true
-            },
-            {
-                category: "extensions:manage.sidePanel.categories.userManagement",
-                children: [
-                    {
-                        component: lazy(() => import("../../roles-v1/pages/role-edit")),
-                        exact: true,
-                        icon: {
-                            icon: getSidePanelIcons().childIcon
-                        },
-                        id: "rolesV1Edit",
-                        name: "console:manage.features.sidePanel.editRoles",
-                        path: AppConstants.getPaths().get("ROLE_EDIT"),
-                        protected: true,
-                        showOnSidePanel: false
-                    }
-                ],
-                component: lazy(() => import("../../roles-v1/pages/role")),
-                exact: true,
-                icon: {
-                    icon: getSidePanelIcons().applicationRoles
-                },
-                id: "userV1Roles",
-                name: "console:manage.features.sidePanel.roles",
-                order: 7,
-                path: AppConstants.getPaths().get("ROLES"),
-                protected: true,
-                showOnSidePanel: false
-            }
-        );
+                showOnSidePanel: !legacyMode?.rolesV1
+            });
+        }
     }
 
     routes.push({

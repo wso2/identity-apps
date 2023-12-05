@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import Autocomplete, {  
-    AutocompleteRenderGetTagProps, 
-    AutocompleteRenderInputParams 
+import Autocomplete, {
+    AutocompleteRenderGetTagProps,
+    AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
@@ -68,14 +68,14 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
 
     /**
      * Get the place holder components.
-     * 
+     *
      * @returns place holder components
      */
     const getPlaceholders = () => {
         if (showEmptyRolesListPlaceholder) {
             return (
                 <EmptyPlaceholder
-                    subtitle={ 
+                    subtitle={
                         [ t("console:manage.features.groups.edit.roles.placeHolders.emptyListPlaceholder.subtitles") ]
                     }
                     title={ t("console:manage.features.groups.edit.roles.placeHolders.emptyListPlaceholder.title") }
@@ -112,15 +112,15 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
                                 />
                             ) }
                             renderTags={ (
-                                value: RolesMemberInterface[], 
+                                value: RolesMemberInterface[],
                                 getTagProps: AutocompleteRenderGetTagProps
                             ) => value.map((option: RolesMemberInterface, index: number) => (
-                                <RenderChipRolesInGroups 
+                                <RenderChipRolesInGroups
                                     { ...getTagProps({ index }) }
                                     key={ index }
-                                    displayName={ option.display }
-                                    audienceType={ option.audienceType }
-                                    audienceDisplay={ option.audienceDisplay }
+                                    displayName={ option?.display }
+                                    audienceType={ option?.audienceType }
+                                    audienceDisplay={ option?.audienceDisplay }
                                     option={ option }
                                     activeOption={ activeOption }
                                     setActiveOption={ setActiveOption }
@@ -128,7 +128,7 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
                                 />
                             )) }
                             renderOption={ (
-                                props: HTMLAttributes<HTMLLIElement>, 
+                                props: HTMLAttributes<HTMLLIElement>,
                                 option: RolesMemberInterface
                             ) => (
                                 <AutoCompleteRenderOption

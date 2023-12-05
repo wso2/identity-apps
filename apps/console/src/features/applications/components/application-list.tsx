@@ -300,7 +300,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                 return template.id === ApplicationManagementConstants.CUSTOM_APPLICATION;
                             }).name;
                     } else {
-                        const relevantApplicationTemplate: ApplicationTemplateListItemInterface | undefined = 
+                        const relevantApplicationTemplate: ApplicationTemplateListItemInterface | undefined =
                             applicationTemplates
                             && applicationTemplates instanceof Array
                             && applicationTemplates.length > 0
@@ -373,8 +373,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                     <Grid alignItems="flex-end">
                                         <div>
                                             { templateDisplayName && (
-                                                <Label 
-                                                    className="no-margin-left" 
+                                                <Label
+                                                    className="no-margin-left"
                                                     size="mini"
                                                 >
                                                     { templateDisplayName }
@@ -383,7 +383,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                         </div>
                                     </Grid>
                                     {
-                                        ApplicationManagementUtils.isChoreoApplication(app) 
+                                        ApplicationManagementUtils.isChoreoApplication(app)
                                             && (<Grid>
                                                 <div>
                                                     <Label
@@ -427,7 +427,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             <Header.Content>
                                 <Header.Subheader data-testid={ `${ testId }-col-2-item-sub-heading` }>
                                     { inboundAuthKey }
-                                    { 
+                                    {
                                         inboundAuthType && (
                                             <Label
                                                 pointing="left"
@@ -615,12 +615,12 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     >
                         {
                             ApplicationManagementUtils.isChoreoApplication(deletingApplication)
-                                ? ( 
+                                ? (
                                     <>
                                         <ConfirmationModal.Header
                                             data-testid={ `${ testId }-delete-confirmation-modal-header` }
                                         >
-                                            { t("console:develop.features.applications.confirmations." + 
+                                            { t("console:develop.features.applications.confirmations." +
                                                 "deleteChoreoApplication.header") }
                                         </ConfirmationModal.Header>
                                         <ConfirmationModal.Message
@@ -628,29 +628,29 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                             negative
                                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                                         >
-                                            { t("console:develop.features.applications.confirmations." + 
+                                            { t("console:develop.features.applications.confirmations." +
                                                 "deleteChoreoApplication.message") }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
                                             data-testid={ `${ testId }-delete-confirmation-modal-content` }
                                         >
                                             <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                                            <Trans 
-                                                i18nKey= { "console:develop.features.applications.confirmations." + 
+                                            <Trans
+                                                i18nKey= { "console:develop.features.applications.confirmations." +
                                                 "deleteChoreoApplication.content" }>
-                                                Deleting this application will break the authentication flows and cause 
+                                                Deleting this application will break the authentication flows and cause
                                                 the associated Choreo application to be unusable with its credentials.
                                                 <b>Proceed at your own risk.</b>
                                             </Trans>
                                         </ConfirmationModal.Content>
-                                    </> 
+                                    </>
                                 )
-                                : ( 
+                                : (
                                     <>
                                         <ConfirmationModal.Header
                                             data-testid={ `${ testId }-delete-confirmation-modal-header` }
                                         >
-                                            { t("console:develop.features.applications.confirmations." + 
+                                            { t("console:develop.features.applications.confirmations." +
                                                 "deleteApplication.header") }
                                         </ConfirmationModal.Header>
                                         <ConfirmationModal.Message
@@ -658,17 +658,17 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                             negative
                                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                                         >
-                                            { t("console:develop.features.applications.confirmations." + 
+                                            { t("console:develop.features.applications.confirmations." +
                                                 "deleteApplication.message") }
                                         </ConfirmationModal.Message>
                                         <ConfirmationModal.Content
                                             data-testid={ `${ testId }-delete-confirmation-modal-content` }
                                         >
                                             <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
-                                            { t("console:develop.features.applications.confirmations." + 
+                                            { t("console:develop.features.applications.confirmations." +
                                                 "deleteApplication.content") }
                                         </ConfirmationModal.Content>
-                                    </> 
+                                    </>
                                 )
                         }
                     </ConfirmationModal>

@@ -82,12 +82,16 @@ export const RenderChip: FunctionComponent<RenderChipInterface> = (
                 label={
                     (<>
                         <Typography fontWeight={ 500 } sx={ { display: "inline-block" } }>{ primaryText }</Typography>
-                        <Typography sx={ { display: "inline-block", fontStyle:"italic" } } >
-                            { " (" + option?.audienceType }
-                            { option?.audienceType.toUpperCase() === RoleAudienceTypes.APPLICATION
-                                && (" | " + option?.audienceDisplay) }
-                            { ") " }
-                        </Typography>
+                        {
+                            option?.audienceType && (
+                                <Typography sx={ { display: "inline-block", fontStyle:"italic" } } >
+                                    { " (" + option?.audienceType }
+                                    { option?.audienceType?.toUpperCase() === RoleAudienceTypes.APPLICATION
+                                        && (" | " + option?.audienceDisplay) }
+                                    { ") " }
+                                </Typography>
+                            )
+                        }
                     </>)
                 }
                 onMouseEnter={ handleChipMouseEnter }
