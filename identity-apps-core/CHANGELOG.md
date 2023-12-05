@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.85
+
+### Patch Changes
+
+- [#4964](https://github.com/wso2/identity-apps/pull/4964) [`f5d078c1b4`](https://github.com/wso2/identity-apps/commit/f5d078c1b41985cfe71a4731c6ebda7ff8b99961) Thanks [@Thumimku](https://github.com/Thumimku)! - improvement for error handling oauth2 error
+
 ## 2.0.84
 
 ### Patch Changes
