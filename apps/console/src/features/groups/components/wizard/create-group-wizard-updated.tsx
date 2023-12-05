@@ -316,6 +316,17 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                             });
                         }
                     });
+                } else {
+                    dispatch(
+                        addAlert({
+                            description: t("console:manage.features.groups.notifications.createGroup.success." +
+                                "description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("console:manage.features.groups.notifications.createGroup.success." +
+                                "message")
+                        })
+                    );
+                    closeWizard();
                 }
             }
 
