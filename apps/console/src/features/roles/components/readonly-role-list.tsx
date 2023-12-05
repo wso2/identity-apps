@@ -16,23 +16,20 @@
  * under the License.
  */
 
-import {
-    IdentifiableComponentInterface,
-    LoadableComponentInterface,
-    RolesMemberInterface
-} from "@wso2is/core/models";
+import { IdentifiableComponentInterface, LoadableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,
     AppAvatar,
     DataTable,
     EmptyPlaceholder,
-    LinkButton, ListLayout,
+    LinkButton,
+    ListLayout,
     TableColumnInterface
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { DropdownProps, Header, Icon, Input, Label } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, getEmptyPlaceholderIllustrations, UIConstants } from "../../core";
+import { Dropdown, DropdownItemProps, DropdownProps, Header, Label } from "semantic-ui-react";
+import { AdvancedSearchWithBasicFilters, UIConstants, getEmptyPlaceholderIllustrations } from "../../core";
 import { RoleAudienceTypes } from "../constants";
 
 const DEFAULT_SEARCH_OPERATOR: string = "co";
@@ -69,8 +66,30 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
     const [ finalRoleList, setFinalRoleList ] = useState<RolesMemberInterface[]>(undefined);
     const [ filteredRoleList, setFilteredRoleList ] = useState<RolesMemberInterface[]>(undefined);
     const [ listOffset, setListOffset ] = useState<number>(0);
-    const [ searchQuery, setSearchQuery ] = useState<string>(undefined);
+    const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
+    const [ roleAudienceFilter, setRoleAudienceFilter ] = useState<string>(undefined);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+
+    /**
+     * Filter options for the roles list.
+     */
+    const filterOptions: DropdownItemProps[] = [
+        {
+            key: undefined,
+            text: t("console:manage.features.roles.list.filterOptions.all"),
+            value: undefined
+        },
+        {
+            key: RoleAudienceTypes.APPLICATION,
+            text: t("console:manage.features.roles.list.filterOptions.applicationRoles"),
+            value: RoleAudienceTypes.APPLICATION
+        },
+        {
+            key: RoleAudienceTypes.ORGANIZATION,
+            text: t("console:manage.features.roles.list.filterOptions.organizationRoles"),
+            value: RoleAudienceTypes.ORGANIZATION
+        }
+    ];
 
     useEffect(() => {
 
@@ -81,6 +100,26 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
         setFilteredRoleList(totalRoleList);
         setIsLoading(false);
     }, [ totalRoleList, triggerClearQuery ]);
+
+    useEffect(() => {
+
+        let filteredList: RolesMemberInterface[] = totalRoleList;
+
+        if (roleAudienceFilter) {
+            filteredList = filteredList.filter(
+                (role: RolesMemberInterface) => role.audienceType.toUpperCase() === roleAudienceFilter
+            );
+        }
+        if (roleNameSearchQuery) {
+            const roleNameToFilter: string = roleNameSearchQuery.split(DEFAULT_SEARCH_OPERATOR)[1].trim().toLowerCase();
+
+            filteredList = filteredList.filter(
+                (role: RolesMemberInterface) => role.display.toLowerCase().includes(roleNameToFilter)
+            );
+        }
+
+        setFilteredRoleList(filteredList);
+    }, [ roleNameSearchQuery, roleAudienceFilter ]);
 
 
     useEffect(() => {
@@ -99,30 +138,26 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
     };
 
     const getPaginatedRoleList = (roleListToPaginate: RolesMemberInterface[]): RolesMemberInterface[] => {
-        // console.log("roles list to paginate ",roleListToPaginate?.map((role) => role.display));
 
         return roleListToPaginate?.length >= 0 ? roleListToPaginate.slice(listOffset, listOffset + listItemLimit) : [];
     };
 
-    const handleFilterChange = (query: string) => {
-        setSearchQuery(query);
 
-        if (!query) {
-            setFilteredRoleList(totalRoleList);
+    const handleSearchByRoleName = (query: string) => {
 
-            return;
-        }
+        setListOffset(0);
+        setRoleNameSearchQuery(query);
+    };
 
-        const roleNameFilter: string = query.split(DEFAULT_SEARCH_OPERATOR)[1].trim().toLowerCase();
+    const handleFilterByRoleAudience = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
 
-        setFilteredRoleList(totalRoleList.filter(
-            (role: RolesMemberInterface) => role.display.toLowerCase().includes(roleNameFilter))
-        );
+        setListOffset(0);
+        setRoleAudienceFilter(data.value as string);
     };
 
     const handleSearchQueryClear = () => {
         setTriggerClearQuery(true);
-        setSearchQuery(null);
+        setRoleNameSearchQuery(null);
     };
 
     /**
@@ -130,7 +165,7 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
-        if (searchQuery && finalRoleList?.length === 0) {
+        if (roleNameSearchQuery && finalRoleList?.length === 0) {
             return (
                 <EmptyPlaceholder
                     data-componentid={ `${ componentId }-search-empty-placeholder` }
@@ -147,7 +182,7 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
                     title={ t("console:manage.features.roles.list.emptyPlaceholders.search.title") }
                     subtitle={ [
                         t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.0",
-                            { searchQuery: searchQuery }),
+                            { searchQuery: roleNameSearchQuery }),
                         t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.1")
                     ] }
                 />
@@ -235,7 +270,7 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
             advancedSearch={ (
                 <AdvancedSearchWithBasicFilters
                     data-componentid={ `${componentId}-list-advanced-search` }
-                    onFilter={ handleFilterChange }
+                    onFilter={ handleSearchByRoleName }
                     disableSearchFilterDropdown={ true }
                     filterAttributeOptions={ [
                         {
@@ -266,7 +301,18 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
             onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
             onPageChange={ handlePaginationChange }
             showTopActionPanel={ true }
-            showPagination={ filteredRoleList?.length > listItemLimit }
+            rightActionPanel={
+                (
+                    <Dropdown
+                        data-componentid={ `${componentId}-list-filters-dropdown` }
+                        selection
+                        options={ filterOptions }
+                        placeholder= { t("console:manage.features.roles.list.buttons.filterDropdown") }
+                        onChange={ handleFilterByRoleAudience }
+                    />
+                )
+            }
+            showPagination={ filteredRoleList?.length > 0 }
             totalPages={ Math.ceil(filteredRoleList?.length / listItemLimit) }
             totalListSize={ filteredRoleList?.length }
             isLoading={ isLoading }
