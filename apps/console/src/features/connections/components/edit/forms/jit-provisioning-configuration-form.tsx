@@ -18,14 +18,15 @@
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Code, DocumentationLink, Hint, Message, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Grid } from "semantic-ui-react";
+import { Button, DropdownItemProps, Grid } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../../extensions";
 import { SimpleUserStoreListItemInterface } from "../../../../applications/models";
+import { useGetCurrentOrganizationType } from "../../../../organizations/hooks/use-get-organization-type";
 import {
     ConnectionInterface,
     JITProvisioningResponseInterface,
@@ -75,6 +76,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const [ isJITProvisioningEnabled, setIsJITProvisioningEnabled ] = useState<boolean>(false);
 
@@ -104,10 +106,10 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
      * Create user store options.
      */
     const getUserStoreOption = () => {
-        const allowedOptions = [];
+        const allowedOptions: DropdownItemProps[] = [];
 
         if (useStoreList) {
-            useStoreList?.map((userStore) => {
+            useStoreList?.map((userStore: SimpleUserStoreListItemInterface) => {
                 allowedOptions.push({
                     key: useStoreList.indexOf(userStore),
                     text: userStore?.name,
@@ -125,7 +127,10 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         }
     }, [ initialValues ]);
 
-    const supportedProvisioningSchemes = [ {
+    const supportedProvisioningSchemes: {
+        label: string;
+        value: SupportedJITProvisioningSchemes;
+    }[] = [ {
         label: t("console:develop.features.authenticationProvider" +
             ".forms.jitProvisioning.provisioningScheme.children.0"),
         value: SupportedJITProvisioningSchemes.PROMPT_USERNAME_PASSWORD_CONSENT
@@ -143,7 +148,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         value: SupportedJITProvisioningSchemes.PROVISION_SILENTLY
     } ];
 
-    const ProxyModeConflictMessage = (
+    const ProxyModeConflictMessage: ReactElement = (
         <div
             style={ { animationDuration: "350ms" } }
             className={ classNames("ui image warning scale transition", {
@@ -175,7 +180,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     );
 
     return (
-        <Forms onSubmit={ (values) => onSubmit(updateConfiguration(values)) }>
+        <Forms onSubmit={ (values: Map<string, FormValue>) => onSubmit(updateConfiguration(values)) }>
             <Grid>
                 {
                     identityProviderConfig?.jitProvisioningSettings?.enableJitProvisioningField?.show
@@ -193,7 +198,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                             : []
                                     }
                                     type="checkbox"
-                                    listen={ (values) => {
+                                    listen={ (values: Map<string, FormValue>) => {
                                         setIsJITProvisioningEnabled(
                                             values
                                                 .get(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY)
@@ -221,14 +226,16 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                     )
                 }
                 {
-                    identityProviderConfig?.jitProvisioningSettings?.enableAssociateLocalUserField?.show &&
-                    isJITProvisioningEnabled && (
+                    isSubOrganization()
+                    && identityProviderConfig?.jitProvisioningSettings?.enableAssociateLocalUserField?.show
+                    && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
                                 <Field
                                     name={ JITProvisioningConstants.ASSOCIATE_LOCAL_USER }
                                     label=""
                                     required={ false }
+                                    disabled={ !isJITProvisioningEnabled }
                                     requiredErrorMessage=""
                                     value={
                                         initialValues?.associateLocalUser

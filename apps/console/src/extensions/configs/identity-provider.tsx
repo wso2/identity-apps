@@ -306,7 +306,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
     },
     jitProvisioningSettings: {
         enableAssociateLocalUserField: {
-            show: !!window[ "AppUtils" ]?.getConfig()?.organizationName
+            show: true
         },
         enableJitProvisioningField: {
             show: true
