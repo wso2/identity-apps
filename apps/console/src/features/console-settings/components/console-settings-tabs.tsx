@@ -122,20 +122,29 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                 }
             ]
                 .filter((tab: ConsoleSettingsTabInterface) => !tab || !tab.hidden)
-                .map((tab, index) => ({ ...tab, value: index })),
+                .map((tab: ConsoleSettingsTabInterface, index: number) => ({ ...tab, value: index })),
         []
     );
 
-    const getActiveTabFromUrl = () => {
-        const activeTabFromUrl = consoleTabs.find(tab => location.hash === `#tab=${tab.id}`);
+    /**
+     * Get the active tab index from the tab id defined in the URL params.
+     * @returns Active tab.
+     */
+    const getActiveTabFromUrl = (): number => {
+        const activeTabFromUrl: ConsoleSettingsTabInterface = consoleTabs.find((tab: ConsoleSettingsTabInterface) => {
+            return location.hash === `#tab=${tab.id}`;
+        });
 
         return activeTabFromUrl ? activeTabFromUrl.value : consoleTabs[0].value;
     };
 
     const [ activeTab, setActiveTab ] = useState<number>(getActiveTabFromUrl);
 
+    /**
+     * Register a hash change listener to update the active tab.
+     */
     useEffect(() => {
-        const handleHashChange = () => {
+        const handleHashChange = (): void => {
             setActiveTab(getActiveTabFromUrl());
         };
 
@@ -146,7 +155,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
             // Clean up the event listener when the component unmounts
             window.removeEventListener("hashchange", handleHashChange);
         };
-    }, []); // Run the effect only once on mount
+    }, []);
 
     return (
         <div className="console-settings-tabs">
