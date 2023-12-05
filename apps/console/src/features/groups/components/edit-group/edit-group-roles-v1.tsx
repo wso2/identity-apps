@@ -102,7 +102,7 @@ export const GroupRolesV1List: FunctionComponent<GroupRolesV1PropsInterface> = (
     const [ tempRoleList, setTempRoleList ] = useState([]);
     const [ initialRoleList, setInitialRoleList ] = useState([]);
     const [ initialTempRoleList, setInitialTempRoleList ] = useState([]);
-    //TODO: [Fix Type] Ideally this should be a `RolesInterface[]` 
+    //TODO: [Fix Type] Ideally this should be a `RolesInterface[]`
     //but the `setPrimaryRoles` method usage is not consistent with the type.
     const [ primaryRoles, setPrimaryRoles ] = useState(undefined);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -127,9 +127,9 @@ export const GroupRolesV1List: FunctionComponent<GroupRolesV1PropsInterface> = (
 
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization);
-    
+
     const isRootOrganization: boolean = useMemo(
-        () => OrganizationUtils.isSuperOrganization(currentOrganization), 
+        () => OrganizationUtils.isSuperOrganization(currentOrganization),
         [ currentOrganization ]
     );
 
@@ -225,7 +225,7 @@ export const GroupRolesV1List: FunctionComponent<GroupRolesV1PropsInterface> = (
      * The following function remove already assigned roles from the initial roles.
      */
     const removeExistingRoles = () => {
-        //TODO: [Fix Type] Ideally this should be a `RolesInterface[]` 
+        //TODO: [Fix Type] Ideally this should be a `RolesInterface[]`
         //but the `setPrimaryRoles` method usage is not consistent with the type.
         const roleListCopy: any = primaryRoles ? [ ...primaryRoles ] : [];
         const addedRoles: any = [];
