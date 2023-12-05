@@ -174,6 +174,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     /**
      * Show the organization switching dropdown only if
+     *  - the organizations feature is enabled
      *  - the extensions config enables this
      *  - the requires scopes are there
      *  - the organization management feature is enabled by the backend
