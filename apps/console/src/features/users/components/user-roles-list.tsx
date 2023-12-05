@@ -42,7 +42,7 @@ import { RenderChip } from "./user-common-components/render-chip";
 import { AppState } from "../../core";
 import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
 import { APPLICATION_DOMAIN, DOMAIN_SEPARATOR, INTERNAL_DOMAIN, RoleAudienceTypes } from "../../roles/constants";
-import { Grid, Label, Table } from "semantic-ui-react";
+import { Divider, Grid, Label, Table } from "semantic-ui-react";
 import RolesList from "../../application-roles/components/roles-list";
 import { RoleList } from "../../roles/components/role-list";
 import { ReadOnlyRoleList } from "../../roles/components/readonly-role-list";
@@ -134,10 +134,20 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
     };
 
     return (
-        <ReadOnlyRoleList
-            totalRoleList={ initialSelectedRolesOptions }
-            emptyRolesListPlaceholder={ getPlaceholders() }
-        />
+
+        <>
+            <Heading as="h4">
+                { t("console:manage.features.user.updateUser.roles.editRoles.heading") }
+            </Heading>
+            <Heading subHeading ellipsis as="h6">
+                { t("console:manage.features.user.updateUser.roles.editRoles.subHeading") }
+            </Heading>
+            <Divider hidden/>
+            <ReadOnlyRoleList
+                totalRoleList={ initialSelectedRolesOptions }
+                emptyRolesListPlaceholder={ getPlaceholders() }
+            />
+        </>
     );
 };
 

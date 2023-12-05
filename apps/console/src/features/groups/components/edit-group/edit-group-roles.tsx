@@ -36,6 +36,7 @@ import { GroupsInterface } from "../../models/groups";
 import { AutoCompleteRenderOption } from "../group-common-components/auto-complete-render-option";
 import { RenderChipRolesInGroups } from "../group-common-components/render-chip";
 import { ReadOnlyRoleList } from "../../../roles/components/readonly-role-list";
+import { Divider } from "semantic-ui-react";
 
 interface EditGroupRolesPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -83,10 +84,19 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
     };
 
     return (
-        <ReadOnlyRoleList
-            totalRoleList={ initialSelectedRolesOptions }
-            emptyRolesListPlaceholder={ getPlaceholders() }
-        />
+        <>
+            <Heading as="h4">
+                { t("console:manage.features.groups.edit.roles.heading") }
+            </Heading>
+            <Heading subHeading ellipsis as="h6">
+                { t("console:manage.features.groups.edit.roles.subHeading") }
+            </Heading>
+            <Divider hidden/>
+            <ReadOnlyRoleList
+                totalRoleList={ initialSelectedRolesOptions }
+                emptyRolesListPlaceholder={ getPlaceholders() }
+            />
+        </>
     );
 };
 
