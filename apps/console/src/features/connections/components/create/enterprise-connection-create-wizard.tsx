@@ -300,8 +300,8 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
             identityProvider.templateId = template.subTemplates
                 .find((template: ConnectionTemplateInterface) => {
-                    return template.templateId === "enterprise-saml-idp";
-                })?.templateId;
+                    return template.id === "enterprise-saml-idp";
+                })?.id;
 
             // Populate user entered values
             identityProvider.name = values?.name?.toString();
