@@ -16,27 +16,19 @@
  * under the License.
  */
 
-import Autocomplete, {  
-    AutocompleteRenderGetTagProps, 
-    AutocompleteRenderInputParams 
-} from "@oxygen-ui/react/Autocomplete";
-import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
-import { EmphasizedSegment, EmptyPlaceholder, Heading } from "@wso2is/react-components";
+import { EmptyPlaceholder, Heading } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
-    HTMLAttributes,
     ReactElement,
     useEffect,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { getEmptyPlaceholderIllustrations } from "../../../core/configs/ui";
-import { GroupsInterface } from "../../models/groups";
-import { AutoCompleteRenderOption } from "../group-common-components/auto-complete-render-option";
-import { RenderChipRolesInGroups } from "../group-common-components/render-chip";
-import { ReadOnlyRoleList } from "../../../roles/components/readonly-role-list";
 import { Divider } from "semantic-ui-react";
+import { getEmptyPlaceholderIllustrations } from "../../../core";
+import { ReadOnlyRoleList } from "../../../roles/components/readonly-role-list";
+import { GroupsInterface } from "../../models";
 
 interface EditGroupRolesPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -54,7 +46,6 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
     const { t } = useTranslation();
 
     const [ initialSelectedRolesOptions, setInitialSelectedRolesOptions ] = useState<RolesMemberInterface[]>([]);
-    const [ activeOption, setActiveOption ] = useState<RolesMemberInterface>(undefined);
 
     /**
      * Set initial selected roles options
@@ -66,14 +57,14 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
     }, [ group ]);
 
     /**
-     * Get the place holder components.
-     * 
+     * Get the placeholder components.
+     *
      * @returns place holder components
      */
     const getPlaceholders = () => {
         return (
             <EmptyPlaceholder
-                subtitle={ 
+                subtitle={
                     [ t("console:manage.features.groups.edit.roles.placeHolders.emptyListPlaceholder.subtitles") ]
                 }
                 title={ t("console:manage.features.groups.edit.roles.placeHolders.emptyListPlaceholder.title") }

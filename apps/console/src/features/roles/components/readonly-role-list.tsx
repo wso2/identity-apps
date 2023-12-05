@@ -100,7 +100,7 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
 
         setFilteredRoleList(totalRoleList);
         setIsLoading(false);
-    }, [ totalRoleList, triggerClearQuery ]);
+    }, [ totalRoleList ]);
 
     useEffect(() => {
 
@@ -128,14 +128,15 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
     }, [ listOffset, listItemLimit, filteredRoleList ]);
 
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+
         setListItemLimit(data.value as number);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+
         const activePage: number = data?.activePage as number ?? 1;
 
         setListOffset((activePage - 1) * listItemLimit);
-
     };
 
     const getPaginatedRoleList = (roleListToPaginate: RolesMemberInterface[]): RolesMemberInterface[] => {
@@ -159,6 +160,7 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
     };
 
     const handleSearchQueryClear = () => {
+
         setTriggerClearQuery(true);
         setRoleNameSearchQuery(null);
     };
@@ -297,7 +299,6 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
                     placeholder={ t("console:manage.features.roles.advancedSearch.placeholder") }
                     defaultSearchAttribute="displayName"
                     defaultSearchOperator= { DEFAULT_SEARCH_OPERATOR }
-                    triggerClearQuery={ triggerClearQuery }
                 />
             ) }
             listItemLimit={ listItemLimit }

@@ -16,36 +16,25 @@
  * under the License.
  */
 
-import Autocomplete, {  
-    AutocompleteRenderGetTagProps, 
-    AutocompleteRenderInputParams 
-} from "@oxygen-ui/react/Autocomplete";
-import TextField from "@oxygen-ui/react/TextField";
-import { 
-    IdentifiableComponentInterface, 
-    ProfileInfoInterface, 
-    RoleGroupsInterface, 
-    RolesMemberInterface 
+import {
+    IdentifiableComponentInterface,
+    ProfileInfoInterface,
+    RoleGroupsInterface,
+    RolesMemberInterface
 } from "@wso2is/core/models";
-import { EmphasizedSegment, EmptyPlaceholder, Heading } from "@wso2is/react-components";
+import { EmptyPlaceholder, Heading } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
-    HTMLAttributes,
     ReactElement,
     useEffect,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AutoCompleteRenderOption } from "./user-common-components/auto-complete-render-option";
-import { RenderChip } from "./user-common-components/render-chip";
-import { AppState } from "../../core";
-import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
-import { APPLICATION_DOMAIN, DOMAIN_SEPARATOR, INTERNAL_DOMAIN, RoleAudienceTypes } from "../../roles/constants";
-import { Divider, Grid, Label, Table } from "semantic-ui-react";
-import RolesList from "../../application-roles/components/roles-list";
-import { RoleList } from "../../roles/components/role-list";
+import { Divider } from "semantic-ui-react";
+import { AppState, getEmptyPlaceholderIllustrations } from "../../core";
 import { ReadOnlyRoleList } from "../../roles/components/readonly-role-list";
+import { APPLICATION_DOMAIN, DOMAIN_SEPARATOR, INTERNAL_DOMAIN } from "../../roles/constants";
 
 interface UserRoleEditPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -63,9 +52,7 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
     const { t } = useTranslation();
 
     const [ initialSelectedRolesOptions, setInitialSelectedRolesOptions ] = useState<RolesMemberInterface[]>([]);
-    const [ activeOption, setActiveOption ] = useState<RolesMemberInterface>(undefined);
-
-    const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) => 
+    const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
     /**
@@ -73,7 +60,7 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
      */
     useEffect(() => {
         let userRoles: RolesMemberInterface[];
-        
+
         if (isGroupAndRoleSeparationEnabled && user?.roles?.length > 0) {
             userRoles = user.roles;
         } else {
@@ -88,17 +75,17 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
     /**
      * When Group and Role Separation is enabled, the groups section of the user will contain both roles and groups.
      * This method can be used to extract roles from the groups section.
-     * 
+     *
      * @param groups - Groups of the user
      * @returns Roles of the user
      */
     const extractUserRolesFromGroups = (groups: RoleGroupsInterface[]): RolesMemberInterface[] => {
 
         const userRoles: RolesMemberInterface[] = [];
-        
+
         groups?.forEach((group: RoleGroupsInterface) => {
             const [ domain, displayName ]: string[] = group?.display?.split(DOMAIN_SEPARATOR);
-            
+
             if (domain && displayName && [ APPLICATION_DOMAIN, INTERNAL_DOMAIN ].includes(domain)) {
                 userRoles.push({
                     $ref: group.$ref,
@@ -109,23 +96,23 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
                 });
             }
         });
-        
+
         return userRoles;
     };
 
     /**
-     * Get the place holder components.
-     * 
+     * Get the placeholder components.
+     *
      * @returns place holder components
      */
     const getPlaceholders = () => {
         return (
             <EmptyPlaceholder
-                subtitle={ 
-                    [ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.emptyPlaceholder" + 
+                subtitle={
+                    [ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.emptyPlaceholder" +
                         ".subtitles") ]
                 }
-                title={ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.emptyPlaceholder" + 
+                title={ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.emptyPlaceholder" +
                     ".title") }
                 image={ getEmptyPlaceholderIllustrations().emptyList }
                 imageSize="tiny"
