@@ -1,5 +1,15 @@
 # @wso2is/form
 
+## 2.0.18
+
+### Patch Changes
+
+- [#4933](https://github.com/wso2/identity-apps/pull/4933) [`c5cd4b8d51`](https://github.com/wso2/identity-apps/commit/c5cd4b8d51e38eb0d82d0ec733d009993a2e9e3a) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Introduce legacy mode to console
+
+- Updated dependencies [[`c5cd4b8d51`](https://github.com/wso2/identity-apps/commit/c5cd4b8d51e38eb0d82d0ec733d009993a2e9e3a)]:
+  - @wso2is/core@2.0.22
+  - @wso2is/react-components@2.0.26
+
 ## 2.0.17
 
 ### Patch Changes
