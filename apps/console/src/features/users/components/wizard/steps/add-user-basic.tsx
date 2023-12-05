@@ -844,11 +844,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                                 ".buttons.radioButton.label") }
                                         </label>
                                         {
-                                            emailVerificationEnabled && (
-                                                (
-                                                    isEmailFilled
-                                                ) || !isAlphanumericUsernameEnabled()
-                                            )
+                                            emailVerificationEnabled && isEmailFilled
+                                            || !isAlphanumericUsernameEnabled()
                                                 ? (
                                                     <Radio
                                                         label={ askPasswordOptionData.label }
