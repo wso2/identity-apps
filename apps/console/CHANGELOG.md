@@ -1,5 +1,29 @@
 # @wso2is/console
 
+## 2.10.0
+
+### Minor Changes
+
+- [#4933](https://github.com/wso2/identity-apps/pull/4933) [`c5cd4b8d51`](https://github.com/wso2/identity-apps/commit/c5cd4b8d51e38eb0d82d0ec733d009993a2e9e3a) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Introduce legacy mode to console
+
+### Patch Changes
+
+- [#4959](https://github.com/wso2/identity-apps/pull/4959) [`07b9690edd`](https://github.com/wso2/identity-apps/commit/07b9690eddaef984b4f21f9118055e7692b2464a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix enable account immediately option not updating properly.
+
+* [#4969](https://github.com/wso2/identity-apps/pull/4969) [`9a86e730bd`](https://github.com/wso2/identity-apps/commit/9a86e730bd65b81e2339e19de0b8e08b305d495f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update route id for email templates in side panel categorization
+
+- [#4967](https://github.com/wso2/identity-apps/pull/4967) [`90e66add97`](https://github.com/wso2/identity-apps/commit/90e66add97c42456bb8817239b61a18329b4cab7) Thanks [@Rashmini](https://github.com/Rashmini)! - Fix SAML connection settings page issue
+
+- Updated dependencies [[`c5cd4b8d51`](https://github.com/wso2/identity-apps/commit/c5cd4b8d51e38eb0d82d0ec733d009993a2e9e3a)]:
+  - @wso2is/core@2.0.22
+  - @wso2is/access-control@2.0.11
+  - @wso2is/common@2.0.14
+  - @wso2is/dynamic-forms@2.0.17
+  - @wso2is/form@2.0.18
+  - @wso2is/forms@2.0.8
+  - @wso2is/i18n@2.0.73
+  - @wso2is/react-components@2.0.26
+
 ## 2.9.51
 
 ### Patch Changes
