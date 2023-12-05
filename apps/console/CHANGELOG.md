@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.9.51
+
+### Patch Changes
+
+- [#4962](https://github.com/wso2/identity-apps/pull/4962) [`32b758f1a9`](https://github.com/wso2/identity-apps/commit/32b758f1a99b6012a9fe7cac5e057da9b4fef2c6) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Enable `Associate provisioned users with existing local users` option under JIT provisioning for IDPs
+
 ## 2.9.50
 
 ### Patch Changes
