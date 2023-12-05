@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.10.3
+
+### Patch Changes
+
+- [#4976](https://github.com/wso2/identity-apps/pull/4976) [`84928f1edb`](https://github.com/wso2/identity-apps/commit/84928f1edb1c70b0032f87ae46c34e51569965a4) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Support UI to assign V1 roles in user and group sections
+
+* [#4971](https://github.com/wso2/identity-apps/pull/4971) [`51f8e7c470`](https://github.com/wso2/identity-apps/commit/51f8e7c4709841ac25cd7dda8df181a1f94ae671) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with application sharing form
+
+* Updated dependencies [[`51f8e7c470`](https://github.com/wso2/identity-apps/commit/51f8e7c4709841ac25cd7dda8df181a1f94ae671)]:
+  - @wso2is/i18n@2.0.74
+
 ## 2.10.2
 
 ### Patch Changes
