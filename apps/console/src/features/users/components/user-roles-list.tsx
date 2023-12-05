@@ -41,7 +41,11 @@ import { AutoCompleteRenderOption } from "./user-common-components/auto-complete
 import { RenderChip } from "./user-common-components/render-chip";
 import { AppState } from "../../core";
 import { getEmptyPlaceholderIllustrations } from "../../core/configs/ui";
-import { APPLICATION_DOMAIN, DOMAIN_SEPARATOR, INTERNAL_DOMAIN } from "../../roles/constants";
+import { APPLICATION_DOMAIN, DOMAIN_SEPARATOR, INTERNAL_DOMAIN, RoleAudienceTypes } from "../../roles/constants";
+import { Grid, Label, Table } from "semantic-ui-react";
+import RolesList from "../../application-roles/components/roles-list";
+import { RoleList } from "../../roles/components/role-list";
+import { ReadOnlyRoleList } from "../../roles/components/readonly-role-list";
 
 interface UserRoleEditPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -60,7 +64,6 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
 
     const [ initialSelectedRolesOptions, setInitialSelectedRolesOptions ] = useState<RolesMemberInterface[]>([]);
     const [ activeOption, setActiveOption ] = useState<RolesMemberInterface>(undefined);
-    const [ showEmptyRolesListPlaceholder, setShowEmptyRolesListPlaceholder ] = useState<boolean>(false);
 
     const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) => 
         state?.config?.ui?.isGroupAndRoleSeparationEnabled);
@@ -79,8 +82,6 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
 
         if (userRoles?.length > 0) {
             setInitialSelectedRolesOptions(userRoles);
-        } else {
-            setShowEmptyRolesListPlaceholder(true);
         }
     }, [ user ]);
 
@@ -118,74 +119,25 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
      * @returns place holder components
      */
     const getPlaceholders = () => {
-        if (showEmptyRolesListPlaceholder) {
-            return (
-                <EmptyPlaceholder
-                    subtitle={ 
-                        [ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.emptyPlaceholder" + 
-                            ".subtitles") ]
-                    }
-                    title={ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.emptyPlaceholder" + 
-                        ".title") }
-                    image={ getEmptyPlaceholderIllustrations().emptyList }
-                    imageSize="tiny"
-                />
-            );
-        }
+        return (
+            <EmptyPlaceholder
+                subtitle={ 
+                    [ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.emptyPlaceholder" + 
+                        ".subtitles") ]
+                }
+                title={ t("console:manage.features.user.updateUser.roles.editRoles.placeholders.emptyPlaceholder" + 
+                    ".title") }
+                image={ getEmptyPlaceholderIllustrations().emptyList }
+                imageSize="tiny"
+            />
+        );
     };
 
     return (
-        <EmphasizedSegment padded="very">
-            <Heading as="h4">
-                { t("console:manage.features.user.updateUser.roles.editRoles.heading") }
-            </Heading>
-            <Heading subHeading ellipsis as="h6">
-                { t("console:manage.features.user.updateUser.roles.editRoles.subHeading") }
-            </Heading>
-            {
-                showEmptyRolesListPlaceholder
-                    ? getPlaceholders()
-                    : (
-                        <Autocomplete
-                            multiple
-                            disableCloseOnSelect
-                            options={ initialSelectedRolesOptions }
-                            value={ initialSelectedRolesOptions }
-                            getOptionLabel={ (role: RolesMemberInterface) => role.display }
-                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                <TextField
-                                    { ...params }
-                                    placeholder= { t("console:manage.features.user.updateUser.roles.editRoles" + 
-                                        ".searchPlaceholder") }
-                                />
-                            ) }
-                            renderTags={ (
-                                value: RolesMemberInterface[], 
-                                getTagProps: AutocompleteRenderGetTagProps
-                            ) => value.map((option: RolesMemberInterface, index: number) => (
-                                <RenderChip 
-                                    { ...getTagProps({ index }) }
-                                    key={ index }
-                                    primaryText={ option.display }
-                                    option={ option }
-                                    activeOption={ activeOption }
-                                    setActiveOption={ setActiveOption }
-                                    onDelete={ null }
-                                />
-                            )) }
-                            renderOption={ (
-                                props: HTMLAttributes<HTMLLIElement>, 
-                                option: RolesMemberInterface
-                            ) => (
-                                <AutoCompleteRenderOption
-                                    displayName={ option.display }
-                                    renderOptionProps={ props }
-                                />
-                            ) }
-                        />
-                    )
-            }
-        </EmphasizedSegment>
+        <ReadOnlyRoleList
+            totalRoleList={ initialSelectedRolesOptions }
+            emptyRolesListPlaceholder={ getPlaceholders() }
+        />
     );
 };
 
