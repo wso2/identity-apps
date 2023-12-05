@@ -283,13 +283,12 @@ const useSignIn = (): UseSignInInterface => {
         }
 
         let wellKnownEndpoint: string = Config.getServiceResourceEndpoints().wellKnown;
+        const disabledFeatures: string[] = featureConfig?.disabledFeatures;
 
-        if (!legacyAuthzRuntime) {
+        if (legacyAuthzRuntime && disabledFeatures?.includes("branding.hostnameUrlBranding")) {
             // FIXME: Skipping /o/ appending from the `getServiceResourceEndpoints` level seems to be not working.
             wellKnownEndpoint = wellKnownEndpoint.replace("/o/", "/");
         }
-
-        const disabledFeatures: string[] = featureConfig?.disabledFeatures;
 
         if (legacyAuthzRuntime && !disabledFeatures?.includes("branding.hostnameUrlBranding")) {
             // Set configurations related to hostname branding.
