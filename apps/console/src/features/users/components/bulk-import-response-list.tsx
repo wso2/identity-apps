@@ -419,7 +419,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                             "wizardSummary.alerts.importFailed.message")
                                             }
                                         </AlertTitle>
-                                        <Trans
+                                        {/* <Trans
                                             i18nKey={
                                                 "console:manage.features.user.modals.bulkImportUserWizard." +
                                                 "wizardSummary.alerts.importFailed.description"
@@ -430,7 +430,10 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                             } }
                                         >
                                             Issues encountered in <b> creation operations</b>  <b> operations</b>.
-                                        </Trans>
+                                        </Trans> */}
+                                        <li>Issues encountered in 2 user creations.</li>
+                                        <li>Issues encountered in 1 group assignments. Users in the affected groups were created but not assigned. Use the console to manually assign users to these groups.</li>
+                               
                                     </Alert>
                                 )
                     }

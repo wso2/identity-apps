@@ -22,11 +22,13 @@ import {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
 } from "@mui/material";
-import { Chip, TextField, Typography } from "@oxygen-ui/react";
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import Divider from "@oxygen-ui/react/Divider";
 import InputLabel from "@oxygen-ui/react/InputLabel/InputLabel";
+import TextField from "@oxygen-ui/react/TextField";
+import Typography from "@oxygen-ui/react/Typography";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertLevels,
@@ -150,10 +152,12 @@ const CSV_FILE_PROCESSING_STRATEGY: CSVFileStrategy = new CSVFileStrategy(
     userConfig.bulkUserImportLimit.userCount  // Row Count.
 );
 const DATA_VALIDATION_ERROR: string = "Data validation error";
+const TIMEOUT_ERROR: string = "TIMEOUT_ERROR";
 const ADDRESS_HOME_ATTRIBUTE: string = "addresses#home";
 const ADDRESS_ATTRIBUTE: string = "addresses";
 const HOME_ATTRIBUTE: string = "home";
 const BULK_ID: string = "bulkId";
+const FILE_IMPORT_TIMEOUT: number = 60000; // 1 minutes.
 
 /**
  *  BulkImportUserWizard component.
@@ -193,6 +197,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ readWriteUserStoresList, setReadWriteUserStoresList ] = useState<DropdownItemProps[]>([]);
     const [ selectedUserStore, setSelectedUserStore ] = useState<string>("");
     const [ isUserStoreError, setUserStoreError ] = useState<boolean>(false);
+    const [ fileModeTimeOutError , setFileModeTimeOutError ] = useState<boolean>(false);
 
     const optionsArray: string[] = [];
 
@@ -1145,7 +1150,15 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             const scimRequestBody: SCIMBulkEndpointInterface = await generateSCIMRequestBody(attributeMapping);
 
             setShowResponseView(true);
-            const scimResponse: any = await addBulkUsers(scimRequestBody);
+
+            const scimResponsePromise: Promise<any> = addBulkUsers(scimRequestBody);
+            const timeoutPromise: any = new Promise((_resolve, reject) => {
+                setTimeout(() => reject(
+                    new Error(TIMEOUT_ERROR)
+                ), FILE_IMPORT_TIMEOUT);
+            });
+
+            const scimResponse: any = await Promise.race([ scimResponsePromise, timeoutPromise ]);
 
             if (scimResponse.status !== 200) {
                 throw new Error("Failed to import users.");
@@ -1156,7 +1169,17 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             setResponse(response);
         } catch (error) {
             setHasError(true);
-            if (error.message !== DATA_VALIDATION_ERROR) {
+            if (error.message === TIMEOUT_ERROR) {
+                setFileModeTimeOutError(true);
+                setAlert({
+                    // description: t(
+                    //     "console:manage.features.users.notifications.bulkImportUser.submit.timeoutError.description"),
+                    // level: AlertLevels.ERROR,
+                    description: "Some users may not have been imported.",
+                    level: AlertLevels.WARNING,
+                    message: "The request has timed out"
+                });
+            } else if (error.message !== DATA_VALIDATION_ERROR) {
                 setAlert({
                     description: t(
                         "console:manage.features.users.notifications.bulkImportUser.submit.genericError.description"),
@@ -1164,7 +1187,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     message: t("console:manage.features.users.notifications.bulkImportUser.submit.genericError.message")
                 });
             }
-
         } finally {
             setIsLoading(false);
             setIsSubmitting(false);
@@ -1666,12 +1688,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                 <AlertTitle data-componentid={ `${componentId}-success-alert-title` }>
                                                     {
                                                         t("console:manage.features.user.modals.bulkImportUserWizard." +
-                                                        "wizardSummary.manualCreation.alerts.creationSuccess.message")
+                                                    "wizardSummary.manualCreation.alerts.creationSuccess.message")
                                                     }
                                                 </AlertTitle>
                                                 {
                                                     t("console:manage.features.user.modals.bulkImportUserWizard." +
-                                                    "wizardSummary.manualCreation.alerts.creationSuccess.description")
+                                                "wizardSummary.manualCreation.alerts.creationSuccess.description")
                                                 }
                                             </Alert>
                                         ) }
@@ -1742,21 +1764,27 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     )
                     : (
                         <>
-                            { alert && (
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                        { alertComponent }
-                                    </Grid.Column>
-                                </Grid.Row>
+                            { alert &&
+                                (
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            { alertComponent }
+                                        </Grid.Column>
+                                    </Grid.Row>
 
-                            ) }
-                            <BulkImportResponseList
-                                isLoading={ isSubmitting }
-                                data-componentid={ `${componentId}-response-list` }
-                                hasError={ hasError }
-                                responseList={ response }
-                                bulkResponseSummary={ bulkResponseSummary }
-                            />
+                                )
+                            }
+                            { !fileModeTimeOutError &&
+                                (
+                                    <BulkImportResponseList
+                                        isLoading={ isSubmitting }
+                                        data-componentid={ `${componentId}-response-list` }
+                                        hasError={ hasError }
+                                        responseList={ response }
+                                        bulkResponseSummary={ bulkResponseSummary }
+                                    />
+                                )
+                            }
                         </>
                     )
             );
