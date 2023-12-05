@@ -279,7 +279,7 @@ const useSignIn = (): UseSignInInterface => {
         }
 
         let wellKnownEndpoint: string = Config.getServiceResourceEndpoints().wellKnown;
-        const disabledFeatures: string[] = window["AppUtils"].getConfig()?.ui?.features?.branding;
+        const disabledFeatures: string[] = window["AppUtils"].getConfig()?.ui?.features?.branding?.disabledFeatures;
 
         if (!legacyAuthzRuntime) {
             // FIXME: Skipping /o/ appending from the `getServiceResourceEndpoints` level seems to be not working.
