@@ -22,13 +22,13 @@ import {
     AppAvatar,
     DataTable,
     EmptyPlaceholder,
-    LinkButton,
     ListLayout,
+    TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Dropdown, DropdownItemProps, DropdownProps, Header, Label } from "semantic-ui-react";
+import { Dropdown, DropdownItemProps, DropdownProps, Header, Label, SemanticICONS } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, UIConstants, getEmptyPlaceholderIllustrations } from "../../core";
 import { RoleAudienceTypes } from "../constants";
 
@@ -159,12 +159,6 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
         setRoleAudienceFilter(data.value as string);
     };
 
-    const handleSearchQueryClear = () => {
-
-        setTriggerClearQuery(true);
-        setRoleNameSearchQuery(null);
-    };
-
     /**
      * Shows list placeholders.
      */
@@ -260,6 +254,18 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
         ];
     };
 
+    /**
+     * Resolves data table actions.
+     */
+    const resolveTableActions = (): TableActionsInterface[] => {
+        return [
+            {
+                icon: (): SemanticICONS => "eye",
+                onClick: (): void => { return;},
+                popupText: (): string => t("common:view"),
+                renderer: "semantic-icon"
+            } ];
+    };
 
     return (
         <ListLayout
@@ -316,6 +322,7 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
             <DataTable<RolesMemberInterface>
                 loadingStateOptions={ { imageType: "square" } }
                 columns={ resolveTableColumns() }
+                actions={ resolveTableActions() }
                 data={ finalRoleList }
                 onRowClick={ () => { return; } }
                 placeholders={ showPlaceholders() }
