@@ -318,10 +318,15 @@
         spProperty.setKey("spId");
         spProperty.setValue(spId);
 
+        Property skipSignupEnableCheckProperty = new Property();
+        skipSignupEnableCheckProperty.setKey("skipSignUpEnableCheck");
+        skipSignupEnableCheckProperty.setValue(String.valueOf(skipSignUpEnableCheck));
+
         properties.add(sessionKey);
         properties.add(consentProperty);
         properties.add(spProperty);
 
+        properties.add(skipSignupEnableCheckProperty);
 
         SelfUserRegistrationRequest selfUserRegistrationRequest = new SelfUserRegistrationRequest();
         selfUserRegistrationRequest.setUser(selfRegistrationUser);
