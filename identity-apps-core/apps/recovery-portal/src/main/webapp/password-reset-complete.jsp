@@ -137,12 +137,11 @@
             property.setValue(URLEncoder.encode(callback, "UTF-8"));
             properties.add(property);
         }
-        if (StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) {
-            Property accessUrlProperty = new Property();
-            accessUrlProperty.setKey("accessUrl");
-            accessUrlProperty.setValue(URLEncoder.encode(applicationAccessURLWithoutEncoding, "UTF-8"));
-            properties.add(accessUrlProperty);
-        }
+
+        Property appIsAccessUrlAvailableProperty = new Property();
+        appIsAccessUrlAvailableProperty.setKey("isAccessUrlAvailable");
+        appIsAccessUrlAvailableProperty.setValue(String.valueOf(StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)));
+        properties.add(appIsAccessUrlAvailableProperty);
 
         Property tenantProperty = new Property();
         tenantProperty.setKey(IdentityManagementEndpointConstants.TENANT_DOMAIN);

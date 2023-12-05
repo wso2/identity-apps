@@ -328,15 +328,16 @@
         spIdProperty.setKey("spId");
         spIdProperty.setValue(spId);
 
-        Property spAccessUrlProperty = new Property();
-        spAccessUrlProperty.setKey("accessUrl");
-        spAccessUrlProperty.setValue(URLEncoder.encode(applicationAccessUrl, "UTF-8"));
+        Property appIsAccessUrlAvailableProperty = new Property();
+        appIsAccessUrlAvailableProperty.setKey("isAccessUrlAvailable");
+        appIsAccessUrlAvailableProperty.setValue(String.valueOf(StringUtils.isNotBlank(accessUrl)));
+        properties.add(appIsAccessUrlAvailableProperty);
 
         properties.add(sessionKey);
         properties.add(consentProperty);
         properties.add(spProperty);
         properties.add(spIdProperty);
-        properties.add(spAccessUrlProperty);
+        properties.add(appIsAccessUrlAvailableProperty);
 
         SelfUserRegistrationRequest selfUserRegistrationRequest = new SelfUserRegistrationRequest();
         selfUserRegistrationRequest.setUser(selfRegistrationUser);
