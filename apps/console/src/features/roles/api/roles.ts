@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -410,7 +410,8 @@ export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Pr
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: store.getState().config.endpoints.rolesV2 + "/" + roleId
+        url: (isLegacyAuthzRuntime() ?
+            store.getState().config.endpoints.roles : store.getState().config.endpoints.rolesV2) + "/" + roleId
     };
 
     return httpClient(requestConfig)
@@ -485,7 +486,7 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
 /**
  * Hook to get the retrieve the list of groups that are currently in the system.
  *
- * @param, count - Number of records to fetch.
+ * @param count - Number of records to fetch.
  * @param startIndex - Index of the first record to fetch.
  * @param filter - Search filter.
  * @param shouldFetch - Should fetch the data.
