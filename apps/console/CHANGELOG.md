@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.10.1
+
+### Patch Changes
+
+- [#4960](https://github.com/wso2/identity-apps/pull/4960) [`93418f7034`](https://github.com/wso2/identity-apps/commit/93418f7034912543c6206afd2d6f7692e2c5edc6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enable ask password option in user create wizard on email autofill
+
+* [#4970](https://github.com/wso2/identity-apps/pull/4970) [`eb8d751284`](https://github.com/wso2/identity-apps/commit/eb8d75128492b0b97e1ed8b816ff68b78900a506) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the userstore property hidding issue
+
 ## 2.10.0
 
 ### Minor Changes
