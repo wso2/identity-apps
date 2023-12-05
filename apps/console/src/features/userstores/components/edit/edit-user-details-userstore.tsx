@@ -84,19 +84,19 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
         if (properties) {
             const tempSql: Map<string, string> = new Map<string, string>();
 
-            properties?.optional?.sql?.delete.forEach((property: TypeProperty) => {
+            properties?.optional?.sql?.delete?.forEach((property: TypeProperty) => {
                 tempSql.set(property.name, property.value ?? property.defaultValue);
             });
 
-            properties?.optional?.sql?.insert.forEach((property: TypeProperty) => {
+            properties?.optional?.sql?.insert?.forEach((property: TypeProperty) => {
                 tempSql.set(property.name, property.value ?? property.defaultValue);
             });
 
-            properties?.optional?.sql?.select.forEach((property: TypeProperty) => {
+            properties?.optional?.sql?.select?.forEach((property: TypeProperty) => {
                 tempSql.set(property.name, property.value ?? property.defaultValue);
             });
 
-            properties?.optional?.sql?.update.forEach((property: TypeProperty) => {
+            properties?.optional?.sql?.update?.forEach((property: TypeProperty) => {
                 tempSql.set(property.name, property.value ?? property.defaultValue);
             });
 
@@ -105,7 +105,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
     }, [ properties ]);
 
     const onSubmitHandler = (values: Map<string, FormValue>): void => {
-        const requiredData: PatchData[] = properties?.required.filter((property: TypeProperty) => {
+        const requiredData: PatchData[] = properties?.required?.filter((property: TypeProperty) => {
             return values.has(property.name);
         }).map((property: TypeProperty) => {
             return {
@@ -236,16 +236,16 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                         <Grid.Column width={ 8 }>
                             {
                                 properties?.required?.map((property: TypeProperty, index: number) => {
-                                    let name: string = property?.description.split("#")[ 0 ];
+                                    let userStorePropertyName: string = property?.description?.split("#")[ 0 ];
 
-                                    if (!name) {
-                                        name = property?.name.replace(/([a-z])([A-Z])/g, "$1 $2");
+                                    if (!userStorePropertyName) {
+                                        userStorePropertyName = property?.name?.replace(/([a-z])([A-Z])/g, "$1 $2");
                                     }
 
-                                    const isPassword: boolean = property?.attributes.find(
+                                    const isPassword: boolean = property?.attributes?.find(
                                         (attribute: PropertyAttribute) => attribute?.name === "type"
                                     )?.value === "password";
-                                    const toggle: boolean = property?.attributes.find(
+                                    const toggle: boolean = property?.attributes?.find(
                                         (attribute: PropertyAttribute) => attribute?.name === "type"
                                     )?.value === "boolean";
 
@@ -258,13 +258,13 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                     key={ index }
                                                     required={ true }
                                                     disabled={ id === CONSUMER_USERSTORE_ID }
-                                                    label={ name }
+                                                    label={ userStorePropertyName }
                                                     requiredErrorMessage={
                                                         t(
                                                             "console:manage.features.userstores.forms." +
                                                             "custom.requiredErrorMessage",
                                                             {
-                                                                name
+                                                                name: userStorePropertyName
                                                             }
                                                         )
                                                     }
@@ -275,7 +275,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                             "console:manage.features.userstores.forms." +
                                                             "custom.placeholder",
                                                             {
-                                                                name
+                                                                name: userStorePropertyName
                                                             }
                                                         )
                                                     }
@@ -291,13 +291,13 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                         key={ index }
                                                         required={ false }
                                                         disabled={ id === CONSUMER_USERSTORE_ID }
-                                                        label={ name }
+                                                        label={ userStorePropertyName }
                                                         requiredErrorMessage={
                                                             t(
                                                                 "console:manage.features.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
                                                                 {
-                                                                    name
+                                                                    name: userStorePropertyName
                                                                 }
                                                             )
                                                         }
@@ -307,7 +307,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                 "console:manage.features.userstores.forms." +
                                                                 "custom.placeholder",
                                                                 {
-                                                                    name
+                                                                    name: userStorePropertyName
                                                                 }
                                                             )
                                                         }
@@ -325,13 +325,13 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                 type="text"
                                                                 key={ index }
                                                                 required={ true }
-                                                                label={ name }
+                                                                label={ userStorePropertyName }
                                                                 requiredErrorMessage={
                                                                     t(
                                                                         "console:manage.features.userstores.forms." +
                                                                         "custom.requiredErrorMessage",
                                                                         {
-                                                                            name
+                                                                            name: userStorePropertyName
                                                                         }
                                                                     )
                                                                 }
@@ -340,7 +340,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                         "console:manage.features.userstores.forms." +
                                                                         "custom.placeholder",
                                                                         {
-                                                                            name
+                                                                            name: userStorePropertyName
                                                                         }
                                                                     )
                                                                 }
@@ -357,13 +357,13 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                             type="text"
                                                             key={ index }
                                                             required={ true }
-                                                            label={ name }
+                                                            label={ userStorePropertyName }
                                                             requiredErrorMessage={
                                                                 t(
                                                                     "console:manage.features.userstores.forms." +
                                                                     "custom.requiredErrorMessage",
                                                                     {
-                                                                        name
+                                                                        name: userStorePropertyName
                                                                     }
                                                                 )
                                                             }
@@ -372,7 +372,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                     "console:manage.features.userstores.forms." +
                                                                     "custom.placeholder",
                                                                     {
-                                                                        name
+                                                                        name: userStorePropertyName
                                                                     }
                                                                 )
                                                             }
@@ -417,11 +417,11 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                 <Grid.Column width={ 8 }>
                                     {
                                         properties?.optional?.nonSql.map((property: TypeProperty, index: number) => {
-                                            const name: string = property?.description.split("#")[ 0 ];
-                                            const isPassword: boolean = property?.attributes.find(
+                                            const name: string = property?.description?.split("#")[ 0 ];
+                                            const isPassword: boolean = property?.attributes?.find(
                                                 (attribute: PropertyAttribute) => attribute?.name === "type"
                                             )?.value === "password";
-                                            const toggle: boolean = property?.attributes.find(
+                                            const toggle: boolean = property?.attributes?.find(
                                                 (attribute: PropertyAttribute) => attribute?.name === "type"
                                             )?.value === "boolean";
                                             const uniqueID: boolean = property?.name === "UniqueID";
@@ -478,7 +478,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                         "requiredErrorMessage",
                                                                         {
                                                                             name: property?.description
-                                                                                .split("#")[ 0 ]
+                                                                                ?.split("#")[ 0 ]
                                                                         }
                                                                     )
                                                                 }
@@ -489,7 +489,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                         "forms.custom.placeholder",
                                                                         {
                                                                             name: property?.description
-                                                                                .split("#")[ 0 ]
+                                                                                ?.split("#")[ 0 ]
                                                                         }
                                                                     )
                                                                 }
@@ -516,8 +516,8 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                             ".forms.edit.connection.custom" +
                                                                             ".requiredErrorMessage",
                                                                             {
-                                                                                name: property?.description.
-                                                                                    split("#")[ 0 ]
+                                                                                name: property?.description
+                                                                                    ?.split("#")[ 0 ]
                                                                             })
                                                                     }
                                                                     placeholder={
@@ -525,8 +525,8 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                             "console:manage.features.userstores." +
                                                                             "forms.custom.placeholder",
                                                                             {
-                                                                                name: property?.description.
-                                                                                    split("#")[ 0 ]
+                                                                                name: property?.description
+                                                                                    ?.split("#")[ 0 ]
                                                                             })
                                                                     }
                                                                     data-testid={
@@ -551,8 +551,8 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                             "forms.edit.connection.custom." +
                                                                             "requiredErrorMessage",
                                                                             {
-                                                                                name: property?.description.
-                                                                                    split("#")[ 0 ]
+                                                                                name: property?.description
+                                                                                    ?.split("#")[ 0 ]
                                                                             })
                                                                     }
                                                                     placeholder={
@@ -560,8 +560,8 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                             "console:manage.features.userstores." +
                                                                             "forms.custom.placeholder",
                                                                             {
-                                                                                name: property?.description.
-                                                                                    split("#")[ 0 ]
+                                                                                name: property?.description
+                                                                                    ?.split("#")[ 0 ]
                                                                             })
                                                                     }
                                                                     data-testid={
