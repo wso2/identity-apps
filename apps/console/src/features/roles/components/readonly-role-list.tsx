@@ -170,25 +170,16 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
-        if (roleNameSearchQuery && finalRoleList?.length === 0) {
+        if ((roleNameSearchQuery || roleAudienceFilter) && finalRoleList?.length === 0) {
             return (
                 <EmptyPlaceholder
                     data-componentid={ `${ componentId }-search-empty-placeholder` }
-                    action={ (
-                        <LinkButton
-                            data-componentid={ `${ componentId }-search-empty-placeholder-clear-button` }
-                            onClick={ handleSearchQueryClear }
-                        >
-                            { t("console:manage.features.roles.list.emptyPlaceholders.search.action") }
-                        </LinkButton>
-                    ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("console:manage.features.roles.list.emptyPlaceholders.search.title") }
+                    title={ t("console:manage.features.roles.readOnlyList.emptyPlaceholders.searchAndFilter.title") }
                     subtitle={ [
-                        t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.0",
-                            { searchQuery: roleNameSearchQuery }),
-                        t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.1")
+                        t("console:manage.features.roles.readOnlyList.emptyPlaceholders.searchAndFilter.subtitles.0"),
+                        t("console:manage.features.roles.readOnlyList.emptyPlaceholders.searchAndFilter.subtitles.1")
                     ] }
                 />
             );

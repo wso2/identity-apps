@@ -10851,6 +10851,17 @@ export const console: ConsoleNS = {
                         audience: "Role Audience"
                     }
                 },
+                readOnlyList: {
+                    emptyPlaceholders: {
+                        searchAndFilter: {
+                            subtitles: {
+                                0: "We couldn't find any results for the specified role name and audience combination.",
+                                1: "Please try a different combination."
+                            },
+                            title: "No results found"
+                        }
+                    }
+                },
                 notifications: {
                     createPermission: {
                         error: {

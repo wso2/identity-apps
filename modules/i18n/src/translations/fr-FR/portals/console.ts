@@ -9083,6 +9083,17 @@ export const console: ConsoleNS = {
                         audience: "Rôle public"
                     }
                 },
+                readOnlyList: {
+                    emptyPlaceholders: {
+                        searchAndFilter: {
+                            subtitles: {
+                                0: "Nous n'avons trouvé aucun résultat pour la combinaison de nom de rôle et d'audience spécifiée.",
+                                1: "Veuillez essayer une combinaison différente."
+                            },
+                            title: "Aucun résultat trouvé"
+                        }
+                    }
+                },
                 notifications: {
                     createPermission: {
                         error: {
