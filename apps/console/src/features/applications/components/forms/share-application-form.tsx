@@ -413,12 +413,12 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         addAlert({
                             description: t(
                                 "console:develop.features.applications.edit.sections.shareApplication" +
-                                ".addSharingNotification.success.description"
+                                ".stopAllSharingNotification.success.description"
                             ),
                             level: AlertLevels.SUCCESS,
                             message: t(
                                 "console:develop.features.applications.edit.sections.shareApplication" +
-                                ".addSharingNotification.success.message"
+                                ".stopAllSharingNotification.success.message"
                             )
                         })
                     );
@@ -451,7 +451,10 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         );
                     }
                 })
-                .finally(() => onApplicationSharingCompleted());
+                .finally(() => {
+                    setSharedOrganizationList([]);
+                    onApplicationSharingCompleted();
+                });
         }
     }, [
         sharedOrganizationList,

@@ -1244,6 +1244,16 @@ export const console: ConsoleNS = {
                                     description: "Application Sharing stopped with the {{organization}} successfully",
                                     message: "Application shared stopped successfully!"
                                 }
+                            },
+                            stopAllSharingNotification: {
+                                genericError: {
+                                    description: "Application sharing stop failed for all organizations",
+                                    message: "Application sharing stop failed!"
+                                },
+                                success: {
+                                    description: "Application sharing stopped with all the organizations successfully",
+                                    message: "Application sharing stopped successfully!"
+                                }
                             }
                         },
                         signOnMethod: {

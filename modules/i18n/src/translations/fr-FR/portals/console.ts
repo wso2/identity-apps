@@ -1243,6 +1243,16 @@ export const console: ConsoleNS = {
                                     description: "Le partage d'application s'est arrêté avec succès avec l'{{organisation}}",
                                     message: "L'application partagée s'est arrêtée avec succès!"
                                 }
+                            },
+                            stopAllSharingNotification: {
+                                genericError: {
+                                    description: "L'arrêt du partage des applications a échoué pour toutes les organisations",
+                                    message: "L'arrêt du partage de l'application a échoué!"
+                                },
+                                success: {
+                                    description: "Le partage des applications s'est arrêté avec toutes les organisations avec succès",
+                                    message: "Le partage d'applications s'est arrêté avec succès!"
+                                }
                             }
                         },
                         signOnMethod: {
