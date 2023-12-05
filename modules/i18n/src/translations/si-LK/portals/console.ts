@@ -1238,6 +1238,16 @@ export const console: ConsoleNS = {
                                     description: "යෙදුම බෙදාගැනීම {{organization}} සමඟ සාර්ථක විය",
                                     message: "යෙදුම බෙදාගැනීම සාර්ථක විය!"
                                 }
+                            },
+                            stopAllSharingNotification: {
+                                genericError: {
+                                    description: "සියලුම සංවිධාන සඳහා යෙදුම් බෙදාගැනීමේ නැවතුම අසාර්ථක විය",
+                                    message: "යෙදුම් බෙදාගැනීමේ නැවතුම අසාර්ථක විය!"
+                                },
+                                success: {
+                                    description: "යෙදුම් හුවමාරුව සියලුම සංවිධාන සමඟ සාර්ථකව කටයුතු කළේය",
+                                    message: "යෙදුම් හුවමාරුව සාර්ථකව නතර විය!"
+                                }
                             }
                         },
                         signOnMethod: {

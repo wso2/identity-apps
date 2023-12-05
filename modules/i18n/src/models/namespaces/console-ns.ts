@@ -1054,8 +1054,9 @@ export interface ConsoleNS {
                             heading: string;
                             shareApplication: string;
                             addSharingNotification: Notification;
-                            stopSharingNotification: Notification
+                            stopSharingNotification: Notification;
                             getSharedOrganizations: Notification;
+                            stopAllSharingNotification: Notification;
                         };
                         apiAuthorization: {
                             m2mPolicyMessage: string;
