@@ -73,7 +73,7 @@ export class APIResourcesConstants {
 export enum APIResourceType {
     MANAGEMENT = "management",
     ORGANIZATION = "organization",
-    CUSTOM = "custom"
+    BUSINESS = "business"
 }
 
 /*
