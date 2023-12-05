@@ -401,7 +401,7 @@ export class RouteUtils {
             },
             {
                 category: build,
-                id: "communication-management",
+                id: "emailTemplates",
                 parent: branding
             },
             {
