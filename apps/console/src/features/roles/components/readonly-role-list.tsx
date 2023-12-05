@@ -63,6 +63,7 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
     const { t } = useTranslation();
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
+    const [ resetPagination, setResetPagination ] = useState<boolean>(false);
     const [ finalRoleList, setFinalRoleList ] = useState<RolesMemberInterface[]>(undefined);
     const [ filteredRoleList, setFilteredRoleList ] = useState<RolesMemberInterface[]>(undefined);
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -146,12 +147,14 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
     const handleSearchByRoleName = (query: string) => {
 
         setListOffset(0);
+        setResetPagination(true);
         setRoleNameSearchQuery(query);
     };
 
     const handleFilterByRoleAudience = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
 
         setListOffset(0);
+        setResetPagination(true);
         setRoleAudienceFilter(data.value as string);
     };
 
@@ -316,6 +319,7 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
             totalPages={ Math.ceil(filteredRoleList?.length / listItemLimit) }
             totalListSize={ filteredRoleList?.length }
             isLoading={ isLoading }
+            resetPagination={ resetPagination }
         >
             <DataTable<RolesMemberInterface>
                 loadingStateOptions={ { imageType: "square" } }
