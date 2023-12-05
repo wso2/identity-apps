@@ -29,14 +29,14 @@ import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore
 } from "@wso2is/core/constants";
-import { FeatureAccessConfigInterface, TenantListInterface } from "@wso2is/core/models";
+import { TenantListInterface } from "@wso2is/core/models";
 import { setDeploymentConfigs, setServiceResourceEndpoints, setSignIn } from "@wso2is/core/store";
 import {
     AuthenticateUtils as CommonAuthenticateUtils,
     ContextUtils
 } from "@wso2is/core/utils";
 import axios, { AxiosResponse } from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import useAuthorization from "../../authorization/hooks/use-authorization";
@@ -95,10 +95,6 @@ const useSignIn = (): UseSignInInterface => {
     const { legacyAuthzRuntime }  = useAuthorization();
 
     const { transformTenantDomain } = useOrganizations();
-
-    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
-        return state.config?.ui?.features?.branding;
-    });
 
     const onSignIn = async (
         response: BasicUserInfo,
@@ -283,9 +279,9 @@ const useSignIn = (): UseSignInInterface => {
         }
 
         let wellKnownEndpoint: string = Config.getServiceResourceEndpoints().wellKnown;
-        const disabledFeatures: string[] = featureConfig?.disabledFeatures;
+        const disabledFeatures: string[] = window["AppUtils"].getConfig()?.ui?.features?.branding;
 
-        if (legacyAuthzRuntime && disabledFeatures?.includes("branding.hostnameUrlBranding")) {
+        if (!legacyAuthzRuntime) {
             // FIXME: Skipping /o/ appending from the `getServiceResourceEndpoints` level seems to be not working.
             wellKnownEndpoint = wellKnownEndpoint.replace("/o/", "/");
         }
