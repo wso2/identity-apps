@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.10.2
+
+### Patch Changes
+
+- [#4973](https://github.com/wso2/identity-apps/pull/4973) [`43ca0b38f8`](https://github.com/wso2/identity-apps/commit/43ca0b38f89893cf1c83cc43bc6b1d4bb66f64b4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with API authorize add button
+
+* [#4974](https://github.com/wso2/identity-apps/pull/4974) [`61b957e893`](https://github.com/wso2/identity-apps/commit/61b957e893b40f14b7da3849a6a0a49d91466160) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the api resource dropdown
+
 ## 2.10.1
 
 ### Patch Changes
