@@ -49,7 +49,8 @@ import { RenderChip } from "./edit-role-common/render-chip";
 import { RoleAPIResourcesListItem } from "./edit-role-common/role-api-resources-list-item";
 import { useAPIResources } from "../../../api-resources/api";
 import { useGetAuthorizedAPIList } from "../../../api-resources/api/useGetAuthorizedAPIList";
-import { APIResourcesConstants } from "../../../api-resources/constants";
+import { APIResourceCategories, APIResourcesConstants } from "../../../api-resources/constants";
+import { APIResourceUtils } from "../../../api-resources/utils/api-resource-utils";
 import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 import { getAPIResourceDetailsBulk, updateRoleDetails, useAPIResourceDetails } from "../../api";
 import { RoleAudienceTypes } from "../../constants/role-constants";
@@ -558,7 +559,8 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                     } }
                     getOptionLabel={ (apiResourcesListOption: DropdownProps) =>
                         apiResourcesListOption.text }
-                    groupBy={ (apiResourcesListOption: DropdownProps) => apiResourcesListOption.type }
+                    groupBy={ (apiResourcesListOption: DropdownItemProps) =>
+                        APIResourceUtils.resolveApiResourceGroup(apiResourcesListOption?.type) }
                     isOptionEqualToValue={
                         (option: DropdownProps, value: DropdownProps) =>
                             option.value === value.value
@@ -566,8 +568,16 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                     loading={ shouldFetchAPIResources && iscurrentAPIResourcesListLoading }
                     onChange={ onAPIResourceSelected }
                     options={ allAPIResourcesDropdownOptions
-                        .sort((a: DropdownItemProps, b: DropdownItemProps) =>
-                            -b?.type?.localeCompare(a?.type)) }
+                        ?.filter((item: DropdownItemProps) =>
+                            item?.type === APIResourceCategories.TENANT_ADMIN ||
+                            item?.type === APIResourceCategories.TENANT_USER ||
+                            item?.type === APIResourceCategories.ORGANIZATION_ADMIN ||
+                            item?.type === APIResourceCategories.ORGANIZATION_USER ||
+                            item?.type === APIResourceCategories.BUSINESS
+                        ).sort((a: DropdownItemProps, b: DropdownItemProps) =>
+                            -b?.type?.localeCompare(a?.type)
+                        )
+                    }
                     noOptionsText={ t("common:noResultsFound") }
                     renderInput={ (params: AutocompleteRenderInputParams) => (
                         <TextField
