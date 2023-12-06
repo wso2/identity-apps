@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.75
+
+### Patch Changes
+
+- [#4984](https://github.com/wso2/identity-apps/pull/4984) [`b8c694e8ba`](https://github.com/wso2/identity-apps/commit/b8c694e8baf7906e42ca70fec8376f4f6fe54ae2) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Make the roles tab on Edit Users and Edit Groups sections a consistent list view.
+
 ## 2.0.74
 
 ### Patch Changes
