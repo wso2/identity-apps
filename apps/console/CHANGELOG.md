@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.10.6
+
+### Patch Changes
+
+- [#4983](https://github.com/wso2/identity-apps/pull/4983) [`7f43ef604f`](https://github.com/wso2/identity-apps/commit/7f43ef604fb17f8d8ac5cfe6e7e0d79a01331621) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Avoid rendering `OrganizationSwitchBreadcrumb` when the organizations are disabled
+
+* [#4990](https://github.com/wso2/identity-apps/pull/4990) [`f89a0ce5cd`](https://github.com/wso2/identity-apps/commit/f89a0ce5cd641c73b137446a231342fa9b912b25) Thanks [@savindi7](https://github.com/savindi7)! - Fix userstore delete modal input type and message type
+
+- [#4977](https://github.com/wso2/identity-apps/pull/4977) [`f2470483c5`](https://github.com/wso2/identity-apps/commit/f2470483c51194e7fc2a9bc856ec8f2a90907a18) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add success message after group creation
+
 ## 2.10.5
 
 ### Patch Changes
