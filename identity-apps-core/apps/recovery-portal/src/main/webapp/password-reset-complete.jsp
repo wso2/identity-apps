@@ -67,6 +67,7 @@
     String RECOVERY_TYPE_INVITE = "invite";
     String CONSOLE_APP_NAME = "Console";
     String MY_ACCOUNT_APP_NAME = "My Account";
+    String MY_ACCOUNT_APP_ID = "My_Account";
     String passwordHistoryErrorCode = "22001";
     String passwordPatternErrorCode = "20035";
     String confirmationKey =
@@ -74,6 +75,7 @@
     String newPassword = request.getParameter("reset-password");
     String callback = request.getParameter("callback");
     String spId = request.getParameter("spId");
+    String sp = Encode.forJava(request.getParameter("sp"));
     String userStoreDomain = request.getParameter(USERSTORE_DOMAIN);
     String type = request.getParameter("type");
     String username = null;
@@ -86,7 +88,44 @@
     }
 
     PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+    ApplicationDataRetrievalClient applicationDataRetrieval = new ApplicationDataRetrievalClient();
     Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterPasswordRecoveryEnabled(tenantDomain);
+
+    if (StringUtils.isNotBlank(callback) &&
+        StringUtils.isNotBlank(userStoreDomain)) {
+        if (callback.contains(CONSOLE_APP_NAME.toLowerCase())) {
+            applicationName = CONSOLE_APP_NAME;
+        } else if (callback.contains(MY_ACCOUNT_APP_NAME.toLowerCase().replaceAll("\\s+", ""))) {
+            applicationName = MY_ACCOUNT_APP_NAME;
+        } else if (StringUtils.isNotBlank(sp)) {
+            applicationName = sp;
+        }
+    } else {
+            if (StringUtils.isNotBlank(spId)) {
+            try {
+                if (spId.equals(MY_ACCOUNT_APP_ID)) {
+                    applicationName = MY_ACCOUNT_APP_NAME;
+                } else {
+                    applicationName = applicationDataRetrieval.getApplicationName(tenantDomain,spId);
+                }
+            } catch (Exception e) {
+                // Ignored and fallback to my account page url.
+            }
+        }
+    }
+
+    // Retrieve application access url to redirect user back to the application.
+    String applicationAccessURLWithoutEncoding = null;
+    if (StringUtils.isNotBlank(applicationName)) {
+        try {
+            applicationAccessURLWithoutEncoding = applicationDataRetrieval.getApplicationAccessURL(tenantDomain,
+                    applicationName);
+            applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.replaceUserTenantHintPlaceholder(
+                    applicationAccessURLWithoutEncoding, userTenantDomain);
+        } catch (ApplicationDataRetrievalClientException e) {
+            // Ignored and fallback to login page url.
+        }
+    }
 
     if (StringUtils.isNotBlank(newPassword)) {
         NotificationApi notificationApi = new NotificationApi();
@@ -98,6 +137,11 @@
             property.setValue(URLEncoder.encode(callback, "UTF-8"));
             properties.add(property);
         }
+
+        Property appIsAccessUrlAvailableProperty = new Property();
+        appIsAccessUrlAvailableProperty.setKey("isAccessUrlAvailable");
+        appIsAccessUrlAvailableProperty.setValue(String.valueOf(StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)));
+        properties.add(appIsAccessUrlAvailableProperty);
 
         Property tenantProperty = new Property();
         tenantProperty.setKey(IdentityManagementEndpointConstants.TENANT_DOMAIN);
@@ -177,42 +221,6 @@
         request.setAttribute(USERSTORE_DOMAIN, userStoreDomain);
         request.getRequestDispatcher("password-reset.jsp").forward(request, response);
         return;
-    }
-
-    if (StringUtils.isNotBlank(callback) &&
-        StringUtils.isNotBlank(userStoreDomain)) {
-        if (callback.contains(CONSOLE_APP_NAME.toLowerCase())) {
-            applicationName = CONSOLE_APP_NAME;
-        } else if (callback.contains(MY_ACCOUNT_APP_NAME.toLowerCase().replaceAll("\\s+", ""))) {
-            applicationName = MY_ACCOUNT_APP_NAME;
-        }
-    } else {
-            if (StringUtils.isNotBlank(spId)) {
-            try {
-                ApplicationDataRetrievalClient applicationDataRetrieval = new ApplicationDataRetrievalClient();
-                if (spId.equals("My_Account")) {
-                    applicationName = MY_ACCOUNT_APP_NAME;
-                } else {
-                    applicationName = applicationDataRetrieval.getApplicationName(tenantDomain,spId);
-                }
-            } catch (Exception e) {
-                // Ignored and fallback to my account page url.
-            }
-        }
-    }
-
-    // Retrieve application access url to redirect user back to the application.
-    String applicationAccessURLWithoutEncoding = null;
-    if (StringUtils.isNotBlank(applicationName)) {
-        try {
-            ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
-            applicationAccessURLWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,
-                    applicationName);
-            applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.replaceUserTenantHintPlaceholder(
-                    applicationAccessURLWithoutEncoding, userTenantDomain);
-        } catch (ApplicationDataRetrievalClientException e) {
-            // Ignored and fallback to login page url.
-        }
     }
 
     if ((StringUtils.isNotBlank(userStoreDomain) && StringUtils.isNotBlank(callback)

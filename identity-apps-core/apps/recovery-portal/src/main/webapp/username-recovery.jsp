@@ -220,6 +220,9 @@
                         <div>
                             <input type="hidden" name="callback" value="<%=Encode.forHtmlAttribute(callback) %>"/>
                         </div>
+                        <div>
+                            <input type="hidden" name="sp" value="<%=Encode.forHtmlAttribute(request.getParameter("sp"))%>"/>
+                        </div>
                         <%
                             }
 
