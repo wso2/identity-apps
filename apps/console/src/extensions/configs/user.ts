@@ -30,5 +30,5 @@ export const userConfig: User = {
         return deleteUser(user.id);
     },
     disableManagedByColumn: true,
-    enableBulkImportSecondaryUserStore: false
+    enableBulkImportSecondaryUserStore: true
 };
