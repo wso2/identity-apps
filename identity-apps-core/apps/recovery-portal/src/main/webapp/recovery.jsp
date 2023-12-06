@@ -97,6 +97,7 @@
     Boolean isValidCallBackURL = false;
     try {
         if (StringUtils.isNotBlank(applicationAccessUrl)) {
+            // Disregard callbackURL regex validation when accessURL is configured in the application.
             isValidCallBackURL = true;
         } else if (StringUtils.isNotBlank(callback)) {
             PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
