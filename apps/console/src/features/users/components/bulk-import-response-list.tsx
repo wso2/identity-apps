@@ -412,8 +412,7 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                             }
                                         </Alert>
                                     )
-                                ) :
-                                (
+                                ) : (
                                     <Alert severity="error" data-componentid={ `${componentId}-error-alert` }>
                                         <AlertTitle data-componentid={ `${componentId}-error-alert-title` }>
                                             {
@@ -436,7 +435,9 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                                                 bulkResponseSummary.failedUserCreation
                                                         } }
                                                     >
-                                                    Issues encountered in <b>2 user creations</b>.
+                                                        Issues encountered in
+                                                        <b>{ bulkResponseSummary.failedUserCreation } user
+                                                        creations</b>.
                                                     </Trans>
                                                 </li>
                                             )
@@ -456,9 +457,11 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                                             bulkResponseSummary.failedUserAssignment
                                                         } }
                                                     >
-                                                    Issues encountered in <b>1 group assignments</b>. Users in the
-                                                    affected groups were created but not assigned. Please navigate to
-                                                    User Management section to review  and assign groups to the users.
+                                                        Issues encountered in
+                                                        <b>{ bulkResponseSummary.failedUserAssignment } group
+                                                        assignments</b>. Users in the affected groups were created
+                                                        but not assigned. Please navigate to User Management section
+                                                        to review  and assign groups to the users.
                                                     </Trans>
                                                 </li>
                                             )
