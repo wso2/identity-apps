@@ -1151,8 +1151,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
             setShowResponseView(true);
 
-            const scimResponsePromise: Promise<any> = addBulkUsers(scimRequestBody);
-            const timeoutPromise: any = new Promise((_resolve, reject) => {
+            const scimResponsePromise: Promise<unknown> = addBulkUsers(scimRequestBody);
+            const timeoutPromise: Promise<unknown> = new Promise((_: unknown, reject: (reason?: any) => void) => {
                 setTimeout(() => reject(
                     new Error(TIMEOUT_ERROR)
                 ), FILE_IMPORT_TIMEOUT);
