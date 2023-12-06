@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.87
+
+### Patch Changes
+
+- [#4988](https://github.com/wso2/identity-apps/pull/4988) [`ffb9f06e83`](https://github.com/wso2/identity-apps/commit/ffb9f06e833b6bdc02951e1b8755384f067d4c42) Thanks [@savindi7](https://github.com/savindi7)! - Fix language selector visibility issue
+
 ## 2.0.86
 
 ### Patch Changes
