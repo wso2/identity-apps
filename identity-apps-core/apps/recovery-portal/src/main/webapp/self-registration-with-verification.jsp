@@ -972,6 +972,16 @@
                     }
                 }
 
+                var password = $("#password").val();
+                var password2 = $("#password2").val();
+
+                if (password !== password2) {
+                    error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                        "Passwords.did.not.match.please.try.again")%>");
+                    error_msg.show();
+                    $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
+                    return false;
+                }
                 if (invalidInput) {
                     return false;
                 }
@@ -1478,7 +1488,7 @@
                 confirm_password_field.removeClass("error");
             }
 
-            if ( confirmPasswordInput.value.trim() !== passwordInput.value.trim() )  {
+            if ( confirmPasswordInput.value.trim() !== "" && confirmPasswordInput.value.trim() !== passwordInput.value.trim() )  {
                 password_mismatch_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Passwords.did.not.match.please.try.again")%>");
                 password_mismatch_error_msg.show();
                 $("html, body").animate({scrollTop: confirm_password_error_msg.offset().top}, 'slow');
@@ -1490,6 +1500,7 @@
                 confirm_password_field.removeClass("error");
                 password_field.removeClass("error");
             }
+
         }
 
         function validateNameFields() {
@@ -1509,7 +1520,8 @@
             var confirmPasswordInput = document.getElementById("password2");
 
             if ( (!!passwordInput &&  passwordInput.value.trim() === "")
-                || ( !!confirmPasswordInput && confirmPasswordInput.value.trim() === ""))  {
+                || (!!confirmPasswordInput && confirmPasswordInput.value.trim() === "")
+                || (confirmPasswordInput.value.trim() !== passwordInput.value.trim()))  {
                 return false;
             }
 
