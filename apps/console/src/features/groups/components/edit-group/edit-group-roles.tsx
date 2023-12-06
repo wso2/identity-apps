@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
-import { EmptyPlaceholder, Heading } from "@wso2is/react-components";
+import { EmphasizedSegment, EmptyPlaceholder, Heading } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -29,6 +29,7 @@ import { Divider } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations } from "../../../core";
 import { ReadOnlyRoleList } from "../../../roles/components/readonly-role-list";
 import { GroupsInterface } from "../../models";
+import "./edit-group-roles.scss";
 
 interface EditGroupRolesPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -75,7 +76,7 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
     };
 
     return (
-        <>
+        <EmphasizedSegment padded="very" className="list-group-roles-section">
             <Heading as="h4">
                 { t("console:manage.features.groups.edit.roles.heading") }
             </Heading>
@@ -87,7 +88,7 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
                 totalRoleList={ initialSelectedRolesOptions }
                 emptyRolesListPlaceholder={ getPlaceholders() }
             />
-        </>
+        </EmphasizedSegment>
     );
 };
 

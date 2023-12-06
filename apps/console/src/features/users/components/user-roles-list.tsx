@@ -22,7 +22,7 @@ import {
     RoleGroupsInterface,
     RolesMemberInterface
 } from "@wso2is/core/models";
-import { EmptyPlaceholder, Heading } from "@wso2is/react-components";
+import { EmphasizedSegment, EmptyPlaceholder, Heading } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -35,6 +35,7 @@ import { Divider } from "semantic-ui-react";
 import { AppState, getEmptyPlaceholderIllustrations } from "../../core";
 import { ReadOnlyRoleList } from "../../roles/components/readonly-role-list";
 import { APPLICATION_DOMAIN, DOMAIN_SEPARATOR, INTERNAL_DOMAIN } from "../../roles/constants";
+import "./user-roles-list.scss";
 
 interface UserRoleEditPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -121,8 +122,7 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
     };
 
     return (
-
-        <>
+        <EmphasizedSegment padded="very" className="list-user-roles-section">
             <Heading as="h4">
                 { t("console:manage.features.user.updateUser.roles.editRoles.heading") }
             </Heading>
@@ -134,7 +134,7 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
                 totalRoleList={ initialSelectedRolesOptions }
                 emptyRolesListPlaceholder={ getPlaceholders() }
             />
-        </>
+        </EmphasizedSegment>
     );
 };
 
