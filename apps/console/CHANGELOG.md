@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.10.4
+
+### Patch Changes
+
+- [#4979](https://github.com/wso2/identity-apps/pull/4979) [`0c4b0b19e5`](https://github.com/wso2/identity-apps/commit/0c4b0b19e5ed8c55a58e2c57b10f5219775dfc18) Thanks [@savindi7](https://github.com/savindi7)! - Add missing Microsoft icon in default theme
+
+- Updated dependencies [[`0c4b0b19e5`](https://github.com/wso2/identity-apps/commit/0c4b0b19e5ed8c55a58e2c57b10f5219775dfc18)]:
+  - @wso2is/theme@2.0.48
+
 ## 2.10.3
 
 ### Patch Changes
