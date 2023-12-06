@@ -84,6 +84,7 @@ h6.ui.header .sub.header {
 .is-header {
     &.oxygen-header .oxygen-brand {
         width: auto;
+        min-width: var(--oxygen-customComponents-Navbar-properties-width);
     }
 
     &.oxygen-header .oxygen-brand-logo {
