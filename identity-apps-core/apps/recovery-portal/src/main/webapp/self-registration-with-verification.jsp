@@ -666,16 +666,18 @@
                                         <%=i18n(recoveryResourceBundle, customText, "sign.up.button")%>
                                     </button>
                                 </div>
-                                <div class="ui divider hidden"></div>
-                                <div class="buttons mt-2">
-                                    <div class="field external-link-container text-small">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                                "Already.have.an.account")%>
-                                        <a href="<%= callback %>">
-                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Sign.in")%>
-                                        </a>
+                                <% if (!skipSignUpEnableCheck) { %>
+                                    <div class="ui divider hidden"></div>
+                                    <div class="buttons mt-2">
+                                        <div class="field external-link-container text-small">
+                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                                    "Already.have.an.account")%>
+                                            <a href="<%= callback %>">
+                                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Sign.in")%>
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
+                                <% } %>
                                 <div class="field">
                                     <input id="isSelfRegistrationWithVerification" type="hidden"
                                            name="isSelfRegistrationWithVerification"
