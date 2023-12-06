@@ -315,7 +315,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     };
 
     const hideUserStoreDropdown = (): boolean => {
-        if (isUserStoreError) {
+        if (!userConfig?.enableBulkImportSecondaryUserStore || isUserStoreError) {
             return true;
         }
 
@@ -1172,12 +1172,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             if (error.message === TIMEOUT_ERROR) {
                 setFileModeTimeOutError(true);
                 setAlert({
-                    // description: t(
-                    //     "console:manage.features.users.notifications.bulkImportUser.submit.timeoutError.description"),
-                    // level: AlertLevels.ERROR,
-                    description: "Some users may not have been imported.",
+                    description: t(
+                        "console:manage.features.users.notifications.bulkImportUser.timeOut.description"),
                     level: AlertLevels.WARNING,
-                    message: "The request has timed out"
+                    message: t(
+                        "console:manage.features.users.notifications.bulkImportUser.timeOut.message")
                 });
             } else if (error.message !== DATA_VALIDATION_ERROR) {
                 setAlert({

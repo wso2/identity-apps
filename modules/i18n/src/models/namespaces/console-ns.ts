@@ -3917,6 +3917,7 @@ export interface ConsoleNS {
                             invalidGroup: NotificationItem;
                         },
                         submit: Notification;
+                        timeOut: NotificationItem;
                     }
                     deleteUser: Notification;
                     fetchUsers: Notification;
@@ -6144,7 +6145,11 @@ export interface ConsoleNS {
                             };
                             alerts: {
                                 importSuccess: NotificationItem;
-                                importFailed: NotificationItem;
+                                importFailed: {
+                                    message: string;
+                                    userCreation: string;
+                                    groupAssignment: string;
+                                }
                             };
                             advanceSearch: {
                                 searchByUsername: string;

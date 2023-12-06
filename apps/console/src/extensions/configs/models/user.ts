@@ -24,6 +24,7 @@ export interface User {
         inviteEmails: number;
         userCount: number;
     };
+    enableBulkImportSecondaryUserStore: boolean;
     deleteUser: (user: ProfileInfoInterface) => Promise<any>;
     disableManagedByColumn: boolean;
 }

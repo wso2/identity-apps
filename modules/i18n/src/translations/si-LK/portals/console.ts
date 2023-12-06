@@ -9508,8 +9508,10 @@ export const console: ConsoleNS = {
                                     message: "ආනයනය සාර්ථකයි"
                                 },
                                 importFailed: {
-                                    description: "<1>{{failedUserCreationCount}} පරිශීලක නිර්මාණය</1> කිරීමේ මෙහෙයුම් සහ " +
-                                        "<3>{{failedUserAssignmentCount}} කණ්ඩායම් පැවරුම්</3> මෙහෙයුම් තුළ ඇති වූ ගැටළු.",
+                                    userCreation: "<1>{{failedUserCreationCount}} පරිශීලක නිර්මාණ</1> තුළ ඇති වූ ගැටලු.",
+                                    groupAssignment: "<1>{{failedUserAssignmentCount}} කණ්ඩායම් පැවරුම්වල</1> ඇති ගැටළු. " +
+                                        "බලපෑමට ලක් වූ කණ්ඩායම්වල පරිශීලකයින් නිර්මාණය කර ඇති නමුත් පවරා නැත. සමාලෝචනය කිරීමට සහ " +
+                                        "පරිශීලකයින්ට කණ්ඩායම් පැවරීමට කරුණාකර පරිශීලක කළමනාකරණ අංශය වෙත සංචාලනය කරන්න.",
                                     message: "ගැටළු සමාලෝචනය අවශ්‍යයි."
                                 }
                             },
@@ -10221,6 +10223,10 @@ export const console: ConsoleNS = {
                                 description: "පරිශීලකයන් සාර්ථකව ආනයනය කරන ලදී.",
                                 message: "පරිශීලකයන් සාර්ථකව ආනයනය කරන ලදී"
                             }
+                        },
+                        timeOut: {
+                            description: "සමහර පරිශීලකයන් නිර්මාණය කර නොතිබිය හැකිය.",
+                            message: "ඉල්ලීම කල් ඉකුත් වී ඇත"
                         }
                     },
                     deleteUser: {
