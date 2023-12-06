@@ -5736,6 +5736,11 @@ export interface ConsoleNS {
                         audience: string;
                     };
                 };
+                readOnlyList: {
+                    emptyPlaceholders: {
+                        searchAndFilter: Placeholder;
+                    }
+                }
                 notifications: {
                     deleteRole: Notification;
                     fetchRoles: Notification;

@@ -8890,6 +8890,17 @@ export const console: ConsoleNS = {
                         audience: "භූමිකාව ප්රේක්ෂකයින්"
                     }
                 },
+                readOnlyList: {
+                    emptyPlaceholders: {
+                        searchAndFilter: {
+                            subtitles: {
+                                0: "අපට වත්මන් භූමිකාවේ නම සහ ප්‍රේක්ෂක සංයෝජනය සඳහා ප්‍රතිඵල කිසිවක් සොයාගත නොහැකි විය.",
+                                1: "කරුණාකර වෙනස් සංයෝජනයක් උත්සාහ කරන්න."
+                            },
+                            title: "ප්‍රතිඵල හමු නොවීය"
+                        }
+                    }
+                },
                 notifications: {
                     createPermission: {
                         error: {
