@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.10.5
+
+### Patch Changes
+
+- [#4961](https://github.com/wso2/identity-apps/pull/4961) [`14c5175fa1`](https://github.com/wso2/identity-apps/commit/14c5175fa1f2485c15b25a61c4ee09f2edd1acf9) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Remove redundant API call for well known end point
+
+* [#4984](https://github.com/wso2/identity-apps/pull/4984) [`b8c694e8ba`](https://github.com/wso2/identity-apps/commit/b8c694e8baf7906e42ca70fec8376f4f6fe54ae2) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Make the roles tab on Edit Users and Edit Groups sections a consistent list view.
+
+* Updated dependencies [[`b8c694e8ba`](https://github.com/wso2/identity-apps/commit/b8c694e8baf7906e42ca70fec8376f4f6fe54ae2)]:
+  - @wso2is/i18n@2.0.75
+
 ## 2.10.4
 
 ### Patch Changes
