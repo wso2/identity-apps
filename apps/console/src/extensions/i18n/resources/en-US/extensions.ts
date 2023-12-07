@@ -3051,7 +3051,7 @@ export const extensions: Extensions = {
                 pageTitle: "Username Validation",
                 description: "Update the username type and customize username validation rules for your users.",
                 usernameType: "Select username type",
-                usernameTypeHint: "Allow users to set an email or a combination of alphanumeric characters for the username.",
+                usernameTypeHint: "Allow users to set an email or a combination of characters for the username.",
                 emailType: "Email",
                 customType: "Custom",
                 usernameLength: {
@@ -3302,9 +3302,9 @@ export const extensions: Extensions = {
                         },
                         usernameHint: "Must be an alphanumeric (a-z, A-Z, 0-9) string between {{minLength}} to " +
                             "{{maxLength}} characters including at least one letter.",
-                        usernameSpecialCharHint: "Must be {{minLength}} to {{maxLength}} characters long and " +
-                            "may only contain a combination of letters (a-z, A-Z), " +
-                            "numbers (0-9), and the following characters: !@#$%&'*+\\=?^_`.{|}~-.",
+                        usernameSpecialCharHint: "Must be {{minLength}} to {{maxLength}} characters long, " +
+                            "including at least one letter, and may contain a combination of the following" +
+                            "characters: a-z, A-Z, 0-9, !@#$%&'*+\\=?^_`.{|}~-.",
                         usernameLength: "The username length should be between {{minLength}} and {{maxLength}}.",
                         usernameSymbols: "The username should consist of alphanumeric characters (a-z, A-Z, 0-9) and must include at least one letter.",
                         usernameSpecialCharSymbols: "Please choose a valid username that adheres to the given guidelines."

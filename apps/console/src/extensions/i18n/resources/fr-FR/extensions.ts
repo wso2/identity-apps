@@ -3126,7 +3126,7 @@ export const extensions: Extensions = {
                 pageTitle: "Validation du nom d'utilisateur",
                 description: "Mettez à jour le type de nom d'utilisateur et personnalisez les règles de validation du nom d'utilisateur pour vos utilisateurs.",
                 usernameType: "Sélectionnez le type de nom d'utilisateur",
-                usernameTypeHint: "Autoriser les utilisateurs à définir une adresse e-mail ou une combinaison de caractères alphanumériques pour le nom d'utilisateur.",
+                usernameTypeHint: "Autoriser les utilisateurs à définir un e-mail ou une combinaison de caractères pour le nom d'utilisateur.",
                 emailType: "Email",
                 customType: "Coutume",
                 usernameLength: {
@@ -3135,7 +3135,9 @@ export const extensions: Extensions = {
                     2: "caractères."
                 },
                 usernameAlphanumeric: "Restreindre aux caractères alphanumériques (a-z, A-Z, 0-9).",
-                usernameSpecialCharsHint: "Toute combinaison de lettres (a-z, A-Z), de chiffres (0-9) et des caractères suivants : !@#$%&'*+\\=?^_`.{|}~-."
+                usernameSpecialCharsHint: "TDoit contenir entre {minLength}} et {{maxLength}} caractères, dont au " +
+                    "moins une lettre, et peut contenir une combinaison des caractères " +
+                    "suivants: a-z, A-Z, 0-9, !@#$%&'*+\\=?^_`.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "Identifiants de connexion alternatifs",

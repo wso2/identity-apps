@@ -3020,7 +3020,7 @@ export const extensions: Extensions = {
                 pageTitle: "පරිශීලක නාමය වලංගු කිරීම",
                 description: "පරිශීලක නාම වර්ගය යාවත්කාලීන කර ඔබේ පරිශීලකයින් සඳහා පරිශීලක නාම වලංගු කිරීමේ රීති අභිරුචිකරණය කරන්න.",
                 usernameType: "පරිශීලක නාම වර්ගය තෝරන්න",
-                usernameTypeHint: "පරිශීලක නාමය සඳහා ඊමේල් හෝ අක්ෂරාංක අක්ෂර එකතුවක් සැකසීමට පරිශීලකයින්ට ඉඩ දෙන්න.",
+                usernameTypeHint: "පරිශීලක නාමය සඳහා විද්‍යුත් තැපෑලක් හෝ අක්ෂර එකතුවක් සැකසීමට පරිශීලකයින්ට ඉඩ දෙන්න.",
                 emailType: "විද්යුත් තැපෑල",
                 customType: "අභිරුචි",
                 usernameLength: {
@@ -3029,7 +3029,8 @@ export const extensions: Extensions = {
                     2: "අතර විය යුතුය."
                 },
                 usernameAlphanumeric: "අක්ෂරාංක වලට සීමා කරන්න (a-z, A-Z, 0-9).",
-                usernameSpecialCharsHint: "අකුරු (a-z, A-Z), අංක (0-9) සහ පහත දැක්වෙන අක්ෂරවල ඕනෑම සංයෝජනයක්: !@#$%&'*+\\=?^_`.{|}~-."
+                usernameSpecialCharsHint: "අවම වශයෙන් එක් අකුරක් ඇතුළුව අක්ෂර {{minLength}} සිට {{maxLength}} දක්වා දිගු " +
+                    "විය යුතු අතර, පහත දැක්වෙන අක්ෂරවල එකතුවක් අඩංගු විය හැක: a-z, A-Z, 0-9, !@#$%&'*+\\=?^_`.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "විකල්ප පිවිසුම් හඳුනාගැනීම්",
