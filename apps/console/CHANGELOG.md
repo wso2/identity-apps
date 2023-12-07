@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.7
+
+### Patch Changes
+
+- [#4995](https://github.com/wso2/identity-apps/pull/4995) [`66467519e0`](https://github.com/wso2/identity-apps/commit/66467519e0341419de1396f945bed8ffc95adaf1) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add component IDs to email provider UI components
+
 ## 2.10.6
 
 ### Patch Changes
