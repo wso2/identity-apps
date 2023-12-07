@@ -339,7 +339,7 @@
         }
         String url;
         if (StringUtils.isNotBlank(EndpointConfigManager.getServerOrigin())) {
-            url = EndpointConfigManager.getServerOrigin() + proxyContextPath + path;
+            url = IdentityManagementEndpointUtil.getBasePath(tenantDomain, path, false);
         } else {
             url = IdentityUtil.getServerURL(path, true, false);
         }
