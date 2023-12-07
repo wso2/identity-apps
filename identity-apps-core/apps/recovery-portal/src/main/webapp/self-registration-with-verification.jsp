@@ -1446,7 +1446,7 @@
             var password_error_msg_text = $("#password-error-msg-text");
             var password_field= $("#passwordField");
 
-            if ( passwordInput.value.trim() === "" )  {
+            if ( passwordInput.value.trim() == "" )  {
                 password_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "required")%>");
                 password_error_msg.show();
                 $("html, body").animate({scrollTop: password_error_msg.offset().top}, 'slow');
@@ -1467,7 +1467,7 @@
             var password_mismatch_error_msg_text = $("#password-mismatch-error-msg-text");
             var confirm_password_field= $("#confirmPasswordField");
 
-            if ( confirmPasswordInput.value.trim() === "" )  {
+            if ( confirmPasswordInput.value.trim() == "" )  {
                 confirm_password_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "required")%>");
                 confirm_password_error_msg.show();
                 $("html, body").animate({scrollTop: confirm_password_error_msg.offset().top}, 'slow');
@@ -1497,8 +1497,8 @@
             var firstNameUserInput = document.getElementById("firstNameUserInput");
             var lastNameUserInput = document.getElementById("lastNameUserInput");
 
-            if ( (!!firstNameUserInput &&  firstNameUserInput.value.trim() === "")
-                || ( !!lastNameUserInput && lastNameUserInput.value.trim() === ""))  {
+            if ( (!!firstNameUserInput &&  firstNameUserInput.value.trim() == "")
+                || ( !!lastNameUserInput && lastNameUserInput.value.trim() == ""))  {
                 return false;
             }
 
@@ -1509,8 +1509,8 @@
             var passwordInput = document.getElementById("password");
             var confirmPasswordInput = document.getElementById("password2");
 
-            if ( (!!passwordInput &&  passwordInput.value.trim() === "")
-                || (!!confirmPasswordInput && confirmPasswordInput.value.trim() === "")
+            if ( (!!passwordInput &&  passwordInput.value.trim() == "")
+                || (!!confirmPasswordInput && confirmPasswordInput.value.trim() == "")
                 || (confirmPasswordInput.value.trim() !== passwordInput.value.trim()))  {
                 return false;
             }
