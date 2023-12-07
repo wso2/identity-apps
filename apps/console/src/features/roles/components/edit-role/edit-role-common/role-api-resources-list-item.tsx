@@ -16,13 +16,15 @@
  * under the License.
  */
 
-import { Grid, IconButton, ListItemText } from "@oxygen-ui/react";
 import { ChevronDownIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import Checkbox from "@oxygen-ui/react/Checkbox";
+import Grid from "@oxygen-ui/react/Grid";
+import IconButton from "@oxygen-ui/react/IconButton";
 import ListItem from "@oxygen-ui/react/ListItem";
+import ListItemText from "@oxygen-ui/react/ListItemText";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Tooltip } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -146,17 +148,19 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                         disablePadding
                     >
                         <ListItemText primary={ apiResource?.name } />
-                        <ListItemText
-                            secondary={ (
-                                <Label
-                                    size="mini"
-                                    className= "info-label"
-                                >
-                                    { apiResource?.type }
-                                </Label>
-                            ) } >
-
-                        </ListItemText>
+                        { apiResource?.type
+                            && (
+                                <ListItemText
+                                    secondary={ (
+                                        <Label
+                                            size="mini"
+                                            className= "info-label"
+                                        >
+                                            { apiResource?.type }
+                                        </Label>
+                                    ) } >
+                                </ListItemText>
+                            ) }
                         <ListItemText
                             secondary={ (<>
                                 { apiResource?.identifier }
