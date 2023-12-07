@@ -972,20 +972,6 @@
                     }
                 }
 
-                var password = $("#password").val();
-                var password2 = $("#password2").val();
-
-                if (password !== password2) {
-                    error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                        "Passwords.did.not.match.please.try.again")%>");
-                    error_msg.show();
-                    $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                    return false;
-                }
-                if (invalidInput) {
-                    return false;
-                }
-
                 if(!$("#termsCheckbox")[0].checked){
                         error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                             "Confirm.Privacy.Policy")%>");
