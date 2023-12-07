@@ -476,6 +476,11 @@ export class ApplicationManagementConstants {
      * Sign in step of other applications.
      */
     public static readonly APPLICATION_SIGNIN_TAB: number = 3;
+
+    /**
+     * Login Flow tab index of My Account application.
+     */
+    public static readonly MY_ACCOUNT_LOGIN_FLOW_TAB: number = 2;
 }
 
 export enum ShareWithOrgStatus {

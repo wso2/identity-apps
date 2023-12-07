@@ -47,6 +47,7 @@ import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { applicationConfig } from "../../../extensions";
 import { applicationListConfig } from "../../../extensions/configs/application-list";
+import { ConsoleSettingsModes } from "../../console-settings/models/ui";
 import {
     AppConstants,
     AppState,
@@ -200,8 +201,27 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      * @param appId - Application id.
      * @param access - Access level of the application.
      */
-    const handleApplicationEdit = (appId: string, access: ApplicationAccessTypes): void => {
+    const handleApplicationEdit = (appId: string, access: ApplicationAccessTypes, appName: string): void => {
         if (isSetStrongerAuth) {
+            if (!UIConfig?.legacyMode?.applicationListSystemApps) {
+                if (appName === ApplicationManagementConstants.CONSOLE_APP_NAME) {
+                    history.push({
+                        hash: `tab=${ ConsoleSettingsModes.LOGIN_FLOW }`,
+                        pathname: AppConstants.getPaths().get("CONSOLE_SETTINGS")
+                    });
+
+                    return;
+                } else if (appName === ApplicationManagementConstants.MY_ACCOUNT_APP_NAME) {
+                    history.push({
+                        pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
+                        search: `#tab=${
+                            ApplicationManagementConstants.MY_ACCOUNT_LOGIN_FLOW_TAB }`
+                    });
+
+                    return;
+                }
+            }
+
             history.push({
                 pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
                 search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=${
@@ -479,7 +499,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         : "pencil alternate";
                 },
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void =>
-                    handleApplicationEdit(app.id, app.access),
+                    handleApplicationEdit(app.id, app.access, app.name),
                 popupText: (app: ApplicationListItemInterface): string => {
                     return app?.access === ApplicationAccessTypes.READ
                         || !hasRequiredScopes(featureConfig?.applications,
@@ -584,7 +604,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 columns={ resolveTableColumns() }
                 data={ list?.applications }
                 onRowClick={ (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
-                    handleApplicationEdit(app.id, app.access);
+                    handleApplicationEdit(app.id, app.access, app.name);
                     onListItemClick && onListItemClick(e, app);
                 } }
                 placeholders={ showPlaceholders() }

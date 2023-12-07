@@ -253,7 +253,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
     }, [ featureConfig ]);
 
     const isValidAuthenticationFlow: boolean = useMemo(() => {
-        const stepsHaveOptions: boolean = authenticationSequence.steps.every(
+        const stepsHaveOptions: boolean = authenticationSequence?.steps?.every(
             (step: AuthenticationStepInterface) => !isEmpty(step.options)
         );
 
