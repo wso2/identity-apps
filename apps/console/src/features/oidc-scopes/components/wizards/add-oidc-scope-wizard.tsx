@@ -280,7 +280,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                     triggerSubmit={ submitGeneralDetails }
                     triggerSubmission={ (submitFunction: () => void) => {
                         submitScopeForm = submitFunction; } }
-                    onSubmit={ (values: Record<string, any>) =>
+                    onSubmit={ (values: Record<string, unknown>) =>
                         handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
                     data-testid={ `${ testId }-form` }
                 />
