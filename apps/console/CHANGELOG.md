@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.10.9
+
+### Patch Changes
+
+- [#4982](https://github.com/wso2/identity-apps/pull/4982) [`178dea1136`](https://github.com/wso2/identity-apps/commit/178dea11369f076c6913be5cbf6778b510a5809a) Thanks [@brionmario](https://github.com/brionmario)! - Fix system app redirections
+
+* [#5000](https://github.com/wso2/identity-apps/pull/5000) [`8269e4a93a`](https://github.com/wso2/identity-apps/commit/8269e4a93a6d670dbbbe57cbfedcd4a33dcf3149) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Conditionally hide the API resource type chip
+
 ## 2.10.8
 
 ### Patch Changes
