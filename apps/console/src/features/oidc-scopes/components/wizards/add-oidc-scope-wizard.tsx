@@ -208,7 +208,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
             claims: attributes,
             description: wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.description
                 ? wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.description
-                : "This is the description of the scope",
+                : null,
             displayName: wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.displayName,
             name: wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.scopeName
         };
