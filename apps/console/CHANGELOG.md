@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.10
+
+### Patch Changes
+
+- [#5001](https://github.com/wso2/identity-apps/pull/5001) [`deb1f59c01`](https://github.com/wso2/identity-apps/commit/deb1f59c018258768893a525a388b20953e3dad5) Thanks [@Yasasr1](https://github.com/Yasasr1)! - add a constant for swe template
+
 ## 2.10.9
 
 ### Patch Changes
