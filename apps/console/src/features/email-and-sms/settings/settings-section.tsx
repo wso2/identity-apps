@@ -62,12 +62,14 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
         header,
         icon,
         placeholder,
-        onPrimaryActionClick
+        onPrimaryActionClick,
+        [ "data-componentid"]: componentId
     } = props;
 
     return (
 
         <Card
+            data-componentid={ componentId }
             position="relative"
             className={ `notification-channel ${!connectorEnabled && "disabled"}` }
             onClick={ onPrimaryActionClick }
@@ -119,7 +121,6 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
 SettingsSection.defaultProps = {
     className: "",
     contentPadding: false,
-    "data-componentid": "settings-section",
     description: "",
     header: "",
     primaryAction: "",
