@@ -972,6 +972,10 @@
                     }
                 }
 
+                if (invalidInput) {
+                    return false;
+                }
+
                 if(!$("#termsCheckbox")[0].checked){
                         error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                             "Confirm.Privacy.Policy")%>");
