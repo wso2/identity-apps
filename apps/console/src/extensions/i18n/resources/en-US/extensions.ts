@@ -3051,7 +3051,7 @@ export const extensions: Extensions = {
                 pageTitle: "Username Validation",
                 description: "Update the username type and customize username validation rules for your users.",
                 usernameType: "Select username type",
-                usernameTypeHint: "Allow users to set an email or a combination of alphanumeric characters for the username.",
+                usernameTypeHint: "Allow users to set an email or a combination of characters for the username.",
                 emailType: "Email",
                 customType: "Custom",
                 usernameLength: {

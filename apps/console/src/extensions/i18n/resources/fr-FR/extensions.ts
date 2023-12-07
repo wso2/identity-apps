@@ -3126,7 +3126,7 @@ export const extensions: Extensions = {
                 pageTitle: "Validation du nom d'utilisateur",
                 description: "Mettez à jour le type de nom d'utilisateur et personnalisez les règles de validation du nom d'utilisateur pour vos utilisateurs.",
                 usernameType: "Sélectionnez le type de nom d'utilisateur",
-                usernameTypeHint: "Autoriser les utilisateurs à définir une adresse e-mail ou une combinaison de caractères alphanumériques pour le nom d'utilisateur.",
+                usernameTypeHint: "Autoriser les utilisateurs à définir un e-mail ou une combinaison de caractères pour le nom d'utilisateur.",
                 emailType: "Email",
                 customType: "Coutume",
                 usernameLength: {
