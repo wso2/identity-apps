@@ -19,6 +19,7 @@
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
 import { authenticatorConfig } from "../../../extensions/configs/authenticator";
+import SweIdpTemplate from "../../../extensions/identity-provider-templates/templates/swe/swe.json";
 import TrustedTokenIssuerTemplate from
     "../../../extensions/identity-provider-templates/templates/trusted-token-issuer/trusted-token-issuer.json";
 import AppleIdPTemplate from "../data/identity-provider-templates/templates/apple/apple.json";
@@ -100,6 +101,7 @@ export class IdentityProviderManagementConstants {
         ORGANIZATION_ENTERPRISE_IDP: string;
         SAML: string;
         TRUSTED_TOKEN_ISSUER: string;
+        SWE: string;
     } = {
         APPLE: AppleIdPTemplate.id,
         ENTERPRISE: EnterpriseIdPTemplate.id,
@@ -112,6 +114,7 @@ export class IdentityProviderManagementConstants {
         OIDC: EnterpriseOIDCIdPTemplate.id,
         ORGANIZATION_ENTERPRISE_IDP: EnterpriseOrganizationIdPTemplate.id,
         SAML: EnterpriseSAMLIdPTemplate.id,
+        SWE: SweIdpTemplate.id,
         TRUSTED_TOKEN_ISSUER: TrustedTokenIssuerTemplate.id
     };
 
