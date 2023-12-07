@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.10.8
+
+### Patch Changes
+
+- [#4996](https://github.com/wso2/identity-apps/pull/4996) [`7b885d1d9a`](https://github.com/wso2/identity-apps/commit/7b885d1d9ae08e0766097b654defb106f6fc8284) Thanks [@Avarjana](https://github.com/Avarjana)! - Update special character username hint.
+
+- Updated dependencies [[`7b885d1d9a`](https://github.com/wso2/identity-apps/commit/7b885d1d9ae08e0766097b654defb106f6fc8284)]:
+  - @wso2is/i18n@2.0.76
+
 ## 2.10.7
 
 ### Patch Changes

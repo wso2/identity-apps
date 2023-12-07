@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.89
+
+### Patch Changes
+
+- [#4996](https://github.com/wso2/identity-apps/pull/4996) [`7b885d1d9a`](https://github.com/wso2/identity-apps/commit/7b885d1d9ae08e0766097b654defb106f6fc8284) Thanks [@Avarjana](https://github.com/Avarjana)! - Update special character username hint.
+
 ## 2.0.88
 
 ### Patch Changes
