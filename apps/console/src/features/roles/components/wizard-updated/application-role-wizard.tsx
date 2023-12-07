@@ -118,15 +118,19 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         const options: DropdownProps[] = [];
 
         subscribedAPIResourcesListData?.map((apiResource: AuthorizedAPIListItemInterface) => {
-            options.push({
-                key: apiResource?.id,
-                text: apiResource?.displayName,
-                value: apiResource?.id
-            });
-        });
+            const isNotSelected: boolean = !selectedAPIResources
+                ?.find((selectedAPIResource: APIResourceInterface) => selectedAPIResource?.id === apiResource?.id);
 
+            if (isNotSelected) {
+                options.push({
+                    key: apiResource?.id,
+                    text: apiResource?.displayName,
+                    value: apiResource?.id
+                });
+            }
+        });
         setAPIResourcesListOptions(options);
-    }, [ subscribedAPIResourcesListData ]);
+    }, [ subscribedAPIResourcesListData, selectedAPIResources ]);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching API resources.
@@ -427,6 +431,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                         hint={
                             !isSubscribedAPIResourcesListLoading
                             && apiResourcesListOptions?.length === 0
+                            && selectedAPIResources?.length === 0
                             && (
                                 <Hint>
                                     <Trans
