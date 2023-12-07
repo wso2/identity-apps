@@ -1,5 +1,15 @@
 # @wso2is/identity-apps-core
 
+## 2.0.88
+
+### Patch Changes
+
+- [#4992](https://github.com/wso2/identity-apps/pull/4992) [`8ae825e77e`](https://github.com/wso2/identity-apps/commit/8ae825e77e8acf75de7eb3b2575712fa0adcc41a) Thanks [@dewniMW](https://github.com/dewniMW)! - Temporarily disable AppPortalRoleManagementListener
+
+* [#4985](https://github.com/wso2/identity-apps/pull/4985) [`2bf1f2ee25`](https://github.com/wso2/identity-apps/commit/2bf1f2ee25eeb2abfe4683bb641fc8571402b3e5) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Fix resend confirmation mail failure issue in self registration flow
+
+- [#4989](https://github.com/wso2/identity-apps/pull/4989) [`c5846ed185`](https://github.com/wso2/identity-apps/commit/c5846ed185bbc8d899490c36dc4bfec1af3f00b9) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add password feilds for jit provisioned users
+
 ## 2.0.87
 
 ### Patch Changes
