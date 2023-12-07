@@ -3029,7 +3029,8 @@ export const extensions: Extensions = {
                     2: "අතර විය යුතුය."
                 },
                 usernameAlphanumeric: "අක්ෂරාංක වලට සීමා කරන්න (a-z, A-Z, 0-9).",
-                usernameSpecialCharsHint: "අකුරු (a-z, A-Z), අංක (0-9) සහ පහත දැක්වෙන අක්ෂරවල ඕනෑම සංයෝජනයක්: !@#$%&'*+\\=?^_`.{|}~-."
+                usernameSpecialCharsHint: "අවම වශයෙන් එක් අකුරක් ඇතුළුව අක්ෂර {{minLength}} සිට {{maxLength}} දක්වා දිගු " +
+                    "විය යුතු අතර, පහත දැක්වෙන අක්ෂරවල එකතුවක් අඩංගු විය හැක: a-z, A-Z, 0-9, !@#$%&'*+\\=?^_`.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "විකල්ප පිවිසුම් හඳුනාගැනීම්",

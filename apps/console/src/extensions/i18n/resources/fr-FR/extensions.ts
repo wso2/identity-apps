@@ -3135,7 +3135,9 @@ export const extensions: Extensions = {
                     2: "caractères."
                 },
                 usernameAlphanumeric: "Restreindre aux caractères alphanumériques (a-z, A-Z, 0-9).",
-                usernameSpecialCharsHint: "Toute combinaison de lettres (a-z, A-Z), de chiffres (0-9) et des caractères suivants : !@#$%&'*+\\=?^_`.{|}~-."
+                usernameSpecialCharsHint: "TDoit contenir entre {minLength}} et {{maxLength}} caractères, dont au " +
+                    "moins une lettre, et peut contenir une combinaison des caractères " +
+                    "suivants: a-z, A-Z, 0-9, !@#$%&'*+\\=?^_`.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "Identifiants de connexion alternatifs",
