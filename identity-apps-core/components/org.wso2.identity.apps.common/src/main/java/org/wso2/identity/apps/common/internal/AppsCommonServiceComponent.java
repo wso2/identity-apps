@@ -106,7 +106,7 @@ public class AppsCommonServiceComponent {
                 bundleContext.registerService(ApplicationMgtListener.class.getName(), applicationMgtListener, null);
                 log.debug("AppPortalApplicationMgtListener registered successfully.");
 
-                RoleManagementListener roleManagementListener = new AppPortalRoleManagementListener(true);
+                RoleManagementListener roleManagementListener = new AppPortalRoleManagementListener(false);
                 bundleContext.registerService(RoleManagementListener.class.getName(), roleManagementListener, null);
                 log.debug("AppPortalRoleManagementListener registered successfully.");
             }
