@@ -395,7 +395,8 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                     {
                         isLoading || hasError
                             ? null
-                            : bulkResponseSummary.failedUserCreation === 0
+                            : bulkResponseSummary.failedUserCreation === 0 &&
+                                bulkResponseSummary.failedUserAssignment === 0
                                 ? (
                                     successAlert ?? (
                                         <Alert severity="success" data-componentid={ `${componentId}-success-alert` }>
@@ -416,21 +417,55 @@ export const BulkImportResponseList: React.FunctionComponent<BulkImportResponseL
                                         <AlertTitle data-componentid={ `${componentId}-error-alert-title` }>
                                             {
                                                 t("console:manage.features.user.modals.bulkImportUserWizard." +
-                                            "wizardSummary.alerts.importFailed.message")
+                                                "wizardSummary.alerts.importFailed.message")
                                             }
                                         </AlertTitle>
-                                        <Trans
-                                            i18nKey={
-                                                "console:manage.features.user.modals.bulkImportUserWizard." +
-                                                "wizardSummary.alerts.importFailed.description"
-                                            }
-                                            tOptions={ {
-                                                failedUserAssignmentCount: bulkResponseSummary.failedUserAssignment,
-                                                failedUserCreationCount: bulkResponseSummary.failedUserCreation
-                                            } }
-                                        >
-                                            Issues encountered in <b> creation operations</b>  <b> operations</b>.
-                                        </Trans>
+                                        {
+                                            bulkResponseSummary.failedUserCreation !== 0 &&
+                                            (
+                                                <li>
+                                                    <Trans
+                                                        i18nKey={
+                                                            "console:manage.features.user.modals." +
+                                                            "bulkImportUserWizard.wizardSummary.alerts.importFailed." +
+                                                            "userCreation"
+                                                        }
+                                                        tOptions={ {
+                                                            failedUserCreationCount:
+                                                                bulkResponseSummary.failedUserCreation
+                                                        } }
+                                                    >
+                                                        Issues encountered in
+                                                        <b>{ bulkResponseSummary.failedUserCreation } user
+                                                        creations</b>.
+                                                    </Trans>
+                                                </li>
+                                            )
+                                        }
+                                        {
+                                            bulkResponseSummary.failedUserAssignment !== 0 &&
+                                            (
+                                                <li>
+                                                    <Trans
+                                                        i18nKey={
+                                                            "console:manage.features.user.modals." +
+                                                            "bulkImportUserWizard.wizardSummary.alerts.importFailed." +
+                                                            "groupAssignment"
+                                                        }
+                                                        tOptions={ {
+                                                            failedUserAssignmentCount:
+                                                            bulkResponseSummary.failedUserAssignment
+                                                        } }
+                                                    >
+                                                        Issues encountered in
+                                                        <b>{ bulkResponseSummary.failedUserAssignment } group
+                                                        assignments</b>. Users in the affected groups were created
+                                                        but not assigned. Please navigate to User Management section
+                                                        to review  and assign groups to the users.
+                                                    </Trans>
+                                                </li>
+                                            )
+                                        }
                                     </Alert>
                                 )
                     }

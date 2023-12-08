@@ -11489,9 +11489,12 @@ export const console: ConsoleNS = {
                                     message: "Import Successful"
                                 },
                                 importFailed: {
-                                    description: "Issues encountered in <1>{{failedUserCreationCount}} user " +
-                                        "creation operations(s)</1> and <3>{{failedUserAssignmentCount}} group " +
-                                        "assignment operation(s)</3>.",
+                                    userCreation: "Issues encountered in <1>{{failedUserCreationCount}} user " +
+                                        "creation operations(s)</1>",
+                                    groupAssignment: "Issues encountered in <1>{{failedUserAssignmentCount}} group " +
+                                        "assignment(s)</1>. Users in the affected groups were created but not assigned. " +
+                                        "Please navigate to User Management section to review  and assign groups to " +
+                                        "the users.",
                                     message: "Review Required"
                                 }
                             },
@@ -12201,6 +12204,10 @@ export const console: ConsoleNS = {
                                 description: "The users were imported successfully.",
                                 message: "Users Imported Successfully"
                             }
+                        },
+                        timeOut: {
+                            description: "Some users may not have been created.",
+                            message: "The request has timed out"
                         }
                     },
                     deleteUser: {

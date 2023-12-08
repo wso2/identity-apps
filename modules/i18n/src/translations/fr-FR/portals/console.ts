@@ -9747,10 +9747,12 @@ export const console: ConsoleNS = {
                                     message: "Importation réussie"
                                 },
                                 importFailed: {
-                                    description: "Problèmes rencontrés dans <1>{{failedUserCreationCount}} " +
-                                        "opération(s)</1> de création d'utilisateur et " +
-                                        "<3>{{failedUserAssignmentCount}} opération(s) </3> d'attribution de " +
-                                        "groupe.",
+                                    userCreation: "Problèmes rencontrés dans les créations <1>d'utilisateurs " +
+                                        "{{failedUserCreationCount}}</1>.",
+                                    groupAssignment: "Problèmes rencontrés dans les attributions <1>de groupe " +
+                                        "{{failedUserAssignmentCount}}</1>. Les utilisateurs des groupes concernés " +
+                                        "ont été créés mais non attribués. Veuillez accéder à la section Gestion " +
+                                        "des utilisateurs pour examiner et attribuer des groupes aux utilisateurs.",
                                     message: "Révision requise."
                                 }
                             },
@@ -10495,6 +10497,10 @@ export const console: ConsoleNS = {
                                 description: "Les utilisateurs ont été importés avec succès.",
                                 message: "Utilisateurs importés avec succès"
                             }
+                        },
+                        timeOut: {
+                            description: "Certains utilisateurs peuvent ne pas avoir été créés.",
+                            message: "La demande a expiré"
                         }
                     },
                     deleteUser: {
