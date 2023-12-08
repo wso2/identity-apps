@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.13
+
+### Patch Changes
+
+- [#5009](https://github.com/wso2/identity-apps/pull/5009) [`2b2ca77126`](https://github.com/wso2/identity-apps/commit/2b2ca7712667566a708f7b0284eb2e48fc170d6c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove `organization_switch` grant type from M2M application
+
 ## 2.10.12
 
 ### Patch Changes
