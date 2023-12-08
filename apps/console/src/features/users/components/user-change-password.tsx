@@ -390,9 +390,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 </>
             );
         } else {
-            return (
-                <>{ resolveConfigurationList(governanceConnectorProperties) }</>
-            );
+            return resolveConfigurationList(governanceConnectorProperties);
         }
     };
 
