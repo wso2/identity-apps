@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.12
+
+### Patch Changes
+
+- [#5008](https://github.com/wso2/identity-apps/pull/5008) [`5ce93e392c`](https://github.com/wso2/identity-apps/commit/5ce93e392ccd8703d5f1629a6d8d2582fff5b7fb) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix customserverhost issue
+
 ## 2.10.11
 
 ### Patch Changes
