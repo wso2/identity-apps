@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 2.10.14
+
+### Patch Changes
+
+- [#5011](https://github.com/wso2/identity-apps/pull/5011) [`8f1998f6a3`](https://github.com/wso2/identity-apps/commit/8f1998f6a3c18251627228832e064f444ecb9ae3) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update user role section description
+
+* [#5011](https://github.com/wso2/identity-apps/pull/5011) [`370edebcdc`](https://github.com/wso2/identity-apps/commit/370edebcdcada4a99a2a69f4e83d4e83b10d0a7b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bump oxygen-ui version to `1.8.2`
+
+* Updated dependencies [[`8f1998f6a3`](https://github.com/wso2/identity-apps/commit/8f1998f6a3c18251627228832e064f444ecb9ae3), [`370edebcdc`](https://github.com/wso2/identity-apps/commit/370edebcdcada4a99a2a69f4e83d4e83b10d0a7b)]:
+  - @wso2is/i18n@2.0.78
+  - @wso2is/react-components@2.0.27
+  - @wso2is/dynamic-forms@2.0.18
+  - @wso2is/form@2.0.19
+
 ## 2.10.13
 
 ### Patch Changes
