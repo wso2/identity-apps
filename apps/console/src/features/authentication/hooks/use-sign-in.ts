@@ -320,6 +320,18 @@ const useSignIn = (): UseSignInInterface => {
                     // Update runtime configurations.
                     ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
                 });
+        } else {
+            // In case of failure customServerHost is set to the serverHost.
+            window["AppUtils"].updateCustomServerHost(Config.getDeploymentConfig().serverHost);
+
+            // Update store with custom server host.
+            dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
+
+            // Set the deployment configs in the context.
+            setDeploymentConfig(Config.getDeploymentConfig());
+
+            // Update runtime configurations.
+            ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
         }
 
         const firstName: string = idToken?.given_name;
