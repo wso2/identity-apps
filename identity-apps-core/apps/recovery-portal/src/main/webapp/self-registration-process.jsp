@@ -110,7 +110,7 @@
     } catch (Exception e) {
         spId = "";
     }
-    
+
     Boolean isValidCallBackURL = false;
     try {
         if (StringUtils.isNotBlank(applicationAccessUrl)) {
@@ -330,7 +330,7 @@
 
         Property appIsAccessUrlAvailableProperty = new Property();
         appIsAccessUrlAvailableProperty.setKey("isAccessUrlAvailable");
-        appIsAccessUrlAvailableProperty.setValue(String.valueOf(StringUtils.isNotBlank(accessUrl)));
+        appIsAccessUrlAvailableProperty.setValue(String.valueOf(StringUtils.isNotBlank(applicationAccessUrl)));
         properties.add(appIsAccessUrlAvailableProperty);
 
         properties.add(sessionKey);
