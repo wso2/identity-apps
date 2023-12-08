@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.90
+
+### Patch Changes
+
+- [#5005](https://github.com/wso2/identity-apps/pull/5005) [`232a118116`](https://github.com/wso2/identity-apps/commit/232a118116add9962b446fec602f62fee6ca9d9d) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Enable AppPortalRoleManagementListener
+
 ## 2.0.89
 
 ### Patch Changes
