@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.77
+
+### Patch Changes
+
+- [#4955](https://github.com/wso2/identity-apps/pull/4955) [`dcd3ef5420`](https://github.com/wso2/identity-apps/commit/dcd3ef5420c3abc7812067c1ee04938c8dccd194) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add userstore option to bulk user import
+
 ## 2.0.76
 
 ### Patch Changes
