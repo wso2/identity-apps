@@ -11894,6 +11894,7 @@ export const console: ConsoleNS = {
                                 header: "Are you sure?",
                                 message: "This action will modify the role of this user."
                             },
+                            infoMessage: "Roles inherited via groups are not shown here.",
                             placeholders: {
                                 emptyPlaceholder: {
                                     title: "No roles assigned",
@@ -11919,7 +11920,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             searchPlaceholder: "Search Roles",
-                            subHeading: "View assigned roles for the user."
+                            subHeading: "View roles assigned directly to the user."
                         },
                         notifications: {
                             addUserRoles: {

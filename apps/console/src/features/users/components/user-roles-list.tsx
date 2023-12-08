@@ -22,7 +22,7 @@ import {
     RoleGroupsInterface,
     RolesMemberInterface
 } from "@wso2is/core/models";
-import { EmphasizedSegment, EmptyPlaceholder, Heading } from "@wso2is/react-components";
+import { EmphasizedSegment, EmptyPlaceholder, Heading, Message } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -129,6 +129,10 @@ export const UserRolesList: FunctionComponent<UserRoleEditPropsInterface> = (
             <Heading subHeading ellipsis as="h6">
                 { t("console:manage.features.user.updateUser.roles.editRoles.subHeading") }
             </Heading>
+            <Message
+                type="info"
+                content={ t("console:manage.features.user.updateUser.roles.editRoles.infoMessage") }
+            />
             <Divider hidden/>
             <ReadOnlyRoleList
                 totalRoleList={ initialSelectedRolesOptions }

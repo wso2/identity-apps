@@ -6359,6 +6359,7 @@ export interface ConsoleNS {
                         };
                         editRoles: {
                             confirmationModal: Confirmation;
+                            infoMessage: string;
                             roleList: {
                                 emptyListPlaceholder: {
                                     subTitle: {
