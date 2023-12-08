@@ -356,7 +356,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                                 templateId === ApplicationManagementConstants.TEMPLATE_IDS.get("spa")
                             ) && (
                                 <Grid.Row columns={ 2 }>
-                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
+                                    <Grid.Column mobile={ 8 } computer={ 6 }>
                                         <GenericIcon
                                             icon={ getHelpPanelIcons().endpoints.sessionIframe }
                                             size="micro"
@@ -372,9 +372,9 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                                                 "oidcConfigurations.labels.sessionIframe") }
                                         </label>
                                     </Grid.Column>
-                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                                    <Grid.Column mobile={ 8 } computer={ 10 }>
                                         <CopyInputField
-                                            value={ oidcConfigurations?.sessionIframeEndpoint  }
+                                            value={ oidcConfigurations?.sessionIframeEndpoint }
                                             data-testid={ `${ testId }-session-iframe-readonly-input` }
                                         />
                                     </Grid.Column>
