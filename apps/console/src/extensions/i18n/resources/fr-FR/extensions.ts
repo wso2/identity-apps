@@ -4182,7 +4182,10 @@ export const extensions: Extensions = {
                             " le compte d'utilisateur. Veuillez fournir une adresse e-mail pour inviter" +
                             " l'utilisateur à réinitialiser le mot de passe.",
                         emailResetWarning: "Un e-mail avec un lien pour réinitialiser le mot de passe sera envoyé à " +
-                            "l'adresse e-mail fournie pour que l'utilisateur puisse définir son propre mot de passe."
+                            "l'adresse e-mail fournie pour que l'utilisateur puisse définir son propre mot de passe.",
+                        passwordResetConfigDisabled: "La réinitialisation du mot de passe via l'e-mail de récupération " +
+                            "n'est pas activée. Veuillez vous assurer de l'activer dans les configurations " +
+                            "<1> Connexion et inscription </1>."
                     }
                 }
             },

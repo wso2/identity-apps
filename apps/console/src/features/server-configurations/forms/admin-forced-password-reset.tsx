@@ -26,6 +26,7 @@ import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface } from "../models/governance-connectors";
 import { GovernanceConnectorUtils } from "../utils";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 
 /**
  * Interface for admin forced password reset form props.
@@ -118,7 +119,8 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
     const getUpdatedConfigurations = (values: Record<string, unknown>) => {
         const data: { [ key:string ]: unknown } = {
             "Recovery.AdminPasswordReset.RecoveryLink": values[
-                GovernanceConnectorUtils.encodeConnectorPropertyName("Recovery.AdminPasswordReset.RecoveryLink") ]
+                GovernanceConnectorUtils.encodeConnectorPropertyName(
+                    ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET) ]
         };
 
         return data;

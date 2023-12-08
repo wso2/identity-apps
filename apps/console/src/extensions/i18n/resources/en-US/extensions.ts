@@ -4027,7 +4027,10 @@ export const extensions: Extensions = {
                         emailUnavailableWarning: "WARNING: Cannot find an email address for the user account." +
                             "Please provide an email address to proceed with inviting the user to reset the password.",
                         emailResetWarning: "An email with a link to reset the password will be sent to the provided " +
-                            "email address for the user to set their own password."
+                            "email address for the user to set their own password.",
+                        passwordResetConfigDisabled: "Password reset via recovery email is not enabled. Please make " +
+                            "sure to enable it from <1> " +
+                            " Login and Registration </1> configurations."
                     }
                 }
             },

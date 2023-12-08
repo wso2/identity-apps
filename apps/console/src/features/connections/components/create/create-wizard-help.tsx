@@ -104,6 +104,22 @@ CreateConnectionWizardHelpPropsInterface> = (
         }
     };
 
+    /**
+     * This function overrides the code snippet values with the
+     * deployment config values.
+     *
+     * @param value - code snippet
+     * @returns - modified code snippet
+     */
+    const modifyCodeSnippet = (value: string): string => {
+
+        if (value.includes("${redirect_uri}")) {
+            return value.replace("${redirect_uri}", deploymentConfig.customServerHost + "/commonauth");
+        }
+
+        return value;
+    };
+
     const renderPreRequisites = (): ReactElement => {
         return (
             <Message
@@ -156,7 +172,7 @@ CreateConnectionWizardHelpPropsInterface> = (
                                             } }
                                             height="100%"
                                             theme="dark"
-                                            sourceCode={ overrideFieldValue(codeSnippet.value) }
+                                            sourceCode={ modifyCodeSnippet(codeSnippet.value) }
                                         />
                                     </p>
                                 )
@@ -167,7 +183,7 @@ CreateConnectionWizardHelpPropsInterface> = (
             />
         );
     };
-    
+
     return (
         <div data-testid={ testId }>
             { renderPreRequisites() }
