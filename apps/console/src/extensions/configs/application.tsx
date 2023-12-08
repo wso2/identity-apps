@@ -138,8 +138,7 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.IWA_NTLM
         ],
         [ "m2m-application" ]: [
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
         ],
         [ "mobile-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
