@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.92
+
+### Patch Changes
+
+- [#5016](https://github.com/wso2/identity-apps/pull/5016) [`23d30f1c7d`](https://github.com/wso2/identity-apps/commit/23d30f1c7d9e696a44cce468be7609aa4bbeb436) Thanks [@madurangasiriwardena](https://github.com/madurangasiriwardena)! - Fix the variable name
+
 ## 2.0.91
 
 ### Patch Changes
