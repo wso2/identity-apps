@@ -82,7 +82,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
         templateId,
         [ "data-componentid" ]: componentId
     } = props;
-    
+
     const oidcConfigurations: OIDCApplicationConfigurationInterface = useSelector(
         (state: AppState) => state.application.oidcConfigurations);
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
@@ -115,7 +115,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     useEffect(() => {
         if (templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_PASSIVE_STS) {
             setIsWSFed(true);
-        } 
+        }
     }, [ templateId ]);
 
     return (
@@ -147,7 +147,10 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                             </DocumentationLink>
                                         </Heading>
                                         <Divider hidden/>
-                                        <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
+                                        <OIDCConfigurations
+                                            oidcConfigurations={ oidcConfigurations }
+                                            templateId={ templateId }
+                                        />
                                     </>
                                 ) }
                                 { isOIDC && isSAML ? (
@@ -200,7 +203,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
-                </EmphasizedSegment> 
+                </EmphasizedSegment>
             ) :
             (
                 <EmphasizedSegment padded="very">
