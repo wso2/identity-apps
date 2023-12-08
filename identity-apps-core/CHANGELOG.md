@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.91
+
+### Patch Changes
+
+- [#5004](https://github.com/wso2/identity-apps/pull/5004) [`0ddeb3ee83`](https://github.com/wso2/identity-apps/commit/0ddeb3ee832a9773157bc53931e5be26cc8ff70d) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Fix Internal Hostname not Honored Issues
+
 ## 2.0.90
 
 ### Patch Changes
