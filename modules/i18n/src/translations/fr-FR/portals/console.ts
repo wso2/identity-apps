@@ -10175,6 +10175,7 @@ export const console: ConsoleNS = {
                                 header: "Êtes-vous sûr?",
                                 message: "Cette action modifiera le rôle de cet utilisateur."
                             },
+                            infoMessage: "Les rôles hérités via des groupes ne sont pas présentés ici.",
                             placeholders: {
                                 emptyPlaceholder: {
                                     title: "Aucun rôle attribué",
@@ -10200,7 +10201,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             searchPlaceholder: "Rechercher des rôles",
-                            subHeading: "Afficher les rôles attribués pour l'utilisateur."
+                            subHeading: "Afficher les rôles attribués directement à l'utilisateur."
                         },
                         notifications: {
                             addUserRoles: {

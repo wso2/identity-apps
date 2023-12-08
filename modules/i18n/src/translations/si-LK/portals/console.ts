@@ -9933,6 +9933,7 @@ export const console: ConsoleNS = {
                                 header: "ඔබට විශ්වාසද?",
                                 message: "මෙම ක්‍රියාව මෙම පරිශීලකයාගේ භූමිකාව වෙනස් කරයි."
                             },
+                            infoMessage: "කණ්ඩායම් හරහා උරුම වූ කාර්යයන් මෙහි නොපෙන්වයි.",
                             placeholders: {
                                 emptyPlaceholder: {
                                     title: "කිසිදු භූමිකාවක් පවරා නොමැත",
@@ -9958,7 +9959,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             searchPlaceholder: "සෙවුම් භූමිකාවන්",
-                            subHeading: "පරිශීලකයා සඳහා පවරා ඇති භූමිකාවන් බලන්න."
+                            subHeading: "පරිශීලකයාට කෙලින්ම පවරා ඇති භූමිකාවන් බලන්න."
                         },
                         notifications: {
                             addUserRoles: {
