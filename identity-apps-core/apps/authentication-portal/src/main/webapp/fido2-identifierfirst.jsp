@@ -23,7 +23,7 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
-<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -36,7 +36,7 @@
     String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
 
     if (StringUtils.isBlank(authAPIURL)) {
-        authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
+        authAPIURL = IdentityManagementEndpointUtil.getBasePath(tenantDomain, "/api/identity/auth/v1.1/", true);
     } else {
         // Resolve tenant domain for the authentication API URL.
         authAPIURL = AuthenticationEndpointUtil.resolveTenantDomain(authAPIURL);
@@ -48,7 +48,7 @@
     String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
     Gson gson = new Gson();
     Map data = gson.fromJson(contextProperties, Map.class);
-    
+
     boolean enablePasskeyProgressiveEnrollment = (boolean) data.get("FIDO.EnablePasskeyProgressiveEnrollment");
 %>
 
@@ -191,7 +191,7 @@
         function validateForm() {
             var username = document.getElementById('username').value;
             var usernameError = document.getElementById('usernameError');
-            
+
             if(username.trim() === "") {
                 usernameError.style.display = "block";
                 return false;

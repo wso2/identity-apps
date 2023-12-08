@@ -24,7 +24,7 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
-<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
@@ -58,12 +58,12 @@
     String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
 
     if (StringUtils.isBlank(authAPIURL)) {
-        authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
+        authAPIURL = IdentityManagementEndpointUtil.getBasePath(tenantDomain, "/api/identity/auth/v1.1/", true);
     } else {
         // Resolve tenant domain for the authentication API URl
         authAPIURL = AuthenticationEndpointUtil.resolveTenantDomain(authAPIURL);
     }
-    
+
     if (!authAPIURL.endsWith("/")) {
         authAPIURL += "/";
     }
@@ -81,7 +81,7 @@
 
         // Set the error message title and descriptions.
         if (emailOtpErrorCode.equals(emailNotFoundCode)) {
-            statusTitle = AuthenticationEndpointUtil.i18n(resourceBundle, "email.otp.error");                
+            statusTitle = AuthenticationEndpointUtil.i18n(resourceBundle, "email.otp.error");
             statusDescription = AuthenticationEndpointUtil.i18n(resourceBundle, "email.otp.error.description");
         } else {
             statusTitle = stat;
