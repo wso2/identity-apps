@@ -1,5 +1,14 @@
 # @wso2is/form
 
+## 2.0.19
+
+### Patch Changes
+
+- [#5011](https://github.com/wso2/identity-apps/pull/5011) [`370edebcdc`](https://github.com/wso2/identity-apps/commit/370edebcdcada4a99a2a69f4e83d4e83b10d0a7b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bump oxygen-ui version to `1.8.2`
+
+- Updated dependencies [[`370edebcdc`](https://github.com/wso2/identity-apps/commit/370edebcdcada4a99a2a69f4e83d4e83b10d0a7b)]:
+  - @wso2is/react-components@2.0.27
+
 ## 2.0.18
 
 ### Patch Changes

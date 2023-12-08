@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.78
+
+### Patch Changes
+
+- [#5011](https://github.com/wso2/identity-apps/pull/5011) [`8f1998f6a3`](https://github.com/wso2/identity-apps/commit/8f1998f6a3c18251627228832e064f444ecb9ae3) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update user role section description
+
 ## 2.0.77
 
 ### Patch Changes
