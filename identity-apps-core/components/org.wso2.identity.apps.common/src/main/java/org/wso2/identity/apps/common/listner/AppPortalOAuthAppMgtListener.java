@@ -18,7 +18,6 @@
 
 package org.wso2.identity.apps.common.listner;
 
-import org.wso2.carbon.identity.application.common.util.IdentityApplicationManagementUtil;
 import org.wso2.carbon.identity.oauth.Error;
 import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
 import org.wso2.carbon.identity.oauth.IdentityOAuthClientException;
@@ -65,8 +64,7 @@ public class AppPortalOAuthAppMgtListener implements OAuthApplicationMgtListener
             throws IdentityOAuthAdminException {
 
         if (!isEnabled() || systemAppConsumerKeys.stream()
-                .noneMatch(oAuthConsumerAppDTO.getApplicationName()::equalsIgnoreCase) ||
-            IdentityApplicationManagementUtil.getAllowUpdateSystemApplicationThreadLocal()) {
+                .noneMatch(oAuthConsumerAppDTO.getApplicationName()::equalsIgnoreCase)) {
             return;
         }
 
