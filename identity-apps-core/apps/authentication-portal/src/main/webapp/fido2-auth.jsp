@@ -21,7 +21,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
-<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.model.AuthenticationRequestWrapper" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 
@@ -35,22 +35,7 @@
 <%
     String authRequest = request.getParameter("data");
 
-    String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
-
-    if (StringUtils.isBlank(authAPIURL)) {
-        authAPIURL = IdentityManagementEndpointUtil.getBasePath(tenantDomain, "/api/identity/auth/v1.1/", true);
-    } else {
-        // Resolve tenant domain for the authentication API URL.
-        authAPIURL = AuthenticationEndpointUtil.resolveTenantDomain(authAPIURL);
-    }
-    if (!authAPIURL.endsWith("/")) {
-        authAPIURL += "/";
-    }
-    authAPIURL += "context/" + Encode.forUriComponent(request.getParameter("sessionDataKey"));
-    String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
-    Gson gson = new Gson();
-    Map data = gson.fromJson(contextProperties, Map.class);
-
+    Map data = ((AuthenticationRequestWrapper) request).getAuthParams();
     boolean enablePasskeyProgressiveEnrollment = (boolean) data.get("FIDO.EnablePasskeyProgressiveEnrollment");
 %>
 
@@ -159,7 +144,7 @@
                             </p>
                             <div class="mt-4">
                                 <div class="buttons">
-                                    <button class="ui primary fluid large button" type="button" onclick="retry()"
+                                    <button class="ui primary fluid large button" type="button" onclick="retry()" 
                                     data-testid="login-page-fido-retry-button">
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "fido.retry" )%>
                                     </button>
