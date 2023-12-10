@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { AsgardeoSPAClient, OIDCEndpoints } from "@asgardeo/auth-react";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -27,6 +28,7 @@ import { Form, Grid } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../../core";
 import { AppState } from "../../../core/store";
 import { getHelpPanelIcons } from "../../configs/ui";
+import { ApplicationManagementConstants } from "../../constants";
 import {
     OIDCApplicationConfigurationInterface,
     OIDCEndpointsInterface
@@ -43,6 +45,10 @@ const identityClient: AsgardeoSPAClient = AsgardeoSPAClient.getInstance();
  */
 interface OIDCConfigurationsPropsInterface extends TestableComponentInterface {
     oidcConfigurations: OIDCApplicationConfigurationInterface;
+    /**
+     * Application template ID.
+     */
+    templateId?: string;
 }
 
 /**
@@ -64,6 +70,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
 
     const {
         oidcConfigurations,
+        templateId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -343,78 +350,36 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                 {
                     featureConfig?.server?.enabled && (
                         <>
-                            <Grid.Row columns={ 2 }>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
-                                    <GenericIcon
-                                        icon={ getHelpPanelIcons().endpoints.sessionIframe }
-                                        size="micro"
-                                        square
-                                        transparent
-                                        inline
-                                        className="left-icon"
-                                        verticalAlign="middle"
-                                        spaced="right"
-                                    />
-                                    <label data-testid={ `${ testId }-session-iframe-label` }>
-                                        { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                            "oidcConfigurations.labels.sessionIframe") }
-                                    </label>
-                                </Grid.Column>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                                    <CopyInputField
-                                        value={ oidcConfigurations?.sessionIframeEndpoint  }
-                                        data-testid={ `${ testId }-session-iframe-readonly-input` }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row columns={ 2 }>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
-                                    <GenericIcon
-                                        icon={ getHelpPanelIcons().endpoints.webFinger }
-                                        size="micro"
-                                        square
-                                        transparent
-                                        inline
-                                        className="left-icon"
-                                        verticalAlign="middle"
-                                        spaced="right"
-                                    />
-                                    <label data-testid={ `${ testId }-web-finger-label` }>
-                                        { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                            "oidcConfigurations.labels.webFinger") }
-                                    </label>
-                                </Grid.Column>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                                    <CopyInputField
-                                        value={ oidcConfigurations?.webFingerEndpoint  }
-                                        data-testid={ `${ testId }-web-finger-readonly-input` }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row columns={ 2 }>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 6 }>
-                                    <GenericIcon
-                                        icon={ getHelpPanelIcons().endpoints.userInfo }
-                                        size="micro"
-                                        square
-                                        transparent
-                                        inline
-                                        className="left-icon"
-                                        verticalAlign="middle"
-                                        spaced="right"
-                                    />
-                                    <label data-testid={ `${ testId }-dynamic-client-registration-label` }>
-                                        { t("console:develop.features.applications.helpPanel.tabs.start.content." +
-                                            "oidcConfigurations.labels.dynamicClientRegistration") }
-                                    </label>
-                                </Grid.Column>
-                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                                    <CopyInputField
-                                        value={ oidcConfigurations?.dynamicClientRegistrationEndpoint  }
-                                        data-testid={ `${ testId }-dynamic-client-registration-readonly-input` }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
+                            { (
+                                templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
+                                templateId === ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb") ||
+                                templateId === ApplicationManagementConstants.TEMPLATE_IDS.get("spa")
+                            ) && (
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column mobile={ 8 } computer={ 6 }>
+                                        <GenericIcon
+                                            icon={ getHelpPanelIcons().endpoints.sessionIframe }
+                                            size="micro"
+                                            square
+                                            transparent
+                                            inline
+                                            className="left-icon"
+                                            verticalAlign="middle"
+                                            spaced="right"
+                                        />
+                                        <label data-testid={ `${ testId }-session-iframe-label` }>
+                                            { t("console:develop.features.applications.helpPanel.tabs.start.content." +
+                                                "oidcConfigurations.labels.sessionIframe") }
+                                        </label>
+                                    </Grid.Column>
+                                    <Grid.Column mobile={ 8 } computer={ 10 }>
+                                        <CopyInputField
+                                            value={ oidcConfigurations?.sessionIframeEndpoint }
+                                            data-testid={ `${ testId }-session-iframe-readonly-input` }
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                            ) }
                         </>
                     )
                 }
