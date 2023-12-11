@@ -7802,7 +7802,8 @@ export const console: ConsoleNS = {
                                 label: "Nom du scope",
                                 placeholder: "Entrez le nom du scope",
                                 validations: {
-                                    empty: "Ce champ ne peut pas être vide",
+                                    duplicate: "Cette portée existe déjà.",
+                                    empty: "Ce champ ne peut pas être vide.",
                                     invalid: "La portée ne peut contenir que des caractères alphanumériques et _. " +
                                         "Et doit avoir une longueur comprise entre 3 et 40 caractères."
                                 }

@@ -6687,8 +6687,8 @@ export const console: ConsoleNS = {
                         attributeMappingListItem: {
                             validation: {
                                 duplicate: "There's already an attribute mapped with this name.",
-                                required: "This field cannot be empty",
-                                invalid: "Please enter a valid input"
+                                required: "This field cannot be empty.",
+                                invalid: "Please enter a valid input."
                             },
                             placeholders: {
                                 mappedValue: "Enter external IDVP attribute",
@@ -9560,7 +9560,8 @@ export const console: ConsoleNS = {
                                 label: "Scope",
                                 placeholder: "Enter the scope",
                                 validations: {
-                                    empty: "This field cannot be empty",
+                                    duplicate: "This scope already exists.",
+                                    empty: "This field cannot be empty.",
                                     invalid: "Scope can only contain alphanumeric characters and _. " +
                                     "And must be of length between 3 to 40 characters."
                                 }

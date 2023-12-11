@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,8 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { useOIDCScopesList } from "../../api/oidc-scopes";
+import { OIDCScopesListInterface } from "../../models/oidc-scopes";
 
 const SCOPE_NAME_MAX_LENGTH: number = 40;
 const SCOPE_DISPLAY_NAME_MAX_LENGTH: number = 40;
@@ -56,6 +58,10 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
     } = props;
 
     const { t } = useTranslation();
+
+    const {
+        data: scopeList
+    } = useOIDCScopesList();
 
     const getFormValues = (values: any) => {
         return {
@@ -112,7 +118,11 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
                     placeholder={ t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
                         "scopeName.placeholder") }
                     validation={ (value: string) => {
-                        if (!value.toString().match(/^[\w.-]+$/)) {
+                        if (scopeList?.find((item: OIDCScopesListInterface) => item.name === value)) {
+                            return t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
+                                "scopeName.validations.duplicate");
+                        }
+                        else if (!value.toString().match(/^[\w.-]+$/)) {
                             return t("console:manage.features.oidcScopes.forms.addScopeForm.inputs." +
                                 "scopeName.validations.invalid");
                         }
