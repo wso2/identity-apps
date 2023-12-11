@@ -71,6 +71,7 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
         const { t } = useTranslation();
 
         const [ activeOption, setActiveOption ] = useState<ScopeInterface>(undefined);
+        const [ isTouched, setIsTouched ] = useState<boolean>(false);
 
         /**
          * Handles the select scope action.
@@ -98,11 +99,12 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
                             data-componentid={ `${componentId}-textfield` }
                             placeholder= { t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
                                 "permissions.placeholder") }
-                            error={ hasError }
-                            helperText={ hasError && errorMessage }
+                            error={ isTouched && hasError }
+                            helperText={ isTouched && hasError && errorMessage }
                         />
                     ) }
                     onChange={ (event: SyntheticEvent, scopes: ScopeInterface[]) => handleScopeSelection(scopes) }
+                    onClose={ () => setIsTouched(true) }
                     renderTags={ (
                         value: ScopeInterface[],
                         getTagProps: AutocompleteRenderGetTagProps
