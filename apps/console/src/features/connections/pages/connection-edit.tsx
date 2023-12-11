@@ -265,7 +265,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
      */
     const redirectToSpecificTab = (useLocationStateData: boolean = true, tabName?: string): void => {
         if (useLocationStateData) {
-            tabName =  location.state as string;
+            tabName =  location?.state as string;
         }
 
         if (tabName !== undefined) {
@@ -604,7 +604,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                         name={ connector.name }
                         image={
                             ConnectionsManagementUtils
-                                .resolveConnectionResourcePath(connectionResourcesUrl, connector.image)
+                                .resolveConnectionResourcePath(connectionResourcesUrl, connector?.image)
                         }
                         size="tiny"
                     />
@@ -626,7 +626,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                 hoverable={ false }
                 name={ connector.name }
                 image={ !isOrganizationSSOIDP
-                    ? AuthenticatorMeta.getAuthenticatorIcon(connector.id)
+                    ? AuthenticatorMeta.getAuthenticatorIcon(connector?.id)
                     : AuthenticatorMeta.getAuthenticatorIcon((connector as ConnectionInterface)
                         .federatedAuthenticators?.defaultAuthenticatorId)
                 }
@@ -695,7 +695,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                                 {
                                     identityProviderTemplate.name === "Expert Mode"
                                         ? "Custom Connector"
-                                        : identityProviderTemplate.name
+                                        : identityProviderTemplate?.name
                                 }
                             </Label>
                         )
