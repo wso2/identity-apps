@@ -1,5 +1,17 @@
 # @wso2is/identity-apps-core
 
+## 2.0.93
+
+### Patch Changes
+
+- [#5024](https://github.com/wso2/identity-apps/pull/5024) [`f79d4c5ee2`](https://github.com/wso2/identity-apps/commit/f79d4c5ee244f01f02ae73f22c91b00b3e6a9872) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix JIT provisioning for username, password and consent option
+
+* [#5015](https://github.com/wso2/identity-apps/pull/5015) [`a50a8c2b1b`](https://github.com/wso2/identity-apps/commit/a50a8c2b1b2dca99b6ebf863e8970b66bbf3d194) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Revert "Allow to update system apps for set of scenarios" fix
+
+- [#5012](https://github.com/wso2/identity-apps/pull/5012) [`1a1841dd9e`](https://github.com/wso2/identity-apps/commit/1a1841dd9e18d076aaad2cf296d53b7641001759) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Skip showing consent for random scopes
+
+* [#5022](https://github.com/wso2/identity-apps/pull/5022) [`c541ab14fd`](https://github.com/wso2/identity-apps/commit/c541ab14fd4f368e1aee2d458b5b9ab797262154) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Removed redundant REST api calls in several jsps
+
 ## 2.0.92
 
 ### Patch Changes
