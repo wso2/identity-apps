@@ -427,8 +427,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 ) }
                 alt="logo"
             />
-        )
-    }
+        );
+    };
 
     return (
         <OxygenHeader
