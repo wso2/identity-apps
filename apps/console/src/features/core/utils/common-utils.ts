@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,18 +16,13 @@
  * under the License.
  */
 
-import { AlertLevels, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
-import { addAlert, setTenants } from "@wso2is/core/store";
-import { I18n } from "@wso2is/i18n";
+import { StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import set from "lodash-es/set";
 import { AppUtils } from "./app-utils";
-import { getAssociatedTenants } from "../../../extensions/components/tenants/api";
-import { TenantInfo, TenantRequestResponse } from "../../../extensions/components/tenants/models";
 import { CommonConstants } from "../constants";
-import { store } from "../store";
 
 /**
  * Utility class for common util operations.
@@ -84,45 +79,8 @@ export class CommonUtils {
             billingPortalURL: string;
             upgradeButtonURL: string;
         }> {
-        if (!tenantDomain) {
-            tenantDomain = store.getState()?.auth?.tenantDomain;
-        }
-        if (associatedTenants) {
-            associatedTenants = store.getState()?.auth?.tenants;
-        }
 
-        if (!Array.isArray(associatedTenants)) {
-            await getAssociatedTenants()
-                .then((response: TenantRequestResponse) => {
-                    associatedTenants = response?.associatedTenants;
-
-                    store.dispatch(setTenants<TenantInfo>(response.associatedTenants));
-                })
-                .catch((error: any) => {
-                    store.dispatch(
-                        addAlert({
-                            description:
-                                error?.description &&
-                                I18n.instance.t("extensions:manage.features.tenant.notifications."
-                                    + "getTenants.description"),
-                            level: AlertLevels.ERROR,
-                            message:
-                                error?.description &&
-                                I18n.instance.t("extensions:manage.features.tenant.notifications."
-                                    + "getTenants.message")
-                        })
-                    );
-                });
-        }
-
-        if (!tenantDomain) {
-            return {
-                billingPortalURL: "",
-                upgradeButtonURL: ""
-            };
-        }
-
-        if (!Array.isArray(associatedTenants)) {
+        if (!tenantDomain || !Array.isArray(associatedTenants)) {
             return {
                 billingPortalURL: "",
                 upgradeButtonURL: ""
