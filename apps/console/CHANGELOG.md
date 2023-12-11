@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.10.15
+
+### Patch Changes
+
+- [#5018](https://github.com/wso2/identity-apps/pull/5018) [`6079d0a965`](https://github.com/wso2/identity-apps/commit/6079d0a965593a63212124b4a3576f0d612f8d2b) Thanks [@savindi7](https://github.com/savindi7)! - Improve Server endpoints section in Applications' Info tab
+
+* [#4994](https://github.com/wso2/identity-apps/pull/4994) [`245a45b632`](https://github.com/wso2/identity-apps/commit/245a45b632d019cf69164a85b81155e6a6f5a1f6) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Update the default scope description
+
 ## 2.10.14
 
 ### Patch Changes
