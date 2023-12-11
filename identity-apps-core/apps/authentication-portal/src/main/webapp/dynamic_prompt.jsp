@@ -65,11 +65,6 @@
     <% } else { %>
         <jsp:include page="includes/header.jsp"/>
     <% } %>
-
-    <script type="text/javascript">
-        var data = JSON.parse("<%=Encode.forJavaScript(new Gson().toJson(data))%>");
-        var prompt_id = "<%= Encode.forJavaScriptBlock(promptId) %>";
-    </script>
 </head>
 <body class="login-portal layout authentication-portal-layout">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
