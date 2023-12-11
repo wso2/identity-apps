@@ -111,6 +111,31 @@
         requestedOIDCScopeString = URLDecoder.decode(queryParamMap.get("requested_oidc_scopes"), "UTF-8");
     }
 
+    String consentSkipScopesString = "";
+    if (queryParamMap.containsKey("consent_skip_scopes")) {
+        consentSkipScopesString = URLDecoder.decode(queryParamMap.get("consent_skip_scopes"), "UTF-8");
+    }
+    // Initialize empty arrays for safety.
+    String[] scopesArray = StringUtils.isNotBlank(scopeString) ? scopeString.split(" ") : new String[0];
+    String[] consentSkipScopesArray = StringUtils.isNotBlank(consentSkipScopesString) ? consentSkipScopesString.split(" ") : new String[0];
+
+    // Convert consentSkipScopesArray into a Set for efficient lookup.
+    Set<String> consentSkipScopesSet = new HashSet<>(Arrays.asList(consentSkipScopesArray));
+
+    StringBuilder filteredScopes = new StringBuilder();
+
+    // Iterate over scopesArray and append to filteredScopes if not in consentSkipScopesSet.
+    for (String scope : scopesArray) {
+        if (!consentSkipScopesSet.contains(scope)) {
+            if (filteredScopes.length() > 0) {
+                filteredScopes.append(" ");
+            }
+            filteredScopes.append(scope);
+        }
+    }
+    // The resulting string with the filtered scopes.
+    scopeString = filteredScopes.toString();
+
     if (!userClaimsConsentOnly && displayScopes && StringUtils.isNotBlank(scopeString)) {
         if (StringUtils.isNotBlank(requestedOIDCScopeString)) {
             // Remove oidc scopes from the scope list to display.
