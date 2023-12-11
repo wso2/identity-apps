@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FormEvent, FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useOIDCScopesList } from "../../api/oidc-scopes";
 import { OIDCScopesListInterface } from "../../models/oidc-scopes";
@@ -81,17 +81,17 @@ export const AddOIDCScopeForm: FunctionComponent<AddOIDCScopeFormPropsInterface>
                 displayName: initialValues?.displayName,
                 scopeName: initialValues?.scopeName
             } }
-            onSubmit={ (values) => {
+            onSubmit={ (values: Record<string, any>) => {
                 onSubmit(getFormValues(values));
             } }
-            triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
+            triggerSubmit={ (submitFunction: FormEvent<HTMLFormElement>) => triggerSubmission(submitFunction) }
             triggerPrevious={ (previousFunction: () => void) => {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 triggerPreviousForm = previousFunction;
             } }
         >
             <WizardPage
-                validate={ (values): any => {
+                validate={ (values: Record<string, any>): any => {
                     const errors:any = {};
 
                     if (!values.scopeName && !initialValues?.scopeName) {
