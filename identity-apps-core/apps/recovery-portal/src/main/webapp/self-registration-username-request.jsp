@@ -420,19 +420,15 @@
                 <h3 class="ui header">
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Initiate.sign.up")%>
                 </h3>
-
                 <div class="ui negative message" id="error-msg" hidden="hidden"></div>
                 <% if (error) { %>
                 <div class="ui negative message" id="server-error-msg">
                     <%= IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg) %>
                 </div>
                 <% } %>
-                <%-- validation --%>
-
                 <div class="ui divider hidden"></div>
                 <div class="segment-form">
                     <form class="ui large form" action="signup.do" method="post" id="register">
-
                         <div class="field">
                             <label for="username">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
@@ -441,7 +437,6 @@
                             <input id="username" name="username" type="text" required
                                 <% if(skipSignUpEnableCheck) {%> value="<%=Encode.forHtmlAttribute(username)%>" <%}%>>
                         </div>
-
                         <% if (isSaaSApp) { %>
                         <p class="ui tiny compact info message">
                             <i class="icon info circle"></i>
@@ -449,10 +444,8 @@
                                     "If.you.specify.tenant.domain.you.registered.under.super.tenant")%>
                         </p>
                         <% } %>
-
                         <input id="callback" name="callback" type="hidden" value="<%=callback%>"
                                class="form-control" required>
-
                         <% Map<String, String[]> requestMap = request.getParameterMap();
                             for (Map.Entry<String, String[]> entry : requestMap.entrySet()) {
                                 String key = Encode.forHtmlAttribute(entry.getKey());
@@ -478,18 +471,15 @@
                             >
                             </div>
                         </div>
-                        <%
-                            }
-                        %>
+                        <% }  %>
                         <div class="ui divider hidden"></div>
-
                         <div class="align-right buttons">
                             <a href="javascript:goBack()" class="ui button secondary fluid large button mb-2">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                             </a>
                             <button id="registrationSubmit" class="ui primary fluid large button" type="submit">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                        "Proceed.to.self.register")%>
+                                    "Proceed.to.self.register")%>
                             </button>
                         </div>
                     </form>
