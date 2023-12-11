@@ -83,7 +83,6 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
 
     const [ OIDCAttributes, setOIDCAttributes ] = useState<ExternalClaim[]>(undefined);
     const [ selectedAttributes ] = useState<ExternalClaim[]>([]);
-    const [ , setIsClaimRequestLoading ] = useState<boolean>(false);
     const [ claims, setClaims ] = useState<Claim[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
@@ -140,7 +139,6 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
     const getOIDCAttributes = (claimId: string) => {
         getAllExternalClaims(claimId, null)
             .then((response: ExternalClaim[]) => {
-                setIsClaimRequestLoading(true);
                 response?.forEach((externalClaim: ExternalClaim) => {
                     const mappedLocalClaimUri: string = externalClaim.mappedLocalClaimURI;
                     const matchedLocalClaim: Claim[] = claims.filter((localClaim: Claim) => {
@@ -173,9 +171,6 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                         "console:manage.features.oidcScopes.notifications.fetchOIDClaims.genericError" + ".message"
                     )
                 });
-            })
-            .finally(() => {
-                setIsClaimRequestLoading(false);
             });
     };
 
@@ -215,8 +210,6 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
             displayName: wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.displayName,
             name: wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.scopeName
         };
-
-        setIsClaimRequestLoading(true);
 
         createOIDCScope(data)
             .then(() => {
@@ -260,9 +253,6 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                         )
                     })
                 );
-            })
-            .finally(() => {
-                setIsClaimRequestLoading(false);
             });
     };
 
