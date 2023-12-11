@@ -27,6 +27,7 @@ import { useTranslation } from "react-i18next";
 import { AutoCompleteRenderOption } from "./auto-complete-render-option";
 import { RenderChip } from "./render-chip";
 import { APIResourceInterface, ScopeInterface } from "../../../models/apiResources";
+import "./permissions-list.scss";
 
 interface PermissionsListPropsInterface extends  IdentifiableComponentInterface {
     /**
@@ -101,6 +102,12 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
                                 "permissions.placeholder") }
                             error={ isTouched && hasError }
                             helperText={ isTouched && hasError && errorMessage }
+                            label={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission.permissions" +
+                                ".permissionsLabel") }
+                            InputLabelProps={ {
+                                required: true,
+                                className: "permissions-label"
+                            } }
                         />
                     ) }
                     onChange={ (event: SyntheticEvent, scopes: ScopeInterface[]) => handleScopeSelection(scopes) }

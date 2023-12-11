@@ -8580,7 +8580,8 @@ export const console: ConsoleNS = {
                                 },
                                 validation: {
                                     empty: "අවසර(විෂය පද) ලැයිස්තුව හිස් විය නොහැක. අවම වශයෙන් එක් අවසරයක්වත්(විෂය පථය) තෝරන්න."
-                                }
+                                },
+                                permissionsLabel: "අවසර (විෂය පද)"
                             },
                             notes: {
                                 applicationRoles: "තෝරාගත් අයදුම්පතේ(<1>{{applicationName}}</1>) තෝරා ගැනීමට ලැයිස්තුගත කර ඇති APIs සහ විෂය පථයන් පමණක් තෝරා ගැනීමට ලැයිස්තුගත කර ඇත."

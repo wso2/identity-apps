@@ -10537,7 +10537,8 @@ export const console: ConsoleNS = {
                                 },
                                 validation: {
                                     empty: "Permissions(scopes) list cannot be empty. Select at least one permission(scope)."
-                                }
+                                },
+                                permissionsLabel: "Permissions (scopes)"
                             },
                             notes: {
                                 applicationRoles: "Only the APIs and the permissions(scopes) that are authorized in the selected application(<1>{{applicationName}}</1>) will be listed to select."
