@@ -474,11 +474,11 @@
                         <% }  %>
                         <div class="ui divider hidden"></div>
                         <div class="align-right buttons">
-                            <button id="registrationSubmit" class="ui primary fluid large button" type="submit">
+                            <button id="registrationSubmit" class="ui primary fluid large button mb-2" type="submit">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                                     "Proceed.to.self.register")%>
                             </button>
-                            <a href="javascript:goBack()" class="ui button secondary fluid large button mb-2">
+                            <a href="javascript:goBack()" class="ui button secondary fluid large button">
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
                             </a>
                         </div>
