@@ -8763,7 +8763,8 @@ export const console: ConsoleNS = {
                                 },
                                 validation: {
                                     empty: "La liste des autorisations(lunettes) ne peut pas être vide. Sélectionnez au moins une autorisation(lunettes)."
-                                }
+                                },
+                                permissionsLabel: "Autorisations (étendues)"
                             },
                             notes: {
                                 applicationRoles: "Seules les API et les autorisations (lunettes) autorisées dans l'application sélectionnée(<1>{{applicationName}}</1>) seront répertoriées pour être sélectionnées."

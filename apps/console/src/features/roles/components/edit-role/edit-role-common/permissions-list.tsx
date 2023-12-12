@@ -27,6 +27,7 @@ import { useTranslation } from "react-i18next";
 import { AutoCompleteRenderOption } from "./auto-complete-render-option";
 import { RenderChip } from "./render-chip";
 import { APIResourceInterface, ScopeInterface } from "../../../models/apiResources";
+import "./permissions-list.scss";
 
 interface PermissionsListPropsInterface extends  IdentifiableComponentInterface {
     /**
@@ -71,6 +72,7 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
         const { t } = useTranslation();
 
         const [ activeOption, setActiveOption ] = useState<ScopeInterface>(undefined);
+        const [ isTouched, setIsTouched ] = useState<boolean>(false);
 
         /**
          * Handles the select scope action.
@@ -98,11 +100,18 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
                             data-componentid={ `${componentId}-textfield` }
                             placeholder= { t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
                                 "permissions.placeholder") }
-                            error={ hasError }
-                            helperText={ hasError && errorMessage }
+                            error={ isTouched && hasError }
+                            helperText={ isTouched && hasError && errorMessage }
+                            label={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission.permissions" +
+                                ".permissionsLabel") }
+                            InputLabelProps={ {
+                                className: "permissions-label",
+                                required: true
+                            } }
                         />
                     ) }
                     onChange={ (event: SyntheticEvent, scopes: ScopeInterface[]) => handleScopeSelection(scopes) }
+                    onClose={ () => setIsTouched(true) }
                     renderTags={ (
                         value: ScopeInterface[],
                         getTagProps: AutocompleteRenderGetTagProps

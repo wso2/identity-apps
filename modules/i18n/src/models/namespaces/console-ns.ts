@@ -5531,6 +5531,7 @@ export interface ConsoleNS {
                                 validation: {
                                     empty: string;
                                 };
+                                permissionsLabel: string;
                             };
                             notes: {
                                 applicationRoles: string;

@@ -161,19 +161,7 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                                     ) } >
                                 </ListItemText>
                             ) }
-                        <ListItemText
-                            secondary={ (<>
-                                { apiResource?.identifier }
-                                <Label
-                                    pointing="left"
-                                    size="mini"
-                                    className= "client-id-label"
-                                >
-                                    { t("extensions:develop.apiResource.table.identifier.label") }
-                                </Label>
-                            </>
-                            ) } >
-                        </ListItemText>
+                        <ListItemText secondary={ apiResource?.identifier } />
                     </ListItem>
                 </AccordionSummary>
                 {
