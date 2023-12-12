@@ -205,7 +205,9 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
             <Modal.Header className="wizard-header">
                 <Typography variant="inherit">Invite Administrator</Typography>
                 <Heading as="h6">
-                    <Typography variant="inherit">Invite an existing user from your root organization as an administrator</Typography>
+                    <Typography variant="inherit">
+                        Invite an existing user from your root organization as an administrator
+                    </Typography>
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
@@ -304,9 +306,11 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
                                 tabIndex={ 6 }
                                 data-componentid={ `${componentId}-cancel-button` }
                                 floated="left"
-                                onClick={ (e) => onClose(e, null) }
+                                onClick={ (e: React.MouseEvent<HTMLElement>) => onClose(e, null) }
                             >
-                                <Typography variant="inherit">{ t("extensions:develop.apiResource.wizard.addApiResource.cancelButton") }</Typography>
+                                <Typography variant="inherit">
+                                    { t("extensions:develop.apiResource.wizard.addApiResource.cancelButton") }
+                                </Typography>
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
