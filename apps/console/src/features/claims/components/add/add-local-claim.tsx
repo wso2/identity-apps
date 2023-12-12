@@ -35,6 +35,7 @@ import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
 import { getProfileSchemas } from "../../../users/api";
 import { WizardStepInterface } from "../../../users/models";
+import { useUserStores } from "../../../userstores/api";
 import { UserStoreListItem } from "../../../userstores/models";
 import { addDialect, addExternalClaim, addLocalClaim } from "../../api";
 import { getAddLocalClaimWizardStepIcons } from "../../configs";
@@ -108,6 +109,10 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
+    const {
+        data: userStoreList
+    } = useUserStores(null);
+
     /**
      * Conditionally disable map attribute step
      * if there are no secondary user stores and
@@ -127,10 +132,12 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
                 setShowMapAttributes(state.length > 0 && userStoresEnabled);
             });
-        } else {
+        } else if (userStoreList?.length>0) {
             setShowMapAttributes(true);
+        } else {
+            setShowMapAttributes(false);
         }
-    }, [ hiddenUserStores ]);
+    }, [ hiddenUserStores, userStoreList ]);
 
     /**
      * Navigate to the claim edit page after adding a claim.
