@@ -174,8 +174,8 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
                                 },
-                                id: "account-login",
-                                name: "Account Login",
+                                id: "username-validation",
+                                name: "Username Validation",
                                 path: AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"),
                                 protected: true,
                                 showOnSidePanel: false
@@ -191,8 +191,8 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                 icon: {
                                     icon: getSidePanelIcons().childIcon
                                 },
-                                id: "account-login",
-                                name: "Account Login",
+                                id: "alternative-login-identifier",
+                                name: "Alternative Login Identifier",
                                 path: AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
                                 protected: true,
                                 showOnSidePanel: false
