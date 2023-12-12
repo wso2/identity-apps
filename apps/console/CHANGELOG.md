@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.10.19
+
+### Patch Changes
+
+- [#5037](https://github.com/wso2/identity-apps/pull/5037) [`037c25d2a7`](https://github.com/wso2/identity-apps/commit/037c25d2a7cae553d2fb180c931f7712f3a86976) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Disable userstore attribute mapping step when there are no userstores
+
+* [#5039](https://github.com/wso2/identity-apps/pull/5039) [`34326deaeb`](https://github.com/wso2/identity-apps/commit/34326deaeb979780082c17943b03f9be6faaad75) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add missing login identifier related routes
+
 ## 2.10.18
 
 ### Patch Changes
