@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.2.63
+
+### Patch Changes
+
+- [#5025](https://github.com/wso2/identity-apps/pull/5025) [`041a34cf47`](https://github.com/wso2/identity-apps/commit/041a34cf479e7351d8a8faaa10789d60b97bd8a5) Thanks [@savindi7](https://github.com/savindi7)! - Add validation to OIDC scope name input.
+
+- Updated dependencies [[`041a34cf47`](https://github.com/wso2/identity-apps/commit/041a34cf479e7351d8a8faaa10789d60b97bd8a5)]:
+  - @wso2is/i18n@2.0.80
+
 ## 2.2.62
 
 ### Patch Changes
