@@ -5294,6 +5294,7 @@ export interface ConsoleNS {
                                 label: string;
                                 placeholder: string;
                                 validations: {
+                                    duplicate: string;
                                     empty: string;
                                     invalid: string;
                                 };
