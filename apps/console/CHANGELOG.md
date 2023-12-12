@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.16
+
+### Patch Changes
+
+- [#5026](https://github.com/wso2/identity-apps/pull/5026) [`8dfce8dca5`](https://github.com/wso2/identity-apps/commit/8dfce8dca5f04f52b061c9bc8b15abaad91826c6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix duplicate test ID in password validation configuration form
+
 ## 2.10.15
 
 ### Patch Changes
