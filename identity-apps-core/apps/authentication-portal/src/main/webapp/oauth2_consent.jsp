@@ -61,8 +61,11 @@
                 // Get the displayName.
                 String displayName = (String) scope.get("displayName");
             
-                // Check if description exists, if not, use displayName.
-                String scopeName = scope.has("description") ? (String) scope.get("description") : displayName;
+                // Use optString to get description; it returns "" if the key is not found.
+                String description = scope.optString("description", "");
+
+                // Check if description is not empty, otherwise use displayName.
+                String scopeName = !StringUtils.isEmpty(description) ? description : displayName;
             
                 // Add the determined scopeName to the scopes list.
                 scopes.add(scopeName);
