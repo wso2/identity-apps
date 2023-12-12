@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.2.62
+
+### Patch Changes
+
+- [#5034](https://github.com/wso2/identity-apps/pull/5034) [`2509098839`](https://github.com/wso2/identity-apps/commit/250909883919579d646f81dea67696b8c441ed65) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Bump my account version due to the changes done in the PR #5032.
+
+- Updated dependencies [[`6d5e1e680f`](https://github.com/wso2/identity-apps/commit/6d5e1e680f54ed216ab133b87d0f5cda51b78a74)]:
+  - @wso2is/i18n@2.0.79
+
 ## 2.2.61
 
 ### Patch Changes
