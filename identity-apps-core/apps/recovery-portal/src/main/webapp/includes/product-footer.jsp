@@ -101,7 +101,7 @@
             <% } %>
 
                 <%
-                    List<String> langSwitcherEnabledServlets = Arrays.asList("/password-recovery.jsp", "/register.do", "/passwordreset.do", "/error.jsp");
+                    List<String> langSwitcherEnabledServlets = Arrays.asList("/password-recovery.jsp", "/register.do", "/passwordreset.do", "/error.jsp", "/self-registration-with-verification.jsp");
                     if (langSwitcherEnabledServlets.contains(request.getServletPath())) {
                 %>
                         <jsp:include page="language-switcher.jsp"/>
