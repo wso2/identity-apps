@@ -162,6 +162,40 @@ export const getAppViewRoutes = (useExtendedRoutes: boolean = false): RouteInter
                                         ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET),
                                 protected: true,
                                 showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import(
+                                        "../../../extensions/components/account-login/" +
+                                        "pages/username-validation-edit"
+                                    )
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "account-login",
+                                name: "Account Login",
+                                path: AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"),
+                                protected: true,
+                                showOnSidePanel: false
+                            },
+                            {
+                                component: lazy(() =>
+                                    import(
+                                        "../../../extensions/components/account-login/" +
+                                        "pages/alternative-login-identifier-edit"
+                                    )
+                                ),
+                                exact: true,
+                                icon: {
+                                    icon: getSidePanelIcons().childIcon
+                                },
+                                id: "account-login",
+                                name: "Account Login",
+                                path: AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
+                                protected: true,
+                                showOnSidePanel: false
                             }
                         ],
                         component: lazy(() =>
