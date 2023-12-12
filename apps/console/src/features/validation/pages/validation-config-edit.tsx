@@ -1000,7 +1000,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                         }
                         readOnly={ false }
                         disabled={ false }
-                        data-componentid={ `${ componentId }-min-length` }
+                        data-componentid={ `${ componentId }-min-numbers` }
                     ></Field.Input>
                     <label>
                         numbers (0-9).
