@@ -132,7 +132,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
                 setShowMapAttributes(state.length > 0 && userStoresEnabled);
             });
-        } else if (userStoreList?.length>0) {
+        } else if (userStoreList?.length > 0) {
             setShowMapAttributes(true);
         } else {
             setShowMapAttributes(false);
