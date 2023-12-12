@@ -24,7 +24,7 @@ import { Divider } from "semantic-ui-react";
 
 /**
  * Wizard help message props interface.
- */ 
+ */
 interface WizardHelpMessageInterface {
     /**
      * Help content code snippets.
@@ -32,7 +32,7 @@ interface WizardHelpMessageInterface {
     codeSnippets?: { description: string, value: string }[];
     /**
      * Help content input value.
-     */ 
+     */
     copyInputFields?: { description: string, value: string }[];
     /**
      * Help content header.
@@ -40,7 +40,7 @@ interface WizardHelpMessageInterface {
     header?: string;
     /**
      * Help content paragraphs.
-     */ 
+     */
     paragraphs?: string[];
     /**
      * Help content link.
@@ -50,7 +50,7 @@ interface WizardHelpMessageInterface {
 
 /**
  * Wizard help props interface.
- */ 
+ */
 interface WizardHelpInterface {
     /**
      * Help content message.
@@ -129,8 +129,8 @@ CreateConnectionWizardHelpPropsInterface> = (
                     (<>
                         {
                             wizardHelp.message.paragraphs?.map((paragraph: string, index: number) => (
-                                <p 
-                                    key={ index } 
+                                <p
+                                    key={ index }
                                     dangerouslySetInnerHTML={ { __html: paragraph } }
                                 />
                             ))
