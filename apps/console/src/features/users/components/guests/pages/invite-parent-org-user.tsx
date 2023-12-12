@@ -33,7 +33,7 @@ import { UsersConstants } from "../../../../../extensions/components/users/const
 import { useRolesList } from "../../../../roles/api";
 import { UserManagementConstants } from "../../../constants";
 import { sendParentOrgUserInvite } from "../api/invite";
-import { UserInviteInterface } from "../models/invite";
+import { ParentOrgUserInviteInterface } from "../models/invite";
 
 interface RolesAutoCompleteOption {
     key: string;
@@ -158,9 +158,9 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
      */
     const inviteParentOrgUser = (values: InviteParentOrgUserFormValuesInterface) => {
 
-        const invite: UserInviteInterface = {
+        const invite: ParentOrgUserInviteInterface = {
             roles: values?.roles?.map((role: RolesAutoCompleteOption) => role.role.id),
-            username: values?.username
+            usernames: [ values?.username ]
         };
 
         setIsSubmitting(true);

@@ -40,6 +40,18 @@ export interface UserInviteInterface {
 }
 
 /**
+ * Interface to represent invite for parent org user.
+ */
+export interface ParentOrgUserInviteInterface {
+    id?: string;
+    roles?: string[];
+    email?: string;
+    status?: InviteUserStatus;
+    expiredAt?: string;
+    usernames?: string[];
+}
+
+/**
  * Interface to store invitations list.
  */
 export interface InvitationsInterface {

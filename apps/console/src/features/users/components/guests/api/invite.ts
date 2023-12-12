@@ -20,7 +20,7 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../../../core/store";
-import { UserInviteInterface } from "../models/invite";
+import { ParentOrgUserInviteInterface } from "../models/invite";
 
 /**
  * Initialize an axios Http client.
@@ -28,7 +28,7 @@ import { UserInviteInterface } from "../models/invite";
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance());
 
-export const sendParentOrgUserInvite = (userInvite: UserInviteInterface): Promise<any> => {
+export const sendParentOrgUserInvite = (userInvite: ParentOrgUserInviteInterface): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         data: userInvite,
         headers: {
@@ -36,7 +36,7 @@ export const sendParentOrgUserInvite = (userInvite: UserInviteInterface): Promis
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.guests  
+        url: store.getState().config.endpoints.guests
     };
 
     return httpClient(requestConfig).then((response: AxiosResponse) => {
