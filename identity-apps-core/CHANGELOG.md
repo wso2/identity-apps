@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.96
+
+### Patch Changes
+
+- [#5040](https://github.com/wso2/identity-apps/pull/5040) [`01163224f5`](https://github.com/wso2/identity-apps/commit/01163224f5b15649aeb6df9768ecbd0d4c5728a6) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add language switcher to complete sign up page
+
 ## 2.0.95
 
 ### Patch Changes
