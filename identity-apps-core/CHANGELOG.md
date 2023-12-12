@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.95
+
+### Patch Changes
+
+- [#5035](https://github.com/wso2/identity-apps/pull/5035) [`0f2fe280c1`](https://github.com/wso2/identity-apps/commit/0f2fe280c1616661abbc8278a50e6ea4ab73aa54) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Use the display name if description is empty
+
 ## 2.0.94
 
 ### Patch Changes
