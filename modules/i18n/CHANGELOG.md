@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.79
+
+### Patch Changes
+
+- [#5032](https://github.com/wso2/identity-apps/pull/5032) [`6d5e1e680f`](https://github.com/wso2/identity-apps/commit/6d5e1e680f54ed216ab133b87d0f5cda51b78a74) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Improve validation logic and UX of Create Application Role wizard.
+
 ## 2.0.78
 
 ### Patch Changes
