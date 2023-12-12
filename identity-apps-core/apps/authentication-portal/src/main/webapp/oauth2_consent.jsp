@@ -65,7 +65,7 @@
                 String description = scope.optString("description", "");
 
                 // Check if description is not empty, otherwise use displayName.
-                String scopeName = !StringUtils.isEmpty(description) ? description : displayName;
+                String scopeName = !StringUtils.isBlank(description) ? description : displayName;
             
                 // Add the determined scopeName to the scopes list.
                 scopes.add(scopeName);
