@@ -105,8 +105,8 @@ export const PermissionsList: FunctionComponent<PermissionsListPropsInterface> =
                             label={ t("console:manage.features.roles.addRoleWizard.forms.rolePermission.permissions" +
                                 ".permissionsLabel") }
                             InputLabelProps={ {
-                                required: true,
-                                className: "permissions-label"
+                                className: "permissions-label",
+                                required: true
                             } }
                         />
                     ) }
