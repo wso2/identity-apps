@@ -163,6 +163,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                         options.push({
                             key: api.id,
                             text: api.displayName,
+                            type: api?.type,
                             value: api.id
                         });
                     }
