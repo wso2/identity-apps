@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.20
+
+### Patch Changes
+
+- [#5045](https://github.com/wso2/identity-apps/pull/5045) [`629b29b201`](https://github.com/wso2/identity-apps/commit/629b29b201a602745ec141ff86be4e7e96ff4e7a) Thanks [@Achintha444](https://github.com/Achintha444)! - (fix) Permission name is not centered in the label
+
 ## 2.10.19
 
 ### Patch Changes
