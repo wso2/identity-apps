@@ -25,7 +25,7 @@ import { ApplicationsResourceEndpointsInterface } from "../models";
  * @returns The resource endpoints for the Application Management feature.
  */
 export const getApplicationsResourceEndpoints = (serverHost: string): ApplicationsResourceEndpointsInterface => {
-    const serverHostWithoutOPath: string = serverHost.replace("/o", "");
+    const serverHostWithoutOPath: string = serverHost.replace("/o/", "/");
 
     return {
         applications: `${ serverHost }/api/server/v1/applications`,

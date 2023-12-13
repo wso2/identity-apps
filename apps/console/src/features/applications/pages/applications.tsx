@@ -575,7 +575,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             contentTopMargin={ (AppConstants.getTenant() === AppConstants.getSuperTenant()) }
             data-testid={ `${ testId }-page-layout` }
         >
-            { myAccountApplicationData?.applications?.length !== 0 && renderTenantedMyAccountLink() }
+            { !isMyAccountApplicationDataFetchRequestLoading && myAccountApplicationData?.applications?.length !== 0
+              && renderTenantedMyAccountLink() }
             <ListLayout
                 advancedSearch={ (
                     <AdvancedSearchWithBasicFilters
