@@ -222,7 +222,8 @@ export const AppUtils: AppUtilsInterface = (function() {
                 tenant: (this.isSuperTenant()) ? this.getSuperTenant() : this.getTenantName(),
                 tenantPath: this.getTenantPath(),
                 tenantPrefix: this.getTenantPrefix(),
-                ui: _config.ui
+                ui: _config.ui,
+                validateIDTokenIssuer: _config.validateIDTokenIssuer ?? true
             };
         },
 

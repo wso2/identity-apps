@@ -389,5 +389,8 @@
         "theme": {
             "name": "{{ myaccount.theme }}"
         }
-    }
+    }{{ "," if myaccount.validate_id_token_issuer is defined }}
+    {% if myaccount.validate_id_token_issuer is defined %}
+    "validateIDTokenIssuer": {{ myaccount.validate_id_token_issuer }}
+    {% endif %}
 }

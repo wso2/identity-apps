@@ -34,7 +34,7 @@
         "typecheck": "pnpm run compile"
     },
     "dependencies": {
-        "@asgardeo/auth-react": "^1.1.24",
+        "@asgardeo/auth-react": "^3.1.1",
         "@babel/polyfill": "^7.0.0",
         "@microsoft/applicationinsights-core-js": "^3.0.0",
         "@microsoft/applicationinsights-react-js": "^3.4.2",
