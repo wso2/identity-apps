@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -83,7 +83,6 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
     const [ isJITChecked, setIsJITChecked ] = useState<boolean>(initialValues?.jit);
     const [ isRulesChecked, setIsRulesChecked ] = useState<boolean>(initialValues?.rules);
     const [ connector, setConnector ] = useState<string>(initialValues?.connector);
-
 
     useEffect(() => {
         if (!idpList) {
@@ -259,34 +258,39 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                         ) }
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Field
-                            name="rules"
-                            required={ false }
-                            requiredErrorMessage=""
-                            type="checkbox"
-                            children={ [
-                                {
-                                    label: t("console:develop.features.applications.forms.outboundProvisioning" +
-                                        ".fields.rules.label"),
-                                    value: "rules"
-                                }
-                            ] }
-                            value={ initialValues?.rules ? [ "rules" ] : [] }
-                            listen={
-                                (values: Map<string, FormValue>) => {
-                                    setIsRulesChecked(values.get("rules").includes("rules"));
-                                }
-                            }
-                            readOnly={ readOnly }
-                            data-testid={ `${ testId }-rules-checkbox` }
-                        />
-                        <Hint>
-                            { t("console:develop.features.applications.forms.outboundProvisioning.fields.rules.hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    window[ "AppUtils" ].getConfig().ui.isXacmlConnectorEnabled && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Field
+                                    name="rules"
+                                    required={ false }
+                                    requiredErrorMessage=""
+                                    type="checkbox"
+                                    children={ [
+                                        {
+                                            label: t("console:develop.features.applications.forms." +
+                                            "outboundProvisioning.fields.rules.label"),
+                                            value: "rules"
+                                        }
+                                    ] }
+                                    value={ initialValues?.rules ? [ "rules" ] : [] }
+                                    listen={
+                                        (values: Map<string, FormValue>) => {
+                                            setIsRulesChecked(values.get("rules").includes("rules"));
+                                        }
+                                    }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-rules-checkbox` }
+                                />
+                                <Hint>
+                                    { t("console:develop.features.applications.forms.outboundProvisioning." +
+                                    "fields.rules.hint") }
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Field

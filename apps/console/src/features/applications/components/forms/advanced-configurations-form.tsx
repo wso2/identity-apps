@@ -26,7 +26,6 @@ import {
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
 import { GenericIcon, Heading } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import useUIConfig from "modules/common/src/hooks/use-ui-configs";
 import React, {
     FunctionComponent,
     MutableRefObject,
@@ -95,8 +94,6 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
     } = props;
 
     const { t } = useTranslation();
-
-    const { UIConfig } = useUIConfig();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const isApplicationNativeAuthenticationEnabled: boolean = isFeatureEnabled(featureConfig?.applications,
@@ -306,7 +303,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 data-componentid={ `${ testId }-enable-authorization-checkbox` }
                 hidden={
                     !applicationConfig.advancedConfigurations.showEnableAuthorization
-                    || !UIConfig?.legacyMode?.applicationXacmlAuthorization }
+                    || !window[ "AppUtils" ].getConfig().ui.isXacmlConnectorEnabled }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.enableAuthorization.hint") }
             />
             {

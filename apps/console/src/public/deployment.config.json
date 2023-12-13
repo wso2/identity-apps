@@ -1051,13 +1051,13 @@
             "Console",
             "My Account"
         ],
+        "isXacmlConnectorEnabled": false,
         "legacyMode": {
             "apiResources": true,
             "applicationListSystemApps": false,
             "applicationOIDCSubjectIdentifier": false,
             "applicationRequestPathAuthentication": false,
             "applicationSystemAppsSettings": false,
-            "applicationXacmlAuthorization": false,
             "approvals": false,
             "certificates": false,
             "loginAndRegistrationEmailDomainDiscovery": true,
