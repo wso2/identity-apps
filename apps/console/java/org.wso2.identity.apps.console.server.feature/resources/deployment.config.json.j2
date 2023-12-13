@@ -1696,7 +1696,9 @@
                 {% endfor %}
             {% endif %}
         ],
-        "isXacmlConnectorEnabled": "{{ console.ui.isXacmlConnectorEnabled }}",
+        {% if console.ui.isXacmlConnectorEnabled is defined %}
+        "isXacmlConnectorEnabled": {{ console.ui.isXacmlConnectorEnabled }},
+        {% endif %}
         "legacyMode": {
             {% if legacy_mode.enable == true %}
             "apiResources": false,

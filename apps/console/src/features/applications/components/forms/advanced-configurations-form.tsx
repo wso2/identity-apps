@@ -17,6 +17,7 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
@@ -94,6 +95,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
     } = props;
 
     const { t } = useTranslation();
+    const { UIConfig } = useUIConfig();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const isApplicationNativeAuthenticationEnabled: boolean = isFeatureEnabled(featureConfig?.applications,
@@ -303,7 +305,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 data-componentid={ `${ testId }-enable-authorization-checkbox` }
                 hidden={
                     !applicationConfig.advancedConfigurations.showEnableAuthorization
-                    || !window[ "AppUtils" ].getConfig().ui.isXacmlConnectorEnabled }
+                    || !UIConfig?.isXacmlConnectorEnabled }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.enableAuthorization.hint") }
             />
             {

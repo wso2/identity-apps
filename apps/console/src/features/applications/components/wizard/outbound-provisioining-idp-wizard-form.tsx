@@ -15,6 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Hint, PrimaryButton } from "@wso2is/react-components";
@@ -83,6 +85,8 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
     const [ isJITChecked, setIsJITChecked ] = useState<boolean>(initialValues?.jit);
     const [ isRulesChecked, setIsRulesChecked ] = useState<boolean>(initialValues?.rules);
     const [ connector, setConnector ] = useState<string>(initialValues?.connector);
+
+    const { UIConfig } = useUIConfig();
 
     useEffect(() => {
         if (!idpList) {
@@ -259,7 +263,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                     </Grid.Column>
                 </Grid.Row>
                 {
-                    window[ "AppUtils" ].getConfig().ui.isXacmlConnectorEnabled && (
+                    UIConfig?.isXacmlConnectorEnabled && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <Field

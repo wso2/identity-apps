@@ -370,6 +370,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
         defaultLogoUrl: string;
         defaultWhiteLogoUrl: string;
     };
+    /**
+     * is XACML connector enabled.
+     */
+    isXacmlConnectorEnabled?: boolean;
 }
 
 /**
