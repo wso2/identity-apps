@@ -661,7 +661,6 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 <RenderChip
                     { ...getTagProps({ index }) }
                     key={ index }
-                    className="pt-5 m-1"
                     primaryText={ option.display }
                     secondaryText={ option.value }
                     option={ option }
