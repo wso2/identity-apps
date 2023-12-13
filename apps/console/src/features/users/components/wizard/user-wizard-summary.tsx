@@ -28,6 +28,7 @@ import { Dispatch } from "redux";
 import { Button, Divider, Grid, Icon } from "semantic-ui-react";
 import { AppState } from "../../../core/store";
 import { OrganizationType } from "../../../organizations/constants";
+import { OrganizationResponseInterface } from "../../../organizations/models";
 import { generateInviteLink } from "../../api";
 
 interface AddUserWizardSummaryProps extends IdentifiableComponentInterface {
@@ -60,16 +61,16 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
     const dispatch: Dispatch = useDispatch();
 
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
-    const currentOrganization: string
-        = useSelector((state: AppState) => state?.organization?.currentOrganization);
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
+    const currentOrganization: OrganizationResponseInterface = useSelector(
+        (state: AppState) => state?.organization?.organization);
 
     const [ inviteLink, setInviteLink ] = useState<string>("");
     const [ isSummaryLoading, setIsSummaryLoading ] = useState<boolean>(true);
 
     const tenantname: string = useMemo(() => {
         if (orgType === OrganizationType.SUBORGANIZATION) {
-            return currentOrganization;
+            return currentOrganization?.name;
         }
 
         return tenantDomain;
