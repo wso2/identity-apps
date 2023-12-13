@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.10.21
+
+### Patch Changes
+
+- [#5048](https://github.com/wso2/identity-apps/pull/5048) [`3e8e32b71b`](https://github.com/wso2/identity-apps/commit/3e8e32b71b9780d4e3d1fb94035a446c5e29aa89) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix org name display issue in user creation wizard of sub organization
+
+* [#5051](https://github.com/wso2/identity-apps/pull/5051) [`a47fe2d256`](https://github.com/wso2/identity-apps/commit/a47fe2d25673eae44c08794100c4aa6669c03a28) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix permission listing issue for application roles
+
+- [#5047](https://github.com/wso2/identity-apps/pull/5047) [`7885bfd818`](https://github.com/wso2/identity-apps/commit/7885bfd81880b4ddda7688f243f9c148bdd51339) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix network request issues in the Applications page
+
 ## 2.10.20
 
 ### Patch Changes
