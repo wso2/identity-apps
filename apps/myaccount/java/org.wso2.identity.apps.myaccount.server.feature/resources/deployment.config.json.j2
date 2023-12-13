@@ -111,8 +111,12 @@
         {% endif %}
     },
     {% endif %}
-    {% if myaccount.is_sass is defined %}
-        "isSaas": "{{ myaccount.is_sass }}",
+    {% if myaccount.is_saas is defined %}
+    "isSaas": {{ myaccount.is_saas }},
+    {% elif legacy_mode.enabled is defined %}
+    "isSaas": {{ legacy_mode.enabled }},
+    {% elif legacy_authz_runtime.enable is defined %}
+    "isSaas": {{ legacy_authz_runtime.enable }},
     {% endif %}
     "session": {
         {% if myaccount.session.params is defined %}
