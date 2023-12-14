@@ -1515,6 +1515,10 @@
         }
 
         function validatePasswordFields() {
+            var isPasswordProvisionEnabled = <%=isPasswordProvisionEnabled%>;
+            if (!isPasswordProvisionEnabled) {
+                return true;
+            }
             var passwordInput = document.getElementById("password");
             var confirmPasswordInput = document.getElementById("password2");
 
