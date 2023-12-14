@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.10.26
+
+### Patch Changes
+
+- [#5041](https://github.com/wso2/identity-apps/pull/5041) [`560b2f650e`](https://github.com/wso2/identity-apps/commit/560b2f650ecac8f462fc167f30273b307c723e9d) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Make FE compatible with the new request and response formats of /guests/invite endpoint, which allows multiple parent org user invites at once.
+
+- Updated dependencies [[`560b2f650e`](https://github.com/wso2/identity-apps/commit/560b2f650ecac8f462fc167f30273b307c723e9d)]:
+  - @wso2is/react-components@2.0.28
+
 ## 2.10.25
 
 ### Patch Changes
