@@ -58,7 +58,8 @@ export const getApplicationRolesByAudience = (
     appId: string,
     before: string,
     after: string,
-    limit: number
+    limit: number,
+    excludedAttributes?: string
 ):Promise<RolesV2ResponseInterface> => {
 
     const filter: string = audience === RoleAudienceTypes.APPLICATION
@@ -70,6 +71,7 @@ export const getApplicationRolesByAudience = (
         params: {
             after,
             before,
+            excludedAttributes,
             filter,
             limit
         },
@@ -496,6 +498,7 @@ export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInter
     count?: number,
     startIndex?: number,
     filter?: string,
+    excludedAttributes?: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
@@ -507,6 +510,7 @@ export const useRolesList = <Data = RoleListInterface, Error = RequestErrorInter
         method: HttpMethods.GET,
         params: {
             count,
+            excludedAttributes,
             filter,
             startIndex
         },

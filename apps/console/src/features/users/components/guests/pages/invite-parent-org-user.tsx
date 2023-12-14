@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { Chip, Typography } from "@oxygen-ui/react";
 import { AutocompleteRenderGetTagProps } from "@oxygen-ui/react/Autocomplete";
+import Chip from "@oxygen-ui/react/Chip";
+import Typography from "@oxygen-ui/react/Typography";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/form";
@@ -87,7 +88,12 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { data: allowedRoles } = useRolesList();
+    const { data: allowedRoles } = useRolesList(
+        undefined,
+        undefined,
+        undefined,
+        "users,groups,permissions,associatedApplications"
+    );
 
     const rolesAutocompleteOptions: RolesAutoCompleteOption[] = useMemo(() => {
 
@@ -248,7 +254,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                                 <Hint>
                                     <Typography variant="inherit">
                                         { t("console:manage.features.parentOrgInvitations.addUserWizard.username" +
-                                                ".hint") }
+                                            ".hint") }
                                     </Typography>
                                 </Hint>
                             ) }
@@ -267,7 +273,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                                 (<Hint>
                                     <Typography variant="inherit">
                                         { t("console:manage.features.parentOrgInvitations.addUserWizard.roles" +
-                                                ".hint") }
+                                            ".hint") }
                                     </Typography>
                                 </Hint>)
                             }
