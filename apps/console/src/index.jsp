@@ -316,7 +316,15 @@
                 // Redirect user to the login page if the prompt parameter is set to login.
                 if (promptParam && promptParam === 'login') {
                     auth.initialize(authConfig);
-                    auth.signIn({ prompt: "login" });
+
+                    const authParams = { prompt: "login" };
+
+                    if (getOrganizationPath()) {
+                        authParams["fidp"] = "OrganizationSSO";
+                        authParams["orgId"] = getOrganizationName();
+                    }
+
+                    auth.signIn(authParams);
 
                     return;
                 }
@@ -338,7 +346,14 @@
                         sessionStorage.setItem("auth_callback_url_console", authCallbackUrl);
                     }
 
-                    auth.signIn();
+                    const authParams = {};
+
+                    if (getOrganizationPath()) {
+                        authParams["fidp"] = "OrganizationSSO";
+                        authParams["orgId"] = getOrganizationName();
+                    }
+
+                    auth.signIn(authParams);
                 }
             }
         }
