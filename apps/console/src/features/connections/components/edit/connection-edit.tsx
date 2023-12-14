@@ -73,7 +73,7 @@ interface EditConnectionPropsInterface extends TestableComponentInterface {
     /**
      * Callback to update the idp details.
      */
-    onUpdate: (id: string) => void;
+    onUpdate: (id: string, tabName?: string) => void;
     /**
      * Check if IDP is Google
      */
@@ -109,6 +109,10 @@ interface EditConnectionPropsInterface extends TestableComponentInterface {
      */
     isAutomaticTabRedirectionEnabled?: boolean;
     /**
+     * Function to enable/disable automatic tab redirection.
+     */
+    setIsAutomaticTabRedirectionEnabled?: (state: boolean) => void;
+    /**
      * Specifies, to which tab(tabid) it need to redirect.
      */
     tabIdentifier?: string;
@@ -135,11 +139,12 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         isSaml,
         isOidc,
         onDelete,
-        onUpdate,
+        onUpdate: onConnectionUpdate,
         template,
         type,
         isReadOnly,
         isAutomaticTabRedirectionEnabled,
+        setIsAutomaticTabRedirectionEnabled,
         tabIdentifier,
         [ "data-testid" ]: testId
     } = props;
@@ -175,6 +180,21 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const idpImplicitAssociationConfig: ImplicitAssociaionConfigInterface = {
         isEnabled: identityProvider.implicitAssociation.isEnabled,
         lookupAttribute: identityProvider.implicitAssociation.lookupAttribute
+    };
+
+    /**
+     * This wrapper function ensures that the user stays on the tab that
+     * triggered the update after completion. Additionally, it invokes
+     * the onUpdate callback on the parent component.
+     *
+     * @param id - Updated connection id.
+     */
+    const onUpdate = (id: string): void => {
+        if (isAutomaticTabRedirectionEnabled && tabIdentifier) {
+            onConnectionUpdate(id, tabIdentifier);
+        } else {
+            onConnectionUpdate(id, getPanes()[defaultActiveIndex]["data-tabid"]);
+        }
     };
 
     const Loader = (): ReactElement => (
@@ -503,6 +523,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             defaultActiveIndex={ defaultActiveIndex }
             onTabChange={ (e: React.MouseEvent<HTMLDivElement, MouseEvent>, data: TabProps ) => {
                 setDefaultActiveIndex(data.activeIndex);
+                isAutomaticTabRedirectionEnabled && setIsAutomaticTabRedirectionEnabled(false);
             } }
             isAutomaticTabRedirectionEnabled={ isAutomaticTabRedirectionEnabled }
             tabIdentifier={ tabIdentifier }
