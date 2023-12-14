@@ -175,21 +175,21 @@ export const getConnections = (
                 throw new IdentityAppsApiException(
                     ConnectionManagementConstants.CONNECTIONS_FETCH_INVALID_STATUS_CODE_ERROR,
                     null,
-                    response.status,
-                    response.request,
+                    response?.status,
+                    response?.request,
                     response,
-                    response.config);
+                    response?.config);
             }
 
             return Promise.resolve(response?.data as ConnectionListResponseInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ConnectionManagementConstants.CONNECTIONS_FETCH_ERROR,
-                error.stack,
-                error.response?.data?.code,
-                error.request,
-                error.response,
-                error.config);
+                error?.stack,
+                error?.response?.data?.code,
+                error?.request,
+                error?.response,
+                error?.config);
         });
 };
 

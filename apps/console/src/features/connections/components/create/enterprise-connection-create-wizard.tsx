@@ -412,7 +412,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 const errors: FormErrors = {};
 
                 errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
-                if (values?.name && await isIdpNameAlreadyTaken(values.name)) {
+                if (values?.name && await isIdpNameAlreadyTaken(values?.name)) {
                     errors.name = t("console:develop.features.authenticationProvider." +
                         "forms.generalDetails.name.validations.duplicate");
                 }

@@ -325,7 +325,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
         connection.name = values?.name.toString();
         connection.templateId = template.templateId;
 
-        if(connection.templateId === "swe-idp") {
+        if(connection?.templateId === "swe-idp") {
             connection.federatedAuthenticators.authenticators[ 0 ].properties = connection.federatedAuthenticators
                 .authenticators[ 0 ].properties.concat(updatedProperties);
         } else {
