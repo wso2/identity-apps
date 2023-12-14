@@ -633,7 +633,7 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                         data-componentid={ componentId }
                         validateOnBlur
                     >
-                        { getWizardSteps().map((step: TrustedTokenIssuerWizardStepInterface) => step.content) }
+                        { getWizardSteps().map((step: TrustedTokenIssuerWizardStepInterface) => step?.content) }
                     </Wizard2>
                 </Modal.Content>
                 <Modal.Actions
