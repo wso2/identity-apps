@@ -245,6 +245,16 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 }
             }
         });
+
+        if ((get(resolvedInitialFormValues, "SelfRegistration.SendConfirmationOnCreation") === "true") ||
+        (get(resolvedInitialFormValues, "SelfRegistration.LockOnCreation") === "true")) {
+            setEnableAccountConfirmation(true);
+            resolvedInitialFormValues = {
+                ...resolvedInitialFormValues,
+                signUpConfirmation: true
+            };
+        }
+
         // Make accountActivateImmediately false if the account confirmation is false.
         if (get(resolvedInitialFormValues, "signUpConfirmation") !== true) {
             resolvedInitialFormValues.accountActivateImmediately = false;
@@ -271,9 +281,10 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             "SelfRegistration.AutoLogin.Enable": values.autoLogin !== undefined
                 ? !!enableAutoLogin
                 : initialConnectorValues?.get("SelfRegistration.AutoLogin.Enable").value,
-            "SelfRegistration.LockOnCreation": enableAccountConfirmation
-                ? !values?.accountActivateImmediately
-                : initialConnectorValues?.get("SelfRegistration.LockOnCreation").value,
+            "SelfRegistration.LockOnCreation": values.accountActivateImmediately === true ||
+            enableAccountConfirmation == false
+                ? false
+                : true,
             "SelfRegistration.NotifyAccountConfirmation": enableAccountConfirmation !== undefined
                 ? !!enableAccountConfirmation
                 : initialConnectorValues?.get("SelfRegistration.NotifyAccountConfirmation").value,
