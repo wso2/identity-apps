@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.10.23
+
+### Patch Changes
+
+- [#5059](https://github.com/wso2/identity-apps/pull/5059) [`d38d374a0d`](https://github.com/wso2/identity-apps/commit/d38d374a0dee40b8d762a3f0018c5abb38b4e3fa) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue of validating connection name based on full connections list
+
+* [#5030](https://github.com/wso2/identity-apps/pull/5030) [`ba35a148a5`](https://github.com/wso2/identity-apps/commit/ba35a148a5133a8eab1ca0d893a4bfb8fdf919b3) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enable account locking for sub orgs
+
 ## 2.10.22
 
 ### Patch Changes
