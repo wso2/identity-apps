@@ -988,6 +988,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 closeWizard={ closeWizard }
                                 setIsSubmitting={ setIsSubmitting }
                                 onUserInviteSuccess={ onUserInviteSuccess }
+                                setAlert={ setAlert }
                             />
                         )
                     }
