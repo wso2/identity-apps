@@ -104,7 +104,11 @@ interface IdentityProviderSettingsPropsInterface extends TestableComponentInterf
 
 const OIDC_CLIENT_ID_SECRET_MAX_LENGTH: number = 100;
 const URL_MAX_LENGTH: number = 2048;
-const AUTHORIZED_REDIRECT_URL: string = "callbackUrl";
+/**
+ * The backend response includes both of the following keys
+ * for different connections.
+ */
+const AUTHORIZED_REDIRECT_URLS: string[] = [ "callbackUrl", "callBackUrl" ];
 
 /**
  *  Identity Provider and advance settings component.
@@ -332,15 +336,26 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      */
     const addCallbackUrl = (values: FederatedAuthenticatorListItemInterface) => {
 
+        const isCallbackUrlExist: boolean = !!values?.properties?.find(
+            (item: CommonPluggableComponentPropertyInterface) =>
+                AUTHORIZED_REDIRECT_URLS.includes(item?.key)
+        );
+
+        if (isCallbackUrlExist) {
+            return;
+        }
+
         const authenticator: FederatedAuthenticatorWithMetaInterface =
-            availableAuthenticators.find((authenticator: FederatedAuthenticatorWithMetaInterface) => (
-                identityProvider.federatedAuthenticators.defaultAuthenticatorId === authenticator.id
+            availableAuthenticators?.find((authenticator: FederatedAuthenticatorWithMetaInterface) => (
+                values?.authenticatorId === authenticator?.id
             ));
-        const search = (object: any): boolean => object.key === AUTHORIZED_REDIRECT_URL;
-        const index: number = authenticator?.data?.properties.findIndex(search);
+        const index: number = authenticator?.data?.properties?.findIndex(
+            (item: CommonPluggableComponentPropertyInterface) =>
+                AUTHORIZED_REDIRECT_URLS.includes(item?.key)
+        );
 
         if (index >= 0) {
-            values.properties.push(authenticator.data.properties[index]);
+            values?.properties?.push(authenticator?.data?.properties[index]);
         }
     };
 
