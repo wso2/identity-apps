@@ -91,7 +91,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         return {
             associateLocalUser: values.get(JITProvisioningConstants.ASSOCIATE_LOCAL_USER)
                 ?.includes(JITProvisioningConstants.ASSOCIATE_LOCAL_USER) ?? initialValues?.associateLocalUser,
-            attributeSyncMethod: values.get(
+            attributeSyncMethod: values?.get(
                 JITProvisioningConstants.ATTRIBUTE_SYNC_METHOD
             ) ?? initialValues?.attributeSyncMethod,
             isEnabled: values.get(
