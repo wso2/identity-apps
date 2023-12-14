@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.10.25
+
+### Patch Changes
+
+- [#5062](https://github.com/wso2/identity-apps/pull/5062) [`c619fdfbab`](https://github.com/wso2/identity-apps/commit/c619fdfbab593d645b7ad0648c67030b72e102a2) Thanks [@savindi7](https://github.com/savindi7)! - Fix properties updated on self registration verification options.
+
+* [#5064](https://github.com/wso2/identity-apps/pull/5064) [`7ed354a14d`](https://github.com/wso2/identity-apps/commit/7ed354a14dec7b8aa21eeafa455abfdc2f2d19d2) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Make roles a non-mandatory field in invite parent org user wizard
+
 ## 2.10.24
 
 ### Patch Changes
