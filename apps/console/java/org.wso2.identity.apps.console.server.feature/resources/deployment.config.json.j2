@@ -1696,6 +1696,9 @@
                 {% endfor %}
             {% endif %}
         ],
+        {% if console.ui.isXacmlConnectorEnabled is defined %}
+        "isXacmlConnectorEnabled": {{ console.ui.isXacmlConnectorEnabled }},
+        {% endif %}
         "legacyMode": {
             {% if legacy_mode.enable == true %}
             "apiResources": false,
@@ -1703,7 +1706,6 @@
             "applicationOIDCSubjectIdentifier": true,
             "applicationRequestPathAuthentication": true,
             "applicationSystemAppsSettings": true,
-            "applicationXacmlAuthorization": true,
             "approvals": true,
             "certificates": true,
             "loginAndRegistrationEmailDomainDiscovery": false,
