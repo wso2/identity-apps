@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/dynamic-forms",
-    "version": "2.0.18",
+    "version": "2.0.19",
     "private": true,
     "description": "Dynamic form library for WSO2 Identity Server front end applications.",
     "keywords": [
@@ -31,7 +31,7 @@
     "dependencies": {
         "@oxygen-ui/react": "^1.8.2",
         "@mui/material": "^5.13.0",
-        "@wso2is/core": "^2.0.22",
+        "@wso2is/core": "^2.0.23",
         "@wso2is/validation": "^2.0.0",
         "@wso2is/react-components": "^2.0.27",
         "final-form": "^4.20.9",

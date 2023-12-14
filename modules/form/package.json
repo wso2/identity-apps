@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/form",
-    "version": "2.0.19",
+    "version": "2.0.20",
     "description": "Form library for WSO2 Identity Server front end applications.",
     "keywords": [
         "WSO2",
@@ -31,7 +31,7 @@
         "typecheck": "pnpm compile"
     },
     "dependencies": {
-        "@wso2is/core": "^2.0.22",
+        "@wso2is/core": "^2.0.23",
         "@wso2is/react-components": "^2.0.27",
         "@wso2is/validation": "^2.0.2",
         "final-form": "^4.20.2",

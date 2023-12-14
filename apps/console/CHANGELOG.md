@@ -1,5 +1,25 @@
 # @wso2is/console
 
+## 2.10.22
+
+### Patch Changes
+
+- [#5057](https://github.com/wso2/identity-apps/pull/5057) [`36ae93a6fa`](https://github.com/wso2/identity-apps/commit/36ae93a6fa5d44cba538923cbfffedbb06626173) Thanks [@Achintha444](https://github.com/Achintha444)! - (Fix) Fix generate password button is not aligned in the add user modal
+
+* [#5056](https://github.com/wso2/identity-apps/pull/5056) [`0288127fea`](https://github.com/wso2/identity-apps/commit/0288127fea1e5741f3ae4668dde70ffe12e5aa62) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues in self registration page
+
+- [#5058](https://github.com/wso2/identity-apps/pull/5058) [`5a53f0c5bc`](https://github.com/wso2/identity-apps/commit/5a53f0c5bc9c42ace8ec02d14828265902c8a2d5) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add missing tags for the connectors
+
+* [#5044](https://github.com/wso2/identity-apps/pull/5044) [`c6dc46bcd2`](https://github.com/wso2/identity-apps/commit/c6dc46bcd25b0571280f2ea4b1bf9b98a70c9dab) Thanks [@savindi7](https://github.com/savindi7)! - Hide Xacml feature with config
+
+* Updated dependencies [[`36ae93a6fa`](https://github.com/wso2/identity-apps/commit/36ae93a6fa5d44cba538923cbfffedbb06626173), [`c6dc46bcd2`](https://github.com/wso2/identity-apps/commit/c6dc46bcd25b0571280f2ea4b1bf9b98a70c9dab)]:
+  - @wso2is/theme@2.0.49
+  - @wso2is/common@2.0.15
+  - @wso2is/core@2.0.23
+  - @wso2is/access-control@2.0.12
+  - @wso2is/dynamic-forms@2.0.19
+  - @wso2is/form@2.0.20
+
 ## 2.10.21
 
 ### Patch Changes

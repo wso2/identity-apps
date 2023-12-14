@@ -1,5 +1,15 @@
 # @wso2is/common
 
+## 2.0.15
+
+### Patch Changes
+
+- [#5044](https://github.com/wso2/identity-apps/pull/5044) [`c6dc46bcd2`](https://github.com/wso2/identity-apps/commit/c6dc46bcd25b0571280f2ea4b1bf9b98a70c9dab) Thanks [@savindi7](https://github.com/savindi7)! - Hide Xacml feature with config
+
+- Updated dependencies [[`c6dc46bcd2`](https://github.com/wso2/identity-apps/commit/c6dc46bcd25b0571280f2ea4b1bf9b98a70c9dab)]:
+  - @wso2is/core@2.0.23
+  - @wso2is/access-control@2.0.12
+
 ## 2.0.14
 
 ### Patch Changes
