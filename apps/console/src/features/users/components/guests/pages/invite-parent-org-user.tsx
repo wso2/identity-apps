@@ -22,7 +22,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/form";
-import { Hint, Message } from "@wso2is/react-components";
+import { Hint, Message, WizardAlert } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from "react";
@@ -72,6 +72,11 @@ interface InviteParentOrgUserPropsInterface extends IdentifiableComponentInterfa
      * The Callback method for when the user invite is successful.
      */
     onUserInviteSuccess: () => void;
+    /**
+     * The callback method for setting the alert.
+     * @param alert - The alert object.
+     */
+    setAlert: (alert: WizardAlert) => void;
 }
 
 /**
@@ -87,6 +92,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
         closeWizard,
         setIsSubmitting,
         onUserInviteSuccess,
+        setAlert,
         [ "data-componentid"]: componentId
     } = props;
 
@@ -124,36 +130,36 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
          * is available has been used.
          */
         if (!error.response || error.response.status === 401) {
-            dispatch(addAlert({
+            setAlert({
                 description: t("console:manage.features.invite.notifications.sendInvite.error.description"),
                 level: AlertLevels.ERROR,
                 message: t("console:manage.features.invite.notifications.sendInvite.error.message")
-            }));
+            });
         } else if (error.response.status === 403 &&
             error?.response?.data?.code === UsersConstants.ERROR_COLLABORATOR_USER_LIMIT_REACHED) {
-            dispatch(addAlert({
+            setAlert({
                 description: t("extensions:manage.invite.notifications.sendInvite.limitReachError.description"),
                 level: AlertLevels.ERROR,
                 message: t("extensions:manage.invite.notifications.sendInvite.limitReachError.message")
-            }));
+            });
         } else if (error?.response?.data?.description) {
-            dispatch(addAlert({
+            setAlert({
                 description: t(
                     "console:manage.features.invite.notifications.sendInvite.error.description",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: t("console:manage.features.invite.notifications.sendInvite.error.message")
-            }));
+            });
         } else {
             // Generic error message
-            dispatch(addAlert({
+            setAlert({
                 description: t(
                     "console:manage.features.invite.notifications.sendInvite.genericError.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t("console:manage.features.invite.notifications.sendInvite.genericError.message")
-            }));
+            });
         }
     };
 
@@ -178,15 +184,14 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                 const responseData: ParentOrgUserInvitationResult = response.data[0];
 
                 if (responseData.result.status !== ParentOrgUserInviteResultStatus.SUCCESS) {
-
-                    dispatch(addAlert({
+                    setAlert({
                         description: t(
                             "console:manage.features.invite.notifications.sendInvite.error.description",
                             { description: responseData.result.errorDescription }
                         ),
                         level: AlertLevels.ERROR,
                         message: t("console:manage.features.invite.notifications.sendInvite.error.message")
-                    }));
+                    });
 
                     return;
                 }
@@ -207,7 +212,6 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                 handleParentOrgUserInviteError(error);
             })
             .finally(() => {
-                closeWizard();
                 setIsSubmitting(false);
             });
     };

@@ -120,15 +120,14 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
                 const responseData: ParentOrgUserInvitationResult = response.data[0];
 
                 if (responseData.result.status !== ParentOrgUserInviteResultStatus.SUCCESS) {
-
-                    dispatch(addAlert({
+                    setAlert({
                         description: t(
                             "console:manage.features.invite.notifications.sendInvite.error.description",
                             { description: responseData.result.errorDescription }
                         ),
                         level: AlertLevels.ERROR,
                         message: t("console:manage.features.invite.notifications.sendInvite.error.message")
-                    }));
+                    });
 
                     return;
                 }
@@ -143,6 +142,7 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
                     )
                 }));
 
+                onClose(null, null);
             })
             .catch((error: AxiosError) => {
                 /**
@@ -193,9 +193,6 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
                         )
                     });
                 }
-            })
-            .finally(() => {
-                onClose(null, null);
             });
     };
 
