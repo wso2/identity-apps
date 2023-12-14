@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.10.24
+
+### Patch Changes
+
+- [#5014](https://github.com/wso2/identity-apps/pull/5014) [`a85fd666c9`](https://github.com/wso2/identity-apps/commit/a85fd666c9dfadf032cd5092c0b879749ba6f1d5) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues with user creation wizard and login & registration flow
+
+* [#5021](https://github.com/wso2/identity-apps/pull/5021) [`dfbfa455f0`](https://github.com/wso2/identity-apps/commit/dfbfa455f0fc9cd0d4d63191235491cb529790cb) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue in updating authenticators from settings page
+
+- [#5027](https://github.com/wso2/identity-apps/pull/5027) [`69c6da573b`](https://github.com/wso2/identity-apps/commit/69c6da573b08655be5389703423015df8a63480b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the redirection issue in all the tabs in the Custom Connector
+
 ## 2.10.23
 
 ### Patch Changes

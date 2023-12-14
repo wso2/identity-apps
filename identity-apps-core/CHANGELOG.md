@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.98
+
+### Patch Changes
+
+- [#5014](https://github.com/wso2/identity-apps/pull/5014) [`05265988d4`](https://github.com/wso2/identity-apps/commit/05265988d4f26237adcbc9fd2786a94b165de534) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues with JIT provisioning error message
+
 ## 2.0.97
 
 ### Patch Changes
