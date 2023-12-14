@@ -22,11 +22,11 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface } from "../models/governance-connectors";
 import { GovernanceConnectorUtils } from "../utils";
-import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 
 /**
  * Interface for admin forced password reset form props.
