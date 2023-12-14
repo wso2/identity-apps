@@ -246,7 +246,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
         // Remove SMS OTP authenticator from the list at the sub org level.
         _filteredAuthenticators = (orgType === OrganizationType.SUBORGANIZATION &&
-            authenticatorConfig.disableSMSOTPInSubOrgs)
+            authenticatorConfig?.disableSMSOTPInSubOrgs)
             ? _filteredAuthenticators.filter((authenticator: GenericAuthenticatorInterface) => {
                 return (
                     authenticator.name !==
