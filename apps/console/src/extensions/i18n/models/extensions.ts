@@ -3374,6 +3374,7 @@ export interface Extensions {
                     changePasswordModal: {
                         emailUnavailableWarning: string;
                         emailResetWarning: string;
+                        passwordResetConfigDisabled: string;
                     };
                 };
             };

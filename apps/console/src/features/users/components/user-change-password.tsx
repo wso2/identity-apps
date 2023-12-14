@@ -25,14 +25,15 @@ import React,
     FunctionComponent,
     LazyExoticComponent,
     ReactElement,
+    ReactNode,
     Suspense,
     useEffect,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import PasswordStrengthBar from "react-password-strength-bar";
-import { Grid, Modal } from "semantic-ui-react";
-import { SharedUserStoreUtils } from "../../core";
+import { Grid, Icon, Modal } from "semantic-ui-react";
+import { AppConstants, SharedUserStoreUtils, history } from "../../core";
 import { PatchRoleDataInterface } from "../../roles/models/roles";
 import {
     ConnectorPropertyInterface,
@@ -240,6 +241,72 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             });
     };
 
+    const handleLoginAndRegistrationPageRedirect = () => {
+        history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
+            .replace(":categoryId",
+                ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID)
+            .replace(":connectorId",
+                ServerConfigurationsConstants.ADMIN_FORCED_PASSWORD_RESET));
+    };
+
+    const resolveConfigurationList = (governanceConnectorProperties: ConnectorPropertyInterface[]): ReactNode => {
+        return governanceConnectorProperties?.map((property: ConnectorPropertyInterface, index: number) => {
+            if (property?.name === ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET) {
+                if (property?.value === "true") {
+                    return (
+                        <Grid.Row key={ index }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                                <Message
+                                    key={ index }
+                                    hideDefaultIcon
+                                    icon="mail"
+                                    content=
+                                        {
+                                            t("extensions:manage.users." +
+                                            "editUserProfile.resetPassword." +
+                                            "changePasswordModal.emailResetWarning")
+                                        }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    );
+                }
+
+                return (
+                    <Grid.Row key={ index }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                            <Message
+                                hideDefaultIcon
+                                error
+                                key={ index }
+                                content={
+                                    (
+                                        <>
+                                            <Icon color="red" name="times circle" />
+                                            <Trans
+                                                i18nKey={ "extensions:manage.users.editUserProfile.resetPassword." +
+                                                    "changePasswordModal.passwordResetConfigDisabled" }>
+                                                Password reset via recovery email is not enabled.
+                                                Please make sure to enable it from
+                                                <a
+                                                    onClick={ handleLoginAndRegistrationPageRedirect }
+                                                    className="ml-1 external-link link pointing primary"
+                                                >
+                                                    Login and Registration
+                                                </a> configurations
+                                            </Trans>
+                                        </>
+                                    )
+                                }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                );
+            }
+        });
+    };
+
+
     /**
      * The following method handles the change of password reset option
      * and renders the relevant component accordingly.
@@ -323,24 +390,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 </>
             );
         } else {
-            return (
-                <>
-                    <Grid.Row>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                            <Message
-                                hideDefaultIcon
-                                icon="mail"
-                                content=
-                                    {
-                                        t("extensions:manage.users." +
-                                        "editUserProfile.resetPassword." +
-                                        "changePasswordModal.emailResetWarning")
-                                    }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                </>
-            );
+            return resolveConfigurationList(governanceConnectorProperties);
         }
     };
 

@@ -21,7 +21,7 @@ import { Field, Form, FormValue } from "@wso2is/form";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface } from "../models/governance-connectors";
@@ -118,7 +118,8 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
     const getUpdatedConfigurations = (values: Record<string, unknown>) => {
         const data: { [ key:string ]: unknown } = {
             "Recovery.AdminPasswordReset.RecoveryLink": values[
-                GovernanceConnectorUtils.encodeConnectorPropertyName("Recovery.AdminPasswordReset.RecoveryLink") ]
+                GovernanceConnectorUtils.encodeConnectorPropertyName(
+                    ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET) ]
         };
 
         return data;

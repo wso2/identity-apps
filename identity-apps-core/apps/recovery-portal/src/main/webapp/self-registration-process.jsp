@@ -225,7 +225,7 @@
             } else if (SelfRegistrationStatusCodes.CODE_USER_NAME_INVALID.equalsIgnoreCase(errorCode)) {
                 errorMsg = user.getUsername() + " is an invalid user name. Please pick a valid username.";
             }
-            request.setAttribute("errorMsg", errorMsg + " Please contact the administrator to fix this issue.");
+            request.setAttribute("errorMsg", errorMsg + " To fix this issue, please contact the administrator.");
             request.setAttribute("errorCode", errorCode);
             if (!StringUtils.isBlank(username)) {
                 request.setAttribute("username", username);
