@@ -424,6 +424,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 <Button
                                     basic
                                     primary
+                                    size="tiny"
                                     data-testid="user-mgt-password-generate-button"
                                     type="button"
                                     className="info add-user-step-button"
