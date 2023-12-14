@@ -52,7 +52,8 @@ enum JITProvisioningConstants {
     ENABLE_JIT_PROVISIONING_KEY = "enableJITProvisioning",
     PROVISIONING_USER_STORE_DOMAIN_KEY = "provisioningUserstoreDomain",
     PROVISIONING_SCHEME_TYPE_KEY = "provisioningScheme",
-    ASSOCIATE_LOCAL_USER = "associateLocalUser"
+    ASSOCIATE_LOCAL_USER = "associateLocalUser",
+    ATTRIBUTE_SYNC_METHOD ="attributeSyncMethod"
 }
 
 /**
@@ -90,6 +91,9 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         return {
             associateLocalUser: values.get(JITProvisioningConstants.ASSOCIATE_LOCAL_USER)
                 ?.includes(JITProvisioningConstants.ASSOCIATE_LOCAL_USER) ?? initialValues?.associateLocalUser,
+            attributeSyncMethod: values?.get(
+                JITProvisioningConstants.ATTRIBUTE_SYNC_METHOD
+            ) ?? initialValues?.attributeSyncMethod,
             isEnabled: values.get(
                 JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
             ).includes(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY) ?? initialValues?.isEnabled,

@@ -215,6 +215,7 @@ export interface JITProvisioningResponseInterface {
     scheme?: SupportedJITProvisioningSchemes;
     userstore?: string;
     associateLocalUser?: boolean;
+    attributeSyncMethod?: string;
 }
 
 /**
