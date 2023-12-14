@@ -112,7 +112,7 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
             roles: values.roles.map((role: InviteNewAdministratorWizardFormValuesRoleInterface) => role.role.id),
             usernames: [ values.username ]
         };
-        
+
         sendParentOrgUserInvite(invite)
             .then((response: AxiosResponse) => {
                 // TODO: Handle errors for each user if needed when revamping invite parent org user UI to facilitate
