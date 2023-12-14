@@ -18,16 +18,15 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import {
     OrganizationEnterpriseConnectionCreateWizardFormErrorValidationsInterface,
     OrganizationEnterpriseConnectionCreateWizardFormValuesInterface
 } from "./organization-enterprise-connection-create-wizard";
-import { useGetConnections } from "../../../api/connections";
 import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
-import { ConnectionListResponseInterface, ConnectionTemplateInterface } from "../../../models/connection";
-import { handleGetConnectionListCallError } from "../../../utils/connection-utils";
+import { ConnectionTemplateInterface } from "../../../models/connection";
+import { ConnectionsManagementUtils } from "../../../utils/connection-utils";
 
 /**
  * Proptypes for the Organization enterprise connection create wizard content.
@@ -90,54 +89,38 @@ export const OrganizationEnterpriseConnectionCreateWizardContent:
 
         const { t } = useTranslation();
 
-        const {
-            data: connections,
-            isLoading: isConnectionsFetchRequestLoading,
-            error: connectionsFetchRequestError
-        } = useGetConnections(null, null, null, null);
-
-        const [ idpList, setIdPList ] = useState<ConnectionListResponseInterface>({});
-
-        /**
-         * Loads the connections on initial component load.
-         */
-        useEffect(() => {
-            if (!connections) {
-                return;
-            }
-
-            setIdPList(connections);
-        }, [ connections ]);
-
-        useEffect(() => {
-            if (connectionsFetchRequestError) {
-                handleGetConnectionListCallError(connectionsFetchRequestError);
-            }
-        }, [ connectionsFetchRequestError ]);
-
         /**
          * Check whether IDP name is already exist or not.
          *
          * @param value - IDP name.
          * @returns error msg if name is already taken.
          */
-        const idpNameValidation = (value): string => {
+        const idpNameValidation = (value: string): Promise<string> => {
 
-            let nameExist: boolean = false;
-
-            if (idpList?.count > 0) {
-                idpList?.identityProviders.map((idp) => {
-                    if (idp?.name === value) {
-                        nameExist = true;
-
+            return ConnectionsManagementUtils.searchIdentityProviderName(value)
+                .then((idpExist: boolean) => {
+                    if (idpExist) {
+                        return Promise.resolve(
+                            t(
+                                "console:develop.features." +
+                                "authenticationProvider.forms.generalDetails.name." +
+                                "validations.duplicate"
+                            )
+                        );
+                    } else {
+                        return Promise.resolve(null);
                     }
+                })
+                .catch(() => {
+                    /**
+                     * Ignore the error, as a failed identity provider search
+                     * should not result in user blocking. However, if the
+                     * identity provider name already exists, it will undergo
+                     * validation from the backend, and any resulting errors
+                     * will be displayed in the user interface.
+                     */
+                    return Promise.resolve(null);
                 });
-            }
-            if (nameExist) {
-                return t("console:develop.features." +
-                "authenticationProvider.forms.generalDetails.name." +
-                "validations.duplicate");
-            }
         };
 
         /**
@@ -163,77 +146,74 @@ export const OrganizationEnterpriseConnectionCreateWizardContent:
         };
 
         return (
-            !isConnectionsFetchRequestLoading
-                ? (
-                    <Wizard
-                        id={ FORM_ID }
-                        initialValues={ { name: template?.idp?.name } }
-                        onSubmit={
-                            (values: OrganizationEnterpriseConnectionCreateWizardFormValuesInterface) =>
-                                onSubmit(values)
+            <Wizard
+                id={ FORM_ID }
+                initialValues={ { name: template?.idp?.name } }
+                onSubmit={
+                    (values: OrganizationEnterpriseConnectionCreateWizardFormValuesInterface) =>
+                        onSubmit(values)
+                }
+                triggerSubmit={ (submitFunction: () => void) => triggerSubmission(submitFunction) }
+                triggerPrevious={ (previousFunction: () => void) => triggerPrevious(previousFunction) }
+                changePage={ (step: number) => changePageNumber(step) }
+                setTotalPage={ (step: number) => setTotalPage(step) }
+                data-componenentid={ componentId }
+                validateOnBlur
+            >
+                <WizardPage validate={ validateForm }>
+                    <Field.Input
+                        ariaLabel="Organization IDP Name"
+                        inputType="name"
+                        name="name"
+                        label={ t("console:develop.features.authenticationProvider.forms." +
+                        "generalDetails.name.label") }
+                        placeholder={ t("console:develop.features.authenticationProvider.forms." +
+                        "generalDetails.name.placeholder") }
+                        required={ true }
+                        validation={ idpNameValidation }
+                        maxLength={
+                            AuthenticatorManagementConstants
+                                .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.IDP_NAME_MAX_LENGTH as number
                         }
-                        triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
-                        triggerPrevious={ (previousFunction) => triggerPrevious(previousFunction) }
-                        changePage={ (step: number) => changePageNumber(step) }
-                        setTotalPage={ (step: number) => setTotalPage(step) }
-                        data-componenentid={ componentId }
-                    >
-                        <WizardPage validate={ validateForm }>
-                            <Field.Input
-                                ariaLabel="Organization IDP Name"
-                                inputType="name"
-                                name="name"
-                                label={ t("console:develop.features.authenticationProvider.forms." +
-                                "generalDetails.name.label") }
-                                placeholder={ t("console:develop.features.authenticationProvider.forms." +
-                                "generalDetails.name.placeholder") }
-                                required={ true }
-                                validation={ (value) => idpNameValidation(value) }
-                                maxLength={
-                                    AuthenticatorManagementConstants
-                                        .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.IDP_NAME_MAX_LENGTH as number
-                                }
-                                minLength={
-                                    AuthenticatorManagementConstants
-                                        .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.IDP_NAME_MIN_LENGTH as number
-                                }
-                                data-componentid={ `${componentId}-idp-name` }
-                                width={ 13 }
-                            />
-                            <Field.Input
-                                ariaLabel="Organization IDP Description"
-                                inputType="description"
-                                name="description"
-                                label={
-                                    t("console:develop.features.authenticationProvider.forms." +
-                                    "generalDetails.description.placeholder")
-                                }
-                                placeholder={
-                                    t("console:develop.features.authenticationProvider.forms." +
-                                    "generalDetails.description.placeholder")
-                                }
-                                message={
-                                    t("console:develop.features.authenticationProvider.forms." +
-                                    "generalDetails.description.placeholder")
-                                }
-                                type="text"
-                                maxLength={
-                                    AuthenticatorManagementConstants
-                                        .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
-                                        .IDP_DESCRIPTION_MAX_LENGTH as number
-                                }
-                                minLength={
-                                    AuthenticatorManagementConstants
-                                        .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
-                                        .IDP_DESCRIPTION_MIN_LENGTH as number
-                                }
-                                data-componentid={ `${componentId}-idp-description` }
-                                width={ 30 }
-                            />
-                        </WizardPage>
-                    </Wizard>
-                )
-                : null
+                        minLength={
+                            AuthenticatorManagementConstants
+                                .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.IDP_NAME_MIN_LENGTH as number
+                        }
+                        data-componentid={ `${componentId}-idp-name` }
+                        width={ 13 }
+                    />
+                    <Field.Input
+                        ariaLabel="Organization IDP Description"
+                        inputType="description"
+                        name="description"
+                        label={
+                            t("console:develop.features.authenticationProvider.forms." +
+                            "generalDetails.description.placeholder")
+                        }
+                        placeholder={
+                            t("console:develop.features.authenticationProvider.forms." +
+                            "generalDetails.description.placeholder")
+                        }
+                        message={
+                            t("console:develop.features.authenticationProvider.forms." +
+                            "generalDetails.description.placeholder")
+                        }
+                        type="text"
+                        maxLength={
+                            AuthenticatorManagementConstants
+                                .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                                .IDP_DESCRIPTION_MAX_LENGTH as number
+                        }
+                        minLength={
+                            AuthenticatorManagementConstants
+                                .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                                .IDP_DESCRIPTION_MIN_LENGTH as number
+                        }
+                        data-componentid={ `${componentId}-idp-description` }
+                        width={ 30 }
+                    />
+                </WizardPage>
+            </Wizard>
         );
     };
 
