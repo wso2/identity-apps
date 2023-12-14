@@ -28,16 +28,16 @@ import {
 } from "@wso2is/react-components";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
-import React, { 
-    FC, 
-    ReactElement, 
-    useEffect, 
-    useState 
+import React, {
+    FC,
+    ReactElement,
+    useEffect,
+    useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Icon } from "semantic-ui-react";
-import { 
+import {
     AuthenticatorExtensionsConfigInterface,
     identityProviderConfig
 } from "../../../extensions/configs";
@@ -67,10 +67,10 @@ import {
     ConnectionInterface,
     ConnectionListResponseInterface
 } from "../models/connection";
-import { 
+import {
     ConnectionsManagementUtils,
     handleGetAuthenticatorTagsError,
-    handleGetConnectionListCallError 
+    handleGetConnectionListCallError
 } from "../utils/connection-utils";
 
 /**
@@ -124,11 +124,11 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         error: connectionsFetchRequestError,
         mutate: mutateConnectionsFetchRequest
     } = useGetConnections(
-        listItemLimit, 
-        listOffset, 
-        filter, 
-        "federatedAuthenticators", 
-        !filterAuthenticatorsOnly, 
+        listItemLimit,
+        listOffset,
+        filter,
+        "federatedAuthenticators",
+        !filterAuthenticatorsOnly,
         filterAuthenticatorsOnly
     );
 
@@ -150,7 +150,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         }
 
         if (connectionsFetchRequestError) {
-            handleGetConnectionListCallError(connectionsFetchRequestError); 
+            handleGetConnectionListCallError(connectionsFetchRequestError);
 
             return;
         }
@@ -417,7 +417,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
             action={ (
                 (!isConnectionsFetchRequestLoading || !isAuthenticatorsFetchRequestLoading) &&
                 !(!searchQuery && connectionsList?.identityProviders?.length <= 0)) &&
-                identityProviderConfig.useNewConnectionsView !== undefined && 
+                identityProviderConfig.useNewConnectionsView !== undefined &&
                 (
                     <Show when={ AccessControlConstants.IDP_WRITE }>
                         <PrimaryButton
