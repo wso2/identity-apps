@@ -174,6 +174,15 @@
         </div>
 
         <div class="item"
+            data-value="pt_BR"
+            style="background-color: var(--language-selector-background-color) !important;
+            color: var(--language-selector-text-color) !important;"
+        >
+            <i class="br flag"></i>
+            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "lang.switcher.brazil")%>
+        </div>
+
+        <div class="item"
              data-value="de_DE"
              style="background-color: var(--language-selector-background-color) !important;
              color: var(--language-selector-text-color) !important;"

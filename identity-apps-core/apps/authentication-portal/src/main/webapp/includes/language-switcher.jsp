@@ -208,6 +208,15 @@
             <i class="jp flag"></i>
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "lang.switcher.japanese")%>
         </div>
+
+        <div class="item"
+            data-value="pt_BR"
+            style="background-color: var(--language-selector-background-color) !important;
+            color: var(--language-selector-text-color) !important;"
+        >
+            <i class="br flag"></i>
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "lang.switcher.brazil")%>
+        </div>
     </div>
 </div>
 
