@@ -23,7 +23,6 @@ import { FormValidation } from "@wso2is/validation";
 import { AppState } from "apps/console/src/features/core";
 import { getUsernameConfiguration } from "apps/console/src/features/users/utils/user-management-utils";
 import { useValidationConfigData } from "apps/console/src/features/validation/api";
-import camelCase from "lodash-es/camelCase";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -127,7 +126,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
         ["data-testid"]: testId
     } = props;
 
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     const [ initialConnectorValues, setInitialConnectorValues ]
         = useState<Map<string, ConnectorPropertyInterface>>(undefined);
@@ -314,7 +313,8 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 "SelfRegistration.ReCaptcha",
                 "SelfRegistration.AutoLogin.Enable",
                 "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime",
-                "SelfRegistration.CallbackRegex"
+                "SelfRegistration.CallbackRegex",
+                "SelfRegistration.SMSOTP.Regex"
             ];
 
             for (const key in values) {
@@ -507,34 +507,6 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
     if (!initialConnectorValues) {
         return null;
     }
-
-    const resolveFieldLabel = (name: string, displayName: string): string => {
-        const fieldLabelKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
-                camelCase(initialValues?.category) + ".connectors." + camelCase(initialValues?.name) +
-                ".properties." + camelCase(name) + ".label";
-
-        let fieldLabel: string = displayName;
-
-        if (i18n.exists(fieldLabelKey)) {
-            fieldLabel = t(fieldLabelKey);
-        }
-
-        return fieldLabel;
-    };
-
-    const resolveFieldHint = (name: string, description: string): string => {
-        const fieldHintKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
-                camelCase(initialValues?.category) + ".connectors." + camelCase(initialValues?.name) +
-                ".properties." + camelCase(name) + ".hint";
-
-        let fieldHint: string = description;
-
-        if (i18n.exists(fieldHintKey)) {
-            fieldHint = t(fieldHintKey);
-        }
-
-        return fieldHint;
-    };
 
     return (
         <Form
