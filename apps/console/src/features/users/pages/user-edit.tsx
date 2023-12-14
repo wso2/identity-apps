@@ -56,7 +56,6 @@ import {
     history
 } from "../../core";
 import { getIdPIcons } from "../../identity-providers/configs/ui";
-import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
 import { getGovernanceConnectors } from "../../server-configurations/api";
 import { ServerConfigurationsConstants } from "../../server-configurations/constants";
 import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../../server-configurations/models";
@@ -76,8 +75,6 @@ const UserEditPage = (): ReactElement => {
 
     const dispatch: Dispatch<any> = useDispatch();
 
-    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
-
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
@@ -96,9 +93,6 @@ const UserEditPage = (): ReactElement => {
         user.name?.givenName === undefined;
 
     useEffect(() => {
-        if (!isSuperOrganization() && !isFirstLevelOrganization()) {
-            return;
-        }
 
         const properties: ConnectorPropertyInterface[] = [];
 
