@@ -159,6 +159,7 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
                 changePage={ (step: number) => changePageNumber(step) }
                 setTotalPage={ (step: number) => setTotalPage(step) }
                 data-componentid={ componentId }
+                validateOnBlur
             >
                 <WizardPage validate={ validateForm }>
                     <Field.Input
