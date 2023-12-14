@@ -104,6 +104,10 @@ interface IdentityProviderSettingsPropsInterface extends TestableComponentInterf
 
 const OIDC_CLIENT_ID_SECRET_MAX_LENGTH: number = 100;
 const URL_MAX_LENGTH: number = 2048;
+/**
+ * The backend response includes both of the following keys
+ * for different connections.
+ */
 const AUTHORIZED_REDIRECT_URLS: string[] = [ "callbackUrl", "callBackUrl" ];
 
 /**
