@@ -101,6 +101,12 @@ export class ConnectionManagementConstants {
     public static readonly DEFAULT_IDP_TEMPLATE_LOADING_STRATEGY: ConnectionTemplateLoadingStrategies =
     ConnectionTemplateLoadingStrategies.LOCAL;
 
+    public static readonly CONNECTIONS_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
+        "invalid status code while fetching identity providers.";
+
+    public static readonly CONNECTIONS_FETCH_ERROR: string = "An error occurred while fetching " +
+    "the identity providers.";
+
     public static readonly CONNECTION_TEMPLATE_FETCH_INVALID_STATUS_CODE_ERROR: string = "Received an " +
         "invalid status code while fetching identity provider template.";
 

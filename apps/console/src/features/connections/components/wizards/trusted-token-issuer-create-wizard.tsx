@@ -25,7 +25,6 @@ import { URLUtils } from "@wso2is/core/utils";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import {
     CertFileStrategy,
-    ContentLoader,
     DocumentationLink,
     FilePicker,
     GenericIcon,
@@ -48,7 +47,6 @@ import React, {
     MutableRefObject,
     PropsWithChildren,
     ReactElement,
-    useEffect,
     useRef,
     useState
 } from "react";
@@ -71,14 +69,13 @@ import {
     IdentityProviderFormValuesInterface,
     IdentityProviderInitialValuesInterface,
     IdentityProviderInterface,
-    StrictIdentityProviderInterface,
     TrsutedTokenIssuerWizardStep,
     TrustedTokenIssuerWizardStepInterface
 } from "../../../identity-providers/models";
-import { createConnection, useGetConnections } from "../../api/connections";
+import { createConnection } from "../../api/connections";
 import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
-import { handleGetConnectionsError } from "../../utils/connection-utils";
+import { ConnectionsManagementUtils } from "../../utils/connection-utils";
 
 /**
  * Proptypes for the enterprise identity provider
@@ -118,7 +115,6 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
     const [ finishShouldBeDisabled, setFinishShouldBeDisabled ] = useState<boolean>(true);
-    const [ idpList, setIdPList ] = useState<StrictIdentityProviderInterface[]>([]);
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
     const dispatch: ThunkDispatch<AppState, any, AnyAction> = useDispatch();
@@ -150,30 +146,6 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
         name: ""
     };
 
-    const {
-        data: connections,
-        isLoading: isConnectionsFetchRequestLoading,
-        error: connectionsFetchRequestError
-    } = useGetConnections(null, null, null, null);
-
-    /**
-         * Loads the connections on initial component load.
-         */
-    useEffect(() => {
-        if (connections?.identityProviders?.length > 0) {
-            setIdPList(connections.identityProviders);
-        }
-    }, [ connections ]);
-
-    /**
-     * Check if the get connection list call has returned an error.
-     */
-    useEffect(() => {
-        if (connectionsFetchRequestError) {
-            handleGetConnectionsError(connectionsFetchRequestError);
-        }
-    }, [ connectionsFetchRequestError ]);
-
     /**
      * Get the list of steps for the wizard.
      *
@@ -201,9 +173,22 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
      * @param userInput - User input for the IDP name.
      * @returns `true` if the IDP name is already taken else `false`.
      */
-    const isIdpNameAlreadyTaken = (userInput: string): boolean =>  idpList?.some(
-        ({ name }: StrictIdentityProviderInterface) => name === userInput
-    );
+    const isIdpNameAlreadyTaken = (userInput: string): Promise<boolean> =>  {
+        return ConnectionsManagementUtils.searchIdentityProviderName(userInput)
+            .then((isIdpExist: boolean) => {
+                return Promise.resolve(isIdpExist);
+            })
+            .catch(() => {
+                /**
+                 * Ignore the error, as a failed identity provider search
+                 * should not result in user blocking. However, if the
+                 * identity provider name already exists, it will undergo
+                 * validation from the backend, and any resulting errors
+                 * will be displayed in the user interface.
+                 */
+                return Promise.resolve(false);
+            });
+    };
 
     /**
      * Check whether loop back call is allowed or not.
@@ -337,10 +322,10 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                 required={ true }
                 width={ 15 }
                 format = { (values: string) => values.trimStart() }
-                validation={ (values: string) => {
+                validation={ async (values: string) => {
                     let errorMsg: string;
 
-                    if (isIdpNameAlreadyTaken(values)) {
+                    if (values && await isIdpNameAlreadyTaken(values)) {
                         errorMsg = t("console:develop.features.authenticationProvider." +
                             "forms.generalDetails.name.validations.duplicate");
                     }
@@ -639,20 +624,17 @@ export const TrustedTokenIssuerCreateWizard: FC<TrustedTokenIssuerCreateWizardPr
                     data-componentid={ `${ componentId }-modal-content-2` }
                 >
                     { alert && alertComponent }
-                    { !isConnectionsFetchRequestLoading
-                        ? (
-                            <Wizard2
-                                ref={ wizardRef }
-                                initialValues={ initialValues }
-                                onSubmit={ handleFormSubmit }
-                                uncontrolledForm={ true }
-                                pageChanged={ (index: number) => setCurrentWizardStep(index) }
-                                data-componentid={ componentId }
-                            >
-                                { getWizardSteps().map((step: TrustedTokenIssuerWizardStepInterface) => step.content) }
-                            </Wizard2>
-                        ) : <ContentLoader />
-                    }
+                    <Wizard2
+                        ref={ wizardRef }
+                        initialValues={ initialValues }
+                        onSubmit={ handleFormSubmit }
+                        uncontrolledForm={ true }
+                        pageChanged={ (index: number) => setCurrentWizardStep(index) }
+                        data-componentid={ componentId }
+                        validateOnBlur
+                    >
+                        { getWizardSteps().map((step: TrustedTokenIssuerWizardStepInterface) => step?.content) }
+                    </Wizard2>
                 </Modal.Content>
                 <Modal.Actions
                     data-componentid={ `${ componentId }-modal-actions` }

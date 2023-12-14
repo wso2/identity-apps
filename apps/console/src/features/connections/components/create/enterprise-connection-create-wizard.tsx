@@ -69,7 +69,7 @@ import { Dispatch } from "redux";
 import { Icon, Grid as SemanticGrid } from "semantic-ui-react";
 import { commonConfig } from "../../../../extensions";
 import { EventPublisher } from "../../../core";
-import { createConnection, useGetConnectionTemplate, useGetConnections } from "../../api/connections";
+import { createConnection, useGetConnectionTemplate } from "../../api/connections";
 import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
 import { ConnectionManagementConstants } from "../../constants/connection-constants";
 import { AuthenticatorMeta } from "../../meta/authenticator-meta";
@@ -77,10 +77,9 @@ import {
     AuthProtocolTypes,
     ConnectionInterface,
     ConnectionTemplateInterface,
-    GenericConnectionCreateWizardPropsInterface,
-    StrictConnectionInterface
+    GenericConnectionCreateWizardPropsInterface
 } from "../../models/connection";
-import { handleGetConnectionsError } from "../../utils/connection-utils";
+import { ConnectionsManagementUtils } from "../../utils/connection-utils";
 
 /**
  * Proptypes for the enterprise identity provider
@@ -150,7 +149,6 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     // Dynamic UI state
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
-    const [ idpList, setIdPList ] = useState<StrictConnectionInterface[]>(undefined);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
@@ -161,40 +159,9 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const {
-        data: connections,
-        isLoading: isConnectionsFetchRequestLoading,
-        error: connectionsFetchRequestError
-    } = useGetConnections(null, null, null, null);
-
-    const {
         data: connectionTemplate,
         isLoading: isConnectionTemplateFetchRequestLoading
     } = useGetConnectionTemplate(selectedTemplateId, selectedTemplateId !== null);
-
-    useEffect(() => {
-        if (isConnectionsFetchRequestLoading) {
-
-            return;
-        }
-
-        if (!connections) {
-
-            return;
-        }
-
-        if (idpList) {
-
-            return;
-        }
-
-        setIdPList(connections.identityProviders);
-    }, [ connections ]);
-
-    useEffect(() => {
-        if (connectionsFetchRequestError) {
-            handleGetConnectionsError(connectionsFetchRequestError);
-        }
-    }, [ connectionsFetchRequestError ]);
 
     useEffect(() => {
         if (!initWizard) {
@@ -239,13 +206,21 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
         ] as WizardStepInterface[];
     };
 
-    const isIdpNameAlreadyTaken = (userInput: string): boolean => {
-        if (idpList?.length > 0) {
-            return idpList?.reduce((set: Set<string>, { name }: { name: string }) => set.add(name), new Set<string>())
-                .has(userInput);
-        }
-
-        return false;
+    const isIdpNameAlreadyTaken = (userInput: string): Promise<boolean> => {
+        return ConnectionsManagementUtils.searchIdentityProviderName(userInput)
+            .then((isIdpExist: boolean) => {
+                return Promise.resolve(isIdpExist);
+            })
+            .catch(() => {
+                /**
+                 * Ignore the error, as a failed identity provider search
+                 * should not result in user blocking. However, if the
+                 * identity provider name already exists, it will undergo
+                 * validation from the backend, and any resulting errors
+                 * will be displayed in the user interface.
+                 */
+                return Promise.resolve(false);
+            });
     };
 
     const renderDimmerOverlay = (): ReactNode => {
@@ -433,11 +408,11 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
 
     const wizardCommonFirstPage = () => (
         <WizardPage
-            validate={ (values: any) => {
+            validate={ async (values: any) => {
                 const errors: FormErrors = {};
 
                 errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
-                if (isIdpNameAlreadyTaken(values.name)) {
+                if (values?.name && await isIdpNameAlreadyTaken(values?.name)) {
                     errors.name = t("console:develop.features.authenticationProvider." +
                         "forms.generalDetails.name.validations.duplicate");
                 }
@@ -446,7 +421,8 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                         "templates.enterprise.validation.name");
                 }
                 setNextShouldBeDisabled(ifFieldsHave(errors));
-            } }>
+            } }
+        >
             <Field.Input
                 data-testid={ `${ componentId }-form-wizard-idp-name` }
                 ariaLabel="name"
@@ -462,11 +438,11 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 format = { (values: any) => {
                     return values.toString().trimStart();
                 } }
-                validation={ (values: any) => {
+                validation={ async (values: any) => {
                     let errors: "";
 
                     errors = composeValidators(required, length(IDP_NAME_LENGTH))(values);
-                    if (isIdpNameAlreadyTaken(values)) {
+                    if (values && await isIdpNameAlreadyTaken(values)) {
                         errors = t("console:develop.features.authenticationProvider." +
                             "forms.generalDetails.name.validations.duplicate");
                     }
@@ -970,19 +946,17 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                         className="content-container"
                         data-componentid={ `${ componentId }-modal-content-2` }>
                         { alert && alertComponent }
-                        { !isConnectionsFetchRequestLoading
-                            ? (
-                                <Wizard2
-                                    ref={ wizardRef }
-                                    initialValues={ initialValues }
-                                    onSubmit={ handleFormSubmit }
-                                    uncontrolledForm={ true }
-                                    pageChanged={ (index: number) => setCurrentWizardStep(index) }
-                                    data-componentid={ componentId }>
-                                    { resolveWizardPages() }
-                                </Wizard2>
-                            ) : <ContentLoader />
-                        }
+                        <Wizard2
+                            ref={ wizardRef }
+                            initialValues={ initialValues }
+                            onSubmit={ handleFormSubmit }
+                            uncontrolledForm={ true }
+                            pageChanged={ (index: number) => setCurrentWizardStep(index) }
+                            data-componentid={ componentId }
+                            validateOnBlur
+                        >
+                            { resolveWizardPages() }
+                        </Wizard2>
                     </ModalWithSidePanel.Content>
                 </React.Fragment>
                 { /*Modal actions*/ }

@@ -18,22 +18,20 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
-import { ContentLoader } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import {
     ExpertModeAuthenticationProviderCreateWizardFormErrorValidationsInterface,
     ExpertModeAuthenticationProviderCreateWizardFormValuesInterface
 } from "./expert-mode-authentication-provider-create-wizard";
-import { useGetConnections } from "../../../api/connections";
 import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
 import { ConnectionTemplateInterface } from "../../../models/connection";
-import { handleGetConnectionListCallError } from "../../../utils/connection-utils";
+import { ConnectionsManagementUtils } from "../../../utils/connection-utils";
 
 /**
  * Prop-types for the Expert Mode Authentication Wizard From.
  */
-interface ExpertModeAuthenticationProviderCreateWizardContentPropsInterface extends 
+interface ExpertModeAuthenticationProviderCreateWizardContentPropsInterface extends
     IdentifiableComponentInterface {
     /**
      * Trigger form submit.
@@ -92,51 +90,38 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
 
         const { t } = useTranslation();
 
-        const {
-            data: idpList,
-            isLoading: isIdPListFetchRequestLoading,
-            error: idpListFetchRequestError
-        } = useGetConnections(null, null, null);
-
-        /**
-         * Handles the IdP list fetch request error.
-         */
-        useEffect(() => {
-            if (!idpListFetchRequestError) {
-                return;
-            }
-
-            handleGetConnectionListCallError(idpListFetchRequestError);
-        }, [ idpListFetchRequestError ]);
-
         /**
          * Check whether IDP name is already exist or not.
          *
          * @param value - IDP name.
          * @returns error msg if name is already taken.
          */
-        const idpNameValidation = (value): string => {
+        const idpNameValidation = (value: string): Promise<string> => {
 
-            let nameExist: boolean = false;
-
-            if (idpList?.count > 0) {
-                idpList?.identityProviders.map((idp) => {
-                    if (idp?.name === value) {
-                        nameExist = true;
-
+            return ConnectionsManagementUtils.searchIdentityProviderName(value)
+                .then((idpExist: boolean) => {
+                    if (idpExist) {
+                        return Promise.resolve(
+                            t(
+                                "console:develop.features." +
+                                "authenticationProvider.forms.generalDetails.name." +
+                                "validations.duplicate"
+                            )
+                        );
+                    } else {
+                        return Promise.resolve(null);
                     }
+                })
+                .catch(() => {
+                    /**
+                     * Ignore the error, as a failed identity provider search
+                     * should not result in user blocking. However, if the
+                     * identity provider name already exists, it will undergo
+                     * validation from the backend, and any resulting errors
+                     * will be displayed in the user interface.
+                     */
+                    return Promise.resolve(null);
                 });
-            }
-
-            if (!nameExist) {
-                return null;
-            }
-
-            return t(
-                "console:develop.features." +
-                "authenticationProvider.forms.generalDetails.name." +
-                "validations.duplicate"
-            );
         };
 
         /**
@@ -160,10 +145,6 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
             return errors;
         };
 
-        if (isIdPListFetchRequestLoading) {
-            return <ContentLoader dimmer={ false } />;
-        }
-
         return (
             <Wizard
                 id={ FORM_ID }
@@ -173,11 +154,12 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
                 onSubmit={
                     (values: ExpertModeAuthenticationProviderCreateWizardFormValuesInterface) => onSubmit(values)
                 }
-                triggerSubmit={ (submitFunction) => triggerSubmission(submitFunction) }
-                triggerPrevious={ (previousFunction) => triggerPrevious(previousFunction) }
+                triggerSubmit={ (submitFunction: () => void) => triggerSubmission(submitFunction) }
+                triggerPrevious={ (previousFunction: () => void) => triggerPrevious(previousFunction) }
                 changePage={ (step: number) => changePageNumber(step) }
                 setTotalPage={ (step: number) => setTotalPage(step) }
                 data-componentid={ componentId }
+                validateOnBlur
             >
                 <WizardPage validate={ validateForm }>
                     <Field.Input
@@ -193,7 +175,7 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
                             "generalDetails.name.placeholder")
                         }
                         required={ true }
-                        validation={ (value) => idpNameValidation(value) }
+                        validation={ idpNameValidation }
                         maxLength={
                             AuthenticatorManagementConstants
                                 .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.IDP_NAME_MAX_LENGTH as number
