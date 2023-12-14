@@ -23,7 +23,7 @@ import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@ws
 import { addAlert } from "@wso2is/core/store";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/form";
 import { Hint, Message } from "@wso2is/react-components";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from "react";
 import { FormRenderProps } from "react-final-form";
@@ -34,7 +34,11 @@ import { UsersConstants } from "../../../../../extensions/components/users/const
 import { useRolesList } from "../../../../roles/api";
 import { UserManagementConstants } from "../../../constants";
 import { sendParentOrgUserInvite } from "../api/invite";
-import { ParentOrgUserInviteInterface } from "../models/invite";
+import {
+    ParentOrgUserInvitationResult,
+    ParentOrgUserInviteInterface,
+    ParentOrgUserInviteResultStatus
+} from "../models/invite";
 
 interface RolesAutoCompleteOption {
     key: string;
@@ -167,7 +171,26 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
         setIsSubmitting(true);
 
         sendParentOrgUserInvite(invite)
-            .then(() => {
+            .then((response: AxiosResponse) => {
+
+                // TODO: Handle errors for each user when revamping invite parent org user UI to facilitate multiple
+                // user invites.
+                const responseData: ParentOrgUserInvitationResult = response.data[0];
+
+                if (responseData.result.status !== ParentOrgUserInviteResultStatus.SUCCESS) {
+
+                    dispatch(addAlert({
+                        description: t(
+                            "console:manage.features.invite.notifications.sendInvite.error.description",
+                            { description: responseData.result.errorDescription }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.invite.notifications.sendInvite.error.message")
+                    }));
+
+                    return;
+                }
+
                 dispatch(addAlert({
                     description: t(
                         "console:manage.features.invite.notifications.sendInvite.success.description"

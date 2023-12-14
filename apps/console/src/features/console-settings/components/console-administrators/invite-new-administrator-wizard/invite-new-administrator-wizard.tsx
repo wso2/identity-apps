@@ -24,7 +24,7 @@ import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@ws
 import { addAlert } from "@wso2is/core/store";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import { Heading, Hint, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -34,7 +34,11 @@ import { Grid, Modal, ModalProps } from "semantic-ui-react";
 import { UsersConstants } from "../../../../../extensions/components/users/constants/users";
 import { AppState } from "../../../../core/store";
 import { sendParentOrgUserInvite } from "../../../../users/components/guests/api/invite";
-import { ParentOrgUserInviteInterface } from "../../../../users/components/guests/models/invite";
+import {
+    ParentOrgUserInvitationResult,
+    ParentOrgUserInviteInterface,
+    ParentOrgUserInviteResultStatus
+} from "../../../../users/components/guests/models/invite";
 import { ConsoleAdministratorOnboardingConstants } from "../../../constants/console-administrator-onboarding-constants";
 import useConsoleRoles from "../../../hooks/use-console-roles";
 import "./invite-new-administrator-wizard.scss";
@@ -108,9 +112,27 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
             roles: values.roles.map((role: InviteNewAdministratorWizardFormValuesRoleInterface) => role.role.id),
             usernames: [ values.username ]
         };
-
+        
         sendParentOrgUserInvite(invite)
-            .then(() => {
+            .then((response: AxiosResponse) => {
+                // TODO: Handle errors for each user if needed when revamping invite parent org user UI to facilitate
+                //  multiple user invites.
+                const responseData: ParentOrgUserInvitationResult = response.data[0];
+
+                if (responseData.result.status !== ParentOrgUserInviteResultStatus.SUCCESS) {
+
+                    dispatch(addAlert({
+                        description: t(
+                            "console:manage.features.invite.notifications.sendInvite.error.description",
+                            { description: responseData.result.errorDescription }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.invite.notifications.sendInvite.error.message")
+                    }));
+
+                    return;
+                }
+
                 dispatch(addAlert({
                     description: t(
                         "console:manage.features.invite.notifications.sendInvite.success.description"
@@ -121,7 +143,6 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
                     )
                 }));
 
-                onClose(null, null);
             })
             .catch((error: AxiosError) => {
                 /**
@@ -172,6 +193,9 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
                         )
                     });
                 }
+            })
+            .finally(() => {
+                onClose(null, null);
             });
     };
 
