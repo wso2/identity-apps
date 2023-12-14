@@ -121,6 +121,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
             return null;
         }
     },
+    disableSMSOTPInSubOrgs: true,
     editIdentityProvider: {
         attributesSettings: true,
         getCertificateOptionsForTemplate: (templateId: string): { JWKS: boolean; PEM: boolean } | undefined => {

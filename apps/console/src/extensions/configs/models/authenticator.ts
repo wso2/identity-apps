@@ -19,7 +19,6 @@
 import { ReactElement } from "react";
 
 export interface AuthenticatorConfig {
-    disableSMSOTPInSubOrgs: boolean;
     overriddenAuthenticatorIds: {
         SMS_OTP_AUTHENTICATOR_ID: string;
     },

@@ -41,7 +41,6 @@ import {
     AuthenticatorExtensionsConfigInterface,
     identityProviderConfig
 } from "../../../extensions/configs";
-import { authenticatorConfig as extendedAuthenticatorConfig } from "../../../extensions/configs/authenticator";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -224,7 +223,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
             // Hide the SMS OTP authenticator for sub organizations.
             if (authenticator.id === AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
                 organizationType === OrganizationType.SUBORGANIZATION &&
-                extendedAuthenticatorConfig?.disableSMSOTPInSubOrgs) {
+                identityProviderConfig?.disableSMSOTPInSubOrgs) {
                 return false;
             }
 
@@ -305,7 +304,7 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
 
                 if (authenticator.id === AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
                     organizationType === OrganizationType.SUBORGANIZATION &&
-                    extendedAuthenticatorConfig?.disableSMSOTPInSubOrgs) {
+                    identityProviderConfig?.disableSMSOTPInSubOrgs) {
                     return false;
                 }
 

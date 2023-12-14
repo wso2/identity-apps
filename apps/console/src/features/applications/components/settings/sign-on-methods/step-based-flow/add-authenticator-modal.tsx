@@ -61,6 +61,7 @@ import {
 } from "semantic-ui-react";
 import { Authenticators } from "./authenticators";
 import { authenticatorConfig } from "../../../../../../extensions/configs/authenticator";
+import { identityProviderConfig } from "../../../../../../extensions/configs/identity-provider";
 import { ConnectionManagementConstants } from "../../../../../connections";
 import { ConnectionsManagementUtils } from "../../../../../connections/utils/connection-utils";
 import { getEmptyPlaceholderIllustrations } from "../../../../../core/configs/ui";
@@ -246,7 +247,7 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
         // Remove SMS OTP authenticator from the list at the sub org level.
         _filteredAuthenticators = (orgType === OrganizationType.SUBORGANIZATION &&
-            authenticatorConfig?.disableSMSOTPInSubOrgs)
+            identityProviderConfig?.disableSMSOTPInSubOrgs)
             ? _filteredAuthenticators.filter((authenticator: GenericAuthenticatorInterface) => {
                 return (
                     authenticator.name !==

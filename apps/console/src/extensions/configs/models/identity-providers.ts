@@ -155,6 +155,7 @@ export interface IdentityProviderConfig {
     filterFidoTags: (tags: string[]) => string[];
     getOverriddenAuthenticatorDisplayName: (authenticatorId: string, value: string) => string;
     extendedSamlConfig: ExtendedSamlConfigInterface;
+    disableSMSOTPInSubOrgs: boolean;
 }
 
 /**

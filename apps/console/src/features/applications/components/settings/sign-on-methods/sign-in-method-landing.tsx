@@ -21,7 +21,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Segment } from "semantic-ui-react";
-import { authenticatorConfig } from "../../../../../extensions";
+import { identityProviderConfig } from "../../../../../extensions/configs/identity-provider";
 import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import {
     IdentityProviderManagementConstants
@@ -198,7 +198,7 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             {
                                 (!hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_SMS_OTP) &&
                                     !(organizationType === OrganizationType.SUBORGANIZATION &&
-                                    authenticatorConfig?.disableSMSOTPInSubOrgs)) && (
+                                    identityProviderConfig?.disableSMSOTPInSubOrgs)) && (
                                     <InfoCard
                                         fluid
                                         data-componentid="sms-otp-mfa-flow-card"
