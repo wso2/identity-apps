@@ -312,7 +312,9 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 "SelfRegistration",
                 "SelfRegistration.Notification.InternallyManage",
                 "SelfRegistration.ReCaptcha",
-                "SelfRegistration.AutoLogin.Enable"
+                "SelfRegistration.AutoLogin.Enable",
+                "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime",
+                "SelfRegistration.CallbackRegex"
             ];
 
             for (const key in values) {
@@ -668,56 +670,6 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                     "SelfRegistration.NotifyAccountConfirmation",
                     "Enable sending notification for self sign up confirmation.")
                 }
-            />
-            <Field.Input
-                ariaLabel="SelfRegistration.VerificationCode.SMSOTP.ExpiryTime"
-                inputType="number"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime"
-                ) }
-                type="number"
-                width={ 16 }
-                required={ true }
-                placeholder={ "Enter user self registration verification link expiry time" }
-                labelPosition="top"
-                minLength={ 3 }
-                maxLength={ 100 }
-                readOnly={ readOnly }
-                initialValue={ initialFormValues?.[
-                    "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime" ] }
-                data-componentid={ `${ testId }-sms-otp-expiry-time` }
-                label={ resolveFieldLabel("SelfRegistration.VerificationCode.SMSOTP.ExpiryTime",
-                    "User self registration SMS OTP expiry time")
-                }
-                hidden={ !serverConfigurationConfig.dynamicConnectors }
-                disabled={ !isConnectorEnabled }
-                hint={ resolveFieldHint("SelfRegistration.VerificationCode.SMSOTP.ExpiryTime",
-                    "Specify the expiry time in minutes for the SMS OTP.") }
-            />
-            <Field.Input
-                ariaLabel="SelfRegistration.CallbackRegex"
-                inputType="text"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "SelfRegistration.CallbackRegex"
-                ) }
-                type="text"
-                width={ 16 }
-                required={ true }
-                placeholder={ "Enter user self registration verification link expiry time" }
-                labelPosition="top"
-                minLength={ 3 }
-                maxLength={ 100 }
-                readOnly={ readOnly }
-                initialValue={ initialFormValues?.[
-                    "SelfRegistration.CallbackRegex" ] }
-                data-component={ `${ testId }-callback-url-regex` }
-                label={ resolveFieldLabel("SelfRegistration.CallbackRegex",
-                    "User self registration callback URL regex")
-                }
-                hidden={ !serverConfigurationConfig.dynamicConnectors }
-                disabled={ !isConnectorEnabled }
-                hint={ resolveFieldHint("SelfRegistration.CallbackRegex",
-                    "This prefix will be used to validate the callback URL.") }
             />
             <Field.Button
                 form={ FORM_ID }
