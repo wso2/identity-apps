@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { Chip, Typography } from "@oxygen-ui/react";
 import { AutocompleteRenderGetTagProps } from "@oxygen-ui/react/Autocomplete";
+import Chip from "@oxygen-ui/react/Chip";
+import Typography from "@oxygen-ui/react/Typography";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/form";
@@ -207,10 +208,6 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                 ".required");
         }
 
-        if (!values.roles || isEmpty(values.roles)) {
-            errors.roles =  t("console:manage.features.parentOrgInvitations.addUserWizard.roles.validations.required");
-        }
-
         return errors;
     };
 
@@ -256,8 +253,6 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                         />
                         <FinalFormField
                             fullWidth
-                            required
-                            freeSolo
                             multipleValues
                             ariaLabel="Roles field"
                             data-componentid={ `${componentId}-form-roles-field` }
