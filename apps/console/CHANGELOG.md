@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.10.28
+
+### Patch Changes
+
+- [#5069](https://github.com/wso2/identity-apps/pull/5069) [`645dd00b56`](https://github.com/wso2/identity-apps/commit/645dd00b569c650b74763a56bfe82cad11e14b1c) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Change the ParentOrgUserResultStatus values along with the backend improvement.
+
+* [#5054](https://github.com/wso2/identity-apps/pull/5054) [`9e869ae16a`](https://github.com/wso2/identity-apps/commit/9e869ae16a03daf86cad9fac4e72df66cb2f3ec8) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Improve useRolesList API call
+
+- [#5028](https://github.com/wso2/identity-apps/pull/5028) [`9b4c61b72f`](https://github.com/wso2/identity-apps/commit/9b4c61b72fb370bba7230d3f6d3a18a53a79d70d) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Fix logo misalignment
+
+- Updated dependencies [[`9b4c61b72f`](https://github.com/wso2/identity-apps/commit/9b4c61b72fb370bba7230d3f6d3a18a53a79d70d)]:
+  - @wso2is/theme@2.0.50
+
 ## 2.10.27
 
 ### Patch Changes

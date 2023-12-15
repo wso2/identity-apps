@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.50
+
+### Patch Changes
+
+- [#5028](https://github.com/wso2/identity-apps/pull/5028) [`9b4c61b72f`](https://github.com/wso2/identity-apps/commit/9b4c61b72fb370bba7230d3f6d3a18a53a79d70d) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Fix logo misalignment
+
 ## 2.0.49
 
 ### Patch Changes
