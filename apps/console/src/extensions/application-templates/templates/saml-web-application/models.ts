@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -49,4 +49,17 @@ export interface SAMLTryoutSampleConfigInterface {
     samlIssuer: string,
     ssoUrl: string,
     tomcatHost: string
+}
+
+export interface SAMLSDKMeta {
+    tomcatSAMLAgent: {
+        catalog: string,
+        readme: string,
+        sample: {
+            acsURLSuffix: string,
+            artifact: string,
+            home: string,
+            repository: string
+        }
+    }
 }
