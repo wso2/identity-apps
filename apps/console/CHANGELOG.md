@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.29
+
+### Patch Changes
+
+- [#5072](https://github.com/wso2/identity-apps/pull/5072) [`d308d7509b`](https://github.com/wso2/identity-apps/commit/d308d7509b0f55ff50dd50ff3ea59dd465fd536a) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Fix a NPE that occurs when assigning email domains in the absence of any created sub organizations.
+
 ## 2.10.28
 
 ### Patch Changes
