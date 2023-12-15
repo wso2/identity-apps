@@ -181,8 +181,6 @@ const useRoutes = (): useRoutesInterface => {
             appRoutes[ 0 ] = appRoutes[ 0 ].filter((route: RouteInterface) => route.id === "404");
         }
 
-
-
         dispatch(setFilteredDevelopRoutes(appRoutes));
         dispatch(setSanitizedDevelopRoutes(sanitizedAppRoutes));
 

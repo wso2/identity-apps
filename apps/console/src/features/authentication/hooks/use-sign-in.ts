@@ -154,8 +154,6 @@ const useSignIn = (): UseSignInInterface => {
         window["AppUtils"].updateOrganizationType(orgType);
         dispatch(setUserOrganizationId(userOrganizationId));
 
-        dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
-
         if (window["AppUtils"].getConfig().organizationName || isFirstLevelOrg) {
             // We are actually getting the orgId here rather than orgName
             const orgId: string = isFirstLevelOrg ? orgIdIdToken : window["AppUtils"].getConfig().organizationName;
@@ -338,7 +336,7 @@ const useSignIn = (): UseSignInInterface => {
         const lastName: string = idToken?.family_name;
         const fullName: string = firstName ? firstName + (lastName ? " " + lastName : "") : response.email;
 
-        dispatch(
+        await dispatch(
             setSignIn<AuthenticatedUserInfo & TenantListInterface>(
                 Object.assign(
                     CommonAuthenticateUtils.getSignInState(
@@ -352,6 +350,8 @@ const useSignIn = (): UseSignInInterface => {
                     })
             )
         );
+
+        dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
 
         onAppReady();
 
