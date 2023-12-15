@@ -604,7 +604,6 @@
                         "internal_guest_mgt_invite_list"
                     ],
                     "create": [
-                        "internal_guest_mgt_invite_validate",
                         "internal_guest_mgt_invite_add"
                     ],
                     "update": [
