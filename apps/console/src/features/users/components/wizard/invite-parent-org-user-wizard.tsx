@@ -24,8 +24,7 @@ import { Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/reac
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Modal } from "semantic-ui-react";
-import {
-    UserManagementConstants} from "../../constants";
+import { UserManagementConstants } from "../../constants";
 import { InviteParentOrgUser } from "../guests/pages/invite-parent-org-user";
 
 /**
