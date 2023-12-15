@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.100
+
+### Patch Changes
+
+- [#5074](https://github.com/wso2/identity-apps/pull/5074) [`ad19f3f555`](https://github.com/wso2/identity-apps/commit/ad19f3f555e5623f46f3085a764e94dfb2eb40ef) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Skip username validation from UI.
+
 ## 2.0.99
 
 ### Patch Changes
