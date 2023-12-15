@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.99
+
+### Patch Changes
+
+- [#5029](https://github.com/wso2/identity-apps/pull/5029) [`3f2128994a`](https://github.com/wso2/identity-apps/commit/3f2128994ae4a5b809f07287fb590317e62ca74a) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Append tenant to the username before validation and JIT consent flow password validation logic refactor.
+
 ## 2.0.98
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.10.27
+
+### Patch Changes
+
+- [#5060](https://github.com/wso2/identity-apps/pull/5060) [`53b4e66df3`](https://github.com/wso2/identity-apps/commit/53b4e66df3329fb3e0a0ebb64a191c9494d5b561) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prevent tier and associated tenant retrieval inside sub organizations
+
+* [#5068](https://github.com/wso2/identity-apps/pull/5068) [`5c77c8cce5`](https://github.com/wso2/identity-apps/commit/5c77c8cce5b7a02f77679f45629065f553924a47) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add attributeSyncMethod property to the jit update request
+
 ## 2.10.26
 
 ### Patch Changes
