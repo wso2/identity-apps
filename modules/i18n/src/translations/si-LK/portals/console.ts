@@ -7678,7 +7678,7 @@ export const console: ConsoleNS = {
                             message: "යම් දෝෂයක් ඇති වී ඇත"
                         },
                         success: {
-                            description: "නව OIDC විෂය පථය සාර්ථකව",
+                            description: "නව OIDC විෂය පථය සාර්ථකව නිර්මාණය කරන ලදී",
                             message: "නිර්මාණය සාර්ථකයි"
                         }
                     },

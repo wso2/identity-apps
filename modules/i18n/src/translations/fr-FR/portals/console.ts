@@ -7851,7 +7851,7 @@ export const console: ConsoleNS = {
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Réussir le nouveau scope OIDC",
+                            description: "Création réussie du nouveau champ d'application OIDC",
                             message: "Création réussie"
                         }
                     },
