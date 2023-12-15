@@ -23,6 +23,7 @@ import useRequest, {
 } from "apps/console/src/features/core/hooks/use-request";
 import { HttpMethods } from "modules/core/src/models";
 import { Config } from "../../../../features/core";
+import { useGetCurrentOrganizationType } from "../../../../features/organizations/hooks/use-get-organization-type";
 import { getDomainQueryParam } from "../../tenants/api/tenants";
 import { getTenantResourceEndpoints } from "../../tenants/configs";
 import { TenantTierRequestResponse } from "../models/subscription";
@@ -34,6 +35,9 @@ import { TenantTierRequestResponse } from "../models/subscription";
  */
 const useTenantTier = <Data = TenantTierRequestResponse,
     Error = RequestErrorInterface> (): RequestResultInterface<Data, Error> => {
+
+    const { isFirstLevelOrganization } = useGetCurrentOrganizationType();
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
@@ -44,7 +48,9 @@ const useTenantTier = <Data = TenantTierRequestResponse,
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(
-        Config.getDeploymentConfig().extensions?.subscriptionApiPath ? requestConfig : null,
+        Config.getDeploymentConfig().extensions?.subscriptionApiPath && isFirstLevelOrganization()
+            ? requestConfig
+            : null,
         {
             shouldRetryOnError: false
         }

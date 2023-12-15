@@ -112,7 +112,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const { filterRoutes } = useRoutes();
 
     const { setUIConfig } = useUIConfig();
-    const [ tierName, setTierName ] = useState<TenantTier>(TenantTier.FREE);
+
+    const { data: tenantTier } = useTenantTier();
 
     const featureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features
@@ -130,10 +131,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
     const [ governanceConnectors, setGovernanceConnectors ] = useState<GovernanceCategoryForOrgsInterface[]>([]);
-    const {
-        data: tenantTier,
-        error: tenantTierRequestError
-    } = useTenantTier();
 
     useEffect(() => {
         dispatch(
@@ -201,16 +198,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
         setGovernanceConnectors(originalConnectorCategories);
     }, [ originalConnectorCategories ]);
-
-    useEffect(() => {
-        if (!tenantTier ||
-            tenantTier instanceof IdentityAppsApiException ||
-            tenantTierRequestError) {
-            return;
-        }
-
-        setTierName(tenantTier.tierName);
-    }, [ tierName ]);
 
     const loginSuccessRedirect = (idToken: DecodedIDTokenPayload): void => {
         const AuthenticationCallbackUrl: string = CommonAuthenticateUtils.getAuthenticationCallbackUrl(
@@ -389,7 +376,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         >
             <GovernanceConnectorProvider connectorCategories={ governanceConnectors }>
                 <I18nextProvider i18n={ I18n.instance }>
-                    <SubscriptionProvider tierName={ tierName }>
+                    <SubscriptionProvider tierName={ tenantTier?.tierName ?? TenantTier.FREE }>
                         { renderApp && routesFiltered ? <App /> : <PreLoader /> }
                     </SubscriptionProvider>
                 </I18nextProvider>
