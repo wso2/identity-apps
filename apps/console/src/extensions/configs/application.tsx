@@ -680,8 +680,7 @@ export const applicationConfig: ApplicationConfig = {
                     },
                     root: "",
                     routing: {
-                        artifact:
-                            "",
+                        artifact: "",
                         repository: ""
                     }
                 }
