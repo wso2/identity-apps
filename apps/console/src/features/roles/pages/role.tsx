@@ -45,11 +45,11 @@ type RolesPagePropsInterface = IdentifiableComponentInterface & RouteComponentPr
 const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     props: RolesPagePropsInterface
 ): ReactElement => {
-    
+
     const {
         [ "data-componentid" ]: componentId
     } = props;
-    
+
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
@@ -70,7 +70,8 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
     } = useRolesList(
         listItemLimit,
         listOffset,
-        filterBy
+        filterBy,
+        "users,groups,permissions,associatedApplications"
     );
 
     /**
@@ -156,7 +157,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
 
                     return;
                 }
-                
+
                 handleAlerts({
                     description: t("console:manage.features.roles.notifications.deleteRole.genericError.description"),
                     level: AlertLevels.ERROR,
@@ -221,7 +222,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
             <ListLayout
                 advancedSearch={ (
                     <AdvancedSearchWithBasicFilters
-                        data-componentid={ `${componentId}-list-advanced-search` }    
+                        data-componentid={ `${componentId}-list-advanced-search` }
                         onFilter={ handleRolesFilter  }
                         filterAttributeOptions={ [
                             {
@@ -261,7 +262,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                 rightActionPanel={
                     (
                         <Dropdown
-                            data-componentid={ `${componentId}-list-filters-dropdown` }    
+                            data-componentid={ `${componentId}-list-filters-dropdown` }
                             selection
                             options={ filterOptions }
                             placeholder= { t("console:manage.features.roles.list.buttons.filterDropdown") }
