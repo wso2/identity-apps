@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -34,5 +34,28 @@ export interface OIDCTryoutSampleConfigInterface {
     clientID: string,
     clientSecret: string,
     serverOrigin: string,
+}
+
+export interface OIDCSDKMeta {
+    dotNet: {
+        readme: string,
+        sample: {
+            artifact: string,
+            repository: string
+        }
+    },
+    tomcatOIDCAgent: {
+        catalog: string,
+        integrate: {
+            defaultCallbackContext: string
+        },
+        readme: string,
+        sample: {
+            artifact: string,
+            home: string,
+            repository: string,
+            sigInRedirectURL: string
+        }
+    }
 }
 

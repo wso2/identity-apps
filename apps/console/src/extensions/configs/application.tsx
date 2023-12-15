@@ -609,6 +609,84 @@ export const applicationConfig: ApplicationConfig = {
         getBannerComponent: (): ReactElement =>
             !window[ "AppUtils" ].getConfig().organizationName && <MarketingConsentModalWrapper />
     },
+    quickstart: {
+        oidcWeb: {
+            dotNet: {
+                readme: "",
+                sample: {
+                    artifact: "",
+                    repository: ""
+                }
+            },
+            tomcatOIDCAgent: {
+                catalog: "",
+                integrate: {
+                    defaultCallbackContext: ""
+                },
+                readme: "",
+                sample: {
+                    artifact: "",
+                    home: "",
+                    repository: "",
+                    sigInRedirectURL: ""
+                }
+            }
+        },
+        samlWeb: {
+            tomcatSAMLAgent: {
+                catalog: "",
+                readme: "",
+                sample: {
+                    acsURLSuffix: "",
+                    artifact: "",
+                    home: "",
+                    repository: ""
+                }
+            }
+        },
+        spa: {
+            javascript: {
+                apis: "",
+                artifact: "",
+                cdn: "",
+                npmInstallCommand: "",
+                readme: "",
+                repository: "",
+                samples: {
+                    javascript: {
+                        artifact: "",
+                        repository: ""
+                    },
+                    react: {
+                        artifact: "",
+                        repository: ""
+                    },
+                    root: ""
+                }
+            },
+            react: {
+                links: {
+                    authClientConfig: "",
+                    secureRoute: "",
+                    useContextDocumentation: ""
+                },
+                npmInstallCommand: "",
+                readme: "",
+                repository: "",
+                samples: {
+                    basicUsage: {
+                        artifact:"",
+                        repository: ""
+                    },
+                    root: "",
+                    routing: {
+                        artifact: "",
+                        repository: ""
+                    }
+                }
+            }
+        }
+    },
     signInMethod: {
         authenticatorSelection: {
             messages: {
