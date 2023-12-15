@@ -39,6 +39,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="org.wso2.carbon.utils.multitenancy.MultitenantUtils" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Arrays" %>
@@ -105,6 +106,13 @@
         tenantDomain = srtenantDomain;
     }
 
+    String tenantQualifiedUsername = username;
+    if (username.contains(IdentityManagementEndpointConstants.TENANT_DOMAIN_SEPARATOR) && tenantDomain != null) {
+        if (username.split(IdentityManagementEndpointConstants.TENANT_DOMAIN_SEPARATOR).length == 2) {
+            tenantQualifiedUsername = username + IdentityManagementEndpointConstants.TENANT_DOMAIN_SEPARATOR + tenantDomain;
+        }
+    }
+
     User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
 
     if (skipSignUpEnableCheck) {
@@ -125,66 +133,69 @@
         user.setTenantDomain(tenantDomain);
     }
 
-    try {
-        usernameValidityResponse = selfRegistrationMgtClient.checkUsernameValidityStatus(user, skipSignUpEnableCheck);
-    } catch (SelfRegistrationMgtClientException e) {
-        request.setAttribute("error", true);
-        request.setAttribute("errorMsg", IdentityManagementEndpointUtil
-                .i18n(recoveryResourceBundle, "Something.went.wrong.while.registering.user") + Encode
-                .forHtmlContent(username) + IdentityManagementEndpointUtil
-                .i18n(recoveryResourceBundle, "Please.contact.administrator"));
-
-        if (allowchangeusername) {
-            request.getRequestDispatcher("register.do").forward(request, response);
-        } else {
-            IdentityManagementEndpointUtil.addErrorInformation(request, e);
-            if (!StringUtils.isBlank(username)) {
-                request.setAttribute("username", username);
-            }
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-            return;
-        }
-        return;
-    }
-
     if (StringUtils.isBlank(callback)) {
         callback = Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain));
     }
 
-    Integer userNameValidityStatusCode = usernameValidityResponse.getInt("code");
-    if (!SelfRegistrationStatusCodes.CODE_USER_NAME_AVAILABLE.equalsIgnoreCase(userNameValidityStatusCode.toString())) {
-        if (allowchangeusername || !skipSignUpEnableCheck) {
+    boolean isUsernameValidationEnabled = Boolean.parseBoolean(IdentityUtil.getProperty("InputValidation.Username.Enabled"));
+    if (isUsernameValidationEnabled) {
+        try {
+            usernameValidityResponse = selfRegistrationMgtClient.checkUsernameValidityStatus(user, skipSignUpEnableCheck);
+        } catch (SelfRegistrationMgtClientException e) {
             request.setAttribute("error", true);
-            request.setAttribute("errorCode", userNameValidityStatusCode);
-            if (usernameValidityResponse.has("message")) {
-                if (usernameValidityResponse.get("message") instanceof String) {
-                    request.setAttribute("errorMessage", usernameValidityResponse.getString("message"));
+            request.setAttribute("errorMsg", IdentityManagementEndpointUtil
+                    .i18n(recoveryResourceBundle, "Something.went.wrong.while.registering.user") + Encode
+                    .forHtmlContent(username) + IdentityManagementEndpointUtil
+                    .i18n(recoveryResourceBundle, "Please.contact.administrator"));
+    
+            if (allowchangeusername) {
+                request.getRequestDispatcher("register.do").forward(request, response);
+            } else {
+                IdentityManagementEndpointUtil.addErrorInformation(request, e);
+                if (!StringUtils.isBlank(username)) {
+                    request.setAttribute("username", username);
                 }
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+                return;
             }
-            request.getRequestDispatcher("register.do").forward(request, response);
-        } else {
-            String errorCode = String.valueOf(userNameValidityStatusCode);
-            if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_TENANT.equalsIgnoreCase(errorCode)) {
-                errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.tenant.domain")
-                    + " - " + user.getTenantDomain() + ".";
-            } else if (SelfRegistrationStatusCodes.ERROR_CODE_USER_ALREADY_EXISTS.equalsIgnoreCase(errorCode)) {
-                errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")
-                    + " '" + username + "' " + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.already.taken.pick.different.username");
-            } else if (SelfRegistrationStatusCodes.CODE_USER_NAME_INVALID.equalsIgnoreCase(errorCode)) {
-                errorMsg = user.getUsername() + " " + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.username.pick.a.valid.username");
-            } else if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_USERSTORE.equalsIgnoreCase(errorCode)) {
-                errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.userstore.domain") + " - " + user.getRealm();
-            }
-            request.setAttribute("errorMsg", errorMsg + " "
-                + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "please.contact.administrator.to.fix.issue"));
-            request.setAttribute("errorCode", errorCode);
-            if (!StringUtils.isBlank(username)) {
-                request.setAttribute("username", username);
-            }
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
-        return;
+    
+        Integer userNameValidityStatusCode = usernameValidityResponse.getInt("code");
+        if (!SelfRegistrationStatusCodes.CODE_USER_NAME_AVAILABLE.equalsIgnoreCase(userNameValidityStatusCode.toString())) {
+            if (allowchangeusername || !skipSignUpEnableCheck) {
+                request.setAttribute("error", true);
+                request.setAttribute("errorCode", userNameValidityStatusCode);
+                if (usernameValidityResponse.has("message")) {
+                    if (usernameValidityResponse.get("message") instanceof String) {
+                        request.setAttribute("errorMessage", usernameValidityResponse.getString("message"));
+                    }
+                }
+                request.getRequestDispatcher("register.do").forward(request, response);
+            } else {
+                String errorCode = String.valueOf(userNameValidityStatusCode);
+                if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_TENANT.equalsIgnoreCase(errorCode)) {
+                    errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.tenant.domain")
+                        + " - " + user.getTenantDomain() + ".";
+                } else if (SelfRegistrationStatusCodes.ERROR_CODE_USER_ALREADY_EXISTS.equalsIgnoreCase(errorCode)) {
+                    errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")
+                        + " '" + username + "' " + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.already.taken.pick.different.username");
+                } else if (SelfRegistrationStatusCodes.CODE_USER_NAME_INVALID.equalsIgnoreCase(errorCode)) {
+                    errorMsg = user.getUsername() + " " + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.username.pick.a.valid.username");
+                } else if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_USERSTORE.equalsIgnoreCase(errorCode)) {
+                    errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.userstore.domain") + " - " + user.getRealm();
+                }
+                request.setAttribute("errorMsg", errorMsg + " "
+                    + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "please.contact.administrator.to.fix.issue"));
+                request.setAttribute("errorCode", errorCode);
+                if (!StringUtils.isBlank(username)) {
+                    request.setAttribute("username", username);
+                }
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+            }
+            return;
+        }
     }
     String purposes = selfRegistrationMgtClient.getPurposes(user.getTenantDomain(), consentPurposeGroupName,
             consentPurposeGroupType);
@@ -406,13 +417,34 @@
                                            value="<%=Encode.forHtmlAttribute(username)%>"
                                            class="form-control required usrName usrNameLength">
                                 </div>
-                                <div class="field">
-                                    <input id="password" name="password" type="hidden"
-                                        value="<%=Encode.forHtmlAttribute(password)%>"
-                                        class="form-control required usrName usrNameLength">
+                                <div class="two fields">
+                                    <div id="passwordField" class="required field">
+                                        <label for="password" class="control-label">
+                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Password")%>
+                                        </label>
+                                        <input id="password" name="password" type="password"
+                                            class="form-control" required>
+                                        <div class="mt-1" id="password-error-msg" hidden="hidden">
+                                            <i class="red exclamation circle fitted icon"></i>
+                                            <span class="validation-error-message" id="password-error-msg-text"></span>
+                                        </div>
+                                    </div>
+                                    <div id="confirmPasswordField" class="required field">
+                                        <label for="password2" class="control-label">
+                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Confirm.password")%>
+                                        </label>
+                                        <input id="password2" name="password2" type="password" class="form-control"
+                                            data-match="reg-password" required>
+                                        <div class="mt-1" id="confirm-password-error-msg" hidden="hidden">
+                                            <i class="red exclamation circle fitted icon"></i>
+                                            <span class="validation-error-message" id="confirm-password-error-msg-text"></span>
+                                        </div>
+                                    </div>
                                 </div>
-
-
+                                <div class="mb-2" id="password-mismatch-error-msg" hidden="hidden">
+                                    <i class="red exclamation circle fitted icon"></i>
+                                    <span class="validation-error-message" id="password-mismatch-error-msg-text"></span>
+                                </div>
                                 <% Claim emailNamePII =
                                         uniquePIIs.get(IdentityManagementEndpointConstants.ClaimURIs.EMAIL_CLAIM);
                                     if (emailNamePII != null) {
@@ -666,16 +698,18 @@
                                         <%=i18n(recoveryResourceBundle, customText, "sign.up.button")%>
                                     </button>
                                 </div>
-                                <div class="ui divider hidden"></div>
-                                <div class="buttons mt-2">
-                                    <div class="field external-link-container text-small">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                                "Already.have.an.account")%>
-                                        <a href="<%= callback %>">
-                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Sign.in")%>
-                                        </a>
+                                <% if (!skipSignUpEnableCheck) { %>
+                                    <div class="ui divider hidden"></div>
+                                    <div class="buttons mt-2">
+                                        <div class="field external-link-container text-small">
+                                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                                    "Already.have.an.account")%>
+                                            <a href="<%= callback %>">
+                                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Sign.in")%>
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
+                                <% } %>
                                 <div class="field">
                                     <input id="isSelfRegistrationWithVerification" type="hidden"
                                            name="isSelfRegistrationWithVerification"
@@ -807,6 +841,16 @@
         // Fires when lastname field lose focus.
         $('#lastNameUserInput').bind('blur keyup', function () {
             showLastNameValidationStatus();
+        });
+
+        // Fires when password field lose focus.
+        $('#password').bind('blur keyup', function () {
+            showPasswordValidationStatus();
+        });
+
+        // Fires when confirm password field lose focus.
+        $('#password2').bind('blur keyup', function () {
+            showConfirmPasswordValidationStatus();
         });
 
         function goBack() {
@@ -1409,12 +1453,82 @@
             }
         }
 
+        function showPasswordValidationStatus() {
+            var passwordInput = document.getElementById("password");
+            var password_error_msg = $("#password-error-msg");
+            var password_error_msg_text = $("#password-error-msg-text");
+            var password_field= $("#passwordField");
+
+            if ( passwordInput.value.trim() == "" )  {
+                password_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "required")%>");
+                password_error_msg.show();
+                $("html, body").animate({scrollTop: password_error_msg.offset().top}, 'slow');
+                password_field.addClass("error");
+            } else {
+                // When password is accepted.
+                password_error_msg.hide();
+                password_field.removeClass("error");
+            }
+        }
+
+        function showConfirmPasswordValidationStatus() {
+            var passwordInput = document.getElementById("password");
+            var confirmPasswordInput = document.getElementById("password2");
+            var confirm_password_error_msg = $("#confirm-password-error-msg");
+            var confirm_password_error_msg_text = $("#confirm-password-error-msg-text");
+            var password_mismatch_error_msg = $("#password-mismatch-error-msg");
+            var password_mismatch_error_msg_text = $("#password-mismatch-error-msg-text");
+            var confirm_password_field= $("#confirmPasswordField");
+
+            if ( confirmPasswordInput.value.trim() == "" )  {
+                confirm_password_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "required")%>");
+                confirm_password_error_msg.show();
+                $("html, body").animate({scrollTop: confirm_password_error_msg.offset().top}, 'slow');
+                confirm_password_field.addClass("error");
+            } else {
+                // When confirm password is accepted.
+                confirm_password_error_msg.hide();
+                confirm_password_field.removeClass("error");
+            }
+
+            if ( confirmPasswordInput.value.trim() !== "" && confirmPasswordInput.value.trim() !== passwordInput.value.trim() )  {
+                password_mismatch_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Passwords.did.not.match.please.try.again")%>");
+                password_mismatch_error_msg.show();
+                $("html, body").animate({scrollTop: confirm_password_error_msg.offset().top}, 'slow');
+                password_field.addClass("error");
+                confirm_password_field.addClass("error");
+            } else {
+                // When passwords match.
+                password_mismatch_error_msg.hide();
+                confirm_password_field.removeClass("error");
+                password_field.removeClass("error");
+            }
+
+        }
+
         function validateNameFields() {
             var firstNameUserInput = document.getElementById("firstNameUserInput");
             var lastNameUserInput = document.getElementById("lastNameUserInput");
 
-            if ( (!!firstNameUserInput &&  firstNameUserInput.value.trim() === "")
-                || ( !!lastNameUserInput && lastNameUserInput.value.trim() === ""))  {
+            if ( (!!firstNameUserInput &&  firstNameUserInput.value.trim() == "")
+                || ( !!lastNameUserInput && lastNameUserInput.value.trim() == ""))  {
+                return false;
+            }
+
+            return true;
+        }
+
+        function validatePasswordFields() {
+            var isPasswordProvisionEnabled = <%=isPasswordProvisionEnabled%>;
+            if (!isPasswordProvisionEnabled) {
+                return true;
+            }
+            var passwordInput = document.getElementById("password");
+            var confirmPasswordInput = document.getElementById("password2");
+
+            if ( (!!passwordInput &&  passwordInput.value.trim() == "")
+                || (!!confirmPasswordInput && confirmPasswordInput.value.trim() == "")
+                || (confirmPasswordInput.value.trim() !== passwordInput.value.trim()))  {
                 return false;
             }
 
@@ -1427,7 +1541,7 @@
             var termsCheckboxField = $("#termsCheckboxField");
 
             // Checking for empty name fields.
-            if (validateNameFields()) {
+            if (validateNameFields() && validatePasswordFields()) {
                 // Checking for consent checkbox status.
                 if (agreementChk.is(":checked")) {
                     registrationBtn.prop("disabled", false).removeClass("disabled");
