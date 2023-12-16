@@ -26,7 +26,7 @@
 
 <div class="text-left">
     <div>
-        <h3 class="ui header">
+        <h3 class="ui header ellipsis multi-line-header">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "welcome")%> <c:out value='${requestScope.data["username"]}'/>
         </h3>
     </div>

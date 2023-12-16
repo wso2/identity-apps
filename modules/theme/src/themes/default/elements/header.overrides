@@ -29,6 +29,10 @@ h6.ui.header .sub.header {
   font-size: @h6SubHeaderFontSize;
 }
 
+h3.ui.header .multi-line-header {
+  white-space: normal;
+}
+
 .ui.header {
     &.page-header {
         .sub-header {
