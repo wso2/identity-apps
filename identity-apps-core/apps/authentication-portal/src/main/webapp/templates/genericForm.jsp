@@ -39,7 +39,7 @@
         </c:forEach>
         <input type="hidden" id="promptResp" name="promptResp" value="true">
         <input type="hidden" id="promptId" name="promptId" value="${requestScope.promptId}">
-        <input type="submit" class="ui primary fluid large button" value="Submit">
+        <input type="submit" data-componentid="requested-claims-submit-btn" class="ui primary fluid large button"  value="Submit">
     </form>
 </div>
 <%-- /content --%>
