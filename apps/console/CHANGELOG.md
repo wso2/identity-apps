@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.31
+
+### Patch Changes
+
+- [#5079](https://github.com/wso2/identity-apps/pull/5079) [`9629278841`](https://github.com/wso2/identity-apps/commit/96292788415abf16005b23515c17e5abede23a47) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Decouple quickstart tab content to be provided through extensions
+
 ## 2.10.30
 
 ### Patch Changes
