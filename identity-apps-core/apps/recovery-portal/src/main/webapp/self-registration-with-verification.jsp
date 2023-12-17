@@ -39,7 +39,6 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
-<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="org.wso2.carbon.utils.multitenancy.MultitenantUtils" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Arrays" %>
@@ -133,71 +132,67 @@
         user.setTenantDomain(tenantDomain);
     }
 
+    try {
+        usernameValidityResponse = selfRegistrationMgtClient.checkUsernameValidityStatus(user, skipSignUpEnableCheck);
+    } catch (SelfRegistrationMgtClientException e) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", IdentityManagementEndpointUtil
+                .i18n(recoveryResourceBundle, "Something.went.wrong.while.registering.user") + Encode
+                .forHtmlContent(username) + IdentityManagementEndpointUtil
+                .i18n(recoveryResourceBundle, "Please.contact.administrator"));
+
+        if (allowchangeusername) {
+            request.getRequestDispatcher("register.do").forward(request, response);
+        } else {
+            IdentityManagementEndpointUtil.addErrorInformation(request, e);
+            if (!StringUtils.isBlank(username)) {
+                request.setAttribute("username", username);
+            }
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
+        }
+        return;
+    }
+
     if (StringUtils.isBlank(callback)) {
         callback = Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain));
     }
 
-    boolean isUsernameValidationEnabled = Boolean.parseBoolean(IdentityUtil.getProperty("InputValidation.Username.Enabled"));
-    if (isUsernameValidationEnabled) {
-        try {
-            usernameValidityResponse = selfRegistrationMgtClient.checkUsernameValidityStatus(user, skipSignUpEnableCheck);
-        } catch (SelfRegistrationMgtClientException e) {
+    Integer userNameValidityStatusCode = usernameValidityResponse.getInt("code");
+    if (!SelfRegistrationStatusCodes.CODE_USER_NAME_AVAILABLE.equalsIgnoreCase(userNameValidityStatusCode.toString())) {
+        if (allowchangeusername || !skipSignUpEnableCheck) {
             request.setAttribute("error", true);
-            request.setAttribute("errorMsg", IdentityManagementEndpointUtil
-                    .i18n(recoveryResourceBundle, "Something.went.wrong.while.registering.user") + Encode
-                    .forHtmlContent(username) + IdentityManagementEndpointUtil
-                    .i18n(recoveryResourceBundle, "Please.contact.administrator"));
-
-            if (allowchangeusername) {
-                request.getRequestDispatcher("register.do").forward(request, response);
-            } else {
-                IdentityManagementEndpointUtil.addErrorInformation(request, e);
-                if (!StringUtils.isBlank(username)) {
-                    request.setAttribute("username", username);
+            request.setAttribute("errorCode", userNameValidityStatusCode);
+            if (usernameValidityResponse.has("message")) {
+                if (usernameValidityResponse.get("message") instanceof String) {
+                    request.setAttribute("errorMessage", usernameValidityResponse.getString("message"));
                 }
-                request.getRequestDispatcher("error.jsp").forward(request, response);
-                return;
             }
-            return;
-        }
-
-        Integer userNameValidityStatusCode = usernameValidityResponse.getInt("code");
-        if (!SelfRegistrationStatusCodes.CODE_USER_NAME_AVAILABLE.equalsIgnoreCase(userNameValidityStatusCode.toString())) {
-            if (allowchangeusername || !skipSignUpEnableCheck) {
-                request.setAttribute("error", true);
-                request.setAttribute("errorCode", userNameValidityStatusCode);
-                if (usernameValidityResponse.has("message")) {
-                    if (usernameValidityResponse.get("message") instanceof String) {
-                        request.setAttribute("errorMessage", usernameValidityResponse.getString("message"));
-                    }
-                }
-                request.getRequestDispatcher("register.do").forward(request, response);
-            } else {
-                String errorCode = String.valueOf(userNameValidityStatusCode);
-                if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_TENANT.equalsIgnoreCase(errorCode)) {
-                    errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.tenant.domain")
-                        + " - " + user.getTenantDomain() + ".";
-                } else if (SelfRegistrationStatusCodes.ERROR_CODE_USER_ALREADY_EXISTS.equalsIgnoreCase(errorCode)) {
-                    errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")
-                        + " '" + username + "' " + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.already.taken.pick.different.username");
-                } else if (SelfRegistrationStatusCodes.CODE_USER_NAME_INVALID.equalsIgnoreCase(errorCode)) {
-                    errorMsg = user.getUsername() + " " + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.username.pick.a.valid.username");
-                } else if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_USERSTORE.equalsIgnoreCase(errorCode)) {
-                    errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.userstore.domain") + " - " + user.getRealm();
-                }
-                request.setAttribute("errorMsg", errorMsg + " "
-                    + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "please.contact.administrator.to.fix.issue"));
-                request.setAttribute("errorCode", errorCode);
-                if (!StringUtils.isBlank(username)) {
-                    request.setAttribute("username", username);
-                }
-                request.getRequestDispatcher("error.jsp").forward(request, response);
+            request.getRequestDispatcher("register.do").forward(request, response);
+        } else {
+            String errorCode = String.valueOf(userNameValidityStatusCode);
+            if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_TENANT.equalsIgnoreCase(errorCode)) {
+                errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.tenant.domain")
+                    + " - " + user.getTenantDomain() + ".";
+            } else if (SelfRegistrationStatusCodes.ERROR_CODE_USER_ALREADY_EXISTS.equalsIgnoreCase(errorCode)) {
+                errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")
+                    + " '" + username + "' " + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "username.already.taken.pick.different.username");
+            } else if (SelfRegistrationStatusCodes.CODE_USER_NAME_INVALID.equalsIgnoreCase(errorCode)) {
+                errorMsg = user.getUsername() + " " + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.username.pick.a.valid.username");
+            } else if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_USERSTORE.equalsIgnoreCase(errorCode)) {
+                errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.userstore.domain") + " - " + user.getRealm();
             }
-            return;
+            request.setAttribute("errorMsg", errorMsg + " "
+                + IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "please.contact.administrator.to.fix.issue"));
+            request.setAttribute("errorCode", errorCode);
+            if (!StringUtils.isBlank(username)) {
+                request.setAttribute("username", username);
+            }
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
+        return;
     }
-    
     String purposes = selfRegistrationMgtClient.getPurposes(user.getTenantDomain(), consentPurposeGroupName,
             consentPurposeGroupType);
     boolean hasPurposes = StringUtils.isNotEmpty(purposes);
