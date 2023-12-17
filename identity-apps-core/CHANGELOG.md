@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.101
+
+### Patch Changes
+
+- [#5086](https://github.com/wso2/identity-apps/pull/5086) [`be1a05f6b9`](https://github.com/wso2/identity-apps/commit/be1a05f6b98017400802df4048eb91808428d633) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Revert JIT provisioning improvement
+
 ## 2.0.100
 
 ### Patch Changes
