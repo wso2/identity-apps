@@ -105,18 +105,19 @@
         tenantDomain = srtenantDomain;
     }
 
+    if (skipSignUpEnableCheck) {
+        consentPurposeGroupName = "JIT";
+    }
+
     String tenantQualifiedUsername = username;
-    if (username.contains(IdentityManagementEndpointConstants.TENANT_DOMAIN_SEPARATOR) && tenantDomain != null) {
+    if (consentPurposeGroupName == "JIT" && username.contains(IdentityManagementEndpointConstants.TENANT_DOMAIN_SEPARATOR) && tenantDomain != null) {
         if (username.split(IdentityManagementEndpointConstants.TENANT_DOMAIN_SEPARATOR).length == 2) {
             tenantQualifiedUsername = username + IdentityManagementEndpointConstants.TENANT_DOMAIN_SEPARATOR + tenantDomain;
         }
     }
 
-    User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
+    User user = IdentityManagementServiceUtil.getInstance().resolveUser(tenantQualifiedUsername, tenantDomain, isSaaSApp);
 
-    if (skipSignUpEnableCheck) {
-        consentPurposeGroupName = "JIT";
-    }
     if (StringUtils.isEmpty(username)) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Pick.username"));
