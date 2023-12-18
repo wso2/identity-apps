@@ -21,8 +21,8 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Segment } from "semantic-ui-react";
 import { identityProviderConfig } from "../../../../../extensions/configs/identity-provider";
-import { AppState, ConfigReducerStateInterface, EventPublisher, FeatureConfigInterface } from "../../../../core";
 import useAuthenticationFlow from "../../../../authentication-flow-builder/hooks/use-authentication-flow";
+import { EventPublisher, FeatureConfigInterface } from "../../../../core";
 import {
     IdentityProviderManagementConstants
 } from "../../../../identity-providers/constants/identity-provider-management-constants";
@@ -56,6 +56,7 @@ interface SignInMethodLandingPropsInterface extends SBACInterface<FeatureConfigI
      * Set of login flow options to hide.
      */
     hiddenOptions?: LoginFlowTypes[];
+    [ "data-componentid" ]?: string;
 }
 
 /**
