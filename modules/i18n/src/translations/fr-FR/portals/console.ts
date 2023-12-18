@@ -8426,7 +8426,15 @@ export const console: ConsoleNS = {
                     goBack: "Retourner",
                     subOrganizations: "Organisations",
                     switchLabel: "Organisation",
-                    switchButton: "Passer à l'organisation"
+                    switchButton: "Passer à l'organisation",
+                    notifications: {
+                        switchOrganization: {
+                            genericError: {
+                                description: "Impossible de basculer vers l'organisation sélectionnée.",
+                                message: "Quelque chose s'est mal passé"
+                            }
+                        }
+                    }
                 },
                 title: "Organisations"
             },

@@ -10208,7 +10208,15 @@ export const console: ConsoleNS = {
                     },
                     subOrganizations: "Organizations",
                     switchLabel: "Organization",
-                    switchButton: "Switch to Organization"
+                    switchButton: "Switch to Organization",
+                    notifications: {
+                        switchOrganization: {
+                            genericError: {
+                                description: "Couldn't switch to the selected organization.",
+                                message: "Something went wrong"
+                            }
+                        }
+                    }
                 },
                 title: "Organizations"
             },

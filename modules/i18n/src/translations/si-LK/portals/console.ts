@@ -8250,7 +8250,15 @@ export const console: ConsoleNS = {
                     goBack: "ආපසු යන්න",
                     subOrganizations: "සංවිධාන",
                     switchLabel: "සංවිධානය",
-                    switchButton: "සංවිධානය වෙත මාරු වන්න"
+                    switchButton: "සංවිධානය වෙත මාරු වන්න",
+                    notifications: {
+                        switchOrganization: {
+                            genericError: {
+                                description: "ආයතනය වෙත මාරු කිරීමේදී දෝෂයක් ඇතිවිය",
+                                message: "යම්කිසි වරදක් සිදුවී ඇත."
+                            }
+                        }
+                    }
                 },
                 title: "සංවිධාන"
             },

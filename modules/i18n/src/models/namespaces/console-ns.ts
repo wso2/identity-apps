@@ -3761,6 +3761,9 @@ export interface ConsoleNS {
                     goBack: string;
                     switchLabel: string;
                     switchButton: string;
+                    notifications: {
+                        switchOrganization: Notification;
+                    }
                 }
             };
             users: {
