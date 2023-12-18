@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.38
+
+### Patch Changes
+
+- [#5082](https://github.com/wso2/identity-apps/pull/5082) [`30c299bd0a`](https://github.com/wso2/identity-apps/commit/30c299bd0a018652ab1351e543f110c84b7f09f0) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with switching organizations
+
 ## 2.10.37
 
 ### Patch Changes

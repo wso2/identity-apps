@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.105
+
+### Patch Changes
+
+- [#5094](https://github.com/wso2/identity-apps/pull/5094) [`8af5ef5d02`](https://github.com/wso2/identity-apps/commit/8af5ef5d025a9dec223e49d951c1e7685b0c19fb) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken branding preference import paths
+
 ## 2.0.104
 
 ### Patch Changes
