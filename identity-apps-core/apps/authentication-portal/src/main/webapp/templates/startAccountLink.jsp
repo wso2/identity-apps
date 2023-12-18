@@ -23,9 +23,6 @@
 <%-- Localization --%>
 <jsp:directive.include file="../includes/localize.jsp" />
 
-<%-- Branding Preferences --%>
-<jsp:directive.include file="includes/branding-preferences.jsp"/>
-
 <%
     String applicationAccessURLWithoutEncoding = null;
     try {

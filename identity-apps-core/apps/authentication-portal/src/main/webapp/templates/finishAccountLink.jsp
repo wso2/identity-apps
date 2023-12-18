@@ -17,9 +17,6 @@
 <%-- Localization --%>
 <jsp:directive.include file="../includes/localize.jsp" />
 
-<%-- Branding Preferences --%>
-<jsp:directive.include file="includes/branding-preferences.jsp"/>
-
 <head>
     <script src="../js/scripts.js"></script>
 </head>
