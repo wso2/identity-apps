@@ -709,6 +709,9 @@ export const console: ConsoleNS = {
     },
     consoleSettings: {
         administrators: {
+            edit: {
+                backButton: "පරිපාලකයින් වෙත ආපසු යන්න"
+            },
             tabLabel: "පරිපාලකයින්"
         },
         loginFlow: {
@@ -1235,6 +1238,16 @@ export const console: ConsoleNS = {
                                     description: "යෙදුම බෙදාගැනීම {{organization}} සමඟ සාර්ථක විය",
                                     message: "යෙදුම බෙදාගැනීම සාර්ථක විය!"
                                 }
+                            },
+                            stopAllSharingNotification: {
+                                genericError: {
+                                    description: "සියලුම සංවිධාන සඳහා යෙදුම් බෙදාගැනීමේ නැවතුම අසාර්ථක විය",
+                                    message: "යෙදුම් බෙදාගැනීමේ නැවතුම අසාර්ථක විය!"
+                                },
+                                success: {
+                                    description: "යෙදුම් හුවමාරුව සියලුම සංවිධාන සමඟ සාර්ථකව කටයුතු කළේය",
+                                    message: "යෙදුම් හුවමාරුව සාර්ථකව නතර විය!"
+                                }
                             }
                         },
                         signOnMethod: {
@@ -1527,12 +1540,19 @@ export const console: ConsoleNS = {
                                                     "පරිශීලකයින්ට පුරනය වීමට සබල කරන්න.",
                                                 heading: "මුර යතුර පිවිසුම එක් කරන්න",
                                                 info: {
-                                                    progressiveEnrollmentEnabled: "මුර යතුර ප්‍රගතිශීලී ලියාපදිංචිය සබල කර ඇත. " +
-                                                    "පරිශීලකයින්ට පියාසර කිරීමේදී පාස්කී ලියාපදිංචි කළ හැකිය. ඔවුන්ට මුර යතුරු කිහිපයක් " +
-                                                    "ඇතුළත් කිරීමට අවශ්‍ය නම් ඔවුන් එය MyAccount හරහා කළ යුතුය.",
+                                                    progressiveEnrollmentEnabled: "මුර යතුර ප්‍රගතිශීලී ලියාපදිංචිය සබල කර ඇත.",
+                                                    passkeyAsFirstStepWhenprogressiveEnrollmentEnabled: "<0>සටහන : </0> මුර යතුරු " +
+                                                    "සමඟ පියාසර පරිශීලක ලියාපදිංචිය සඳහා, <2>කොන්දේසි සහිත සත්‍යාපන</2> කොටසේ " +
+                                                    "<4>මුරපද ප්‍රගතිශීලී ඇතුළත් වීමේ</4> අච්චුව භාවිතා කරන්න.",
+                                                    passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled: "පරිශීලකයින්ට " +
+                                                    "සත්‍යාපනය වීමේ දී මුර යතුරු ලියාපදිංචි කළ හැකිය. පරිශීලකයන් බහුවිධ මුර යතුරු ලියාපදිංචි කිරීමට කැමති නම්, " +
+                                                    "ඔවුන් එය <1>My Account</1> හරහා කළ යුතුය.",
+                                                    progressiveEnrollmentEnabledCheckbox: "<0>Note : </0> <2>පළමු පියවර</2> " +
+                                                    "තුළ මුරපදය සැකසීමේදී, පරිශීලකයන්ට අනුවර්තන පිටපතක් එක් කිරීමට අවශ්‍ය වේ. " +
+                                                    "යෙදුමේ <4>පිවිසීමේ ක්‍රමය</4> ටැබය තුළ <6>පාස්කීස් ප්‍රගතිශීලී ලියාපදිංචිය</6> අච්චුව භාවිත කරන්න.",
                                                     progressiveEnrollmentDisabled: "ප්‍රගතිශීලී මුර යතුරු ලියාපදිංචිය " +
                                                     "අවහිර කර ඇත. මුරපද රහිත පුරනය වීම භාවිතා කිරීමට පරිශීලකයන් " +
-                                                    "MyAccount හරහා තම මුර යතුරු ලියාපදිංචි කළ යුතුය."
+                                                    "My Account හරහා තම මුර යතුරු ලියාපදිංචි කළ යුතුය."
                                                 }
                                             },
                                             emailOTP: {
@@ -2039,6 +2059,9 @@ export const console: ConsoleNS = {
                             discoverableHint: "සබල කර ඇති නම් සහ වෙබ් ප්‍රවේශ විය හැකි url (ගැඹුරු සබැඳියක්) ලබා දී " +
                                 "ඇත්නම්, පාරිභෝගිකයින්ට <1>{{ myAccount }}</1> ද්වාරයෙන් මෙම යෙදුමට ප්‍රවේශ විය හැක.",
                             mobileAppPlaceholder: "myapp://oauth2"
+                        },
+                        dropdowns: {
+                            selectOption: "විකල්පය තෝරන්න"
                         },
                         sections: {
                             accessToken: {
@@ -3988,23 +4011,23 @@ export const console: ConsoleNS = {
                     },
                     generalDetails: {
                         description: {
-                            hint: "අනන්‍යතා සැපයුම්කරු පිළිබඳ අර්ථවත් විස්තරයක්.",
+                            hint: "සම්බන්ධතාවය පිළිබඳ අර්ථවත් විස්තරයක්.",
                             label: "විස්තර",
-                            placeholder: "අනන්‍යතා සැපයුම්කරුගේ විස්තරයක් ඇතුළත් කරන්න."
+                            placeholder: "සම්බන්ධතාවය පිළිබඳ විස්තරයක් ඇතුළත් කරන්න."
                         },
                         image: {
-                            hint: "අනන්‍යතා සැපයුම්කරුගේ රූපය විමසීමට URL ය.",
-                            label: "හැඳුනුම්පත් සපයන්නාගේ පින්තූර URL",
+                            hint: "සම්බන්ධතාවයේ රූපය විමසීමට URL ය.",
+                            label: "සම්බන්ධතාවයේ පින්තූර URL ය",
                             placeholder: "උදා. https"
                         },
                         name: {
-                            hint: "මෙම අනන්‍යතා සැපයුම්කරු සඳහා අද්විතීය නමක් ඇතුළත් කරන්න.",
-                            label: "හැඳුනුම්පත් සපයන්නාගේ නම",
-                            placeholder: "අනන්‍යතා සැපයුම්කරු සඳහා නමක් ඇතුළත් කරන්න.",
+                            hint: "මෙම සම්බන්ධතාවය සඳහා අද්විතීය නමක් ඇතුළත් කරන්න.",
+                            label: "සම්බන්ධතාවයේ නම",
+                            placeholder: "සම්බන්ධතාවය සඳහා නමක් ඇතුළත් කරන්න.",
                             validations: {
-                                duplicate: "මෙම නම සමඟ අනන්‍යතා සැපයුම්කරුවෙකු දැනටමත් සිටී",
-                                empty: "අනන්‍යතා සැපයුම්කරුගේ නම අවශ්‍ය වේ",
-                                maxLengthReached: "අනන්‍යතා සැපයුම්කරුගේ නමට අක්ෂර {{ maxLength }} කට වඩා තිබිය නොහැක."
+                                duplicate: "මෙම නම සමඟ සම්බන්ධතාවයක් දැනටමත් පවතී",
+                                empty: "සම්බන්ධතාවයේ නම අවශ්‍ය වේ",
+                                maxLengthReached: "සම්බන්ධතාවයේ නමට අක්ෂර {{ maxLength }} කට වඩා තිබිය නොහැක."
                             }
                         }
                     },
@@ -7197,6 +7220,10 @@ export const console: ConsoleNS = {
                             },
                             elasticAnalyticsEngine: {
                                 friendlyName: "ELK විශ්ලේෂණය",
+                                warningModal: {
+                                    configure: "නිසි ක්‍රියාකාරීත්වය සඳහා ELK විශ්ලේෂණ සැකසුම් <1>වින්‍යාස කරන්න</1>",
+                                    reassure: "ඔබට ඕනෑම වේලාවක ඔබගේ සැකසීම් යාවත්කාලීන කළ හැක."
+                                },
                                 properties: {
                                     adaptiveAuthenticationElasticReceiver: {
                                         hint: "ඉළුික්සර්ච් සත්කාරකත්වය",
@@ -7602,7 +7629,8 @@ export const console: ConsoleNS = {
                                 label: "විෂය පථයේ නම",
                                 placeholder: "විෂය පථයේ නම ඇතුළත් කරන්න",
                                 validations: {
-                                    empty: "මෙම ක්ෂේත්‍රය හිස් විය නොහැක",
+                                    duplicate: "මෙම විෂය පථය දැනටමත් පවතී.",
+                                    empty: "මෙම ක්ෂේත්‍රය හිස් විය නොහැක.",
                                     invalid: "විෂය පථයට ඇතුළත් විය හැක්කේ අක්ෂරාංක සහ _. පමණි. " +
                                         "තවද අක්ෂර 3 සිට 40 දක්වා දිග විය යුතුය."
                                 }
@@ -8553,7 +8581,8 @@ export const console: ConsoleNS = {
                                 },
                                 validation: {
                                     empty: "අවසර(විෂය පද) ලැයිස්තුව හිස් විය නොහැක. අවම වශයෙන් එක් අවසරයක්වත්(විෂය පථය) තෝරන්න."
-                                }
+                                },
+                                permissionsLabel: "අවසර (විෂය පද)"
                             },
                             notes: {
                                 applicationRoles: "තෝරාගත් අයදුම්පතේ(<1>{{applicationName}}</1>) තෝරා ගැනීමට ලැයිස්තුගත කර ඇති APIs සහ විෂය පථයන් පමණක් තෝරා ගැනීමට ලැයිස්තුගත කර ඇත."
@@ -8861,6 +8890,17 @@ export const console: ConsoleNS = {
                     filterAttirbutes: {
                         name: "නම",
                         audience: "භූමිකාව ප්රේක්ෂකයින්"
+                    }
+                },
+                readOnlyList: {
+                    emptyPlaceholders: {
+                        searchAndFilter: {
+                            subtitles: {
+                                0: "අපට වත්මන් භූමිකාවේ නම සහ ප්‍රේක්ෂක සංයෝජනය සඳහා ප්‍රතිඵල කිසිවක් සොයාගත නොහැකි විය.",
+                                1: "කරුණාකර වෙනස් සංයෝජනයක් උත්සාහ කරන්න."
+                            },
+                            title: "ප්‍රතිඵල හමු නොවීය"
+                        }
                     }
                 },
                 notifications: {
@@ -9464,7 +9504,7 @@ export const console: ConsoleNS = {
                             successCount: "සාර්ථකත්ව ගණන",
                             failedCount: "අසාර්ථක වූ ගණන",
                             totalUserCreationCount: "සම්පූර්ණ පරිශීලක නිර්මාණ ගණන",
-                            totalUserAssignmentCount: "සම්පූර්ණ පරිශීලක භූමිකාව/කණ්ඩායම් පැවරුම් ගණන",
+                            totalUserAssignmentCount: "සම්පූර්ණ පරිශීලක කණ්ඩායම් පැවරුම් ගණන",
                             tableHeaders: {
                                 username: "පරිශීලක නාමය",
                                 status: "තත්ත්වය",
@@ -9491,15 +9531,17 @@ export const console: ConsoleNS = {
                                     message: "ආනයනය සාර්ථකයි"
                                 },
                                 importFailed: {
-                                    description: "<1>{{failedUserCreationCount}} පරිශීලක නිර්මාණය</1> කිරීමේ මෙහෙයුම් සහ " +
-                                        "<3>{{failedUserAssignmentCount}} භූමිකාව/කණ්ඩායම් පැවරුම්</3> මෙහෙයුම් තුළ ඇති වූ ගැටළු.",
+                                    userCreation: "<1>{{failedUserCreationCount}} පරිශීලක නිර්මාණ</1> තුළ ඇති වූ ගැටලු.",
+                                    groupAssignment: "<1>{{failedUserAssignmentCount}} කණ්ඩායම් පැවරුම්වල</1> ඇති ගැටළු. " +
+                                        "බලපෑමට ලක් වූ කණ්ඩායම්වල පරිශීලකයින් නිර්මාණය කර ඇති නමුත් පවරා නැත. සමාලෝචනය කිරීමට සහ " +
+                                        "පරිශීලකයින්ට කණ්ඩායම් පැවරීමට කරුණාකර පරිශීලක කළමනාකරණ අංශය වෙත සංචාලනය කරන්න.",
                                     message: "ගැටළු සමාලෝචනය අවශ්‍යයි."
                                 }
                             },
                             advanceSearch: {
                                 searchByUsername: "පරිශීලක නාමයෙන් සොයන්න",
-                                searchByRoleOrGroup: "භූමිකාව/කණ්ඩායම් නම අනුව සොයන්න",
-                                roleGroupFilterAttributePlaceHolder: "භූමිකාව/කණ්ඩායම් නම"
+                                searchByGroup: "කණ්ඩායම් නම අනුව සොයන්න",
+                                roleGroupFilterAttributePlaceHolder: "කණ්ඩායම් නම"
                             },
                             manualCreation: {
                                 alerts: {
@@ -9517,8 +9559,8 @@ export const console: ConsoleNS = {
                                     description: "CSV ගොනුවක් මෙතැනට ඇද දමන්න."
                                 },
                                 primaryButton: "එකතු කරන්න",
-                                rolesLabel: "භූමිකාවන්",
-                                rolesPlaceholder: "භූමිකාවන් ඇතුළත් කරන්න",
+                                groupsLabel: "කණ්ඩායම්",
+                                groupsPlaceholder: "කණ්ඩායම් ඇතුළත් කරන්න",
                                 warningMessage: "මෙම විකල්පය භාවිතා කළ හැක්කේ ඊමේල් ලිපිනය පරිශීලක නාමය ලෙස වින්‍යාස කර ඇති විට පමණි."
                             },
                             fileBased: {
@@ -9526,7 +9568,7 @@ export const console: ConsoleNS = {
                             },
                             responseOperationType: {
                                 userCreation: "පරිශීලක නිර්මාණය",
-                                roleAssignment: "භූමිකාව/කණ්ඩායම් පැවරුම"
+                                roleAssignment: "කණ්ඩායම් පැවරුම"
                             },
                             userstoreMessage: "සාදන ලද පරිශීලකයින් <1>{{ userstore }}</1> පරිශීලක ගබඩාවට එක් කරනු ලැබේ."
                         },
@@ -9893,6 +9935,7 @@ export const console: ConsoleNS = {
                                 header: "ඔබට විශ්වාසද?",
                                 message: "මෙම ක්‍රියාව මෙම පරිශීලකයාගේ භූමිකාව වෙනස් කරයි."
                             },
+                            infoMessage: "කණ්ඩායම් හරහා උරුම වූ කාර්යයන් මෙහි නොපෙන්වයි.",
                             placeholders: {
                                 emptyPlaceholder: {
                                     title: "කිසිදු භූමිකාවක් පවරා නොමැත",
@@ -9918,7 +9961,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             searchPlaceholder: "සෙවුම් භූමිකාවන්",
-                            subHeading: "පරිශීලකයා සඳහා පවරා ඇති භූමිකාවන් බලන්න."
+                            subHeading: "පරිශීලකයාට කෙලින්ම පවරා ඇති භූමිකාවන් බලන්න."
                         },
                         notifications: {
                             addUserRoles: {
@@ -10204,6 +10247,10 @@ export const console: ConsoleNS = {
                                 description: "පරිශීලකයන් සාර්ථකව ආනයනය කරන ලදී.",
                                 message: "පරිශීලකයන් සාර්ථකව ආනයනය කරන ලදී"
                             }
+                        },
+                        timeOut: {
+                            description: "සමහර පරිශීලකයන් නිර්මාණය කර නොතිබිය හැකිය.",
+                            message: "ඉල්ලීම කල් ඉකුත් වී ඇත"
                         }
                     },
                     deleteUser: {

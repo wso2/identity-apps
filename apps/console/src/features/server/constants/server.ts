@@ -132,7 +132,7 @@ export class ServerConstants {
 	/**
 	 * UUID of the identity governance password expiry connector.
 	 */
-	public static readonly PASSWORD_EXPIRY_CONNECTOR_ID: string = "cGFzc3dvcmRFeHBpcnlWMg";
+	public static readonly PASSWORD_EXPIRY_CONNECTOR_ID: string = "cGFzc3dvcmRFeHBpcnk";
 
 	/**
 	 * UUID of the identity governance captcha for sso login connector.
@@ -235,7 +235,7 @@ export class ServerConstants {
 
 	public static readonly ACCOUNT_LOCKING_NOTIFICATIONS_INTERNALLY_MANAGED: string =
 		"account.lock.handler.notification.manageInternally";
-	
+
 	public static readonly ACCOUNT_DISABLING_NOTIFICATIONS_INTERNALLY_MANAGED: string =
 		"account.disable.handler.notification.manageInternally";
 
@@ -342,7 +342,7 @@ export class ServerConstants {
 	public static readonly ANALYTICS_HOST: string = "adaptive_authentication.elastic.receiver";
 	public static readonly ANALYTICS_BASIC_AUTH_ENABLE: string = "adaptive_authentication.elastic.basicAuth.enabled";
 	public static readonly ANALYTICS_BASIC_AUTH_USERNAME: string = "adaptive_authentication.elastic.basicAuth.username";
-	public static readonly ANALYTICS_BASIC_AUTH_PASSWORD: string = 
+	public static readonly ANALYTICS_BASIC_AUTH_PASSWORD: string =
 		"__secret__adaptive_authentication.elastic.basicAuth.password";
 
 	public static readonly ANALYTICS_HTTP_CONNECTION_TIMEOUT: string =

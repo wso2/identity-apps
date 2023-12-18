@@ -2177,14 +2177,14 @@ export const extensions: Extensions = {
                 vonage: {
                     subHeading: "Paramètres Vonage",
                     accountSID: {
-                        label: "SID du compte Vonage",
-                        placeholder: "Entrez le SID du compte Vonage",
-                        hint: "Identifiant de chaîne de compte Vonage qui fait office de nom d'utilisateur pour le compte"
+                        label: "Clé API Vonage",
+                        placeholder: "Entrez la clé API Vonage",
+                        hint: "Clé API Vonage qui fait office de nom d'utilisateur pour le compte."
                     },
                     authToken: {
-                        label: "Jeton d'authentification Vonage",
-                        placeholder: "Entrez le jeton d'authentification Vonage",
-                        hint: "Le jeton d'accès généré par le serveur d'authentification Vonage"
+                        label: "Secret de l'API Vonage",
+                        placeholder: "Entrez le secret de l'API Vonage",
+                        hint: "Le secret API généré par le serveur d'authentification Vonage."
                     },
                     sender: {
                         label: "Expéditrice",
@@ -3126,7 +3126,7 @@ export const extensions: Extensions = {
                 pageTitle: "Validation du nom d'utilisateur",
                 description: "Mettez à jour le type de nom d'utilisateur et personnalisez les règles de validation du nom d'utilisateur pour vos utilisateurs.",
                 usernameType: "Sélectionnez le type de nom d'utilisateur",
-                usernameTypeHint: "Autoriser les utilisateurs à définir une adresse e-mail ou une combinaison de caractères alphanumériques pour le nom d'utilisateur.",
+                usernameTypeHint: "Autoriser les utilisateurs à définir un e-mail ou une combinaison de caractères pour le nom d'utilisateur.",
                 emailType: "Email",
                 customType: "Coutume",
                 usernameLength: {
@@ -3135,7 +3135,9 @@ export const extensions: Extensions = {
                     2: "caractères."
                 },
                 usernameAlphanumeric: "Restreindre aux caractères alphanumériques (a-z, A-Z, 0-9).",
-                usernameSpecialCharsHint: "Toute combinaison de lettres (a-z, A-Z), de chiffres (0-9) et des caractères suivants : !@#$%&'*+\\=?^_`.{|}~-."
+                usernameSpecialCharsHint: "TDoit contenir entre {minLength}} et {{maxLength}} caractères, dont au " +
+                    "moins une lettre, et peut contenir une combinaison des caractères " +
+                    "suivants: a-z, A-Z, 0-9, !@#$%&'*+\\=?^_`.{|}~-."
             },
             alternativeLoginIdentifierPage: {
                 pageTitle: "Identifiants de connexion alternatifs",
@@ -4120,6 +4122,20 @@ export const extensions: Extensions = {
                         "lien <1>Créer un compte</1> sur la page de connexion de l'application. " +
                         "Cela crée un nouveau compte <3>client</3> dans l'organisation."
                 },
+                inviteUserToSetPassword: {
+                    notification: {
+                        error: {
+                            description: "Échec de la mise à jour de la configuration du connecteur " +
+                                "Inviter un utilisateur à définir un mot de passe.",
+                            message: "Erreur de mise à jour de la configuration"
+                        },
+                        success: {
+                            description: "Mise à jour réussie de la configuration du connecteur Inviter " +
+                                "un utilisateur à définir un mot de passe",
+                            message: "Mise à jour réussie"
+                        }
+                    }
+                },
                 subHeading: "Paramètres liés à l'auto-enregistrement"
             }
         },
@@ -4168,7 +4184,10 @@ export const extensions: Extensions = {
                             " le compte d'utilisateur. Veuillez fournir une adresse e-mail pour inviter" +
                             " l'utilisateur à réinitialiser le mot de passe.",
                         emailResetWarning: "Un e-mail avec un lien pour réinitialiser le mot de passe sera envoyé à " +
-                            "l'adresse e-mail fournie pour que l'utilisateur puisse définir son propre mot de passe."
+                            "l'adresse e-mail fournie pour que l'utilisateur puisse définir son propre mot de passe.",
+                        passwordResetConfigDisabled: "La réinitialisation du mot de passe via l'e-mail de récupération " +
+                            "n'est pas activée. Veuillez vous assurer de l'activer dans les configurations " +
+                            "<1> Connexion et inscription </1>."
                     }
                 }
             },

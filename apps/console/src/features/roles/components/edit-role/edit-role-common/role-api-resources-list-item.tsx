@@ -16,17 +16,20 @@
  * under the License.
  */
 
-import { Grid, IconButton, ListItemText } from "@oxygen-ui/react";
 import { ChevronDownIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import Checkbox from "@oxygen-ui/react/Checkbox";
+import Grid from "@oxygen-ui/react/Grid";
+import IconButton from "@oxygen-ui/react/IconButton";
 import ListItem from "@oxygen-ui/react/ListItem";
+import ListItemText from "@oxygen-ui/react/ListItemText";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Tooltip } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { Label } from "semantic-ui-react";
 import { PermissionsList } from "./permissions-list";
 import { APIResourceInterface, ScopeInterface } from "../../../models/apiResources";
 
@@ -103,6 +106,7 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
             <Accordion disableGutters defaultExpanded elevation={ 0 } variant="elevation">
                 <AccordionSummary expandIcon={ <ChevronDownIcon /> }>
                     <ListItem
+                        className="list-item-text"
                         secondaryAction={ (
                             <Grid container alignItems="center" spacing={ 2 }>
                                 <Grid>
@@ -144,6 +148,20 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                         disablePadding
                     >
                         <ListItemText primary={ apiResource?.name } />
+                        { apiResource?.type
+                            && (
+                                <ListItemText
+                                    secondary={ (
+                                        <Label
+                                            size="mini"
+                                            className= "info-label"
+                                        >
+                                            { apiResource?.type }
+                                        </Label>
+                                    ) } >
+                                </ListItemText>
+                            ) }
+                        <ListItemText secondary={ apiResource?.identifier } />
                     </ListItem>
                 </AccordionSummary>
                 {

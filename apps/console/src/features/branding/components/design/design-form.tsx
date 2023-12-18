@@ -192,7 +192,7 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
     const {
         data: customLayoutBlob,
         isLoading: customLayoutLoading
-    } = useLayout(PredefinedLayouts.CUSTOM, tenantDomain);
+    } = useLayout(PredefinedLayouts.CUSTOM, tenantDomain, commonConfig?.checkCustomLayoutExistanceBeforeEnabling);
 
     /**
      * Set the internal initial theme state.
@@ -335,7 +335,8 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
         }
 
         // Avoid activating the custom layout when there is no deployed custom layout.
-        if (_values.layout.activeLayout === PredefinedLayouts.CUSTOM) {
+        if (commonConfig?.checkCustomLayoutExistanceBeforeEnabling
+                && _values?.layout?.activeLayout === PredefinedLayouts.CUSTOM) {
             while (customLayoutLoading) {
                 // Wait until finished the loading of custom layout.
             }

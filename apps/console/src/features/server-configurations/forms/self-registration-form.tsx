@@ -23,7 +23,6 @@ import { FormValidation } from "@wso2is/validation";
 import { AppState } from "apps/console/src/features/core";
 import { getUsernameConfiguration } from "apps/console/src/features/users/utils/user-management-utils";
 import { useValidationConfigData } from "apps/console/src/features/validation/api";
-import camelCase from "lodash-es/camelCase";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -127,7 +126,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
         ["data-testid"]: testId
     } = props;
 
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     const [ initialConnectorValues, setInitialConnectorValues ]
         = useState<Map<string, ConnectorPropertyInterface>>(undefined);
@@ -245,6 +244,16 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 }
             }
         });
+
+        if ((get(resolvedInitialFormValues, "SelfRegistration.SendConfirmationOnCreation") === "true") ||
+        (get(resolvedInitialFormValues, "SelfRegistration.LockOnCreation") === "true")) {
+            setEnableAccountConfirmation(true);
+            resolvedInitialFormValues = {
+                ...resolvedInitialFormValues,
+                signUpConfirmation: true
+            };
+        }
+
         // Make accountActivateImmediately false if the account confirmation is false.
         if (get(resolvedInitialFormValues, "signUpConfirmation") !== true) {
             resolvedInitialFormValues.accountActivateImmediately = false;
@@ -271,10 +280,10 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             "SelfRegistration.AutoLogin.Enable": values.autoLogin !== undefined
                 ? !!enableAutoLogin
                 : initialConnectorValues?.get("SelfRegistration.AutoLogin.Enable").value,
-            "SelfRegistration.LockOnCreation": (values.accountActivateImmediately !== undefined
-                || enableAccountConfirmation !== undefined)
-                ? !values.accountActivateImmediately && !!enableAccountConfirmation
-                : initialConnectorValues?.get("SelfRegistration.LockOnCreation").value,
+            "SelfRegistration.LockOnCreation": values.accountActivateImmediately === true ||
+            enableAccountConfirmation == false
+                ? false
+                : true,
             "SelfRegistration.NotifyAccountConfirmation": enableAccountConfirmation !== undefined
                 ? !!enableAccountConfirmation
                 : initialConnectorValues?.get("SelfRegistration.NotifyAccountConfirmation").value,
@@ -307,16 +316,20 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 "accountActivateImmediately",
                 "verificationLinkExpiryTime",
                 "signUpConfirmation",
+                "SelfRegistration.LockOnCreation",
                 "SelfRegistration.VerificationCode.ExpiryTime",
                 "SelfRegistration.SendConfirmationOnCreation",
                 "SelfRegistration",
                 "SelfRegistration.Notification.InternallyManage",
                 "SelfRegistration.ReCaptcha",
-                "SelfRegistration.AutoLogin.Enable"
+                "SelfRegistration.AutoLogin.Enable",
+                "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime",
+                "SelfRegistration.CallbackRegex",
+                "SelfRegistration.SMSOTP.Regex"
             ];
 
             for (const key in values) {
-                if (Object.prototype.hasOwnProperty.call(values, key) && !keysToOmit.includes(key)) {
+                if (!keysToOmit.includes(key)) {
                     data = {
                         ...data,
                         [ GovernanceConnectorUtils.decodeConnectorPropertyName(key) ]: values[ key ]
@@ -506,34 +519,6 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
         return null;
     }
 
-    const resolveFieldLabel = (name: string, displayName: string): string => {
-        const fieldLabelKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
-                camelCase(initialValues?.category) + ".connectors." + camelCase(initialValues?.name) +
-                ".properties." + camelCase(name) + ".label";
-
-        let fieldLabel: string = displayName;
-
-        if (i18n.exists(fieldLabelKey)) {
-            fieldLabel = t(fieldLabelKey);
-        }
-
-        return fieldLabel;
-    };
-
-    const resolveFieldHint = (name: string, description: string): string => {
-        const fieldHintKey: string = "console:manage.features.governanceConnectors.connectorCategories." +
-                camelCase(initialValues?.category) + ".connectors." + camelCase(initialValues?.name) +
-                ".properties." + camelCase(name) + ".hint";
-
-        let fieldHint: string = description;
-
-        if (i18n.exists(fieldHintKey)) {
-            fieldHint = t(fieldHintKey);
-        }
-
-        return fieldHint;
-    };
-
     return (
         <Form
             id={ FORM_ID }
@@ -668,56 +653,6 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                     "SelfRegistration.NotifyAccountConfirmation",
                     "Enable sending notification for self sign up confirmation.")
                 }
-            />
-            <Field.Input
-                ariaLabel="SelfRegistration.VerificationCode.SMSOTP.ExpiryTime"
-                inputType="number"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime"
-                ) }
-                type="number"
-                width={ 16 }
-                required={ true }
-                placeholder={ "Enter user self registration verification link expiry time" }
-                labelPosition="top"
-                minLength={ 3 }
-                maxLength={ 100 }
-                readOnly={ readOnly }
-                initialValue={ initialFormValues?.[
-                    "SelfRegistration.VerificationCode.SMSOTP.ExpiryTime" ] }
-                data-componentid={ `${ testId }-sms-otp-expiry-time` }
-                label={ resolveFieldLabel("SelfRegistration.VerificationCode.SMSOTP.ExpiryTime",
-                    "User self registration SMS OTP expiry time")
-                }
-                hidden={ !serverConfigurationConfig.dynamicConnectors }
-                disabled={ !isConnectorEnabled }
-                hint={ resolveFieldHint("SelfRegistration.VerificationCode.SMSOTP.ExpiryTime",
-                    "Specify the expiry time in minutes for the SMS OTP.") }
-            />
-            <Field.Input
-                ariaLabel="SelfRegistration.CallbackRegex"
-                inputType="text"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "SelfRegistration.CallbackRegex"
-                ) }
-                type="text"
-                width={ 16 }
-                required={ true }
-                placeholder={ "Enter user self registration verification link expiry time" }
-                labelPosition="top"
-                minLength={ 3 }
-                maxLength={ 100 }
-                readOnly={ readOnly }
-                initialValue={ initialFormValues?.[
-                    "SelfRegistration.CallbackRegex" ] }
-                data-component={ `${ testId }-callback-url-regex` }
-                label={ resolveFieldLabel("SelfRegistration.CallbackRegex",
-                    "User self registration callback URL regex")
-                }
-                hidden={ !serverConfigurationConfig.dynamicConnectors }
-                disabled={ !isConnectorEnabled }
-                hint={ resolveFieldHint("SelfRegistration.CallbackRegex",
-                    "This prefix will be used to validate the callback URL.") }
             />
             <Field.Button
                 form={ FORM_ID }

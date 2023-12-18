@@ -145,8 +145,6 @@ export const GroupBasicsUpdated: FunctionComponent<GroupBasicProps> = (props: Gr
             value: ""
         };
 
-        setUserStore(storeOptions[ 0 ].value as string);
-
         if (isSuperOrganization() || isFirstLevelOrganization()) {
             getUserStoreList()
                 .then((response: UserstoreListResponseInterface[] | any) => {

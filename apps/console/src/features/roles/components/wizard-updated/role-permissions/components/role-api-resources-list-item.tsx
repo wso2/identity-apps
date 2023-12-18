@@ -49,7 +49,7 @@ interface RoleAPIResourcesListItemProp extends  IdentifiableComponentInterface {
     onRemoveAPIResource: (apiResourceId: string) => void;
 }
 
-export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListItemProp> = 
+export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListItemProp> =
     (props: RoleAPIResourcesListItemProp): ReactElement => {
 
         const {
@@ -63,9 +63,9 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
         const { t } = useTranslation();
 
         // check if all scopes are selected from the api resource
-        const isAllScopesSelected = (): boolean => 
+        const isAllScopesSelected = (): boolean =>
             apiResource?.scopes?.length === selectedPermissions?.length;
-        
+
         /**
          * Handles the remove API resource action.
          */
@@ -88,7 +88,8 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
             <Accordion disableGutters defaultExpanded elevation={ 1 }>
                 <AccordionSummary expandIcon={ <ChevronDownIcon /> }>
                     <ListItem
-                        secondaryAction={ ( 
+                        className="list-item-text"
+                        secondaryAction={ (
                             <Grid container alignItems="center" spacing={ 2 }>
                                 <Grid>
                                     <Tooltip
@@ -101,7 +102,7 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                                                 onChange={ handleAllScopesSelection }
                                             />
                                         ) }
-                                        content={ apiResource?.scopes?.length < 0 
+                                        content={ apiResource?.scopes?.length < 0
                                             ? t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
                                                 "permissions.tooltips.noScopes")
                                             : t("console:manage.features.roles.addRoleWizard.forms.rolePermission." +
@@ -110,9 +111,9 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                                     />
                                 </Grid>
                                 <Grid>
-                                    <Tooltip 
-                                        trigger={ ( 
-                                            <IconButton 
+                                    <Tooltip
+                                        trigger={ (
+                                            <IconButton
                                                 data-componentid = { `${componentId}-remove` }
                                                 onClick={ handleRemoveAPIResource }
                                             >
@@ -127,12 +128,12 @@ export const RoleAPIResourcesListItem: FunctionComponent<RoleAPIResourcesListIte
                             </Grid>
                         ) }
                         disablePadding
-                    >  
+                    >
                         <ListItemText primary={ apiResource?.name } />
                     </ListItem>
                 </AccordionSummary>
                 {
-                    apiResource?.scopes?.length > 0 
+                    apiResource?.scopes?.length > 0
                         ? (
                             <AccordionDetails>
                                 <PermissionsList

@@ -137,6 +137,63 @@ export const useGetConnections = <Data = ConnectionListResponseInterface, Error 
 };
 
 /**
+ * Function to get the connection list with limit and offset.
+ *
+ * @param limit - Maximum Limit of the connection List.
+ * @param offset - Offset for get to start.
+ * @param filter - Search filter.
+ * @param requiredAttributes - Extra attribute to be included in the list response. ex:`isFederationHub`
+ *
+ * @returns Requested connections.
+ * @throws IdentityAppsApiException.
+ */
+export const getConnections = (
+    limit?: number,
+    offset?: number,
+    filter?: string,
+    requiredAttributes?: string
+): Promise<ConnectionListResponseInterface> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: {
+            filter,
+            limit,
+            offset,
+            requiredAttributes
+        },
+        url: store?.getState()?.config?.endpoints?.identityProviders
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response?.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ConnectionManagementConstants.CONNECTIONS_FETCH_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response?.status,
+                    response?.request,
+                    response,
+                    response?.config);
+            }
+
+            return Promise.resolve(response?.data as ConnectionListResponseInterface);
+        }).catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ConnectionManagementConstants.CONNECTIONS_FETCH_ERROR,
+                error?.stack,
+                error?.response?.data?.code,
+                error?.request,
+                error?.response,
+                error?.config);
+        });
+};
+
+/**
  * Hook to get the basic information about the application.
  *
  * @param id - ID of the application.

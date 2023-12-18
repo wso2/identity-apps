@@ -17,8 +17,10 @@
  */
 
 import Chip, { ChipProps } from "@oxygen-ui/react/Chip";
+import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
+import { RoleAudienceTypes } from "../../../roles/constants";
 
 interface RenderChipInterface extends IdentifiableComponentInterface, ChipProps {
     /**
@@ -63,7 +65,7 @@ export const RenderChipRolesInGroups: FunctionComponent<RenderChipInterface> = (
 
     /**
      * Handles the mouse enter event of the chip.
-     * 
+     *
      * @param event - Mouse event
      * @param option - Group or user object
      */
@@ -71,7 +73,7 @@ export const RenderChipRolesInGroups: FunctionComponent<RenderChipInterface> = (
         event.stopPropagation();
         setActiveOption(option);
     };
-    
+
     /**
      * Handles the mouse leave event of the chip.
      */
@@ -84,12 +86,19 @@ export const RenderChipRolesInGroups: FunctionComponent<RenderChipInterface> = (
             <Chip
                 { ...props }
                 key={ key }
-                label={ 
+                label={
                     (<>
-                        <i> { audienceType } </i> 
-                        <i> { audienceType === "application" && ( " : " + audienceDisplay ) } </i>
-                        { " | " }
-                        <strong> { displayName } </strong>
+                        <Typography fontWeight={ 500 } sx={ { display: "inline-block" } }>{ displayName }</Typography>
+                        {
+                            audienceType && (
+                                <Typography sx={ { display: "inline-block", fontStyle:"italic" } } >
+                                    { " (" + audienceType }
+                                    { audienceType?.toUpperCase() === RoleAudienceTypes.APPLICATION
+                                        && (" | " + audienceDisplay) }
+                                    { ") " }
+                                </Typography>
+                            )
+                        }
                     </>)
                 }
                 onMouseEnter={ handleChipMouseEnter }

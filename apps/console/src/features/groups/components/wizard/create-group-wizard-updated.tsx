@@ -60,10 +60,25 @@ import {
  * Interface which captures create group props.
  */
 interface CreateGroupProps extends IdentifiableComponentInterface {
+    /**
+     * Callback for the wizard close event.
+     */
     closeWizard: () => void;
-    updateList: () => void;
+    /**
+     * Callback for the group create event.
+     */
+    onCreate: () => void;
+    /**
+     * Initial step of the wizard.
+     */
     initStep?: number;
+    /**
+     * Required steps for the wizard.
+     */
     requiredSteps?: WizardStepsFormTypes[] | string[];
+    /**
+     * Should the wizard show the steps.
+     */
     showStepper?: boolean;
 }
 
@@ -80,6 +95,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         initStep,
         showStepper,
         requiredSteps,
+        onCreate,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -100,11 +116,6 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         commonConfig?.primaryUserstoreOnly ? PRIMARY_USERSTORE : CONSUMER_USERSTORE);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ roleList, setRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>([]);
-    const [ tempRoleList, setTempRoleList ] = useState<RolesInterface[] | OrganizationRoleListItemInterface[]>([]);
-    const [ initialRoleList, setInitialRoleList ] = useState<RolesInterface[]
-        | OrganizationRoleListItemInterface[]>([]);
-    const [ initialTempRoleList, setInitialTempRoleList ] = useState<RolesInterface[]
-        | OrganizationRoleListItemInterface[]>([]);
     const [ isWizardActionDisabled, setIsWizardActionDisabled ] = useState<boolean>(true);
     const [ selectedRoleId, setSelectedRoleId ] = useState<string>();
     const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
@@ -177,25 +188,16 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
         }
     }, [ isRoleSelected ]);
 
+    useEffect(() => {
+        if (wizardState?.BasicDetails?.basic?.basicDetails?.domain) {
+            setSelectedUserStore(wizardState?.BasicDetails?.basic?.basicDetails?.domain);
+        }
+    }, [ wizardState ]);
+
+
     const handleRoleIdSet = (roleId: string) => {
         setSelectedRoleId(roleId);
         setRoleSelection(true);
-    };
-
-    const handleRoleListChange = (roleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
-        setRoleList(roleList);
-    };
-
-    const handleInitialRoleListChange = (roleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
-        setInitialRoleList(roleList);
-    };
-
-    const handleAddedRoleListChange = (newRoleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
-        setTempRoleList(newRoleList);
-    };
-
-    const handleAddedRoleInitialListChange = (newRoleList: RolesInterface[] | OrganizationRoleListItemInterface[]) => {
-        setInitialTempRoleList(newRoleList);
     };
 
     /**
@@ -314,8 +316,21 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                             });
                         }
                     });
+                } else {
+                    dispatch(
+                        addAlert({
+                            description: t("console:manage.features.groups.notifications.createGroup.success." +
+                                "description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("console:manage.features.groups.notifications.createGroup.success." +
+                                "message")
+                        })
+                    );
+                    closeWizard();
                 }
             }
+
+            onCreate();
         }).catch((error: AxiosError)  => {
             if (!error.response || error.response.status === 401) {
                 dispatch(
@@ -471,24 +486,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                         <AssignRoles
                             triggerSubmit={ submitRoleList }
                             onSubmit={ (values: any) => handleWizardSubmit(values, WizardStepsFormTypes.ROLE_LIST) }
-                            initialValues={
-                                {
-                                    initialRoleList: initialRoleList,
-                                    initialTempRoleList: initialTempRoleList,
-                                    roleList: roleList,
-                                    tempRoleList: tempRoleList
-                                }
-                            }
-                            handleRoleListChange={ (roles: RolesInterface[] | OrganizationRoleListItemInterface[]) =>
-                                handleRoleListChange(roles) }
-                            handleTempListChange={ (roles: RolesInterface[] | OrganizationRoleListItemInterface[]) =>
-                                handleAddedRoleListChange(roles) }
-                            handleInitialTempListChange={
-                                (roles: RolesInterface[] | OrganizationRoleListItemInterface[]) =>
-                                    handleAddedRoleInitialListChange(roles) }
-                            handleInitialRoleListChange={
-                                (roles: RolesInterface[] | OrganizationRoleListItemInterface[]) =>
-                                    handleInitialRoleListChange(roles) }
+                            initialValues={ { roleList: roleList } }
                             handleSetRoleId={ (roleId: string) => handleRoleIdSet(roleId) }
                         />
                     )

@@ -21,12 +21,14 @@
 <%@ page import="java.io.File" %>
 <%@ page import="org.apache.commons.collections.map.HashedMap" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.base.IdentityRuntimeException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.RecoveryApiV2" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.UserClaim" %>
 <%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
@@ -68,6 +70,7 @@
     String confirmationKey = request.getParameter("confirmationKey");
     String callback = request.getParameter("callback");
     String userTenantHint = request.getParameter("t");
+    String applicationAccessUrl = "";
 
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
@@ -81,9 +84,22 @@
     // Password recovery parameters
     String recoveryOption = request.getParameter("recoveryOption");
 
+    try {
+        String sp = Encode.forJava(request.getParameter("sp"));
+        if (StringUtils.isNotBlank(sp)) {
+            ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+            applicationAccessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
+        }
+    } catch (Exception e) {
+        // Ignored.
+    }
+
     Boolean isValidCallBackURL = false;
     try {
-        if (StringUtils.isNotBlank(callback)) {
+        if (StringUtils.isNotBlank(applicationAccessUrl)) {
+            // Disregard callbackURL regex validation when accessURL is configured in the application.
+            isValidCallBackURL = true;
+        } else if (StringUtils.isNotBlank(callback)) {
             PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
             isValidCallBackURL = preferenceRetrievalClient.checkIfRecoveryCallbackURLValid(tenantDomain,callback);
         }

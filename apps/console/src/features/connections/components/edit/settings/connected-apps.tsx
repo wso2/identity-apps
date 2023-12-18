@@ -20,59 +20,63 @@ import { IdentityAppsError } from "@wso2is/core/errors";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { 
-    AnimatedAvatar, 
-    AppAvatar,  
-    DataTable, 
+import {
+    AnimatedAvatar,
+    AppAvatar,
+    DataTable,
     EmphasizedSegment,
-    EmptyPlaceholder, 
+    EmptyPlaceholder,
     Heading,
-    TableActionsInterface, 
-    TableColumnInterface 
+    TableActionsInterface,
+    TableColumnInterface
 } from "@wso2is/react-components";
-import React, 
-{ 
+import React,
+{
     FunctionComponent,
-    ReactElement, 
-    ReactNode, 
-    SyntheticEvent, 
-    useEffect, 
-    useState 
+    ReactElement,
+    ReactNode,
+    SyntheticEvent,
+    useEffect,
+    useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import {  
+import {
     Divider,
-    Header, 
-    Icon, 
-    Input, 
-    Label, 
+    Header,
+    Icon,
+    Input,
+    Label,
     SemanticICONS
 } from "semantic-ui-react";
 import { applicationListConfig } from "../../../../../extensions/configs/application-list";
 import { getApplicationDetails } from "../../../../applications/api";
 import { ApplicationManagementConstants } from "../../../../applications/constants";
-import { 
-    ApplicationAccessTypes, 
-    ApplicationBasicInterface, 
-    ApplicationListItemInterface, 
-    ApplicationTemplateListItemInterface 
+import {
+    ApplicationAccessTypes,
+    ApplicationBasicInterface,
+    ApplicationListItemInterface,
+    ApplicationTemplateListItemInterface
 } from "../../../../applications/models";
-import { ApplicationTemplateManagementUtils } from "../../../../applications/utils/application-template-management-utils";
-import {  
+import {
+    ApplicationTemplateManagementUtils
+} from "../../../../applications/utils/application-template-management-utils";
+import { ConsoleSettingsModes } from "../../../../console-settings/models/ui";
+import {
     AppConstants,
-    AppState, 
-    FeatureConfigInterface,   
-    UIConstants, 
-    getEmptyPlaceholderIllustrations, 
+    AppState,
+    FeatureConfigInterface,
+    UIConfigInterface,
+    UIConstants,
+    getEmptyPlaceholderIllustrations,
     history
 } from "../../../../core";
 import { getConnectedApps } from "../../../api/connections";
-import { 
+import {
     ConnectedAppInterface,
-    ConnectedAppsInterface, 
-    ConnectionInterface 
+    ConnectedAppsInterface,
+    ConnectionInterface
 } from "../../../models/connection";
 
 
@@ -144,8 +148,10 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         loader: Loader,
         [ "data-componentid" ]: componentId
     } = props;
-    
+
     const dispatch: Dispatch = useDispatch();
+
+    const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
     const [ connectedApps, setConnectedApps ] = useState<ConnectedAppInterface[]>();
     const [ filterSelectedApps, setFilterSelectedApps ] = useState<ConnectedAppInterface[]>([]);
@@ -169,9 +175,9 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         getConnectedApps(editingIDP.id)
             .then(async (response: ConnectedAppsInterface) => {
                 setconnectedAppsCount(response.count);
-                
+
                 if (response.count > 0) {
-                    
+
                     const appRequests: Promise<any>[] = response.connectedApps.map((app: ConnectedAppInterface) => {
                         return getApplicationDetails(app.appId);
                     });
@@ -182,7 +188,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                                 description: error?.description
                                     || t("console:develop.features.idp.connectedApps.genericError.description"),
                                 level: AlertLevels.ERROR,
-                                message: error?.message 
+                                message: error?.message
                                     || t("console:develop.features.idp.connectedApps.genericError.message")
                             }));
                         }))
@@ -212,16 +218,16 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         if (applicationTemplates !== undefined) {
             return;
         }
-    
+
         setApplicationTemplateRequestLoadingStatus(true);
-    
+
         ApplicationTemplateManagementUtils.getApplicationTemplates()
             .catch((error: IdentityAppsError) => {
                 dispatch(addAlert({
                     description: error?.description
                     || t("console:develop.features.applications.notifications.fetchTemplates.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message 
+                    message: error?.message
                     || t("console:develop.features.applications.notifications.fetchTemplates.genericError.message")
                 }));
             })
@@ -229,7 +235,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 setApplicationTemplateRequestLoadingStatus(false);
             });
     }, [ applicationTemplates, groupedApplicationTemplates ]);
- 
+
     /**
      * Resolves data table columns.
      *
@@ -268,7 +274,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                                 return template.id === ApplicationManagementConstants.CUSTOM_APPLICATION;
                             }).name;
                     } else {
-                        const relevantApplicationTemplate: ApplicationTemplateListItemInterface | undefined = 
+                        const relevantApplicationTemplate: ApplicationTemplateListItemInterface | undefined =
                             applicationTemplates
                             && applicationTemplates instanceof Array
                             && applicationTemplates.length > 0
@@ -359,22 +365,65 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      * @param appId - Application id.
      * @param access - Access level of the application.
      */
-    const handleApplicationEdit = (appId: string, access: ApplicationAccessTypes, tabName: string): void => {
+    const handleApplicationEdit = (
+        appId: string,
+        access: ApplicationAccessTypes,
+        tabName: string,
+        appName: string
+    ): void => {
         if (isSetStrongerAuth) {
+            if (!UIConfig?.legacyMode?.applicationListSystemApps) {
+                if (appName === ApplicationManagementConstants.CONSOLE_APP_NAME) {
+                    history.push({
+                        hash: `tab=${ ConsoleSettingsModes.LOGIN_FLOW }`,
+                        pathname: AppConstants.getPaths().get("CONSOLE_SETTINGS")
+                    });
+
+                    return;
+                } else if (appName === ApplicationManagementConstants.MY_ACCOUNT_APP_NAME) {
+                    history.push({
+                        pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
+                        search: `#tab=${
+                            ApplicationManagementConstants.MY_ACCOUNT_LOGIN_FLOW_TAB }`
+                    });
+
+                    return;
+                }
+            }
+
             history.push({
                 pathname: AppConstants.getPaths().get("APPLICATION_SIGN_IN_METHOD_EDIT")
                     .replace(":id", appId).replace(":tabName", tabName),
-                
+
                 search: `?${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_KEY }=
                 ${ ApplicationManagementConstants.APP_STATE_STRONG_AUTH_PARAM_VALUE }`,
-                
+
                 state: { id: editingIDP.id, name: editingIDP.name }
             });
         } else {
+            if (!UIConfig?.legacyMode?.applicationListSystemApps) {
+                if (appName === ApplicationManagementConstants.CONSOLE_APP_NAME) {
+                    history.push({
+                        hash: `tab=${ ConsoleSettingsModes.LOGIN_FLOW }`,
+                        pathname: AppConstants.getPaths().get("CONSOLE_SETTINGS")
+                    });
+
+                    return;
+                } else if (appName === ApplicationManagementConstants.MY_ACCOUNT_APP_NAME) {
+                    history.push({
+                        pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
+                        search: `#tab=${
+                            ApplicationManagementConstants.MY_ACCOUNT_LOGIN_FLOW_TAB }`
+                    });
+
+                    return;
+                }
+            }
+
             history.push({
                 pathname: AppConstants.getPaths().get("APPLICATION_SIGN_IN_METHOD_EDIT")
                     .replace(":id", appId).replace(":tabName", tabName),
-                
+
                 search: access === ApplicationAccessTypes.READ
                     ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
                     : "",
@@ -413,7 +462,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [
-                        t("console:develop.features.idp.connectedApps.placeholders.emptyList", 
+                        t("console:develop.features.idp.connectedApps.placeholders.emptyList",
                             { idpName: editingIDP.name })
                     ] }
                     data-componentid={ `${ componentId }-empty-placeholder` }
@@ -439,12 +488,19 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 "data-componentid": `${ componentId }-item-edit-button`,
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
-                icon: (): SemanticICONS => { 
+                icon: (): SemanticICONS => {
                     return "caret right";
                 },
-                onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void =>
-                    handleApplicationEdit(app.id, app.access, "#tab=" +
-                        ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG),
+                onClick: (_: SyntheticEvent, app: ApplicationListItemInterface): void => {
+                    handleApplicationEdit(
+                        app.id,
+                        app.access,
+                        `#tab=${
+                            ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG
+                        }`,
+                        app.name
+                    );
+                },
                 popupText: (): string => {
                     return t("console:develop.features.idp.connectedApps.action");
                 },
@@ -460,7 +516,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      */
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const changeValue: string = event.target.value.trim();
-        
+
         setSearchQuery(changeValue);
 
         if (changeValue.length > 0) {
@@ -476,10 +532,10 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      * @param changevalue-search query.
      */
     const searchFilter = (changeValue: string) => {
-        const appNameFilter: ConnectedAppInterface[] = connectedApps.filter((item: ConnectedAppInterface) => 
-            item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1); 
-        
-        setFilterSelectedApps(appNameFilter); 
+        const appNameFilter: ConnectedAppInterface[] = connectedApps.filter((item: ConnectedAppInterface) =>
+            item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+
+        setFilterSelectedApps(appNameFilter);
     };
 
     if (isAppsLoading) {
@@ -488,11 +544,11 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
 
     return (
         <EmphasizedSegment padded="very">
-            <Heading as="h4">{ t("console:develop.features.idp.connectedApps.header", 
+            <Heading as="h4">{ t("console:develop.features.idp.connectedApps.header",
                 { idpName: editingIDP.name }) }</Heading>
             <Divider hidden />
             { connectedApps && (
-                <Input 
+                <Input
                     icon={ <Icon name="search" /> }
                     iconPosition="left"
                     onChange={ handleChange }
@@ -514,8 +570,14 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                 columns={ resolveTableColumns() }
                 data={ filterSelectedApps }
                 onRowClick={ (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
-                    handleApplicationEdit(app.id, app.access, "#tab=" +
-                        ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG);
+                    handleApplicationEdit(
+                        app.id,
+                        app.access,
+                        `#tab=${
+                            ApplicationManagementConstants.SIGN_IN_METHOD_TAB_URL_FRAG
+                        }`,
+                        app.name
+                    );
                     onListItemClick && onListItemClick(e, app);
                 } }
                 placeholders={ showPlaceholders() }

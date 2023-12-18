@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { CircleInfoIcon } from "@oxygen-ui/react-icons";
+import { CircleInfoIcon, GearIcon } from "@oxygen-ui/react-icons";
 import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
@@ -26,14 +26,26 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import Image from "@oxygen-ui/react/Image";
 import Toolbar from "@oxygen-ui/react/Toolbar";
 import Typography from "@oxygen-ui/react/Typography";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import {
+    ContentLoader,
+    Heading,
+    LinkButton,
+    PrimaryButton
+} from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, ReactNode, SVGProps, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { Grid, Modal } from "semantic-ui-react";
 import AdaptiveAuthTemplateChangeConfirmationModal from "./adaptive-auth-template-change-confimation-modal";
 import AdaptiveAuthTemplateInfoModal from "./adaptive-auth-template-info-modal";
 import BasicLoginFlowTemplateChangeConfirmationModal from "./basic-login-flow-template-change-confimation-modal";
 import PredefinedSocialFlowHandlerModalFactory from "./predefined-social-flow-handler-modal-factory";
+import { serverConfigurationConfig } from "../../../../extensions/configs/server-configuration";
 import {
     AdaptiveAuthTemplateCategoryInterface,
     AdaptiveAuthTemplateInterface,
@@ -44,6 +56,20 @@ import {
 import { AdaptiveScriptUtils } from "../../../applications/utils/adaptive-script-utils";
 import { getAuthenticatorIcons } from "../../../identity-providers/configs/ui";
 import { GenericAuthenticatorInterface } from "../../../identity-providers/models";
+import {
+    getConnectorDetails,
+    updateGovernanceConnector
+} from "../../../server-configurations/api/governance-connectors";
+import {
+    ServerConfigurationsConstants
+} from "../../../server-configurations/constants/server-configurations-constants";
+import { AnalyticsConfigurationForm } from "../../../server-configurations/forms/analytics-form";
+import {
+    GovernanceConnectorInterface,
+    UpdateGovernanceConnectorConfigInterface
+} from "../../../server-configurations/models/governance-connectors";
+import { GovernanceConnectorUtils } from "../../../server-configurations/utils/governance-connector-utils";
+import { ELK_RISK_BASED_TEMPLATE_NAME } from "../../constants/template-constants";
 import * as FlowSequences from "../../data/flow-sequences";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import { PredefinedFlowCategories, SocialIdPPlaceholders } from "../../models/predefined-flows";
@@ -176,6 +202,14 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
         showPredefinedSocialFlowModalHandlerModalFactory,
         setShowPredefinedSocialFlowModalHandlerModalFactory
     ] = useState<boolean>(false);
+    const [ openELKAnalyticsModal, setELKAnalyticsModalOpen ] = useState(false);
+    const [ isConnectorRequestLoading, setConnectorRequestLoading ] = useState<boolean>(false);
+    const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
+    const [ categoryId, setCategoryId ] = useState<string>(undefined);
+    const [ connectorId, setConnectorId ] = useState<string>(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
+    const dispatch: Dispatch = useDispatch();
 
     /**
      * Handles the accordion change event.
@@ -340,6 +374,216 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
     };
 
     /**
+     * Load ELK analytics connector details.
+     */
+    const loadConnectorDetails = () => {
+        const categoryId: string = ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID;
+        const connectorId: string = ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID;
+
+        setCategoryId(categoryId);
+        setConnectorId(connectorId);
+        setConnectorRequestLoading(true);
+
+        getConnectorDetails(categoryId, connectorId)
+            .then((response: GovernanceConnectorInterface) => {
+                setConnector(response);
+            })
+            .catch((error: AxiosError) => {
+                if (error?.response && error?.response?.data && error?.response?.data?.detail) {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "getConnector.error.description",
+                                { description: error?.response?.data?.description }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "getConnector.error.message"
+                            )
+                        })
+                    );
+                } else {
+                    // Generic error message
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "getConnector.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "getConnector.genericError.message"
+                            )
+                        })
+                    );
+                }
+            })
+            .finally(() => {
+                setConnectorRequestLoading(false);
+            });
+    };
+
+    /**
+     * Handles ELK analytics configuration form submit.
+     */
+    const handleSubmit = (values: Record<string, unknown>) => {
+
+        const data: UpdateGovernanceConnectorConfigInterface = {
+            operation: "UPDATE",
+            properties: []
+        };
+
+        for (const key in values) {
+            data.properties.push({
+                name: GovernanceConnectorUtils.decodeConnectorPropertyName(key),
+                value: values[ key ]
+            });
+        }
+
+        if (
+            serverConfigurationConfig.connectorToggleName[ connector?.name ] &&
+            serverConfigurationConfig.autoEnableConnectorToggleProperty
+        ) {
+            data.properties.push({
+                name: GovernanceConnectorUtils.decodeConnectorPropertyName(
+                    serverConfigurationConfig.connectorToggleName[ connector?.name ]
+                ),
+                value: "true"
+            });
+        }
+
+        setIsSubmitting(true);
+
+        updateGovernanceConnector(data, categoryId, connectorId)
+            .then(() => {
+                dispatch(
+                    addAlert({
+                        description: t("extensions:manage.serverConfigurations.analytics.form." +
+                            "notification.success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "console:manage.features.governanceConnectors.notifications." +
+                            "updateConnector.success.message"
+                        )
+                    })
+                );
+            })
+            .catch((error: AxiosError) => {
+                if (error?.response && error?.response?.data && error?.response?.data?.detail) {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "extensions:manage.serverConfigurations.analytics.form." +
+                                "notification.error.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "updateConnector.error.message"
+                            )
+                        })
+                    );
+                } else {
+                    // Generic error message
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "updateConnector.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "console:manage.features.governanceConnectors.notifications." +
+                                "updateConnector.genericError.message"
+                            )
+                        })
+                    );
+                }
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+                handleELKAnalyticsModalClose();
+            });
+    };
+
+    const handleELKAnalyticsModalClose = (): void => setELKAnalyticsModalOpen(false);
+
+    const handleELKAnalyticsModalOpen = (): void => {
+        loadConnectorDetails();
+        setELKAnalyticsModalOpen(true);
+    };
+
+    const elkAnalyticsConfigurationsModal = (): ReactElement => {
+        let submitAuthorization: () => void;
+
+        return (
+            <Modal
+                open={ openELKAnalyticsModal }
+                onClose={ handleELKAnalyticsModalClose }
+                size="small"
+                dimmer="blurring"
+            >
+                <Modal.Header>
+                    { connector?.friendlyName }
+                    <Heading subHeading ellipsis as="h6">
+                        { t("console:manage.features.governanceConnectors.connectorSubHeading", {
+                            name: connector?.friendlyName })
+                        }
+                    </Heading>
+                </Modal.Header>
+                <Modal.Content className="elk-analytics-modal" scrolling>
+                    {
+                        isConnectorRequestLoading
+                            ? <ContentLoader inline="centered" active />
+                            : (
+                                <AnalyticsConfigurationForm
+                                    onSubmit={ handleSubmit }
+                                    triggerSubmission={ (submitFunctionCb: () => void) => {
+                                        submitAuthorization = submitFunctionCb;
+                                    } }
+                                    initialValues={ connector }
+                                    isConnectorEnabled={ true }
+                                    isSubmitting={ isSubmitting }
+                                    hideUpdateButton
+                                    isModalForm
+                                />
+                            )
+                    }
+                </Modal.Content>
+                <Modal.Actions>
+                    <Grid>
+                        <Grid.Row column={ 1 }>
+                            <Grid.Column mobile={ 8 }>
+                                <LinkButton
+                                    data-testid={ `${componentId}-cancel-button` }
+                                    floated="left"
+                                    onClick={ () => handleELKAnalyticsModalClose() }
+                                >
+                                    { t("console:apiResources.tabs.scopes.form.cancelButton") }
+                                </LinkButton>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 }>
+                                <PrimaryButton
+                                    data-testid={ `${componentId}-finish-button` }
+                                    floated="right"
+                                    onClick={ () => submitAuthorization() }
+                                    loading={ isSubmitting }
+                                >
+                                    { t("common:update") }
+                                </PrimaryButton>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Modal.Actions>
+            </Modal>
+        );
+    };
+
+    /**
      * Generates the adaptive authentication templates.
      *
      * @returns Set of adaptive authentication templates.
@@ -363,6 +607,19 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                                             { template.name }
                                         </div>
                                         <div className="actions">
+                                            {
+                                                template.name === ELK_RISK_BASED_TEMPLATE_NAME && (
+                                                    <IconButton
+                                                        size="small"
+                                                        onClick={ () => {
+                                                            setSelectedAdaptiveAuthTemplate(template);
+                                                            handleELKAnalyticsModalOpen();
+                                                        } }
+                                                    >
+                                                        <GearIcon size={ 14 } />
+                                                    </IconButton>
+                                                )
+                                            }
                                             <IconButton
                                                 size="small"
                                                 onClick={ () => {
@@ -502,6 +759,8 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
             </div>
             { showAdaptiveAuthTemplateChangeConfirmationModal && (
                 <AdaptiveAuthTemplateChangeConfirmationModal
+                    onELKConfigureClick={ () => handleELKAnalyticsModalOpen() }
+                    isELKRiskBased={ selectedAdaptiveAuthTemplate?.name === "ELK-Risk-Based" }
                     open={ showAdaptiveAuthTemplateChangeConfirmationModal }
                     onClose={ () => setShowAdaptiveAuthTemplateChangeConfirmationModal(false) }
                     selectedTemplate={ selectedAdaptiveAuthTemplate }
@@ -545,6 +804,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                     } }
                 />
             ) }
+            { elkAnalyticsConfigurationsModal() }
         </div>
     );
 };

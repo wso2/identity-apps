@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -29,6 +30,7 @@ import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
 import { BasicGroupDetails } from "./edit-group-basic";
 import { EditGroupRoles } from "./edit-group-roles";
+import { GroupRolesV1List } from "./edit-group-roles-v1";
 import { GroupUsersList } from "./edit-group-users";
 import { FeatureConfigInterface } from "../../../core/models";
 import { AppState } from "../../../core/store";
@@ -84,10 +86,12 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const { UIConfig } = useUIConfig();
 
     const { activeTab, updateActiveTab } = useGroupManagement();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const roleV1Enabled: boolean = UIConfig?.legacyMode?.rolesV1;
 
     const [ isUsersFetchRequestLoading, setIsUsersFetchRequestLoading ] = useState<boolean>(true);
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
@@ -226,8 +230,21 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                     </ResourceTab.Pane>
                 )
             },
+            isSuperOrganization && roleV1Enabled ? {
+                menuItem: t("console:manage.features.roles.edit.menuItems.roles"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <GroupRolesV1List
+                            data-testid="group-mgt-edit-group-roles-v1"
+                            group={ group }
+                            onGroupUpdate={ onGroupUpdate }
+                            isReadOnly={ isReadOnly }
+                        />
+                    </ResourceTab.Pane>
+                )
+            } : null,
             // ToDo - Enabled only for root organizations as BE doesn't have full SCIM support for organizations yet
-            isSuperOrganization ? {
+            isSuperOrganization && !roleV1Enabled ? {
                 menuItem: t("console:manage.features.roles.edit.menuItems.roles"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>

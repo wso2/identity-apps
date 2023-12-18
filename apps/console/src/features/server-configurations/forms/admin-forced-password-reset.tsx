@@ -21,7 +21,7 @@ import { Field, Form, FormValue } from "@wso2is/form";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface } from "../models/governance-connectors";
@@ -116,9 +116,10 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
      * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: Record<string, unknown>) => {
-        const data: any = {
-            [ GovernanceConnectorUtils.decodeConnectorPropertyName(
-                "Recovery.AdminPasswordReset.RecoveryLink") ]: values[ "Recovery.AdminPasswordReset.RecoveryLink" ]
+        const data: { [ key:string ]: unknown } = {
+            "Recovery.AdminPasswordReset.RecoveryLink": values[
+                GovernanceConnectorUtils.encodeConnectorPropertyName(
+                    ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET) ]
         };
 
         return data;
@@ -146,7 +147,7 @@ export const AdminForcedPasswordResetForm: FunctionComponent<AdminForcedPassword
                     "Account Management",
                     "Recovery.AdminPasswordReset.RecoveryLink",
                     "Enable password reset via recovery e-mail") }
-                defaultValue={ initialFormValues?.[
+                initialValue={ initialFormValues?.[
                     "Recovery.AdminPasswordReset.RecoveryLink" ] === "true" }
                 readOnly={ readOnly }
                 disabled={ !isConnectorEnabled }

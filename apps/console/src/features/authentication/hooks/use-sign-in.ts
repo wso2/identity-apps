@@ -278,42 +278,61 @@ const useSignIn = (): UseSignInInterface => {
             }
         }
 
-        // FIXME: Skipping /o/ appending from the `getServiceResourceEndpoints` level seems to be not working.
-        const wellKnownEndpoint: string = Config.getServiceResourceEndpoints().wellKnown.replace("/o/", "/");
+        let wellKnownEndpoint: string = Config.getServiceResourceEndpoints().wellKnown;
+        const disabledFeatures: string[] = window["AppUtils"].getConfig()?.ui?.features?.branding?.disabledFeatures;
 
-        // Set configurations related to hostname branding.
-        axios
-            .get(wellKnownEndpoint)
-            .then((response: AxiosResponse) => {
-                // Use token endpoint to extract the host url.
-                const splitted: string[] = response?.data?.token_endpoint?.split("/") ?? [];
+        if (!legacyAuthzRuntime) {
+            // FIXME: Skipping /o/ appending from the `getServiceResourceEndpoints` level seems to be not working.
+            wellKnownEndpoint = wellKnownEndpoint.replace("/o/", "/");
+        }
 
-                let serverHost: string = splitted.slice(0, -2).join("/");
+        if (legacyAuthzRuntime && !disabledFeatures?.includes("branding.hostnameUrlBranding")) {
+            // Set configurations related to hostname branding.
+            axios
+                .get(wellKnownEndpoint)
+                .then((response: AxiosResponse) => {
+                    // Use token endpoint to extract the host url.
+                    const splitted: string[] = response?.data?.token_endpoint?.split("/") ?? [];
 
-                if (orgType === OrganizationType.SUBORGANIZATION) {
-                    serverHost = `${Config.getDeploymentConfig().serverOrigin}/${
-                        window["AppUtils"].getConfig().organizationPrefix
-                    }/${window["AppUtils"].getConfig().organizationName}`;
-                }
+                    let serverHost: string = splitted.slice(0, -2).join("/");
 
-                window["AppUtils"].updateCustomServerHost(serverHost);
-            })
-            .catch((error: any) => {
-                // In case of failure customServerHost is set to the serverHost.
-                window["AppUtils"].updateCustomServerHost(Config.getDeploymentConfig().serverHost);
+                    if (orgType === OrganizationType.SUBORGANIZATION) {
+                        serverHost = `${Config.getDeploymentConfig().serverOrigin}/${
+                            window["AppUtils"].getConfig().organizationPrefix
+                        }/${window["AppUtils"].getConfig().organizationName}`;
+                    }
 
-                throw error;
-            })
-            .finally(() => {
-                // Update store with custom server host.
-                dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
+                    window["AppUtils"].updateCustomServerHost(serverHost);
+                })
+                .catch((error: any) => {
+                    // In case of failure customServerHost is set to the serverHost.
+                    window["AppUtils"].updateCustomServerHost(Config.getDeploymentConfig().serverHost);
 
-                // Set the deployment configs in the context.
-                setDeploymentConfig(Config.getDeploymentConfig());
+                    throw error;
+                })
+                .finally(() => {
+                    // Update store with custom server host.
+                    dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
 
-                // Update runtime configurations.
-                ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
-            });
+                    // Set the deployment configs in the context.
+                    setDeploymentConfig(Config.getDeploymentConfig());
+
+                    // Update runtime configurations.
+                    ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
+                });
+        } else {
+            // In case of failure customServerHost is set to the serverHost.
+            window["AppUtils"].updateCustomServerHost(Config.getDeploymentConfig().serverHost);
+
+            // Update store with custom server host.
+            dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
+
+            // Set the deployment configs in the context.
+            setDeploymentConfig(Config.getDeploymentConfig());
+
+            // Update runtime configurations.
+            ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
+        }
 
         const firstName: string = idToken?.given_name;
         const lastName: string = idToken?.family_name;

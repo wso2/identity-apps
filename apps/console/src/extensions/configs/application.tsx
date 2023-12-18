@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { LegacyModeInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import {
     Code,
@@ -137,8 +138,7 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.IWA_NTLM
         ],
         [ "m2m-application" ]: [
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
         ],
         [ "mobile-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
@@ -383,9 +383,12 @@ export const applicationConfig: ApplicationConfig = {
 
             const tabExtensions: ResourceTabPaneInterface[] = [];
 
+            const legacyMode: LegacyModeInterface = window["AppUtils"]?.getConfig()?.ui?.legacyMode;
+
             // Enable the API authorization tab for supported templates when the api resources config is enabled.
             if (
                 apiResourceFeatureEnabled && !application?.advancedConfigurations?.fragment &&
+                legacyMode?.apiResources &&
                 (
                     application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
                     || application?.templateId === MobileAppTemplate?.id
@@ -416,6 +419,7 @@ export const applicationConfig: ApplicationConfig = {
             // Enable the roles tab for supported templates when the api resources config is enabled.
             if (apiResourceFeatureEnabled
                 && applicationRolesFeatureEnabled
+                && !legacyMode?.rolesV1
                 && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
                     applicationRoles?.enabled)
                 && (
@@ -604,6 +608,84 @@ export const applicationConfig: ApplicationConfig = {
     marketingConsent: {
         getBannerComponent: (): ReactElement =>
             !window[ "AppUtils" ].getConfig().organizationName && <MarketingConsentModalWrapper />
+    },
+    quickstart: {
+        oidcWeb: {
+            dotNet: {
+                readme: "",
+                sample: {
+                    artifact: "",
+                    repository: ""
+                }
+            },
+            tomcatOIDCAgent: {
+                catalog: "",
+                integrate: {
+                    defaultCallbackContext: ""
+                },
+                readme: "",
+                sample: {
+                    artifact: "",
+                    home: "",
+                    repository: "",
+                    sigInRedirectURL: ""
+                }
+            }
+        },
+        samlWeb: {
+            tomcatSAMLAgent: {
+                catalog: "",
+                readme: "",
+                sample: {
+                    acsURLSuffix: "",
+                    artifact: "",
+                    home: "",
+                    repository: ""
+                }
+            }
+        },
+        spa: {
+            javascript: {
+                apis: "",
+                artifact: "",
+                cdn: "",
+                npmInstallCommand: "",
+                readme: "",
+                repository: "",
+                samples: {
+                    javascript: {
+                        artifact: "",
+                        repository: ""
+                    },
+                    react: {
+                        artifact: "",
+                        repository: ""
+                    },
+                    root: ""
+                }
+            },
+            react: {
+                links: {
+                    authClientConfig: "",
+                    secureRoute: "",
+                    useContextDocumentation: ""
+                },
+                npmInstallCommand: "",
+                readme: "",
+                repository: "",
+                samples: {
+                    basicUsage: {
+                        artifact:"",
+                        repository: ""
+                    },
+                    root: "",
+                    routing: {
+                        artifact: "",
+                        repository: ""
+                    }
+                }
+            }
+        }
     },
     signInMethod: {
         authenticatorSelection: {

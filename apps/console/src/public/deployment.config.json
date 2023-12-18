@@ -211,6 +211,7 @@
     "getProfileInfoFromIDToken": true,
     "superTenantProxy": "",
     "legacyAuthzRuntime": false,
+    "legacyMode": false,
     "ui": {
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
@@ -241,10 +242,14 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
-                    "update": [],
-                    "read": [],
-                    "create": [],
-                    "delete": []
+                    "delete": [],
+                    "update": [
+                        "internal_governance_update"
+                    ],
+                    "read": [
+                        "internal_governance_view"
+                    ],
+                    "create": []
                 }
             },
             "apiResources": {
@@ -286,7 +291,7 @@
                 }
             },
             "branding": {
-                "disabledFeatures": [],
+                "disabledFeatures": [ "branding.hostnameUrlBranding" ],
                 "enabled": true,
                 "scopes": {
                     "update": [
@@ -397,7 +402,7 @@
             },
             "approvals": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "update": [
                         "internal_humantask_view"
@@ -473,6 +478,24 @@
                     ],
                     "delete": [
                         "internal_guest_mgt_invite_delete"
+                    ]
+                }
+            },
+            "notificationChannels": {
+                "disabledFeatures": [ ],
+                "enabled": true,
+                "scopes": {
+                    "update": [
+                        "internal_config_mgt_update"
+                    ],
+                    "delete": [
+                        "internal_config_mgt_delete"
+                    ],
+                    "create": [
+                        "internal_config_mgt_add"
+                    ],
+                    "read": [
+                        "internal_config_mgt_view"
                     ]
                 }
             },
@@ -657,13 +680,17 @@
                     ]
                 }
             },
-            "residentIdp": {
+            "server": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
-                    "update": [],
-                    "read": [],
                     "create": [],
+                    "read": [
+                        "internal_governance_view"
+                    ],
+                    "update": [
+                        "internal_governance_update"
+                    ],
                     "delete": []
                 }
             },
@@ -678,7 +705,7 @@
                 }
             },
             "secretsManagement": {
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "create": [
                         "internal_secret_mgt_add"
@@ -750,30 +777,22 @@
                 },
                 "disabledFeatures": []
             },
-            "manageGettingStarted": {
+            "gettingStarted": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
                     "delete": [],
-                    "create": [],
-                    "read": [
+                    "create": [
+                        "internal_application_mgt_create",
+                        "internal_idp_create",
                         "internal_user_mgt_create",
                         "internal_group_mgt_create"
                     ],
-                    "update": []
-                }
-            },
-            "developerGettingStarted": {
-                "disabledFeatures": [],
-                "enabled": true,
-                "scopes": {
-                    "delete": [],
-                    "create": [],
-                    "update": [],
-                    "read": [
-                        "internal_application_mgt_create",
-                        "internal_idp_create",
+                    "update": [
                         "internal_application_mgt_update"
+                    ],
+                    "read": [
+                        "internal_application_mgt_view"
                     ]
                 }
             },
@@ -859,7 +878,21 @@
                     ]
                 }
             },
-            "roles": {
+            "loginAndRegistration": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "delete": [],
+                    "create": [],
+                    "read": [
+                        "internal_governance_view"
+                    ],
+                    "update": [
+                        "internal_governance_update"
+                    ]
+                }
+            },
+            "userRoles": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
@@ -939,9 +972,9 @@
                 "enabled": false,
                 "scopes": {}
             },
-            "diagnosticLogs": {
+            "logs": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "scopes": {
                     "update": [
                         "internal_application_mgt_view"
@@ -966,16 +999,6 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {}
-            },
-            "server": {
-                "disabledFeatures": [],
-                "enabled": true,
-                "scopes": {
-                    "create": [],
-                    "read": [],
-                    "update": [],
-                    "delete": []
-                }
             }
         },
         "gravatarConfig": {
@@ -1028,13 +1051,20 @@
             "Console",
             "My Account"
         ],
-        "classicFeatures": {
-            "isRequestPathAuthenticationEnabled": false,
-            "isApplicationLevelRoleMappingEnabled": false,
-            "isXacmlAuthorizationEnabled": false,
-            "isIncludeOrgNameInSubjectEnabled": false,
-            "isUseMappedLocalSubjectEnabled": false,
-            "isSubjectIdentifierEnabled": false
+        "isXacmlConnectorEnabled": false,
+        "legacyMode": {
+            "apiResources": true,
+            "applicationListSystemApps": false,
+            "applicationOIDCSubjectIdentifier": false,
+            "applicationRequestPathAuthentication": false,
+            "applicationSystemAppsSettings": false,
+            "approvals": false,
+            "certificates": false,
+            "loginAndRegistrationEmailDomainDiscovery": true,
+            "organizations": true,
+            "rolesV1": false,
+            "roleMapping": false,
+            "secretsManagement": false
         },
         "theme": {
             "name": "wso2is"

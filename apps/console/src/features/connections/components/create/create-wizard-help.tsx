@@ -24,7 +24,7 @@ import { Divider } from "semantic-ui-react";
 
 /**
  * Wizard help message props interface.
- */ 
+ */
 interface WizardHelpMessageInterface {
     /**
      * Help content code snippets.
@@ -32,7 +32,7 @@ interface WizardHelpMessageInterface {
     codeSnippets?: { description: string, value: string }[];
     /**
      * Help content input value.
-     */ 
+     */
     copyInputFields?: { description: string, value: string }[];
     /**
      * Help content header.
@@ -40,7 +40,7 @@ interface WizardHelpMessageInterface {
     header?: string;
     /**
      * Help content paragraphs.
-     */ 
+     */
     paragraphs?: string[];
     /**
      * Help content link.
@@ -50,7 +50,7 @@ interface WizardHelpMessageInterface {
 
 /**
  * Wizard help props interface.
- */ 
+ */
 interface WizardHelpInterface {
     /**
      * Help content message.
@@ -104,6 +104,22 @@ CreateConnectionWizardHelpPropsInterface> = (
         }
     };
 
+    /**
+     * This function overrides the code snippet values with the
+     * deployment config values.
+     *
+     * @param value - code snippet
+     * @returns - modified code snippet
+     */
+    const modifyCodeSnippet = (value: string): string => {
+
+        if (value.includes("${redirect_uri}")) {
+            return value.replace("${redirect_uri}", deploymentConfig.customServerHost + "/commonauth");
+        }
+
+        return value;
+    };
+
     const renderPreRequisites = (): ReactElement => {
         return (
             <Message
@@ -113,8 +129,8 @@ CreateConnectionWizardHelpPropsInterface> = (
                     (<>
                         {
                             wizardHelp.message.paragraphs?.map((paragraph: string, index: number) => (
-                                <p 
-                                    key={ index } 
+                                <p
+                                    key={ index }
                                     dangerouslySetInnerHTML={ { __html: paragraph } }
                                 />
                             ))
@@ -156,7 +172,7 @@ CreateConnectionWizardHelpPropsInterface> = (
                                             } }
                                             height="100%"
                                             theme="dark"
-                                            sourceCode={ overrideFieldValue(codeSnippet.value) }
+                                            sourceCode={ modifyCodeSnippet(codeSnippet.value) }
                                         />
                                     </p>
                                 )
@@ -167,7 +183,7 @@ CreateConnectionWizardHelpPropsInterface> = (
             />
         );
     };
-    
+
     return (
         <div data-testid={ testId }>
             { renderPreRequisites() }

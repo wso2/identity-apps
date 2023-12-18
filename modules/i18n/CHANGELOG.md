@@ -1,5 +1,114 @@
 # @wso2is/i18n
 
+## 2.0.81
+
+### Patch Changes
+
+- [#5075](https://github.com/wso2/identity-apps/pull/5075) [`0256394c2f`](https://github.com/wso2/identity-apps/commit/0256394c2f8c9e5d6d5150cf72ed38a283d9df58) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Change the connection create error content
+
+## 2.0.80
+
+### Patch Changes
+
+- [#5025](https://github.com/wso2/identity-apps/pull/5025) [`041a34cf47`](https://github.com/wso2/identity-apps/commit/041a34cf479e7351d8a8faaa10789d60b97bd8a5) Thanks [@savindi7](https://github.com/savindi7)! - Add validation to OIDC scope name input.
+
+## 2.0.79
+
+### Patch Changes
+
+- [#5032](https://github.com/wso2/identity-apps/pull/5032) [`6d5e1e680f`](https://github.com/wso2/identity-apps/commit/6d5e1e680f54ed216ab133b87d0f5cda51b78a74) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Improve validation logic and UX of Create Application Role wizard.
+
+## 2.0.78
+
+### Patch Changes
+
+- [#5011](https://github.com/wso2/identity-apps/pull/5011) [`8f1998f6a3`](https://github.com/wso2/identity-apps/commit/8f1998f6a3c18251627228832e064f444ecb9ae3) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update user role section description
+
+## 2.0.77
+
+### Patch Changes
+
+- [#4955](https://github.com/wso2/identity-apps/pull/4955) [`dcd3ef5420`](https://github.com/wso2/identity-apps/commit/dcd3ef5420c3abc7812067c1ee04938c8dccd194) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add userstore option to bulk user import
+
+## 2.0.76
+
+### Patch Changes
+
+- [#4996](https://github.com/wso2/identity-apps/pull/4996) [`7b885d1d9a`](https://github.com/wso2/identity-apps/commit/7b885d1d9ae08e0766097b654defb106f6fc8284) Thanks [@Avarjana](https://github.com/Avarjana)! - Update special character username hint.
+
+## 2.0.75
+
+### Patch Changes
+
+- [#4984](https://github.com/wso2/identity-apps/pull/4984) [`b8c694e8ba`](https://github.com/wso2/identity-apps/commit/b8c694e8baf7906e42ca70fec8376f4f6fe54ae2) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Make the roles tab on Edit Users and Edit Groups sections a consistent list view.
+
+## 2.0.74
+
+### Patch Changes
+
+- [#4971](https://github.com/wso2/identity-apps/pull/4971) [`51f8e7c470`](https://github.com/wso2/identity-apps/commit/51f8e7c4709841ac25cd7dda8df181a1f94ae671) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with application sharing form
+
+## 2.0.73
+
+### Patch Changes
+
+- [#4933](https://github.com/wso2/identity-apps/pull/4933) [`c5cd4b8d51`](https://github.com/wso2/identity-apps/commit/c5cd4b8d51e38eb0d82d0ec733d009993a2e9e3a) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Introduce legacy mode to console
+
+- Updated dependencies [[`c5cd4b8d51`](https://github.com/wso2/identity-apps/commit/c5cd4b8d51e38eb0d82d0ec733d009993a2e9e3a)]:
+  - @wso2is/core@2.0.22
+
+## 2.0.72
+
+### Patch Changes
+
+- [#4937](https://github.com/wso2/identity-apps/pull/4937) [`d76056b45f`](https://github.com/wso2/identity-apps/commit/d76056b45f83a765d15f30a28c7de0d97c163ed8) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Improve add multiple users wizard
+
+* [#4903](https://github.com/wso2/identity-apps/pull/4903) [`6bc38c40e6`](https://github.com/wso2/identity-apps/commit/6bc38c40e697a031f79fafe907750f39a06478fe) Thanks [@savindi7](https://github.com/savindi7)! - Support to configure ELK Analytics from the Sign in methods of an App
+
+## 2.0.71
+
+### Patch Changes
+
+- [#4890](https://github.com/wso2/identity-apps/pull/4890) [`084d392a3f`](https://github.com/wso2/identity-apps/commit/084d392a3ff932119ca6ea0deae77aa9f224fd17) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues with login and registration section
+
+## 2.0.70
+
+### Patch Changes
+
+- [#4906](https://github.com/wso2/identity-apps/pull/4906) [`cac64194c6`](https://github.com/wso2/identity-apps/commit/cac64194c6613ba352f4d11695dcaaff16ad6283) Thanks [@AnjanaSamindraPerera](https://github.com/AnjanaSamindraPerera)! - Change wording in Vonage sms provider
+
+## 2.0.69
+
+### Patch Changes
+
+- [#4900](https://github.com/wso2/identity-apps/pull/4900) [`951c6434c0`](https://github.com/wso2/identity-apps/commit/951c6434c03c45f8d4fa6624f5eff84a492487dd) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues in the user attributes section
+
+- Updated dependencies [[`951c6434c0`](https://github.com/wso2/identity-apps/commit/951c6434c03c45f8d4fa6624f5eff84a492487dd)]:
+  - @wso2is/core@2.0.21
+
+## 2.0.68
+
+### Patch Changes
+
+- [#4908](https://github.com/wso2/identity-apps/pull/4908) [`7890ba578d`](https://github.com/wso2/identity-apps/commit/7890ba578d6174a7e2554ee3474a2f6706ec6718) Thanks [@RivinduM](https://github.com/RivinduM)! - Add option to clear dropdown selection.
+
+## 2.0.67
+
+### Patch Changes
+
+- [#4889](https://github.com/wso2/identity-apps/pull/4889) [`144b485698`](https://github.com/wso2/identity-apps/commit/144b485698b58b7b4812e0b2a2ae7c589ff5b2b8) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix UX issues in Passkey based login
+
+## 2.0.66
+
+### Patch Changes
+
+- [#4885](https://github.com/wso2/identity-apps/pull/4885) [`143df44dd3`](https://github.com/wso2/identity-apps/commit/143df44dd3ac1ba44c46e34590c436f38fd3c143) Thanks [@Achintha444](https://github.com/Achintha444)! - (improvement) Adding config for API Based Authn configuration
+
+* [#4885](https://github.com/wso2/identity-apps/pull/4885) [`614bc01dc7`](https://github.com/wso2/identity-apps/commit/614bc01dc7631402b61756a8583f6eff0bd8a6ff) Thanks [@Achintha444](https://github.com/Achintha444)! - config for api based authn
+
+* Updated dependencies [[`143df44dd3`](https://github.com/wso2/identity-apps/commit/143df44dd3ac1ba44c46e34590c436f38fd3c143), [`614bc01dc7`](https://github.com/wso2/identity-apps/commit/614bc01dc7631402b61756a8583f6eff0bd8a6ff)]:
+  - @wso2is/core@2.0.20
+
 ## 2.0.65
 
 ### Patch Changes

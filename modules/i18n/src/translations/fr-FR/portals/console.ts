@@ -701,6 +701,9 @@ export const console: ConsoleNS = {
     },
     consoleSettings: {
         administrators: {
+            edit: {
+                backButton: "Retourner aux administrateurs"
+            },
             tabLabel: "Administratrices"
         },
         loginFlow: {
@@ -1240,6 +1243,16 @@ export const console: ConsoleNS = {
                                     description: "Le partage d'application s'est arrêté avec succès avec l'{{organisation}}",
                                     message: "L'application partagée s'est arrêtée avec succès!"
                                 }
+                            },
+                            stopAllSharingNotification: {
+                                genericError: {
+                                    description: "L'arrêt du partage des applications a échoué pour toutes les organisations",
+                                    message: "L'arrêt du partage de l'application a échoué!"
+                                },
+                                success: {
+                                    description: "Le partage des applications s'est arrêté avec toutes les organisations avec succès",
+                                    message: "Le partage d'applications s'est arrêté avec succès!"
+                                }
                             }
                         },
                         signOnMethod: {
@@ -1555,13 +1568,20 @@ export const console: ConsoleNS = {
                                                 "de passe, d'une clé de sécurité FIDO ou de données biométriques.",
                                                 heading: "Ajouter une connexion par mot de passe",
                                                 info: {
-                                                    progressiveEnrollmentEnabled: "L1inscription progressive par mot de passe " +
-                                                    "est activée. Les utilisateurs peuvent enregistrer des clés d'accès à " +
-                                                    "la volée. S’ils souhaitent enregistrer plusieurs mots de passe, ils " +
-                                                    "doivent le faire via Mon compte.",
+                                                    progressiveEnrollmentEnabled: "L’inscription progressive par mot de passe est activée.",
+                                                    passkeyAsFirstStepWhenprogressiveEnrollmentEnabled: "<0>Note : </0> Pour " +
+                                                    "Inscription utilisateur à la volée avec PassKeys, utilisez le <2>Passkeys progressif " +
+                                                    "Inscription</2> modèle <4>Authentification conditionnelle</4> section.",
+                                                    passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled: "Les utilisateurs peuvent s'inscrire " +
+                                                    "Passkeys à la volée. Si les utilisateurs souhaitent inscrire plusieurs clés de pass " +
+                                                    "Je sais via <1>My Account</1>.",
+                                                    progressiveEnrollmentEnabledCheckbox: "<0>Note : </0> Lors de la définition de " +
+                                                    "la clé d'accès lors de la <2>première étape</2>, les utilisateurs doivent ajouter " +
+                                                    "un script adaptatif. Utilisez le modèle <4>Inscription progressive des clés d'accès</4> " +
+                                                    "dans l'onglet <6>Méthode de connexion</6> de l'application.",
                                                     progressiveEnrollmentDisabled: "L'inscription du mot de passe à la volée " +
                                                     "est désactivée. Les utilisateurs doivent enregistrer leurs clés d'accès " +
-                                                    "via MyAccount pour utiliser la connexion sans mot de passe."
+                                                    "via <1>My Account</1> pour utiliser la connexion sans mot de passe."
                                                 }
                                             },
                                             emailOTP: {
@@ -2084,6 +2104,9 @@ export const console: ConsoleNS = {
                                 "Web (lien profond) est fournie, les clients peuvent accéder à cette " +
                                 "application à partir du portail <1>{{ myAccount }}</1>.",
                             mobileAppPlaceholder: "myapp://oauth2"
+                        },
+                        dropdowns: {
+                            selectOption: "Sélectionner une option"
                         },
                         sections: {
                             accessToken: {
@@ -7365,6 +7388,10 @@ export const console: ConsoleNS = {
                             },
                             elasticAnalyticsEngine: {
                                 friendlyName: "Analytique des wapitis",
+                                warningModal: {
+                                    configure: "<1>Configurer</1> les paramètres ELK Analytics pour une fonctionnalité appropriée.",
+                                    reassure: "Vous pouvez mettre à jour vos paramètres à tout moment."
+                                },
                                 properties: {
                                     adaptiveAuthenticationElasticReceiver: {
                                         hint: "Hôte elasticsearch",
@@ -7775,7 +7802,8 @@ export const console: ConsoleNS = {
                                 label: "Nom du scope",
                                 placeholder: "Entrez le nom du scope",
                                 validations: {
-                                    empty: "Ce champ ne peut pas être vide",
+                                    duplicate: "Cette portée existe déjà.",
+                                    empty: "Ce champ ne peut pas être vide.",
                                     invalid: "La portée ne peut contenir que des caractères alphanumériques et _. " +
                                         "Et doit avoir une longueur comprise entre 3 et 40 caractères."
                                 }
@@ -8736,7 +8764,8 @@ export const console: ConsoleNS = {
                                 },
                                 validation: {
                                     empty: "La liste des autorisations(lunettes) ne peut pas être vide. Sélectionnez au moins une autorisation(lunettes)."
-                                }
+                                },
+                                permissionsLabel: "Autorisations (étendues)"
                             },
                             notes: {
                                 applicationRoles: "Seules les API et les autorisations (lunettes) autorisées dans l'application sélectionnée(<1>{{applicationName}}</1>) seront répertoriées pour être sélectionnées."
@@ -9054,6 +9083,17 @@ export const console: ConsoleNS = {
                     filterAttirbutes: {
                         name: "Nom",
                         audience: "Rôle public"
+                    }
+                },
+                readOnlyList: {
+                    emptyPlaceholders: {
+                        searchAndFilter: {
+                            subtitles: {
+                                0: "Nous n'avons trouvé aucun résultat pour la combinaison de nom de rôle et d'audience spécifiée.",
+                                1: "Veuillez essayer une combinaison différente."
+                            },
+                            title: "Aucun résultat trouvé"
+                        }
                     }
                 },
                 notifications: {
@@ -9678,7 +9718,7 @@ export const console: ConsoleNS = {
                             successCount: "Nombre de réussites",
                             failedCount: "Nombre d'échecs",
                             totalUserCreationCount: "Nombre total de créations d'utilisateurs",
-                            totalUserAssignmentCount: "Nombre total d'attributions de rôles/groupes",
+                            totalUserAssignmentCount: "Nombre total d'attributions de groupes",
                             tableHeaders: {
                                 username: "Nom d'utilisateur",
                                 status: "Statut",
@@ -9709,17 +9749,19 @@ export const console: ConsoleNS = {
                                     message: "Importation réussie"
                                 },
                                 importFailed: {
-                                    description: "Problèmes rencontrés dans <1>{{failedUserCreationCount}} " +
-                                        "opération(s)</1> de création d'utilisateur et " +
-                                        "<3>{{failedUserAssignmentCount}} opération(s) </3> d'attribution de " +
-                                        "rôle/groupe.",
+                                    userCreation: "Problèmes rencontrés dans les créations <1>d'utilisateurs " +
+                                        "{{failedUserCreationCount}}</1>.",
+                                    groupAssignment: "Problèmes rencontrés dans les attributions <1>de groupe " +
+                                        "{{failedUserAssignmentCount}}</1>. Les utilisateurs des groupes concernés " +
+                                        "ont été créés mais non attribués. Veuillez accéder à la section Gestion " +
+                                        "des utilisateurs pour examiner et attribuer des groupes aux utilisateurs.",
                                     message: "Révision requise."
                                 }
                             },
                             advanceSearch: {
                                 searchByUsername: "Rechercher par nom d'utilisateur",
-                                searchByRoleOrGroup: "Recherche par nom de rôle/groupe",
-                                roleGroupFilterAttributePlaceHolder: "Nom du rôle/groupe"
+                                searchByGroup: "Recherche par nom de groupe",
+                                roleGroupFilterAttributePlaceHolder: "Nom du groupe"
                             },
                             manualCreation: {
                                 alerts: {
@@ -9737,8 +9779,8 @@ export const console: ConsoleNS = {
                                     description: "Faites glisser et déposez un fichier CSV ici."
                                 },
                                 primaryButton: "Ajouter",
-                                rolesLabel: "Les rôles",
-                                rolesPlaceholder: "Entrez les rôles",
+                                groupsLabel: "Grupos",
+                                groupsPlaceholder: "Entrar em grupos",
                                 warningMessage: "Cette option ne peut être utilisée que lorsque l'adresse e-mail " +
                                     "est configurée comme nom d'utilisateur."
                             },
@@ -9747,7 +9789,7 @@ export const console: ConsoleNS = {
                             },
                             responseOperationType: {
                                 userCreation: "Création d'utilisateur",
-                                roleAssignment: "Affectation de rôle/groupe"
+                                roleAssignment: "Tarefa de grupo"
                             },
                             userstoreMessage: "Les utilisateurs créés seront ajoutés au magasin d'utilisateurs <1>{{ userstore }></1>."
                         },
@@ -10135,6 +10177,7 @@ export const console: ConsoleNS = {
                                 header: "Êtes-vous sûr?",
                                 message: "Cette action modifiera le rôle de cet utilisateur."
                             },
+                            infoMessage: "Les rôles hérités via des groupes ne sont pas présentés ici.",
                             placeholders: {
                                 emptyPlaceholder: {
                                     title: "Aucun rôle attribué",
@@ -10160,7 +10203,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             searchPlaceholder: "Rechercher des rôles",
-                            subHeading: "Afficher les rôles attribués pour l'utilisateur."
+                            subHeading: "Afficher les rôles attribués directement à l'utilisateur."
                         },
                         notifications: {
                             addUserRoles: {
@@ -10457,6 +10500,10 @@ export const console: ConsoleNS = {
                                 description: "Les utilisateurs ont été importés avec succès.",
                                 message: "Utilisateurs importés avec succès"
                             }
+                        },
+                        timeOut: {
+                            description: "Certains utilisateurs peuvent ne pas avoir été créés.",
+                            message: "La demande a expiré"
                         }
                     },
                     deleteUser: {

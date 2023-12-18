@@ -19,12 +19,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.base.MultitenantConstants" %>
 <%@ page import="org.wso2.carbon.identity.base.IdentityRuntimeException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.NotificationApi" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.CodeValidationRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
@@ -54,15 +56,29 @@
 
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
+    String sp = Encode.forJava(request.getParameter("sp"));
+    String spAccessUrl = "";
     if (StringUtils.isBlank(callback)) {
         callback = request.getParameter("redirect_uri");
+    }
+
+    try {
+        if (StringUtils.isNotBlank(sp)) {
+            ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+            spAccessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,sp);
+        }
+    } catch (Exception e) {
+        // Ignored.
     }
 
     boolean passwordExpired = Boolean.parseBoolean(request.getParameter("passwordExpired"));
 
     Boolean isValidCallBackURL = false;
     try {
-        if (StringUtils.isNotBlank(callback)) {
+        if (StringUtils.isNotBlank(spAccessUrl)) {
+            // Disregard callbackURL regex validation when accessURL is configured in the application.
+            isValidCallBackURL = true;
+        } else if (StringUtils.isNotBlank(callback)) {
             PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
             isValidCallBackURL = preferenceRetrievalClient.checkIfRecoveryCallbackURLValid(tenantDomain,callback);
         }
@@ -127,6 +143,7 @@
         request.setAttribute("callback", callback);
         request.setAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN, tenantDomain);
         request.setAttribute("passwordExpired", passwordExpired);
+        request.setAttribute("sp", sp);
         request.getRequestDispatcher("passwordreset.do").forward(request, response);
     } else {
         request.setAttribute("error", true);

@@ -1,5 +1,210 @@
 # @wso2is/identity-apps-core
 
+## 2.0.103
+
+### Patch Changes
+
+- [#5083](https://github.com/wso2/identity-apps/pull/5083) [`2653310a5b`](https://github.com/wso2/identity-apps/commit/2653310a5bdd7ec96985b4c2c0b7b2ccbdb4136a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix UI issues in displaying long usernames in dynamic prompt generic form
+
+- Updated dependencies [[`2653310a5b`](https://github.com/wso2/identity-apps/commit/2653310a5bdd7ec96985b4c2c0b7b2ccbdb4136a)]:
+  - @wso2is/theme@2.0.51
+
+## 2.0.102
+
+### Patch Changes
+
+- [#5084](https://github.com/wso2/identity-apps/pull/5084) [`eaf0d12ac9`](https://github.com/wso2/identity-apps/commit/eaf0d12ac96754566d7d6d8dfb0cb03f1bcf6ecb) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Apply tenantQualifiedName changes.
+
+## 2.0.101
+
+### Patch Changes
+
+- [#5086](https://github.com/wso2/identity-apps/pull/5086) [`be1a05f6b9`](https://github.com/wso2/identity-apps/commit/be1a05f6b98017400802df4048eb91808428d633) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Revert JIT provisioning improvement
+
+## 2.0.100
+
+### Patch Changes
+
+- [#5074](https://github.com/wso2/identity-apps/pull/5074) [`ad19f3f555`](https://github.com/wso2/identity-apps/commit/ad19f3f555e5623f46f3085a764e94dfb2eb40ef) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Skip username validation from UI.
+
+## 2.0.99
+
+### Patch Changes
+
+- [#5029](https://github.com/wso2/identity-apps/pull/5029) [`3f2128994a`](https://github.com/wso2/identity-apps/commit/3f2128994ae4a5b809f07287fb590317e62ca74a) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Append tenant to the username before validation and JIT consent flow password validation logic refactor.
+
+## 2.0.98
+
+### Patch Changes
+
+- [#5014](https://github.com/wso2/identity-apps/pull/5014) [`05265988d4`](https://github.com/wso2/identity-apps/commit/05265988d4f26237adcbc9fd2786a94b165de534) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues with JIT provisioning error message
+
+## 2.0.97
+
+### Patch Changes
+
+- [#5057](https://github.com/wso2/identity-apps/pull/5057) [`36ae93a6fa`](https://github.com/wso2/identity-apps/commit/36ae93a6fa5d44cba538923cbfffedbb06626173) Thanks [@Achintha444](https://github.com/Achintha444)! - (Fix) Fix generate password button is not aligned in the add user modal
+
+* [#5044](https://github.com/wso2/identity-apps/pull/5044) [`c6dc46bcd2`](https://github.com/wso2/identity-apps/commit/c6dc46bcd25b0571280f2ea4b1bf9b98a70c9dab) Thanks [@savindi7](https://github.com/savindi7)! - Hide Xacml feature with config
+
+* Updated dependencies [[`36ae93a6fa`](https://github.com/wso2/identity-apps/commit/36ae93a6fa5d44cba538923cbfffedbb06626173)]:
+  - @wso2is/theme@2.0.49
+
+## 2.0.96
+
+### Patch Changes
+
+- [#5040](https://github.com/wso2/identity-apps/pull/5040) [`01163224f5`](https://github.com/wso2/identity-apps/commit/01163224f5b15649aeb6df9768ecbd0d4c5728a6) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add language switcher to complete sign up page
+
+## 2.0.95
+
+### Patch Changes
+
+- [#5035](https://github.com/wso2/identity-apps/pull/5035) [`0f2fe280c1`](https://github.com/wso2/identity-apps/commit/0f2fe280c1616661abbc8278a50e6ea4ab73aa54) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Use the display name if description is empty
+
+## 2.0.94
+
+### Patch Changes
+
+- [#5025](https://github.com/wso2/identity-apps/pull/5025) [`041a34cf47`](https://github.com/wso2/identity-apps/commit/041a34cf479e7351d8a8faaa10789d60b97bd8a5) Thanks [@savindi7](https://github.com/savindi7)! - Add validation to OIDC scope name input.
+
+## 2.0.93
+
+### Patch Changes
+
+- [#5024](https://github.com/wso2/identity-apps/pull/5024) [`f79d4c5ee2`](https://github.com/wso2/identity-apps/commit/f79d4c5ee244f01f02ae73f22c91b00b3e6a9872) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix JIT provisioning for username, password and consent option
+
+* [#5015](https://github.com/wso2/identity-apps/pull/5015) [`a50a8c2b1b`](https://github.com/wso2/identity-apps/commit/a50a8c2b1b2dca99b6ebf863e8970b66bbf3d194) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Revert "Allow to update system apps for set of scenarios" fix
+
+- [#5012](https://github.com/wso2/identity-apps/pull/5012) [`1a1841dd9e`](https://github.com/wso2/identity-apps/commit/1a1841dd9e18d076aaad2cf296d53b7641001759) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Skip showing consent for random scopes
+
+* [#5022](https://github.com/wso2/identity-apps/pull/5022) [`c541ab14fd`](https://github.com/wso2/identity-apps/commit/c541ab14fd4f368e1aee2d458b5b9ab797262154) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Removed redundant REST api calls in several jsps
+
+## 2.0.92
+
+### Patch Changes
+
+- [#5016](https://github.com/wso2/identity-apps/pull/5016) [`23d30f1c7d`](https://github.com/wso2/identity-apps/commit/23d30f1c7d9e696a44cce468be7609aa4bbeb436) Thanks [@madurangasiriwardena](https://github.com/madurangasiriwardena)! - Fix the variable name
+
+## 2.0.91
+
+### Patch Changes
+
+- [#5004](https://github.com/wso2/identity-apps/pull/5004) [`0ddeb3ee83`](https://github.com/wso2/identity-apps/commit/0ddeb3ee832a9773157bc53931e5be26cc8ff70d) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Fix Internal Hostname not Honored Issues
+
+## 2.0.90
+
+### Patch Changes
+
+- [#5005](https://github.com/wso2/identity-apps/pull/5005) [`232a118116`](https://github.com/wso2/identity-apps/commit/232a118116add9962b446fec602f62fee6ca9d9d) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Enable AppPortalRoleManagementListener
+
+## 2.0.89
+
+### Patch Changes
+
+- [#4996](https://github.com/wso2/identity-apps/pull/4996) [`7b885d1d9a`](https://github.com/wso2/identity-apps/commit/7b885d1d9ae08e0766097b654defb106f6fc8284) Thanks [@Avarjana](https://github.com/Avarjana)! - Update special character username hint.
+
+## 2.0.88
+
+### Patch Changes
+
+- [#4992](https://github.com/wso2/identity-apps/pull/4992) [`8ae825e77e`](https://github.com/wso2/identity-apps/commit/8ae825e77e8acf75de7eb3b2575712fa0adcc41a) Thanks [@dewniMW](https://github.com/dewniMW)! - Temporarily disable AppPortalRoleManagementListener
+
+* [#4985](https://github.com/wso2/identity-apps/pull/4985) [`2bf1f2ee25`](https://github.com/wso2/identity-apps/commit/2bf1f2ee25eeb2abfe4683bb641fc8571402b3e5) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Fix resend confirmation mail failure issue in self registration flow
+
+- [#4989](https://github.com/wso2/identity-apps/pull/4989) [`c5846ed185`](https://github.com/wso2/identity-apps/commit/c5846ed185bbc8d899490c36dc4bfec1af3f00b9) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add password feilds for jit provisioned users
+
+## 2.0.87
+
+### Patch Changes
+
+- [#4988](https://github.com/wso2/identity-apps/pull/4988) [`ffb9f06e83`](https://github.com/wso2/identity-apps/commit/ffb9f06e833b6bdc02951e1b8755384f067d4c42) Thanks [@savindi7](https://github.com/savindi7)! - Fix language selector visibility issue
+
+## 2.0.86
+
+### Patch Changes
+
+- [#4963](https://github.com/wso2/identity-apps/pull/4963) [`2d9d8d1c7e`](https://github.com/wso2/identity-apps/commit/2d9d8d1c7e788463c798ef804c89f9809ffc5292) Thanks [@savindi7](https://github.com/savindi7)! - Remove sign in link in the Complete Sign Up page
+
+* [#4979](https://github.com/wso2/identity-apps/pull/4979) [`0c4b0b19e5`](https://github.com/wso2/identity-apps/commit/0c4b0b19e5ed8c55a58e2c57b10f5219775dfc18) Thanks [@savindi7](https://github.com/savindi7)! - Add missing Microsoft icon in default theme
+
+* Updated dependencies [[`0c4b0b19e5`](https://github.com/wso2/identity-apps/commit/0c4b0b19e5ed8c55a58e2c57b10f5219775dfc18)]:
+  - @wso2is/theme@2.0.48
+
+## 2.0.85
+
+### Patch Changes
+
+- [#4964](https://github.com/wso2/identity-apps/pull/4964) [`f5d078c1b4`](https://github.com/wso2/identity-apps/commit/f5d078c1b41985cfe71a4731c6ebda7ff8b99961) Thanks [@Thumimku](https://github.com/Thumimku)! - improvement for error handling oauth2 error
+
+## 2.0.84
+
+### Patch Changes
+
+- [#4956](https://github.com/wso2/identity-apps/pull/4956) [`4e3be8a755`](https://github.com/wso2/identity-apps/commit/4e3be8a755becfd3740efe683df5b1fa3aaef996) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Fix the style of consent page
+
+## 2.0.83
+
+### Patch Changes
+
+- [#4954](https://github.com/wso2/identity-apps/pull/4954) [`3a0022b4bd`](https://github.com/wso2/identity-apps/commit/3a0022b4bd4d04f4a19fb07afd14d647e4294c12) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the cookie domain issue
+
+- Updated dependencies [[`6bc38c40e6`](https://github.com/wso2/identity-apps/commit/6bc38c40e697a031f79fafe907750f39a06478fe)]:
+  - @wso2is/theme@2.0.47
+
+## 2.0.82
+
+### Patch Changes
+
+- [#4940](https://github.com/wso2/identity-apps/pull/4940) [`88fde38c4b`](https://github.com/wso2/identity-apps/commit/88fde38c4bc6057e5e3971b237f653ac08f914e5) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix tenant creation issue
+
+## 2.0.81
+
+### Patch Changes
+
+- [#4860](https://github.com/wso2/identity-apps/pull/4860) [`0724022f4c`](https://github.com/wso2/identity-apps/commit/0724022f4cbd6a0f2711da9648a3bb49dd967bd3) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Allow to update system apps for set of scenarios
+
+## 2.0.80
+
+### Patch Changes
+
+- [#4934](https://github.com/wso2/identity-apps/pull/4934) [`0fd3494829`](https://github.com/wso2/identity-apps/commit/0fd3494829e9386283a9a727f25390616cd89042) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Framework version bump
+
+## 2.0.79
+
+### Patch Changes
+
+- [#4914](https://github.com/wso2/identity-apps/pull/4914) [`da915ea6a0`](https://github.com/wso2/identity-apps/commit/da915ea6a02efae9d554961e3447c5247adec4d7) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Remove unnecessary information from consent page
+
+* [#4928](https://github.com/wso2/identity-apps/pull/4928) [`d520eacfbb`](https://github.com/wso2/identity-apps/commit/d520eacfbb275d5ab5210b4e8f4e37aa204cedac) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Rename duplicate variable
+
+* Updated dependencies [[`da915ea6a0`](https://github.com/wso2/identity-apps/commit/da915ea6a02efae9d554961e3447c5247adec4d7)]:
+  - @wso2is/theme@2.0.45
+
+## 2.0.78
+
+### Patch Changes
+
+- [#4902](https://github.com/wso2/identity-apps/pull/4902) [`8a13e28839`](https://github.com/wso2/identity-apps/commit/8a13e288390862d83a7b9ce5129f251a3dc19359) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add enterprise idp logo with the idp name
+
+- Updated dependencies [[`8a13e28839`](https://github.com/wso2/identity-apps/commit/8a13e288390862d83a7b9ce5129f251a3dc19359)]:
+  - @wso2is/theme@2.0.44
+
+## 2.0.77
+
+### Patch Changes
+
+- [#4885](https://github.com/wso2/identity-apps/pull/4885) [`143df44dd3`](https://github.com/wso2/identity-apps/commit/143df44dd3ac1ba44c46e34590c436f38fd3c143) Thanks [@Achintha444](https://github.com/Achintha444)! - (improvement) Adding config for API Based Authn configuration
+
+* [#4899](https://github.com/wso2/identity-apps/pull/4899) [`47c65e6968`](https://github.com/wso2/identity-apps/commit/47c65e69686a2cac6a1d5111e0713d03f2d81d95) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Fix issue with language switcher not picking the browser language
+
+- [#4885](https://github.com/wso2/identity-apps/pull/4885) [`614bc01dc7`](https://github.com/wso2/identity-apps/commit/614bc01dc7631402b61756a8583f6eff0bd8a6ff) Thanks [@Achintha444](https://github.com/Achintha444)! - config for api based authn
+
+* [#4895](https://github.com/wso2/identity-apps/pull/4895) [`6421d44c14`](https://github.com/wso2/identity-apps/commit/6421d44c14ffafc563774151a62715865c998e65) Thanks [@thanujalk](https://github.com/thanujalk)! - Fix permission issue with admin username change
+
+* Updated dependencies [[`614bc01dc7`](https://github.com/wso2/identity-apps/commit/614bc01dc7631402b61756a8583f6eff0bd8a6ff)]:
+  - @wso2is/theme@2.0.43
+
 ## 2.0.76
 
 ### Patch Changes

@@ -68,28 +68,28 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
             description={ t("extensions:develop.notificationChannel.description") }
             data-testid={ `${componentid}-page-layout` }
         >
-            <Grid container spacing={ 2 }>
+            <Grid container rowSpacing={ 3 } columnSpacing={ 3 }>
                 { featureConfig.emailProviders?.enabled
                   && !(featureConfig?.emailProviders?.disabledFeatures?.includes("superTenantProvider"))
                   && (
-                      <Grid xs={ 12 } md={ 4 }>
+                      <Grid xs={ 12 } md={ 6 } lg={ 4 }>
                           <SettingsSection
-                              data-componentid={ "account-login-page-section" }
-                              data-testid={ "account-login-page-section" }
+                              data-componentid={ "email-provider-card" }
                               description={ t("extensions:develop.emailProviders.description") }
                               icon={ <EnvelopeIcon size="small" className="icon"/> }
                               header={ t("extensions:develop.emailProviders.heading") }
                               onPrimaryActionClick={ isSuperOrganization() ? null : handleEmailSelection }
                               primaryAction={ isSuperOrganization() ? null : t("common:configure") }
                               placeholder={
-                                  (<Trans
-                                      i18nKey={
-                                          "extensions:develop.emailProviders.note"
-                                      }
-                                  >
+                                  isSuperOrganization() ?
+                                      (<Trans
+                                          i18nKey={
+                                              "extensions:develop.emailProviders.note"
+                                          }
+                                      >
                                     Email provider configurations for the super organization
                                     can only be updated through <strong>deployment.toml</strong>
-                                  </Trans>)
+                                      </Trans>) : null
                               }
                               connectorEnabled={ !isSuperOrganization() }
                           />
@@ -97,10 +97,9 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
                   ) }
 
                 { featureConfig.smsProviders?.enabled && (
-                    <Grid xs={ 12 } md={ 4 }>
+                    <Grid xs={ 12 } md={ 6 } lg={ 4 }>
                         <SettingsSection
-                            data-componentid={ "account-login-page-section" }
-                            data-testid={ "account-login-page-section" }
+                            data-componentid={ "sms-provider-card" }
                             description={ t("extensions:develop.smsProviders.description") }
                             icon={ <SMSIcon fill="white" /> }
                             header={

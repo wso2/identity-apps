@@ -39,8 +39,9 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Modal } from "semantic-ui-react";
 import { useAPIResources } from "../../../../api-resources/api";
-import { APIResourcesConstants } from "../../../../api-resources/constants";
+import { APIResourceCategories, APIResourcesConstants } from "../../../../api-resources/constants";
 import { APIResourceInterface, APIResourcePermissionInterface } from "../../../../api-resources/models";
+import { APIResourceUtils } from "../../../../api-resources/utils/api-resource-utils";
 import useScopesOfAPIResources from "../../../api/use-scopes-of-api-resources";
 import { Policy, PolicyInfo, policyDetails } from "../../../constants/api-authorization";
 import { ApplicationTemplateIdTypes } from "../../../models";
@@ -137,7 +138,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     }, [ currentAPIResourcesFetchRequestError ]);
 
     /**
-     * Assign all the API resources to the dropdown options if the after value is not null. 
+     * Assign all the API resources to the dropdown options if the after value is not null.
      */
     useEffect(() => {
         if (!isAPIResourcesListLoading) {
@@ -338,7 +339,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
         const processedAuthorizedScopes: string[] = authorizedScopes?.map((scope: DropdownItemProps) => {
             return scope?.value?.toString();
         });
-    
+
         handleCreateAPIResource(selectedAPIResource.id, processedAuthorizedScopes,
             selectedPolicy?.key?.toString(), callBack);
     };
@@ -405,14 +406,23 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                 getOptionLabel={ (apiResourcesListOption: DropdownProps) =>
                                                     apiResourcesListOption.text }
                                                 groupBy={ (apiResourcesListOption: DropdownItemProps) =>
-                                                    apiResourcesListOption.type }
-                                                isOptionEqualToValue={ 
-                                                    (option: DropdownItemProps, value: DropdownItemProps) => 
-                                                        option.value === value.value 
+                                                    APIResourceUtils
+                                                        .resolveApiResourceGroup(apiResourcesListOption?.type) }
+                                                isOptionEqualToValue={
+                                                    (option: DropdownItemProps, value: DropdownItemProps) =>
+                                                        option.value === value.value
                                                 }
                                                 options={ allAPIResourcesDropdownOptions
-                                                    .sort((a: DropdownItemProps, b: DropdownItemProps) =>
-                                                        -b?.type?.localeCompare(a?.type)) }
+                                                    ?.filter((item: DropdownItemProps) =>
+                                                        item?.type === APIResourceCategories.TENANT_ADMIN ||
+                                                        item?.type === APIResourceCategories.TENANT_USER ||
+                                                        item?.type === APIResourceCategories.ORGANIZATION_ADMIN ||
+                                                        item?.type === APIResourceCategories.ORGANIZATION_USER ||
+                                                        item?.type === APIResourceCategories.BUSINESS
+                                                    ).sort((a: DropdownItemProps, b: DropdownItemProps) =>
+                                                        -b?.type?.localeCompare(a?.type)
+                                                    )
+                                                }
                                                 onChange={ (
                                                     event: SyntheticEvent<HTMLElement>,
                                                     data: DropdownProps
@@ -458,8 +468,8 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                         onClick={ () => handleBulkDropdownChange(true) }
                                                     >
                                                         {
-                                                            t("extensions:develop.applications.edit.sections" + 
-                                                                ".apiAuthorization.sections.apiSubscriptions." + 
+                                                            t("extensions:develop.applications.edit.sections" +
+                                                                ".apiAuthorization.sections.apiSubscriptions." +
                                                                 "scopesSection.selectNone")
                                                         }
                                                     </Button>
@@ -494,9 +504,9 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                 disabled={ !selectedAPIResource }
                                                 getOptionLabel={ (scopesDropdownOption: DropdownProps) =>
                                                     scopesDropdownOption?.text?.toString() }
-                                                isOptionEqualToValue={ 
-                                                    (option: DropdownItemProps, value: DropdownItemProps) => 
-                                                        option?.value === value?.value 
+                                                isOptionEqualToValue={
+                                                    (option: DropdownItemProps, value: DropdownItemProps) =>
+                                                        option?.value === value?.value
                                                 }
                                                 loading={ isScopesDropdownLoading }
                                                 options={ scopesDropdownOptions }
@@ -552,15 +562,15 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                                 }
                                                             } }
                                                             data-componentid={ `${componentId}-policy` }
-                                                            disabled={ 
+                                                            disabled={
                                                                 !selectedAPIResource
-                                                                || selectedAPIResourceRequiresAuthorization 
+                                                                || selectedAPIResourceRequiresAuthorization
                                                             }
                                                             getOptionLabel={ (scopesDropdownOption: DropdownProps) =>
                                                                 scopesDropdownOption?.text?.toString() }
                                                             isOptionEqualToValue={ (
                                                                 option: DropdownItemProps,
-                                                                value: Policy) => 
+                                                                value: Policy) =>
                                                                 option?.value === value
                                                             }
                                                             loading={ isPolicyDropdownLoading }
@@ -569,7 +579,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                                 event: SyntheticEvent<HTMLElement>,
                                                                 data: DropdownItemProps
                                                             ) => {
-                                                                setSelectedPolicy(data); 
+                                                                setSelectedPolicy(data);
                                                             } }
                                                             noOptionsText={ t("common:noResultsFound") }
                                                             renderInput={ (params: AutocompleteRenderInputParams) => (
@@ -591,17 +601,17 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                         />
                                                         <Hint
                                                             className="mb-1"
-                                                            disabled={ 
+                                                            disabled={
                                                                 !selectedAPIResource
-                                                                || selectedAPIResourceRequiresAuthorization 
+                                                                || selectedAPIResourceRequiresAuthorization
                                                             }
                                                         >
-                                                            { 
+                                                            {
                                                                 t(
                                                                     "extensions:develop.applications.edit.sections." +
                                                                     "apiAuthorization.sections.apiSubscriptions." +
                                                                     "wizards.authorizeAPIResource.fields.policy.hint"
-                                                                ) 
+                                                                )
                                                             }
                                                         </Hint>
                                                     </Grid.Column>
@@ -610,8 +620,8 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                         }
                                         { /* Need to add doc links to the following content of the message box */ }
                                         {
-                                            !m2mApplication 
-                                            && selectedAPIResource 
+                                            !m2mApplication
+                                            && selectedAPIResource
                                             && (
                                                 <Grid.Row columns={ 1 } className="pt-0">
                                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
@@ -647,7 +657,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                         <Alert severity="info">
                                                             {
                                                                 t(
-                                                                    "console:develop.features.applications.edit." + 
+                                                                    "console:develop.features.applications.edit." +
                                                                     "sections.apiAuthorization.m2mPolicyMessage"
                                                                 )
                                                             }

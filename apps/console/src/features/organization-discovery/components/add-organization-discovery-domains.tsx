@@ -122,7 +122,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                     return discoverableOrganization.organizationId === organization.id;
                 }
             );
-        });
+        }) ?? [];
     }, [ discoverableOrganizations, organizations ]);
 
     const optionsArray: string[] = [];

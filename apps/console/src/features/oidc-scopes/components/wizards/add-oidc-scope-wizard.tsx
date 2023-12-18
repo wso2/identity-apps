@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,9 +20,11 @@ import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { AxiosError } from "axios";
+import React, { FunctionComponent, ReactElement, SVGProps, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddOIDCScopeForm } from "./add-oidc-scope-form";
 import { getAllExternalClaims, getAllLocalClaims } from "../../../claims/api";
@@ -42,7 +44,6 @@ interface WizardStateInterface {
 /**
  * Enum for wizard steps form types.
  * @readonly
- * @enum {string}
  */
 enum WizardStepsFormTypes {
     BASIC_DETAILS = "BasicDetails",
@@ -61,8 +62,8 @@ interface OIDCScopeCreateWizardPropsInterface extends TestableComponentInterface
 /**
  * OIDC scope create wizard component.
  *
- * @param {OIDCScopeCreateWizardPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param OIDCScopeCreateWizardPropsInterface - Props injected to the component.
+ * @returns OIDCScopeCreateWizard.
  */
 export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardPropsInterface> = (
     props: OIDCScopeCreateWizardPropsInterface
@@ -71,7 +72,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
     const [ submitGeneralDetails, setSubmitGeneralDetails ] = useTrigger();
@@ -81,8 +82,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
 
     const [ OIDCAttributes, setOIDCAttributes ] = useState<ExternalClaim[]>(undefined);
-    const [ selectedAttributes, setSelectedAttributes ] = useState<ExternalClaim[]>([]);
-    const [ isClaimRequestLoading, setIsClaimRequestLoading ] = useState<boolean>(false);
+    const [ selectedAttributes ] = useState<ExternalClaim[]>([]);
     const [ claims, setClaims ] = useState<Claim[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
@@ -90,10 +90,10 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
 
     useEffect(() => {
         getAllLocalClaims(null)
-            .then((response) => {
+            .then((response: Claim[]) => {
                 setClaims(response);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 dispatch(
                     addAlert({
                         description:
@@ -131,17 +131,17 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
             return;
         }
 
-        const OIDCAttributeId = OIDCScopesManagementConstants.OIDC_ATTRIBUTE_ID;
+        const OIDCAttributeId: string = OIDCScopesManagementConstants.OIDC_ATTRIBUTE_ID;
+
         getOIDCAttributes(OIDCAttributeId);
     }, [ OIDCAttributes, claims ]);
 
     const getOIDCAttributes = (claimId: string) => {
         getAllExternalClaims(claimId, null)
-            .then((response) => {
-                setIsClaimRequestLoading(true);
-                response?.forEach((externalClaim) => {
-                    const mappedLocalClaimUri = externalClaim.mappedLocalClaimURI;
-                    const matchedLocalClaim = claims.filter((localClaim) => {
+            .then((response: ExternalClaim[]) => {
+                response?.forEach((externalClaim: ExternalClaim) => {
+                    const mappedLocalClaimUri: string = externalClaim.mappedLocalClaimURI;
+                    const matchedLocalClaim: Claim[] = claims.filter((localClaim: Claim) => {
                         return localClaim.claimURI === mappedLocalClaimUri;
                     });
 
@@ -152,7 +152,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
 
                 setOIDCAttributes(response);
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
                         description: error.response.data.description,
@@ -171,9 +171,6 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                         "console:manage.features.oidcScopes.notifications.fetchOIDClaims.genericError" + ".message"
                     )
                 });
-            })
-            .finally(() => {
-                setIsClaimRequestLoading(false);
             });
     };
 
@@ -182,6 +179,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
             case 0:
                 setSubmitGeneralDetails();
                 submitScopeForm();
+
                 break;
             case 1:
                 setFinishSubmit();
@@ -196,7 +194,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
      * Handles wizard step submit.
      *
      * @param values - Forms values to be stored in state.
-     * @param {WizardStepsFormTypes} formType - Type of the form.
+     * @param formType - Type of the form.
      */
     const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes) => {
         setCurrentWizardStep(currentWizardStep + 1);
@@ -208,12 +206,10 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
             claims: attributes,
             description: wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.description
                 ? wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.description
-                : "This is the description of the scope",
+                : null,
             displayName: wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.displayName,
             name: wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.scopeName
         };
-
-        setIsClaimRequestLoading(true);
 
         createOIDCScope(data)
             .then(() => {
@@ -229,7 +225,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                 );
                 onUpdate();
             })
-            .catch((error) => {
+            .catch((error: AxiosError) => {
                 closeWizard();
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(
@@ -257,15 +253,16 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                         )
                     })
                 );
-            })
-            .finally(() => {
-                setIsClaimRequestLoading(false);
             });
     };
 
     let submitScopeForm: () => void;
 
-    const STEPS = [
+    const STEPS: {
+        content: ReactElement;
+        icon: FunctionComponent<SVGProps<SVGSVGElement>> | ReactElement;
+        title: string;
+    }[] = [
         {
             content: (
                 <AddOIDCScopeForm
@@ -273,7 +270,8 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                     triggerSubmit={ submitGeneralDetails }
                     triggerSubmission={ (submitFunction: () => void) => {
                         submitScopeForm = submitFunction; } }
-                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
+                    onSubmit={ (values: Record<string, unknown>) =>
+                        handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
                     data-testid={ `${ testId }-form` }
                 />
             ),
@@ -287,6 +285,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                     setAvailableExternalClaims={ () => null }
                     setInitialSelectedExternalClaims={ (response: ExternalClaim[]) => {
                         const claimURIs: string[] = response?.map((claim: ExternalClaim) => claim.claimURI);
+
                         if (claimURIs?.length > 0) {
                             setIsSubmitting(true);
                             handleWizardFormFinish(claimURIs);
@@ -331,7 +330,12 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group current={ currentWizardStep } data-testid={ `${ testId }-steps` }>
-                    { STEPS.map((step, index) => (
+                    { STEPS.map((
+                        step: {
+                            content: ReactElement;
+                            icon: FunctionComponent<SVGProps<SVGSVGElement>> | ReactElement;
+                            title: string;
+                        }, index: number) => (
                         <Steps.Step
                             key={ index }
                             icon={ step.icon }

@@ -3249,6 +3249,12 @@ export interface Extensions {
                     };
                     subHeading: string;
                 };
+                inviteUserToSetPassword: {
+                    notification: {
+                        error: NotificationItem;
+                        success: NotificationItem;
+                    };
+                };
             };
         };
         groups: {
@@ -3368,6 +3374,7 @@ export interface Extensions {
                     changePasswordModal: {
                         emailUnavailableWarning: string;
                         emailResetWarning: string;
+                        passwordResetConfigDisabled: string;
                     };
                 };
             };

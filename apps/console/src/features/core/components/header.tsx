@@ -28,14 +28,15 @@ import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import { OrganizationType } from "@wso2is/common";
+import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { hasRequiredScopes, resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { LocalStorageUtils, StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import { GenericIcon, useDocumentation } from "@wso2is/react-components";
-import { 
-    TenantTier, 
-    TenantTierRequestResponse 
+import {
+    TenantTier,
+    TenantTierRequestResponse
 } from "apps/console/src/extensions/components/subscription/models/subscription";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -127,6 +128,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const userOrganizationID: string = useSelector((state: AppState) =>
         state?.organization?.userOrganizationId);
 
+    const { UIConfig } = useUIConfig();
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
     const { tierName }: TenantTierRequestResponse = useContext(SubscriptionContext);
 
@@ -172,12 +174,18 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     /**
      * Show the organization switching dropdown only if
+     *  - the organizations feature is enabled
      *  - the extensions config enables this
      *  - the requires scopes are there
      *  - the organization management feature is enabled by the backend
      *  - the user is logged in to a non-super-tenant account
      */
     const isOrgSwitcherEnabled: boolean = useMemo(() => {
+        // If the organizations feature is disabled, do not show the org switcher.
+        if (!UIConfig?.legacyMode?.organizations) {
+            return false;
+        }
+
         if (legacyAuthzRuntime) {
             return (
                 isOrganizationManagementEnabled &&
@@ -361,9 +369,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             window[ "AppUtils" ].getConfig().extensions
                 .upgradeButtonEnabled && (
                 <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
-                    <a 
-                        href={ upgradeButtonURL } 
-                        target="_blank" 
+                    <a
+                        href={ upgradeButtonURL }
+                        target="_blank"
                         rel="noreferrer"
                         data-componentid="upgrade-button-link"
                     >
@@ -394,8 +402,32 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             return (!userOrganizationID
                 || userOrganizationID === window[ "AppUtils" ].getConfig().organizationName);
         }
-        
+
         return true;
+    };
+
+    const LOGO_IMAGE = () => {
+        return (
+            <Image
+                src={ resolveAppLogoFilePath(
+                    window[ "AppUtils" ].getConfig().ui.appLogoPath,
+                    `${ window[ "AppUtils" ].getConfig().clientOrigin
+                    }/` +
+                    `${ StringUtils.removeSlashesFromPath(
+                        window[ "AppUtils" ].getConfig()
+                            .appBase
+                    ) !== ""
+                        ? StringUtils.removeSlashesFromPath(
+                            window[ "AppUtils" ].getConfig()
+                                .appBase
+                        ) + "/"
+                        : ""
+                    }libs/themes/` +
+                    config.ui.theme.name
+                ) }
+                alt="logo"
+            />
+        );
     };
 
     return (
@@ -403,48 +435,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             className="is-header"
             brand={ {
                 logo: {
-                    desktop: (
-                        <Image
-                            src={ resolveAppLogoFilePath(
-                                window[ "AppUtils" ].getConfig().ui.appLogoPath,
-                                `${ window[ "AppUtils" ].getConfig().clientOrigin
-                                }/` +
-                                `${ StringUtils.removeSlashesFromPath(
-                                    window[ "AppUtils" ].getConfig()
-                                        .appBase
-                                ) !== ""
-                                    ? StringUtils.removeSlashesFromPath(
-                                        window[ "AppUtils" ].getConfig()
-                                            .appBase
-                                    ) + "/"
-                                    : ""
-                                }libs/themes/` +
-                                config.ui.theme.name
-                            ) }
-                            alt="logo"
-                        />
-                    ),
-                    mobile: (
-                        <Image
-                            src={ resolveAppLogoFilePath(
-                                window[ "AppUtils" ].getConfig().ui.appLogoPath,
-                                `${ window[ "AppUtils" ].getConfig().clientOrigin
-                                }/` +
-                                `${ StringUtils.removeSlashesFromPath(
-                                    window[ "AppUtils" ].getConfig()
-                                        .appBase
-                                ) !== ""
-                                    ? StringUtils.removeSlashesFromPath(
-                                        window[ "AppUtils" ].getConfig()
-                                            .appBase
-                                    ) + "/"
-                                    : ""
-                                }libs/themes/` +
-                                config.ui.theme.name
-                            ) }
-                            alt="logo"
-                        />
-                    )
+                    desktop: (<LOGO_IMAGE />),
+                    mobile: (<LOGO_IMAGE />)
                 },
                 onClick: () => history.push(config.deployment.appHomePath),
                 title: config.ui.appName
@@ -497,7 +489,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     </Box>
                 ],
                 menuItems: [
-                    billingPortalURL && window[ "AppUtils" ].getConfig().extensions.billingPortalUrl && 
+                    billingPortalURL && window[ "AppUtils" ].getConfig().extensions.billingPortalUrl &&
                     !isPrivilegedUser && (
                         <Show when={ [] } featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                             <MenuItem
@@ -518,7 +510,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             </MenuItem>
                         </Show>
                     ),
-                    isShowAppSwitchButton() 
+                    isShowAppSwitchButton()
                         ? (
                             <MenuItem
                                 color="inherit"

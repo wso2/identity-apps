@@ -352,10 +352,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                 >
                     <Divider />
                     <Heading
-                        hidden={
-                            onlyOIDCConfigured &&
-                            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute
-                        }
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showSubjectAttribute }
                         as="h4"
                     >
                         { t("console:develop.features.applications.forms.advancedAttributeSettings." +
@@ -372,11 +370,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         required={ claimMappingOn }
                         value={ selectedSubjectValue }
                         options={ dropDownOptions }
-                        hidden={
-                            onlyOIDCConfigured &&
-                            !applicationConfig.attributeSettings.advancedAttributeSettings.showSubjectAttribute ||
-                            !UIConfig?.classicFeatures?.isSubjectIdentifierEnabled
-                        }
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showSubjectAttribute ||
+                            (onlyOIDCConfigured &&
+                                !UIConfig?.legacyMode?.applicationOIDCSubjectIdentifier) }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-subject-attribute-dropdown` }
                         listen={ subjectAttributeChangeListener }
@@ -392,10 +389,10 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         value={ initialSubject?.includeUserDomain ? [ "includeUserDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-subject-iInclude-user-domain-checkbox` }
-                        hidden={
-                            !applicationConfig.attributeSettings.advancedAttributeSettings.
-                                showIncludeUserstoreDomainSubject
-                        }
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings.
+                            showIncludeUserstoreDomainSubject ||
+                            (onlyOIDCConfigured &&
+                                !UIConfig?.legacyMode?.applicationOIDCSubjectIdentifier) }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeUserDomain.hint")
@@ -412,15 +409,79 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         value={ initialSubject?.includeTenantDomain ? [ "includeTenantDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-subject-include-tenant-domain-checkbox` }
-                        hidden={
-                            !applicationConfig.attributeSettings.advancedAttributeSettings
-                                .showIncludeTenantDomain || !UIConfig?.classicFeatures?.isIncludeOrgNameInSubjectEnabled
-                        }
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showIncludeTenantDomain ||
+                            (onlyOIDCConfigured &&
+                                !UIConfig?.legacyMode?.applicationOIDCSubjectIdentifier) }
                         hint={
                             t("console:develop.features.applications.forms.advancedAttributeSettings" +
                                 ".sections.subject.fields.subjectIncludeTenantDomain.hint")
                         }
                     />
+                    <Divider hidden />
+                    { onlyOIDCConfigured && (
+                        <div>
+                            <Text>
+                                {
+                                    t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                        ".sections.subject.fields.subjectType.label")
+                                }
+                            </Text>
+                            {
+                                Object.keys(SubjectTypes)
+                                    .map((subjectTypeKey: SubjectTypes, index: number) => {
+                                        const subjectType: SubjectTypes
+                                            = SubjectTypes[subjectTypeKey];
+
+                                        return (
+                                            <>
+                                                <Field.Radio
+                                                    key={ index }
+                                                    ariaLabel={ `Subject type ${subjectType}` }
+                                                    name={ "subjectType" }
+                                                    value={ subjectType }
+                                                    label={ t("console:develop.features.applications.forms" +
+                                                        ".advancedAttributeSettings.sections.subject.fields" +
+                                                        ".subjectType." + subjectType + ".label") }
+                                                    hint={ subjectType === SubjectTypes.PAIRWISE &&
+                                                            t("console:develop.features.applications.forms" +
+                                                        ".advancedAttributeSettings.sections.subject.fields" +
+                                                        ".subjectType." + subjectType + ".hint") }
+                                                    checked={ selectedSubjectType === subjectType }
+                                                    listen={ () => {
+                                                        setSelectedSubjectType(subjectType);
+                                                    } }
+                                                    readOnly={ readOnly }
+                                                />
+                                            </>
+                                        );
+                                    })
+                            }
+                        </div>
+                    ) }
+                    { selectedSubjectType === SubjectTypes.PAIRWISE && (
+                        <Field.Input
+                            ariaLabel="Sector Identifier URI"
+                            inputType="url"
+                            name="sectorIdentifierURI"
+                            label={ t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                ".sections.subject.fields.sectorIdentifierURI.label")
+                            }
+                            required={ false }
+                            placeholder={
+                                t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                    ".sections.subject.fields.sectorIdentifierURI.placeholder")
+                            }
+                            hint={ t("console:develop.features.applications.forms.advancedAttributeSettings" +
+                                ".sections.subject.fields.sectorIdentifierURI.hint") }
+                            readOnly={ readOnly }
+                            maxLength={ 200 }
+                            minLength={ 3 }
+                            width={ 16 }
+                            initialValue={ oidcInitialValues?.subject?.sectorIdentifierUri }
+                        />
+                    )
+                    }
                     <Divider />
                     <Heading
                         as="h4"
@@ -495,71 +556,13 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         hint={ t("console:develop.features.applications.forms.advancedAttributeSettings." +
                         "sections.linkedAccounts.fields.mandateLocalAccount.hint") }
                     />
-                    <Divider />
-                    { onlyOIDCConfigured && (
-                        <div>
-                            <Text>
-                                {
-                                    t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                        ".sections.subject.fields.subjectType.label")
-                                }
-                            </Text>
-                            {
-                                Object.keys(SubjectTypes)
-                                    .map((subjectTypeKey: SubjectTypes, index: number) => {
-                                        const subjectType: SubjectTypes
-                                            = SubjectTypes[subjectTypeKey];
-
-                                        return (
-                                            <>
-                                                <Field.Radio
-                                                    key={ index }
-                                                    ariaLabel={ `Subject type ${subjectType}` }
-                                                    name={ "subjectType" }
-                                                    value={ subjectType }
-                                                    label={ t("console:develop.features.applications.forms" +
-                                                        ".advancedAttributeSettings.sections.subject.fields" +
-                                                        ".subjectType." + subjectType + ".label") }
-                                                    hint={ subjectType === SubjectTypes.PAIRWISE &&
-                                                            t("console:develop.features.applications.forms" +
-                                                        ".advancedAttributeSettings.sections.subject.fields" +
-                                                        ".subjectType." + subjectType + ".hint") }
-                                                    checked={ selectedSubjectType === subjectType }
-                                                    listen={ () => {
-                                                        setSelectedSubjectType(subjectType);
-                                                    } }
-                                                />
-                                            </>
-                                        );
-                                    })
-                            }
-                        </div>
-                    ) }
-                    { selectedSubjectType === SubjectTypes.PAIRWISE && (
-                        <Field.Input
-                            ariaLabel="Sector Identifier URI"
-                            inputType="url"
-                            name="sectorIdentifierURI"
-                            label={ t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                ".sections.subject.fields.sectorIdentifierURI.label")
-                            }
-                            required={ false }
-                            placeholder={
-                                t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                    ".sections.subject.fields.sectorIdentifierURI.placeholder")
-                            }
-                            hint={ t("console:develop.features.applications.forms.advancedAttributeSettings" +
-                                ".sections.subject.fields.sectorIdentifierURI.hint") }
-                            readOnly={ readOnly }
-                            maxLength={ 200 }
-                            minLength={ 3 }
-                            width={ 16 }
-                            initialValue={ oidcInitialValues?.subject?.sectorIdentifierUri }
-                        />
-                    )
-                    }
+                    <Divider
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showRoleAttribute || !UIConfig?.legacyMode?.roleMapping }
+                    />
                     {
-                        applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute && (
+                        applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute &&
+                        UIConfig?.legacyMode?.roleMapping && (
                             <>
                                 <Heading as="h4">
                                     { t("console:develop.features.applications.forms.advancedAttributeSettings" +
@@ -580,30 +583,30 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         options={ dropDownOptions }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-role-attribute-dropdown` }
-                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings.showRoleAttribute }
+                        hidden={  !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showRoleAttribute || !UIConfig?.legacyMode?.roleMapping }
                         hint={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
-                                "role.fields.roleAttribute.hint")
+                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                "sections.role.fields.roleAttribute.hint")
                         }
                     />
                     <Field.CheckboxLegacy
                         ariaLabel="Role"
                         name="role"
                         label={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
-                                "role.fields.role.label")
+                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                "sections.role.fields.role.label")
                         }
                         required={ false }
                         value={ initialRole?.includeUserDomain ? [ "includeUserDomain" ] : [] }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-role-checkbox` }
-                        hidden={
-                            !applicationConfig.attributeSettings.advancedAttributeSettings
-                                .showIncludeUserstoreDomainRole
-                        }
+                        hidden={ !applicationConfig.attributeSettings.advancedAttributeSettings
+                            .showIncludeUserstoreDomainRole ||
+                            !UIConfig?.legacyMode?.roleMapping }
                         hint={
-                            t("console:develop.features.applications.forms.advancedAttributeSettings.sections." +
-                                "role.fields.role.hint")
+                            t("console:develop.features.applications.forms.advancedAttributeSettings." +
+                                "sections.role.fields.role.hint")
                         }
                     />
                 </Form>

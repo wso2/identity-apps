@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { FormValue } from "@wso2is/forms";
 import {
     ContentLoader,
@@ -26,6 +27,7 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -38,6 +40,8 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch as ReduxDispatch } from "redux";
 import { Header, Segment } from "semantic-ui-react";
 import { GroupBasicsUpdated } from "./group-basics-updated";
 import { UserManagementUtils } from "../../../../extensions/components/users/utils";
@@ -83,6 +87,8 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
     const [ isSelectAllAssignedUsers ] = useState<boolean>(false);
 
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<UserBasicInterface[]>([]);
+
+    const dispatch: ReduxDispatch = useDispatch();
 
     useEffect(() => {
         setListItemLimit(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -154,6 +160,29 @@ export const AddGroupUsersUpdated: FunctionComponent<AddGroupUserProps> = (props
                         );
                     }
                 }
+            })
+            .catch((error: AxiosError) => {
+                setUsersList([]);
+                setInitialUserList([]);
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.description ?? error?.response?.data?.detail
+                            ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.response?.data?.message
+                            ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
+                        "description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
+                }));
+
             })
             .finally(() => {
                 setIsUsersFetchRequestLoading(false);

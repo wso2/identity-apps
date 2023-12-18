@@ -66,8 +66,7 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
             inboundProtocolConfiguration: {
                 passiveSts: {
                     realm: values.get("realm"),
-                    replyTo: values.get("replyTo"),
-                    replyToLogout: values.get("replyToLogout")
+                    replyTo: values.get("replyTo")
                 }
             }
         };
@@ -139,42 +138,6 @@ export const PassiveStsProtocolSettingsWizardForm: FunctionComponent<PassiveStsS
                                 />
                                 <Hint>
                                     { t("console:develop.features.applications.forms.inboundSTS.fields.replyTo.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column mobile={ 16 }>
-                                <Field
-                                    name="replyToLogout"
-                                    label={
-                                        t("console:develop.features.applications.forms.inboundSTS.fields." +
-                                          "replyToLogout.label")
-                                    }
-                                    requiredErrorMessage={
-                                        t("console:develop.features.applications.forms.inboundSTS.fields." +
-                                          "replyToLogout.validations.empty")
-                                    }
-                                    placeholder={
-                                        t("console:develop.features.applications.forms.inboundSTS.fields." +
-                                          "replyToLogout.placeholder")
-                                    }
-                                    validation={ (value: string, validation: Validation) => {
-                                        if (!FormValidation.url(value)) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push(
-                                                t("console:develop.features.applications.forms" +
-                                                  ".inboundSTS.fields.replyToLogout.validations.invalid")
-                                            );
-                                        }
-                                    } }
-                                    type="text"
-                                    value={ initialValues?.replyToLogout ?? templateValues?.replyToLogout }
-                                    data-testid={ `${ testId }-reply-to-logout-url-input` }
-                                    required
-                                />
-                                <Hint>
-                                    { t("console:develop.features.applications.forms.inboundSTS.fields." +
-                                        "replyToLogout.hint") }
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>

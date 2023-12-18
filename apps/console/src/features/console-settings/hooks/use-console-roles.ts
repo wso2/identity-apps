@@ -49,6 +49,7 @@ const useConsoleRoles = (
         count,
         startIndex,
         `audience.value eq ${consoleId}${ filter ? ` and ${ filter }` : "" }`,
+        "users,groups,permissions,associatedApplications",
         !!consoleId || shouldFetch
     );
 

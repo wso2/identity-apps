@@ -16,13 +16,14 @@
  * under the License.
  */
 
-import { Chip, Typography } from "@oxygen-ui/react";
 import { AutocompleteRenderGetTagProps } from "@oxygen-ui/react/Autocomplete";
+import Chip from "@oxygen-ui/react/Chip";
+import Typography from "@oxygen-ui/react/Typography";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/form";
-import { Hint, Message } from "@wso2is/react-components";
-import { AxiosError } from "axios";
+import { Hint, Message, WizardAlert } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from "react";
 import { FormRenderProps } from "react-final-form";
@@ -33,7 +34,11 @@ import { UsersConstants } from "../../../../../extensions/components/users/const
 import { useRolesList } from "../../../../roles/api";
 import { UserManagementConstants } from "../../../constants";
 import { sendParentOrgUserInvite } from "../api/invite";
-import { UserInviteInterface } from "../models/invite";
+import {
+    ParentOrgUserInvitationResult,
+    ParentOrgUserInviteInterface,
+    ParentOrgUserInviteResultStatus
+} from "../models/invite";
 
 interface RolesAutoCompleteOption {
     key: string;
@@ -67,6 +72,11 @@ interface InviteParentOrgUserPropsInterface extends IdentifiableComponentInterfa
      * The Callback method for when the user invite is successful.
      */
     onUserInviteSuccess: () => void;
+    /**
+     * The callback method for setting the alert.
+     * @param alert - The alert object.
+     */
+    setAlert: (alert: WizardAlert) => void;
 }
 
 /**
@@ -82,12 +92,18 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
         closeWizard,
         setIsSubmitting,
         onUserInviteSuccess,
+        setAlert,
         [ "data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { data: allowedRoles } = useRolesList();
+    const { data: allowedRoles } = useRolesList(
+        undefined,
+        undefined,
+        undefined,
+        "users,groups,permissions,associatedApplications"
+    );
 
     const rolesAutocompleteOptions: RolesAutoCompleteOption[] = useMemo(() => {
 
@@ -119,36 +135,36 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
          * is available has been used.
          */
         if (!error.response || error.response.status === 401) {
-            dispatch(addAlert({
+            setAlert({
                 description: t("console:manage.features.invite.notifications.sendInvite.error.description"),
                 level: AlertLevels.ERROR,
                 message: t("console:manage.features.invite.notifications.sendInvite.error.message")
-            }));
+            });
         } else if (error.response.status === 403 &&
             error?.response?.data?.code === UsersConstants.ERROR_COLLABORATOR_USER_LIMIT_REACHED) {
-            dispatch(addAlert({
+            setAlert({
                 description: t("extensions:manage.invite.notifications.sendInvite.limitReachError.description"),
                 level: AlertLevels.ERROR,
                 message: t("extensions:manage.invite.notifications.sendInvite.limitReachError.message")
-            }));
+            });
         } else if (error?.response?.data?.description) {
-            dispatch(addAlert({
+            setAlert({
                 description: t(
                     "console:manage.features.invite.notifications.sendInvite.error.description",
                     { description: error.response.data.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: t("console:manage.features.invite.notifications.sendInvite.error.message")
-            }));
+            });
         } else {
             // Generic error message
-            dispatch(addAlert({
+            setAlert({
                 description: t(
                     "console:manage.features.invite.notifications.sendInvite.genericError.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t("console:manage.features.invite.notifications.sendInvite.genericError.message")
-            }));
+            });
         }
     };
 
@@ -158,15 +174,33 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
      */
     const inviteParentOrgUser = (values: InviteParentOrgUserFormValuesInterface) => {
 
-        const invite: UserInviteInterface = {
+        const invite: ParentOrgUserInviteInterface = {
             roles: values?.roles?.map((role: RolesAutoCompleteOption) => role.role.id),
-            username: values?.username
+            usernames: [ values?.username ]
         };
 
         setIsSubmitting(true);
 
         sendParentOrgUserInvite(invite)
-            .then(() => {
+            .then((response: AxiosResponse) => {
+
+                // TODO: Handle errors for each user when revamping invite parent org user UI to facilitate multiple
+                // user invites.
+                const responseData: ParentOrgUserInvitationResult = response.data[0];
+
+                if (responseData.result.status !== ParentOrgUserInviteResultStatus.SUCCESS) {
+                    setAlert({
+                        description: t(
+                            "console:manage.features.invite.notifications.sendInvite.error.description",
+                            { description: responseData.result.errorDescription }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t("console:manage.features.invite.notifications.sendInvite.error.message")
+                    });
+
+                    return;
+                }
+
                 dispatch(addAlert({
                     description: t(
                         "console:manage.features.invite.notifications.sendInvite.success.description"
@@ -183,7 +217,6 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                 handleParentOrgUserInviteError(error);
             })
             .finally(() => {
-                closeWizard();
                 setIsSubmitting(false);
             });
     };
@@ -205,10 +238,6 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
         if (!values.username) {
             errors.username = t("console:manage.features.parentOrgInvitations.addUserWizard.username.validations" +
                 ".required");
-        }
-
-        if (!values.roles || isEmpty(values.roles)) {
-            errors.roles =  t("console:manage.features.parentOrgInvitations.addUserWizard.roles.validations.required");
         }
 
         return errors;
@@ -248,7 +277,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                                 <Hint>
                                     <Typography variant="inherit">
                                         { t("console:manage.features.parentOrgInvitations.addUserWizard.username" +
-                                                ".hint") }
+                                            ".hint") }
                                     </Typography>
                                 </Hint>
                             ) }
@@ -256,8 +285,6 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                         />
                         <FinalFormField
                             fullWidth
-                            required
-                            freeSolo
                             multipleValues
                             ariaLabel="Roles field"
                             data-componentid={ `${componentId}-form-roles-field` }
@@ -267,7 +294,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                                 (<Hint>
                                     <Typography variant="inherit">
                                         { t("console:manage.features.parentOrgInvitations.addUserWizard.roles" +
-                                                ".hint") }
+                                            ".hint") }
                                     </Typography>
                                 </Hint>)
                             }

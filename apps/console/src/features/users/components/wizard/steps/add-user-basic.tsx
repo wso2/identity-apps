@@ -71,8 +71,6 @@ export interface AddUserProps {
 /**
  * Add user basic component.
  *
- * TODO: Add localization support. (https://github.com/wso2-enterprise/asgardeo-product/issues/209)
- *
  * @returns ReactElement
  */
 export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
@@ -426,6 +424,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                 <Button
                                     basic
                                     primary
+                                    size="tiny"
                                     data-testid="user-mgt-password-generate-button"
                                     type="button"
                                     className="info add-user-step-button"
@@ -846,12 +845,8 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
                                                 ".buttons.radioButton.label") }
                                         </label>
                                         {
-                                            emailVerificationEnabled && (
-                                                (
-                                                    isValidEmail
-                                                    && isEmailFilled
-                                                ) || !isAlphanumericUsernameEnabled()
-                                            )
+                                            emailVerificationEnabled && isEmailFilled
+                                            || !isAlphanumericUsernameEnabled()
                                                 ? (
                                                     <Radio
                                                         label={ askPasswordOptionData.label }

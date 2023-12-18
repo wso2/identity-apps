@@ -6,7 +6,7 @@
     "id": "enterprise-protocols",
     "docLink": "/guides/authentication/enterprise-login/",
     "image": "enterprise",
-    "name": "Enterprise",
+    "name": "Standard-Based IdP",
     "services": [],
     "disabled": false,
     "type": "ENTERPRISE",

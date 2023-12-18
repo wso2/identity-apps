@@ -703,7 +703,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             } else {
                 metadataProp.options.map((ele: any, index: number) => {
                     if (!ele.displayName) {
-                        allowedList.push({ text: ele, value: ele });
+                        allowedList.push({ text: ele, value: ele !== t( "console:develop.features.applications" +
+                            ".forms.inboundOIDC.dropdowns.selectOption" ) ? ele : "" });
                     } else {
                         allowedList.push({
                             content: (
@@ -805,14 +806,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 <>
                     <label>
                         { label }
-                        <GenericIcon
-                            icon={ getGeneralIcons().warning }
-                            defaultIcon
-                            colored
-                            transparent
-                            spaced="left"
-                            floated="right"
-                        />
+                        { !isM2MApplication && (
+                            <GenericIcon
+                                icon={ getGeneralIcons().warning }
+                                defaultIcon
+                                colored
+                                transparent
+                                spaced="left"
+                                floated="right"
+                            />)
+                        }
                     </label>
                 </>
             );
@@ -901,7 +904,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                  */
                 const description: string = getGrantTypeHintDescription(name);
 
-                if (description) {
+                if (description && !isM2MApplication) {
                     grant.hint = {
                         content: description,
                         header: ""
@@ -1040,8 +1043,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             values.get("method") : metadata?.idTokenEncryptionMethod?.defaultValue
                     },
                     expiryInSeconds: Number(values.get("idExpiryInSeconds")),
-                    idTokenSignedResponseAlg: values.get("idTokenSignedResponseAlg") !== "None" ?
-                        values.get("idTokenSignedResponseAlg") : null
+                    idTokenSignedResponseAlg: values.get("idTokenSignedResponseAlg")
                 },
                 logout: {
                     backChannelLogoutUrl: values.get("backChannelLogoutUrl"),
@@ -1121,26 +1123,27 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 };
             }
 
+            if (!isPublicClient) {
+                inboundConfigFormValues = {
+                    ...inboundConfigFormValues,
+                    clientAuthentication: {
+                        tlsClientAuthSubjectDn: subjectDN,
+                        tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod"),
+                        tokenEndpointAuthSigningAlg: values.get("tokenEndpointAuthSigningAlg")
+                    }
+                };
+            }
             inboundConfigFormValues = {
                 ...inboundConfigFormValues,
-                clientAuthentication: {
-                    tlsClientAuthSubjectDn: subjectDN,
-                    tokenEndpointAuthMethod: values.get("tokenEndpointAuthMethod") !== "None" ?
-                        values.get("tokenEndpointAuthMethod") : null,
-                    tokenEndpointAuthSigningAlg: values.get("tokenEndpointAuthSigningAlg")
-                },
                 pushAuthorizationRequest: {
                     requirePushAuthorizationRequest: values.get("requirePushAuthorizationRequest")?.length > 0
                 },
                 requestObject: {
                     encryption: {
-                        algorithm: values.get("requestObjectEncryptionAlgorithm") !== "None" ?
-                            values.get("requestObjectEncryptionAlgorithm") : null,
-                        method: values.get("requestObjectEncryptionMethod") !== "None" ?
-                            values.get("requestObjectEncryptionMethod") : null
+                        algorithm: values.get("requestObjectEncryptionAlgorithm"),
+                        method: values.get("requestObjectEncryptionMethod")
                     },
-                    requestObjectSigningAlg: values.get("requestObjectSigningAlg") !== "None" ?
-                        values.get("requestObjectSigningAlg") : null
+                    requestObjectSigningAlg: values.get("requestObjectSigningAlg")
                 },
                 subject: {
                     sectorIdentifierUri: initialValues?.subject?.sectorIdentifierUri,
@@ -1300,6 +1303,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             setPublicClient(initialValues?.publicClient);
         }, [ initialValues ]
     );
+
+    /**
+    The following function is used to reset the client authentication method if public client is selected
+    *
+    * @param publicClient - is public client
+    */
+    const handleClientAuthenticationChange = (publicClient: boolean):void => {
+        if (publicClient) {
+            setSelectedAuthMethod("");
+        }
+    };
 
     /**
      * The following function handles allowing CORS for a new origin.
@@ -1508,62 +1522,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>
-                )
-            }
-            {
-                !isSPAApplication
-                && !isMobileApplication
-                && !isFAPIApplication
-                && (
-                    selectedGrantTypes?.includes(ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
-                    || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
-                    || selectedGrantTypes?.includes(ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)
-                )
-                && !isSystemApplication
-                && !isDefaultApplication
-                && (
-                    <>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field
-                                    ref={ supportPublicClients }
-                                    name="supportPublicClients"
-                                    label=""
-                                    required={ false }
-                                    requiredErrorMessage={
-                                        t("console:develop.features.applications.forms.inboundOIDC.fields.public" +
-                                            ".validations.empty")
-                                    }
-                                    type="checkbox"
-                                    value={
-                                        initialValues?.publicClient
-                                            ? [ "supportPublicClients" ]
-                                            : []
-                                    }
-                                    children={ [
-                                        {
-                                            label: t("console:develop.features.applications.forms.inboundOIDC" +
-                                                ".fields.public.label"),
-                                            value: "supportPublicClients"
-                                        }
-                                    ] }
-                                    readOnly={ readOnly }
-                                    listen={ (values: Map<string, FormValue>): void => {
-                                        const isPublicClient: boolean = values.get("supportPublicClients")
-                                            .includes("supportPublicClients");
-
-                                        setPublicClient(isPublicClient);
-                                    } }
-                                    data-testid={ `${ testId }-public-client-checkbox` }
-                                />
-                                <Hint>
-                                    { t("console:develop.features.applications.forms.inboundOIDC.fields.public.hint", {
-                                        productName: config.ui?.productName
-                                    }) }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </>
                 )
             }
             {
@@ -1845,8 +1803,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             { /* Client Authentication*/ }
-            { !isPublicClient
-                && ApplicationTemplateNames.STANDARD_BASED_APPLICATION === template?.name
+            { (ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
+                || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId)
                 && !isSystemApplication
                 && !isDefaultApplication
                 && (
@@ -1861,6 +1819,65 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                         ".clientAuthentication.heading") }
                                 </Heading>
+                                {
+                                    !isSPAApplication
+                                    && !isMobileApplication
+                                    && !isFAPIApplication
+                                    && (
+                                        selectedGrantTypes?.includes(
+                                            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT)
+                                        || selectedGrantTypes?.includes(ApplicationManagementConstants.DEVICE_GRANT)
+                                        || selectedGrantTypes?.includes(
+                                            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE)
+                                    )
+                                    && !isSystemApplication
+                                    && !isDefaultApplication
+                                    && (
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                <Field
+                                                    ref={ supportPublicClients }
+                                                    name="supportPublicClients"
+                                                    label=""
+                                                    required={ false }
+                                                    requiredErrorMessage={
+                                                        t("console:develop.features.applications.forms.inboundOIDC" +
+                                                            ".fields.public.validations.empty")
+                                                    }
+                                                    type="checkbox"
+                                                    value={
+                                                        initialValues?.publicClient
+                                                            ? [ "supportPublicClients" ]
+                                                            : []
+                                                    }
+                                                    children={ [
+                                                        {
+                                                            label: t("console:develop.features.applications.forms" +
+                                                                ".inboundOIDC.fields.public.label"),
+                                                            value: "supportPublicClients"
+                                                        }
+                                                    ] }
+                                                    readOnly={ readOnly }
+                                                    listen={ (values: Map<string, FormValue>): void => {
+                                                        const isPublicClient: boolean =
+                                                            values.get("supportPublicClients")
+                                                                .includes("supportPublicClients");
+
+                                                        setPublicClient(isPublicClient);
+                                                        handleClientAuthenticationChange(isPublicClient);
+                                                    } }
+                                                    data-testid={ `${ testId }-public-client-checkbox` }
+                                                />
+                                                <Hint>
+                                                    { t("console:develop.features.applications.forms.inboundOIDC" +
+                                                        ".fields.public.hint", {
+                                                        productName: config.ui?.productName
+                                                    }) }
+                                                </Hint>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    )
+                                }
                                 <Field
                                     ref={ tokenEndpointAuthMethod }
                                     name="tokenEndpointAuthMethod"
@@ -1870,16 +1887,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     required={ false }
                                     type="dropdown"
-                                    disabled={ false }
-                                    default={
-                                        initialValues?.clientAuthentication ?
-                                            initialValues.clientAuthentication.tokenEndpointAuthMethod
-                                            : metadata?.tokenEndpointAuthMethod.defaultValue
-                                    }
+                                    disabled={ isPublicClient }
                                     placeholder={
                                         t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                             ".clientAuthentication.fields.authenticationMethod.placeholder")
                                     }
+                                    value={ selectedAuthMethod }
                                     listen={ (values: Map<string, FormValue>) => handleAuthMethodChange(values) }
                                     children={ isFAPIApplication ?
                                         getAllowedList(metadata?.fapiMetadata?.tokenEndpointAuthMethod)
@@ -1906,7 +1919,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             }
                                             required={ false }
                                             type="dropdown"
-                                            disabled={ false }
+                                            disabled={ isPublicClient }
                                             default={
                                                 initialValues?.clientAuthentication ?
                                                     initialValues.clientAuthentication.tokenEndpointAuthSigningAlg
@@ -1942,6 +1955,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             label={ t("console:develop.features.applications.forms.inboundOIDC" +
                                                 ".sections.clientAuthentication.fields.subjectDN.label")
                                             }
+                                            disabled = { isPublicClient }
                                             required={ false }
                                             placeholder={
                                                 t("console:develop.features.applications.forms.inboundOIDC.sections" +
@@ -1969,7 +1983,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             { /* Pushed Authorization Requests*/ }
-            { ApplicationTemplateNames.STANDARD_BASED_APPLICATION === template?.name
+            { (ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
+                || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId)
                 && !isSystemApplication
                 && !isDefaultApplication
                 && (
@@ -2009,7 +2024,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 ) }
 
             { /* Request Object*/ }
-            { ApplicationTemplateNames.STANDARD_BASED_APPLICATION === template?.name
+            { (ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
+                || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId)
                 && !isSystemApplication
                 && !isDefaultApplication
                 && (

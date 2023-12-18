@@ -270,7 +270,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                 label={ GovernanceConnectorUtils.resolveFieldLabel(
                     "User Onboarding",
                     "EmailVerification.AskPassword.ExpiryTime",
-                    "Ask password code expiry time") }
+                    "Password Setup Invitation Code Expiration Time") }
                 required={ false }
                 hidden={ !serverConfigurationConfig.dynamicConnectors }
                 placeholder={ t("extensions:manage.serverConfigurations.userOnboarding." +
@@ -291,7 +291,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                 hint={ GovernanceConnectorUtils.resolveFieldHint(
                     "User Onboarding",
                     "EmailVerification.AskPassword.ExpiryTime",
-                    "Set the time span that the ask password e-mail would be valid, " +
+                    "Set the time span that the password setup invitation e-mail would be valid, " +
                         "in minutes. (For infinite validity period, set -1).")
                 }
             >

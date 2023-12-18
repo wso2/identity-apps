@@ -24,12 +24,12 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState  } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
-import { 
-    ApplicationInterface, 
-    CertificateInterface, 
-    CertificateTypeInterface, 
-    PassiveStsConfigurationInterface, 
-    SupportedAuthProtocolTypes 
+import {
+    ApplicationInterface,
+    CertificateInterface,
+    CertificateTypeInterface,
+    PassiveStsConfigurationInterface,
+    SupportedAuthProtocolTypes
 } from "../../models";
 import { CertificateFormFieldModal } from "../modals";
 import { ApplicationCertificateWrapper } from "../settings/certificate";
@@ -128,8 +128,8 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
      */
     const handleFormSubmit = (values: Map<string, FormValue>): void => {
         setTriggerCertSubmit();
-        onSubmit(updateConfiguration(values));           
-    };        
+        onSubmit(updateConfiguration(values));
+    };
 
     return (
         <Forms
@@ -197,13 +197,8 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
                             name="replyToLogout"
-                            label={ 
-                                t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout.label") 
-                            }
-                            required
-                            requiredErrorMessage={
-                                t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout" +
-                                    ".validations.empty")
+                            label={
+                                t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout.label")
                             }
                             placeholder={
                                 t("console:develop.features.applications.forms.inboundSTS.fields.replyToLogout" +
@@ -230,7 +225,6 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                 </Grid.Row>
                 { /* Certificates */ }
                 <Grid.Row columns={ 1 }>
-                    
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <ApplicationCertificateWrapper
                             protocol={ SupportedAuthProtocolTypes.WS_FEDERATION }

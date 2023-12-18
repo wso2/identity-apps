@@ -62,6 +62,7 @@ import {
 import { Authenticators } from "./authenticators";
 import { authenticatorConfig } from "../../../../../../extensions/configs/authenticator";
 import { identityProviderConfig } from "../../../../../../extensions/configs/identity-provider";
+import useAuthenticationFlow from "../../../../../authentication-flow-builder/hooks/use-authentication-flow";
 import { ConnectionManagementConstants } from "../../../../../connections";
 import { ConnectionsManagementUtils } from "../../../../../connections/utils/connection-utils";
 import { getEmptyPlaceholderIllustrations } from "../../../../../core/configs/ui";
@@ -177,8 +178,13 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+    const { hiddenAuthenticators } = useAuthenticationFlow();
+
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
-    const hiddenAuthenticators: string[] = useSelector((state: AppState) => state.config?.ui?.hiddenAuthenticators);
+
+    const hiddenConnectionTemplates: string[] = useSelector(
+        (state: AppState) => state.config?.ui?.hiddenConnectionTemplates
+    );
     const groupedIDPTemplates: IdentityProviderTemplateItemInterface[] = useSelector(
         (state: AppState) => state.identityProvider?.groupedTemplates
     );
@@ -545,7 +551,8 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                                                 ConnectionManagementConstants.IDP_TEMPLATE_IDS.LINKEDIN,
                                                 ConnectionManagementConstants.IDP_TEMPLATE_IDS
                                                     .ORGANIZATION_ENTERPRISE_IDP,
-                                                ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID
+                                                ConnectionManagementConstants.TRUSTED_TOKEN_TEMPLATE_ID,
+                                                ...hiddenConnectionTemplates
                                             ];
 
                                             if (hiddenTemplates.includes(template?.templateId)) {

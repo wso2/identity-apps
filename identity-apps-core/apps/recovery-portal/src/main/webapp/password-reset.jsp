@@ -46,6 +46,7 @@
     String userStoreDomain = request.getParameter("userstoredomain");
     String type = request.getParameter("type");
     String spId = request.getParameter("spId");
+    String sp = Encode.forJava(request.getParameter("sp"));
     boolean passwordExpired = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("passwordExpired"));
     String tenantDomainFromQuery = (String) request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
     String ASGARDEO_USERSTORE = "ASGARDEO-USER";
@@ -216,6 +217,13 @@
                             %>
                             <div>
                                 <input type="hidden" name="callback" value="<%=Encode.forHtmlAttribute(callback) %>"/>
+                            </div>
+                            <%
+                                }
+                                if (StringUtils.isNotBlank(sp)) {
+                            %>
+                            <div>
+                                <input type="hidden" name="sp" value="<%=Encode.forHtmlAttribute(sp) %>"/>
                             </div>
                             <%
                                 }

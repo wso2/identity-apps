@@ -40,6 +40,39 @@ export interface UserInviteInterface {
 }
 
 /**
+ * Interface to represent invite for parent org user.
+ */
+export interface ParentOrgUserInviteInterface {
+    id?: string;
+    roles?: string[];
+    email?: string;
+    status?: InviteUserStatus;
+    expiredAt?: string;
+    usernames?: string[];
+}
+
+/**
+ * Interface to represent the result of an invitation for a parent org user.
+ */
+export interface ParentOrgUserInvitationResult {
+    username: string;
+    result: {
+        status: ParentOrgUserInviteResultStatus
+        errorCode?: string;
+        errorMessage?: string;
+        errorDescription?: string;
+    }
+}
+
+/**
+ * Enum for the result status of a parent org user invite.
+ */
+export enum ParentOrgUserInviteResultStatus {
+    SUCCESS = "Successful",
+    FAIL = "Failed"
+}
+
+/**
  * Interface to store invitations list.
  */
 export interface InvitationsInterface {

@@ -703,6 +703,9 @@ export const console: ConsoleNS = {
     },
     consoleSettings: {
         administrators: {
+            edit: {
+                backButton: "Go back to Administrators"
+            },
             tabLabel: "Administrators"
         },
         loginFlow: {
@@ -1241,6 +1244,16 @@ export const console: ConsoleNS = {
                                     description: "Application Sharing stopped with the {{organization}} successfully",
                                     message: "Application shared stopped successfully!"
                                 }
+                            },
+                            stopAllSharingNotification: {
+                                genericError: {
+                                    description: "Application sharing stop failed for all organizations",
+                                    message: "Application sharing stop failed!"
+                                },
+                                success: {
+                                    description: "Application sharing stopped with all the organizations successfully",
+                                    message: "Application sharing stopped successfully!"
+                                }
                             }
                         },
                         signOnMethod: {
@@ -1531,11 +1544,19 @@ export const console: ConsoleNS = {
                                                 "biometrics.",
                                                 heading: "Add Passkey Login",
                                                 info: {
-                                                    progressiveEnrollmentEnabled: "Passkey progressive enrollment is enabled. " +
-                                                    "Users can enroll passkeys on-the-fly. If they wish to enroll multiple passkeys " +
-                                                    "they should do so via MyAccount.",
-                                                    progressiveEnrollmentDisabled: "On-the-fly passkey enrollment is disabled. " +
-                                                    "Users must enroll their passkeys through MyAccount to use passwordless sign-in."
+                                                    progressiveEnrollmentEnabled: "Passkey progressive enrollment is enabled.",
+                                                    passkeyAsFirstStepWhenprogressiveEnrollmentEnabled: "<0>Note : </0> For " +
+                                                    "on-the-fly user enrollment with passkeys, use the <2>Passkeys Progressive " +
+                                                    "Enrollment</2> template in <4>Conditional Authentication</4> section.",
+                                                    passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled: "Users can enroll " +
+                                                    "passkeys on-the-fly. If users wish to enroll multiple passkeys they should do " +
+                                                    "so via <1>My Account</1>.",
+                                                    progressiveEnrollmentEnabledCheckbox: "<0>Note : </0> When setting " +
+                                                    "the Passkey in the <2>first step</2>, users need to add an adaptive " +
+                                                    "script. Use the <4>Passkeys Progressive Enrollment</4> template in " +
+                                                    "the <6>Sign-In-Method</6> tab of the application.",
+                                                    progressiveEnrollmentDisabled: "Passkey progressive enrollment is disabled. " +
+                                                    "Users must enroll their passkeys through <1>My Account</1> to use passwordless sign-in."
                                                 }
                                             },
                                             emailOTP: {
@@ -2051,6 +2072,9 @@ export const console: ConsoleNS = {
                             discoverableHint: "If enabled and a web accessible url(deep link) is given, customers " +
                                 "can access this application from the <1>{{ myAccount }}</1> portal.",
                             mobileAppPlaceholder: "myapp://oauth2"
+                        },
+                        dropdowns: {
+                            selectOption: "Select Option"
                         },
                         sections: {
                             accessToken: {
@@ -3632,7 +3656,7 @@ export const console: ConsoleNS = {
                         actionTitle: "{{ state }} Connection",
                         header: "{{ state }} connection",
                         subheader: "Once you disable it, it can no longer be used until you enable it again.",
-                        subheader2: "Enable the identity provider to use it with your applications."
+                        subheader2: "Enable the connection to use it with your applications."
                     },
                     header: "Danger Zone"
                 },
@@ -4343,12 +4367,12 @@ export const console: ConsoleNS = {
                     },
                     generalDetails: {
                         description: {
-                            hint: "A text description of the identity provider.",
+                            hint: "A text description of the connection.",
                             label: "Description",
-                            placeholder: "Enter a description of the identity provider."
+                            placeholder: "Enter a description of the connection."
                         },
                         image: {
-                            hint: "A URL for the image of the identity provider for display purposes. If not provided" +
+                            hint: "A URL for the image of the connection for display purposes. If not provided" +
                                 " a generated thumbnail will be displayed. Recommended size is 200x200 pixels.",
                             label: "Logo",
                             placeholder: "https://myapp-resources.io/my_app_image.png"
@@ -4358,10 +4382,10 @@ export const console: ConsoleNS = {
                             label: "Name",
                             placeholder: "Enter a name for the connection.",
                             validations: {
-                                duplicate: "An identity provider already exists with this name",
-                                empty: "Identity Provider name is required",
-                                maxLengthReached: "Identity provider name cannot exceed {{ maxLength }} characters.",
-                                required: "Identity Provider name is required"
+                                duplicate: "A connection already exists with this name",
+                                empty: "Connection name is required",
+                                maxLengthReached: "Connection name cannot exceed {{ maxLength }} characters.",
+                                required: "Connection name is required"
                             }
                         },
                         issuer: {
@@ -6663,8 +6687,8 @@ export const console: ConsoleNS = {
                         attributeMappingListItem: {
                             validation: {
                                 duplicate: "There's already an attribute mapped with this name.",
-                                required: "This field cannot be empty",
-                                invalid: "Please enter a valid input"
+                                required: "This field cannot be empty.",
+                                invalid: "Please enter a valid input."
                             },
                             placeholders: {
                                 mappedValue: "Enter external IDVP attribute",
@@ -8993,6 +9017,10 @@ export const console: ConsoleNS = {
                             },
                             elasticAnalyticsEngine: {
                                 friendlyName: "ELK Analytics",
+                                warningModal: {
+                                    configure: "<1>Configure</1> ELK Analytics settings for proper functionality.",
+                                    reassure: "You can update your settings anytime."
+                                },
                                 properties: {
                                     adaptiveAuthenticationElasticReceiver: {
                                         hint: "Elasticsearch Host",
@@ -9532,7 +9560,8 @@ export const console: ConsoleNS = {
                                 label: "Scope",
                                 placeholder: "Enter the scope",
                                 validations: {
-                                    empty: "This field cannot be empty",
+                                    duplicate: "This scope already exists.",
+                                    empty: "This field cannot be empty.",
                                     invalid: "Scope can only contain alphanumeric characters and _. " +
                                     "And must be of length between 3 to 40 characters."
                                 }
@@ -10509,7 +10538,8 @@ export const console: ConsoleNS = {
                                 },
                                 validation: {
                                     empty: "Permissions(scopes) list cannot be empty. Select at least one permission(scope)."
-                                }
+                                },
+                                permissionsLabel: "Permissions (scopes)"
                             },
                             notes: {
                                 applicationRoles: "Only the APIs and the permissions(scopes) that are authorized in the selected application(<1>{{applicationName}}</1>) will be listed to select."
@@ -10821,6 +10851,17 @@ export const console: ConsoleNS = {
                     filterAttirbutes: {
                         name: "Name",
                         audience: "Role Audience"
+                    }
+                },
+                readOnlyList: {
+                    emptyPlaceholders: {
+                        searchAndFilter: {
+                            subtitles: {
+                                0: "We couldn't find any results for the specified role name and audience combination.",
+                                1: "Please try a different combination."
+                            },
+                            title: "No results found"
+                        }
                     }
                 },
                 notifications: {
@@ -11422,7 +11463,7 @@ export const console: ConsoleNS = {
                             successCount: "Successful Imports",
                             failedCount: "Failed Imports",
                             totalUserCreationCount: "Total user creation count",
-                            totalUserAssignmentCount: "Total role/group assigment count ",
+                            totalUserAssignmentCount: "Total group assigment count ",
                             tableHeaders: {
                                 username: "Username",
                                 status: "Status",
@@ -11450,16 +11491,19 @@ export const console: ConsoleNS = {
                                     message: "Import Successful"
                                 },
                                 importFailed: {
-                                    description: "Issues encountered in <1>{{failedUserCreationCount}} user " +
-                                        "creation operations(s)</1> and <3>{{failedUserAssignmentCount}} role/group " +
-                                        "assignment operation(s)</3>.",
+                                    userCreation: "Issues encountered in <1>{{failedUserCreationCount}} user " +
+                                        "creation operations(s)</1>",
+                                    groupAssignment: "Issues encountered in <1>{{failedUserAssignmentCount}} group " +
+                                        "assignment(s)</1>. Users in the affected groups were created but not assigned. " +
+                                        "Please navigate to User Management section to review  and assign groups to " +
+                                        "the users.",
                                     message: "Review Required"
                                 }
                             },
                             advanceSearch: {
                                 searchByUsername: "Search by Username",
-                                searchByRoleOrGroup: "Search by Role/Group",
-                                roleGroupFilterAttributePlaceHolder: "Role/Group Name"
+                                searchByGroup: "Search by Group",
+                                roleGroupFilterAttributePlaceHolder: "Group Name"
                             },
                             manualCreation: {
                                 alerts: {
@@ -11477,8 +11521,8 @@ export const console: ConsoleNS = {
                                     description: "Drag and drop a CSV file here."
                                 },
                                 primaryButton: "Add",
-                                rolesLabel: "Roles",
-                                rolesPlaceholder: "Enter roles",
+                                groupsLabel: "Groups",
+                                groupsPlaceholder: "Enter groups",
                                 warningMessage: "This option can only be used when email address is configured " +
                                     "as the username."
                             },
@@ -11487,7 +11531,7 @@ export const console: ConsoleNS = {
                             },
                             responseOperationType: {
                                 userCreation: "User Creation",
-                                roleAssignment: "Role/Group Assignment"
+                                roleAssignment: "Group Assignment"
                             },
                             userstoreMessage: "The created users will be added to the <1>{{ userstore }}</1> user store."
                         },
@@ -11852,6 +11896,7 @@ export const console: ConsoleNS = {
                                 header: "Are you sure?",
                                 message: "This action will modify the role of this user."
                             },
+                            infoMessage: "Roles inherited via groups are not shown here.",
                             placeholders: {
                                 emptyPlaceholder: {
                                     title: "No roles assigned",
@@ -11877,7 +11922,7 @@ export const console: ConsoleNS = {
                                 }
                             },
                             searchPlaceholder: "Search Roles",
-                            subHeading: "View assigned roles for the user."
+                            subHeading: "View roles assigned directly to the user."
                         },
                         notifications: {
                             addUserRoles: {
@@ -12162,6 +12207,10 @@ export const console: ConsoleNS = {
                                 description: "The users were imported successfully.",
                                 message: "Users Imported Successfully"
                             }
+                        },
+                        timeOut: {
+                            description: "Some users may not have been created.",
+                            message: "The request has timed out"
                         }
                     },
                     deleteUser: {

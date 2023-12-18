@@ -519,6 +519,9 @@ export interface ConsoleNS {
     };
     consoleSettings: {
         administrators: {
+            edit: {
+                backButton: string;
+            };
             tabLabel: string;
         };
         loginFlow: {
@@ -994,6 +997,9 @@ export interface ConsoleNS {
                                                 heading: string;
                                                 info: {
                                                     progressiveEnrollmentEnabled: string;
+                                                    passkeyAsFirstStepWhenprogressiveEnrollmentEnabled: string;
+                                                    passkeyIsNotFirstStepWhenprogressiveEnrollmentEnabled: string;
+                                                    progressiveEnrollmentEnabledCheckbox: string;
                                                     progressiveEnrollmentDisabled: string;
                                                 }
                                             }
@@ -1048,8 +1054,9 @@ export interface ConsoleNS {
                             heading: string;
                             shareApplication: string;
                             addSharingNotification: Notification;
-                            stopSharingNotification: Notification
+                            stopSharingNotification: Notification;
                             getSharedOrganizations: Notification;
+                            stopAllSharingNotification: Notification;
                         };
                         apiAuthorization: {
                             m2mPolicyMessage: string;
@@ -1183,6 +1190,9 @@ export interface ConsoleNS {
                         mobileApp: {
                             discoverableHint: string;
                             mobileAppPlaceholder: string;
+                        },
+                        dropdowns: {
+                            selectOption: string;
                         },
                         sections: {
                             accessToken: {
@@ -3908,6 +3918,7 @@ export interface ConsoleNS {
                             invalidGroup: NotificationItem;
                         },
                         submit: Notification;
+                        timeOut: NotificationItem;
                     }
                     deleteUser: Notification;
                     fetchUsers: Notification;
@@ -5138,6 +5149,10 @@ export interface ConsoleNS {
                             };
                             elasticAnalyticsEngine: {
                                 friendlyName: string;
+                                warningModal: {
+                                    configure: string,
+                                    reassure: string
+                                },
                                 properties: {
                                     adaptiveAuthenticationElasticReceiver: {
                                         hint: string;
@@ -5279,6 +5294,7 @@ export interface ConsoleNS {
                                 label: string;
                                 placeholder: string;
                                 validations: {
+                                    duplicate: string;
                                     empty: string;
                                     invalid: string;
                                 };
@@ -5516,6 +5532,7 @@ export interface ConsoleNS {
                                 validation: {
                                     empty: string;
                                 };
+                                permissionsLabel: string;
                             };
                             notes: {
                                 applicationRoles: string;
@@ -5722,6 +5739,11 @@ export interface ConsoleNS {
                         audience: string;
                     };
                 };
+                readOnlyList: {
+                    emptyPlaceholders: {
+                        searchAndFilter: Placeholder;
+                    }
+                }
                 notifications: {
                     deleteRole: Notification;
                     fetchRoles: Notification;
@@ -6131,11 +6153,15 @@ export interface ConsoleNS {
                             };
                             alerts: {
                                 importSuccess: NotificationItem;
-                                importFailed: NotificationItem;
+                                importFailed: {
+                                    message: string;
+                                    userCreation: string;
+                                    groupAssignment: string;
+                                }
                             };
                             advanceSearch: {
                                 searchByUsername: string;
-                                searchByRoleOrGroup: string;
+                                searchByGroup: string;
                                 roleGroupFilterAttributePlaceHolder: string;
                             };
                             manualCreation: {
@@ -6151,8 +6177,8 @@ export interface ConsoleNS {
                                     description: string;
                                 };
                                 primaryButton: string;
-                                rolesLabel: string;
-                                rolesPlaceholder: string;
+                                groupsLabel: string;
+                                groupsPlaceholder: string;
                                 warningMessage: string;
                             };
                             fileBased: {
@@ -6335,6 +6361,7 @@ export interface ConsoleNS {
                         };
                         editRoles: {
                             confirmationModal: Confirmation;
+                            infoMessage: string;
                             roleList: {
                                 emptyListPlaceholder: {
                                     subTitle: {

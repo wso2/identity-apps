@@ -22,11 +22,14 @@ import {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
 } from "@mui/material";
-import { Chip, TextField, Typography } from "@oxygen-ui/react";
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import Divider from "@oxygen-ui/react/Divider";
 import InputLabel from "@oxygen-ui/react/InputLabel/InputLabel";
+import TextField from "@oxygen-ui/react/TextField";
+import Typography from "@oxygen-ui/react/Typography";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertLevels,
     ClaimDialect,
@@ -54,28 +57,28 @@ import {
 } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import Axios,  { AxiosResponse }from "axios";
-import camelCase from "lodash-es/camelCase";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, Grid, Icon, Label } from "semantic-ui-react";
+import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon } from "semantic-ui-react";
 import { v4 as uuidv4 } from "uuid";
+import { UsersConstants } from "../../../../extensions/components/users/constants";
 import { userConfig } from "../../../../extensions/configs";
 import { ClaimManagementConstants } from "../../../../features/claims/constants";
-import { getGroupList } from "../../../../features/groups/api";
+import { getGroupList, useGroupList } from "../../../../features/groups/api";
 import { GroupsInterface } from "../../../../features/groups/models";
-import { useRolesList } from "../../../../features/roles/api";
-import useAuthorization from "../../../authorization/hooks/use-authorization";
 import { getAllExternalClaims, getDialects, getSCIMResourceTypes } from "../../../claims/api";
 import {
     AppConstants,
     ModalWithSidePanel,
+    UserStoreDetails,
+    UserStoreProperty,
     getCertificateIllustrations,
     history
 } from "../../../core";
-import { RoleAudienceTypes } from "../../../roles/constants";
 import { PatchRoleDataInterface } from "../../../roles/models";
+import { getAUserStore, getUserStores } from "../../../userstores/api";
 import { PRIMARY_USERSTORE } from "../../../userstores/constants";
 import { addBulkUsers } from "../../api";
 import {
@@ -107,6 +110,7 @@ interface BulkImportUserInterface extends TestableComponentInterface {
     userstore: string;
     ["data-componentid"]?: string;
 }
+
 interface CSVAttributeMapping {
     attributeName: string;
     mappedLocalClaimURI: string;
@@ -116,7 +120,7 @@ interface CSVAttributeMapping {
 }
 
 interface MultiValuedComplexAttribute {
-    [key: string] : string | boolean; 
+    [key: string] : string | boolean;
 }
 
 type ValidationError = {
@@ -135,12 +139,6 @@ interface User {
     display: string;
 }
 
-interface RoleUserAssociation {
-    id: string;
-    displayName: string;
-    users: User[];
-}
-
 interface GroupMemberAssociation {
     id: string;
     displayName: string;
@@ -154,11 +152,12 @@ const CSV_FILE_PROCESSING_STRATEGY: CSVFileStrategy = new CSVFileStrategy(
     userConfig.bulkUserImportLimit.userCount  // Row Count.
 );
 const DATA_VALIDATION_ERROR: string = "Data validation error";
+const TIMEOUT_ERROR: string = "TIMEOUT_ERROR";
 const ADDRESS_HOME_ATTRIBUTE: string = "addresses#home";
 const ADDRESS_ATTRIBUTE: string = "addresses";
 const HOME_ATTRIBUTE: string = "home";
 const BULK_ID: string = "bulkId";
-const ORG_ROLE_FILTER: string = "audience.type eq organization";
+const FILE_IMPORT_TIMEOUT: number = 60000; // 1 minutes.
 
 /**
  *  BulkImportUserWizard component.
@@ -191,71 +190,147 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const [ emailData, setEmailData ] = useState<string[]>();
     const [ isEmailDataError, setIsEmailDataError ] = useState<boolean>(false);
     const [ emailDataError, setEmailDataError ] = useState<string>("");
-    const [ roleUserAssociations, setRoleUserAssociations ] = useState<Record<string, RoleUserAssociation>>({});
-    const [ rolesData, setRolesData ] = useState<RolesInterface[]>();
+    const [ groupsData, setGroupsData ] = useState<GroupsInterface[]>();
     const [ alert, setAlert, alertComponent ] = useWizardAlert({ "data-componentid": `${componentId}-alert` });
     const [ manualInviteAlert, setManualInviteAlert, manualInviteAlertComponent ]
         = useWizardAlert({ "data-componentid": `${componentId}-manual-invite-alert` });
+    const [ readWriteUserStoresList, setReadWriteUserStoresList ] = useState<DropdownItemProps[]>([]);
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>("");
+    const [ isUserStoreError, setUserStoreError ] = useState<boolean>(false);
+    const [ fileModeTimeOutError , setFileModeTimeOutError ] = useState<boolean>(false);
 
     const optionsArray: string[] = [];
 
-    const { legacyAuthzRuntime }  = useAuthorization();
-    
     const {
-        data: allRolesList,
-        isLoading: isAllRolesListLoading,
-        error: allRolesListError
-    } = useRolesList(
-        undefined, undefined, undefined, !legacyAuthzRuntime
-    );
+        data: groupList,
+        error: groupsError,
+        isLoading: isGroupsListRequestLoading
+    } = useGroupList(selectedUserStore, "members", null, true);
 
-    const {
-        data: rolesList,
-        isLoading: isRolesListLoading,
-        error: rolesListError
-    } = useRolesList(
-        undefined, undefined, ORG_ROLE_FILTER
-    );
-    
-    /**
-     * Handle if any error occurs while fetching the roles list.
-     */
     useEffect(() => {
-        if (rolesListError || allRolesListError) {
-            dispatch(
-                addAlert({
-                    description: t("console:manage.features.roles.notifications.fetchRoles.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:manage.features.roles.notifications.fetchRoles.genericError.message")
-                })
-            );
+        if (groupsError) {
+            dispatch(addAlert({
+                description: groupsError?.response?.data?.description ?? groupsError?.response?.data?.detail
+                    ?? t("console:manage.features.groups.notifications.fetchGroups.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: groupsError?.response?.data?.message
+                    ?? t("console:manage.features.groups.notifications.fetchGroups.genericError.message")
+            }));
         }
-    }, [ rolesListError, allRolesListError ]);
-    
+    },[ groupsError ]);
+
     /**
-     * Fetch the user roles list.
+     * Set the user store list.
      */
     useEffect(() => {
-        const newRoles: Record<string, RoleUserAssociation> = rolesList?.Resources?.reduce((
-            roles: Record<string, RoleUserAssociation>, role: RolesInterface) => {
-            roles[role?.displayName.toLowerCase()] = {
-                displayName: role?.displayName,
-                id: role?.id,
-                users: []
-            };
+        setSelectedUserStore(userstore);
+        getUserStoreList();
+    }, [ userstore ]);
 
-            return roles;
-        }, {});
-    
-        setRoleUserAssociations(newRoles);
-    }, [ rolesList ]);
+    /**
+     * This will fetch userstore list.
+     */
+    const getUserStoreList = (): void => {
+        setIsLoading(true);
+        const userStoreArray: DropdownItemProps[] = [
+            {
+                key: -1,
+                text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
+                value: "PRIMARY"
+            }
+        ];
+
+        getUserStores(null)
+            .then((response: UserStoreDetails[]) => {
+                response?.forEach(async (item: UserStoreDetails, index: number) => {
+                    // Set read/write enabled userstores based on the type.
+                    if (await checkReadWriteUserStore(item)) {
+                        userStoreArray.push({
+                            key: index,
+                            text: item.name.toUpperCase(),
+                            value: item.name.toUpperCase()
+                        });
+                    }});
+
+                setUserStoreError(false);
+                setReadWriteUserStoresList(userStoreArray);
+            }).catch((error: IdentityAppsApiException) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.description ?? error?.response?.data?.detail
+                            ?? t("console:manage.features.userstores.notifications.fetchUserstores.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.response?.data?.message
+                            ?? t("console:manage.features.userstores.notifications.fetchUserstores.error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("console:manage.features.userstores.notifications.fetchUserstores.genericError" +
+                        ".description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.userstores.notifications.fetchUserstores.genericError.message")
+                }));
+
+                setUserStoreError(true);
+
+                return;
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    };
+
+    /**
+     * Check the given user store is Read/Write enabled
+     *
+     * @param userStore - Userstore
+     * @returns If the given userstore is read only or not
+     */
+    const checkReadWriteUserStore = (userStore: UserStoreDetails): Promise<boolean> => {
+        let isReadWriteUserStore: boolean = false;
+
+        return getAUserStore(userStore?.id).then((response: UserStoreDetails) => {
+            response?.properties?.some((property: UserStoreProperty) => {
+                if (property.name === UsersConstants.USER_STORE_PROPERTY_READ_ONLY) {
+                    isReadWriteUserStore = property.value === "false";
+
+                    return true;
+                }
+            });
+
+            return isReadWriteUserStore;
+        }).catch(() => {
+            dispatch(addAlert({
+                description: t("console:manage.features.users.notifications.fetchUserStores.genericError." +
+                    "description"),
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.users.notifications.fetchUserStores.genericError.message")
+            }));
+
+            return false;
+        });
+    };
+
+    const hideUserStoreDropdown = (): boolean => {
+        if (!userConfig?.enableBulkImportSecondaryUserStore || isUserStoreError) {
+            return true;
+        }
+
+        if(readWriteUserStoresList) {
+            return readWriteUserStoresList?.length === 0 || (readWriteUserStoresList?.length === 1 &&
+                readWriteUserStoresList[0]?.value === userstore);
+        }
+    };
 
     /**
      * Fetch the group list.
      */
     const getGroupMemberAssociation = async (): Promise<Record<string, GroupMemberAssociation>> => {
         try {
-            const response: AxiosResponse = await getGroupList(null);
+            const response: AxiosResponse = await getGroupList(selectedUserStore);
             const newGroups: Record<string, GroupMemberAssociation> = response?.data?.Resources?.reduce((
                 groups: Record<string, GroupMemberAssociation>, group: GroupsInterface) => {
                 groups[group?.displayName.toLowerCase()] = {
@@ -424,23 +499,23 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             const lowerCaseValue: string = value.toLowerCase();
 
             acc[lowerCaseValue] = (acc[lowerCaseValue] || 0) + 1;
-            
+
             return acc;
         }, {});
-    
+
         return Object.keys(counts).filter((key: string) => counts[key] > 1);
     };
 
     const getMissingFields = (headers: string[], requiredFields: string[]): string[] => {
-        return requiredFields.filter((field: string) => 
+        return requiredFields.filter((field: string) =>
             !headers.some((header: string) => header.toLowerCase() === field.toLowerCase())
         );
     };
-    
+
     const isEmptyArray = (array: unknown[]): boolean => {
         return array.length === 0;
     };
-   
+
     const isEmptyAttribute = (attribute: string): boolean => {
         return !attribute || attribute.trim() === "";
     };
@@ -450,7 +525,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             .map((header: string, index: number) => (isEmptyAttribute(header) ? index : -1))
             .filter((index: number) => index !== -1);
     };
-    
+
     const getBlockedAttributes = (headers: string[], blockedAttributes: string[]): string[] => {
         return headers.filter((attribute: string) =>
             blockedAttributes.some((blockedAttribute: string) =>
@@ -458,7 +533,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             )
         );
     };
-    
+
     const getInvalidHeaderAttributes = (headers: string[], externalClaimAttributes: string[]): string[] => {
         return headers.filter((attribute: string) =>
             !externalClaimAttributes.some((externalClaimAttributeName: string) =>
@@ -567,14 +642,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     descriptionValues: { headers: joinWithAnd(invalidHeaders) },
                     messageKey: "invalidHeaderError.message"
                 }
-            }  
+            }
         ];
 
         if (!runValidations(csvValidations)) return false;
 
         return true;
     };
-    
+
     /**
      * Get only attributes that are in the header.
      * @param headers - csv header.
@@ -589,12 +664,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 )
             )
             .filter(Boolean);
-        
+
         filteredAttributeList.push(
             attributeMapping.find((attribute: CSVAttributeMapping) =>
                 attribute.attributeName.toLowerCase() === (ASK_PASSWORD_ATTRIBUTE.toLowerCase()))
         );
-        
+
         return filteredAttributeList;
     };
 
@@ -643,11 +718,11 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         throw new Error(DATA_VALIDATION_ERROR);
                     }
 
-                    dataObj[RequiredBulkUserImportAttributes.USERNAME] = 
-                    userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
-                        ? `${userstore}/${attributeValue}`
+                    dataObj[RequiredBulkUserImportAttributes.USERNAME] = selectedUserStore &&
+                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
+                        ? `${selectedUserStore}/${attributeValue}`
                         : attributeValue;
-                
+
                     continue;
                 }
 
@@ -680,7 +755,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
                     continue;
                 }
-            
+
                 // Usage in your existing code
                 const specialMultiValuedComplex: SpecialMultiValuedComplexAttributes | undefined =
                 Object.values(SpecialMultiValuedComplexAttributes).find(
@@ -696,7 +771,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     (dataObj[specialMultiValuedComplex] as unknown[]).push(info);
 
                     continue;
-                
+
                 }
 
                 // Handle multi-valued address attribute.
@@ -711,7 +786,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     );
 
                     continue;
-                } 
+                }
 
                 // Add the schema to the set
                 schemasSet.add(attribute.mappedSCIMClaimDialectURI);
@@ -743,7 +818,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         ? dataObj
                         : dataObj[attribute.mappedSCIMClaimDialectURI] ||
                         (dataObj[attribute.mappedSCIMClaimDialectURI] = {});
-                
+
                     if (isMultiValued) {
                         target[parentAttr] = ((target[parentAttr] || []) as unknown[]).concat({
                             [childAttr]: attributeValue
@@ -777,11 +852,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         row: string[],
         filteredAttributeMapping: CSVAttributeMapping[],
         headers: string[],
-        roleUserAssociations: Record<string, RoleUserAssociation>,
         groupMemberAssociations: Record<string, GroupMemberAssociation>
     ): {
         newGroupMemberAssociations: Record<string, GroupMemberAssociation>;
-        newRoleUserAssociations: Record<string, RoleUserAssociation>;
         userOperation: SCIMBulkOperation;
     } => {
         const asyncOperationID: string = uuidv4();
@@ -789,31 +862,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             `${BULK_ID}:${row[headers.indexOf(
                 RequiredBulkUserImportAttributes.USERNAME.toLowerCase())]}:${asyncOperationID}`;
         const username: string = row[headers.indexOf(RequiredBulkUserImportAttributes.USERNAME.toLowerCase())];
-
-        let newRoleUserAssociations: Record<string, RoleUserAssociation> = { ...roleUserAssociations };
         let newGroupMemberAssociations: Record<string, GroupMemberAssociation> = { ...groupMemberAssociations };
-
-        // Check if roles are included in the headers.
-        if (headers.includes(UserManagementConstants.ROLES)) {
-            const csvRoles: string[] = row[headers.indexOf(UserManagementConstants.ROLES)].split("|");
-            const uniqueCSVRoles: string[] = [ ...new Set(csvRoles) ];
-
-            uniqueCSVRoles.forEach((role: string) => {
-                if (role.toLowerCase() in roleUserAssociations) {
-                    newRoleUserAssociations = addUserToRole(role, {
-                        display: username,
-                        value: `bulkId:${bulkId}`
-                    }, newRoleUserAssociations);
-                } else {
-                    setValidationError({
-                        descriptionKey: "invalidRole.description",
-                        descriptionValues: { role },
-                        messageKey: "invalidRole.message"
-                    });
-                    throw new Error(DATA_VALIDATION_ERROR);
-                }
-            });
-        }
 
         // Check if groups are included in the headers.
         if (headers.includes(UserManagementConstants.GROUPS)) {
@@ -821,15 +870,21 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             const uniqueCSVGroups: string[] = [ ...new Set(csvGroups) ];
 
             uniqueCSVGroups.forEach((group: string) => {
-                if (group.toLowerCase() in groupMemberAssociations) {
-                    newGroupMemberAssociations = addMemberToGroup(group, {
+                if (isEmptyAttribute(group)) return;
+                const domainGroupName: string = selectedUserStore &&
+                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
+                    ? `${selectedUserStore}/${group}`
+                    : group;
+
+                if (domainGroupName.toLowerCase() in groupMemberAssociations) {
+                    newGroupMemberAssociations = addMemberToGroup(domainGroupName, {
                         display: username,
                         value: `bulkId:${bulkId}`
                     }, newGroupMemberAssociations);
                 } else {
                     setValidationError({
                         descriptionKey: "invalidGroup.description",
-                        descriptionValues: { group },
+                        descriptionValues: { group: domainGroupName },
                         messageKey: "invalidGroup.message"
                     });
                     throw new Error(DATA_VALIDATION_ERROR);
@@ -843,91 +898,34 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             method: HttpMethods.POST,
             path: UserManagementConstants.SCIM_USER_PATH
         };
-            
+
         return {
             newGroupMemberAssociations,
-            newRoleUserAssociations,
             userOperation
         };
-    }; 
-    
-    /**
-     * Add member to role.
-     * @param roleName - role name.
-     * @param userBulkId - user bulk id.
-     */
-    const addUserToRole = (
-        roleName: string, 
-        user: User,
-        roleUserAssociations: Record<string, RoleUserAssociation>
-    ): Record<string, RoleUserAssociation> => {
-        // Copying existing roleUserAssociations to avoid direct mutation of parameters.
-        const updatedRoleUserAssociations: Record<string, RoleUserAssociation>  = { ...roleUserAssociations }; 
-    
-        const existingRole: RoleUserAssociation = updatedRoleUserAssociations[roleName.toLowerCase()];
-
-        updatedRoleUserAssociations[roleName.toLowerCase()] = {
-            ...existingRole,
-            users: [ ...new Set([ ...existingRole.users, user ]) ]
-        };
-        
-        return updatedRoleUserAssociations;
     };
-    
+
     /**
      * Add member to group.
      * @param groupName - group name.
      * @param userBulkId  - user bulk id.
      */
     const addMemberToGroup = (
-        groupName: string, 
+        groupName: string,
         member: User,
         groupMemberAssociations: Record<string, GroupMemberAssociation>
     ): Record<string, GroupMemberAssociation> => {
         // Copying existing groupMemberAssociations to avoid direct mutation
-        const updatedGroupMemberAssociations: Record<string, GroupMemberAssociation> = { ...groupMemberAssociations }; 
-    
+        const updatedGroupMemberAssociations: Record<string, GroupMemberAssociation> = { ...groupMemberAssociations };
+
         const existingGroup: GroupMemberAssociation = updatedGroupMemberAssociations[groupName.toLowerCase()];
 
         updatedGroupMemberAssociations[groupName.toLowerCase()] = {
             ...existingGroup,
             members: Array.from(new Set([ ...existingGroup.members, member ]))
         };
-            
-        return updatedGroupMemberAssociations;
-    };
-    
-    /**
-     * Generate SCIM Role Operations.
-     *
-     * @returns SCIM Role Operations.
-     */
-    const generateRoleOperation = (roleUserAssociations: Record<string, RoleUserAssociation>): SCIMBulkOperation[] => {
-        const asyncOperationID: string = uuidv4();
 
-        return Object.values(roleUserAssociations)
-            .filter((roleUserAssociation: RoleUserAssociation) => roleUserAssociation.users.length > 0)
-            .map((roleUserAssociation: RoleUserAssociation) => {
-                const bulkId: string = `${BULK_ID}:${roleUserAssociation.displayName}:${asyncOperationID}`;
-                
-                return {
-                    bulkId,
-                    data: {
-                        Operations: [
-                            {
-                                op: "add",
-                                value: {
-                                    users: roleUserAssociation.users.map((user: User) => ({
-                                        value: user.value
-                                    }))
-                                }
-                            }
-                        ]
-                    },
-                    method: HttpMethods.PATCH,
-                    path: `${UserManagementConstants.SCIM_V2_ROLE_PATH}/${roleUserAssociation.id}`
-                };
-            });
+        return updatedGroupMemberAssociations;
     };
 
     /**
@@ -944,7 +942,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             .filter((groupMemberAssociation: GroupMemberAssociation) => groupMemberAssociation.members.length > 0)
             .map((groupMemberAssociation: GroupMemberAssociation) => {
                 const bulkId: string = `${BULK_ID}:${groupMemberAssociation.displayName}:${asyncOperationID}`;
-            
+
                 return {
                     bulkId,
                     data: {
@@ -980,10 +978,8 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
         const filteredAttributeMapping: CSVAttributeMapping[] = filterAttributes(headers, attributeMapping);
         let groupMemberAssociations: Record<string, GroupMemberAssociation> = await getGroupMemberAssociation();
-        let updatedRoleUserAssociations: Record<string, RoleUserAssociation> = { ...roleUserAssociations };
 
         const userOperations: SCIMBulkOperation[] = [];
-        let roleOperations: SCIMBulkOperation[] = [];
         let groupOperations: SCIMBulkOperation[] = [];
 
         for (let rowNumber: number = 0; rowNumber < rows.length; rowNumber++) {
@@ -993,27 +989,20 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 row,
                 filteredAttributeMapping,
                 headers,
-                updatedRoleUserAssociations,
                 groupMemberAssociations
             );
-            
+
             // Append the user operation to the collection.
             userOperations.push(userOperationData.userOperation);
 
-            // Updating the association states.
-            updatedRoleUserAssociations = userOperationData.newRoleUserAssociations;
             groupMemberAssociations = userOperationData.newGroupMemberAssociations;
-        }
-
-        if (headers.includes(UserManagementConstants.ROLES)) {
-            roleOperations = generateRoleOperation(updatedRoleUserAssociations);
         }
 
         if (headers.includes(UserManagementConstants.GROUPS)) {
             groupOperations = generateGroupOperations(groupMemberAssociations);
         }
-        
-        const operations: SCIMBulkOperation[] = userOperations.concat(roleOperations).concat(groupOperations);
+
+        const operations: SCIMBulkOperation[] = userOperations.concat(groupOperations);
 
         return {
             Operations: operations,
@@ -1031,7 +1020,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     const generateMultipleUsersSCIMRequestBody = (): SCIMBulkEndpointInterface => {
         // Create the data operations.
         const operations: SCIMBulkOperation[] = [];
-        const users : { value: string; }[]= [];
+        const users : { display: string; value: string; }[]= [];
         const asyncOperationID: string = uuidv4();
 
         // Create the user record.
@@ -1047,10 +1036,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     "urn:ietf:params:scim:schemas:core:2.0:User",
                     "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
                 ],
-                userName: 
-                    userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
-                        ? `${userstore}/${email}`
-                        : email,    
+                userName:
+                    selectedUserStore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
+                        ? `${selectedUserStore}/${email}`
+                        : email,
                 [ userstore.toLowerCase() !== PRIMARY_USERSTORE.toLowerCase()
                     ? UserManagementConstants.CUSTOMSCHEMA
                     : UserManagementConstants.ENTERPRISESCHEMA
@@ -1058,7 +1047,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     askPassword: "true"
                 }
             };
-            
+
             const SCIMBulkOperation: SCIMBulkOperation = {
                 bulkId: `bulkId:${email}:${asyncOperationID}`,
                 data: userDetails,
@@ -1066,35 +1055,36 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 path: UserManagementConstants.SCIM_USER_PATH
             };
 
-            const user: { value: string; } = {
+            const user: { display: string; value: string; } = {
+                display: email,
                 value: `bulkId:bulkId:${email}:${asyncOperationID}`
             };
-            
+
             users.push(user);
             operations.push(SCIMBulkOperation);
         });
 
-        // Create the roles record.
-        rolesData?.map((role: RolesInterface) => {
-            const roleDetails: PatchRoleDataInterface = {
+        // Create the group record.
+        groupsData?.map((group: GroupsInterface) => {
+            const groupDetails: PatchRoleDataInterface = {
                 "Operations":[
                     {
                         op: "add",
                         value: {
-                            users: users
+                            members: users
                         }
                     }
                 ]
             };
-            
-            const SCIMRolesOperation: SCIMBulkOperation = {
-                bulkId: `bulkId:${role?.displayName}:${asyncOperationID}`,
-                data: roleDetails,
+
+            const SCIMGroupsOperation: SCIMBulkOperation = {
+                bulkId: `bulkId:${group?.displayName}:${asyncOperationID}`,
+                data: groupDetails,
                 method: HttpMethods.PATCH,
-                path: `${UserManagementConstants.SCIM_V2_ROLE_PATH}/${role?.id}`
+                path: `${UserManagementConstants.SCIM_GROUP_PATH}/${group?.id}`
             };
 
-            operations.push(SCIMRolesOperation);
+            operations.push(SCIMGroupsOperation);
         });
 
         return {
@@ -1158,20 +1148,37 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             }
 
             const scimRequestBody: SCIMBulkEndpointInterface = await generateSCIMRequestBody(attributeMapping);
-            
+
             setShowResponseView(true);
-            const scimResponse: any = await addBulkUsers(scimRequestBody);
+
+            const scimResponsePromise: Promise<unknown> = addBulkUsers(scimRequestBody);
+            const timeoutPromise: Promise<unknown> = new Promise((_: unknown, reject: (reason?: any) => void) => {
+                setTimeout(() => reject(
+                    new Error(TIMEOUT_ERROR)
+                ), FILE_IMPORT_TIMEOUT);
+            });
+
+            const scimResponse: any = await Promise.race([ scimResponsePromise, timeoutPromise ]);
 
             if (scimResponse.status !== 200) {
                 throw new Error("Failed to import users.");
             }
 
             const response: BulkUserImportOperationResponse[] = scimResponse.data.Operations.map(generateBulkResponse);
-           
+
             setResponse(response);
         } catch (error) {
             setHasError(true);
-            if (error.message !== DATA_VALIDATION_ERROR) {
+            if (error.message === TIMEOUT_ERROR) {
+                setFileModeTimeOutError(true);
+                setAlert({
+                    description: t(
+                        "console:manage.features.users.notifications.bulkImportUser.timeOut.description"),
+                    level: AlertLevels.WARNING,
+                    message: t(
+                        "console:manage.features.users.notifications.bulkImportUser.timeOut.message")
+                });
+            } else if (error.message !== DATA_VALIDATION_ERROR) {
                 setAlert({
                     description: t(
                         "console:manage.features.users.notifications.bulkImportUser.submit.genericError.description"),
@@ -1179,7 +1186,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     message: t("console:manage.features.users.notifications.bulkImportUser.submit.genericError.message")
                 });
             }
-
         } finally {
             setIsLoading(false);
             setIsSubmitting(false);
@@ -1187,7 +1193,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     };
 
     /**
-     * Generate bulk response. 
+     * Generate bulk response.
      * @param operation - SCIM bulk operation.
      * @returns - BulkUserImportOperationResponse
      */
@@ -1225,20 +1231,20 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 "userAssignmentInternalErrorMessage", { resource: resourceIdentifier })
             };
         }
-        
+
         // Functional update to update the bulk response summary.
         setBulkResponseSummary((prevSummary: BulkResponseSummary) => {
             const successUserAssignment: number = (operation?.method === HttpMethods.PATCH && statusCode === 200) ?
                 prevSummary.successUserAssignment + 1 : prevSummary.successUserAssignment;
-            
+
             const failedUserAssignment: number = (operation?.method === HttpMethods.PATCH && statusCode !== 200) ?
                 prevSummary.failedUserAssignment + 1 : prevSummary.failedUserAssignment;
-            
+
             const successUserCreation: number =
                 (operation?.method === HttpMethods.POST && (statusCode === 201 || statusCode === 202)) ?
                     prevSummary.successUserCreation + 1 :
                     prevSummary.successUserCreation;
-            
+
             const failedUserCreation: number =
                 (operation?.method === HttpMethods.POST && (statusCode !== 201 && statusCode !== 202)) ?
                     prevSummary.failedUserCreation + 1 :
@@ -1254,7 +1260,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         });
 
         let _statusCode: BulkUserImportStatus = BulkUserImportStatus.FAILED;
-        
+
         if (statusCode === 201 || statusCode === 202 || statusCode === 200) {
             _statusCode = BulkUserImportStatus.SUCCESS;
         }
@@ -1269,7 +1275,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     };
 
     /**
-     * Generate bulk response. 
+     * Generate bulk response.
      * @param operation - SCIM bulk operation.
      * @returns - BulkUserImportOperationResponse
      */
@@ -1307,20 +1313,20 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 "userAssignmentInternalErrorMessage", { resource: resourceIdentifier })
             };
         }
-        
+
         // Functional update to update the bulk response summary.
         setManualInviteesponseSummary((prevSummary: BulkResponseSummary) => {
             const successUserAssignment: number = (operation?.method === HttpMethods.PATCH && statusCode === 200) ?
                 prevSummary.successUserAssignment + 1 : prevSummary.successUserAssignment;
-            
+
             const failedUserAssignment: number = (operation?.method === HttpMethods.PATCH && statusCode !== 200) ?
                 prevSummary.failedUserAssignment + 1 : prevSummary.failedUserAssignment;
-            
+
             const successUserCreation: number =
                 (operation?.method === HttpMethods.POST && (statusCode === 201 || statusCode === 202)) ?
                     prevSummary.successUserCreation + 1 :
                     prevSummary.successUserCreation;
-            
+
             const failedUserCreation: number =
                 (operation?.method === HttpMethods.POST && (statusCode !== 201 && statusCode !== 202)) ?
                     prevSummary.failedUserCreation + 1 :
@@ -1336,7 +1342,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         });
 
         let _statusCode: BulkUserImportStatus = BulkUserImportStatus.FAILED;
-        
+
         if (statusCode === 201 || statusCode === 202 || statusCode === 200) {
             _statusCode = BulkUserImportStatus.SUCCESS;
         }
@@ -1396,7 +1402,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             event.preventDefault();
                                             setConfigureMode(mode);
                                         } }
-                                    />         
+                                    />
                                 );
                             })
                         }
@@ -1414,11 +1420,55 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         return isLoading
             || isSubmitting
             || hasError
-            || isAllRolesListLoading
             || !emailData
             || emailData?.length === 0
-            || !rolesData
-            || rolesData?.length === 0;
+            || !groupsData
+            || isGroupsListRequestLoading
+            || groupsData?.length === 0;
+    };
+
+    const userStoreDropDown = (): ReactElement => {
+        return (
+            <Form.Field required={ true }>
+                <InputLabel
+                    htmlFor="tags-filled"
+                    disableAnimation
+                    shrink={ false }
+                    margin="dense"
+                    className="spacing-bottom"
+                    data-componentid={ `${componentId}-userstore-label` }
+                >
+                    { t("console:manage.features.user.forms.addUserForm." +
+                        "inputs.domain.label") }
+                </InputLabel>
+                <Dropdown
+                    className="mt-2"
+                    fluid
+                    selection
+                    labeled
+                    options={ readWriteUserStoresList }
+                    loading={ false }
+                    data-testid={
+                        `${componentId}-userstore-dropdown`
+                    }
+                    data-componentid={
+                        `${componentId}-userstore-dropdown`
+                    }
+                    name="userstore"
+                    disabled={ false }
+                    readOnly={ false }
+                    value={ selectedUserStore }
+                    onChange={
+                        (e: React.ChangeEvent<HTMLInputElement>,
+                            data: DropdownProps) => {
+                            setSelectedUserStore(data.value.toString());
+                        }
+                    }
+                    tabIndex={ 1 }
+                    maxLength={ 60 }
+                />
+            </Form.Field>
+        );
     };
 
     /**
@@ -1442,142 +1492,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                         !showManualInviteTable
                             ? (
                                 <>
-                                    <Grid.Row columns={ 1 } className="mb-0 pb-0">
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }> 
-                                            <Alert severity="info">
-                                                <Trans
-                                                    i18nKey={
-                                                        "console:manage.features.user.modals.bulkImportUserWizard" +
-                                                        ".wizardSummary.userstoreMessage"
-                                                    }
-                                                    tOptions={ {
-                                                        userstore: camelCase(userstore)
-                                                    } }
-                                                > 
-                                                    The created users will be added to 
-                                                    the <b>{ camelCase(userstore) }</b> user store.          
-                                                </Trans>
-                                            </Alert>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                    {
-                                        allRolesList
-                                        && !legacyAuthzRuntime
-                                        &&  (
-                                            <Autocomplete
-                                                size="small"
-                                                multiple
-                                                fullWidth
-                                                disablePortal
-                                                id="combo-box-demo"
-                                                options={ 
-                                                    allRolesList?.Resources
-                                                }
-                                                getOptionLabel={ (option: RolesInterface) => option?.displayName }
-                                                renderOption={ (
-                                                    props: React.HTMLAttributes<HTMLLIElement>,
-                                                    option: RolesInterface
-                                                ) => (
-                                                    <Box 
-                                                        component="li"
-                                                        { ...props }
-                                                    >
-                                                        <Typography
-                                                            sx={ { fontWeight: 500 } }
-                                                        >
-                                                            { option?.displayName }
-                                                        </Typography>
-                                                        <Typography
-                                                            variant="caption"
-                                                            className="mr-2 ml-6"
-                                                        >
-                                                            { " Audience:"  }
-                                                        </Typography>
-                                                        <label>
-                                                            {
-                                                                option?.audience?.type.charAt(0).toUpperCase()
-                                                                +option?.audience?.type.slice(1)
-                                                            }
-                                                        </label>
-                                                        <Label
-                                                            pointing="left"
-                                                            size="mini"
-                                                            className={ 
-                                                                RoleAudienceTypes.ORGANIZATION
-                                                                === option?.audience?.type.toUpperCase()
-                                                                    ? "issuer-label"
-                                                                    : "client-id-label"
-                                                            }
-                                                        >
-                                                            { option?.audience?.display }
-                                                        </Label>
-                                                    </Box>
-                                                ) }
-                                                renderInput={ (params: AutocompleteRenderInputParams) => 
-                                                    (<>
-                                                        <InputLabel
-                                                            htmlFor="tags-filled"
-                                                            disableAnimation
-                                                            shrink={ false }
-                                                            margin="dense"
-                                                            className="mt-2"
-                                                            data-componentid={ `${componentId}-roles-label` }
-                                                        >
-                                                            { 
-                                                                t("console:manage.features.user.modals." +
-                                                                "bulkImportUserWizard.wizardSummary." +
-                                                                "manualCreation.rolesLabel")
-                                                            }
-                                                        </InputLabel>
-                                                        <TextField
-                                                            id="tags-filled"
-                                                            margin="normal"
-                                                            InputLabelProps= { {
-                                                                required: true
-                                                            } }
-                                                            { ...params }
-                                                            required
-                                                            variant="outlined"
-                                                            placeholder={
-                                                                t("console:manage.features.user.modals." +
-                                                                "bulkImportUserWizard.wizardSummary." +
-                                                                "manualCreation.rolesPlaceholder") 
-                                                            }
-                                                            data-componentid={ `${componentId}-roles-input` }
-                                                    
-                                                        />
-                                                    </>)
-                                                }
-                                                onChange={ (
-                                                    event: React.SyntheticEvent<Element, Event>,
-                                                    value: RolesInterface[]
-                                                ) => {
-                                                    setRolesData(value);
-                                                } }
-                                                renderTags={ (
-                                                    value: RolesInterface[],
-                                                    getTagProps: AutocompleteRenderGetTagProps
-                                                ) =>
-                                                    value.map((option: RolesInterface, index: number) => (
-                                                        <Chip 
-                                                            key={ index }
-                                                            size="small"
-                                                            className="oxygen-chip-beta"
-                                                            label={ 
-                                                                (<label>
-                                                                    {
-                                                                        `${option?.displayName}:
-                                                                        ${option?.audience?.type
-                                                                        .charAt(0).toUpperCase()}${
-                                                                        option?.audience?.type.slice(1)}`
-                                                                    }
-                                                                </label>)
-                                                            }
-                                                            { ...getTagProps({ index }) } 
-                                                        />
-                                                    ))
-                                                }
-                                            />)
+                                    { !hideUserStoreDropdown() &&
+                                        (<Grid.Row columns={ 1 } className="mb-0 pb-0">
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                { userStoreDropDown() }
+                                            </Grid.Column>
+                                        </Grid.Row>)
                                     }
                                     <Autocomplete
                                         size="small"
@@ -1593,13 +1513,13 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                             getTagProps: AutocompleteRenderGetTagProps
                                         ) =>
                                             value.map((option: string, index: number) => (
-                                                <Chip 
-                                                    key={ "" }
+                                                <Chip
+                                                    key={ index }
                                                     size="small"
                                                     sx={ { marginLeft: 1 } }
                                                     className="oxygen-chip-beta"
                                                     label={ option }
-                                                    { ...getTagProps({ index }) } 
+                                                    { ...getTagProps({ index }) }
                                                 />
                                             ))
                                         }
@@ -1613,7 +1533,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     className="mt-2"
                                                     data-componentid={ `${componentId}-emails-label` }
                                                 >
-                                                    { 
+                                                    {
                                                         t("console:manage.features.user.modals.bulkImportUserWizard" +
                                                         ".wizardSummary.manualCreation.emailsLabel")
                                                     }
@@ -1622,7 +1542,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     id="tags-filled"
                                                     margin="normal"
                                                     error={ isEmailDataError }
-                                                    helperText= { 
+                                                    helperText= {
                                                         isEmailDataError
                                                         && emailDataError
                                                     }
@@ -1634,7 +1554,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                     variant="outlined"
                                                     placeholder={
                                                         t("console:manage.features.user.modals.bulkImportUserWizard" +
-                                                        ".wizardSummary.manualCreation.emailsPlaceholder") 
+                                                        ".wizardSummary.manualCreation.emailsPlaceholder")
                                                     }
                                                     data-componentid={ `${componentId}-email-input` }
                                                 />
@@ -1655,6 +1575,93 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                         { t("console:manage.features.user.modals.bulkImportUserWizard.wizardSummary" +
                                         ".manualCreation.hint" ) }
                                     </Hint>
+                                    {
+                                        ( <Autocomplete
+                                            size="small"
+                                            multiple
+                                            fullWidth
+                                            disablePortal
+                                            id="combo-box-demo"
+                                            options={
+                                                groupList?.Resources ?? []
+                                            }
+                                            getOptionLabel={ (option: GroupsInterface) => option?.displayName }
+                                            renderOption={ (
+                                                props: React.HTMLAttributes<HTMLLIElement>,
+                                                option: RolesInterface
+                                            ) => (
+                                                <Box
+                                                    component="li"
+                                                    { ...props }
+                                                >
+                                                    <Typography
+                                                        sx={ { fontWeight: 500 } }
+                                                    >
+                                                        { option?.displayName }
+                                                    </Typography>
+                                                </Box>
+                                            ) }
+                                            renderInput={ (params: AutocompleteRenderInputParams) =>
+                                                (<>
+                                                    <InputLabel
+                                                        htmlFor="tags-filled"
+                                                        disableAnimation
+                                                        shrink={ false }
+                                                        margin="dense"
+                                                        className="mt-2"
+                                                        data-componentid={ `${componentId}-roles-label` }
+                                                    >
+                                                        {
+                                                            t("console:manage.features.user.modals." +
+                                                            "bulkImportUserWizard.wizardSummary." +
+                                                            "manualCreation.groupsLabel")
+                                                        }
+                                                    </InputLabel>
+                                                    <TextField
+                                                        id="tags-filled"
+                                                        margin="normal"
+                                                        InputLabelProps= { {
+                                                            required: true
+                                                        } }
+                                                        { ...params }
+                                                        required
+                                                        variant="outlined"
+                                                        placeholder={
+                                                            t("console:manage.features.user.modals." +
+                                                            "bulkImportUserWizard.wizardSummary." +
+                                                            "manualCreation.groupsPlaceholder")
+                                                        }
+                                                        data-componentid={ `${componentId}-roles-input` }
+
+                                                    />
+                                                </>)
+                                            }
+                                            onChange={ (
+                                                event: React.SyntheticEvent<Element, Event>,
+                                                value: RolesInterface[]
+                                            ) => {
+                                                setGroupsData(value);
+                                            } }
+                                            renderTags={ (
+                                                value: RolesInterface[],
+                                                getTagProps: AutocompleteRenderGetTagProps
+                                            ) =>
+                                                value.map((option: RolesInterface, index: number) => (
+                                                    <Chip
+                                                        key={ index }
+                                                        size="small"
+                                                        className="oxygen-chip-beta"
+                                                        label={
+                                                            (<label>
+                                                                { option?.displayName }
+                                                            </label>)
+                                                        }
+                                                        { ...getTagProps({ index }) }
+                                                    />
+                                                ))
+                                            }
+                                        />)
+                                    }
                                 </>
                             )
                             : (
@@ -1680,12 +1687,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                 <AlertTitle data-componentid={ `${componentId}-success-alert-title` }>
                                                     {
                                                         t("console:manage.features.user.modals.bulkImportUserWizard." +
-                                                        "wizardSummary.manualCreation.alerts.creationSuccess.message")
+                                                    "wizardSummary.manualCreation.alerts.creationSuccess.message")
                                                     }
                                                 </AlertTitle>
                                                 {
                                                     t("console:manage.features.user.modals.bulkImportUserWizard." +
-                                                    "wizardSummary.manualCreation.alerts.creationSuccess.description")
+                                                "wizardSummary.manualCreation.alerts.creationSuccess.description")
                                                 }
                                             </Alert>
                                         ) }
@@ -1693,7 +1700,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                 </>
                             )
                     }
-                </>      
+                </>
             );
         } else if (configureMode === MultipleInviteMode.META_FILE) {
             return (
@@ -1709,32 +1716,17 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                     </Grid.Row>
                                 )
                             }
-                            { !isLoading
-                                && (
-                                    <>
-                                        <Grid.Row columns={ 1 } className="mb-0 pb-0">
-                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }> 
-                                                <Alert severity="info">
-                                                    <Trans
-                                                        i18nKey={
-                                                            "console:manage.features.user.modals.bulkImportUserWizard" +
-                                                        ".wizardSummary.userstoreMessage"
-                                                        }
-                                                        tOptions={ {
-                                                            userstore: camelCase(userstore)
-                                                        } }
-                                                    > 
-                                                        The created users will be added to 
-                                                        the <b>{ camelCase(userstore) }</b> user store.          
-                                                    </Trans>
-                                                </Alert>
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    </>
+                            { !isLoading && !hideUserStoreDropdown() &&
+                                (
+                                    <Grid.Row columns={ 1 } className="mb-0 pb-0">
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            { userStoreDropDown() }
+                                        </Grid.Column>
+                                    </Grid.Row>
                                 )
                             }
                             <Grid.Row columns={ 1 } className="pt-0">
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Grid.Column mobile={ 16 }>
                                     <FilePicker
                                         key={ 1 }
                                         fileStrategy={ CSV_FILE_PROCESSING_STRATEGY }
@@ -1771,23 +1763,29 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                     )
                     : (
                         <>
-                            { alert && (
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                        { alertComponent }
-                                    </Grid.Column>
-                                </Grid.Row>
-                                    
-                            ) }
-                            <BulkImportResponseList
-                                isLoading={ isSubmitting }
-                                data-componentid={ `${componentId}-response-list` }
-                                hasError={ hasError }
-                                responseList={ response }
-                                bulkResponseSummary={ bulkResponseSummary }
-                            />
+                            { alert &&
+                                (
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                            { alertComponent }
+                                        </Grid.Column>
+                                    </Grid.Row>
+
+                                )
+                            }
+                            { !fileModeTimeOutError &&
+                                (
+                                    <BulkImportResponseList
+                                        isLoading={ isSubmitting }
+                                        data-componentid={ `${componentId}-response-list` }
+                                        hasError={ hasError }
+                                        responseList={ response }
+                                        bulkResponseSummary={ bulkResponseSummary }
+                                    />
+                                )
+                            }
                         </>
-                    ) 
+                    )
             );
         }
     };
@@ -1845,10 +1843,10 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                 "fileFormatSampleHeading") }</p>
                         <p>
                             <code>
-                                username,givenname,emailaddress,roles<br />
-                                user1,john,john@test.com,role1|role2<br/>
-                                user2,jake,jake@test.com,role2<br/>
-                                user3,jane,jane@test.com,role1<br/>
+                                username,givenname,emailaddress,groups<br />
+                                user1,john,john@test.com,group1|group2<br/>
+                                user2,jake,jake@test.com,group2<br/>
+                                user3,jane,jane@test.com,group1<br/>
                             </code>
                         </p>
                     </Suspense>
@@ -1965,7 +1963,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                                                         onClick={ handleBulkUserImport }
                                                         loading={ isSubmitting }
                                                         disabled={ isLoading || isSubmitting || hasError
-                                                        || !selectedCSVFile || isRolesListLoading
+                                                        || !selectedCSVFile
                                                         }
                                                     >
                                                         { t("console:manage.features.user.modals." +

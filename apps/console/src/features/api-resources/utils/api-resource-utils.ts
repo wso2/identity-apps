@@ -18,7 +18,7 @@
 
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { FeatureConfigInterface } from "../../core";
-import { APIResourcesConstants } from "../constants/api-resources-constants";
+import { APIResourceCategories, APIResourcesConstants } from "../constants/api-resources-constants";
 
 export class APIResourceUtils {
 
@@ -30,7 +30,7 @@ export class APIResourceUtils {
 
     /**
      * Check whether the API resource read is allowed.
-     * 
+     *
      * @param featureConfig - Feature config.
      * @param allowedScopes - Allowed scopes.
      * @returns True if the API resource read is allowed.
@@ -44,7 +44,7 @@ export class APIResourceUtils {
 
     /**
      * Check whether the API resource update is allowed.
-     * 
+     *
      * @param featureConfig - Feature config.
      * @param allowedScopes - Allowed scopes.
      * @returns True if the API resource update is allowed.
@@ -58,7 +58,7 @@ export class APIResourceUtils {
 
     /**
      * Check whether the API resource create is allowed.
-     * 
+     *
      * @param featureConfig - Feature config.
      * @param allowedScopes - Allowed scopes.
      * @returns True if the API resource create is allowed.
@@ -72,7 +72,7 @@ export class APIResourceUtils {
 
     /**
      * Check whether the API resource delete is allowed.
-     * 
+     *
      * @param featureConfig - Feature config.
      * @param allowedScopes - Allowed scopes.
      * @returns True if the API resource delete is allowed.
@@ -86,7 +86,7 @@ export class APIResourceUtils {
 
     /**
      * Check whether the API resource is a system API.
-     * 
+     *
      * @param type - API Resource type.
      * @returns True if the API resource is a system API.
      */
@@ -96,4 +96,21 @@ export class APIResourceUtils {
             || type === APIResourcesConstants.SYSTEM_ORG
             || type === APIResourcesConstants.SYSTEM_FEATURE;
     }
+
+    public static resolveApiResourceGroup = (groupName: string): string => {
+        switch (groupName) {
+            case APIResourceCategories.TENANT_ADMIN:
+                return "Management";
+            case APIResourceCategories.TENANT_USER:
+                return "Management";
+            case APIResourceCategories.ORGANIZATION_ADMIN:
+                return "Organization";
+            case APIResourceCategories.ORGANIZATION_USER:
+                return "Organization";
+            case APIResourceCategories.BUSINESS:
+                return "Business";
+            default:
+                return groupName;
+        }
+    };
 }

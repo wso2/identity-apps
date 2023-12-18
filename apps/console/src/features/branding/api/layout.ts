@@ -31,11 +31,13 @@ import { PredefinedLayouts } from "../meta";
  *
  * @param layout - Layout name.
  * @param tenantDomain - Tenant name.
+ * @param shouldFetch - Should fetch the data.
  * @returns Layouts.
  */
 export const useLayout = <Data = Blob, Error = RequestErrorInterface>(
     layout: PredefinedLayouts,
-    tenantDomain: string
+    tenantDomain: string,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     const basename: string = AppConstants.getAppBasename()
         ? `/${AppConstants.getAppBasename()}`
@@ -63,7 +65,7 @@ export const useLayout = <Data = Blob, Error = RequestErrorInterface>(
         error,
         isValidating,
         mutate
-    } = useRequest<Data, Error>(requestConfig, { attachToken: false });
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null, { attachToken: false });
 
     return {
         data,

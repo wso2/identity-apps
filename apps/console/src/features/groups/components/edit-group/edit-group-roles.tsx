@@ -16,25 +16,20 @@
  * under the License.
  */
 
-import Autocomplete, {  
-    AutocompleteRenderGetTagProps, 
-    AutocompleteRenderInputParams 
-} from "@oxygen-ui/react/Autocomplete";
-import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import { EmphasizedSegment, EmptyPlaceholder, Heading } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
-    HTMLAttributes,
     ReactElement,
     useEffect,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { getEmptyPlaceholderIllustrations } from "../../../core/configs/ui";
-import { GroupsInterface } from "../../models/groups";
-import { AutoCompleteRenderOption } from "../group-common-components/auto-complete-render-option";
-import { RenderChipRolesInGroups } from "../group-common-components/render-chip";
+import { Divider } from "semantic-ui-react";
+import { getEmptyPlaceholderIllustrations } from "../../../core";
+import { ReadOnlyRoleList } from "../../../roles/components/readonly-role-list";
+import { GroupsInterface } from "../../models";
+import "./edit-group-roles.scss";
 
 interface EditGroupRolesPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -52,8 +47,6 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
     const { t } = useTranslation();
 
     const [ initialSelectedRolesOptions, setInitialSelectedRolesOptions ] = useState<RolesMemberInterface[]>([]);
-    const [ activeOption, setActiveOption ] = useState<RolesMemberInterface>(undefined);
-    const [ showEmptyRolesListPlaceholder, setShowEmptyRolesListPlaceholder ] = useState<boolean>(false);
 
     /**
      * Set initial selected roles options
@@ -61,84 +54,40 @@ export const EditGroupRoles: FunctionComponent<EditGroupRolesPropsInterface> = (
     useEffect(() => {
         if ( group?.roles?.length > 0 ) {
             setInitialSelectedRolesOptions(group.roles);
-        } else {
-            setShowEmptyRolesListPlaceholder(true);
         }
     }, [ group ]);
 
     /**
-     * Get the place holder components.
-     * 
+     * Get the placeholder components.
+     *
      * @returns place holder components
      */
     const getPlaceholders = () => {
-        if (showEmptyRolesListPlaceholder) {
-            return (
-                <EmptyPlaceholder
-                    subtitle={ 
-                        [ t("console:manage.features.groups.edit.roles.placeHolders.emptyListPlaceholder.subtitles") ]
-                    }
-                    title={ t("console:manage.features.groups.edit.roles.placeHolders.emptyListPlaceholder.title") }
-                    image={ getEmptyPlaceholderIllustrations().emptyList }
-                    imageSize="tiny"
-                />
-            );
-        }
+        return (
+            <EmptyPlaceholder
+                subtitle={
+                    [ t("console:manage.features.groups.edit.roles.placeHolders.emptyListPlaceholder.subtitles") ]
+                }
+                title={ t("console:manage.features.groups.edit.roles.placeHolders.emptyListPlaceholder.title") }
+                image={ getEmptyPlaceholderIllustrations().emptyList }
+                imageSize="tiny"
+            />
+        );
     };
 
     return (
-        <EmphasizedSegment padded="very">
+        <EmphasizedSegment padded="very" className="list-group-roles-section">
             <Heading as="h4">
                 { t("console:manage.features.groups.edit.roles.heading") }
             </Heading>
             <Heading subHeading ellipsis as="h6">
                 { t("console:manage.features.groups.edit.roles.subHeading") }
             </Heading>
-            {
-                showEmptyRolesListPlaceholder
-                    ? getPlaceholders()
-                    : (
-                        <Autocomplete
-                            multiple
-                            disableCloseOnSelect
-                            options={ initialSelectedRolesOptions }
-                            value={ initialSelectedRolesOptions }
-                            getOptionLabel={ (role: RolesMemberInterface) => role.display }
-                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                <TextField
-                                    { ...params }
-                                    placeholder= { t("console:manage.features.transferList.searchPlaceholder",
-                                        { type: "Roles" }) }
-                                />
-                            ) }
-                            renderTags={ (
-                                value: RolesMemberInterface[], 
-                                getTagProps: AutocompleteRenderGetTagProps
-                            ) => value.map((option: RolesMemberInterface, index: number) => (
-                                <RenderChipRolesInGroups 
-                                    { ...getTagProps({ index }) }
-                                    key={ index }
-                                    displayName={ option.display }
-                                    audienceType={ option.audienceType }
-                                    audienceDisplay={ option.audienceDisplay }
-                                    option={ option }
-                                    activeOption={ activeOption }
-                                    setActiveOption={ setActiveOption }
-                                    onDelete={ null }
-                                />
-                            )) }
-                            renderOption={ (
-                                props: HTMLAttributes<HTMLLIElement>, 
-                                option: RolesMemberInterface
-                            ) => (
-                                <AutoCompleteRenderOption
-                                    displayName={ option.display }
-                                    renderOptionProps={ props }
-                                />
-                            ) }
-                        />
-                    )
-            }
+            <Divider hidden/>
+            <ReadOnlyRoleList
+                totalRoleList={ initialSelectedRolesOptions }
+                emptyRolesListPlaceholder={ getPlaceholders() }
+            />
         </EmphasizedSegment>
     );
 };

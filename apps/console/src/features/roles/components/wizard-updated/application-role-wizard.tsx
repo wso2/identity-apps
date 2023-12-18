@@ -84,7 +84,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     const [ selectedApplication, setSelectedApplication ] = useState<DropdownItemProps[]>([]);
     const [ isFormError, setIsFormError ] = useState<boolean>(false);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
-    const [ erroneousAPIResourceFields, setErroneousAPIResourceFields ] = useState<string[]>([]);
+    const [ invalidAPIResourceFields, setInvalidAPIResourceFields ] = useState<string[]>([]);
 
     const path: string[] = history.location.pathname.split("/");
     const appId: string = path[path.length - 1].split("#")[0];
@@ -101,7 +101,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         data: rolesList,
         isLoading: isRolesListLoading,
         isValidating: isRolesListValidating
-    } = useRolesList(undefined, undefined, roleNameSearchQuery);
+    } = useRolesList(undefined, undefined, roleNameSearchQuery, "users,groups,permissions,associatedApplications");
 
     useEffect(() => {
         const selectedApplication: DropdownItemProps[] = [];
@@ -118,15 +118,19 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         const options: DropdownProps[] = [];
 
         subscribedAPIResourcesListData?.map((apiResource: AuthorizedAPIListItemInterface) => {
-            options.push({
-                key: apiResource?.id,
-                text: apiResource?.displayName,
-                value: apiResource?.id
-            });
-        });
+            const isNotSelected: boolean = !selectedAPIResources
+                ?.find((selectedAPIResource: APIResourceInterface) => selectedAPIResource?.id === apiResource?.id);
 
+            if (isNotSelected) {
+                options.push({
+                    key: apiResource?.id,
+                    text: apiResource?.displayName,
+                    value: apiResource?.id
+                });
+            }
+        });
         setAPIResourcesListOptions(options);
-    }, [ subscribedAPIResourcesListData ]);
+    }, [ subscribedAPIResourcesListData, selectedAPIResources ]);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching API resources.
@@ -149,6 +153,8 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     const onAPIResourceSelected = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
         event.preventDefault();
 
+        setInvalidAPIResourceFields([ ...invalidAPIResourceFields, data?.value?.toString() ]);
+
         // Add the selected resource to selectedAPIResources
         const subscribedApiResourcesList: APIResourceInterface[] = [ ...selectedAPIResources ];
 
@@ -170,7 +176,6 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     };
 
     const onChangeScopes = (apiResource: APIResourceInterface, scopes: ScopeInterface[]): void => {
-        setErroneousAPIResourceFields([]);
         const selectedScopes: SelectedPermissionsInterface[] = selectedPermissions.filter(
             (selectedPermission: SelectedPermissionsInterface) =>
                 selectedPermission.apiResourceId !== apiResource.id
@@ -184,6 +189,12 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         );
 
         setSelectedPermissions(selectedScopes);
+
+        if (scopes?.length > 0) {
+            setInvalidAPIResourceFields(invalidAPIResourceFields.filter((id: string) => id !== apiResource.id));
+        } else {
+            setInvalidAPIResourceFields([ ...invalidAPIResourceFields, apiResource.id ]);
+        }
     };
 
     /**
@@ -199,6 +210,8 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         setSelectedPermissions(selectedPermissions.filter((selectedPermission: SelectedPermissionsInterface) => {
             return selectedPermission.apiResourceId !== apiResourceId;
         }));
+
+        setInvalidAPIResourceFields(invalidAPIResourceFields.filter((id: string) => id !== apiResourceId));
     };
 
     /**
@@ -208,28 +221,6 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
      */
     const addRole = ( role: CreateRoleInterface): void => {
         setIsSubmitting(true);
-
-        const emptyAPIResourceFields: string[] = [];
-
-        selectedAPIResources?.forEach((apiResource: APIResourceInterface) => {
-            const selectedPermission: SelectedPermissionsInterface = selectedPermissions?.find(
-                (selectedPermission: SelectedPermissionsInterface) =>
-                    selectedPermission.apiResourceId === apiResource?.id
-            );
-
-            if (!selectedPermission || selectedPermission?.scopes?.length === 0) {
-                emptyAPIResourceFields.push(apiResource?.id);
-            }
-        });
-
-        // If there are any empty API resources, set the erroneousAPIResourceFields state.
-        // And return from the function.
-        if (emptyAPIResourceFields?.length > 0) {
-            setErroneousAPIResourceFields(emptyAPIResourceFields);
-            setIsSubmitting(false);
-
-            return;
-        }
 
         const selectedPermissionsList: CreateRolePermissionInterface[] = selectedPermissions?.flatMap(
             (permission: SelectedPermissionsInterface) => (
@@ -427,6 +418,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                         hint={
                             !isSubscribedAPIResourcesListLoading
                             && apiResourcesListOptions?.length === 0
+                            && selectedAPIResources?.length === 0
                             && (
                                 <Hint>
                                     <Trans
@@ -476,7 +468,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                                             selectedPermission.apiResourceId === apiResource?.id
                                                     )?.scopes
                                                 }
-                                                hasError={ erroneousAPIResourceFields?.includes(apiResource?.id) }
+                                                hasError={ invalidAPIResourceFields?.includes(apiResource?.id) }
                                                 errorMessage={ t("console:manage.features.roles.addRoleWizard." +
                                                     "forms.rolePermission.permissions.validation.empty") }
                                             />
@@ -505,7 +497,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                 data-testid={ `${componentId}-finish-button` }
                                 floated="right"
                                 loading={ isSubmitting }
-                                disabled={ isFormError || isSubmitting }
+                                disabled={ isFormError || isSubmitting || invalidAPIResourceFields?.length > 0 }
                                 form={ FORM_ID }
                                 onClick={ () => {
                                     formRef?.current?.triggerSubmit();

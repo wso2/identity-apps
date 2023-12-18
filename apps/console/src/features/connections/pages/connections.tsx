@@ -211,13 +211,12 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
 
             // Set the FIDO authenticator display name and tags.
             if (authenticator.id === AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID) {
-                authenticator.tags = [ AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.PASSKEY ];
                 authenticator.displayName = "Passkey";
             }
 
             // Set the magic link authenticator tags.
             if (authenticator.id === AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID) {
-                authenticator.tags = [ AuthenticatorLabels.PASSWORDLESS ];
+                authenticator.tags = [ AuthenticatorLabels.API_AUTHENTICATION, AuthenticatorLabels.PASSWORDLESS ];
             }
 
             // Hide the SMS OTP authenticator for sub organizations.
@@ -289,17 +288,12 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                 }
 
                 if (authenticator.id === AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID) {
-                    authenticator.tags = [ ...identityProviderConfig.filterFidoTags(authenticator?.tags) ];
                     authenticator.displayName = identityProviderConfig.getOverriddenAuthenticatorDisplayName(
                         authenticator.id, authenticator.displayName);
                 }
 
                 if (authenticator.id === AuthenticatorManagementConstants.MAGIC_LINK_AUTHENTICATOR_ID) {
-                    authenticator.tags = [ AuthenticatorLabels.PASSWORDLESS ];
-                }
-
-                if (authenticator.id === AuthenticatorManagementConstants.EMAIL_OTP_AUTHENTICATOR_ID) {
-                    authenticator.tags = [ AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.MULTI_FACTOR ];
+                    authenticator.tags = [ AuthenticatorLabels.API_AUTHENTICATION, AuthenticatorLabels.PASSWORDLESS ];
                 }
 
                 if (authenticator.id === AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&

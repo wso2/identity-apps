@@ -18,11 +18,11 @@
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { 
-    AlertLevels, 
+import {
+    AlertLevels,
     DeprecatedFeatureInterface,
-    FeatureAccessConfigInterface, 
-    IdentifiableComponentInterface 
+    FeatureAccessConfigInterface,
+    IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
@@ -70,10 +70,10 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-    
+
     const isReadOnly: boolean = useMemo(() => !hasRequiredScopes(
-        featureConfig?.residentIdp,
-        featureConfig?.residentIdp?.scopes?.update,
+        featureConfig?.server,
+        featureConfig?.server?.scopes?.update,
         allowedScopes
     ), [ featureConfig, allowedScopes ]);
 
@@ -82,7 +82,7 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
     const { t } = useTranslation();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ saml2Config , setSaml2Config ] = 
+    const [ saml2Config , setSaml2Config ] =
         useState<Saml2ConfigFormValuesInterface>(undefined);
     const [ destinationUrls, setDestinationUrls ] = useState<string>("");
     const [ showURLError, setShowURLError ] = useState<boolean>(false);
@@ -95,7 +95,7 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
     } = useSaml2Config();
 
     useEffect(() => {
-        if (originalSaml2Config instanceof IdentityAppsApiException 
+        if (originalSaml2Config instanceof IdentityAppsApiException
             || saml2ConfigFetchRequestError) {
             handleRetrieveError();
 
@@ -104,7 +104,7 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
 
         if (!originalSaml2Config) {
             return;
-        }        
+        }
 
         setSaml2Config({
             enableMetadataSigning: originalSaml2Config.enableMetadataSigning ?? false,
@@ -272,7 +272,7 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                         <Grid.Column width={ 16 }>
                             <EmphasizedSegment className="form-wrapper" padded={ "very" }>
                                 { isSaml2FetchRequestLoading
-                                    ? renderLoadingPlaceholder() 
+                                    ? renderLoadingPlaceholder()
                                     : (
                                         <>
                                             <Form
@@ -319,7 +319,7 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                                 minLength={ Saml2ConfigurationConstants
                                                                     .SAML2_CONFIG_FIELD_MIN_LENGTH }
                                                                 maxLength={ null }
-                                                                data-componentid={ 
+                                                                data-componentid={
                                                                     `${componentId}-metadata-validity-period` }
                                                                 autoComplete="new-password"
                                                             />
@@ -336,7 +336,7 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                                         setURLState={ (url: string) => {
                                                                             const processedUrl: string = url?.split(",")
                                                                                 ?.toString();
-                                                                            
+
                                                                             setDestinationUrls(processedUrl);
                                                                         } }
                                                                         labelName={ t("console:saml2Config.form." +
@@ -346,21 +346,21 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                                         required={ true }
                                                                         showError={ showURLError }
                                                                         setShowError={ setShowURLError }
-                                                                        validationErrorMsg={ 
+                                                                        validationErrorMsg={
                                                                             t("console:saml2Config.form." +
                                                                             "validation.destinationURLs") }
                                                                         validation={ (value: string) => {
                                                                             if (!URLUtils.isURLValid(value, true)) {
                                                                                 setShowURLError(true);
-        
+
                                                                                 return false;
                                                                             }
-                                                                
+
                                                                             return true;
                                                                         } }
                                                                         readOnly={ isReadOnly }
                                                                         addURLTooltip={ t("common:addURL") }
-                                                                        duplicateURLErrorMessage={ 
+                                                                        duplicateURLErrorMessage={
                                                                             t("common:duplicateURLError") }
                                                                         data-componentid={ `${ componentId }
                                                                             -destination-url-input` }
@@ -369,7 +369,7 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                                 </Grid.Column>
                                                             </Grid.Row>
                                                         )
-                                                    }                                                 
+                                                    }
                                                 </Grid>
                                             </Form>
                                             <Divider hidden />
@@ -390,13 +390,13 @@ export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInt
                                                 </Grid.Column>
                                             </Grid.Row>
                                         </>
-                                    ) 
+                                    )
                                 }
                             </EmphasizedSegment>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </Ref> 
+            </Ref>
         </PageLayout>
     );
 };

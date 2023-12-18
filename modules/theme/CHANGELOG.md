@@ -1,5 +1,59 @@
 # @wso2is/theme
 
+## 2.0.51
+
+### Patch Changes
+
+- [#5083](https://github.com/wso2/identity-apps/pull/5083) [`2653310a5b`](https://github.com/wso2/identity-apps/commit/2653310a5bdd7ec96985b4c2c0b7b2ccbdb4136a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix UI issues in displaying long usernames in dynamic prompt generic form
+
+## 2.0.50
+
+### Patch Changes
+
+- [#5028](https://github.com/wso2/identity-apps/pull/5028) [`9b4c61b72f`](https://github.com/wso2/identity-apps/commit/9b4c61b72fb370bba7230d3f6d3a18a53a79d70d) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Fix logo misalignment
+
+## 2.0.49
+
+### Patch Changes
+
+- [#5057](https://github.com/wso2/identity-apps/pull/5057) [`36ae93a6fa`](https://github.com/wso2/identity-apps/commit/36ae93a6fa5d44cba538923cbfffedbb06626173) Thanks [@Achintha444](https://github.com/Achintha444)! - (Fix) Fix generate password button is not aligned in the add user modal
+
+## 2.0.48
+
+### Patch Changes
+
+- [#4979](https://github.com/wso2/identity-apps/pull/4979) [`0c4b0b19e5`](https://github.com/wso2/identity-apps/commit/0c4b0b19e5ed8c55a58e2c57b10f5219775dfc18) Thanks [@savindi7](https://github.com/savindi7)! - Add missing Microsoft icon in default theme
+
+## 2.0.47
+
+### Patch Changes
+
+- [#4903](https://github.com/wso2/identity-apps/pull/4903) [`6bc38c40e6`](https://github.com/wso2/identity-apps/commit/6bc38c40e697a031f79fafe907750f39a06478fe) Thanks [@savindi7](https://github.com/savindi7)! - Support to configure ELK Analytics from the Sign in methods of an App
+
+## 2.0.46
+
+### Patch Changes
+
+- [#4913](https://github.com/wso2/identity-apps/pull/4913) [`392095343a`](https://github.com/wso2/identity-apps/commit/392095343a92ec1af6b83208deeda3e3562093f1) Thanks [@Rashmini](https://github.com/Rashmini)! - Fix alignment issue in roles page
+
+## 2.0.45
+
+### Patch Changes
+
+- [#4914](https://github.com/wso2/identity-apps/pull/4914) [`da915ea6a0`](https://github.com/wso2/identity-apps/commit/da915ea6a02efae9d554961e3447c5247adec4d7) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Remove unnecessary information from consent page
+
+## 2.0.44
+
+### Patch Changes
+
+- [#4902](https://github.com/wso2/identity-apps/pull/4902) [`8a13e28839`](https://github.com/wso2/identity-apps/commit/8a13e288390862d83a7b9ce5129f251a3dc19359) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add enterprise idp logo with the idp name
+
+## 2.0.43
+
+### Patch Changes
+
+- [#4885](https://github.com/wso2/identity-apps/pull/4885) [`614bc01dc7`](https://github.com/wso2/identity-apps/commit/614bc01dc7631402b61756a8583f6eff0bd8a6ff) Thanks [@Achintha444](https://github.com/Achintha444)! - config for api based authn
+
 ## 2.0.42
 
 ### Patch Changes

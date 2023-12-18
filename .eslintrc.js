@@ -279,6 +279,10 @@ module.exports = {
                         importNames: [ "Popup" ],
                         message: "Avoid using Popup from Semantic. Instead import it from @wso2is/react-components.",
                         name: "semantic-ui-react"
+                    },
+                    {
+                        message: "Please use import foo from '@oxygen-ui/react/foo' instead.",
+                        name: "@oxygen-ui/react"
                     }
                 ],
                 patterns: [ "@wso2is/**/dist/**", "lodash/**", "lodash/fp/**" ]

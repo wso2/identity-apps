@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,7 @@
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { DocumentationConstants } from "./documentation-constants";
 import { authenticatorConfig } from "../../../extensions/configs/authenticator";
+import SweIdpTemplate from "../../../extensions/identity-provider-templates/templates/swe/swe.json";
 import TrustedTokenIssuerTemplate from
     "../../../extensions/identity-provider-templates/templates/trusted-token-issuer/trusted-token-issuer.json";
 import AppleIdPTemplate from "../data/identity-provider-templates/templates/apple/apple.json";
@@ -100,6 +101,7 @@ export class IdentityProviderManagementConstants {
         ORGANIZATION_ENTERPRISE_IDP: string;
         SAML: string;
         TRUSTED_TOKEN_ISSUER: string;
+        SWE: string;
     } = {
         APPLE: AppleIdPTemplate.id,
         ENTERPRISE: EnterpriseIdPTemplate.id,
@@ -112,6 +114,7 @@ export class IdentityProviderManagementConstants {
         OIDC: EnterpriseOIDCIdPTemplate.id,
         ORGANIZATION_ENTERPRISE_IDP: EnterpriseOrganizationIdPTemplate.id,
         SAML: EnterpriseSAMLIdPTemplate.id,
+        SWE: SweIdpTemplate.id,
         TRUSTED_TOKEN_ISSUER: TrustedTokenIssuerTemplate.id
     };
 
@@ -450,6 +453,7 @@ export class IdentityProviderManagementConstants {
     public static readonly FIDO_AUTHENTICATOR: string = "FIDOAuthenticator";
     public static readonly BASIC_AUTHENTICATOR: string = "BasicAuthenticator";
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR: string = "IdentifierExecutor";
+    public static readonly ORGANIZATION_AUTHENTICATOR: string = "SSO";
     public static readonly SMS_OTP_AUTHENTICATOR: string = authenticatorConfig?.overriddenAuthenticatorNames?.
         SMS_OTP_AUTHENTICATOR ?? "sms-otp";
 

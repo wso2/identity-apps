@@ -55,7 +55,7 @@ export enum AlertLevels {
 
 /**
  * Interface for the runtime config.
- * 
+ *
  * TODO: Remove this and use the ones passed from portals.
  * @deprecated Maintain this on the app side.
  */
@@ -92,7 +92,7 @@ export interface RuntimeConfigInterface {
 
 /**
  * Common interface to extend testable components.
- * 
+ *
  * @deprecated Use IdentifiableComponentInterface instead.
  */
 export interface TestableComponentInterface {
@@ -210,11 +210,17 @@ export interface SVGRLoadedInterface {
     default: string;
 }
 
-export interface ClassicFeaturesInterface {
-    isRequestPathAuthenticationEnabled: boolean;
-    isApplicationLevelRoleMappingEnabled: boolean;
-    isXacmlAuthorizationEnabled: boolean;
-    isIncludeOrgNameInSubjectEnabled: boolean;
-    isUseMappedLocalSubjectEnabled: boolean;
-    isSubjectIdentifierEnabled: boolean;
+export interface LegacyModeInterface {
+    apiResources: boolean;
+    applicationListSystemApps: boolean;
+    applicationOIDCSubjectIdentifier: boolean;
+    applicationRequestPathAuthentication: boolean;
+    applicationSystemAppsSettings: boolean;
+    approvals: boolean;
+    certificates: boolean;
+    loginAndRegistrationEmailDomainDiscovery: boolean;
+    organizations: boolean;
+    rolesV1: boolean;
+    roleMapping: boolean;
+    secretsManagement: boolean;
 }

@@ -57,9 +57,22 @@
             JSONArray scopeArray = new JSONArray (jsonObj.get("scopes").toString());
             for (int scopeCount = 0; scopeCount < scopeArray.length(); scopeCount++) {
                 JSONObject scope = (JSONObject) scopeArray.get(scopeCount);
-                scopes.add((String) (scope.get("displayName")));
+            
+                // Get the displayName.
+                String displayName = (String) scope.get("displayName");
+            
+                // Use optString to get description; it returns "" if the key is not found.
+                String description = scope.optString("description", "");
+
+                // Check if description is not empty, otherwise use displayName.
+                String scopeName = !StringUtils.isBlank(description) ? description : displayName;
+            
+                // Add the determined scopeName to the scopes list.
+                scopes.add(scopeName);
+            
+                // Add the identifier to the scopesWithMetadata list
                 scopesWithMetadata.add((String) scope.get("identifier"));
-            }
+            }            
             scopeDetails.put(key,scopes);
         }
     }
@@ -100,6 +113,31 @@
     if (queryParamMap.containsKey("requested_oidc_scopes")) {
         requestedOIDCScopeString = URLDecoder.decode(queryParamMap.get("requested_oidc_scopes"), "UTF-8");
     }
+
+    String consentSkipScopesString = "";
+    if (queryParamMap.containsKey("consent_skip_scopes")) {
+        consentSkipScopesString = URLDecoder.decode(queryParamMap.get("consent_skip_scopes"), "UTF-8");
+    }
+    // Initialize empty arrays for safety.
+    String[] scopesArray = StringUtils.isNotBlank(scopeString) ? scopeString.split(" ") : new String[0];
+    String[] consentSkipScopesArray = StringUtils.isNotBlank(consentSkipScopesString) ? consentSkipScopesString.split(" ") : new String[0];
+
+    // Convert consentSkipScopesArray into a Set for efficient lookup.
+    Set<String> consentSkipScopesSet = new HashSet<>(Arrays.asList(consentSkipScopesArray));
+
+    StringBuilder filteredScopes = new StringBuilder();
+
+    // Iterate over scopesArray and append to filteredScopes if not in consentSkipScopesSet.
+    for (String scope : scopesArray) {
+        if (!consentSkipScopesSet.contains(scope)) {
+            if (filteredScopes.length() > 0) {
+                filteredScopes.append(" ");
+            }
+            filteredScopes.append(scope);
+        }
+    }
+    // The resulting string with the filtered scopes.
+    scopeString = filteredScopes.toString();
 
     if (!userClaimsConsentOnly && displayScopes && StringUtils.isNotBlank(scopeString)) {
         if (StringUtils.isNotBlank(requestedOIDCScopeString)) {
@@ -195,10 +233,10 @@
                             </h4>
                         </div>
                     </div>
-
-                    <p class="login-portal-app-consent-request">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "this.will.allow.application.to")%>:
-                    </p>
+                    
+                        <p class="login-portal-app-consent-request larger-font">
+                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "this.will.allow.application.to")%>:
+                        </p>
 
                     <div class="segment-form">
 
@@ -212,11 +250,11 @@
                                         <div class="item">
                                             <i aria-hidden="true" class="circle tiny icon primary consent-item-bullet" id="claim_section_icon"></i>
                                             <div class="content">
-                                                <div class="header light-font">
+                                                <div class="header light-font consentItem">
                                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "read.your.profile")%>
                                                 </div>
                                             </div>
-                                            <div class="content mt-3 light-font" id="claim_sections">
+                                            <div class="content light-font" id="claim_sections">
                                                 <%--
                                                     A select all trigger checkbox that is initially hidden
                                                     and selects all the non-mandatory claims at once or
@@ -239,7 +277,7 @@
                                                 <% } %>
                                                 <div class="border-gray margin-bottom-double">
                                                     <div>
-                                                        <div class="claim-list">
+                                                        <div class="mt-3 mb-3 claim-list">
                                                             <% for (String claim : mandatoryClaimList) {
                                                                 String[] mandatoryClaimData = claim.split("_", 2);
                                                                 if (mandatoryClaimData.length == 2) {
@@ -325,7 +363,7 @@
                                                 %>
                                                 <div class="item mt-2">
                                                     <i aria-hidden="true" class="circle tiny icon primary consent-item-bullet" id=("<%=scope%>")></i>
-                                                    <div class="content mt-2">
+                                                    <div class="content mt-2 pl-1 consentItem">
                                                         <div class="header light-font">
                                                             <%=Encode.forHtml(scope)%>
                                                         </div>
@@ -339,30 +377,16 @@
                                                 if (CollectionUtils.isNotEmpty(scopeEntries)) {
                                                     for (Map.Entry<String, List<String>> scopeEntry : scopeEntries) {
                                                 %>
-                                                        <div class="item mt-2">
-                                                            <i aria-hidden="true" class="circle tiny icon primary consent-item-bullet" id=("<%=scopeEntry.getKey()%>")></i>
-                                                            <div class="content mt-2">
+                                                    <% for (String permission : scopeEntry.getValue()) { %>
+                                                        <div class="required mandatoryClaim mb-2 consentItem">
+                                                            <div class="ui" style="display: flex">
+                                                                <i aria-hidden="true" class="circle tiny icon primary consent-item-bullet" id=("<%=scopeEntry.getKey()%>")></i>
                                                                 <div class="header light-font">
-                                                                    <%=Encode.forHtml(StringUtils.capitalize(scopeEntry.getKey()))%>
-                                                                </div>
-                                                            </div>
-                                                            <div class="content light-font">
-                                                                <div class="border-gray margin-bottom-double">
-                                                                    <div>
-                                                                        <div class="claim-list">
-                                                                            <% for (String permission : scopeEntry.getValue()) { %>
-                                                                                <div class="mt-1 pl-5 required mandatoryClaim">
-                                                                                    <div class="ui checkbox claim-cb" style="display: flex">
-                                                                                        <i class="circle notch tiny icon primary consent-item-bullet" id=("<%=permission%>")></i>
-                                                                                        <span> <%=Encode.forHtml(permission)%> </span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            <% } %>
-                                                                        </div>
-                                                                    </div>
+                                                                    <%=Encode.forHtml(permission)%>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    <% } %>
                                                     <%
                                                     }
                                                 }

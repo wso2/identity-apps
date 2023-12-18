@@ -152,7 +152,8 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
      * Fetch application roles.
      */
     const getApplicationRoles = (shouldUpdateSelectedRolesList?: boolean): void => {
-        getApplicationRolesByAudience(roleAudience, appId, null, null, null)
+        getApplicationRolesByAudience(roleAudience, appId, null, null, null,
+            "users,groups,permissions,associatedApplications")
             .then((response: RolesV2ResponseInterface) => {
                 const rolesArray: BasicRoleInterface[] = [];
 

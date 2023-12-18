@@ -52,6 +52,10 @@ export type AuthenticationFlowContextProps = {
         recovery: GenericAuthenticatorInterface[];
     };
     /**
+     * List of hidden authenticators.
+     */
+    hiddenAuthenticators: string[];
+    /**
      * Callback to be fired when a new authentication step needs to be added.
      */
     addSignInStep: () => void;
