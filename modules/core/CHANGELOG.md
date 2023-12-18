@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.0.24
+
+### Patch Changes
+
+- [#5091](https://github.com/wso2/identity-apps/pull/5091) [`deae1075ee`](https://github.com/wso2/identity-apps/commit/deae1075ee47b9288ca607e59edbee275043ad3b) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Add config to show/hide saas applications in legacy mode
+
 ## 2.0.23
 
 ### Patch Changes
