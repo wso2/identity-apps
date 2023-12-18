@@ -437,10 +437,10 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                     maxLength={ 200 }
                                                     minLength={ 3 }
                                                     width={ 16 }
-                                                    data-testid={ 
+                                                    data-testid={
                                                         `${ testId }-client-attestation-android-package-name`
                                                     }
-                                                    data-componentid={ 
+                                                    data-componentid={
                                                         `${ testId }-client-attestation-android-package-name`
                                                     }
                                                     disabled={ isClientAttestationMethodsUiDisabled }
@@ -482,7 +482,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                     minLength={ 30 }
                                                     width={ 16 }
                                                     data-testid={
-                                                        `${ testId }-client-attestation-android-account-credentials` 
+                                                        `${ testId }-client-attestation-android-account-credentials`
                                                     }
                                                     data-componentid={
                                                         `${ testId }-client-attestation-android-account-credentials`
