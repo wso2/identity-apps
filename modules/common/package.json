@@ -45,7 +45,7 @@
         "react-i18next": "^11.18.5",
         "reduce-reducers": "^1.0.4",
         "@wso2is/react-components": "^2.0.26",
-        "axios": "^0.19.2",
+        "axios": "^1.6.0",
         "joi": "^17.4.0",
         "lodash-es": "^4.17.21",
         "history": "^4.9.0",

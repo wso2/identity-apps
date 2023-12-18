@@ -50,7 +50,7 @@
         "@wso2is/react-components": "^2.0.27",
         "@wso2is/theme": "^2.0.51",
         "@wso2is/validation": "^2.0.2",
-        "axios": "^0.19.2",
+        "axios": "^1.6.0",
         "history": "^4.9.0",
         "i18next": "^21.9.1",
         "i18next-browser-languagedetector": "^6.1.5",

@@ -61,7 +61,7 @@
         "@wso2is/validation": "^2.0.2",
         "@wso2is/common": "^2.0.15",
         "@wso2is/dynamic-forms": "^2.0.19",
-        "axios": "^0.19.2",
+        "axios": "^1.6.0",
         "codemirror": "^5.52.0",
         "country-language": "^0.1.7",
         "deep-equal": "^2.2.2",
