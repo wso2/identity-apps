@@ -16,22 +16,27 @@
  * under the License.
  */
 
+import { BasicUserInfo } from "@asgardeo/auth-react";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Button, GenericIcon, PageLayout } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RouteChildrenProps } from "react-router-dom";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
-import { AppConstants, FeatureConfigInterface, history } from "../../core";
-import { getOrganization, useAuthorizedOrganizationsList } from "../api";
+import useSignIn from "../../authentication/hooks/use-sign-in";
+import useAuthorization from "../../authorization/hooks/use-authorization";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { getOrganization, useAuthorizedOrganizationsList, useGetOrganizationBreadCrumb } from "../api";
 import { EditOrganization } from "../components/edit-organization/edit-organization";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
-import { OrganizationResponseInterface } from "../models";
+import useOrganizationSwitch from "../hooks/use-organization-switch";
+import { OrganizationInterface, OrganizationResponseInterface } from "../models";
+import { OrganizationUtils } from "../utils";
 
 interface OrganizationEditPagePropsInterface extends SBACInterface<FeatureConfigInterface>,
     TestableComponentInterface, RouteChildrenProps{
@@ -54,6 +59,24 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     const [ isAuthorizedOrganization, setIsAuthorizedOrganization ] = useState(false);
     const [ filterQuery, setFilterQuery ] = useState<string>("");
 
+    const { switchOrganization } = useOrganizationSwitch();
+    const { legacyAuthzRuntime }  = useAuthorization();
+    const { onSignIn } = useSignIn();
+
+    const isFirstLevelOrg: boolean = useSelector((state: AppState) => state?.organization?.isFirstLevelOrganization);
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+
+    const shouldSendRequest: boolean = useMemo(() => {
+        return (
+            isFirstLevelOrg ||
+            window[ "AppUtils" ].getConfig().organizationName ||
+            tenantDomain === AppConstants.getSuperTenant()
+        );
+    }, [ isFirstLevelOrg, tenantDomain ]);
+
+    const { data: breadcrumbList, mutate: mutateOrganizationBreadCrumbFetchRequest } = useGetOrganizationBreadCrumb(
+        shouldSendRequest
+    );
 
     useEffect(() => {
         setIsReadOnly(
@@ -88,7 +111,10 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
             return;
         }
 
-        setIsAuthorizedOrganization(authorizedOrganizationList.organizations?.length === 1);
+        const isOrgAuthorized: boolean = !!authorizedOrganizationList.organizations
+            ?.find((org: OrganizationInterface) => org.id === organization?.id);
+
+        setIsAuthorizedOrganization(isOrgAuthorized);
     }, [ authorizedOrganizationList ]);
 
     const handleGetAuthoriziedListCallError = (error: any) => {
@@ -161,6 +187,38 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
         history.push(AppConstants.getPaths().get("ORGANIZATIONS")),[ history ]
     );
 
+    /**
+     * Method that handles the organization switch.
+     */
+    const handleOrganizationSwitch = async (): Promise<void> => {
+        if (legacyAuthzRuntime) {
+            OrganizationUtils.handleLegacyOrganizationSwitch(breadcrumbList, organization);
+        }
+
+        let response: BasicUserInfo = null;
+
+        try {
+            response = await switchOrganization(organization.id);
+            await onSignIn(response, () => null, () => null, () => null);
+            await mutateOrganizationBreadCrumbFetchRequest();
+
+            history.push(AppConstants.getPaths().get("GETTING_STARTED"));
+        } catch(e) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "console:manage.features.organizations.switching.notifications.switchOrganization" +
+                        ".genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "console:manage.features.organizations.switching.notifications.switchOrganization" +
+                        ".genericError.message"
+                    )
+                })
+            );
+        }
+    };
 
     return (
         <PageLayout
@@ -190,7 +248,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
                     primary
                     data-testid="org-mgt-edit-org-switch-button"
                     type="button"
-                    onClick={ () => { null;} }
+                    onClick={ handleOrganizationSwitch }
                 >
                     <Icon name="exchange" />
                     { t("console:manage.features.organizations.switching.switchButton") }
