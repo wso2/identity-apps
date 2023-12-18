@@ -8249,7 +8249,8 @@ export const console: ConsoleNS = {
                     },
                     goBack: "ආපසු යන්න",
                     subOrganizations: "සංවිධාන",
-                    switchLabel: "සංවිධානය"
+                    switchLabel: "සංවිධානය",
+                    switchButton: "සංවිධානය වෙත මාරු වන්න"
                 },
                 title: "සංවිධාන"
             },

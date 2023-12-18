@@ -10207,7 +10207,8 @@ export const console: ConsoleNS = {
                         placeholder: "Search by Name"
                     },
                     subOrganizations: "Organizations",
-                    switchLabel: "Organization"
+                    switchLabel: "Organization",
+                    switchButton: "Switch to Organization"
                 },
                 title: "Organizations"
             },

@@ -19,12 +19,13 @@
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { GenericIcon, PageLayout } from "@wso2is/react-components";
+import { Button, GenericIcon, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteChildrenProps } from "react-router-dom";
 import { Dispatch } from "redux";
+import { Icon } from "semantic-ui-react";
 import { AppConstants, FeatureConfigInterface, history } from "../../core";
 import { getOrganization, useAuthorizedOrganizationsList } from "../api";
 import { EditOrganization } from "../components/edit-organization/edit-organization";
@@ -183,6 +184,18 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
             } }
             titleTextAlign="left"
             bottomMargin={ false }
+            action={ !isReadOnly && (
+                <Button
+                    basic
+                    primary
+                    data-testid="org-mgt-edit-org-switch-button"
+                    type="button"
+                    onClick={ () => { null;} }
+                >
+                    <Icon name="exchange" />
+                    { t("console:manage.features.organizations.switching.switchButton") }
+                </Button>
+            ) }
         >
             <EditOrganization
                 organization={ organization }

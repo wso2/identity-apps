@@ -8425,7 +8425,8 @@ export const console: ConsoleNS = {
                     },
                     goBack: "Retourner",
                     subOrganizations: "Organisations",
-                    switchLabel: "Organisation"
+                    switchLabel: "Organisation",
+                    switchButton: "Passer à l'organisation"
                 },
                 title: "Organisations"
             },

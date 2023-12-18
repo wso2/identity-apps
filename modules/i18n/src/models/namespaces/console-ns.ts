@@ -3760,6 +3760,7 @@ export interface ConsoleNS {
                     subOrganizations: string;
                     goBack: string;
                     switchLabel: string;
+                    switchButton: string;
                 }
             };
             users: {
