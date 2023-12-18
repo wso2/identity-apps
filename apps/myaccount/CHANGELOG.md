@@ -1,5 +1,29 @@
 # @wso2is/myaccount
 
+## 2.2.67
+
+### Patch Changes
+
+- [#5043](https://github.com/wso2/identity-apps/pull/5043) [`16d5e3da5a`](https://github.com/wso2/identity-apps/commit/16d5e3da5a8f3691bc32c4a0559e4d4536571fdd) Thanks [@brionmario](https://github.com/brionmario)! - [Legacy Mode] Fix Console/My Account browser path issues
+
+## 2.2.66
+
+### Patch Changes
+
+- [#5083](https://github.com/wso2/identity-apps/pull/5083) [`2653310a5b`](https://github.com/wso2/identity-apps/commit/2653310a5bdd7ec96985b4c2c0b7b2ccbdb4136a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix UI issues in displaying long usernames in dynamic prompt generic form
+
+- Updated dependencies [[`2653310a5b`](https://github.com/wso2/identity-apps/commit/2653310a5bdd7ec96985b4c2c0b7b2ccbdb4136a)]:
+  - @wso2is/theme@2.0.51
+
+## 2.2.65
+
+### Patch Changes
+
+- [#5075](https://github.com/wso2/identity-apps/pull/5075) [`0256394c2f`](https://github.com/wso2/identity-apps/commit/0256394c2f8c9e5d6d5150cf72ed38a283d9df58) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Change the connection create error content
+
+- Updated dependencies [[`0256394c2f`](https://github.com/wso2/identity-apps/commit/0256394c2f8c9e5d6d5150cf72ed38a283d9df58)]:
+  - @wso2is/i18n@2.0.81
+
 ## 2.2.64
 
 ### Patch Changes

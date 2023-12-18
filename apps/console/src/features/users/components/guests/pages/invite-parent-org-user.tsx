@@ -98,7 +98,12 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { data: allowedRoles } = useRolesList();
+    const { data: allowedRoles } = useRolesList(
+        undefined,
+        undefined,
+        undefined,
+        "users,groups,permissions,associatedApplications"
+    );
 
     const rolesAutocompleteOptions: RolesAutoCompleteOption[] = useMemo(() => {
 
@@ -272,7 +277,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                                 <Hint>
                                     <Typography variant="inherit">
                                         { t("console:manage.features.parentOrgInvitations.addUserWizard.username" +
-                                                ".hint") }
+                                            ".hint") }
                                     </Typography>
                                 </Hint>
                             ) }
@@ -289,7 +294,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                                 (<Hint>
                                     <Typography variant="inherit">
                                         { t("console:manage.features.parentOrgInvitations.addUserWizard.roles" +
-                                                ".hint") }
+                                            ".hint") }
                                     </Typography>
                                 </Hint>)
                             }

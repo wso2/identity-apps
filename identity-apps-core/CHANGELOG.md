@@ -1,5 +1,32 @@
 # @wso2is/identity-apps-core
 
+## 2.0.103
+
+### Patch Changes
+
+- [#5083](https://github.com/wso2/identity-apps/pull/5083) [`2653310a5b`](https://github.com/wso2/identity-apps/commit/2653310a5bdd7ec96985b4c2c0b7b2ccbdb4136a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix UI issues in displaying long usernames in dynamic prompt generic form
+
+- Updated dependencies [[`2653310a5b`](https://github.com/wso2/identity-apps/commit/2653310a5bdd7ec96985b4c2c0b7b2ccbdb4136a)]:
+  - @wso2is/theme@2.0.51
+
+## 2.0.102
+
+### Patch Changes
+
+- [#5084](https://github.com/wso2/identity-apps/pull/5084) [`eaf0d12ac9`](https://github.com/wso2/identity-apps/commit/eaf0d12ac96754566d7d6d8dfb0cb03f1bcf6ecb) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Apply tenantQualifiedName changes.
+
+## 2.0.101
+
+### Patch Changes
+
+- [#5086](https://github.com/wso2/identity-apps/pull/5086) [`be1a05f6b9`](https://github.com/wso2/identity-apps/commit/be1a05f6b98017400802df4048eb91808428d633) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Revert JIT provisioning improvement
+
+## 2.0.100
+
+### Patch Changes
+
+- [#5074](https://github.com/wso2/identity-apps/pull/5074) [`ad19f3f555`](https://github.com/wso2/identity-apps/commit/ad19f3f555e5623f46f3085a764e94dfb2eb40ef) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Skip username validation from UI.
+
 ## 2.0.99
 
 ### Patch Changes

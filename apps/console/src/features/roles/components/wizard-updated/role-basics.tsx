@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { Alert, ListItemText } from "@oxygen-ui/react";
+import Alert from "@oxygen-ui/react/Alert";
+import ListItemText from "@oxygen-ui/react/ListItemText";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Link } from "@wso2is/react-components";
@@ -110,7 +111,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
         data: rolesList,
         isLoading: isRolesListLoading,
         isValidating: isRolesListValidating
-    } = useRolesList(undefined, undefined, roleNameSearchQuery);
+    } = useRolesList(undefined, undefined, roleNameSearchQuery, "users,groups,permissions,associatedApplications");
 
     useEffect(() => {
         if (applicationListFetchRequestError) {
@@ -155,8 +156,8 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                                 external={ false }
                                             >
                                                 { t("console:manage.features.roles.addRoleWizard.forms." +
-                                                "roleBasicDetails.assignedApplication.applicationSubTitle." +
-                                                "changeAudience") }
+                                                    "roleBasicDetails.assignedApplication.applicationSubTitle." +
+                                                    "changeAudience") }
                                             </Link>
                                         </>
                                     ) : t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
@@ -349,7 +350,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                             </Trans>
                                         )
                                         : null
-                                        // TODO: need to add a learn more for this.
+                                    // TODO: need to add a learn more for this.
                                 }
                             />
                         ))
@@ -374,8 +375,8 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                 i18nKey= { "console:manage.features.roles.addRoleWizard.forms.roleBasicDetails.notes" +
                                     ".cannotCreateRole" }
                             >
-                            You cannot create an application-scoped role because there are currently no applications
-                            that support application-scoped role. Please (
+                                You cannot create an application-scoped role because there are currently no applications
+                                that support application-scoped role. Please (
                                 <Link
                                     data-componentid={ `${componentId}-link-api-resource-page` }
                                     onClick={ navigateToApplications }
@@ -383,8 +384,8 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                 >
                                     create an application
                                 </Link>
-                            )
-                            that supports application-scoped roles to proceed.
+                                )
+                                that supports application-scoped roles to proceed.
                             </Trans>
                         </Alert>
                     )
@@ -404,7 +405,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                             loading = { isApplicationListFetchRequestLoading || assignedApplicationsSearching }
                             data-componentid={ `${componentId}-typography-font-family-dropdown` }
                             hint={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
-                                    "assignedApplication.hint") }
+                                "assignedApplication.hint") }
                             placeholder={ t("console:manage.features.roles.addRoleWizard.forms.roleBasicDetails." +
                                 "assignedApplication.placeholder") }
                             noResultsMessage={

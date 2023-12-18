@@ -26,6 +26,9 @@ import {
 } from "../../../features/applications/components/settings";
 import { ApplicationInterface, ApplicationTabTypes } from "../../../features/applications/models";
 import { FeatureConfigInterface } from "../../../features/core";
+import { OIDCSDKMeta } from "../../application-templates/templates/oidc-web-application/models";
+import { SAMLSDKMeta } from "../../application-templates/templates/saml-web-application/models";
+import { SDKMetaInterface } from "../../application-templates/templates/single-page-application/models";
 
 export interface ApplicationConfig {
     advancedConfigurations: {
@@ -157,4 +160,9 @@ export interface ApplicationConfig {
     };
     excludeIdentityClaims: boolean;
     excludeSubjectClaim: boolean;
+    quickstart: {
+        oidcWeb: OIDCSDKMeta;
+        samlWeb: SAMLSDKMeta;
+        spa: SDKMetaInterface
+    };
 }

@@ -24,6 +24,7 @@ export interface CommonConfig {
         enableQuerySearch: boolean;
     };
     blockLoopBackCalls: boolean;
+    checkCustomLayoutExistanceBeforeEnabling: boolean;
     checkForUIResourceScopes: boolean;
     enableDefaultBrandingPreviewSection: boolean;
     enableDefaultPreLoader: boolean;

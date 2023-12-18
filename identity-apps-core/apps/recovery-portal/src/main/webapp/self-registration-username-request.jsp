@@ -512,8 +512,8 @@
                     </div>
 
                     <!-- Do not show the horizontal divider, if the only federated authenticator available is the OrganizationAuthenticator. -->
-                    <% 
-                        if (federatedAuthenticators.length() > 0) { 
+                    <%
+                        if (federatedAuthenticators.length() > 0) {
                             Boolean isSSOLoginTheOnlyAuthenticatorConfigured = false;
 
                             if (federatedAuthenticators.length() == 1) {
@@ -521,16 +521,16 @@
                                 String authenticatorType = (String) onlyAvailableFederatedAuthenticator.get("type");
                                 isSSOLoginTheOnlyAuthenticatorConfigured = authenticatorType.equals(SSO_AUTHENTICATOR);
                             }
-                        
+
                             if (!isSSOLoginTheOnlyAuthenticatorConfigured) {
                     %>
                                 <div class="ui horizontal divider">
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "or")%>
                                 </div>
                     <%       }
-                        } 
+                        }
                     %>
-                    
+
                 </div>
 
                 <!-- federated authenticators -->
@@ -1303,7 +1303,7 @@
 
     <script>
         const ALPHANUMERIC_USERNAME_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9]+$/;
-        const USERNAME_WITH_SPECIAL_CHARS_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%&'*+\\=?^_`.{|}~-]+$/;
+        const USERNAME_WITH_SPECIAL_CHARS_REGEX = /^(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%&'*+\\=?^_.{|}~-]+$/;
         var registrationDataKey = "registrationData";
         var passwordField = $("#passwordUserInput");
         var $registerForm = $("#register");

@@ -101,7 +101,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         data: rolesList,
         isLoading: isRolesListLoading,
         isValidating: isRolesListValidating
-    } = useRolesList(undefined, undefined, roleNameSearchQuery);
+    } = useRolesList(undefined, undefined, roleNameSearchQuery, "users,groups,permissions,associatedApplications");
 
     useEffect(() => {
         const selectedApplication: DropdownItemProps[] = [];

@@ -1,5 +1,60 @@
 # @wso2is/console
 
+## 2.10.34
+
+### Patch Changes
+
+- [#5043](https://github.com/wso2/identity-apps/pull/5043) [`16d5e3da5a`](https://github.com/wso2/identity-apps/commit/16d5e3da5a8f3691bc32c4a0559e4d4536571fdd) Thanks [@brionmario](https://github.com/brionmario)! - [Legacy Mode] Fix Console/My Account browser path issues
+
+## 2.10.33
+
+### Patch Changes
+
+- [#5083](https://github.com/wso2/identity-apps/pull/5083) [`2653310a5b`](https://github.com/wso2/identity-apps/commit/2653310a5bdd7ec96985b4c2c0b7b2ccbdb4136a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix UI issues in displaying long usernames in dynamic prompt generic form
+
+- Updated dependencies [[`2653310a5b`](https://github.com/wso2/identity-apps/commit/2653310a5bdd7ec96985b4c2c0b7b2ccbdb4136a)]:
+  - @wso2is/theme@2.0.51
+
+## 2.10.32
+
+### Patch Changes
+
+- [#5078](https://github.com/wso2/identity-apps/pull/5078) [`1ed2dd20c6`](https://github.com/wso2/identity-apps/commit/1ed2dd20c661a8fcdf56b504d3b5a6e88fec9c37) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove custom layout validation
+
+## 2.10.31
+
+### Patch Changes
+
+- [#5079](https://github.com/wso2/identity-apps/pull/5079) [`9629278841`](https://github.com/wso2/identity-apps/commit/96292788415abf16005b23515c17e5abede23a47) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Decouple quickstart tab content to be provided through extensions
+
+## 2.10.30
+
+### Patch Changes
+
+- [#5075](https://github.com/wso2/identity-apps/pull/5075) [`0256394c2f`](https://github.com/wso2/identity-apps/commit/0256394c2f8c9e5d6d5150cf72ed38a283d9df58) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Change the connection create error content
+
+- Updated dependencies [[`0256394c2f`](https://github.com/wso2/identity-apps/commit/0256394c2f8c9e5d6d5150cf72ed38a283d9df58)]:
+  - @wso2is/i18n@2.0.81
+
+## 2.10.29
+
+### Patch Changes
+
+- [#5072](https://github.com/wso2/identity-apps/pull/5072) [`d308d7509b`](https://github.com/wso2/identity-apps/commit/d308d7509b0f55ff50dd50ff3ea59dd465fd536a) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Fix a NPE that occurs when assigning email domains in the absence of any created sub organizations.
+
+## 2.10.28
+
+### Patch Changes
+
+- [#5069](https://github.com/wso2/identity-apps/pull/5069) [`645dd00b56`](https://github.com/wso2/identity-apps/commit/645dd00b569c650b74763a56bfe82cad11e14b1c) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Change the ParentOrgUserResultStatus values along with the backend improvement.
+
+* [#5054](https://github.com/wso2/identity-apps/pull/5054) [`9e869ae16a`](https://github.com/wso2/identity-apps/commit/9e869ae16a03daf86cad9fac4e72df66cb2f3ec8) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Improve useRolesList API call
+
+- [#5028](https://github.com/wso2/identity-apps/pull/5028) [`9b4c61b72f`](https://github.com/wso2/identity-apps/commit/9b4c61b72fb370bba7230d3f6d3a18a53a79d70d) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Fix logo misalignment
+
+- Updated dependencies [[`9b4c61b72f`](https://github.com/wso2/identity-apps/commit/9b4c61b72fb370bba7230d3f6d3a18a53a79d70d)]:
+  - @wso2is/theme@2.0.50
+
 ## 2.10.27
 
 ### Patch Changes

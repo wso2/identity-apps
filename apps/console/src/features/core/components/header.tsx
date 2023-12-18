@@ -406,53 +406,37 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         return true;
     };
 
+    const LOGO_IMAGE = () => {
+        return (
+            <Image
+                src={ resolveAppLogoFilePath(
+                    window[ "AppUtils" ].getConfig().ui.appLogoPath,
+                    `${ window[ "AppUtils" ].getConfig().clientOrigin
+                    }/` +
+                    `${ StringUtils.removeSlashesFromPath(
+                        window[ "AppUtils" ].getConfig()
+                            .appBase
+                    ) !== ""
+                        ? StringUtils.removeSlashesFromPath(
+                            window[ "AppUtils" ].getConfig()
+                                .appBase
+                        ) + "/"
+                        : ""
+                    }libs/themes/` +
+                    config.ui.theme.name
+                ) }
+                alt="logo"
+            />
+        );
+    };
+
     return (
         <OxygenHeader
             className="is-header"
             brand={ {
                 logo: {
-                    desktop: (
-                        <Image
-                            src={ resolveAppLogoFilePath(
-                                window[ "AppUtils" ].getConfig().ui.appLogoPath,
-                                `${ window[ "AppUtils" ].getConfig().clientOrigin
-                                }/` +
-                                `${ StringUtils.removeSlashesFromPath(
-                                    window[ "AppUtils" ].getConfig()
-                                        .appBase
-                                ) !== ""
-                                    ? StringUtils.removeSlashesFromPath(
-                                        window[ "AppUtils" ].getConfig()
-                                            .appBase
-                                    ) + "/"
-                                    : ""
-                                }libs/themes/` +
-                                config.ui.theme.name
-                            ) }
-                            alt="logo"
-                        />
-                    ),
-                    mobile: (
-                        <Image
-                            src={ resolveAppLogoFilePath(
-                                window[ "AppUtils" ].getConfig().ui.appLogoPath,
-                                `${ window[ "AppUtils" ].getConfig().clientOrigin
-                                }/` +
-                                `${ StringUtils.removeSlashesFromPath(
-                                    window[ "AppUtils" ].getConfig()
-                                        .appBase
-                                ) !== ""
-                                    ? StringUtils.removeSlashesFromPath(
-                                        window[ "AppUtils" ].getConfig()
-                                            .appBase
-                                    ) + "/"
-                                    : ""
-                                }libs/themes/` +
-                                config.ui.theme.name
-                            ) }
-                            alt="logo"
-                        />
-                    )
+                    desktop: (<LOGO_IMAGE />),
+                    mobile: (<LOGO_IMAGE />)
                 },
                 onClick: () => history.push(config.deployment.appHomePath),
                 title: config.ui.appName
