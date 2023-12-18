@@ -9609,7 +9609,7 @@ export const console: ConsoleNS = {
                             message: "Something went wrong"
                         },
                         success: {
-                            description: "Successfully the new OIDC scope.",
+                            description: "Successfully created the new OIDC scope.",
                             message: "Creation successful"
                         }
                     },
