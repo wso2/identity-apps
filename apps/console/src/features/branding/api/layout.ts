@@ -65,7 +65,7 @@ export const useLayout = <Data = Blob, Error = RequestErrorInterface>(
         error,
         isValidating,
         mutate
-    } = useRequest<Data, Error>(shouldFetch? requestConfig : null, { attachToken: false });
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null, { attachToken: false });
 
     return {
         data,
