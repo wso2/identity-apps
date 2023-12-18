@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.102
+
+### Patch Changes
+
+- [#5084](https://github.com/wso2/identity-apps/pull/5084) [`eaf0d12ac9`](https://github.com/wso2/identity-apps/commit/eaf0d12ac96754566d7d6d8dfb0cb03f1bcf6ecb) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Apply tenantQualifiedName changes.
+
 ## 2.0.101
 
 ### Patch Changes
