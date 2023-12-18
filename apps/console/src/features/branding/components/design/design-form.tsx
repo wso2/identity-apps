@@ -335,8 +335,8 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
         }
 
         // Avoid activating the custom layout when there is no deployed custom layout.
-        if (commonConfig.checkCustomLayoutExistanceBeforeEnabling
-                && _values.layout.activeLayout === PredefinedLayouts.CUSTOM) {
+        if (commonConfig?.checkCustomLayoutExistanceBeforeEnabling
+                && _values?.layout?.activeLayout === PredefinedLayouts.CUSTOM) {
             while (customLayoutLoading) {
                 // Wait until finished the loading of custom layout.
             }
