@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.36
+
+### Patch Changes
+
+- [#4912](https://github.com/wso2/identity-apps/pull/4912) [`b57f3edb91`](https://github.com/wso2/identity-apps/commit/b57f3edb913b3ef8515565f436582f0d1f80266d) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Enable SMS Otp in sub orgs
+
 ## 2.10.35
 
 ### Patch Changes
