@@ -112,9 +112,14 @@
                     "/fido2-error.jsp", "/email_otp.do", "/org_name.do", "/org_discovery.do", "/retry.do", "/totp_enroll.do",
                     "/backup_code.do", "/device.do", "/error.do");
                 if (langSwitcherEnabledServlets.contains(request.getServletPath())) {
+                    File languageSwitcherFile = new File(getServletContext().getRealPath("extensions/language-switcher.jsp"));
+                    if (languageSwitcherFile.exists()) {
             %>
-                <jsp:include page="language-switcher.jsp"/>
-            <% } %>
+                        <jsp:include page="../extensions/language-switcher.jsp"/>
+                    <% } else { %>
+                        <jsp:include page="language-switcher.jsp"/>
+                    <% } %>
+                <% } %>
             </div>
         </div>
     </div>
