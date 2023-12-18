@@ -221,7 +221,8 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
 
             // Hide the SMS OTP authenticator for sub organizations.
             if (authenticator.id === AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
-                organizationType === OrganizationType.SUBORGANIZATION) {
+                organizationType === OrganizationType.SUBORGANIZATION &&
+                identityProviderConfig?.disableSMSOTPInSubOrgs) {
                 return false;
             }
 
@@ -296,7 +297,8 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
                 }
 
                 if (authenticator.id === AuthenticatorManagementConstants.SMS_OTP_AUTHENTICATOR_ID &&
-                    organizationType === OrganizationType.SUBORGANIZATION) {
+                    organizationType === OrganizationType.SUBORGANIZATION &&
+                    identityProviderConfig?.disableSMSOTPInSubOrgs) {
                     return false;
                 }
 

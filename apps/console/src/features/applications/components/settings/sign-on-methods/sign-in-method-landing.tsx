@@ -20,6 +20,7 @@ import { Heading, InfoCard, useMediaContext } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Segment } from "semantic-ui-react";
+import { identityProviderConfig } from "../../../../../extensions/configs/identity-provider";
 import useAuthenticationFlow from "../../../../authentication-flow-builder/hooks/use-authentication-flow";
 import { EventPublisher, FeatureConfigInterface } from "../../../../core";
 import {
@@ -55,6 +56,7 @@ interface SignInMethodLandingPropsInterface extends SBACInterface<FeatureConfigI
      * Set of login flow options to hide.
      */
     hiddenOptions?: LoginFlowTypes[];
+    [ "data-componentid" ]?: string;
 }
 
 /**
@@ -195,7 +197,8 @@ export const SignInMethodLanding: FunctionComponent<SignInMethodLandingPropsInte
                             ) }
                             {
                                 (!hiddenOptions.includes(LoginFlowTypes.SECOND_FACTOR_SMS_OTP) &&
-                                    organizationType !== OrganizationType.SUBORGANIZATION) && (
+                                    !(organizationType === OrganizationType.SUBORGANIZATION &&
+                                    identityProviderConfig?.disableSMSOTPInSubOrgs)) && (
                                     <InfoCard
                                         fluid
                                         data-componentid="sms-otp-mfa-flow-card"
