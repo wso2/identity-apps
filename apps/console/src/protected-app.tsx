@@ -100,7 +100,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const {
         on,
         signIn,
-        state: { isAuthenticated, allowedScopes }
+        state: { isAuthenticated }
     } = useAuthContext();
 
     const dispatch: Dispatch<any> = useDispatch();
@@ -272,7 +272,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         }
 
         filterRoutes(() => setRoutesFiltered(true), isFirstLevelOrg);
-    }, [ filterRoutes, governanceConnectors, isAuthenticated, isFirstLevelOrg, allowedScopes ]);
+    }, [ filterRoutes, governanceConnectors, isAuthenticated, isFirstLevelOrg ]);
 
     useEffect(() => {
         const error: string = new URLSearchParams(location.search).get(

@@ -126,6 +126,25 @@ const useSignIn = (): UseSignInInterface => {
 
         let tenantDomain: string = transformTenantDomain(orgName);
 
+        const firstName: string = idToken?.given_name;
+        const lastName: string = idToken?.family_name;
+        const fullName: string = firstName ? firstName + (lastName ? " " + lastName : "") : response.email;
+
+        await dispatch(
+            setSignIn<AuthenticatedUserInfo & TenantListInterface>(
+                Object.assign(
+                    CommonAuthenticateUtils.getSignInState(
+                        response,
+                        transformTenantDomain(response.orgName)
+                    ), {
+                        associatedTenants: isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
+                        defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
+                        fullName: fullName,
+                        isPrivilegedUser: isPrivilegedUser
+                    })
+            )
+        );
+
         if (legacyAuthzRuntime) {
             tenantDomain = tenantDomainFromSubject;
         }
@@ -331,25 +350,6 @@ const useSignIn = (): UseSignInInterface => {
             // Update runtime configurations.
             ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
         }
-
-        const firstName: string = idToken?.given_name;
-        const lastName: string = idToken?.family_name;
-        const fullName: string = firstName ? firstName + (lastName ? " " + lastName : "") : response.email;
-
-        await dispatch(
-            setSignIn<AuthenticatedUserInfo & TenantListInterface>(
-                Object.assign(
-                    CommonAuthenticateUtils.getSignInState(
-                        response,
-                        transformTenantDomain(response.orgName)
-                    ), {
-                        associatedTenants: isPrivilegedUser ? tenantDomain : idToken?.associated_tenants,
-                        defaultTenant: isPrivilegedUser ? tenantDomain : idToken?.default_tenant,
-                        fullName: fullName,
-                        isPrivilegedUser: isPrivilegedUser
-                    })
-            )
-        );
 
         dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
 
