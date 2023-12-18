@@ -16,10 +16,7 @@
  * under the License.
  */
 
-import {
-    IdentifiableComponentInterface,
-    TestableComponentInterface
-} from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,8 +27,9 @@ import { InviteParentOrgUser } from "../guests/pages/invite-parent-org-user";
 /**
  * Interface for the Invite Parent Org User Wizard.
  */
-interface InviteParentOrgUserWizardProps extends IdentifiableComponentInterface, TestableComponentInterface {
+interface InviteParentOrgUserWizardProps extends IdentifiableComponentInterface {
     closeWizard: () => void;
+    [ "data-componentid" ]: string;
     /**
      * The Callback to trigger on user invite success.
      */
@@ -45,7 +43,7 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
     const {
         closeWizard,
         onUserInviteSuccess,
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -63,8 +61,8 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
 
     return (
         <Modal
-            data-testid={ testId }
-            open={ true }
+            data-componentid={ componentId }
+            open
             className="wizard application-create-wizard"
             dimmer="blurring"
             size="small"
@@ -90,9 +88,9 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
             <Modal.Actions>
                 <Grid>
                     <Grid.Row column={ 1 }>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                        <Grid.Column mobile={ 8 }>
                             <LinkButton
-                                data-testid={ `${ testId }-cancel-button` }
+                                data-componentid={ `${ componentId }-cancel-button` }
                                 floated="left"
                                 onClick={ () => {
                                     closeWizard();
@@ -102,9 +100,8 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-
                             <PrimaryButton
-                                data-testid={ `${ testId }-finish-button` }
+                                data-componentid={ `${ componentId }-finish-button` }
                                 floated="right"
                                 onClick={ submitParentUserInviteForm }
                                 loading={ isSubmitting }
@@ -112,7 +109,6 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
                             >
                                 { t("extensions:manage.features.user.addUser.invite") }
                             </PrimaryButton>
-
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

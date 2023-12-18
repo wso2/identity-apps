@@ -756,7 +756,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         );
     };
 
-    const addUserOptions = (): DropdownItemProps[] => {
+    const getAddUserOptions = (): DropdownItemProps[] => {
         const dropDownOptions: DropdownItemProps[] = [];
 
         if (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.create, allowedScopes)) {
@@ -838,7 +838,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 trigger={ addUserDropdownTrigger }
             >
                 <Dropdown.Menu >
-                    { addUserOptions().map((option: {
+                    { getAddUserOptions().map((option: {
                         "data-componentid": string;
                         key: number;
                         text: string;
@@ -1074,6 +1074,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     <InviteParentOrgUserWizard
                         closeWizard={ handleInviteParentUserWizardClose }
                         onUserInviteSuccess={ () => mutateParentOrgUserInviteList() }
+                        data-componentid="user-mgt-invite-parent-user-wizard-modal"
                     />
                 )
             }
