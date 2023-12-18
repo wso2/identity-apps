@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.34
+
+### Patch Changes
+
+- [#5043](https://github.com/wso2/identity-apps/pull/5043) [`16d5e3da5a`](https://github.com/wso2/identity-apps/commit/16d5e3da5a8f3691bc32c4a0559e4d4536571fdd) Thanks [@brionmario](https://github.com/brionmario)! - [Legacy Mode] Fix Console/My Account browser path issues
+
 ## 2.10.33
 
 ### Patch Changes
