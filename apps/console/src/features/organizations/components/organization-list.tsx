@@ -291,38 +291,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
         organization: GenericOrganization
     ): Promise<void> => {
         if (legacyAuthzRuntime) {
-            let newOrgPath: string = "";
-
-            if (
-                breadcrumbList && breadcrumbList.length > 0 &&
-                OrganizationUtils.isSuperOrganization(breadcrumbList[ 0 ]) &&
-                breadcrumbList[ 1 ]?.id === organization.id &&
-                organizationConfigs.showSwitcherInTenants
-            ) {
-                newOrgPath =
-                    "/t/" +
-                    organization.name +
-                    "/" +
-                    window[ "AppUtils" ].getConfig().appBase;
-            } else if (OrganizationUtils.isSuperOrganization(organization)) {
-                newOrgPath = `/${ window[ "AppUtils" ].getConfig().appBase }`;
-            } else {
-                newOrgPath =
-                    "/o/" +
-                    organization.id +
-                    "/" +
-                    window[ "AppUtils" ].getConfig().appBase;
-            }
-
-            // Clear the callback url of the previous organization.
-            SessionStorageUtils.clearItemFromSessionStorage(
-                "auth_callback_url_console"
-            );
-
-            // Redirect the user to the newly selected organization path.
-            window.location.replace(newOrgPath);
-
-            return;
+            OrganizationUtils.handleLegacyOrganizationSwitch(breadcrumbList, organization);
         }
 
         let response: BasicUserInfo = null;
