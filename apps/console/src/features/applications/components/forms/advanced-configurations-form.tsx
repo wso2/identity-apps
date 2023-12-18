@@ -241,7 +241,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                 data-testid={ `${ testId }-sass-checkbox` }
                 data-componentid={ `${ testId }-sass-checkbox` }
                 hint={ t("console:develop.features.applications.forms.advancedConfig.fields.saas.hint") }
-                hidden={ !applicationConfig.advancedConfigurations.showSaaS }
+                hidden={ !UIConfig?.legacyMode?.saasApplications || !applicationConfig.advancedConfigurations.showSaaS }
             />
             <Field.CheckboxLegacy
                 ariaLabel="Skip consent login"

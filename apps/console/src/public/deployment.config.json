@@ -1064,7 +1064,8 @@
             "organizations": true,
             "rolesV1": false,
             "roleMapping": false,
-            "secretsManagement": false
+            "secretsManagement": false,
+            "saasApplications": false
         },
         "theme": {
             "name": "wso2is"
