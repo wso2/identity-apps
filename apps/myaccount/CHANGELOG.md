@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.2.68
+
+### Patch Changes
+
+- [#5023](https://github.com/wso2/identity-apps/pull/5023) [`21a47f85f6`](https://github.com/wso2/identity-apps/commit/21a47f85f6b17ea8bc38b90172ab3789b263c35a) Thanks [@Avarjana](https://github.com/Avarjana)! - Fix typo and exclude back tick from username.
+
+- Updated dependencies [[`21a47f85f6`](https://github.com/wso2/identity-apps/commit/21a47f85f6b17ea8bc38b90172ab3789b263c35a)]:
+  - @wso2is/i18n@2.0.82
+
 ## 2.2.67
 
 ### Patch Changes
