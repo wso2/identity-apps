@@ -83,6 +83,7 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
                     setIsSubmitting={ setIsSubmitting }
                     onUserInviteSuccess={ onUserInviteSuccess }
                     setAlert={ setAlert }
+                    data-componentid={ `${ componentId }-form` }
                 />
             </Modal.Content>
             <Modal.Actions>
