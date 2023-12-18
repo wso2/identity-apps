@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.32
+
+### Patch Changes
+
+- [#5078](https://github.com/wso2/identity-apps/pull/5078) [`1ed2dd20c6`](https://github.com/wso2/identity-apps/commit/1ed2dd20c661a8fcdf56b504d3b5a6e88fec9c37) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove custom layout validation
+
 ## 2.10.31
 
 ### Patch Changes
