@@ -25,7 +25,6 @@ import {
     LoadableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { SessionStorageUtils } from "@wso2is/core/utils";
 import {
     ConfirmationModal,
     DataTable,
