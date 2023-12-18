@@ -1726,8 +1726,5 @@
         "theme": {
             "name": "{{ console.theme }}"
         }
-    }{{ "," if console.validate_id_token_issuer is defined }}
-    {% if console.validate_id_token_issuer is defined %}
-    "validateIDTokenIssuer": {{ console.validate_id_token_issuer }}
-    {% endif %}
+    }
 }

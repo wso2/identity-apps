@@ -317,8 +317,7 @@ export const AppUtils: any = (function() {
                 tenantPath: this.getTenantPath(),
                 tenantPathWithoutSuperTenant: this.getTenantPath(true),
                 tenantPrefix: this.getTenantPrefix(),
-                ui: _config.ui,
-                validateIDTokenIssuer: _config.validateIDTokenIssuer ?? true
+                ui: _config.ui
             };
         },
 
