@@ -192,7 +192,7 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
     const {
         data: customLayoutBlob,
         isLoading: customLayoutLoading
-    } = useLayout(PredefinedLayouts.CUSTOM, tenantDomain, commonConfig.checkCustomLayoutExistanceBeforeEnabling);
+    } = useLayout(PredefinedLayouts.CUSTOM, tenantDomain, commonConfig?.checkCustomLayoutExistanceBeforeEnabling);
 
     /**
      * Set the internal initial theme state.
