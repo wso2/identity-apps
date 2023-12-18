@@ -23,6 +23,7 @@ export const commonConfig: CommonConfig = {
         enableQuerySearch: false
     },
     blockLoopBackCalls: false,
+    checkCustomLayoutExistanceBeforeEnabling: false,
     checkForUIResourceScopes: false,
     enableDefaultBrandingPreviewSection: true,
     enableDefaultPreLoader: true,
