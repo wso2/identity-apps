@@ -150,7 +150,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
     const [ submitTemplateSelection, setSubmitTemplateSelection ] = useTrigger();
     const [ submitAuthenticator, setSubmitAuthenticator ] = useTrigger();
 
-    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+    const [ alert, alertComponent ] = useWizardAlert();
     /**
      * Navigates to the next wizard step.
      */
@@ -259,27 +259,31 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
             })
             .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    setAlert({
-                        description: t("console:develop.features.authenticationProvider." +
-                            "notifications.addFederatedAuthenticator." +
-                            "error.description", { description: error.response.data.description }),
-                        level: AlertLevels.ERROR,
-                        message: t("console:develop.features.authenticationProvider.notifications." +
-                            "addFederatedAuthenticator.error.message")
-                    });
+                    dispatch(
+                        addAlert({
+                            description: t("console:develop.features.authenticationProvider." +
+                                "notifications.addFederatedAuthenticator." +
+                                "error.description", { description: error.response.data.description }),
+                            level: AlertLevels.ERROR,
+                            message: t("console:develop.features.authenticationProvider.notifications." +
+                                "addFederatedAuthenticator.error.message")
+                        })
+                    );
 
                     return;
                 }
 
-                setAlert({
-                    description: t("console:develop.features.authenticationProvider." +
-                        "notifications.addFederatedAuthenticator." +
-                        "genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("console:develop.features.authenticationProvider." +
-                        "notifications.addFederatedAuthenticator." +
-                        "genericError.message")
-                });
+                dispatch(
+                    addAlert({
+                        description: t("console:develop.features.authenticationProvider." +
+                            "notifications.addFederatedAuthenticator." +
+                            "genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("console:develop.features.authenticationProvider." +
+                            "notifications.addFederatedAuthenticator." +
+                            "genericError.message")
+                    })
+                );
             })
             .finally(() => {
                 setIsSubmitting(false);
