@@ -246,7 +246,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
                 <Button
                     basic
                     primary
-                    data-testid="org-mgt-edit-org-switch-button"
+                    data-componentid="org-mgt-edit-org-switch-button"
                     type="button"
                     onClick={ handleOrganizationSwitch }
                 >
