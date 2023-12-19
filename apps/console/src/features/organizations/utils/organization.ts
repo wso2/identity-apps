@@ -45,5 +45,4 @@ export class OrganizationUtils {
     public static getOrganizationType(): OrganizationType{
         return store.getState().organization?.organizationType;
     }
-
 }

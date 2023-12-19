@@ -23,17 +23,18 @@ import { addAlert } from "@wso2is/core/store";
 import { Button, GenericIcon, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { RouteChildrenProps } from "react-router-dom";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import useSignIn from "../../authentication/hooks/use-sign-in";
 import useAuthorization from "../../authorization/hooks/use-authorization";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { AppConstants, FeatureConfigInterface, history } from "../../core";
 import { getOrganization, useAuthorizedOrganizationsList, useGetOrganizationBreadCrumb } from "../api";
 import { EditOrganization } from "../components/edit-organization/edit-organization";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
+import { useGetCurrentOrganizationType } from "../hooks/use-get-organization-type";
 import useOrganizationSwitch from "../hooks/use-organization-switch";
 import { OrganizationInterface, OrganizationResponseInterface } from "../models";
 
@@ -61,17 +62,13 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     const { switchOrganization, switchOrganizationInLegacyMode } = useOrganizationSwitch();
     const { legacyAuthzRuntime }  = useAuthorization();
     const { onSignIn } = useSignIn();
-
-    const isFirstLevelOrg: boolean = useSelector((state: AppState) => state?.organization?.isFirstLevelOrganization);
-    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+    const { isFirstLevelOrganization, isSuperOrganization } = useGetCurrentOrganizationType();
 
     const shouldSendRequest: boolean = useMemo(() => {
         return (
-            isFirstLevelOrg ||
-            window[ "AppUtils" ].getConfig().organizationName ||
-            tenantDomain === AppConstants.getSuperTenant()
+            isFirstLevelOrganization() || isSuperOrganization() || window[ "AppUtils" ].getConfig().organizationName
         );
-    }, [ isFirstLevelOrg, tenantDomain ]);
+    }, [ isFirstLevelOrganization, isSuperOrganization ]);
 
     const { data: breadcrumbList, mutate: mutateOrganizationBreadCrumbFetchRequest } = useGetOrganizationBreadCrumb(
         shouldSendRequest

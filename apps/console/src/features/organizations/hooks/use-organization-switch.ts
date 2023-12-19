@@ -98,8 +98,12 @@ const useOrganizationSwitch = (): UseOrganizationSwitchInterface => {
 
         let newOrgPath: string = "";
 
-        if (breadcrumbList && breadcrumbList.length > 0 && OrganizationUtils.isSuperOrganization(breadcrumbList[0])
-            && breadcrumbList[ 1 ]?.id === org.id && organizationConfigs.showSwitcherInTenants) {
+        if (
+            breadcrumbList && breadcrumbList.length > 0
+            && OrganizationUtils.isSuperOrganization(breadcrumbList[0])
+            && breadcrumbList[ 1 ]?.id === org.id
+            && organizationConfigs.showSwitcherInTenants
+        ) {
             newOrgPath = "/t/" + org.name + "/" + window[ "AppUtils" ].getConfig().appBase;
         } else if (OrganizationUtils.isSuperOrganization(org)) {
             newOrgPath = `/${ window[ "AppUtils" ].getConfig().appBase }`;
@@ -113,7 +117,6 @@ const useOrganizationSwitch = (): UseOrganizationSwitchInterface => {
         // Redirect the user to the newly selected organization path.
         window.location.replace(newOrgPath);
     };
-
 
     return {
         isOrganizationSwitchRequestLoading,
