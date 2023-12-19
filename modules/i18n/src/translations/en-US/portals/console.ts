@@ -10207,7 +10207,16 @@ export const console: ConsoleNS = {
                         placeholder: "Search by Name"
                     },
                     subOrganizations: "Organizations",
-                    switchLabel: "Organization"
+                    switchLabel: "Organization",
+                    switchButton: "Switch to Organization",
+                    notifications: {
+                        switchOrganization: {
+                            genericError: {
+                                description: "Couldn't switch to the selected organization.",
+                                message: "Something went wrong"
+                            }
+                        }
+                    }
                 },
                 title: "Organizations"
             },

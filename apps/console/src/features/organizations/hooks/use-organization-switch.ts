@@ -18,7 +18,11 @@
 
 import { BasicUserInfo, useAuthContext } from "@asgardeo/auth-react";
 import { TokenConstants } from "@wso2is/core/constants";
+import { SessionStorageUtils } from "@wso2is/core/utils";
 import useOrganizations from "./use-organizations";
+import { organizationConfigs } from "../../../extensions";
+import { BreadcrumbList, GenericOrganization } from "../models";
+import { OrganizationUtils } from "../utils";
 
 /**
  * Interface for the return type of the `useOrganizationSwitch` hook.
@@ -34,6 +38,12 @@ export interface UseOrganizationSwitchInterface {
      * @returns A promise containing the basic user info.
      */
     switchOrganization: (orgId: string) => Promise<BasicUserInfo>;
+    /**
+     * Handles the organization switch in the legacy mode.
+     * @param breadcrumbList - Breadcrumb list
+     * @param organization - Organization to switch to.
+     */
+    switchOrganizationInLegacyMode: (breadcrumbList: BreadcrumbList, organization: GenericOrganization) => void;
 }
 
 /**
@@ -79,9 +89,39 @@ const useOrganizationSwitch = (): UseOrganizationSwitchInterface => {
         return response;
     };
 
+    /**
+     * Handles the organization switch in the legacy mode.
+     * @param breadcrumbList - Breadcrumb list
+     * @param org - Organization to switch to.
+     */
+    const switchOrganizationInLegacyMode = (breadcrumbList: BreadcrumbList, org: GenericOrganization): void => {
+
+        let newOrgPath: string = "";
+
+        if (
+            breadcrumbList && breadcrumbList.length > 0
+            && OrganizationUtils.isSuperOrganization(breadcrumbList[0])
+            && breadcrumbList[ 1 ]?.id === org.id
+            && organizationConfigs.showSwitcherInTenants
+        ) {
+            newOrgPath = "/t/" + org.name + "/" + window[ "AppUtils" ].getConfig().appBase;
+        } else if (OrganizationUtils.isSuperOrganization(org)) {
+            newOrgPath = `/${ window[ "AppUtils" ].getConfig().appBase }`;
+        } else {
+            newOrgPath = "/o/" + org.id + "/" + window[ "AppUtils" ].getConfig().appBase;
+        }
+
+        // Clear the callback url of the previous organization.
+        SessionStorageUtils.clearItemFromSessionStorage("auth_callback_url_console");
+
+        // Redirect the user to the newly selected organization path.
+        window.location.replace(newOrgPath);
+    };
+
     return {
         isOrganizationSwitchRequestLoading,
-        switchOrganization
+        switchOrganization,
+        switchOrganizationInLegacyMode
     };
 };
 
