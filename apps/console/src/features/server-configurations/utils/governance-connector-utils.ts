@@ -358,7 +358,7 @@ export class GovernanceConnectorUtils {
                         description: "Manage settings for WS-Federation based single sign-on.",
                         header: I18n.instance.t("console:wsFederationConfig.title"),
                         id: ServerConfigurationsConstants.WS_FEDERATION_CONNECTOR_ID,
-                        route: AppConstants.getPaths().get("WSFED_CONFIGURATION").replace,
+                        route: AppConstants.getPaths().get("WSFED_CONFIGURATION"),
                         testId: "ws-federation-sso-card"
                     }
                 ],
