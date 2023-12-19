@@ -17,7 +17,7 @@
  */
 
 import { AccessControlConstants, Show } from "@wso2is/access-control";
-import { CommonHelpers } from "@wso2is/core/helpers";
+import { CommonHelpers, hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -83,6 +83,7 @@ import { GuestUsersList } from "../components/guests/pages/guest-users-list";
 import { UsersList } from "../components/users-list";
 import { AddUserWizard } from "../components/wizard/add-user-wizard";
 import { BulkImportUserWizard } from "../components/wizard/bulk-import-user-wizard";
+import { InviteParentOrgUserWizard } from "../components/wizard/invite-parent-org-user-wizard";
 import {
     UserAccountTypes,
     UserAccountTypesMain,
@@ -128,6 +129,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const dispatch: Dispatch<any> = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -159,6 +161,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ paginatedGuestList, setPaginateGuestList ] = useState<UserInviteInterface[]>([]);
     const [ showMultipleInviteConfirmationModal, setShowMultipleInviteConfirmationModal ] = useState<boolean>(false);
     const [ connectorConfigLoading, setConnecterConfigLoading ] = useState<boolean>(false);
+    const [ showInviteParentUserWizard, setShowInviteParentUserWizard ] = useState<boolean>(false);
 
     const { isSubOrganization, isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
@@ -753,32 +756,65 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         );
     };
 
-    const addUserOptions: DropdownItemProps[] = [
-        {
-            "data-componentid": `${ componentId }-add-user`,
-            key: 1,
-            text: t("console:manage.features.users.addUserDropDown.addNewUser"),
-            value: UserAccountTypesMain.EXTERNAL
-        },
-        {
-            "data-componentid": `${ testId }-bulk-import-users-dropdown-item`,
-            "data-testid": `${ testId }-bulk-import-users-dropdown-item`,
-            key: 2,
-            text: t("console:manage.features.users.addUserDropDown.bulkImport"),
-            value: UserAddOptionTypes.BULK_IMPORT
+    const getAddUserOptions = (): DropdownItemProps[] => {
+        const dropDownOptions: DropdownItemProps[] = [];
+
+        if (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.create, allowedScopes)) {
+            dropDownOptions.push({
+                "data-componentid": `${componentId}-add-user`,
+                key: 1,
+                text: t("console:manage.features.users.addUserDropDown.addNewUser"),
+                value: UserAccountTypesMain.EXTERNAL
+            });
         }
-    ];
+        if (hasRequiredScopes(
+            featureConfig?.bulkUserImport,
+            featureConfig?.bulkUserImport?.scopes?.create,
+            allowedScopes)) {
+            dropDownOptions.push({
+                "data-componentid": `${testId}-bulk-import-users-dropdown-item`,
+                "data-testid": `${testId}-bulk-import-users-dropdown-item`,
+                key: 2,
+                text: t("console:manage.features.users.addUserDropDown.bulkImport"),
+                value: UserAddOptionTypes.BULK_IMPORT
+            });
+        }
+        if (isSubOrganization() &&
+            featureConfig?.guestUser?.enabled &&
+            hasRequiredScopes(featureConfig?.guestUser, featureConfig?.guestUser?.scopes?.create, allowedScopes)) {
+            dropDownOptions.push({
+                "data-componentid": `${componentId}-invite-parent-user`,
+                key: 3,
+                text: t("console:manage.features.parentOrgInvitations.addUserWizard.heading"),
+                value: UserAccountTypesMain.INTERNAL
+            });
+        }
+
+        return dropDownOptions;
+    };
 
     const handleDropdownItemChange = (value: string): void => {
         handleAddNewUserWizardClick();
-        if (value === UserAccountTypesMain.EXTERNAL) {
-            eventPublisher.publish("manage-users-click-create-new", {
-                type: "user"
-            });
-            setShowWizard(true);
-            setUserType(UserAccountTypesMain.EXTERNAL);
-        } else if (value === UserAddOptionTypes.BULK_IMPORT) {
-            setShowBulkImportWizard(true);
+        switch (value) {
+            case UserAccountTypesMain.EXTERNAL:
+                eventPublisher.publish("manage-users-click-create-new", {
+                    type: "user"
+                });
+                setShowWizard(true);
+                setUserType(UserAccountTypesMain.EXTERNAL);
+
+                break;
+            case UserAddOptionTypes.BULK_IMPORT:
+                setShowBulkImportWizard(true);
+
+                break;
+            case UserAccountTypesMain.INTERNAL:
+                eventPublisher.publish("manage-users-click-invite-new", {
+                    type: "user"
+                });
+                setShowInviteParentUserWizard(true);
+
+                break;
         }
     };
 
@@ -802,7 +838,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 trigger={ addUserDropdownTrigger }
             >
                 <Dropdown.Menu >
-                    { addUserOptions.map((option: {
+                    { getAddUserOptions().map((option: {
                         "data-componentid": string;
                         key: number;
                         text: string;
@@ -842,7 +878,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 listItemLimit={ listItemLimit }
                 updateList={ () => setListUpdated(true) }
                 userStore= { userStore }
-                onUserInviteSuccess={ () => mutateParentOrgUserInviteList() }
             />
         );
     };
@@ -984,6 +1019,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         );
     };
 
+    const handleInviteParentUserWizardClose = (): void => {
+        setShowInviteParentUserWizard(false);
+    };
+
     return (
         <PageLayout
             action={
@@ -1029,6 +1068,15 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             {
                 showMultipleInviteConfirmationModal &&
                     renderMultipleInviteConfirmationModel()
+            }
+            {
+                showInviteParentUserWizard && (
+                    <InviteParentOrgUserWizard
+                        closeWizard={ handleInviteParentUserWizardClose }
+                        onUserInviteSuccess={ () => mutateParentOrgUserInviteList() }
+                        data-componentid="user-mgt-invite-parent-user-wizard-modal"
+                    />
+                )
             }
         </PageLayout>
     );
