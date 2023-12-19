@@ -208,7 +208,7 @@
         "checkSessionInterval": 5,
         "userIdleTimeOut": 1800
     },
-    "getProfileInfoFromIDToken": true,
+    "getProfileInfoFromIDToken": false,
     "superTenantProxy": "",
     "legacyAuthzRuntime": false,
     "legacyMode": false,
