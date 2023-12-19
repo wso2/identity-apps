@@ -155,18 +155,15 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
     const formTopRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
 
     /**
-     * Scrolls to the first field that throws an error.
-     *
-     * @param field - field The name of the field.
+     * Scrolls to the top of the form.
      */
-    const scrollToInValidField = (): void => {
+    const scrollToTop = (): void => {
         const options: ScrollIntoViewOptions = {
             behavior: "smooth",
             block: "center"
         };
 
         formTopRef.current.scrollIntoView(options);
-
     };
 
     /**
@@ -286,7 +283,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                         message: t("console:develop.features.authenticationProvider.notifications." +
                             "addFederatedAuthenticator.error.message")
                     });
-                    scrollToInValidField();
+                    scrollToTop();
 
                     return;
                 }
@@ -299,7 +296,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                         "notifications.addFederatedAuthenticator." +
                         "genericError.message")
                 });
-                scrollToInValidField();
+                scrollToTop();
             })
             .finally(() => {
                 setIsSubmitting(false);
