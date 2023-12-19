@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.0.83
+
+### Patch Changes
+
+- [#5097](https://github.com/wso2/identity-apps/pull/5097) [`2a3ec9029a`](https://github.com/wso2/identity-apps/commit/2a3ec9029a3d3d25fe791f199e2765800b6c2f66) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Add option to switch to a particular sub organization from its settings page.
+
 ## 2.0.82
 
 ### Patch Changes
