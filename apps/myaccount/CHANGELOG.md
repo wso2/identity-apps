@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.2.69
+
+### Patch Changes
+
+- [#5050](https://github.com/wso2/identity-apps/pull/5050) [`b3b5a88a90`](https://github.com/wso2/identity-apps/commit/b3b5a88a90bac33a6072cd2a9afb603f2a652708) Thanks [@dhaura](https://github.com/dhaura)! - Add Functionality Enable or Disable ID Token Issuer Validation in My Account and Console
+
 ## 2.2.68
 
 ### Patch Changes
