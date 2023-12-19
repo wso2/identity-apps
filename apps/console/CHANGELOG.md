@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.10.39
+
+### Patch Changes
+
+- [#5050](https://github.com/wso2/identity-apps/pull/5050) [`b3b5a88a90`](https://github.com/wso2/identity-apps/commit/b3b5a88a90bac33a6072cd2a9afb603f2a652708) Thanks [@dhaura](https://github.com/dhaura)! - Add Functionality Enable or Disable ID Token Issuer Validation in My Account and Console
+
+* [#5081](https://github.com/wso2/identity-apps/pull/5081) [`70d6bb2703`](https://github.com/wso2/identity-apps/commit/70d6bb2703325676d7da168047ced3922f0ce4a8) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Move parent user invite option to separate wizard
+
 ## 2.10.38
 
 ### Patch Changes
