@@ -18,14 +18,15 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Wizard, WizardPage } from "@wso2is/form";
-import React, { FunctionComponent, ReactElement } from "react";
+import debounce, { DebouncedFunc } from "lodash-es/debounce";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     ExpertModeAuthenticationProviderCreateWizardFormErrorValidationsInterface,
     ExpertModeAuthenticationProviderCreateWizardFormValuesInterface
 } from "./expert-mode-authentication-provider-create-wizard";
 import { AuthenticatorManagementConstants } from "../../../constants/autheticator-constants";
-import { ConnectionTemplateInterface } from "../../../models/connection";
+import { ConnectionTemplateInterface, IdpNameValidationCache } from "../../../models/connection";
 import { ConnectionsManagementUtils } from "../../../utils/connection-utils";
 
 /**
@@ -90,39 +91,46 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
 
         const { t } = useTranslation();
 
-        /**
-         * Check whether IDP name is already exist or not.
-         *
-         * @param value - IDP name.
-         * @returns error msg if name is already taken.
-         */
-        const idpNameValidation = (value: string): Promise<string> => {
+        const idpNameValidationCache: MutableRefObject<IdpNameValidationCache> = useRef(null);
+        const [ isUserInputIdpNameAlreadyTaken, setIsUserInputIdpNameAlreadyTaken ] = useState<boolean>(undefined);
 
-            return ConnectionsManagementUtils.searchIdentityProviderName(value)
-                .then((idpExist: boolean) => {
-                    if (idpExist) {
-                        return Promise.resolve(
-                            t(
-                                "console:develop.features." +
-                                "authenticationProvider.forms.generalDetails.name." +
-                                "validations.duplicate"
-                            )
-                        );
-                    } else {
-                        return Promise.resolve(null);
+        /**
+         * Check if the typed IDP name is already taken.
+         *
+         * @param value - User input for the IDP name.
+         */
+        const idpNameValidation: DebouncedFunc<(value: string) => void> = debounce(
+            async (value: string) => {
+                let idpExist: boolean;
+
+                if (idpNameValidationCache?.current?.value === value) {
+                    idpExist = idpNameValidationCache?.current?.state;
+                }
+
+                if (idpExist === undefined) {
+                    try {
+                        idpExist = await ConnectionsManagementUtils.searchIdentityProviderName(value);
+                    } catch (e) {
+                        /**
+                         * Ignore the error, as a failed identity provider search
+                         * should not result in user blocking. However, if the
+                         * identity provider name already exists, it will undergo
+                         * validation from the backend, and any resulting errors
+                         * will be displayed in the user interface.
+                         */
+                        idpExist = false;
                     }
-                })
-                .catch(() => {
-                    /**
-                     * Ignore the error, as a failed identity provider search
-                     * should not result in user blocking. However, if the
-                     * identity provider name already exists, it will undergo
-                     * validation from the backend, and any resulting errors
-                     * will be displayed in the user interface.
-                     */
-                    return Promise.resolve(null);
-                });
-        };
+
+                    idpNameValidationCache.current = {
+                        state: idpExist,
+                        value
+                    };
+                }
+
+                setIsUserInputIdpNameAlreadyTaken(!!idpExist);
+            },
+            500
+        );
 
         /**
          * Validates the Form.
@@ -159,7 +167,6 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
                 changePage={ (step: number) => changePageNumber(step) }
                 setTotalPage={ (step: number) => setTotalPage(step) }
                 data-componentid={ componentId }
-                validateOnBlur
             >
                 <WizardPage validate={ validateForm }>
                     <Field.Input
@@ -175,7 +182,20 @@ export const ExpertModeAuthenticationProviderCreateWizardContent: FunctionCompon
                             "generalDetails.name.placeholder")
                         }
                         required={ true }
-                        validation={ idpNameValidation }
+                        listen={ idpNameValidation }
+                        validation={
+                            () => {
+                                if (isUserInputIdpNameAlreadyTaken) {
+                                    return t(
+                                        "console:develop.features." +
+                                        "authenticationProvider.forms.generalDetails.name." +
+                                        "validations.duplicate"
+                                    );
+                                }
+
+                                return null;
+                            }
+                        }
                         maxLength={
                             AuthenticatorManagementConstants
                                 .AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.IDP_NAME_MAX_LENGTH as number
