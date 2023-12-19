@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.10.41
+
+### Patch Changes
+
+- [#5103](https://github.com/wso2/identity-apps/pull/5103) [`fdfda1bc31`](https://github.com/wso2/identity-apps/commit/fdfda1bc31cad9e9a4b45e20f7e24f6ce1a9b8b7) Thanks [@savindi7](https://github.com/savindi7)! - Update value of getProfileInfoFromIDToken config
+
+* [#5104](https://github.com/wso2/identity-apps/pull/5104) [`2c36179cef`](https://github.com/wso2/identity-apps/commit/2c36179ceff20263709a1d76d22acdd0a3b1aef9) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Make the appearance of audience column in the roles page consistent with other places.
+
 ## 2.10.40
 
 ### Patch Changes
