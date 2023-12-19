@@ -36,7 +36,6 @@ import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
 import useOrganizationSwitch from "../hooks/use-organization-switch";
 import { OrganizationInterface, OrganizationResponseInterface } from "../models";
-import { OrganizationUtils } from "../utils";
 
 interface OrganizationEditPagePropsInterface extends SBACInterface<FeatureConfigInterface>,
     TestableComponentInterface, RouteChildrenProps{
@@ -59,7 +58,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     const [ isAuthorizedOrganization, setIsAuthorizedOrganization ] = useState(false);
     const [ filterQuery, setFilterQuery ] = useState<string>("");
 
-    const { switchOrganization } = useOrganizationSwitch();
+    const { switchOrganization, switchOrganizationInLegacyMode } = useOrganizationSwitch();
     const { legacyAuthzRuntime }  = useAuthorization();
     const { onSignIn } = useSignIn();
 
@@ -192,7 +191,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
      */
     const handleOrganizationSwitch = async (): Promise<void> => {
         if (legacyAuthzRuntime) {
-            OrganizationUtils.handleLegacyOrganizationSwitch(breadcrumbList, organization);
+            switchOrganizationInLegacyMode(breadcrumbList, organization);
         }
 
         let response: BasicUserInfo = null;

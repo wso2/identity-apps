@@ -60,7 +60,6 @@ import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
 import useOrganizationSwitch from "../hooks/use-organization-switch";
 import { GenericOrganization, OrganizationInterface, OrganizationListInterface } from "../models";
-import { OrganizationUtils } from "../utils";
 
 /**
  *
@@ -162,7 +161,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
     const { onSignIn } = useSignIn();
 
-    const { switchOrganization } = useOrganizationSwitch();
+    const { switchOrganization, switchOrganizationInLegacyMode } = useOrganizationSwitch();
 
     const { legacyAuthzRuntime }  = useAuthorization();
 
@@ -290,7 +289,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
         organization: GenericOrganization
     ): Promise<void> => {
         if (legacyAuthzRuntime) {
-            OrganizationUtils.handleLegacyOrganizationSwitch(breadcrumbList, organization);
+            switchOrganizationInLegacyMode(breadcrumbList, organization);
         }
 
         let response: BasicUserInfo = null;
