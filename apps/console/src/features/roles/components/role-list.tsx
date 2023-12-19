@@ -232,23 +232,16 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 id: "audience",
                 key: "audience",
                 render: (role: RolesInterface) => (
-                    <Header as="h6" data-componentid={ `${ componentId }-col-2-item-heading` }>
-                        <Header.Content>
-                            <Header.Subheader data-componentid={ `${ componentId }-col-2-item-sub-heading` }>
-                                { role?.audience?.type.charAt(0).toUpperCase() + role?.audience?.type.slice(1) }
-                                {
-                                    RoleAudienceTypes.APPLICATION === role?.audience?.type.toUpperCase() && (
-                                        <Label
-                                            size="mini"
-                                            className="client-id-label"
-                                        >
-                                            { role?.audience?.display }
-                                        </Label>
-                                    )
-                                }
-                            </Header.Subheader>
-                        </Header.Content>
-                    </Header>
+                    role?.audience && (
+                        <Label size="mini">
+                            { role.audience.type }
+                            {
+                                role.audience.type.toUpperCase() === RoleAudienceTypes.APPLICATION
+                                    ? ` | ${role.audience.display} `
+                                    : ""
+                            }
+                        </Label>
+                    )
                 ),
                 title: (
                     <div className="pl-3">
