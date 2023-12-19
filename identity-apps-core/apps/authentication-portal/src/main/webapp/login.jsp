@@ -336,6 +336,9 @@
         try {
             PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
             isSelfSignUpEnabledInTenant = preferenceRetrievalClient.checkSelfRegistration(userTenant);
+            if (isSelfSignUpEnabledInTenant && StringUtils.equals("Console", appName)) {
+                isSelfSignUpEnabledInTenant = false;
+            }
             isUsernameRecoveryEnabledInTenant = preferenceRetrievalClient.checkUsernameRecovery(userTenant);
             isPasswordRecoveryEnabledInTenant = preferenceRetrievalClient.checkPasswordRecovery(userTenant);
         } catch (PreferenceRetrievalClientException e) {
@@ -917,7 +920,7 @@
                                         if (imageURL == null || imageURL.isEmpty()) {
                                             logoPath = "libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg";
                                         }
-                                        
+
                                         if (!imageURL.isEmpty() && imageURL.contains("assets/images/logos/")) {
                                             String[] imageURLSegements = imageURL.split("/");
                                             String logoFileName = imageURLSegements[imageURLSegements.length - 1];
