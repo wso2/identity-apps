@@ -303,12 +303,6 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             };
         }
 
-        // Temporarily make SelfRegistration.NotifyAccountConfirmation false.
-        data = {
-            ...data,
-            "SelfRegistration.NotifyAccountConfirmation": false
-        };
-
         if (serverConfigurationConfig.dynamicConnectors) {
 
             const keysToOmit: string[] = [
