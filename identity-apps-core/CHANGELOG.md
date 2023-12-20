@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.106
+
+### Patch Changes
+
+- [#5105](https://github.com/wso2/identity-apps/pull/5105) [`8e8f6b4a5f`](https://github.com/wso2/identity-apps/commit/8e8f6b4a5f68f67b3b198b24e15bb02f11d605b1) Thanks [@thanujalk](https://github.com/thanujalk)! - Disable self signup for Console
+
 ## 2.0.105
 
 ### Patch Changes
