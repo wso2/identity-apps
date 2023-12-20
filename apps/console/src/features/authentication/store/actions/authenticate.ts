@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -48,6 +48,8 @@ export const getProfileInformation = (
 
     dispatch(setProfileInfoRequestLoadingStatus(true));
 
+    const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
+
     const getProfileInfoFromToken: boolean = store.getState().auth.isPrivilegedUser ||
                                     (window[ "AppUtils" ].getConfig().getProfileInfoFromIDToken ?? false);
 
@@ -90,7 +92,7 @@ export const getProfileInformation = (
         }
     };
 
-    if (getProfileInfoFromToken && meEndpoint.includes("scim2/Me")) {
+    if (getProfileInfoFromToken || isSubOrg && meEndpoint.includes("scim2/Me")) {
         AsgardeoSPAClient.getInstance().getDecodedIDToken().then((decodedToken: DecodedIDTokenPayload) => {
             const profileInfo: ProfileInfoInterface = {
                 emails: [ decodedToken.email ] ?? [],
