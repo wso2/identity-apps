@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.10.42
+
+### Patch Changes
+
+- [#5110](https://github.com/wso2/identity-apps/pull/5110) [`998f9beea5`](https://github.com/wso2/identity-apps/commit/998f9beea51cb927b794397ac900b41ffe3f414f) Thanks [@savindi7](https://github.com/savindi7)! - Fix issues in Artifact Binding option in SAML Connections
+
+* [#5113](https://github.com/wso2/identity-apps/pull/5113) [`7202b73dc6`](https://github.com/wso2/identity-apps/commit/7202b73dc606d4281485f3e4e019a99791740040) Thanks [@savindi7](https://github.com/savindi7)! - Prevent invoking the Me endpoint for sub organizations
+
 ## 2.10.41
 
 ### Patch Changes
