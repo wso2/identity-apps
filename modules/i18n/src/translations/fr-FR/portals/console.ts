@@ -2735,7 +2735,7 @@ export const console: ConsoleNS = {
                     inboundSTS: {
                         fields: {
                             realm: {
-                                hint: "Saisir l'identifiant du domaine STS passif",
+                                hint: "Saisissez l'identifiant du domaine ws-federation",
                                 label: "Domaine d'identité",
                                 placeholder: "Saisir le domaine.",
                                 validations: {
