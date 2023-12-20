@@ -339,7 +339,29 @@ const useSignIn = (): UseSignInInterface => {
                 });
         } else {
             // In case of failure customServerHost is set to the serverHost.
-            window["AppUtils"].updateCustomServerHost(Config.getDeploymentConfig().serverHost);
+            let customServerHost: string = Config.getDeploymentConfig().serverHost;
+
+            const isSuperTenant: boolean = window["AppUtils"].isSuperTenant();
+            const isSubOrganization: boolean = orgType === OrganizationType.SUBORGANIZATION &&
+                window["AppUtils"].getConfig().organizationName;
+
+            if (!window["AppUtils"].getConfig().requireSuperTenantInUrls && isSuperTenant) {
+                // Removing super tenant from the server host.
+                const customServerHostSplit: string[] = customServerHost.split("/t/");
+
+                if (customServerHostSplit.length >= 2) {
+                    customServerHost = customServerHostSplit[0];
+                }
+            }
+
+            if (isSubOrganization) {
+                const orgPrefix: string = (!window["AppUtils"].getConfig().requireSuperTenantInUrls && isSuperTenant)
+                    ? `${window["AppUtils"].getConfig().organizationPrefix}/` : "";
+
+                customServerHost = `${customServerHost}/${orgPrefix}${window["AppUtils"].getConfig().organizationName}`;
+            }
+
+            window["AppUtils"].updateCustomServerHost(customServerHost);
 
             // Update store with custom server host.
             dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
