@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { Autocomplete, AutocompleteRenderInputParams, TextField, Typography } from "@oxygen-ui/react";
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import TextField from "@oxygen-ui/react/TextField";
+import Typography from "@oxygen-ui/react/Typography";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, Field, Form } from "@wso2is/form";
 import { Code, FormInputLabel, FormSection } from "@wso2is/react-components";
@@ -105,9 +107,8 @@ export interface SamlPropertiesInterface {
     /**
      * https://github.com/wso2/product-is/issues/17004
      */
-    ISArtifactResolveReqSigned?: string, 
+    ISArtifactResolveReqSigned?: string,
     ISArtifactResponseSigned?: string,
-    
     isAssertionSigned?: boolean,
     attributeConsumingServiceIndex?: string;
     AuthnContextComparisonLevel?: string;
@@ -214,7 +215,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         { key: 25, text: "Custom Authentication Context Class", value: "Custom Authentication Context Class" }
     ];
 
-    const authorizedRedirectURL: string = config?.deployment?.customServerHost + "/commonauth" ;
+    const authorizedRedirectURL: string = config?.deployment?.customServerHost + "/commonauth";
 
     /**
      * ISAuthnReqSigned, IsLogoutReqSigned these two fields states will be used by other
@@ -244,8 +245,8 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
             /**
              * https://github.com/wso2/product-is/issues/17004
              */
-            ISArtifactResolveReqSigned: findPropVal<string>({ 
-                defaultValue: "string", 
+            ISArtifactResolveReqSigned: findPropVal<string>({
+                defaultValue: "string",
                 key: "ISArtifactResolveReqSigned" }
             ),
             ISArtifactResponseSigned: findPropVal<string>({ defaultValue: "string", key: "ISArtifactResponseSigned" }),
@@ -300,7 +301,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
 
         const initiallySelectedAuthnContextClasses: DropdownChild[] = initialFormValues.AuthnContextClassRef?.split(",")
             .map(
-                (contextClass: string) => 
+                (contextClass: string) =>
                     authenticationContextClassOptions.find(
                         (classOption: DropdownChild) => classOption.value === contextClass
                     )
@@ -724,7 +725,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             />
                         </SectionRow>
                     ) }
-                   
                     { identityProviderConfig?.extendedSamlConfig?.includePublicCertEnabled && (
                         <SectionRow>
                             <Field.Checkbox
@@ -744,7 +744,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             />
                         </SectionRow>
                     ) }
-                
                     { identityProviderConfig?.extendedSamlConfig?.includeNameIDPolicyEnabled && (
                         <SectionRow>
                             <Field.Checkbox
@@ -764,7 +763,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             />
                         </SectionRow>
                     ) }
-                   
                     { identityProviderConfig?.extendedSamlConfig?.isAssertionEncryptionEnabled && (
                         <SectionRow>
                             <Field.Checkbox
@@ -784,7 +782,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             />
                         </SectionRow>
                     ) }
-                   
                     { identityProviderConfig.extendedSamlConfig.includeAuthenticationContextEnabled && (
                         <SectionRow>
                             { /* IncludeAuthnContext */ }
@@ -800,7 +797,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                     required={ false }
                                     value={ option.value }
                                 />
-                            )) } 
+                            )) }
                         </SectionRow>
                     ) }
 
@@ -818,7 +815,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                     value={ option.value }
                                 />
                             )) }
-                        </SectionRow> 
+                        </SectionRow>
                     ) }
 
                     { identityProviderConfig.extendedSamlConfig.responseAuthenticationContextClassEnabled && (
@@ -838,7 +835,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                 />
                             )) }
                         </SectionRow>
-                    ) }      
+                    ) }
 
                     { identityProviderConfig.extendedSamlConfig.authContextComparisonLevelEnabled && (
                         <SectionRow>
@@ -857,7 +854,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                 ) }
                                 hint={ t(`${ I18N_TARGET_KEY }.authContextComparisonLevel.hint`) }
                                 readOnly={ readOnly }
-                            /> 
+                            />
                         </SectionRow>
                     ) }
 
@@ -887,7 +884,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                         <Typography variant="body1">
                             { t(`${ I18N_TARGET_KEY }.authenticationContextClass.label`) }
                         </Typography>
-                        
                         <Autocomplete
                             multiple
                             className="forms-wrapped-autocomplete"
@@ -930,7 +926,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             data-testid={ `${ testId }-customAuthenticationContextClass-field` }
                         />
                     </SectionRow>
-                    
                     <SectionRow>
                         <Field.QueryParams
                             value={ formValues?.commonAuthQueryParams }
@@ -961,7 +956,8 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                 ) }
                                 hint={ t(`${ I18N_TARGET_KEY }.isArtifactBindingEnabled.hint`) }
                                 readOnly={ readOnly }
-                            /> 
+                                listen={ (value: boolean) => setIsArtifactBindingEnabled(value) }
+                            />
                         </SectionRow>
 
                         <SectionRow>
@@ -989,7 +985,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             <Field.Checkbox
                                 required={ false }
                                 name="ISArtifactResolveReqSigned"
-                                value={ initialFormValues.ISArtifactResolveReqSigned === "true" }
+                                defaultValue={ initialFormValues.ISArtifactResolveReqSigned === "true" }
                                 ariaLabel={ "Enable Artifact resolve request signing" }
                                 data-testid={ `${ testId }-isArtifactResolveReqSigned-field` }
                                 label={ (
@@ -1006,7 +1002,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                             <Field.Checkbox
                                 required={ false }
                                 name="ISArtifactResponseSigned"
-                                value={ initialFormValues.ISArtifactResponseSigned === "true" }
+                                defaultValue={ initialFormValues.ISArtifactResponseSigned === "true" }
                                 ariaLabel={ "Enable artifact response signing" }
                                 data-testid={ `${ testId }-isArtifactResponseSigned-field` }
                                 label={ (
@@ -1017,7 +1013,7 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                 hint={ t(`${ I18N_TARGET_KEY }.isArtifactResponseSigned.hint`) }
                                 readOnly={ readOnly }
                                 disabled={ !isArtifactBindingEnabled }
-                            /> 
+                            />
                         </SectionRow>
                     </Grid>
                 </FormSection>
