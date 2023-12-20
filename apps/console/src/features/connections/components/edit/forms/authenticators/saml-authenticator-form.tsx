@@ -954,7 +954,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                         { t(`${ I18N_TARGET_KEY }.isArtifactBindingEnabled.label`) }
                                     </FormInputLabel>
                                 ) }
-                                hint={ t(`${ I18N_TARGET_KEY }.isArtifactBindingEnabled.hint`) }
                                 readOnly={ readOnly }
                                 listen={ (value: boolean) => setIsArtifactBindingEnabled(value) }
                             />
@@ -975,7 +974,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                 ) }
                                 maxLength={ LOGOUT_URL_LENGTH.max }
                                 minLength={ LOGOUT_URL_LENGTH.min }
-                                hint={ t(`${ I18N_TARGET_KEY }.artifactResolveEndpointUrl.hint`) }
                                 readOnly={ readOnly }
                                 disabled={ !isArtifactBindingEnabled }
                             />
@@ -993,7 +991,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                         { t(`${ I18N_TARGET_KEY }.isArtifactResolveReqSigned.label`) }
                                     </FormInputLabel>
                                 ) }
-                                hint={ t(`${ I18N_TARGET_KEY }.isArtifactResolveReqSigned.hint`) }
                                 readOnly={ readOnly }
                                 disabled={ !isArtifactBindingEnabled }
                             />
@@ -1010,7 +1007,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
                                         { t(`${ I18N_TARGET_KEY }.isArtifactResponseSigned.label`) }
                                     </FormInputLabel>
                                 ) }
-                                hint={ t(`${ I18N_TARGET_KEY }.isArtifactResponseSigned.hint`) }
                                 readOnly={ readOnly }
                                 disabled={ !isArtifactBindingEnabled }
                             />
