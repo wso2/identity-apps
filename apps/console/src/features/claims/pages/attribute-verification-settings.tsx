@@ -329,14 +329,14 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                 id={ FORM_ID }
                 uncontrolledForm
                 initialValues={ formValues }
-                onSubmit={ (values: Record<string, unknown>) => 
+                onSubmit={ (values: Record<string, unknown>) =>
                     updateFormData(getUpdatedConfigurations(values))
                 }
             >
                 <Field.Checkbox
                     ariaLabel={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION, 
+                        CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION,
                         formDisplayData?.[CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION]?.displayName)
                     }
                     name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
@@ -344,10 +344,10 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     className="toggle"
                     label={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION, 
+                        CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION,
                         formDisplayData?.[CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION]?.displayName)
                     }
-                    defaultValue={ formValues?.[ 
+                    defaultValue={ formValues?.[
                         CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION ] == true }
                     readOnly={ readOnly }
                     disabled={ !isConnectorEnabled }
@@ -355,14 +355,14 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     data-componentid={ `${ componentId }-enable-auto-login` }
                     hint={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION, 
+                        CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION,
                         formDisplayData?.[CONNECTOR_NAMES.ENABLE_EMAIL_VERIFICATION]?.description)
                     }
                 />
                 <Field.Input
                     ariaLabel={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,
-                        CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME, 
+                        CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME,
                         formDisplayData?.
                             [CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME]?.displayName)
                     }
@@ -377,19 +377,19 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     minLength={ 3 }
                     maxLength={ 100 }
                     readOnly={ readOnly }
-                    initialValue={ formValues?.[ 
+                    initialValue={ formValues?.[
                         CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME ] }
                     data-componentId={ `${ componentId }-otp-length` }
                     label={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,
-                        CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME, 
+                        CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME,
                         formDisplayData?.
                             [CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME]?.displayName)
                     }
                     disabled={ !isConnectorEnabled }
                     hint={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,
-                        CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME, 
+                        CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME,
                         formDisplayData?.
                             [CONNECTOR_NAMES.EMAIL_VERIFICATION_ON_UPDATE_LINK_EXPIRY_TIME]?.description)
                     }
@@ -397,7 +397,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                 <Field.Checkbox
                     ariaLabel={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION, 
+                        CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION,
                         formDisplayData?.[CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION]?.displayName)
                     }
                     name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
@@ -405,10 +405,10 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     className="toggle"
                     label={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION, 
+                        CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION,
                         formDisplayData?.[CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION]?.displayName)
                     }
-                    defaultValue={ formValues?.[ 
+                    defaultValue={ formValues?.[
                         CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION ] == true }
                     readOnly={ readOnly }
                     disabled={ !isConnectorEnabled }
@@ -416,7 +416,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                     data-componentid={ `${ componentId }-enable-auto-login` }
                     hint={ GovernanceConnectorUtils.resolveFieldLabel(
                         CATEGORY_NAME,
-                        CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION, 
+                        CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION,
                         formDisplayData?.[CONNECTOR_NAMES.ENABLE_EMAIL_NOTIFICATION]?.description)
                     }
                 />
@@ -436,7 +436,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
         );
     };
 
-    return (  
+    return (
         <PageLayout
             title={ t(
                 "console:manage.features.governanceConnectors.connectorCategories.otherSettings.connectors." +
@@ -447,7 +447,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                 "userClaimUpdate.friendlyName"
             ) }
             description={ t(
-                "console:manage.features.governanceConnectors.connectorSubHeading", 
+                "console:manage.features.governanceConnectors.connectorSubHeading",
                 { name: t(
                     "console:manage.features.governanceConnectors.connectorCategories.otherSettings.connectors." +
                     "userClaimUpdate.friendlyName"
