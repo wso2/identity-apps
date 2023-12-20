@@ -17,12 +17,12 @@
  */
 
 import { ApplicationManagementConstants } from "../../constants";
-import { 
-    AuthProtocolMetaListItemInterface, 
-    SAMLConfigModes, 
-    SAMLConfigurationInterface, 
-    SupportedAuthProtocolTypes, 
-    SupportedAuthProtocolTypesInterface 
+import {
+    AuthProtocolMetaListItemInterface,
+    SAMLConfigModes,
+    SAMLConfigurationInterface,
+    SupportedAuthProtocolTypes,
+    SupportedAuthProtocolTypesInterface
 } from "../../models";
 
 export const InboundProtocolDefaultFallbackTemplates: Map<string, string> = new Map<string, string>([
