@@ -9032,7 +9032,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Rechercher les utilisateurs"
                             },
                             assign: {
-                                placeholder: "Affecter les utilisateurs"
+                                placeholder: "Tapez le(s) nom(s) d'utilisateur pour rechercher et attribuer des utilisateurs"
                             },
                             remove: {
                                 label: "Suppression des utilisateurs",

@@ -8841,7 +8841,7 @@ export const console: ConsoleNS = {
                                 placeholder: "පරිශීලකයින් සොයන්න"
                             },
                             assign: {
-                                placeholder: "පරිශීලකයින් යොදවන්න"
+                                placeholder: "පරිශීලකයන් සෙවීමට සහ පැවරීමට පරිශීලක නාමය/න් ටයිප් කරන්න"
                             },
                             remove: {
                                 label: "ඉවත් කරන පරිශීලකයින්",
