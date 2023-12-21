@@ -314,7 +314,6 @@ export class RouteUtils {
             AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"),
             AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"),
             AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
-            AppConstants.getPaths().get("ADMIN_ADVISORY_BANNER_EDIT"),
             AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN")
         ];
 
@@ -330,7 +329,8 @@ export class RouteUtils {
             {
                 category: build,
                 id: "applications",
-                order: 1
+                order: 1,
+                selected: history.location.pathname.includes("applications")
             },
             {
                 category: build,
@@ -421,7 +421,8 @@ export class RouteUtils {
             },
             {
                 category: settings,
-                id: "server"
+                id: "server",
+                selected: history.location.pathname.includes("server")
             },
             {
                 category: build,
@@ -436,14 +437,6 @@ export class RouteUtils {
                 category: build,
                 id: "smsProviders",
                 parent: branding
-            },
-            {
-                category: other,
-                id: "remoteLogging"
-            },
-            {
-                category: settings,
-                id: "eventPublishing"
             },
             {
                 category: settings,

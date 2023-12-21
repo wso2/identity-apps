@@ -67,7 +67,7 @@ const getKnownConnectorMetadata = (): FederatedAuthenticatorMetaDataInterface[] 
         {
             authenticatorId: AuthenticatorManagementConstants.PASSIVE_STS_AUTHENTICATOR_ID,
             description: "Login users with WS Federation.",
-            displayName: "Passive STS",
+            displayName: "WS-Federation",
             icon: getConnectionIcons().wsFed,
             name: AuthenticatorManagementConstants.PASSIVE_STS_AUTHENTICATOR_NAME
         },

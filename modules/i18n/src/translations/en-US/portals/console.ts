@@ -2700,7 +2700,7 @@ export const console: ConsoleNS = {
                     inboundSTS: {
                         fields: {
                             realm: {
-                                hint: "Enter realm identifier for passive sts",
+                                hint: "Enter realm identifier for ws-federation",
                                 label: "Realm",
                                 placeholder: "Enter realm.",
                                 validations: {
@@ -2927,7 +2927,7 @@ export const console: ConsoleNS = {
                                 },
                                 wsFedConfigurations: {
                                     labels: {
-                                        passiveSTSUrl: "Passive STS URL"
+                                        passiveSTSUrl: "WS-Federation URL"
                                     }
                                 }
                             },

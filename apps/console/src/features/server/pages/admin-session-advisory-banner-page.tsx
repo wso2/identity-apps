@@ -64,9 +64,9 @@ export const AdminSessionAdvisoryBannerEditPage: FC<AdmindvisoryBannerEditPageIn
 
     const { [ "data-componentid" ]: componentId } = props;
 
-    const [ 
-        adminAdvisoryBannerConfigs, 
-        setAdminAdvisoryBannerConfigs 
+    const [
+        adminAdvisoryBannerConfigs,
+        setAdminAdvisoryBannerConfigs
     ] = useState<AdminAdvisoryBannerConfigurationInterface>(undefined);
 
     const {
@@ -106,9 +106,9 @@ export const AdminSessionAdvisoryBannerEditPage: FC<AdmindvisoryBannerEditPageIn
 
     const handleToggleChange = (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps) => {
         event.preventDefault();
-        
+
         const configs: AdminAdvisoryConfigurationInterface = {
-            bannerContent: adminAdvisoryConfigs?.bannerContent,
+            bannerContent: adminAdvisoryBannerConfigs?.bannerContent,
             enableBanner: data.checked
         };
 
@@ -117,14 +117,14 @@ export const AdminSessionAdvisoryBannerEditPage: FC<AdmindvisoryBannerEditPageIn
 
     const handleBannerContentUpdate = (values: Record<string, unknown>) => {
         const configs: AdminAdvisoryConfigurationInterface = {
-            bannerContent: values?.adminAdvisoryBannerContent.toString(),
+            bannerContent: values?.bannerContent?.toString(),
             enableBanner: adminAdvisoryBannerConfigs.enableBanner
         };
 
         updateAdminAdvisoryBannerConfig(configs, false);
     };
 
-    const updateAdminAdvisoryBannerConfig = (configs: AdminAdvisoryConfigurationInterface, 
+    const updateAdminAdvisoryBannerConfig = (configs: AdminAdvisoryConfigurationInterface,
         isFeatureStatus: boolean): void => {
 
         updateAdminAdvisoryBannerConfiguration(configs).then(() => {
@@ -148,7 +148,7 @@ export const AdminSessionAdvisoryBannerEditPage: FC<AdmindvisoryBannerEditPageIn
                         "disbleAdminAdvisoryBanner.success.message")
                     }));
                 }
-                
+
                 return;
             }
 
@@ -181,11 +181,11 @@ export const AdminSessionAdvisoryBannerEditPage: FC<AdmindvisoryBannerEditPageIn
 
     return (
         <PageLayout
-            title={ t("console:manage.features.serverConfigs.adminAdvisory." + 
+            title={ t("console:manage.features.serverConfigs.adminAdvisory." +
                 "configurationEditSection.pageHeading") }
-            pageTitle={ t("console:manage.features.serverConfigs.adminAdvisory." + 
+            pageTitle={ t("console:manage.features.serverConfigs.adminAdvisory." +
                 "configurationEditSection.pageHeading") }
-            description={ t("console:manage.features.serverConfigs.adminAdvisory." + 
+            description={ t("console:manage.features.serverConfigs.adminAdvisory." +
                 "configurationEditSection.pageSubheading") }
             data-componentid={ `${ componentId }-page-layout` }
             backButton={ {
@@ -199,7 +199,7 @@ export const AdminSessionAdvisoryBannerEditPage: FC<AdmindvisoryBannerEditPageIn
             isLoading={ isAdminAdvisoryConfigsGetRequestLoading }
         >
             <Checkbox
-                label={ adminAdvisoryBannerConfigs?.enableBanner 
+                label={ adminAdvisoryBannerConfigs?.enableBanner
                     ? t("console:manage.features.serverConfigs.adminAdvisory.configurationSection.enabled")
                     : t("console:manage.features.serverConfigs.adminAdvisory.configurationSection.enabled")
                 }
@@ -221,21 +221,21 @@ export const AdminSessionAdvisoryBannerEditPage: FC<AdmindvisoryBannerEditPageIn
                         >
                             <Field.Textarea
                                 ariaLabel="Admin Advisory Banner Content"
-                                name="adminAdvisoryBannerContent"
-                                label={ t("console:manage.features.serverConfigs.adminAdvisory" + 
+                                name="bannerContent"
+                                label={ t("console:manage.features.serverConfigs.adminAdvisory" +
                                     ".configurationEditSection.form.bannerContent.label") }
                                 required={ false }
-                                placeholder={ 
-                                    t("console:manage.features.serverConfigs.adminAdvisory" + 
-                                        ".configurationEditSection.form.bannerContent.placeholder") 
+                                placeholder={
+                                    t("console:manage.features.serverConfigs.adminAdvisory" +
+                                        ".configurationEditSection.form.bannerContent.placeholder")
                                 }
-                                value={ adminAdvisoryBannerConfigs?.bannerContent }
+                                initialValue={ adminAdvisoryBannerConfigs?.bannerContent }
                                 readOnly={ !adminAdvisoryBannerConfigs?.enableBanner }
                                 maxLength={ 300 }
                                 minLength={ 3 }
                                 data-componentid={ `${ componentId }-content` }
                                 width={ 16 }
-                                hint={ t("console:manage.features.serverConfigs.adminAdvisory" + 
+                                hint={ t("console:manage.features.serverConfigs.adminAdvisory" +
                                     ".configurationEditSection.form.bannerContent.hint") }
                             />
                             <Field.Button

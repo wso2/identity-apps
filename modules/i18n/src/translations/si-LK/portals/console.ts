@@ -2887,7 +2887,7 @@ export const console: ConsoleNS = {
                                 },
                                 wsFedConfigurations: {
                                     labels: {
-                                        passiveSTSUrl: "Passive STS url"
+                                        passiveSTSUrl: "ws-federation url"
                                     }
                                 }
                             },

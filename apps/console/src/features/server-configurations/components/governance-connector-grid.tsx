@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { Avatar, CardContent } from "@oxygen-ui/react";
 import {
     ArrowLoopRightUserIcon,
     BuildingGearIcon,
@@ -35,7 +34,9 @@ import {
     UserGearIcon,
     UserPlusIcon
 } from "@oxygen-ui/react-icons";
+import Avatar from "@oxygen-ui/react/Avatar";
 import Card from "@oxygen-ui/react/Card";
+import CardContent from "@oxygen-ui/react/CardContent";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
