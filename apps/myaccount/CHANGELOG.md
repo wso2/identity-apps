@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.2.71
+
+### Patch Changes
+
+- [#5100](https://github.com/wso2/identity-apps/pull/5100) [`286bd104d0`](https://github.com/wso2/identity-apps/commit/286bd104d0a7d229072cd489792b81a2319963c4) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Bump i18n module version
+
+- Updated dependencies [[`0377a66ee3`](https://github.com/wso2/identity-apps/commit/0377a66ee37caede060ee77ab16cbb1d3138a094)]:
+  - @wso2is/i18n@2.0.84
+
 ## 2.2.70
 
 ### Patch Changes
