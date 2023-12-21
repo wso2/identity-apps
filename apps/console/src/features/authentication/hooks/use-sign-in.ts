@@ -349,16 +349,15 @@ const useSignIn = (): UseSignInInterface => {
                 // Removing super tenant from the server host.
                 const customServerHostSplit: string[] = customServerHost.split("/t/");
 
-                if (customServerHostSplit.length >= 2) {
+                if (customServerHostSplit.length > 0) {
                     customServerHost = customServerHostSplit[0];
                 }
             }
 
             if (isSubOrganization) {
-                const orgPrefix: string = (!window["AppUtils"].getConfig().requireSuperTenantInUrls && isSuperTenant)
-                    ? `${window["AppUtils"].getConfig().organizationPrefix}/` : "";
-
-                customServerHost = `${customServerHost}/${orgPrefix}${window["AppUtils"].getConfig().organizationName}`;
+                customServerHost = `${Config.getDeploymentConfig().serverOrigin}/${
+                    window["AppUtils"].getConfig().organizationPrefix}/${
+                    window["AppUtils"].getConfig().organizationName}`;
             }
 
             window["AppUtils"].updateCustomServerHost(customServerHost);
