@@ -203,8 +203,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
 
     const {
         data: groupList,
-        error: groupsError,
-        isLoading: isGroupsListRequestLoading
+        error: groupsError
     } = useGroupList(selectedUserStore, "members", null, true);
 
     useEffect(() => {
@@ -1421,10 +1420,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             || isSubmitting
             || hasError
             || !emailData
-            || emailData?.length === 0
-            || !groupsData
-            || isGroupsListRequestLoading
-            || groupsData?.length === 0;
+            || emailData?.length === 0;
     };
 
     const userStoreDropDown = (): ReactElement => {
