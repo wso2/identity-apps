@@ -735,3 +735,17 @@ export interface OutboundProvisioningConnectorMetaDataInterface {
      */
     icon: any;
 }
+
+/**
+ * Interface representing the cache for IDP name validation results.
+ */
+export interface IdpNameValidationCache {
+    /**
+     * The previously validated IDP name.
+     */
+    value: string;
+    /**
+     * Indicates whether the above IDP name is already taken.
+     */
+    state: boolean;
+}

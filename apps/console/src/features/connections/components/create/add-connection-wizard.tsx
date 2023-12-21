@@ -37,9 +37,10 @@ import {
     useWizardAlert
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
+import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FC, ReactElement, Suspense, useEffect, useState } from "react";
+import React, { FC, MutableRefObject, ReactElement, Suspense, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -51,6 +52,7 @@ import { ConnectionManagementConstants } from "../../constants/connection-consta
 import {
     ConnectionInterface,
     GenericConnectionCreateWizardPropsInterface,
+    IdpNameValidationCache,
     OutboundProvisioningConnectorInterface
 } from "../../models/connection";
 import { ConnectionsManagementUtils, handleGetConnectionsMetaDataError } from "../../utils/connection-utils";
@@ -91,6 +93,9 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     const [ totalStep, setTotalStep ] = useState<number>(0);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ connectionMetaDetails, setConnectionMetaDetails ] = useState<any>(undefined);
+
+    const idpNameValidationCache: MutableRefObject<IdpNameValidationCache> = useRef(null);
+    const [ isUserInputIdpNameAlreadyTaken, setIsUserInputIdpNameAlreadyTaken ] = useState<boolean>(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -238,37 +243,60 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     };
 
     /**
+     * Check if the typed IDP name is already taken.
+     *
+     * @param value - User input for the IDP name.
+     */
+    const isIdpNameAlreadyTaken: DebouncedFunc<(value: string) => void> = debounce(
+        async (value: string) => {
+            let idpExist: boolean;
+
+            if (idpNameValidationCache?.current?.value === value) {
+                idpExist = idpNameValidationCache?.current?.state;
+            }
+
+            if (idpExist === undefined) {
+                try {
+                    idpExist = await ConnectionsManagementUtils.searchIdentityProviderName(value);
+                } catch (e) {
+                    /**
+                     * Ignore the error, as a failed identity provider search
+                     * should not result in user blocking. However, if the
+                     * identity provider name already exists, it will undergo
+                     * validation from the backend, and any resulting errors
+                     * will be displayed in the user interface.
+                     */
+                    idpExist = false;
+                }
+
+                idpNameValidationCache.current = {
+                    state: idpExist,
+                    value
+                };
+            }
+
+            setIsUserInputIdpNameAlreadyTaken(!!idpExist);
+        },
+        500
+    );
+
+    /**
      * Check whether IDP name is already exist or not.
      *
      * @param value - IDP name - IDP Name.
      * @returns error msg if name is already taken.
      */
-    const connectionNameValidation = (value: string): Promise<string> => {
+    const connectionNameValidation = (_value: string): Promise<string> => {
 
-        return ConnectionsManagementUtils.searchIdentityProviderName(value)
-            .then((idpExist: boolean) => {
-                if (idpExist) {
-                    return Promise.resolve(
-                        t(
-                            "console:develop.features." +
-                            "authenticationProvider.forms.generalDetails.name." +
-                            "validations.duplicate"
-                        )
-                    );
-                } else {
-                    return Promise.resolve(null);
-                }
-            })
-            .catch(() => {
-                /**
-                 * Ignore the error, as a failed identity provider search
-                 * should not result in user blocking. However, if the
-                 * identity provider name already exists, it will undergo
-                 * validation from the backend, and any resulting errors
-                 * will be displayed in the user interface.
-                 */
-                return Promise.resolve(null);
-            });
+        if (isUserInputIdpNameAlreadyTaken) {
+            return t(
+                "console:develop.features." +
+                "authenticationProvider.forms.generalDetails.name." +
+                "validations.duplicate"
+            );
+        }
+
+        return null;
     };
 
     /**
@@ -474,6 +502,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     const modifyFormFields = (fields: any) => {
         return fields?.map((field: any) => {
             if (field?.name === "name") {
+                field.listen = isIdpNameAlreadyTaken;
                 field.validation = connectionNameValidation;
             }
 
@@ -572,7 +601,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                             changePage={ (step: number) => setWizStep(step) }
                             setTotalPages={ (pageNumber: number) => setTotalStep(pageNumber) }
                             data-componentid={ componentId }
-                            validateOnBlur
+                            uncontrolledForm={ true }
                         >
                             <DynamicWizardPage>
                                 { renderFormFields(modifyFormFields(connectionMetaData?.create?.modal?.form?.fields)) }
