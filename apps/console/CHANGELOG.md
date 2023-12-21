@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.10.48
+
+### Patch Changes
+
+- [#5121](https://github.com/wso2/identity-apps/pull/5121) [`a9674b11c5`](https://github.com/wso2/identity-apps/commit/a9674b11c5f068cd837f67fda500162717909971) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Remove link to attributes in sub org.
+
+* [#5127](https://github.com/wso2/identity-apps/pull/5127) [`b8cccad48f`](https://github.com/wso2/identity-apps/commit/b8cccad48fde4e8b6fce73b97ec6bb0821b028b1) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Change button type
+
 ## 2.10.47
 
 ### Patch Changes
