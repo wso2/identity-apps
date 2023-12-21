@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.107
+
+### Patch Changes
+
+- [#5115](https://github.com/wso2/identity-apps/pull/5115) [`6b5e3cd2dd`](https://github.com/wso2/identity-apps/commit/6b5e3cd2dd0b33e39a0decbee5d60d5ae514bf52) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Fix server startup errors in legacy runtime
+
 ## 2.0.106
 
 ### Patch Changes

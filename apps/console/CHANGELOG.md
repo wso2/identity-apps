@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.43
+
+### Patch Changes
+
+- [#5095](https://github.com/wso2/identity-apps/pull/5095) [`9e989a1a4a`](https://github.com/wso2/identity-apps/commit/9e989a1a4ac2ca5a6ca59084579e09fa02dfa5d8) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add alerts to create authenticator failures
+
 ## 2.10.42
 
 ### Patch Changes
