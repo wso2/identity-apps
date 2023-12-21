@@ -1,5 +1,13 @@
 # @wso2is/console
 
+## 2.10.47
+
+### Patch Changes
+
+- [#5122](https://github.com/wso2/identity-apps/pull/5122) [`8eaf5816df`](https://github.com/wso2/identity-apps/commit/8eaf5816df9d65da0b8be209f13ae0f5fce308fd) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Allow bulk user creation without assigning groups.
+
+* [#5107](https://github.com/wso2/identity-apps/pull/5107) [`c33ad62774`](https://github.com/wso2/identity-apps/commit/c33ad6277438322f732f7e4f75fa1f3b4b9f021f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue related connection name validation
+
 ## 2.10.46
 
 ### Patch Changes
