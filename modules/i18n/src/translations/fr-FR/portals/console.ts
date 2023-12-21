@@ -9806,20 +9806,21 @@ export const console: ConsoleNS = {
                         }
                     },
                     inviteParentUserWizard: {
-                        totalInvitations: "Total Invitation(s)",
+                        totalInvitations: "Nombre total d'invitations",
                         successAlert: {
-                            description: "Successfully invited the user(s).",
-                            message: "Invitation(s) Sent"
+                            description: "L'invitation du ou des utilisateurs a réussi.",
+                            message: "Invitation(s) envoyée(s)"
                         },
                         errorAlert: {
-                            description: "An error occurred while inviting {{ failedCount }} user(s).",
-                            message: "Review Required"
+                            description: "Une erreur s'est produite lors de l'invitation de {{ failedCount }} " +
+                                "utilisateur(s).",
+                            message: "Examen requis"
                         },
                         tableMessages: {
-                            userNotFound: "User not found",
-                            activeInvitationExists: "An active invitation already exists for the user",
-                            userEmailNotFound: "Could not find the email of the invited user",
-                            userAlreadyExist: "User already exist"
+                            userNotFound: "Utilisateur non trouvé",
+                            activeInvitationExists: "Une invitation active existe déjà pour l'utilisateur",
+                            userEmailNotFound: "Impossible de trouver l'e-mail de l'utilisateur invité",
+                            userAlreadyExist: "L'utilisateur existe déjà"
                         }
                     },
                     changePasswordModal: {

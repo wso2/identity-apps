@@ -9584,20 +9584,20 @@ export const console: ConsoleNS = {
                         }
                     },
                     inviteParentUserWizard: {
-                        totalInvitations: "Total Invitation(s)",
+                        totalInvitations: "සම්පූර්ණ ආරාධනා",
                         successAlert: {
-                            description: "Successfully invited the user(s).",
-                            message: "Invitation(s) Sent"
+                            description: "පරිශීලක(න්) හට සාර්ථකව ආරාධනා කරන ලදී.",
+                            message: "ආරාධනා යවා ඇත"
                         },
                         errorAlert: {
-                            description: "An error occurred while inviting {{ failedCount }} user(s).",
-                            message: "Review Required"
+                            description: "{{ failedCount }} පරිශීලක(න්) හට ආරාධනා කිරීමේදී දෝෂයක් සිදු විය.",
+                            message: "සමාලෝචනය අවශ්‍යයි"
                         },
                         tableMessages: {
-                            userNotFound: "User not found",
-                            activeInvitationExists: "An active invitation already exists for the user",
-                            userEmailNotFound: "Could not find the email of the invited user",
-                            userAlreadyExist: "User already exist"
+                            userNotFound: "පරිශීලක හමු නොවීය",
+                            activeInvitationExists: "පරිශීලකයා සඳහා සක්‍රිය ආරාධනාවක් දැනටමත් පවතී",
+                            userEmailNotFound: "ආරාධිත පරිශීලකයාගේ විද්‍යුත් තැපෑල සොයා ගැනීමට නොහැකි විය",
+                            userAlreadyExist: "පරිශීලක දැනටමත් පවතී"
                         }
                     },
                     changePasswordModal: {
