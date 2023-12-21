@@ -304,6 +304,7 @@ export const AppUtils: any = (function() {
                 organizationPrefix: this.getOrganizationPrefix(),
                 organizationType: this.getOrganizationType(),
                 productVersionConfig: _config.ui.productVersionConfig,
+                requireSuperTenantInUrls: _config.requireSuperTenantInUrls,
                 routes: {
                     home: this.constructAppPaths(_config.routePaths.home),
                     login: this.constructAppPaths(_config.routePaths.login),
