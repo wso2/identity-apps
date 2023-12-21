@@ -110,20 +110,32 @@ public class AppPortalUtils {
         oAuthConsumerAppDTO.setOauthConsumerKey(consumerKey);
         oAuthConsumerAppDTO.setOauthConsumerSecret(consumerSecret);
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
-        if (!SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
-            callbackUrl = callbackUrl.replace(portalPath, "/t/" + tenantDomain.trim() + portalPath);
-        } else if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
-            if (StringUtils.equals(CONSOLE_APP, applicationName) &&
-                AppsCommonDataHolder.getInstance().isOrganizationManagementEnabled()) {
-                callbackUrl = "regexp=(" + callbackUrl + "|" + callbackUrl.replace(portalPath, "/t/(.*)" +
-                    portalPath) + "|" + callbackUrl.replace(portalPath, "/o/(.*)" + portalPath) + ")";
-            } else {
-                callbackUrl = "regexp=(" + callbackUrl + "|" +
-                    callbackUrl.replace(portalPath, "/t/(.*)" + portalPath) + ")";
+        if (CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
+            if (SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
+                if (StringUtils.equals(CONSOLE_APP, applicationName) &&
+                    AppsCommonDataHolder.getInstance().isOrganizationManagementEnabled()) {
+                    callbackUrl = "regexp=(" + callbackUrl
+                        + "|" + callbackUrl.replace(portalPath, "/t/(.*)" + portalPath)
+                        + "|" + callbackUrl.replace(portalPath, "/o/(.*)" + portalPath)
+                        + ")";
+                } else {
+                    callbackUrl = "regexp=(" + callbackUrl
+                        + "|" + callbackUrl.replace(portalPath, "/t/(.*)" + portalPath)
+                        + ")";
+                }
             }
-        } else if (SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
-            callbackUrl = "regexp=(" + callbackUrl + "|" + callbackUrl.replace(portalPath, "/t/carbon.super" +
-                    portalPath) + ")";
+        } else {
+            if (SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
+                callbackUrl = "regexp=(" + callbackUrl
+                    + "|" + callbackUrl.replace(portalPath, "/o/(.*)" + portalPath)
+                    + "|" + callbackUrl.replace(portalPath, "/t/carbon.super" + portalPath)
+                    + "|" + callbackUrl.replace(portalPath, "/t/carbon.super/o/(.*)" + portalPath)
+                    + ")";
+            } else {
+                callbackUrl = "regexp=(" + callbackUrl.replace(portalPath, "/t/(.*)" + portalPath)
+                    + "|" + callbackUrl.replace(portalPath, "/t/(.*)/o/(.*)" + portalPath)
+                    + ")";
+            }
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
         oAuthConsumerAppDTO.setBypassClientCredentials(true);
