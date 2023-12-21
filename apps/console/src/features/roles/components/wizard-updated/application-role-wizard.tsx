@@ -499,6 +499,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                 loading={ isSubmitting }
                                 disabled={ isFormError || isSubmitting || invalidAPIResourceFields?.length > 0 }
                                 form={ FORM_ID }
+                                type="button"
                                 onClick={ () => {
                                     formRef?.current?.triggerSubmit();
                                 } }
