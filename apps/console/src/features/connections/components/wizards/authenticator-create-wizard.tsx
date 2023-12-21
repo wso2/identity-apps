@@ -32,7 +32,7 @@ import {
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import merge from "lodash-es/merge";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -151,6 +151,21 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
     const [ submitAuthenticator, setSubmitAuthenticator ] = useTrigger();
 
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
+    const formTopRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
+
+    /**
+     * Scrolls to the top of the form.
+     */
+    const scrollToTop = (): void => {
+        const options: ScrollIntoViewOptions = {
+            behavior: "smooth",
+            block: "center"
+        };
+
+        formTopRef.current.scrollIntoView(options);
+    };
+
     /**
      * Navigates to the next wizard step.
      */
@@ -256,6 +271,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                     message: t("console:develop.features.authenticationProvider" +
                         ".notifications.addFederatedAuthenticator.success.message")
                 }));
+                closeWizard();
             })
             .catch((error: IdentityAppsApiException) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -267,10 +283,10 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                         message: t("console:develop.features.authenticationProvider.notifications." +
                             "addFederatedAuthenticator.error.message")
                     });
+                    scrollToTop();
 
                     return;
                 }
-
                 setAlert({
                     description: t("console:develop.features.authenticationProvider." +
                         "notifications.addFederatedAuthenticator." +
@@ -280,10 +296,10 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                         "notifications.addFederatedAuthenticator." +
                         "genericError.message")
                 });
+                scrollToTop();
             })
             .finally(() => {
                 setIsSubmitting(false);
-                closeWizard();
             });
     };
 
@@ -482,6 +498,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
             </Modal.Content>
             <Modal.Content className="content-container" scrolling data-testid={ `${ testId }-modal-content-2` }>
                 { alert && alertComponent }
+                <div ref={ formTopRef } />
                 { resolveStepContent(currentWizardStep) as any }
             </Modal.Content>
             <Modal.Actions data-testid={ `${ testId }-modal-actions` }>
