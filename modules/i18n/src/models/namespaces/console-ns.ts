@@ -6201,6 +6201,17 @@ export interface ConsoleNS {
                             fileFormatSampleHeading: string;
                         }
                     };
+                    inviteParentUserWizard: {
+                        totalInvitations: string;
+                        successAlert: NotificationItem;
+                        errorAlert: NotificationItem;
+                        tableMessages: {
+                            userNotFound: string;
+                            activeInvitationExists: string;
+                            userEmailNotFound: string;
+                            userAlreadyExist: string;
+                        }
+                    }
                     changePasswordModal: {
                         header: string;
                         message: string;

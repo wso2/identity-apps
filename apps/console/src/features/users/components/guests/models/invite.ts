@@ -16,7 +16,9 @@
  * under the License.
  */
 
+import { RolesInterface } from "@wso2is/core/models";
 import { InviteUserStatus } from "apps/console/src/extensions/components/users/models";
+import { ReactNode } from "react";
 
 /**
   * Enum for role types.
@@ -88,4 +90,22 @@ export interface UserInviteInterface {
     email?: string;
     status?: InviteUserStatus;
     username?: string;
+}
+
+export interface RolesAutoCompleteOption {
+    key: string;
+    label: ReactNode;
+    role: RolesInterface;
+}
+
+export interface InviteParentOrgUserFormValuesInterface {
+    username: string[];
+    roles: RolesAutoCompleteOption[];
+}
+
+export enum ParentOrgUserInviteErrorCode {
+    ERROR_CODE_USER_NOT_FOUND = "OUI-10011",
+    ERROR_CODE_ACTIVE_INVITATION_EXISTS = "OUI-10018",
+    ERROR_CODE_INVITED_USER_EMAIL_NOT_FOUND = "OUI-10030",
+    ERROR_CODE_USER_ALREADY_EXISTS_INVITED_ORGANIZATION = "OUI-10032"
 }

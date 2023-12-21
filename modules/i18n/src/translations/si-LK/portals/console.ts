@@ -9583,6 +9583,23 @@ export const console: ConsoleNS = {
                             fileFormatSampleHeading: "නියැදි CSV ගොනු ආකෘතිය:"
                         }
                     },
+                    inviteParentUserWizard: {
+                        totalInvitations: "Total Invitation(s)",
+                        successAlert: {
+                            description: "Successfully invited the user(s).",
+                            message: "Invitation(s) Sent"
+                        },
+                        errorAlert: {
+                            description: "An error occurred while inviting {{ failedCount }} user(s).",
+                            message: "Review Required"
+                        },
+                        tableMessages: {
+                            userNotFound: "User not found",
+                            activeInvitationExists: "An active invitation already exists for the user",
+                            userEmailNotFound: "Could not find the email of the invited user",
+                            userAlreadyExist: "User already exist"
+                        }
+                    },
                     changePasswordModal: {
                         button: "මුරපදය නැවත සකසන්න",
                         header: "පරිශීලක මුරපදය යළි පිහිටුවන්න",

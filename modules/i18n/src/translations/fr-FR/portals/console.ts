@@ -9805,6 +9805,23 @@ export const console: ConsoleNS = {
                             fileFormatSampleHeading: "Exemple de format de fichier CSV:"
                         }
                     },
+                    inviteParentUserWizard: {
+                        totalInvitations: "Total Invitation(s)",
+                        successAlert: {
+                            description: "Successfully invited the user(s).",
+                            message: "Invitation(s) Sent"
+                        },
+                        errorAlert: {
+                            description: "An error occurred while inviting {{ failedCount }} user(s).",
+                            message: "Review Required"
+                        },
+                        tableMessages: {
+                            userNotFound: "User not found",
+                            activeInvitationExists: "An active invitation already exists for the user",
+                            userEmailNotFound: "Could not find the email of the invited user",
+                            userAlreadyExist: "User already exist"
+                        }
+                    },
                     changePasswordModal: {
                         button: "réinitialiser le mot de passe",
                         header: "Réinitialiser le mot de passe de l'utilisateur",
