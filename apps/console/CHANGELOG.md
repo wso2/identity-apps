@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.46
+
+### Patch Changes
+
+- [#5118](https://github.com/wso2/identity-apps/pull/5118) [`64721ebe76`](https://github.com/wso2/identity-apps/commit/64721ebe769ae3884aa2109410fba41def6ae96b) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Make application role view read only in sub orgs.
+
 ## 2.10.45
 
 ### Patch Changes
