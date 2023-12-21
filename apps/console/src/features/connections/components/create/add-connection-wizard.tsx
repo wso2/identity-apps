@@ -502,8 +502,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     const modifyFormFields = (fields: any) => {
         return fields?.map((field: any) => {
             if (field?.name === "name") {
-                //field.listen = isIdpNameAlreadyTaken;
-                field.listen = () => console.log("listen");
+                field.listen = isIdpNameAlreadyTaken;
                 field.validation = connectionNameValidation;
             }
 
@@ -602,6 +601,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                             changePage={ (step: number) => setWizStep(step) }
                             setTotalPages={ (pageNumber: number) => setTotalStep(pageNumber) }
                             data-componentid={ componentId }
+                            uncontrolledForm={ true }
                         >
                             <DynamicWizardPage>
                                 { renderFormFields(modifyFormFields(connectionMetaData?.create?.modal?.form?.fields)) }
