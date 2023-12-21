@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.10.44
+
+### Patch Changes
+
+- [#5111](https://github.com/wso2/identity-apps/pull/5111) [`c9a00ea9b0`](https://github.com/wso2/identity-apps/commit/c9a00ea9b09f53181032a6b9cbd2505edae69be8) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix issues with sign up confirmation configuration value not being sent
+
+* [#5100](https://github.com/wso2/identity-apps/pull/5100) [`0377a66ee3`](https://github.com/wso2/identity-apps/commit/0377a66ee37caede060ee77ab16cbb1d3138a094) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issues in login and registration section
+
+* Updated dependencies [[`0377a66ee3`](https://github.com/wso2/identity-apps/commit/0377a66ee37caede060ee77ab16cbb1d3138a094)]:
+  - @wso2is/i18n@2.0.84
+
 ## 2.10.43
 
 ### Patch Changes
