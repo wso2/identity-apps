@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.45
+
+### Patch Changes
+
+- [#5112](https://github.com/wso2/identity-apps/pull/5112) [`be101def9e`](https://github.com/wso2/identity-apps/commit/be101def9ec8c9af4dec7b7062e7d7c744dbe34f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix issues tenanted path in super orgs
+
 ## 2.10.44
 
 ### Patch Changes
