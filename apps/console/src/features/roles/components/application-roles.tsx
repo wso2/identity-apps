@@ -326,7 +326,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                         </Grid.Column>
                                         <Grid.Column width={ 6 }>
                                             {
-                                                roleAudience === RoleAudienceTypes.APPLICATION
+                                                roleAudience === RoleAudienceTypes.APPLICATION && !isReadOnly
                                                     && (
                                                         <LinkButton
                                                             fluid
@@ -388,10 +388,10 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                             <Autocomplete
                                 multiple
                                 disableCloseOnSelect
-                                readOnly={ isReadOnly }
                                 loading={ isLoading }
                                 options={ roleList }
                                 value={ selectedRoles ?? [] }
+                                disabled = { isReadOnly }
                                 getOptionLabel={
                                     (role: BasicRoleInterface) => role.name
                                 }
