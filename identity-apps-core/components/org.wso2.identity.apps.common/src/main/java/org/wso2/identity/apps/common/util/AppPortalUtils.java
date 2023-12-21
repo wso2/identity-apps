@@ -307,7 +307,8 @@ public class AppPortalUtils {
                 AppPortalUtils.createApplication(appPortal.getName(), tenantInfoBean.getAdmin(),
                     appPortal.getDescription(), consumerKey, consumerSecret, tenantInfoBean.getTenantDomain(),
                     tenantInfoBean.getTenantId(), appPortal.getPath());
-            } else if (StringUtils.equalsIgnoreCase(CONSOLE_APP, appPortal.getName())) {
+            } else if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME &&
+                StringUtils.equalsIgnoreCase(CONSOLE_APP, appPortal.getName())) {
                 try {
                     String userId = getUserId(tenantInfoBean.getAdmin(), tenantInfoBean.getTenantId());
                     List<RoleBasicInfo> assignedRoles = AppsCommonDataHolder.getInstance().getRoleManagementServiceV2()
