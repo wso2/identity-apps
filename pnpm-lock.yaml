@@ -476,8 +476,8 @@ importers:
   apps/console:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^3.1.1
-        version: 3.1.1(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@4.3.1)(react@18.2.0)
+        specifier: ^4.0.0
+        version: 4.0.0(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@4.3.1)(react@18.2.0)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.11.0(@types/react@18.0.18)(react@18.2.0)
@@ -825,8 +825,8 @@ importers:
   apps/myaccount:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^3.1.1
-        version: 3.1.1(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@4.3.1)(react@18.2.0)
+        specifier: ^4.0.0
+        version: 4.0.0(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@4.3.1)(react@18.2.0)
       '@babel/polyfill':
         specifier: ^7.0.0
         version: 7.12.1
@@ -1130,8 +1130,8 @@ importers:
   modules/common:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^1.1.23
-        version: 1.1.23(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@5.3.4)(react@18.2.0)
+        specifier: ^4.0.0
+        version: 4.0.0(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@6.3.0)(react@18.2.0)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.11.0(@types/react@18.0.18)(react@18.2.0)
@@ -1278,8 +1278,8 @@ importers:
   modules/core:
     dependencies:
       '@asgardeo/auth-react':
-        specifier: ^1.1.24
-        version: 1.1.24(@babel/runtime-corejs3@7.18.9)(react-dom@16.14.0)(react-router-dom@5.3.4)(react@16.14.0)
+        specifier: ^4.0.0
+        version: 4.0.0(@babel/runtime-corejs3@7.18.9)(react-dom@16.14.0)(react-router-dom@6.3.0)(react@16.14.0)
       '@braintree/sanitize-url':
         specifier: ^5.0.0
         version: 5.0.2
@@ -2136,61 +2136,36 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@asgardeo/auth-js@2.0.14:
-    resolution: {integrity: sha512-Wl+JzGF+xy7yesscJh57jXYMqMKd9X13n9Xuxhlhi1n+wb/jcVsYua5Fw6UvOA/+eCwh6f7F93frfzZdVHpqmg==}
+  /@asgardeo/auth-js@5.0.0:
+    resolution: {integrity: sha512-BMQsTzpFwtgbSeJvmSDgRrOjXfA6+yQ2NUq7CXP4q1TtqZJt8s/zadOazPM00/jIY8B2ENS0CLRHp07M0mFdOw==}
     dev: false
 
-  /@asgardeo/auth-js@2.0.15:
-    resolution: {integrity: sha512-ciMLhrm/M//CvyMpCvaoA82S3tKvB529L+MwKKBbRZFe+d0HRPuDfruDhclWl7i07XO1+AVp9Dy1MdUDkhzR4Q==}
-    dev: false
-
-  /@asgardeo/auth-js@4.1.2:
-    resolution: {integrity: sha512-CYpKxQMFtxBUcp7NntlA+OoQ4BGXWLjJPYTJdMJAcU1K9GGdxGq6CvHfHGSmJ2l1qDksa8ZkCHnG/IwlDKaUqA==}
-    dev: false
-
-  /@asgardeo/auth-react@1.1.23(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@5.3.4)(react@18.2.0):
-    resolution: {integrity: sha512-YzRgySd8wyfH9sRan7o8yZWpACAnSGO6kqlU+uBAtHN7kzEUDCIT3+fXGp99EVKeI8xbmu/wbhXicxS6o3jFcA==}
-    peerDependencies:
-      '@babel/runtime-corejs3': ^7.11.2
-      react: '>=16.8'
-      react-dom: '>=16.8'
-      react-router-dom: ^5.2.0
-    dependencies:
-      '@asgardeo/auth-spa': 0.4.13
-      '@babel/runtime-corejs3': 7.18.9
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      react-router-dom: 5.3.4(react@18.2.0)
-    transitivePeerDependencies:
-      - debug
-    dev: false
-
-  /@asgardeo/auth-react@1.1.24(@babel/runtime-corejs3@7.18.9)(react-dom@16.14.0)(react-router-dom@5.3.4)(react@16.14.0):
-    resolution: {integrity: sha512-vkQbaSAKiKflw0wTlFnbC/dKfK6UKR4IRrUm4IEydIZJAajwuikzHaqe+yHVKqFURIVq1ZCbmElrZgt9HNeiew==}
-    peerDependencies:
-      '@babel/runtime-corejs3': ^7.11.2
-      react: '>=16.8'
-      react-dom: '>=16.8'
-      react-router-dom: ^5.2.0
-    dependencies:
-      '@asgardeo/auth-spa': 0.4.14
-      '@babel/runtime-corejs3': 7.18.9
-      react: 16.14.0
-      react-dom: 16.14.0(react@16.14.0)
-      react-router-dom: 5.3.4(react@16.14.0)
-    transitivePeerDependencies:
-      - debug
-    dev: false
-
-  /@asgardeo/auth-react@3.1.1(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@4.3.1)(react@18.2.0):
-    resolution: {integrity: sha512-JGpLaoarnBaaqBVpN8VepB2V58bonN04bCBEn3ZhYwvp5ys5xzg+L6ZlqpCtPFhaUU0rwtte7FmiCVkRaCnppA==}
+  /@asgardeo/auth-react@4.0.0(@babel/runtime-corejs3@7.18.9)(react-dom@16.14.0)(react-router-dom@6.3.0)(react@16.14.0):
+    resolution: {integrity: sha512-bML03MYxSUIkGXTiSScUK4KKCHv3SeeDt4nJpdSy1QfmWXlXBTTUeohDrA4OtkqEEM6qoJeARNOvrtVD4fD/zA==}
     peerDependencies:
       '@babel/runtime-corejs3': ^7.11.2
       react: '>=16.8'
       react-dom: '>=16.8'
       react-router-dom: ^6.3.0
     dependencies:
-      '@asgardeo/auth-spa': 2.1.1
+      '@asgardeo/auth-spa': 3.0.0
+      '@babel/runtime-corejs3': 7.18.9
+      react: 16.14.0
+      react-dom: 16.14.0(react@16.14.0)
+      react-router-dom: 6.3.0(react-dom@16.14.0)(react@16.14.0)
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
+  /@asgardeo/auth-react@4.0.0(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@4.3.1)(react@18.2.0):
+    resolution: {integrity: sha512-bML03MYxSUIkGXTiSScUK4KKCHv3SeeDt4nJpdSy1QfmWXlXBTTUeohDrA4OtkqEEM6qoJeARNOvrtVD4fD/zA==}
+    peerDependencies:
+      '@babel/runtime-corejs3': ^7.11.2
+      react: '>=16.8'
+      react-dom: '>=16.8'
+      react-router-dom: ^6.3.0
+    dependencies:
+      '@asgardeo/auth-spa': 3.0.0
       '@babel/runtime-corejs3': 7.18.9
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -2199,40 +2174,27 @@ packages:
       - debug
     dev: false
 
-  /@asgardeo/auth-spa@0.4.13:
-    resolution: {integrity: sha512-PK0dMqG4Bxt+BfYKCuKaN68HVXDSlzpyW6e425wASApNx589QPvKR9EY0edGJBECnZ3Dvsc+9C8mggmKFlC/OQ==}
+  /@asgardeo/auth-react@4.0.0(@babel/runtime-corejs3@7.18.9)(react-dom@18.2.0)(react-router-dom@6.3.0)(react@18.2.0):
+    resolution: {integrity: sha512-bML03MYxSUIkGXTiSScUK4KKCHv3SeeDt4nJpdSy1QfmWXlXBTTUeohDrA4OtkqEEM6qoJeARNOvrtVD4fD/zA==}
+    peerDependencies:
+      '@babel/runtime-corejs3': ^7.11.2
+      react: '>=16.8'
+      react-dom: '>=16.8'
+      react-router-dom: ^6.3.0
     dependencies:
-      '@asgardeo/auth-js': 2.0.14
-      await-semaphore: 0.1.3
-      axios: 0.26.1
-      base64url: 3.0.1
-      buffer: 6.0.3
-      fast-sha256: 1.3.0
-      jose: 4.9.2
-      randombytes: 2.1.0
+      '@asgardeo/auth-spa': 3.0.0
+      '@babel/runtime-corejs3': 7.18.9
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-router-dom: 6.3.0(react-dom@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@asgardeo/auth-spa@0.4.14:
-    resolution: {integrity: sha512-Eh1eBflbOftdeS42uy5yLYHW+G12dPQkdQRbQ52MMXYN212RXatqTzjtzS3f8xJs6i3qZGGI6LXdrav7ksJFXQ==}
+  /@asgardeo/auth-spa@3.0.0:
+    resolution: {integrity: sha512-97WU9e9rt2FtmZwWyDYriEb9u3ZbUGZ/jkdKnXwIwwZod5+8yJsZq+dxFrvl2Bu473RfvdWr/kvXx6/DfZWBKg==}
     dependencies:
-      '@asgardeo/auth-js': 2.0.15
-      await-semaphore: 0.1.3
-      axios: 0.26.1
-      base64url: 3.0.1
-      buffer: 6.0.3
-      fast-sha256: 1.3.0
-      jose: 4.9.2
-      randombytes: 2.1.0
-    transitivePeerDependencies:
-      - debug
-    dev: false
-
-  /@asgardeo/auth-spa@2.1.1:
-    resolution: {integrity: sha512-24tRnOutAChqchTEGuEYQgCcDFeGqVzEtnztYRHFuX6VJ3mh6NZ/MfUm0gq5wb8oWwTNTGAhzSCcSnXZENLzgw==}
-    dependencies:
-      '@asgardeo/auth-js': 4.1.2
+      '@asgardeo/auth-js': 5.0.0
       await-semaphore: 0.1.3
       axios: 0.26.1
       base64url: 3.0.1
@@ -20586,7 +20548,6 @@ packages:
     resolution: {integrity: sha512-ZqaKwjjrAYUYfLG+htGaIIZ4nioX2L70ZUMIFysS3xvBsSG4x/n1V6TXV3N8ZYNuFGlDirFg32T7B6WOUPDYcQ==}
     dependencies:
       '@babel/runtime': 7.22.15
-    dev: true
 
   /hoist-non-react-statics@2.5.5:
     resolution: {integrity: sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw==}
@@ -27955,36 +27916,6 @@ packages:
       warning: 4.0.3
     dev: false
 
-  /react-router-dom@5.3.4(react@16.14.0):
-    resolution: {integrity: sha512-m4EqFMHv/Ih4kpcBCONHbkT68KoAeHN4p3lAGoNryfHi0dMy0kCzEZakiKRsvg5wHZ/JLrLW8o8KomWiz/qbYQ==}
-    peerDependencies:
-      react: '>=15'
-    dependencies:
-      '@babel/runtime': 7.22.15
-      history: 4.10.1
-      loose-envify: 1.4.0
-      prop-types: 15.8.1
-      react: 16.14.0
-      react-router: 5.3.4(react@16.14.0)
-      tiny-invariant: 1.2.0
-      tiny-warning: 1.0.3
-    dev: false
-
-  /react-router-dom@5.3.4(react@18.2.0):
-    resolution: {integrity: sha512-m4EqFMHv/Ih4kpcBCONHbkT68KoAeHN4p3lAGoNryfHi0dMy0kCzEZakiKRsvg5wHZ/JLrLW8o8KomWiz/qbYQ==}
-    peerDependencies:
-      react: '>=15'
-    dependencies:
-      '@babel/runtime': 7.22.15
-      history: 4.10.1
-      loose-envify: 1.4.0
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-router: 5.3.4(react@18.2.0)
-      tiny-invariant: 1.2.0
-      tiny-warning: 1.0.3
-    dev: false
-
   /react-router-dom@6.3.0(react-dom@16.14.0)(react@16.14.0):
     resolution: {integrity: sha512-uaJj7LKytRxZNQV8+RbzJWnJ8K2nPsOOEuX7aQstlMZKQT0164C+X2w6bnkqU3sjtLvpd5ojrezAyfZ1+0sStw==}
     peerDependencies:
@@ -27995,7 +27926,18 @@ packages:
       react: 16.14.0
       react-dom: 16.14.0(react@16.14.0)
       react-router: 6.3.0(react@16.14.0)
-    dev: true
+
+  /react-router-dom@6.3.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-uaJj7LKytRxZNQV8+RbzJWnJ8K2nPsOOEuX7aQstlMZKQT0164C+X2w6bnkqU3sjtLvpd5ojrezAyfZ1+0sStw==}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      history: 5.3.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-router: 6.3.0(react@18.2.0)
+    dev: false
 
   /react-router@4.3.1(react@16.14.0):
     resolution: {integrity: sha512-yrvL8AogDh2X42Dt9iknk4wF4V8bWREPirFfS9gLU1huk6qK41sg7Z/1S81jjTrGHxa3B8R3J6xIkDAA6CVarg==}
@@ -28027,40 +27969,6 @@ packages:
       warning: 4.0.3
     dev: false
 
-  /react-router@5.3.4(react@16.14.0):
-    resolution: {integrity: sha512-Ys9K+ppnJah3QuaRiLxk+jDWOR1MekYQrlytiXxC1RyfbdsZkS5pvKAzCCr031xHixZwpnsYNT5xysdFHQaYsA==}
-    peerDependencies:
-      react: '>=15'
-    dependencies:
-      '@babel/runtime': 7.22.15
-      history: 4.10.1
-      hoist-non-react-statics: 3.3.2
-      loose-envify: 1.4.0
-      path-to-regexp: 1.8.0
-      prop-types: 15.8.1
-      react: 16.14.0
-      react-is: 16.13.1
-      tiny-invariant: 1.2.0
-      tiny-warning: 1.0.3
-    dev: false
-
-  /react-router@5.3.4(react@18.2.0):
-    resolution: {integrity: sha512-Ys9K+ppnJah3QuaRiLxk+jDWOR1MekYQrlytiXxC1RyfbdsZkS5pvKAzCCr031xHixZwpnsYNT5xysdFHQaYsA==}
-    peerDependencies:
-      react: '>=15'
-    dependencies:
-      '@babel/runtime': 7.22.15
-      history: 4.10.1
-      hoist-non-react-statics: 3.3.2
-      loose-envify: 1.4.0
-      path-to-regexp: 1.8.0
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-is: 16.13.1
-      tiny-invariant: 1.2.0
-      tiny-warning: 1.0.3
-    dev: false
-
   /react-router@6.3.0(react@16.14.0):
     resolution: {integrity: sha512-7Wh1DzVQ+tlFjkeo+ujvjSqSJmkt1+8JO+T5xklPlgrh70y7ogx75ODRW0ThWhY7S+6yEDks8TYrtQe/aoboBQ==}
     peerDependencies:
@@ -28068,7 +27976,15 @@ packages:
     dependencies:
       history: 5.3.0
       react: 16.14.0
-    dev: true
+
+  /react-router@6.3.0(react@18.2.0):
+    resolution: {integrity: sha512-7Wh1DzVQ+tlFjkeo+ujvjSqSJmkt1+8JO+T5xklPlgrh70y7ogx75ODRW0ThWhY7S+6yEDks8TYrtQe/aoboBQ==}
+    peerDependencies:
+      react: '>=16.8'
+    dependencies:
+      history: 5.3.0
+      react: 18.2.0
+    dev: false
 
   /react-side-effect@1.2.0(react@16.14.0):
     resolution: {integrity: sha512-v1ht1aHg5k/thv56DRcjw+WtojuuDHFUgGfc+bFHOWsF4ZK6C2V57DO0Or0GPsg6+LSTE0M6Ry/gfzhzSwbc5w==}

@@ -276,6 +276,38 @@
                     return applicationDomain.replace(/\/+$/, '') + getTenantPath();
                 }
 
+                /**
+                 * Construct the auth params for organization login `authorize` requets.
+                 *
+                 * @remarks This only applies to the new authz runtime.
+                 *
+                 * @returns {string} Contructed auth params.
+                 */
+                function getAuthParamsForOrganizationLogins(orginalParams) {
+                    if (startupConfig.legacyAuthzRuntime) {
+                        return orginalParams;
+                    }
+
+                    var authParams = Object.assign({}, orginalParams);
+
+                    if (getOrganizationPath()) {
+                        var initialUserOrgInLocalStorage = localStorage.getItem("user-org");
+                        var orgIdInLocalStorage = localStorage.getItem("org-id");
+
+                        if (orgIdInLocalStorage) {
+                            if (orgIdInLocalStorage === getOrganizationName() && initialUserOrgInLocalStorage !== "undefined") {
+                                authParams["fidp"] = "OrganizationSSO";
+                                authParams["orgId"] = getOrganizationName();
+                            }
+                        } else {
+                            authParams["fidp"] = "OrganizationSSO";
+                            authParams["orgId"] = getOrganizationName();
+                        }
+                    }
+
+                    return authParams;
+                }
+
                 var auth = AsgardeoAuth.AsgardeoSPAClient.getInstance();
 
                 var authConfig = {
@@ -316,7 +348,7 @@
                 // Redirect user to the login page if the prompt parameter is set to login.
                 if (promptParam && promptParam === 'login') {
                     auth.initialize(authConfig);
-                    auth.signIn({ prompt: "login" });
+                    auth.signIn(getAuthParamsForOrganizationLogins({ prompt: "login" }));
 
                     return;
                 }
@@ -338,7 +370,7 @@
                         sessionStorage.setItem("auth_callback_url_console", authCallbackUrl);
                     }
 
-                    auth.signIn();
+                    auth.signIn(getAuthParamsForOrganizationLogins({}));
                 }
             }
         }

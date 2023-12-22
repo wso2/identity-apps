@@ -519,6 +519,13 @@ export interface ConsoleNS {
     };
     consoleSettings: {
         administrators: {
+            add: {
+                action: string;
+                options: {
+                    addExistingUser: string;
+                    inviteNewUser: string;
+                }
+            },
             edit: {
                 backButton: string;
             };

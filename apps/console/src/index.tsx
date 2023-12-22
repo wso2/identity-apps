@@ -29,6 +29,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AsgardeoTheme } from "./branding/theme";
 import { AuthenticateUtils } from "./features/authentication";
 import { Config, PreLoader, store } from "./features/core";
+import AppSettingsProvider from "./features/core/providers/app-settings-provider";
 import OrganizationsProvider from "./features/organizations/providers/organizations-provider";
 import { ProtectedApp } from "./protected-app";
 
@@ -79,23 +80,25 @@ const RootWithConfig = (): ReactElement => {
     }
 
     return (
-        <ThemeProvider theme={ AsgardeoTheme } defaultMode="light" modeStorageKey="console-oxygen-mode">
-            <Provider store={ store }>
-                <BrowserRouter>
-                    <AuthProvider
-                        config={ AuthenticateUtils.getInitializeConfig() }
-                        fallback={ <PreLoader /> }
-                        getAuthParams={ getAuthParams }
-                    >
-                        <AppConfigProvider>
-                            <OrganizationsProvider>
-                                <ProtectedApp />
-                            </OrganizationsProvider>
-                        </AppConfigProvider>
-                    </AuthProvider>
-                </BrowserRouter>
-            </Provider>
-        </ThemeProvider>
+        <AppSettingsProvider>
+            <ThemeProvider theme={ AsgardeoTheme } defaultMode="light" modeStorageKey="console-oxygen-mode">
+                <Provider store={ store }>
+                    <BrowserRouter>
+                        <AuthProvider
+                            config={ AuthenticateUtils.getInitializeConfig() }
+                            fallback={ <PreLoader /> }
+                            getAuthParams={ getAuthParams }
+                        >
+                            <AppConfigProvider>
+                                <OrganizationsProvider>
+                                    <ProtectedApp />
+                                </OrganizationsProvider>
+                            </AppConfigProvider>
+                        </AuthProvider>
+                    </BrowserRouter>
+                </Provider>
+            </ThemeProvider>
+        </AppSettingsProvider>
     );
 };
 

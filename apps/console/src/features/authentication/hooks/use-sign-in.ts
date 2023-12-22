@@ -94,7 +94,14 @@ const useSignIn = (): UseSignInInterface => {
 
     const { legacyAuthzRuntime }  = useAuthorization();
 
-    const { transformTenantDomain } = useOrganizations();
+    const {
+        transformTenantDomain,
+        setUserOrgInLocalStorage,
+        setOrgIdInLocalStorage,
+        getUserOrgInLocalStorage,
+        removeOrgIdInLocalStorage,
+        removeUserOrgInLocalStorage
+    } = useOrganizations();
 
     const setCustomServerHost = (orgType: string, wellKnownEndpoint: string) => {
         const disabledFeatures: string[] = window["AppUtils"]?.getConfig()?.ui?.features?.branding?.disabledFeatures;
@@ -427,7 +434,11 @@ const useSignIn = (): UseSignInInterface => {
                         endSessionEndpoint: logoutUrl.split("?")[0],
                         tokenEndpoint: tokenEndpoint
                     },
-                    signOutRedirectURL: logoutRedirectUrl
+                    signOutRedirectURL: deriveLogoutRedirectForSubOrgLogins(
+                        logoutRedirectUrl,
+                        userOrganizationId,
+                        orgIdIdToken
+                    )
                 });
             })
             .catch((error: any) => {
@@ -447,6 +458,46 @@ const useSignIn = (): UseSignInInterface => {
 
         onSignInSuccessRedirect(idToken);
         setCustomServerHost(orgType, wellKnownEndpoint);
+    };
+
+    /**
+     * Derives the logout redirect URL for sub-org logins.
+     *
+     * @remarks This only applies to the new authz runtime.
+     *
+     * @param currentLogoutRedirect - Current logout redirect URL.
+     * @param userOrg - User's org.
+     * @param orgId - User's org ID.
+     * @returns Derived logout redirect URL.
+     */
+    const deriveLogoutRedirectForSubOrgLogins = (currentLogoutRedirect: string, userOrg: string, orgId: string) => {
+        if (legacyAuthzRuntime) {
+            return currentLogoutRedirect;
+        }
+
+        let logoutRedirectUrl: string = currentLogoutRedirect;
+
+        // When a first level tenant login happens, `user_org` is undefined.
+        // We need to save that in the local storage to handle the login/logout if they switch.
+        if (userOrg === undefined && orgId) {
+            removeUserOrgInLocalStorage();
+            removeOrgIdInLocalStorage();
+
+            setUserOrgInLocalStorage(userOrg);
+            setOrgIdInLocalStorage(orgId);
+        }
+
+        if (userOrg) {
+            const isSwitchedFromRootOrg: boolean = getUserOrgInLocalStorage() === "undefined";
+
+            if (!isSwitchedFromRootOrg) {
+                logoutRedirectUrl = window["AppUtils"]?.getConfig()?.clientOriginWithTenant?.replace(
+                    orgId, userOrg
+                );
+            }
+        }
+
+        return logoutRedirectUrl;
     };
 
     return {
