@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.51
+
+### Patch Changes
+
+- [#5132](https://github.com/wso2/identity-apps/pull/5132) [`ad3b9b5712`](https://github.com/wso2/identity-apps/commit/ad3b9b5712376dcde3d91e98edc5e55f886ca7cd) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the default value issue in dropdowns of Custom Connector Authenticator forms.
+
 ## 2.10.50
 
 ### Patch Changes
