@@ -1,5 +1,16 @@
 # @wso2is/identity-apps-core
 
+## 2.0.109
+
+### Patch Changes
+
+- [#5129](https://github.com/wso2/identity-apps/pull/5129) [`136be24845`](https://github.com/wso2/identity-apps/commit/136be248454dc35312db32e8e6092f71f18d5be9) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add missing i18n mappings for org sso page when email domain discovery is enabled
+
+* [#5128](https://github.com/wso2/identity-apps/pull/5128) [`3e05f7c015`](https://github.com/wso2/identity-apps/commit/3e05f7c0157657798b982446608866d0d445809f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the checkbox branding issue
+
+* Updated dependencies [[`f506af671f`](https://github.com/wso2/identity-apps/commit/f506af671ffdaca6414fe8ca4b90a635b32684f6), [`3e05f7c015`](https://github.com/wso2/identity-apps/commit/3e05f7c0157657798b982446608866d0d445809f)]:
+  - @wso2is/theme@2.0.52
+
 ## 2.0.108
 
 ### Patch Changes
