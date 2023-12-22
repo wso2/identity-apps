@@ -8196,8 +8196,8 @@ export const console: ConsoleNS = {
                         disableOrganization: {
                             disableActionTitle: "Désactiver l'organisation",
                             enableActionTitle: "Activer l'organisation",
-                            subheader: "La désactivation d'une organisation peut vous faire perdre l'accès à" +
-                                " l'organisation associée. Procéder avec prudence."
+                            subheader: "La désactivation d'une organisation la rendra indisponible pour tous " +
+                                "les utilisateurs."
                         },
                         subHeader: "Voulez-vous vraiment supprimer cette organisation?",
                         title: "Supprimer l'organisation"
