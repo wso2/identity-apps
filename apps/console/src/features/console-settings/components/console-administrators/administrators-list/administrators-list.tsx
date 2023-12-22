@@ -214,17 +214,18 @@ const AdministratorsList: React.FunctionComponent<AdministratorsListProps> = (
 
             return (
                 <Dropdown
-                    data-componentid={ `${ componentId }-add-user-dropdown` }
+                    data-componentid={ `${ componentId }-add-administrator-dropdown` }
                     direction="left"
                     floating
                     icon={ null }
                     trigger={ (
                         <PrimaryButton
                             data-componentid={ `${ componentId }-add-button` }
+                            className="add-administrator-dropdown-trigger"
                         >
                             <Icon data-componentid={ `${componentId}-add-button-icon` } name="add" />
                             { t("console:consoleSettings.administrators.add.action") }
-                            <Icon name="dropdown" className="ml-3 mr-0"/>
+                            <Icon name="dropdown" className="add-administrator-dropdown-chevron"/>
                         </PrimaryButton>
                     ) }
                 >
