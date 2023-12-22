@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/access-control",
-    "version": "2.0.12",
+    "version": "2.0.13",
     "description": "Access control module for WSO2 Identity Server front end applications",
     "main": "dist/src/index.js",
     "types": "dist/types/index.d.ts",
@@ -33,7 +33,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/core": "^2.0.23",
+        "@wso2is/core": "^2.0.25",
         "jest": "^26.4.2",
         "react-access-control": "^1.0.1",
         "ts-jest": "^26.4.0"
