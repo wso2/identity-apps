@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.2.72
+
+### Patch Changes
+
+- [#5126](https://github.com/wso2/identity-apps/pull/5126) [`f506af671f`](https://github.com/wso2/identity-apps/commit/f506af671ffdaca6414fe8ca4b90a635b32684f6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Bump oxygen-ui version
+
+* [#5128](https://github.com/wso2/identity-apps/pull/5128) [`3e05f7c015`](https://github.com/wso2/identity-apps/commit/3e05f7c0157657798b982446608866d0d445809f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the checkbox branding issue
+
+* Updated dependencies [[`f506af671f`](https://github.com/wso2/identity-apps/commit/f506af671ffdaca6414fe8ca4b90a635b32684f6), [`3e05f7c015`](https://github.com/wso2/identity-apps/commit/3e05f7c0157657798b982446608866d0d445809f)]:
+  - @wso2is/react-components@2.0.29
+  - @wso2is/theme@2.0.52
+
 ## 2.2.71
 
 ### Patch Changes
