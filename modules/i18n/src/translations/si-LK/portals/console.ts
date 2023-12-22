@@ -712,7 +712,7 @@ export const console: ConsoleNS = {
             add: {
                 action: "පරිපාලක එකතු කරන්න",
                 options: {
-                    addExistingUser: "පවතින පරිශීලකයා එක් කරන්න",
+                    addExistingUser: "පවතින පරිශීලකයෙක් එක් කරන්න",
                     inviteNewUser: "නව පරිශීලකයෙකුට ආරාධනා කරන්න"
                 }
             },
