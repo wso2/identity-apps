@@ -709,6 +709,13 @@ export const console: ConsoleNS = {
     },
     consoleSettings: {
         administrators: {
+            add: {
+                action: "පරිපාලක එකතු කරන්න",
+                options: {
+                    addExistingUser: "පවතින පරිශීලකයා එක් කරන්න",
+                    inviteNewUser: "නව පරිශීලකයාට ආරාධනා කරන්න"
+                }
+            },
             edit: {
                 backButton: "පරිපාලකයින් වෙත ආපසු යන්න"
             },

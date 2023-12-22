@@ -701,6 +701,13 @@ export const console: ConsoleNS = {
     },
     consoleSettings: {
         administrators: {
+            add: {
+                action: "Ajouter l'administrateur",
+                options: {
+                    addExistingUser: "Ajouter l'utilisateur existant",
+                    inviteNewUser: "Inviter un nouvel utilisateur"
+                }
+            },
             edit: {
                 backButton: "Retourner aux administrateurs"
             },
