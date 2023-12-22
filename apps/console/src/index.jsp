@@ -283,12 +283,12 @@
                  *
                  * @returns {string} Contructed auth params.
                  */
-                function getAuthParamsForOrganizationLogins(orginalPrams) {
+                function getAuthParamsForOrganizationLogins(orginalParams) {
                     if (startupConfig.legacyAuthzRuntime) {
-                        return orginalPrams;
+                        return orginalParams;
                     }
 
-                    var authParams = Object.assign({}, orginalPrams);
+                    var authParams = Object.assign({}, orginalParams);
 
                     if (getOrganizationPath()) {
                         var initialUserOrgInLocalStorage = localStorage.getItem("user-org");
