@@ -31,6 +31,7 @@ import useConsoleSettings from "../../hooks/use-console-settings";
 import { AssociatedRolesPatchObjectInterface, BasicRoleInterface } from "../../../roles/models/roles";
 import CreateConsoleRoleWizard from "./create-console-role-wizard/create-console-role-wizard";
 import useConsoleRoles from "../../hooks/use-console-roles";
+import { useGetCurrentOrganizationType } from "../../../organizations/hooks/use-get-organization-type";
 
 /**
  * Props interface of {@link ConsoleRolesList}
@@ -64,6 +65,8 @@ const ConsoleRolesList: FunctionComponent<ConsoleRolesListInterface> = (
         isConsoleRolesFetchRequestLoading
     } = useConsoleRoles(true, listItemLimit, listOffset, searchQuery);
 
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
     /**
      * The following useEffect is used to handle if any error occurs while fetching the roles list.
      */
@@ -87,7 +90,7 @@ const ConsoleRolesList: FunctionComponent<ConsoleRolesListInterface> = (
         <>
             <ConsoleRolesListLayout
                 data-componentid={ `${ componentId }-layout` }
-                isSubOrg={ false }
+                isSubOrg={ isSubOrganization() }
                 rolesList={ consoleRoles }
                 onMutateRolesList={ mutateConsoleRolesFetchRequest }
                 isRolesListLoading={ isConsoleRolesFetchRequestLoading }
