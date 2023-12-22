@@ -42,8 +42,8 @@ interface InviteParentOrgUserFormErrorsInterface {
  * Props interface of {@link InviteParentOrgUser}
  */
 interface InviteParentOrgUserPropsInterface extends IdentifiableComponentInterface {
-    onSubmit?: (values: any) => void;
-    [ "data-componentid"]?: string;
+    onSubmit?: (values:  InviteParentOrgUserFormValuesInterface) => void;
+    [ "data-componentid" ]?: string;
 }
 
 /**
@@ -146,10 +146,10 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
                             component={ AutocompleteFieldAdapter }
                             options={ [] }
                             renderTags={ (
-                                value: readonly string[],
+                                values: readonly string[],
                                 getTagProps: AutocompleteRenderGetTagProps
                             ) =>
-                                value.map((option: string, index: number) => (
+                                values.map((option: string, index: number) => (
                                     <Chip
                                         key={ index }
                                         size="small"

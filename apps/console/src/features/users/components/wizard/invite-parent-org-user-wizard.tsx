@@ -59,7 +59,8 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
     const { t } = useTranslation();
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
-    const [ response, setResponse ] = useState<ParentOrgUserInvitationResult[]>([]);
+    const [ parentOrgUserInvitationResults, setParentOrgUserInvitationResults ] =
+        useState<ParentOrgUserInvitationResult[]>([]);
 
     /**
      * Triggers a form submit event for the form in the InviteParentOrgUser component.
@@ -76,19 +77,18 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
      * @param error - Error response.
      */
     const handleParentOrgUserInviteError = (error: AxiosError) => {
-
         /**
          * Axios throws a generic `Network Error` for status code 401.
          * As a temporary solution, a check to see if a response
          * is available has been used.
          */
-        if (!error.response || error.response.status === 401) {
+        if (!error?.response || error?.response?.status === 401) {
             setAlert({
                 description: t("console:manage.features.invite.notifications.sendInvite.error.description"),
                 level: AlertLevels.ERROR,
                 message: t("console:manage.features.invite.notifications.sendInvite.error.message")
             });
-        } else if (error.response.status === 403 &&
+        } else if (error?.response?.status === 403 &&
             error?.response?.data?.code === UsersConstants.ERROR_COLLABORATOR_USER_LIMIT_REACHED) {
             setAlert({
                 description: t("extensions:manage.invite.notifications.sendInvite.limitReachError.description"),
@@ -99,7 +99,7 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
             setAlert({
                 description: t(
                     "console:manage.features.invite.notifications.sendInvite.error.description",
-                    { description: error.response.data.description }
+                    { description: error?.response?.data?.description }
                 ),
                 level: AlertLevels.ERROR,
                 message: t("console:manage.features.invite.notifications.sendInvite.error.message")
@@ -130,9 +130,9 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
         setIsSubmitting(true);
         sendParentOrgUserInvite(invite)
             .then((response: AxiosResponse) => {
-                const responseData: ParentOrgUserInvitationResult[] = response.data;
+                const responseData: ParentOrgUserInvitationResult[] = response?.data;
 
-                setResponse(responseData);
+                setParentOrgUserInvitationResults(responseData);
                 onUserInviteSuccess();
             })
             .catch((error: AxiosError) => {
@@ -162,10 +162,10 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
                 { alert && alertComponent }
-                { response && response.length > 0
+                { parentOrgUserInvitationResults && parentOrgUserInvitationResults?.length > 0
                     ? (
                         <ParentInviteResponseList
-                            response={ response }
+                            response={ parentOrgUserInvitationResults }
                             isLoading={ isSubmitting }
                         />
                     ) : (
@@ -178,7 +178,7 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
             <Modal.Actions>
                 <Grid>
                     <Grid.Row column={ 2 }>
-                        <Grid.Column mobile={ 8 } >
+                        <Grid.Column mobile={ 8 }>
                             <LinkButton
                                 data-componentid={ `${ componentId }-cancel-button` }
                                 floated="left"
@@ -190,7 +190,7 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
                             </LinkButton>
                         </Grid.Column>
                         {
-                            !response || response.length < 1 && (
+                            !parentOrgUserInvitationResults || parentOrgUserInvitationResults?.length < 1 && (
                                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                     <PrimaryButton
                                         data-componentid={ `${componentId}-finish-button` }

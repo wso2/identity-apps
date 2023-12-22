@@ -9586,11 +9586,11 @@ export const console: ConsoleNS = {
                     inviteParentUserWizard: {
                         totalInvitations: "සම්පූර්ණ ආරාධනා",
                         successAlert: {
-                            description: "පරිශීලක(න්) හට සාර්ථකව ආරාධනා කරන ලදී.",
+                            description: "පරිශීලකයා(යන්) හට සාර්ථකව ආරාධනා කරන ලදී.",
                             message: "ආරාධනා යවා ඇත"
                         },
                         errorAlert: {
-                            description: "{{ failedCount }} පරිශීලක(න්) හට ආරාධනා කිරීමේදී දෝෂයක් සිදු විය.",
+                            description: "{{ failedCount }} පරිශීලකයා(යන්) හට ආරාධනා කිරීමේදී දෝෂයක් සිදු විය.",
                             message: "සමාලෝචනය අවශ්‍යයි"
                         },
                         tableMessages: {

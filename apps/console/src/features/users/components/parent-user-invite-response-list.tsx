@@ -31,8 +31,7 @@ import {
     Header,
     Label
 } from "semantic-ui-react";
-import {
-    UIConstants, getEmptyPlaceholderIllustrations } from "../../core";
+import { UIConstants, getEmptyPlaceholderIllustrations } from "../../core";
 import {
     ParentOrgUserInvitationResult,
     ParentOrgUserInviteErrorCode,
@@ -85,8 +84,7 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
     });
 
     useEffect(() => {
-
-        if (response && response.length > 0) {
+        if (response && response?.length > 0) {
             response.map((item: ParentOrgUserInvitationResult) => {
                 let message: string = t("console:manage.features.invite.notifications.sendInvite.success.message");
 
@@ -155,9 +153,7 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                     return (
                         <Header as="h6" data-componentid={ `${componentId}-username-item-heading` }>
                             <Header.Content>
-                                {
-                                    item.username
-                                }
+                                { item.username }
                             </Header.Content>
                         </Header>
                     );
@@ -178,7 +174,7 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                                     content={ item.status }
                                     size="small"
                                     color={ item.status === ParentOrgUserInviteResultStatus.SUCCESS ? "green" : "red" }
-                                    className={ "group-label" }
+                                    className="group-label"
                                 />
                             </Header.Content>
                         </Header>
@@ -232,7 +228,7 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                     {
                         isLoading || hasError
                             ? null
-                            : responseSummary.failedCount === 0
+                            : responseSummary?.failedCount === 0
                                 ? ((
                                     <Alert severity="success" data-componentid={ `${componentId}-success-alert` }>
                                         <AlertTitle data-componentid={ `${componentId}-success-alert-title` }>
@@ -260,10 +256,10 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                                                 "errorAlert.description"
                                             }
                                             tOptions={ {
-                                                failedCount: responseSummary.failedCount
+                                                failedCount: responseSummary?.failedCount
                                             } }
                                         >
-                                            An error occurred while inviting { responseSummary.failedCount } user(s)..
+                                            An error occurred while inviting { responseSummary?.failedCount } user(s)..
                                         </Trans>
                                     </Alert>
                                 )
@@ -275,7 +271,7 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                     <Typography variant="body2" style={ { textAlign: "right" } }>
                         {
                             t("console:manage.features.user.modals.inviteParentUserWizard.totalInvitations") +
-                            " : " +  responseSummary.totalCount
+                            " : " +  responseSummary?.totalCount
                         }
                     </Typography>
                     <DataTable<ResponseListItem[]>

@@ -11561,7 +11561,7 @@ export const console: ConsoleNS = {
                             userNotFound: "User not found",
                             activeInvitationExists: "An active invitation already exists for the user",
                             userEmailNotFound: "Could not find the email of the invited user",
-                            userAlreadyExist: "User already exist"
+                            userAlreadyExist: "User already exists"
                         }
                     },
                     changePasswordModal: {
