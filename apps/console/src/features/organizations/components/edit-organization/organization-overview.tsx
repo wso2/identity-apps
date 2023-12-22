@@ -260,12 +260,12 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
 
     const handleDisableOrganization = useCallback(
         (event, data: CheckboxProps) => {
-            const isChecked = data.checked;
+            const isChecked: boolean = data.checked;
 
             const patchData: OrganizationPatchData = {
                 operation: "REPLACE",
                 path: "/status",
-                value: isChecked ? "ACTIVE" : "DISABLED"
+                value: isChecked ? "DISABLED" : "ACTIVE"
             };
 
             patchOrganization(organization.id, [ patchData ])
@@ -616,18 +616,12 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                         <Show when={ AccessControlConstants.ORGANIZATION_EDIT }>
                             <DangerZone
                                 actionTitle={ t(
-                                    organization.status === "ACTIVE"
-                                        ? "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
-                                        ".disableActionTitle"
-                                        : "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
-                                        ".enableActionTitle"
+                                    "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                                    ".disableActionTitle"
                                 ) }
                                 header={ t(
-                                    organization.status === "ACTIVE"
-                                        ? "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
-                                        ".disableActionTitle"
-                                        : "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
-                                        ".enableActionTitle"
+                                    "console:manage.features.organizations.edit.dangerZone.disableOrganization" +
+                                    ".disableActionTitle"
                                 ) }
                                 subheader={ t(
                                     "console:manage.features.organizations.edit.dangerZone" +
@@ -636,7 +630,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                 onActionClick={ undefined }
                                 data-testid={ `${ testId }-disable-danger-zone` }
                                 toggle={ {
-                                    checked: organization.status === "ACTIVE",
+                                    checked: organization.status !== "ACTIVE",
                                     onChange: handleDisableOrganization
                                 } }
                             />
