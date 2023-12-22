@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -154,12 +154,14 @@ export const getRadioButtonField = (eachProp: CommonPluggableComponentPropertyIn
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 children={
-                    propertyMetadata?.subProperties?.map(function(val): StrictRadioChild {
-                        return {
-                            label: val.displayName,
-                            value: val.defaultValue
-                        };
-                    })
+                    propertyMetadata?.subProperties?.map(
+                        function(val: CommonPluggableComponentMetaPropertyInterface): StrictRadioChild {
+                            return {
+                                label: val?.displayName,
+                                value: val?.defaultValue
+                            };
+                        }
+                    )
                 }
                 disabled={ propertyMetadata?.isDisabled }
                 readOnly={ propertyMetadata?.readOnly }
@@ -189,12 +191,14 @@ export const getRadioButtonFieldWithListener = (eachProp: CommonPluggableCompone
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
                 children={
-                    propertyMetadata?.subProperties?.map(function(val): StrictRadioChild {
-                        return {
-                            label: val.displayName,
-                            value: val.defaultValue
-                        };
-                    })
+                    propertyMetadata?.subProperties?.map(
+                        function(val: CommonPluggableComponentMetaPropertyInterface): StrictRadioChild {
+                            return {
+                                label: val?.displayName,
+                                value: val?.defaultValue
+                            };
+                        }
+                    )
                 }
                 listen={ (values: Map<string, FormValue>) => {
                     listen(propertyMetadata?.key, values);
@@ -262,7 +266,7 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms." +
                     "common.requiredErrorMessage") }
                 placeholder={ propertyMetadata?.defaultValue }
-                validation={ (value, validation) => {
+                validation={ (value: string, validation: Validation) => {
                     if (!FormValidation.url(value)) {
                         validation.isValid = false;
                         validation.errorMessages.push(
@@ -367,7 +371,7 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
                 required={ propertyMetadata?.isMandatory }
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider.forms.common." +
                     "requiredErrorMessage") }
-                validation={ (value, validation) => {
+                validation={ (value: string, validation: Validation) => {
                     if (!FormValidation.url("https://www.sample.com?" + value)) {
                         validation.isValid = false;
                         validation.errorMessages.push(
@@ -431,7 +435,7 @@ export const getTableField = (eachProp: CommonPluggableComponentPropertyInterfac
                 } }
             />
             <Grid>
-                { eachProp?.value.split(" ").map((scope,index) => (
+                { eachProp?.value.split(" ").map((scope: string, index: number) => (
                     <Grid.Row columns={ 3 } key={ index }>
                         <Grid.Column mobile={ 1 } tablet={ 1 } computer={ 1 }>
                             <GenericIcon
@@ -478,7 +482,7 @@ export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInter
                 requiredErrorMessage={ I18n.instance.t("console:develop.features.authenticationProvider." +
                     "forms.common.requiredErrorMessage") }
                 type="dropdown"
-                value={ eachProp?.value || propertyMetadata?.key }
+                value={ eachProp?.value || propertyMetadata?.defaultValue }
                 key={ eachProp?.key || propertyMetadata?.key }
                 children={ getDropDownChildren(eachProp?.key, propertyMetadata?.options) }
                 disabled={ propertyMetadata?.isDisabled }
@@ -493,7 +497,7 @@ export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInter
 };
 
 const getDropDownChildren = (key: string, options: string[]) => {
-    return options.map((option) => {
+    return options.map((option: string) => {
         return ({
             key: key,
             text: key === "RequestMethod" ? mapSAMLProtocolBindingToProperDisplayNames(option) : option,
