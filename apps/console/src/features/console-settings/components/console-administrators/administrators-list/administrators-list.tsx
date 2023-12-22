@@ -29,7 +29,7 @@ import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Dropdown, DropdownItemProps, DropdownMenu, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import AdministratorsTable from "./administrators-table";
 import { AccessControlConstants } from "../../../../access-control/constants/access-control";
 import {
