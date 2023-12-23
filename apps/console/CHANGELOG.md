@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.10.52
+
+### Patch Changes
+
+- [#5134](https://github.com/wso2/identity-apps/pull/5134) [`835c173536`](https://github.com/wso2/identity-apps/commit/835c173536e1590121b6f4ba0092ffd61adc7b35) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Improve UX in organization enable/disable action
+
+* [#5135](https://github.com/wso2/identity-apps/pull/5135) [`f19f0a8051`](https://github.com/wso2/identity-apps/commit/f19f0a80517853354725ffa1d258c17b7d9b0b6b) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Replace hardcoded isSubOrg prop with proper implementation
+
+* Updated dependencies [[`835c173536`](https://github.com/wso2/identity-apps/commit/835c173536e1590121b6f4ba0092ffd61adc7b35)]:
+  - @wso2is/i18n@2.0.86
+
 ## 2.10.51
 
 ### Patch Changes

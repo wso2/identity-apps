@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.2.74
+
+### Patch Changes
+
+- [#5134](https://github.com/wso2/identity-apps/pull/5134) [`835c173536`](https://github.com/wso2/identity-apps/commit/835c173536e1590121b6f4ba0092ffd61adc7b35) Thanks [@nipunsampath](https://github.com/nipunsampath)! - Improve UX in organization enable/disable action
+
+- Updated dependencies [[`835c173536`](https://github.com/wso2/identity-apps/commit/835c173536e1590121b6f4ba0092ffd61adc7b35)]:
+  - @wso2is/i18n@2.0.86
+
 ## 2.2.73
 
 ### Patch Changes
