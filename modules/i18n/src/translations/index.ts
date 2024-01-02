@@ -18,10 +18,10 @@
 
 export * from "./en-US";
 export * from "./fr-FR";
+export * from "./pt-PT";
 export * from "./pt-BR";
 export * from "./si-LK";
 export * from "./es-ES";
 export * from "./de-DE";
 export * from "./ja-JP";
 export * from "./zh-CN";
-export * from "./pt-PT";
