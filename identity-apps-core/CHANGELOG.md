@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.111
+
+### Patch Changes
+
+- [#5053](https://github.com/wso2/identity-apps/pull/5053) [`13266edfe2`](https://github.com/wso2/identity-apps/commit/13266edfe28afa6e7bdadb98beee4d0277c0b390) Thanks [@ayeshajay](https://github.com/ayeshajay)! - Add brazil language support for IS
+
 ## 2.0.110
 
 ### Patch Changes

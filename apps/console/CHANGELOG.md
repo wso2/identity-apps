@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.10.53
+
+### Patch Changes
+
+- [#5139](https://github.com/wso2/identity-apps/pull/5139) [`6e50301122`](https://github.com/wso2/identity-apps/commit/6e50301122858fb3023086d78ca5ca7e34536d78) Thanks [@dewniMW](https://github.com/dewniMW)! - Fix typo in application sharing
+
+* [#5140](https://github.com/wso2/identity-apps/pull/5140) [`acbca78402`](https://github.com/wso2/identity-apps/commit/acbca78402110e93a7db24c71c30e5bcc4d3e60d) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the custom grant type displaying issue
+
+- [#5053](https://github.com/wso2/identity-apps/pull/5053) [`13266edfe2`](https://github.com/wso2/identity-apps/commit/13266edfe28afa6e7bdadb98beee4d0277c0b390) Thanks [@ayeshajay](https://github.com/ayeshajay)! - Add brazil language support for IS
+
+* [#5137](https://github.com/wso2/identity-apps/pull/5137) [`7366e9870e`](https://github.com/wso2/identity-apps/commit/7366e9870e2bf194c05d031fe02a029594244477) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show my account in applications page for SaaS deployment
+
+* Updated dependencies [[`6e50301122`](https://github.com/wso2/identity-apps/commit/6e50301122858fb3023086d78ca5ca7e34536d78), [`13266edfe2`](https://github.com/wso2/identity-apps/commit/13266edfe28afa6e7bdadb98beee4d0277c0b390)]:
+  - @wso2is/i18n@2.0.87
+
 ## 2.10.52
 
 ### Patch Changes
