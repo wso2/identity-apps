@@ -11559,7 +11559,7 @@ export const console: ConsoleNS = {
                         },
                         tableMessages: {
                             userNotFound: "User not found",
-                            activeInvitationExists: "An active invitation already exists for the user",
+                            activeInvitationExists: "An active invitation for the user already exists",
                             userEmailNotFound: "Could not find the email of the invited user",
                             userAlreadyExist: "User already exists"
                         }
