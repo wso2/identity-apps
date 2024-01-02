@@ -18,6 +18,7 @@
 
 export * from "./en-US";
 export * from "./fr-FR";
+export * from "./pt-PT";
 export * from "./pt-BR";
 export * from "./si-LK";
 export * from "./es-ES";

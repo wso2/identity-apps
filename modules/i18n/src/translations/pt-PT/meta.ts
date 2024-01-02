@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,12 @@
  * under the License.
  */
 
-import { meta } from "./meta";
-import * as portals from "./portals";
-import { LocaleBundle } from "../../models";
+import { I18nModuleConstants } from "../../constants";
+import { LocaleMeta } from "../../models";
 
-export const PT_BR: LocaleBundle = {
-    meta,
-    resources: {
-        portals
-    }
+export const meta: LocaleMeta = {
+    code: "pt-PT",
+    flag: "pt",
+    name: "Português (Portugal)",
+    namespaces: [ I18nModuleConstants.COMMON_NAMESPACE, I18nModuleConstants.MY_ACCOUNT_NAMESPACE ]
 };

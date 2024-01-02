@@ -37,14 +37,15 @@
     
     // Map to store default supported language codes.
     // TODO: Use this map to generate the `language-switcher.jsp`.
-    Map<String, String> supportedLanguages = new HashMap<>();
-    supportedLanguages.put("en", "US");
-    supportedLanguages.put("fr", "FR");
-    supportedLanguages.put("es", "ES");
-    supportedLanguages.put("pt", "PT");
-    supportedLanguages.put("de", "DE");
-    supportedLanguages.put("zh", "CN");
-    supportedLanguages.put("ja", "JP");
+    List<String> languageSupportedCountries = new ArrayList<>();
+    languageSupportedCountries.add("US");
+    languageSupportedCountries.add("FR");
+    languageSupportedCountries.add("ES");
+    languageSupportedCountries.add("PT");
+    languageSupportedCountries.add("DE");
+    languageSupportedCountries.add("CN");
+    languageSupportedCountries.add("JP");
+    languageSupportedCountries.add("BR");
 
     // Check cookie for the user selected language first
     Cookie[] cookies = request.getCookies();
@@ -116,12 +117,12 @@
         }
     } else {
         // `browserLocale` is coming as `en` instead of `en_US` for the first render before switching the language from the dropdown.
-        String countryCode = supportedLanguages.get(browserLocale.getLanguage());
+        String countryCode = browserLocale.getCountry();
 
-        if (StringUtils.isNotBlank(countryCode)) {
+        if (StringUtils.isNotBlank(countryCode) && languageSupportedCountries.contains(countryCode)) {
             userLocale = new Locale(browserLocale.getLanguage(), countryCode);
         } else {
-            userLocale = browserLocale;
+            userLocale = new Locale("en","US");
         }
     }
 
