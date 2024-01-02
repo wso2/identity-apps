@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.2.75
+
+### Patch Changes
+
+- [#5053](https://github.com/wso2/identity-apps/pull/5053) [`13266edfe2`](https://github.com/wso2/identity-apps/commit/13266edfe28afa6e7bdadb98beee4d0277c0b390) Thanks [@ayeshajay](https://github.com/ayeshajay)! - Add brazil language support for IS
+
+- Updated dependencies [[`6e50301122`](https://github.com/wso2/identity-apps/commit/6e50301122858fb3023086d78ca5ca7e34536d78), [`13266edfe2`](https://github.com/wso2/identity-apps/commit/13266edfe28afa6e7bdadb98beee4d0277c0b390)]:
+  - @wso2is/i18n@2.0.87
+
 ## 2.2.74
 
 ### Patch Changes
