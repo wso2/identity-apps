@@ -181,6 +181,7 @@ export class ApplicationManagementConstants {
     public static readonly CLIENT_CREDENTIALS_GRANT: string = "client_credentials";
     public static readonly REFRESH_TOKEN_GRANT: string = "refresh_token";
     public static readonly ORGANIZATION_SWITCH_GRANT: string = "organization_switch";
+    public static readonly ORGANIZATION_SWITCH_CC_GRANT: string = "organization_switch_cc";
     public static readonly IMPLICIT_GRANT: string = "implicit";
     public static readonly PASSWORD: string = "password";
     public static readonly SAML2_BEARER: string = "urn:ietf:params:oauth:grant-type:saml2-bearer";
@@ -190,6 +191,26 @@ export class ApplicationManagementConstants {
     public static readonly DEVICE_GRANT: string = "urn:ietf:params:oauth:grant-type:device_code";
     public static readonly OAUTH2_TOKEN_EXCHANGE: string = "urn:ietf:params:oauth:grant-type:token-exchange";
     public static readonly ACCOUNT_SWITCH_GRANT: string = "account_switch";
+
+    /**
+     * List of available grant types.
+     */
+    public static readonly AVAILABLE_GRANT_TYPES: string[] = [
+        this.AUTHORIZATION_CODE_GRANT,
+        this.CLIENT_CREDENTIALS_GRANT,
+        this.REFRESH_TOKEN_GRANT,
+        this.ORGANIZATION_SWITCH_GRANT,
+        this.ORGANIZATION_SWITCH_CC_GRANT,
+        this.IMPLICIT_GRANT,
+        this.PASSWORD,
+        this.SAML2_BEARER,
+        this.JWT_BEARER,
+        this.IWA_NTLM,
+        this.UMA_TICKET,
+        this.DEVICE_GRANT,
+        this.OAUTH2_TOKEN_EXCHANGE,
+        this.ACCOUNT_SWITCH_GRANT
+    ];
 
     /**
      * Set of grant types to hide from the UI.

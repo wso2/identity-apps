@@ -880,7 +880,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     && template.id
                     && get(applicationConfig.allowedGrantTypes, template.id)
                     && !applicationConfig.allowedGrantTypes[ template.id ]
-                        .includes(name)) {
+                        .includes(name)
+                    && ApplicationManagementConstants.AVAILABLE_GRANT_TYPES.includes(name)) {
 
                     return;
                 }
@@ -921,13 +922,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
         /**
          * Rearranging the allowed list according to the correct order.
-         * Below algorithm assumes that the template's arrange order map
-         * keys length is equals to allowedList.
          *
          * Below invariants must be satisfied to complete the operation: -
          *      - `template` AND `template.id` IS truthy
          *      - `arrangement` HAS `template.id`
-         *      - `length(arrangement.length)` == `length(allowedList)`
          *
          * If all the above invariants are satisfied then we can safely
          * attach a `index` property to every entry of the `allowedList`
@@ -938,7 +936,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             const arrangement: Map<string, number> = ApplicationManagementConstants
                 .TEMPLATE_WISE_ALLOWED_GRANT_TYPE_ARRANGE_ORDER[ template.id ];
 
-            if (arrangement && arrangement.size === allowedList.length) {
+            if (arrangement) {
                 for (const grant of allowedList) {
                     const index: number = arrangement.get(grant.value);
 
