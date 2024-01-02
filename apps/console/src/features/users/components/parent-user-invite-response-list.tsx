@@ -45,13 +45,13 @@ interface ParentInviteResponseListProps {
     ["data-componentid"]?: string;
 }
 
-interface ResponseListItem {
+interface ParentUserInviteResponseListItem {
     username: string;
     status: string;
     message: string;
 }
 
-interface ResponseSummary {
+interface ParentUserInviteSummaryResponse {
     successCount: number;
     failedCount: number;
     totalCount: number;
@@ -76,8 +76,8 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
 
     const { t } = useTranslation();
 
-    const [ responseList, setResponseList ] = useState<ResponseListItem[]>([]);
-    const [ responseSummary, setResponseSummary ] = useState<ResponseSummary>({
+    const [ responseList, setResponseList ] = useState<ParentUserInviteResponseListItem[]>([]);
+    const [ responseSummary, setResponseSummary ] = useState<ParentUserInviteSummaryResponse>({
         failedCount: 0,
         successCount: 0,
         totalCount: 0
@@ -112,7 +112,7 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                             break;
                     }
                 }
-                setResponseList((prevState: ResponseListItem[]) => [
+                setResponseList((prevState: ParentUserInviteResponseListItem[]) => [
                     ...prevState,
                     {
                         message: message,
@@ -121,13 +121,13 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                     }
                 ]);
                 if (item.result.status === ParentOrgUserInviteResultStatus.SUCCESS ) {
-                    setResponseSummary((prevState: ResponseSummary) => ({
+                    setResponseSummary((prevState: ParentUserInviteSummaryResponse) => ({
                         ...prevState,
                         successCount: prevState.successCount + 1,
                         totalCount: prevState.totalCount + 1
                     }));
                 } else {
-                    setResponseSummary((prevState: ResponseSummary) => ({
+                    setResponseSummary((prevState: ParentUserInviteSummaryResponse) => ({
                         ...prevState,
                         failedCount: prevState.failedCount + 1,
                         totalCount: prevState.totalCount + 1
@@ -149,7 +149,7 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                 dataIndex: "resourceIdentifier",
                 id: "resourceIdentifier",
                 key: "resourceIdentifier",
-                render: (item: ResponseListItem): ReactNode => {
+                render: (item: ParentUserInviteResponseListItem): ReactNode => {
                     return (
                         <Header as="h6" data-componentid={ `${componentId}-username-item-heading` }>
                             <Header.Content>
@@ -165,7 +165,7 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                 dataIndex: "status",
                 id: "status",
                 key: "status",
-                render: (item: ResponseListItem): ReactNode => {
+                render: (item: ParentUserInviteResponseListItem): ReactNode => {
                     return (
                         <Header as="h6" data-componentid={ `${componentId}-status-item-heading` } >
                             <Header.Content>
@@ -187,7 +187,7 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                 dataIndex: "message",
                 id: "message",
                 key: "message",
-                render: (item: ResponseListItem): ReactNode => {
+                render: (item: ParentUserInviteResponseListItem): ReactNode => {
                     return (
                         <Header as="h6" data-componentid={ `${componentId}-status-item-heading` }>
                             <Header.Content>
@@ -274,7 +274,7 @@ export const ParentInviteResponseList: React.FunctionComponent<ParentInviteRespo
                             " : " +  responseSummary?.totalCount
                         }
                     </Typography>
-                    <DataTable<ResponseListItem[]>
+                    <DataTable<ParentUserInviteResponseListItem[]>
                         className="addon-field-wrapper"
                         isLoading={ isLoading }
                         actions={ [] }
