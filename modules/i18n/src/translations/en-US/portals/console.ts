@@ -1230,7 +1230,7 @@ export const console: ConsoleNS = {
                                     message: "Application sharing failed!"
                                 },
                                 success: {
-                                    description: "Application Shared with the organization(s) successfully",
+                                    description: "Application shared with the organization(s) successfully",
                                     message: "Application shared!"
                                 }
                             },
@@ -1248,7 +1248,7 @@ export const console: ConsoleNS = {
                                     message: "Application sharing stop failed!"
                                 },
                                 success: {
-                                    description: "Application Sharing stopped with the {{organization}} successfully",
+                                    description: "Application sharing stopped with the {{organization}} successfully",
                                     message: "Application shared stopped successfully!"
                                 }
                             },
