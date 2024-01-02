@@ -22,6 +22,6 @@ import { LocaleMeta } from "../../models";
 export const meta: LocaleMeta = {
     code: "pt-BR",
     flag: "br",
-    name: "Português (lang.switcher.brazil=Português - Brazil)",
+    name: "Português (Brazil)",
     namespaces: [ I18nModuleConstants.COMMON_NAMESPACE, I18nModuleConstants.MY_ACCOUNT_NAMESPACE ]
 };
