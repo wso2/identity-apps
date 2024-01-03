@@ -1021,6 +1021,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
     const handleInviteParentUserWizardClose = (): void => {
         setShowInviteParentUserWizard(false);
+        mutateParentOrgUserInviteList();
     };
 
     return (

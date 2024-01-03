@@ -9821,6 +9821,24 @@ export const console: ConsoleNS = {
                             fileFormatSampleHeading: "Exemple de format de fichier CSV:"
                         }
                     },
+                    inviteParentUserWizard: {
+                        totalInvitations: "Nombre total d'invitations",
+                        successAlert: {
+                            description: "L'invitation du ou des utilisateurs a réussi.",
+                            message: "Invitation(s) envoyée(s)"
+                        },
+                        errorAlert: {
+                            description: "Une erreur s'est produite lors de l'invitation de {{ failedCount }} " +
+                                "utilisateur(s).",
+                            message: "Examen requis"
+                        },
+                        tableMessages: {
+                            userNotFound: "Utilisateur non trouvé",
+                            activeInvitationExists: "Une invitation active existe déjà pour l'utilisateur",
+                            userEmailNotFound: "Impossible de trouver l'e-mail de l'utilisateur invité",
+                            userAlreadyExist: "L'utilisateur existe déjà"
+                        }
+                    },
                     changePasswordModal: {
                         button: "réinitialiser le mot de passe",
                         header: "Réinitialiser le mot de passe de l'utilisateur",

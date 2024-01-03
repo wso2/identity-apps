@@ -16,13 +16,23 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
+import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Modal } from "semantic-ui-react";
+import { UsersConstants } from "../../../../extensions/components/users/constants";
 import { UserManagementConstants } from "../../constants";
+import { sendParentOrgUserInvite } from "../guests/api/invite";
+import {
+    InviteParentOrgUserFormValuesInterface,
+    ParentOrgUserInvitationResult,
+    ParentOrgUserInviteInterface,
+    RolesAutoCompleteOption
+} from "../guests/models/invite";
 import { InviteParentOrgUser } from "../guests/pages/invite-parent-org-user";
+import { ParentInviteResponseList } from "../parent-user-invite-response-list";
 
 /**
  * Interface for the Invite Parent Org User Wizard.
@@ -49,6 +59,8 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
     const { t } = useTranslation();
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
+    const [ parentOrgUserInvitationResults, setParentOrgUserInvitationResults ] =
+        useState<ParentOrgUserInvitationResult[]>([]);
 
     /**
      * Triggers a form submit event for the form in the InviteParentOrgUser component.
@@ -57,6 +69,78 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
         document
             .getElementById(UserManagementConstants.INVITE_PARENT_ORG_USER_FORM_ID)
             .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+    };
+
+    /**
+     * Handles the error scenario when sending an invitation to a user in a parent organization to join the current
+     * organization.
+     * @param error - Error response.
+     */
+    const handleParentOrgUserInviteError = (error: AxiosError) => {
+        /**
+         * Axios throws a generic `Network Error` for status code 401.
+         * As a temporary solution, a check to see if a response
+         * is available has been used.
+         */
+        if (!error?.response || error?.response?.status === 401) {
+            setAlert({
+                description: t("console:manage.features.invite.notifications.sendInvite.error.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.invite.notifications.sendInvite.error.message")
+            });
+        } else if (error?.response?.status === 403 &&
+            error?.response?.data?.code === UsersConstants.ERROR_COLLABORATOR_USER_LIMIT_REACHED) {
+            setAlert({
+                description: t("extensions:manage.invite.notifications.sendInvite.limitReachError.description"),
+                level: AlertLevels.ERROR,
+                message: t("extensions:manage.invite.notifications.sendInvite.limitReachError.message")
+            });
+        } else if (error?.response?.data?.description) {
+            setAlert({
+                description: t(
+                    "console:manage.features.invite.notifications.sendInvite.error.description",
+                    { description: error?.response?.data?.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.invite.notifications.sendInvite.error.message")
+            });
+        } else {
+            // Generic error message
+            setAlert({
+                description: t(
+                    "console:manage.features.invite.notifications.sendInvite.genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t("console:manage.features.invite.notifications.sendInvite.genericError.message")
+            });
+        }
+    };
+
+    /**
+     * Sends an invitation to a user in a parent organization to join the current organization.
+     * @param values - Form values.
+     */
+    const inviteParentOrgUser = (values: InviteParentOrgUserFormValuesInterface) => {
+        const invite: ParentOrgUserInviteInterface = {
+            roles: values?.roles?.map((role: RolesAutoCompleteOption) => role.role.id),
+            usernames:  values?.username
+        };
+
+        setAlert(null);
+        setIsSubmitting(true);
+        sendParentOrgUserInvite(invite)
+            .then((response: AxiosResponse) => {
+                const responseData: ParentOrgUserInvitationResult[] = response?.data;
+
+                setParentOrgUserInvitationResults(responseData);
+                onUserInviteSuccess();
+            })
+            .catch((error: AxiosError) => {
+                handleParentOrgUserInviteError(error);
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
     };
 
     return (
@@ -78,17 +162,22 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
                 { alert && alertComponent }
-                <InviteParentOrgUser
-                    closeWizard={ closeWizard }
-                    setIsSubmitting={ setIsSubmitting }
-                    onUserInviteSuccess={ onUserInviteSuccess }
-                    setAlert={ setAlert }
-                    data-componentid={ `${ componentId }-form` }
-                />
+                { parentOrgUserInvitationResults?.length > 0
+                    ? (
+                        <ParentInviteResponseList
+                            response={ parentOrgUserInvitationResults }
+                            isLoading={ isSubmitting }
+                        />
+                    ) : (
+                        <InviteParentOrgUser
+                            onSubmit={ inviteParentOrgUser }
+                            data-componentid={ `${ componentId }-form` }
+                        />
+                    ) }
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
-                    <Grid.Row column={ 1 }>
+                    <Grid.Row column={ 2 }>
                         <Grid.Column mobile={ 8 }>
                             <LinkButton
                                 data-componentid={ `${ componentId }-cancel-button` }
@@ -100,21 +189,23 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
                                 { t("common:cancel") }
                             </LinkButton>
                         </Grid.Column>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <PrimaryButton
-                                data-componentid={ `${ componentId }-finish-button` }
-                                floated="right"
-                                onClick={ submitParentUserInviteForm }
-                                loading={ isSubmitting }
-                                disabled={ isSubmitting }
-                            >
-                                { t("extensions:manage.features.user.addUser.invite") }
-                            </PrimaryButton>
-                        </Grid.Column>
+                        {
+                            !parentOrgUserInvitationResults || parentOrgUserInvitationResults?.length < 1 && (
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                    <PrimaryButton
+                                        data-componentid={ `${componentId}-finish-button` }
+                                        floated="right"
+                                        onClick={ submitParentUserInviteForm }
+                                        loading={ isSubmitting }
+                                        disabled={ isSubmitting }
+                                    >
+                                        { t("extensions:manage.features.user.addUser.invite") }
+                                    </PrimaryButton>
+                                </Grid.Column>
+                            ) }
                     </Grid.Row>
                 </Grid>
             </Modal.Actions>
         </Modal>
     );
 };
-

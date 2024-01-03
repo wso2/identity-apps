@@ -9599,6 +9599,23 @@ export const console: ConsoleNS = {
                             fileFormatSampleHeading: "නියැදි CSV ගොනු ආකෘතිය:"
                         }
                     },
+                    inviteParentUserWizard: {
+                        totalInvitations: "සම්පූර්ණ ආරාධනා",
+                        successAlert: {
+                            description: "පරිශීලකයා(යන්) හට සාර්ථකව ආරාධනා කරන ලදී.",
+                            message: "ආරාධනා යවා ඇත"
+                        },
+                        errorAlert: {
+                            description: "{{ failedCount }} පරිශීලකයා(යන්) හට ආරාධනා කිරීමේදී දෝෂයක් සිදු විය.",
+                            message: "සමාලෝචනය අවශ්‍යයි"
+                        },
+                        tableMessages: {
+                            userNotFound: "පරිශීලක හමු නොවීය",
+                            activeInvitationExists: "පරිශීලකයා සඳහා සක්‍රිය ආරාධනාවක් දැනටමත් පවතී",
+                            userEmailNotFound: "ආරාධිත පරිශීලකයාගේ විද්‍යුත් තැපෑල සොයා ගැනීමට නොහැකි විය",
+                            userAlreadyExist: "පරිශීලක දැනටමත් පවතී"
+                        }
+                    },
                     changePasswordModal: {
                         button: "මුරපදය නැවත සකසන්න",
                         header: "පරිශීලක මුරපදය යළි පිහිටුවන්න",
