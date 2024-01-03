@@ -313,7 +313,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                     isApplicationNativeAuthenticationEnabled &&
                     template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
                     template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
-                    template?.id === ApplicationManagementConstants.MOBILE
+                    template?.id === ApplicationManagementConstants.MOBILE ||
+                    template?.id === ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb")
                 ) && (
                     <>
                         <Grid>
@@ -361,143 +362,178 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                     />
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row columns={ 1 } onClick={ handleWhenClientAttestationClickedWhenDisabled }>
-                                <Grid.Column>
-                                    <Field.CheckboxLegacy
-                                        ariaLabel="Enable attestation"
-                                        name="enableClientAttestation"
-                                        label={ t("console:develop.features.applications.forms.advancedConfig." +
-                                            "sections.applicationNativeAuthentication.fields." +
-                                            "enableClientAttestation.label") }
-                                        required={ false }
-                                        readOnly={ readOnly }
-                                        value={
-                                            config?.attestationMetaData?.enableClientAttestation
-                                                ? [ "enableClientAttestation" ]
-                                                : []
-                                        }
-                                        listen={ setIsEnableClientAttestation }
-                                        data-testid={ `${ testId }-enable-client-attestation` }
-                                        data-componentid={ `${ testId }-enable-api-based-authentication` }
-                                        disabled={ isClientAttestationUIDisabled }
-                                        hint={ t("console:develop.features.applications.forms.advancedConfig." +
-                                            "sections.applicationNativeAuthentication.fields." +
-                                            "enableClientAttestation.hint") }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row columns={ 1 } onClick={ handleWhenClientAttestationClickedWhenDisabled }>
-                                <Grid.Column >
-                                    <Heading as="h5" bold="500">
-                                        <GenericIcon
-                                            size="micro"
-                                            icon={ getTechnologyLogos().android }
-                                            verticalAlign="middle"
-                                            floated="left"
-                                        />
-                                        { t("console:develop.features.applications.forms.advancedConfig." +
-                                            "sections.applicationNativeAuthentication.fields." +
-                                            "android.heading") }
-                                    </Heading>
-                                    <Field.Input
-                                        ariaLabel="Android package name"
-                                        inputType="default"
-                                        name="androidPackageName"
-                                        label={ t("console:develop.features.applications.forms.advancedConfig." +
-                                            "sections.applicationNativeAuthentication.fields." +
-                                            "android.fields.androidPackageName.label") }
-                                        required={ false }
-                                        readOnly={ readOnly }
-                                        value={ config?.attestationMetaData?.androidPackageName ?
-                                            config?.attestationMetaData?.androidPackageName : "" }
-                                        placeholder={ t("console:develop.features.applications.forms.advancedConfig." +
-                                            "sections.applicationNativeAuthentication.fields." +
-                                            "android.fields.androidPackageName.placeholder") }
-                                        hint={ t("console:develop.features.applications.forms.advancedConfig." +
-                                            "sections.applicationNativeAuthentication.fields." +
-                                            "android.fields.androidPackageName.hint") }
-                                        maxLength={ 200 }
-                                        minLength={ 3 }
-                                        width={ 16 }
-                                        data-testid={ `${ testId }-client-attestation-android-package-name` }
-                                        data-componentid={ `${ testId }-client-attestation-android-package-name` }
-                                        disabled={ isClientAttestationMethodsUiDisabled }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row columns={ 1 } onClick={ handleWhenClientAttestationClickedWhenDisabled }>
-                                <Grid.Column>
-                                    <Field.Textarea
-                                        ariaLabel="Android service account credentials"
-                                        inputType="description"
-                                        name="androidAttestationServiceCredentials"
-                                        label={ t("console:develop.features.applications.forms.advancedConfig." +
-                                            "sections.applicationNativeAuthentication.fields." +
-                                            "android.fields.androidAttestationServiceCredentials.label") }
-                                        placeholder={ t("console:develop.features.applications.forms.advancedConfig." +
-                                            "sections.applicationNativeAuthentication.fields." +
-                                            "android.fields.androidAttestationServiceCredentials.placeholder") }
-                                        value={ config?.attestationMetaData?.androidAttestationServiceCredentials ?
-                                            [ JSON.stringify(
-                                                config?.attestationMetaData?.androidAttestationServiceCredentials,
-                                                null, 4)
-                                            ] : []
-                                        }
-                                        hint={ t("console:develop.features.applications.forms.advancedConfig." +
-                                            "sections.applicationNativeAuthentication.fields." +
-                                            "android.fields.androidAttestationServiceCredentials.hint") }
-                                        type="text"
-                                        maxLength={ 5000 }
-                                        minLength={ 30 }
-                                        width={ 16 }
-                                        data-testid={ `${ testId }-client-attestation-android-account-credentials` }
-                                        data-componentid={
-                                            `${ testId }-client-attestation-android-account-credentials`
-                                        }
-                                        disabled={ isClientAttestationMethodsUiDisabled }
-                                        readOnly={ readOnly }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row columns={ 1 } onClick={ handleWhenClientAttestationClickedWhenDisabled }>
-                                <Grid.Column>
-                                    <Heading as="h5" bold="500">
-                                        <GenericIcon
-                                            size="micro"
-                                            icon={ getTechnologyLogos().apple }
-                                            floated="left"
-                                            verticalAlign="middle"
-                                        />
-                                        { t("console:develop.features.applications.forms.advancedConfig." +
-                                            "sections.applicationNativeAuthentication.fields." +
-                                            "apple.heading") }
-                                    </Heading>
-                                    <Field.Input
-                                        ariaLabel="Apple App Id"
-                                        inputType="default"
-                                        name="appleAppId"
-                                        label={ t("console:develop.features.applications.forms.advancedConfig." +
-                                            "sections.applicationNativeAuthentication.fields." +
-                                            "apple.fields.appleAppId.label") }
-                                        required={ false }
-                                        placeholder={ t("console:develop.features.applications.forms.advancedConfig." +
-                                            "sections.applicationNativeAuthentication.fields." +
-                                            "apple.fields.appleAppId.placeholder") }
-                                        value={ config?.attestationMetaData?.appleAppId ?
-                                            config?.attestationMetaData?.appleAppId  : "" }
-                                        hint={ t("console:develop.features.applications.forms.advancedConfig." +
-                                            "sections.applicationNativeAuthentication.fields." +
-                                            "apple.fields.appleAppId.hint") }
-                                        maxLength={ 200 }
-                                        minLength={ 3 }
-                                        width={ 16 }
-                                        data-testid={ `${ testId }-client-attestation-apple=app=id` }
-                                        data-componentid={ `${ testId }-client-attestation-apple=app=id` }
-                                        disabled={ isClientAttestationMethodsUiDisabled }
-                                        readOnly={ readOnly }
-                                    />
-                                </Grid.Column>
-                            </Grid.Row>
+                            {
+                                (
+                                    template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION ||
+                                    template?.id === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC ||
+                                    template?.id === ApplicationManagementConstants.MOBILE
+                                ) && (
+                                    <>
+                                        <Grid.Row
+                                            columns={ 1 }
+                                            onClick={ handleWhenClientAttestationClickedWhenDisabled }>
+                                            <Grid.Column>
+                                                <Field.CheckboxLegacy
+                                                    ariaLabel="Enable attestation"
+                                                    name="enableClientAttestation"
+                                                    label={ t("console:develop.features.applications.forms." +
+                                                        "advancedConfig.sections.applicationNativeAuthentication." +
+                                                        "fields.enableClientAttestation.label") }
+                                                    required={ false }
+                                                    readOnly={ readOnly }
+                                                    value={
+                                                        config?.attestationMetaData?.enableClientAttestation
+                                                            ? [ "enableClientAttestation" ]
+                                                            : []
+                                                    }
+                                                    listen={ setIsEnableClientAttestation }
+                                                    data-testid={ `${ testId }-enable-client-attestation` }
+                                                    data-componentid={ `${ testId }-enable-api-based-authentication` }
+                                                    disabled={ isClientAttestationUIDisabled }
+                                                    hint={ t("console:develop.features.applications.forms." +
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "enableClientAttestation.hint") }
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                        <Grid.Row
+                                            columns={ 1 }
+                                            onClick={ handleWhenClientAttestationClickedWhenDisabled }>
+                                            <Grid.Column>
+                                                <Heading as="h5" bold="500">
+                                                    <GenericIcon
+                                                        size="micro"
+                                                        icon={ getTechnologyLogos().android }
+                                                        verticalAlign="middle"
+                                                        floated="left"
+                                                    />
+                                                    { t("console:develop.features.applications.forms.advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "android.heading") }
+                                                </Heading>
+                                                <Field.Input
+                                                    ariaLabel="Android package name"
+                                                    inputType="default"
+                                                    name="androidPackageName"
+                                                    label={ t("console:develop.features.applications.forms." +
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "android.fields.androidPackageName.label") }
+                                                    required={ false }
+                                                    readOnly={ readOnly }
+                                                    value={ config?.attestationMetaData?.androidPackageName ?? "" }
+                                                    placeholder={ t("console:develop.features.applications.forms." +
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "android.fields.androidPackageName.placeholder") }
+                                                    hint={ t("console:develop.features.applications.forms." +
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "android.fields.androidPackageName.hint") }
+                                                    maxLength={ 200 }
+                                                    minLength={ 3 }
+                                                    width={ 16 }
+                                                    data-testid={
+                                                        `${ testId }-client-attestation-android-package-name`
+                                                    }
+                                                    data-componentid={
+                                                        `${ testId }-client-attestation-android-package-name`
+                                                    }
+                                                    disabled={ isClientAttestationMethodsUiDisabled }
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                        <Grid.Row
+                                            columns={ 1 }
+                                            onClick={ handleWhenClientAttestationClickedWhenDisabled }>
+                                            <Grid.Column>
+                                                <Field.Textarea
+                                                    ariaLabel="Android service account credentials"
+                                                    inputType="description"
+                                                    name="androidAttestationServiceCredentials"
+                                                    label={ t("console:develop.features.applications.forms." +
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "android.fields.androidAttestationServiceCredentials.label") }
+                                                    placeholder={ t("console:develop.features.applications.forms." +
+                                                        "advancedConfig.sections." +
+                                                        "applicationNativeAuthentication.fields.android.fields." +
+                                                        "androidAttestationServiceCredentials.placeholder") }
+                                                    value={
+                                                        config?.
+                                                            attestationMetaData?.androidAttestationServiceCredentials ?
+                                                            [ JSON.stringify(
+                                                                config?.
+                                                                    attestationMetaData?.
+                                                                    androidAttestationServiceCredentials,
+                                                                null, 4)
+                                                            ] : []
+                                                    }
+                                                    hint={ t("console:develop.features.applications.forms." +
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "android.fields.androidAttestationServiceCredentials.hint") }
+                                                    type="text"
+                                                    maxLength={ 5000 }
+                                                    minLength={ 30 }
+                                                    width={ 16 }
+                                                    data-testid={
+                                                        `${ testId }-client-attestation-android-account-credentials`
+                                                    }
+                                                    data-componentid={
+                                                        `${ testId }-client-attestation-android-account-credentials`
+                                                    }
+                                                    disabled={ isClientAttestationMethodsUiDisabled }
+                                                    readOnly={ readOnly }
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                        <Grid.Row
+                                            columns={ 1 }
+                                            onClick={ handleWhenClientAttestationClickedWhenDisabled }>
+                                            <Grid.Column>
+                                                <Heading as="h5" bold="500">
+                                                    <GenericIcon
+                                                        size="micro"
+                                                        icon={ getTechnologyLogos().apple }
+                                                        floated="left"
+                                                        verticalAlign="middle"
+                                                    />
+                                                    { t("console:develop.features.applications.forms.advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "apple.heading") }
+                                                </Heading>
+                                                <Field.Input
+                                                    ariaLabel="Apple App Id"
+                                                    inputType="default"
+                                                    name="appleAppId"
+                                                    label={ t("console:develop.features.applications.forms." +
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "apple.fields.appleAppId.label") }
+                                                    required={ false }
+                                                    placeholder={ t("console:develop.features.applications.forms." +
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "apple.fields.appleAppId.placeholder") }
+                                                    value={ config?.attestationMetaData?.appleAppId ?? "" }
+                                                    hint={ t("console:develop.features.applications.forms." +
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "apple.fields.appleAppId.hint") }
+                                                    maxLength={ 200 }
+                                                    minLength={ 3 }
+                                                    width={ 16 }
+                                                    data-testid={ `${ testId }-client-attestation-apple=app=id` }
+                                                    data-componentid={ `${ testId }-client-attestation-apple=app=id` }
+                                                    disabled={ isClientAttestationMethodsUiDisabled }
+                                                    readOnly={ readOnly }
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </>
+                                ) }
                         </Grid>
                     </>
                 ) }
