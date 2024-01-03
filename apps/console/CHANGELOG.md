@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.55
+
+### Patch Changes
+
+- [#5145](https://github.com/wso2/identity-apps/pull/5145) [`31687600c5`](https://github.com/wso2/identity-apps/commit/31687600c53d3ae6743517e5a61446b21cc6e952) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add API based authentication UI support for Traditional Web App
+
 ## 2.10.54
 
 ### Patch Changes
