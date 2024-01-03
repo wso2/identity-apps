@@ -377,9 +377,8 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                     ariaLabel="Enable attestation"
                                                     name="enableClientAttestation"
                                                     label={ t("console:develop.features.applications.forms." +
-                                                        "advancedConfig." +
-                                                        "sections.applicationNativeAuthentication.fields." +
-                                                        "enableClientAttestation.label") }
+                                                        "advancedConfig.sections.applicationNativeAuthentication." +
+                                                        "fields.enableClientAttestation.label") }
                                                     required={ false }
                                                     readOnly={ readOnly }
                                                     value={
@@ -391,17 +390,17 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                     data-testid={ `${ testId }-enable-client-attestation` }
                                                     data-componentid={ `${ testId }-enable-api-based-authentication` }
                                                     disabled={ isClientAttestationUIDisabled }
-                                                    hint={ t("console:develop.features.applications.forms" +
-                                                    ".advancedConfig." +
-                                                    "sections.applicationNativeAuthentication.fields." +
-                                                    "enableClientAttestation.hint") }
+                                                    hint={ t("console:develop.features.applications.forms." +
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "enableClientAttestation.hint") }
                                                 />
                                             </Grid.Column>
                                         </Grid.Row>
                                         <Grid.Row
                                             columns={ 1 }
                                             onClick={ handleWhenClientAttestationClickedWhenDisabled }>
-                                            <Grid.Column >
+                                            <Grid.Column>
                                                 <Heading as="h5" bold="500">
                                                     <GenericIcon
                                                         size="micro"
@@ -411,28 +410,27 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                     />
                                                     { t("console:develop.features.applications.forms.advancedConfig." +
                                                         "sections.applicationNativeAuthentication.fields." +
-                                                "android.heading") }
+                                                        "android.heading") }
                                                 </Heading>
                                                 <Field.Input
                                                     ariaLabel="Android package name"
                                                     inputType="default"
                                                     name="androidPackageName"
                                                     label={ t("console:develop.features.applications.forms." +
-                                                    "advancedConfig." +
-                                                    "sections.applicationNativeAuthentication.fields." +
-                                                    "android.fields.androidPackageName.label") }
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "android.fields.androidPackageName.label") }
                                                     required={ false }
                                                     readOnly={ readOnly }
-                                                    value={ config?.attestationMetaData?.androidPackageName ?
-                                                        config?.attestationMetaData?.androidPackageName : "" }
+                                                    value={ config?.attestationMetaData?.androidPackageName ?? "" }
                                                     placeholder={ t("console:develop.features.applications.forms." +
-                                                    "advancedConfig." +
-                                                    "sections.applicationNativeAuthentication.fields." +
-                                                    "android.fields.androidPackageName.placeholder") }
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "android.fields.androidPackageName.placeholder") }
                                                     hint={ t("console:develop.features.applications.forms." +
-                                                    "advancedConfig." +
-                                                    "sections.applicationNativeAuthentication.fields." +
-                                                    "android.fields.androidPackageName.hint") }
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "android.fields.androidPackageName.hint") }
                                                     maxLength={ 200 }
                                                     minLength={ 3 }
                                                     width={ 16 }
@@ -455,13 +453,13 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                     inputType="description"
                                                     name="androidAttestationServiceCredentials"
                                                     label={ t("console:develop.features.applications.forms." +
-                                                    "advancedConfig." +
-                                                    "sections.applicationNativeAuthentication.fields." +
-                                                    "android.fields.androidAttestationServiceCredentials.label") }
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "android.fields.androidAttestationServiceCredentials.label") }
                                                     placeholder={ t("console:develop.features.applications.forms." +
-                                                    "advancedConfig." +
-                                                    "sections.applicationNativeAuthentication.fields." +
-                                                    "android.fields.androidAttestationServiceCredentials.placeholder") }
+                                                        "advancedConfig.sections." +
+                                                        "applicationNativeAuthentication.fields.android.fields." +
+                                                        "androidAttestationServiceCredentials.placeholder") }
                                                     value={
                                                         config?.
                                                             attestationMetaData?.androidAttestationServiceCredentials ?
@@ -473,9 +471,9 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                             ] : []
                                                     }
                                                     hint={ t("console:develop.features.applications.forms." +
-                                                    "advancedConfig." +
-                                                    "sections.applicationNativeAuthentication.fields." +
-                                                    "android.fields.androidAttestationServiceCredentials.hint") }
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "android.fields.androidAttestationServiceCredentials.hint") }
                                                     type="text"
                                                     maxLength={ 5000 }
                                                     minLength={ 30 }
@@ -511,20 +509,19 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                                     inputType="default"
                                                     name="appleAppId"
                                                     label={ t("console:develop.features.applications.forms." +
-                                                    "advancedConfig." +
-                                                    "sections.applicationNativeAuthentication.fields." +
-                                                    "apple.fields.appleAppId.label") }
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "apple.fields.appleAppId.label") }
                                                     required={ false }
                                                     placeholder={ t("console:develop.features.applications.forms." +
-                                                    "advancedConfig." +
-                                                    "sections.applicationNativeAuthentication.fields." +
-                                                    "apple.fields.appleAppId.placeholder") }
-                                                    value={ config?.attestationMetaData?.appleAppId ?
-                                                        config?.attestationMetaData?.appleAppId  : "" }
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "apple.fields.appleAppId.placeholder") }
+                                                    value={ config?.attestationMetaData?.appleAppId ?? "" }
                                                     hint={ t("console:develop.features.applications.forms." +
-                                                    "advancedConfig." +
-                                                    "sections.applicationNativeAuthentication.fields." +
-                                                    "apple.fields.appleAppId.hint") }
+                                                        "advancedConfig." +
+                                                        "sections.applicationNativeAuthentication.fields." +
+                                                        "apple.fields.appleAppId.hint") }
                                                     maxLength={ 200 }
                                                     minLength={ 3 }
                                                     width={ 16 }

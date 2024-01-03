@@ -2,4 +2,4 @@
 "@wso2is/console": patch
 ---
 
-add ANA for TWA
+Add API based authentication UI support for Traditional Web App
