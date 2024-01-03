@@ -1,0 +1,233 @@
+/**
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import {
+    AsgardeoAuthException,
+    AuthenticatedUserInfo,
+    BasicUserInfo,
+    OIDCEndpoints,
+    useAuthContext
+} from "@asgardeo/auth-react";
+import { AppConstants as AppConstantsCore, CommonConstants as CommonConstantsCore } from "@wso2is/core/constants";
+import {
+    setDeploymentConfigs,
+    setI18nConfigs,
+    setServiceResourceEndpoints,
+    setSignIn,
+    setUIConfigs
+} from "@wso2is/core/store";
+import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
+import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { useDispatch } from "react-redux";
+import { AnyAction } from "redux";
+import { ThunkDispatch } from "redux-thunk";
+import useOrganizations from "./use-organizations";
+import { Config } from "../configs/app";
+import { AppConstants } from "../constants/app-constants";
+import { CommonConstants } from "../constants/common-constants";
+import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models/app-config";
+import { AppState } from "../store";
+import { getProfileInformation, resolveIdpURLSAfterTenantResolves } from "../store/actions/authenticate";
+
+const AUTHORIZATION_ENDPOINT: string = "authorization_endpoint";
+const TOKEN_ENDPOINT: string = "token_endpoint";
+const OIDC_SESSION_IFRAME_ENDPOINT: string = "oidc_session_iframe_endpoint";
+const LOGOUT_URL: string = "sign_out_url";
+
+/**
+ * Props interface of {@link useSignIn}
+ */
+export type UseSignInInterface = {
+    onSignIn: (response: BasicUserInfo) => Promise<void>;
+};
+
+/**
+ * Hook that provides access to the Organizations context.
+ *
+ * @returns An object containing the current Organizations context.
+ */
+const useSignIn = (): UseSignInInterface => {
+    const dispatch: ThunkDispatch<AppState, any, AnyAction> = useDispatch();
+
+    const { getDecodedIDToken, getOIDCServiceEndpoints, updateConfig } = useAuthContext();
+
+    const { transformTenantDomain } = useOrganizations();
+
+    const onSignIn = async (response: BasicUserInfo): Promise<void> => {
+        let logoutUrl: string;
+        let logoutRedirectUrl: string;
+
+        const event: Event = new Event(CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT);
+
+        dispatchEvent(event);
+
+        let tenantDomain: string = AuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
+
+        tenantDomain = transformTenantDomain(tenantDomain);
+
+        // Update the app base name with the newly resolved tenant.
+        window["AppUtils"].updateTenantQualifiedBaseName(tenantDomain);
+
+        dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
+        dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
+        dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
+        dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
+
+        // When the tenant domain changes, we have to reset the auth callback in session storage.
+        // If not, it will hang and the app will be unresponsive with in the tab.
+        // We can skip clearing the callback for super tenant since we do not put it in the path.
+        if (tenantDomain !== AppConstants.getSuperTenant()) {
+            // If the auth callback already has the logged in tenant's path, we can skip the reset.
+            if (
+                !AuthenticateUtils.isValidAuthenticationCallbackUrl(
+                    AppConstantsCore.CONSOLE_APP,
+                    AppConstants.getTenantPath()
+                )
+            ) {
+                AuthenticateUtils.removeAuthenticationCallbackUrl(AppConstantsCore.CONSOLE_APP);
+            }
+        }
+
+        // Update the context with new config once the basename is changed.
+        ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
+
+        // Update post_logout_redirect_uri of logout_url with tenant qualified url
+        if (window["AppUtils"].getConfig().isSaas) {
+            if (sessionStorage.getItem(LOGOUT_URL)) {
+                logoutUrl = sessionStorage.getItem(LOGOUT_URL);
+
+                // If there is a base name, replace the `post_logout_redirect_uri` with the tenanted base name.
+                if (window["AppUtils"].getConfig().appBase) {
+                    logoutUrl = logoutUrl.replace(
+                        window["AppUtils"].getAppBase(),
+                        window["AppUtils"].getAppBaseWithTenant()
+                    );
+                    logoutRedirectUrl = window["AppUtils"]
+                        .getConfig()
+                        .logoutCallbackURL.replace(
+                            window["AppUtils"].getAppBase(),
+                            window["AppUtils"].getAppBaseWithTenant()
+                        );
+                } else {
+                    logoutUrl = logoutUrl.replace(
+                        window["AppUtils"].getConfig().logoutCallbackURL,
+                        window["AppUtils"].getConfig().clientOrigin + window["AppUtils"].getConfig().routes.login
+                    );
+                    logoutRedirectUrl =
+                        window["AppUtils"].getConfig().clientOrigin + window["AppUtils"].getConfig().routes.login;
+                }
+
+                // If an override URL is defined in config, use that instead.
+                if (window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL) {
+                    logoutUrl = resolveIdpURLSAfterTenantResolves(
+                        logoutUrl,
+                        window["AppUtils"].getConfig().idpConfigs.logoutEndpointURL
+                    );
+                }
+
+                // If super tenant proxy is configured, logout url is updated with the
+                // configured super tenant proxy.
+                if (window["AppUtils"].getConfig().superTenantProxy) {
+                    logoutUrl = logoutUrl.replace(
+                        window["AppUtils"].getConfig().superTenant,
+                        window["AppUtils"].getConfig().superTenantProxy
+                    );
+                }
+
+                sessionStorage.setItem(LOGOUT_URL, logoutUrl);
+            }
+        } else {
+            logoutUrl = window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL;
+        }
+
+        getDecodedIDToken()
+            .then(() => {
+                dispatch(setSignIn<AuthenticatedUserInfo>(AuthenticateUtils.getSignInState(response)));
+            })
+            .catch((error: AsgardeoAuthException) => {
+                throw error;
+            });
+
+        sessionStorage.setItem(CommonConstants.SESSION_STATE, response?.sessionState);
+
+        getOIDCServiceEndpoints()
+            .then((response: OIDCEndpoints) => {
+                let authorizationEndpoint: string = response.authorizationEndpoint;
+                let oidcSessionIframeEndpoint: string = response.checkSessionIframe;
+                let tokenEndpoint: string = response.tokenEndpoint;
+
+                // If `authorize` endpoint is overridden, save that in the session.
+                if (window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL) {
+                    authorizationEndpoint = resolveIdpURLSAfterTenantResolves(
+                        authorizationEndpoint,
+                        window["AppUtils"].getConfig().idpConfigs.authorizeEndpointURL
+                    );
+                }
+
+                // If super tenant proxy is configured, `authorize` endpoint is updated with the configured
+                // super tenant proxy.
+                if (window["AppUtils"].getConfig().superTenantProxy) {
+                    authorizationEndpoint = authorizationEndpoint.replace(
+                        window["AppUtils"].getConfig().superTenant,
+                        window["AppUtils"].getConfig().superTenantProxy
+                    );
+                }
+
+                // If `oidc session iframe` endpoint is overridden, save that in the session.
+                if (window["AppUtils"].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL) {
+                    oidcSessionIframeEndpoint = resolveIdpURLSAfterTenantResolves(
+                        oidcSessionIframeEndpoint,
+                        window["AppUtils"].getConfig().idpConfigs.oidcSessionIFrameEndpointURL
+                    );
+                }
+
+                // If `token` endpoint is overridden, save that in the session.
+                if (window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL) {
+                    tokenEndpoint = resolveIdpURLSAfterTenantResolves(
+                        tokenEndpoint,
+                        window["AppUtils"].getConfig().idpConfigs.tokenEndpointURL
+                    );
+                }
+
+                sessionStorage.setItem(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
+                sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, oidcSessionIframeEndpoint);
+                sessionStorage.setItem(TOKEN_ENDPOINT, tokenEndpoint);
+
+                updateConfig({
+                    endpoints: {
+                        authorizationEndpoint: authorizationEndpoint,
+                        checkSessionIframe: oidcSessionIframeEndpoint,
+                        endSessionEndpoint: logoutUrl.split("?")[0],
+                        tokenEndpoint: tokenEndpoint
+                    },
+                    signOutRedirectURL: logoutRedirectUrl
+                });
+            })
+            .catch((error: AsgardeoAuthException) => {
+                throw error;
+            });
+
+        dispatch(getProfileInformation());
+    };
+
+    return {
+        onSignIn
+    };
+};
+
+export default useSignIn;
