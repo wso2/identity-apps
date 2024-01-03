@@ -244,6 +244,14 @@ export enum PasswordOptionTypes {
 }
 
 /**
+ * Enum for ask-password option types.
+ */
+export enum AskPasswordOptionTypes {
+    EMAIL = "email",
+    OFFLINE = "offline"
+}
+
+/**
  * Enum for wizard steps form types.
  * @readonly
  */

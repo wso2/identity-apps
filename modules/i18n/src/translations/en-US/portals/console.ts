@@ -11441,7 +11441,9 @@ export const console: ConsoleNS = {
                                 "alphanumeric username feature.",
                             emailInvalid: "To invite users to set the password, please enter a valid email address.",
                             emailVerificationDisabled: "To invite users to set the password, enable email verification from " +
-                                "Login & Registration settings."
+                                "Login & Registration settings.",
+                            inviteOffline: "Invite offline",
+                            inviteViaEmail: "Invite via email"
                         },
                         buttons: {
                             next: "Next",

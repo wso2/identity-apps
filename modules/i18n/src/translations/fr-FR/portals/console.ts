@@ -9695,7 +9695,9 @@ export const console: ConsoleNS = {
                             emailInvalid: "Pour utiliser la fonction de réinitialisation du mot de passe, veuillez utiliser une adresse e-mail valide comme "+
                                 "l'identifiant.",
                             emailVerificationDisabled: "Pour utiliser la fonction de réinitialisation du mot de passe, activez la vérification par e-mail par "+
-                                "Configuration d'un fournisseur de messagerie."
+                                "Configuration d'un fournisseur de messagerie.",
+                            inviteOffline: "Inviter hors ligne",
+                            inviteViaEmail: "Inviter par e-mail"
                         },
                         buttons: {
                             next: "Suivant",
