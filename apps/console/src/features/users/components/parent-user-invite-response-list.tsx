@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { AlertTitle } from "@mui/material";
 import Alert from "@oxygen-ui/react/Alert";
+import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Typography from "@oxygen-ui/react/Typography";
 import {
     DataTable,

@@ -162,7 +162,7 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
                 { alert && alertComponent }
-                { parentOrgUserInvitationResults && parentOrgUserInvitationResults?.length > 0
+                { parentOrgUserInvitationResults?.length > 0
                     ? (
                         <ParentInviteResponseList
                             response={ parentOrgUserInvitationResults }
