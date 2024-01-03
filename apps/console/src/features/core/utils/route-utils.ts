@@ -314,7 +314,9 @@ export class RouteUtils {
             AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"),
             AppConstants.getPaths().get("USERNAME_VALIDATION_EDIT"),
             AppConstants.getPaths().get("ALTERNATIVE_LOGIN_IDENTIFIER_EDIT"),
-            AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN")
+            AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN"),
+            AppConstants.getPaths().get("VALIDATION_CONFIG_EDIT"),
+            AppConstants.getPaths().get("ORGANIZATION_DISCOVERY_DOMAINS")
         ];
 
         const CategoryMappedRoutes: Omit<RouteInterface, "showOnSidePanel">[] = [
