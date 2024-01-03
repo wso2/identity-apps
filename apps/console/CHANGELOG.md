@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.10.54
+
+### Patch Changes
+
+- [#5119](https://github.com/wso2/identity-apps/pull/5119) [`b58e80cb1d`](https://github.com/wso2/identity-apps/commit/b58e80cb1dffab5dafab3dfba508383118c4aacd) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Provide multiple parent user invite support
+
+* [#5143](https://github.com/wso2/identity-apps/pull/5143) [`82cb48e580`](https://github.com/wso2/identity-apps/commit/82cb48e5800b3342fa0d0bf049bfc18a02fbee79) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues with menu items in side nav bar
+
+* Updated dependencies [[`b58e80cb1d`](https://github.com/wso2/identity-apps/commit/b58e80cb1dffab5dafab3dfba508383118c4aacd)]:
+  - @wso2is/i18n@2.0.88
+
 ## 2.10.53
 
 ### Patch Changes

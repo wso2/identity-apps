@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.2.76
+
+### Patch Changes
+
+- [#5119](https://github.com/wso2/identity-apps/pull/5119) [`b58e80cb1d`](https://github.com/wso2/identity-apps/commit/b58e80cb1dffab5dafab3dfba508383118c4aacd) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Provide multiple parent user invite support
+
+- Updated dependencies [[`b58e80cb1d`](https://github.com/wso2/identity-apps/commit/b58e80cb1dffab5dafab3dfba508383118c4aacd)]:
+  - @wso2is/i18n@2.0.88
+
 ## 2.2.75
 
 ### Patch Changes
