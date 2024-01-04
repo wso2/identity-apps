@@ -168,7 +168,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         data: myAccountStatus,
         isLoading: isMyAccountStatusLoading,
         error: myAccountStatusFetchRequestError
-    } = useMyAccountStatus(!isSubOrg);
+    } = useMyAccountStatus(!isSubOrg && applicationConfig?.advancedConfigurations?.showMyAccountStatus);
 
     /**
      * Sets the initial spinner.
@@ -464,11 +464,15 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                             />
                                         )
                                     }
-                                    <Icon
-                                        color={ isMyAccountEnabled ? "green":"grey" }
-                                        name={ isMyAccountEnabled ? "check circle" : "minus circle" }
-                                        className="middle aligned ml-1"
-                                    />
+                                    {
+                                        applicationConfig?.advancedConfigurations?.showMyAccountStatus && (
+                                            <Icon
+                                                color={ isMyAccountEnabled ? "green":"grey" }
+                                                name={ isMyAccountEnabled ? "check circle" : "minus circle" }
+                                                className="middle aligned ml-1"
+                                            />
+                                        )
+                                    }
                                 </List.Header>
                                 <List.Description
                                     data-componentid="application-consumer-account-link-description"

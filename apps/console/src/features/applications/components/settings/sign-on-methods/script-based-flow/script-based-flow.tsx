@@ -198,7 +198,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      * Calls method to load secrets to secret list.
      */
     useEffect(() => {
-        loadSecretListForSecretType();
+        !readOnly && loadSecretListForSecretType();
     }, []);
 
     /**
@@ -1337,15 +1337,19 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     <Menu attached="top" className="action-panel" secondary>
                                         <Menu.Menu position="right">
                                             { resolveApiDocumentationLink() }
-                                            <Menu.Item
-                                                className={ `action ${ isSecretsDropdownOpen
-                                                    ? "selected-secret"
-                                                    : ""
-                                                }` }>
-                                                <div>
-                                                    { renderSecretListDropdown() }
-                                                </div>
-                                            </Menu.Item>
+                                            {
+                                                !readOnly && (
+                                                    <Menu.Item
+                                                        className={ `action ${ isSecretsDropdownOpen
+                                                            ? "selected-secret"
+                                                            : ""
+                                                        }` }>
+                                                        <div>
+                                                            { renderSecretListDropdown() }
+                                                        </div>
+                                                    </Menu.Item>
+                                                )
+                                            }
                                             <Menu.Item className="action">
                                                 <Tooltip
                                                     compact

@@ -927,6 +927,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     setShowIDPCreateWizard(true);
                     broadcastIDPCreateSuccessMessage = cb;
                 } }
+                readOnly={ readOnly }
             />
             { showIDPCreateWizard && renderIDPCreateWizard() }
             { showMissingSocialAuthenticatorModal && renderMissingSocialAuthenticatorModal() }

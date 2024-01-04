@@ -635,11 +635,17 @@ export interface ProvisioningConfigurationInterface {
 }
 
 /**
- * Captures name and id of the user store.
+ * Provisioning form data interface.
  */
-export interface SimpleUserStoreListItemInterface {
-    id?: string;
-    name: string;
+export interface ProvisioningFormDataInterface {
+    provisioningConfigurations: {
+        inboundProvisioning: InboundProvisioningFormValuesInterface;
+    };
+}
+
+export interface InboundProvisioningFormValuesInterface {
+    provisioningUserstoreDomain: string;
+    proxyMode: boolean;
 }
 
 /**

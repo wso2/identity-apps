@@ -71,6 +71,10 @@ interface ApplicationRolesSettingsInterface extends IdentifiableComponentInterfa
      * on application update callback
      */
     onUpdate: (id: string) => void;
+    /**
+     * Make the component read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -84,6 +88,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 
     const {
         onUpdate,
+        readOnly,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -112,7 +117,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
         useState<BasicRoleInterface[]>(application?.associatedRoles?.roles ?? []);
     const [ activeOption, setActiveOption ] = useState<BasicRoleInterface>(undefined);
 
-    const isReadOnly: boolean = organizationType === OrganizationType.SUBORGANIZATION;
+    const isReadOnly: boolean = readOnly || organizationType === OrganizationType.SUBORGANIZATION;
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
 
     /**
@@ -537,5 +542,6 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
  * Default props for application roles tab component.
  */
 ApplicationRoles.defaultProps = {
-    "data-componentid": "application-roles-tab"
+    "data-componentid": "application-roles-tab",
+    readOnly: true
 };

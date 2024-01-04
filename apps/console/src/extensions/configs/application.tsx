@@ -103,6 +103,7 @@ export const applicationConfig: ApplicationConfig = {
         showDefaultMyAccountApplicationEditPage: true,
         showEnableAuthorization: true,
         showMyAccount: true,
+        showMyAccountStatus: false,
         showReturnAuthenticatedIdPs: true,
         showSaaS: true
     },
@@ -371,7 +372,8 @@ export const applicationConfig: ApplicationConfig = {
         },
         getTabExtensions: (
             props: Record<string, unknown>,
-            features: FeatureConfigInterface
+            features: FeatureConfigInterface,
+            isReadOnly: boolean
         ): ResourceTabPaneInterface[] => {
             const extendedFeatureConfig: ExtendedFeatureConfigInterface = features as ExtendedFeatureConfigInterface;
             const apiResourceFeatureEnabled: boolean = extendedFeatureConfig?.apiResources?.enabled;
@@ -409,7 +411,10 @@ export const applicationConfig: ApplicationConfig = {
                         ),
                         render: () => (
                             <ResourceTab.Pane controlledSegmentation>
-                                <APIAuthorization templateId={ application?.templateId } />
+                                <APIAuthorization
+                                    templateId={ application?.templateId }
+                                    readOnly={ isReadOnly }
+                                />
                             </ResourceTab.Pane>
                         )
                     }
@@ -443,6 +448,7 @@ export const applicationConfig: ApplicationConfig = {
                             <ResourceTab.Pane controlledSegmentation>
                                 <ApplicationRoles
                                     onUpdate={ onApplicationUpdate }
+                                    readOnly={ isReadOnly }
                                 />
                             </ResourceTab.Pane>
                         )

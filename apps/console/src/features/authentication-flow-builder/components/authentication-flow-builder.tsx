@@ -50,6 +50,10 @@ export interface AuthenticationFlowBuilderPropsInterface extends IdentifiableCom
      * Callback to trigger IDP create wizard.
      */
     onIDPCreateWizardTrigger: (type: string, cb: () => void, template?: any) => void;
+    /**
+     * Make the component read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -61,7 +65,12 @@ export interface AuthenticationFlowBuilderPropsInterface extends IdentifiableCom
 const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderPropsInterface> = (
     props: AuthenticationFlowBuilderPropsInterface
 ): ReactElement => {
-    const { legacyBuilder: LegacyBuilder, onIDPCreateWizardTrigger, "data-componentid": componentId } = props;
+    const {
+        legacyBuilder: LegacyBuilder,
+        onIDPCreateWizardTrigger,
+        readOnly,
+        "data-componentid": componentId
+    } = props;
 
     const { t } = useTranslation();
 
@@ -73,7 +82,12 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         refetchApplication
     } = useAuthenticationFlow();
 
-    const FlowModes: AuthenticationFlowBuilderModesInterface[] = [
+    const FlowModes: AuthenticationFlowBuilderModesInterface[] = readOnly ? [
+        {
+            id: 0,
+            label: t("console:loginFlow.modes.legacy.label")
+        }
+    ] : [
         {
             id: 0,
             label: t("console:loginFlow.modes.legacy.label")
@@ -103,7 +117,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             return;
         }
 
-        if (isVisualEditorEnabled) {
+        if (isVisualEditorEnabled && !readOnly) {
             setActiveFlowMode(FlowModes[1]);
         } else {
             setActiveFlowMode(FlowModes[0]);
@@ -209,7 +223,8 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
  * Default props for the component.
  */
 AuthenticationFlowBuilder.defaultProps = {
-    "data-componentid": "authentication-flow-builder"
+    "data-componentid": "authentication-flow-builder",
+    readOnly: false
 };
 
 export default AuthenticationFlowBuilder;

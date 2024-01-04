@@ -214,10 +214,14 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
      * Fetch data on component load
      */
     useEffect(() => {
+        if (readOnly) return;
+
         fetchRequestPathAuthenticators();
     }, []);
 
     useEffect(() => {
+        if (readOnly) return;
+
         getMultiFactorAuthenticatorDetails(AuthenticatorManagementConstants.FIDO_AUTHENTICATOR_ID)
             .then((response: GovernanceConnectorInterface) => {
                 const properties: ConnectorPropertyInterface[] = response?.properties;

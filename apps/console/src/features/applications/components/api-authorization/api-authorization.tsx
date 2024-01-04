@@ -61,6 +61,10 @@ interface APIAuthorizationResourcesProps extends
      * Template ID.
      */
     templateId: string;
+     /**
+     * Make the component read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -74,6 +78,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
 
     const {
         templateId,
+        readOnly,
         ["data-componentid"]: componentId
     } = props;
 
@@ -102,7 +107,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
         isLoading: isAllAPIResourcesListLoading,
         error: allAPIResourcesFetchRequestError,
         mutate: mutateAllAPIResourcesList
-    } = useAPIResources();
+    } = useAPIResources(null, null, null, !readOnly);
 
     const {
         data: subscribedAPIResourcesListData,
@@ -122,7 +127,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
      * The following useEffect is used to handle if any error occurs while fetching API resources.
      */
     useEffect(() => {
-        if (allAPIResourcesFetchRequestError || subscribedAPIResourcesFetchRequestError) {
+        if (!readOnly && (allAPIResourcesFetchRequestError || subscribedAPIResourcesFetchRequestError)) {
             setHideAuthorizeAPIResourceButton(true);
             if (!isShownError) {
                 setIsShownError(true);
@@ -142,9 +147,11 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
      */
     useEffect(() => {
         setSubAPIResourcesSectionLoading(
-            isUpdateData ||
-            isAllAPIResourcesListLoading ||
-            isSubscribedAPIResourcesListLoading
+            !readOnly && (
+                isUpdateData ||
+                isAllAPIResourcesListLoading ||
+                isSubscribedAPIResourcesListLoading
+            )
         );
     }, [ isUpdateData, isAllAPIResourcesListLoading, isSubscribedAPIResourcesListLoading ]);
 
@@ -415,5 +422,6 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
  * Default props for application roles tab component.
  */
 APIAuthorization.defaultProps = {
-    "data-componentid": "api-authorization-tab"
+    "data-componentid": "api-authorization-tab",
+    readOnly: false
 };

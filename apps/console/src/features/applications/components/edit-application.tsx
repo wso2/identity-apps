@@ -404,6 +404,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 template: template
             },
             featureConfig,
+            readOnly,
             tenantDomain
         );
 

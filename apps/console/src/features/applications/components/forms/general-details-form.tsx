@@ -172,6 +172,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
+    const {
+        data: myAccountStatus,
+        isLoading: isMyAccountStatusLoading
+    } = useMyAccountStatus(!isSubOrg && applicationConfig?.advancedConfigurations?.showMyAccountStatus);
+
     /**
      * Prepare form values for submitting.
      *
@@ -245,11 +250,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             return "Please enter a valid input.";
         }
     };
-
-    const {
-        data: myAccountStatus,
-        isLoading: isMyAccountStatusLoading
-    } = useMyAccountStatus(!isSubOrg);
 
     /**
      * Checks whether this is an M2M application.

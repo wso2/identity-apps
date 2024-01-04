@@ -34,6 +34,7 @@ export interface ApplicationConfig {
     advancedConfigurations: {
         showEnableAuthorization: boolean;
         showMyAccount: boolean;
+        showMyAccountStatus: boolean;
         showDefaultMyAccountApplicationEditPage: boolean;
         showSaaS: boolean;
         showReturnAuthenticatedIdPs: boolean;
@@ -76,6 +77,7 @@ export interface ApplicationConfig {
         getTabExtensions: (
             props: Record<string, unknown>,
             features: FeatureConfigInterface,
+            isReadOnly: boolean,
             tenantDomain?: string
         ) => ResourceTabPaneInterface[];
         getTabPanelReadOnlyStatus: (tabPanelName: string, application: ApplicationInterface) => boolean;
