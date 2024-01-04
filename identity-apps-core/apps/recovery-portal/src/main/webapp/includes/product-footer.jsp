@@ -64,8 +64,8 @@
                     <%
                         if (!shouldRemoveDefaultBranding) {
                     %>
-                    <div class="powered-by-logo-divider">|</div>Powered by <div class="powered-by-logo" onclick="window.open('<%= StringEscapeUtils.escapeHtml4(productURL) %>', '_self', 'noopener,noreferrer,resizable')">
-                        <img width="80" height="20" src="<%= StringEscapeUtils.escapeHtml4(logoURL) %>" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" />
+                    <div class="powered-by-logo-divider">|</div>Powered by <div class="powered-by-logo" onclick="window.open('<%= StringEscapeUtils.escapeHtml4(productLogoURL) %>', '_self', 'noopener,noreferrer,resizable')">
+                        <img width="80" height="20" src="<%= StringEscapeUtils.escapeHtml4(productLogoURL) %>" alt="<%= StringEscapeUtils.escapeHtml4(logoAlt) %>" />
                     </div>
                     <% } %>
                 </a>
