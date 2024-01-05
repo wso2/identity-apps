@@ -192,9 +192,9 @@
 
             if(!authorizationCode) {
                 function getTenantName() {
-                    const path = window.location.pathname;
-                    const pathChunks = path.split("/");
-                    const tenantPrefixIndex = pathChunks.indexOf(startupConfig.tenantPrefix);
+                    var path = window.location.pathname;
+                    var pathChunks = path.split("/");
+                    var tenantPrefixIndex = pathChunks.indexOf(startupConfig.tenantPrefix);
                     if (tenantPrefixIndex !== -1) {
                         return pathChunks[ tenantPrefixIndex + 1 ];
                     }
@@ -306,10 +306,10 @@
                  * @returns {string}
                  */
                 function getOrganizationName() {
-                    const path = window.location.pathname;
-                    const pathChunks = path.split("/");
+                    var path = window.location.pathname;
+                    var pathChunks = path.split("/");
 
-                    const orgPrefixIndex = pathChunks.indexOf(startupConfig.orgPrefix);
+                    var orgPrefixIndex = pathChunks.indexOf(startupConfig.orgPrefix);
 
                     if (orgPrefixIndex !== -1) {
                         return pathChunks[ orgPrefixIndex + 1 ];
@@ -397,7 +397,7 @@
             authSPAJS.setAttribute("src", authScriptSrc);
             authSPAJS.setAttribute("async", "false");
 
-            let head = document.head;
+            var head = document.head;
             head.insertBefore(authSPAJS, head.firstElementChild);
 
             authSPAJS.addEventListener("load", authenticateWithSDK, false);

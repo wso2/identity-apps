@@ -182,9 +182,9 @@
 
             if(!authorizationCode) {
                 function getTenantName() {
-                    const path = window.location.pathname;
-                    const pathChunks = path.split("/");
-                    const tenantPrefixIndex = pathChunks.indexOf(startupConfig.tenantPrefix);
+                    var path = window.location.pathname;
+                    var pathChunks = path.split("/");
+                    var tenantPrefixIndex = pathChunks.indexOf(startupConfig.tenantPrefix);
                     if (tenantPrefixIndex !== -1) {
                         return pathChunks[ tenantPrefixIndex + 1 ];
                     }
@@ -225,10 +225,10 @@
                  * @returns {string}
                  */
                 function getOrganizationName() {
-                    const path = window.location.pathname;
-                    const pathChunks = path.split("/");
+                    var path = window.location.pathname;
+                    var pathChunks = path.split("/");
 
-                    const orgPrefixIndex = pathChunks.indexOf(startupConfig.orgPrefix);
+                    var orgPrefixIndex = pathChunks.indexOf(startupConfig.orgPrefix);
 
                     if (orgPrefixIndex !== -1) {
                         return pathChunks[ orgPrefixIndex + 1 ];
@@ -343,7 +343,7 @@
 
                 var isSilentSignInDisabled = userAccessedPath.includes("disable_silent_sign_in");
                 var isTenantSwitchPath = userAccessedPath.includes("switch_tenant");
-                const promptParam = new URL(location.href).searchParams.get("prompt");
+                var promptParam = new URL(location.href).searchParams.get("prompt");
 
                 // Redirect user to the login page if the prompt parameter is set to login.
                 if (promptParam && promptParam === 'login') {
@@ -383,7 +383,7 @@
             authSPAJS.setAttribute("src", authScriptSrc);
             authSPAJS.setAttribute("async", "false");
 
-            let head = document.head;
+            var head = document.head;
             head.insertBefore(authSPAJS, head.firstElementChild);
 
             authSPAJS.addEventListener("load", authenticateWithSDK, false);
