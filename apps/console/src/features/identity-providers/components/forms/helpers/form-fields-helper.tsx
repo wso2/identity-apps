@@ -647,7 +647,7 @@ export enum FieldType {
     DROP_DOWN = "DropDown",
     RADIO = "Radio",
     COPY_INPUT = "CopyInput",
-    FILEPICKER = "FILEPICKER"
+    FILEPICKER = "FilePicker"
 }
 
 /**

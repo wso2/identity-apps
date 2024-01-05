@@ -62,6 +62,13 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     const [ customProperties, setCustomProperties ] = useState<string>(undefined);
     const [ manualMode, setManualMode ] = useState<boolean>(true);
 
+    const commonKeys: string[] = [ "SelectMode", "SPEntityId", "NameIDType" ];
+
+    const enum SelectModTypes {
+        MANUAL = "Manual Configuration",
+        FILEBASED = "Metadata File Configuration"
+    }
+
     const interpretValueByType = (value: FormValue, key: string, type: string) => {
         switch (type?.toUpperCase()) {
             case CommonConstants.BOOLEAN: {
@@ -270,9 +277,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                             `${ testId }-form`, handleParentPropertyChange, manualMode);
                     }
                     else if (
-                        metaProperty?.key === "SelectMode"
-                        || metaProperty?.key ==="SPEntityId"
-                        || metaProperty?.key === "NameIDType"
+                        commonKeys.includes(metaProperty?.key)
                     ) {
                         field = getField(property, metaProperty, isSub, `${ testId }-form`,
                             handleParentPropertyChange, true);
@@ -343,7 +348,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             const isChecked = (value: FormValue): boolean =>
                 value &&
             (Array.isArray(value) && value.length > 0) ||
-            (typeof value === "string" && value == "true");
+            (typeof value === "string" && value === "true");
 
             const logoutRequestSigned: FormValue = values.get("IsLogoutReqSigned");
             const authenticationRequestSigned: FormValue = values.get("ISAuthnReqSigned");
@@ -363,9 +368,9 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
         if (key === "SelectMode") {
 
-            if (selectedMode === "Manual Configuration") {
+            if (selectedMode === SelectModTypes.MANUAL) {
                 setManualMode(true);
-            } else if (selectedMode === "Metadata File Configuration"){
+            } else if (selectedMode === SelectModTypes.FILEBASED){
                 setManualMode(false);
             }
         }
