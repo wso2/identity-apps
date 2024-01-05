@@ -36,6 +36,7 @@ import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
+import useAuthorization from "./use-authorization";
 import useOrganizations from "./use-organizations";
 import { Config } from "../configs/app";
 import { AppConstants } from "../constants/app-constants";
@@ -66,9 +67,34 @@ const useSignIn = (): UseSignInInterface => {
 
     const { getDecodedIDToken, getOIDCServiceEndpoints, updateConfig } = useAuthContext();
 
+    const { legacyAuthzRuntime } = useAuthorization();
+
     const { transformTenantDomain } = useOrganizations();
 
+    /**
+     * Handles the sign-in process.
+     *
+     * @example
+     * ```
+     * const { onSignIn } = useSignIn();
+     * ```
+     * @param response - The basic user information returned from the sign-in process.
+     * @throws Will throw an error if the new onSignIn method is not implemented.
+     */
     const onSignIn = async (response: BasicUserInfo): Promise<void> => {
+        if (legacyAuthzRuntime) {
+            legacyOnSignIn(response);
+        }
+
+        throw new Error("New onSignIn is not implemented.");
+    };
+
+    /**
+     * Handles the sign-in process for legacy authorization server.
+     * @deprecated This is deprecated and will be removed in the next major release.
+     * @param response - The basic user information returned from the sign-in process.
+     */
+    const legacyOnSignIn = async (response: BasicUserInfo): Promise<void> => {
         let logoutUrl: string;
         let logoutRedirectUrl: string;
 
