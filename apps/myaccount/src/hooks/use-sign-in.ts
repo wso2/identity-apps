@@ -35,15 +35,13 @@ import {
 import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { useDispatch } from "react-redux";
-import { AnyAction } from "redux";
-import { ThunkDispatch } from "redux-thunk";
+import { AnyAction, Dispatch } from "redux";
 import useAuthorization from "./use-authorization";
 import useOrganizations from "./use-organizations";
 import { Config } from "../configs/app";
 import { AppConstants } from "../constants/app-constants";
 import { CommonConstants } from "../constants/common-constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models/app-config";
-import { AppState } from "../store";
 import { getProfileInformation, resolveIdpURLSAfterTenantResolves } from "../store/actions/authenticate";
 
 const AUTHORIZATION_ENDPOINT: string = "authorization_endpoint";
@@ -69,7 +67,7 @@ export interface UseSignInInterface {
  * @returns An object containing the current Organizations context.
  */
 const useSignIn = (): UseSignInInterface => {
-    const dispatch: ThunkDispatch<AppState, any, AnyAction> = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { getDecodedIDToken, getOIDCServiceEndpoints, updateConfig } = useAuthContext();
 
@@ -110,18 +108,16 @@ const useSignIn = (): UseSignInInterface => {
      */
     const _onSignIn = async (response: BasicUserInfo): Promise<void> => {
         const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
-
         const event: Event = new Event(CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT);
 
         dispatchEvent(event);
 
-        let tenantDomain: string = AuthenticateUtils.deriveTenantDomainFromSubject(response.sub);
-
+        const tenantDomain: string = transformTenantDomain(
+            AuthenticateUtils.deriveTenantDomainFromSubject(response.sub)
+        );
         const isFirstLevelOrg: boolean = !idToken.user_org
                 || idToken.org_name === tenantDomain
                 || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomain);
-
-        tenantDomain = transformTenantDomain(tenantDomain);
 
         // Update the organization name with the newly resolved org.
         if (!isFirstLevelOrg) {
@@ -232,7 +228,7 @@ const useSignIn = (): UseSignInInterface => {
                 throw error;
             });
 
-        dispatch(getProfileInformation());
+        dispatch(getProfileInformation() as unknown as AnyAction);
     };
 
     /**
@@ -394,7 +390,7 @@ const useSignIn = (): UseSignInInterface => {
                 throw error;
             });
 
-        dispatch(getProfileInformation());
+        dispatch(getProfileInformation() as unknown as AnyAction);
     };
 
     /**

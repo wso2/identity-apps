@@ -20,6 +20,7 @@ import { useContext } from "react";
 import { MultitenantConstants } from "../../core/constants/multitenant-constants";
 import useAppSettings from "../../core/hooks/use-app-settings";
 import OrganizationsContext, { OrganizationsContextProps } from "../context/organizations-context";
+import useAuthorization from "../../authorization/hooks/use-authorization";
 
 /**
  * Interface for the return type of the UseOrganizations hook.
@@ -72,6 +73,8 @@ export interface UseOrganizationsInterface extends OrganizationsContextProps {
 const useOrganizations = (): UseOrganizationsInterface => {
     const context: OrganizationsContextProps = useContext(OrganizationsContext);
 
+    const { legacyAuthzRuntime } = useAuthorization();
+
     const { getLocalStorageSetting, setLocalStorageSetting, removeLocalStorageSetting } = useAppSettings();
 
     if (context === undefined) {
@@ -86,8 +89,10 @@ const useOrganizations = (): UseOrganizationsInterface => {
      */
     const transformTenantDomain = (tenantDomain: string): string => {
         // With the latest Authz framework, `carbon.super` is resolved as `Super`.
-        if (tenantDomain === MultitenantConstants.SUPER_TENANT_DISPLAY_NAME) {
-            return MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
+        if (!legacyAuthzRuntime) {
+            if (tenantDomain === MultitenantConstants.SUPER_TENANT_DISPLAY_NAME) {
+                return MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
+            }
         }
 
         return tenantDomain;
