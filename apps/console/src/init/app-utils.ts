@@ -511,9 +511,9 @@ export const AppUtils: any = (function() {
          * @returns Tenant qualified account app path.
          */
         getTenantQualifiedAccountAppPath: function(pathname: string) {
-            if (_config.legacyAuthzRuntime) {
-                let url: string = "";
+            let url: string = "";
 
+            if (_config.legacyAuthzRuntime) {
                 if (this.getTenantPrefix() !== "" && this.getTenantName() !== "") {
                     url = `${_config.accountAppOrigin}/${this.getTenantPrefix()}/${this.getTenantName()}`;
                 }
@@ -522,8 +522,6 @@ export const AppUtils: any = (function() {
 
                 return url;
             }
-
-            let url: string = "";
 
             if (this.getTenantPrefix() !== "" && this.getTenantName() !== "") {
                 const tenantPath: string = this.getTenantPath(true)
