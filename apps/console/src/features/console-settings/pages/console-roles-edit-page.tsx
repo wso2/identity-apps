@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { Grid } from "@oxygen-ui/react";
 import Button from "@oxygen-ui/react/Button";
+import Grid from "@oxygen-ui/react/Grid";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, TabPageLayout } from "@wso2is/react-components";
@@ -32,6 +32,7 @@ import { history } from "../../core/helpers/history";
 import { useGetRoleById } from "../../roles/api/roles";
 import { RoleAudienceTypes } from "../../roles/constants/role-constants";
 import ConsoleRolesEdit from "../components/console-roles/console-roles-edit/console-roles-edit";
+import { ConsoleSettingsTabIDs } from "../models/ui";
 
 /**
  * Props interface of {@link ConsoleRolesEditPage}
@@ -124,7 +125,8 @@ const ConsoleRolesEditPage: FunctionComponent<ConsoleRolesEditPageInterface> = (
      * Handle back button click.
      */
     const handleBackButtonClick = () => {
-        history.push(AppConstants.getPaths().get("CONSOLE_SETTINGS"));
+        history.push(AppConstants.getPaths().get("CONSOLE_SETTINGS")
+            + `#tab=${ ConsoleSettingsTabIDs.ROLES }`);
     };
 
     if (roleDetailsRequestError) {
