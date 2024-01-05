@@ -298,6 +298,9 @@
                 "disabledFeatures": [ "branding.hostnameUrlBranding" ],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:applications"
+                    ],
                     "update": [
                         "internal_application_mgt_update"
                     ],
