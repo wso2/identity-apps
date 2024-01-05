@@ -276,7 +276,7 @@ const useSignIn = (): UseSignInInterface => {
         ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
         // Update post_logout_redirect_uri of logout_url with tenant qualified url
-        if (window["AppUtils"].getConfig().isSaas) {
+        if (legacyAuthzRuntime) {
             if (sessionStorage.getItem(LOGOUT_URL)) {
                 logoutUrl = sessionStorage.getItem(LOGOUT_URL);
 
