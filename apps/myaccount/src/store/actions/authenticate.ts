@@ -64,8 +64,7 @@ export const resetAuthentication = (): AuthAction => ({
 /**
  * Dispatches an action of type `SET_PROFILE_INFO`.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const setProfileInfo = (details: any): AuthAction => ({
+export const setProfileInfo = (details: BasicProfileInterface): AuthAction => ({
     payload: details,
     type: authenticateActionTypes.SET_PROFILE_INFO
 });
@@ -116,7 +115,9 @@ export const getScimSchemas = (
 /**
  *  Gets profile information by making an API call
  */
-export const getProfileInformation = (updateProfileCompletion: boolean = false) => (dispatch): void => {
+export const getProfileInformation = (
+    updateProfileCompletion: boolean = false
+) => (dispatch: Dispatch<AnyAction>): void => {
     let isCompletionCalculated: boolean = false;
 
     dispatch(setProfileInfoLoader(true));
@@ -145,7 +146,7 @@ export const getProfileInformation = (updateProfileCompletion: boolean = false) 
                                     toBoolean(
                                         response[SCIMConfigs.scim.customEnterpriseSchema]?.isReadOnlyUser
                                     )
-                                )
+                                ) as unknown as AnyAction
                             );
                         }
 
@@ -275,7 +276,7 @@ export const resolveIdpURLSAfterTenantResolves = (originalURL: string, overridde
  *
  * @returns A function that accepts dispatch as an argument.
  */
-export const handleAccountSwitching = (account: LinkedAccountInterface) => (dispatch: Dispatch<AnyAction>) => {
+export const handleAccountSwitching = (account: LinkedAccountInterface) => (dispatch: Dispatch<AnyAction>): void => {
     switchAccount(account)
         .then((response: BasicUserInfo) => {
             dispatch(
