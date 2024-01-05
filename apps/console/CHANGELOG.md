@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.56
+
+### Patch Changes
+
+- [#5149](https://github.com/wso2/identity-apps/pull/5149) [`38f72e700c`](https://github.com/wso2/identity-apps/commit/38f72e700cde80ad19beada4412fa3a75c1c2a88) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix organization paths persisting issue in legacy authz runtime.
+
 ## 2.10.55
 
 ### Patch Changes
