@@ -34,7 +34,7 @@ import {
 } from "@wso2is/core/store";
 import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import useAuthorization from "./use-authorization";
@@ -78,6 +78,8 @@ const useSignIn = (): UseSignInInterface => {
         removeOrgIdInLocalStorage,
         removeUserOrgInLocalStorage
     } = useOrganizations();
+
+    const clientHost: string = useSelector((state: AppState) => state?.config?.deployment?.clientHost);
 
     /**
      * Handles the sign-in process.
@@ -419,9 +421,7 @@ const useSignIn = (): UseSignInInterface => {
             const isSwitchedFromRootOrg: boolean = getUserOrgInLocalStorage() === "undefined";
 
             if (!isSwitchedFromRootOrg) {
-                logoutRedirectUrl = window["AppUtils"]?.getConfig()?.clientOriginWithTenant?.replace(
-                    orgId, userOrg
-                );
+                logoutRedirectUrl = clientHost?.replace(orgId, userOrg);
             }
         }
 
