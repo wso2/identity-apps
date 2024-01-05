@@ -17,10 +17,10 @@
  */
 
 import { useContext } from "react";
+import useAuthorization from "../../authorization/hooks/use-authorization";
 import { MultitenantConstants } from "../../core/constants/multitenant-constants";
 import useAppSettings from "../../core/hooks/use-app-settings";
 import OrganizationsContext, { OrganizationsContextProps } from "../context/organizations-context";
-import useAuthorization from "../../authorization/hooks/use-authorization";
 
 /**
  * Interface for the return type of the UseOrganizations hook.
