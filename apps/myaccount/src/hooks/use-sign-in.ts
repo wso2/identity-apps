@@ -70,7 +70,14 @@ const useSignIn = (): UseSignInInterface => {
 
     const { legacyAuthzRuntime } = useAuthorization();
 
-    const { transformTenantDomain } = useOrganizations();
+    const {
+        transformTenantDomain,
+        setUserOrgInLocalStorage,
+        setOrgIdInLocalStorage,
+        getUserOrgInLocalStorage,
+        removeOrgIdInLocalStorage,
+        removeUserOrgInLocalStorage
+    } = useOrganizations();
 
     /**
      * Handles the sign-in process.
@@ -97,9 +104,6 @@ const useSignIn = (): UseSignInInterface => {
      * @param response - The basic user information returned from the sign-in process.
      */
     const _onSignIn = async (response: BasicUserInfo): Promise<void> => {
-        let logoutUrl: string;
-        let logoutRedirectUrl: string;
-
         const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
 
         const event: Event = new Event(CommonConstantsCore.AUTHENTICATION_SUCCESSFUL_EVENT);
@@ -147,55 +151,6 @@ const useSignIn = (): UseSignInInterface => {
 
         // Update the context with new config once the basename is changed.
         ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
-
-        // Update post_logout_redirect_uri of logout_url with tenant qualified url
-        if (window["AppUtils"].getConfig().isSaas) {
-            if (sessionStorage.getItem(LOGOUT_URL)) {
-                logoutUrl = sessionStorage.getItem(LOGOUT_URL);
-
-                // If there is a base name, replace the `post_logout_redirect_uri` with the tenanted base name.
-                if (window["AppUtils"].getConfig().appBase) {
-                    logoutUrl = logoutUrl.replace(
-                        window["AppUtils"].getAppBase(),
-                        window["AppUtils"].getAppBaseWithTenant()
-                    );
-                    logoutRedirectUrl = window["AppUtils"]
-                        .getConfig()
-                        .logoutCallbackURL.replace(
-                            window["AppUtils"].getAppBase(),
-                            window["AppUtils"].getAppBaseWithTenant()
-                        );
-                } else {
-                    logoutUrl = logoutUrl.replace(
-                        window["AppUtils"].getConfig().logoutCallbackURL,
-                        window["AppUtils"].getConfig().clientOrigin + window["AppUtils"].getConfig().routes.login
-                    );
-                    logoutRedirectUrl =
-                            window["AppUtils"].getConfig().clientOrigin + window["AppUtils"].getConfig().routes.login;
-                }
-
-                // If an override URL is defined in config, use that instead.
-                if (window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL) {
-                    logoutUrl = resolveIdpURLSAfterTenantResolves(
-                        logoutUrl,
-                        window["AppUtils"].getConfig().idpConfigs.logoutEndpointURL
-                    );
-                }
-
-                // If super tenant proxy is configured, logout url is updated with the
-                // configured super tenant proxy.
-                if (window["AppUtils"].getConfig().superTenantProxy) {
-                    logoutUrl = logoutUrl.replace(
-                        window["AppUtils"].getConfig().superTenant,
-                        window["AppUtils"].getConfig().superTenantProxy
-                    );
-                }
-
-                sessionStorage.setItem(LOGOUT_URL, logoutUrl);
-            }
-        } else {
-            logoutUrl = window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL;
-        }
 
         getDecodedIDToken()
             .then(() => {
@@ -250,6 +205,10 @@ const useSignIn = (): UseSignInInterface => {
                 sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, oidcSessionIframeEndpoint);
                 sessionStorage.setItem(TOKEN_ENDPOINT, tokenEndpoint);
 
+                // Update post_logout_redirect_uri of logout_url with tenant qualified url
+                const logoutUrl: string = window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL;
+                let logoutRedirectUrl: string;
+
                 updateConfig({
                     endpoints: {
                         authorizationEndpoint: authorizationEndpoint,
@@ -257,7 +216,11 @@ const useSignIn = (): UseSignInInterface => {
                         endSessionEndpoint: logoutUrl.split("?")[0],
                         tokenEndpoint: tokenEndpoint
                     },
-                    signOutRedirectURL: logoutRedirectUrl
+                    signOutRedirectURL: deriveLogoutRedirectForSubOrgLogins(
+                        logoutRedirectUrl,
+                        idToken.user_org,
+                        idToken.org_id
+                    )
                 });
             })
             .catch((error: AsgardeoAuthException) => {
@@ -427,6 +390,42 @@ const useSignIn = (): UseSignInInterface => {
             });
 
         dispatch(getProfileInformation());
+    };
+
+    /**
+     * Derives the logout redirect URL for sub-org logins.
+     *
+     * @remarks This only applies to the new authz runtime.
+     *
+     * @param currentLogoutRedirect - Current logout redirect URL.
+     * @param userOrg - User's org.
+     * @param orgId - User's org ID.
+     * @returns Derived logout redirect URL.
+     */
+    const deriveLogoutRedirectForSubOrgLogins = (currentLogoutRedirect: string, userOrg: string, orgId: string) => {
+        let logoutRedirectUrl: string = currentLogoutRedirect;
+
+        // When a first level tenant login happens, `user_org` is undefined.
+        // We need to save that in the local storage to handle the login/logout if they switch.
+        if (userOrg === undefined && orgId) {
+            removeUserOrgInLocalStorage();
+            removeOrgIdInLocalStorage();
+
+            setUserOrgInLocalStorage(userOrg);
+            setOrgIdInLocalStorage(orgId);
+        }
+
+        if (userOrg) {
+            const isSwitchedFromRootOrg: boolean = getUserOrgInLocalStorage() === "undefined";
+
+            if (!isSwitchedFromRootOrg) {
+                logoutRedirectUrl = window["AppUtils"]?.getConfig()?.clientOriginWithTenant?.replace(
+                    orgId, userOrg
+                );
+            }
+        }
+
+        return logoutRedirectUrl;
     };
 
     return {

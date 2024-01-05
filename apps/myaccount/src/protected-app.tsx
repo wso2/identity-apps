@@ -175,12 +175,50 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                 fallback={ <PreLoader /> }
                 onSignIn={ loginSuccessRedirect }
                 overrideSignIn={ async () => {
-                // This is to prompt the SSO page if a user tries to sign in
-                // through a federated IdP using an existing email address.
+                    // This is to prompt the SSO page if a user tries to sign in
+                    // through a federated IdP using an existing email address.
                     if (new URL(location.href).searchParams.get("prompt")) {
                         await signIn({ prompt: "login" });
                     } else {
-                        await signIn();
+                        /**
+                         * Get the organization name from the URL.
+                         * @returns Organization name.
+                         */
+                        const getOrganizationName = (): string => {
+                            const path: string = window.location.pathname;
+                            const pathChunks: string[] = path.split("/");
+
+                            const orgPrefixIndex: number = pathChunks.indexOf("o");
+
+                            if (orgPrefixIndex !== -1) {
+                                return pathChunks[ orgPrefixIndex + 1 ];
+                            }
+
+                            return "";
+                        };
+
+                        const authParams: {
+                            fidp?: string;
+                            orgId?: string;
+                        } = {};
+
+                        if (getOrganizationName()) {
+                            const initialUserOrgInLocalStorage: string = localStorage.getItem("user-org");
+                            const orgIdInLocalStorage: string = localStorage.getItem("org-id");
+
+                            if (orgIdInLocalStorage) {
+                                if (orgIdInLocalStorage === getOrganizationName()
+                                    && initialUserOrgInLocalStorage !== "undefined") {
+                                    authParams["fidp"] = "OrganizationSSO";
+                                    authParams["orgId"] = getOrganizationName();
+                                }
+                            } else {
+                                authParams["fidp"] = "OrganizationSSO";
+                                authParams["orgId"] = getOrganizationName();
+                            }
+                        }
+
+                        await signIn(authParams);
                     }
                 } }
             >
