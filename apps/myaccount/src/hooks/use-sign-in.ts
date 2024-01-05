@@ -54,9 +54,14 @@ const LOGOUT_URL: string = "sign_out_url";
 /**
  * Props interface of {@link useSignIn}
  */
-export type UseSignInInterface = {
+export interface UseSignInInterface {
+    /**
+     * Handles the sign-in process.
+     * @param response - The basic user information returned from the sign-in process.
+     * @returns A promise.
+     */
     onSignIn: (response: BasicUserInfo) => Promise<void>;
-};
+}
 
 /**
  * Hook that provides access to the Organizations context.
