@@ -5243,6 +5243,21 @@ export const console: ConsoleNS = {
                 subTitle: null,
                 title: null
             },
+            authenticationProviderTemplate: {
+                backButton: "සම්බන්ධතා වෙත ආපසු යන්න",
+                disabledHint: {
+                    apple: "ඇපල් විශේෂාංගය සමඟ පුරනය වීම localhost (හෝ 127.0.0.1.) සමඟ වින්යාසගත කළ නොහැක. මෙම සැකසුම ඇපල් වින්යාස කිරීමේ පියවරේදී අවලංගු වසම් දෝෂයක් ඇති කරයි. පරීක්ෂා කිරීම සඳහා, සැබෑ හෝ DNS-විසඳිය හැකි ඩොමේන් නාමයක් භාවිතා කරන්න. දේශීය සංවර්ධනය සඳහා, `etc/hosts` ලිපිගොනු වල වසම් සිතියම් ගත කළ හැකිය."
+                },
+                search: {
+                    placeholder: "නම අනුව සොයන්න"
+                },
+                subTitle: "සම්බන්ධතා වර්ගයක් තෝරන්න සහ නව සම්බන්ධතාවයක් සාදන්න.",
+                supportServices: {
+                    authenticationDisplayName: "සත්යාපනය",
+                    provisioningDisplayName: "ප්රතිපාදන සැපයීම"
+                },
+                title: "නව සම්බන්ධතාවයක් සාදන්න"
+            },
             idp: {
                 subTitle: "අනන්‍යතා සැපයුම්කරුවන් කළමනාකරණය කර ඒවා හරහා ඔබගේ යෙදුමට පිවිසීමට පරිශීලකයින්ට " +
                     "ඉඩ දෙන්න.",
