@@ -36,7 +36,7 @@ import {
     ContextUtils
 } from "@wso2is/core/utils";
 import axios, { AxiosResponse } from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import useAuthorization from "../../authorization/hooks/use-authorization";
@@ -102,8 +102,6 @@ const useSignIn = (): UseSignInInterface => {
         removeOrgIdInLocalStorage,
         removeUserOrgInLocalStorage
     } = useOrganizations();
-
-    const clientHost: string = useSelector((state: AppState) => state?.config?.deployment?.clientHost);
 
     const setCustomServerHost = (orgType: string, wellKnownEndpoint: string) => {
         const disabledFeatures: string[] = window["AppUtils"]?.getConfig()?.ui?.features?.branding?.disabledFeatures;
@@ -493,7 +491,9 @@ const useSignIn = (): UseSignInInterface => {
             const isSwitchedFromRootOrg: boolean = getUserOrgInLocalStorage() === "undefined";
 
             if (!isSwitchedFromRootOrg) {
-                logoutRedirectUrl = clientHost?.replace(orgId, userOrg);
+                logoutRedirectUrl = window["AppUtils"]?.getConfig()?.clientOriginWithTenant?.replace(
+                    orgId, userOrg
+                );
             }
         }
 
