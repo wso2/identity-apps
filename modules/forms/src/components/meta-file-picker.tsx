@@ -21,7 +21,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Form, InputOnChangeData } from "semantic-ui-react";
 
-interface CertificateFilePickerPropsInterface {
+interface MetaFilePickerPropsInterface {
     value: string;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -30,8 +30,8 @@ interface FilePickerInterface {
     value: string;
 }
 
-export const CertificateFilePicker: FunctionComponent<CertificateFilePickerPropsInterface> = (
-    props: CertificateFilePickerPropsInterface) => {
+export const MetaFilePicker: FunctionComponent<MetaFilePickerPropsInterface> = (
+    props: MetaFilePickerPropsInterface) => {
 
     const {
         value,
@@ -40,7 +40,7 @@ export const CertificateFilePicker: FunctionComponent<CertificateFilePickerProps
 
     const QUERY_PARAMETER_SEPARATOR = " ";
 
-    const [ certificateFilePickerValue, setCertificateFilePickerValue ] = useState<string>(null);
+    const [ metaFilePickerValue, setMetaFilePickerValue ] = useState<string>(null);
     const [ filePicker, setFilePicker ] = useState<FilePickerInterface[]>();
 
     const XML_FILE_PROCESSING_STRATEGY: XMLFileStrategy = new XMLFileStrategy();
@@ -93,7 +93,7 @@ export const CertificateFilePicker: FunctionComponent<CertificateFilePickerProps
      * @param queryParam - QueryParameter.
      */
     const updateQueryParameterInputFields = (filePicker: FilePickerInterface): void => {
-        setCertificateFilePickerValue(filePicker?.value);
+        setMetaFilePickerValue(filePicker?.value);
     };
 
     /**
@@ -116,16 +116,16 @@ export const CertificateFilePicker: FunctionComponent<CertificateFilePickerProps
 
     useEffect(() => {
         handleQueryParameterAdd();
-    }, [ certificateFilePickerValue ]);
+    }, [ metaFilePickerValue ]);
 
     const handleQueryParameterAdd = () => {
         event.preventDefault();
-        if (isEmpty(certificateFilePickerValue)) {
+        if (isEmpty(metaFilePickerValue)) {
             return;
         }
 
         const output: FilePickerInterface[] = [ {
-            value: certificateFilePickerValue
+            value: metaFilePickerValue
         } ];
 
         filePicker?.forEach(function(queryParam) {
@@ -153,14 +153,14 @@ export const CertificateFilePicker: FunctionComponent<CertificateFilePickerProps
                 <Form.Input
                     fluid
                     type="hidden"
-                    value={ certificateFilePickerValue }
+                    value={ metaFilePickerValue }
                     focus
                     placeholder="name"
                     onChange={ (
                         event: React.ChangeEvent<HTMLInputElement>,
                         data: InputOnChangeData
                     ) => {
-                        setCertificateFilePickerValue(data.value);
+                        setMetaFilePickerValue(data.value);
                     } }
                 />
                 {
@@ -169,7 +169,7 @@ export const CertificateFilePicker: FunctionComponent<CertificateFilePickerProps
                             fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
                             normalizeStateOnRemoveOperations={ true }
                             onChange={ (result: PickerResult<File>) => {
-                                setCertificateFilePickerValue(result.serialized as string);
+                                setMetaFilePickerValue(result.serialized as string);
                                 handleQueryParameterAdd();
                             } }
                             uploadButtonText="Upload Metadata File"

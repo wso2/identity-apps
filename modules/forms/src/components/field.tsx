@@ -20,7 +20,7 @@ import classNames from "classnames";
 import React, { ReactElement } from "react";
 // eslint-disable-next-line no-restricted-imports
 import { Button, Divider, Form, Icon, Popup, Radio } from "semantic-ui-react";
-import { CertificateFilePicker } from "./certificate-file-picker";
+import { MetaFilePicker } from "./meta-file-picker";
 import { Password } from "./password";
 import { QueryParameters } from "./query-parameters";
 import { Scopes } from "./scopes";
@@ -449,7 +449,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                 : null
                         }
                     </label>
-                    <CertificateFilePicker
+                    <MetaFilePicker
                         value={ inputField.value }
                         onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
                             handleChange(event.target.value, inputField.name);
