@@ -20,4 +20,4 @@ export * from "./forms";
 export * from "./models";
 export { Field, GroupFields } from "./components";
 export * from "./utils";
-export { DynamicField, KeyValue } from "./components/dynamic-field"
+export { DynamicField, KeyValue } from "./components/dynamic-field";
