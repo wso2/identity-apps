@@ -259,7 +259,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                             />
                         </Form>
                     </EmphasizedSegment>
-                    <Divider className="mb-1" hidden />
+                    <Divider hidden />
                     { resolveDangerActions() }
                     {
                         deletingAPIResource && (
