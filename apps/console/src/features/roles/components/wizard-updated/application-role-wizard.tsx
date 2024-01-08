@@ -34,6 +34,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Modal } from "semantic-ui-react";
+import { Policy } from "../../../../extensions/components/application/constants";
 import { AppConstants, history } from "../../../../features/core";
 import { APIResourceInterface } from "../../../api-resources/models";
 import useSubscribedAPIResources from "../../../applications/api/use-subscribed-api-resources";
@@ -49,7 +50,6 @@ import {
     SelectedPermissionsInterface
 } from "../../models/roles";
 import { RoleAPIResourcesListItem } from "../edit-role/edit-role-common/role-api-resources-list-item";
-import {Policy} from "../../../../extensions/components/application/constants";
 
 interface ApplicationRoleWizardPropsInterface extends IdentifiableComponentInterface {
     application: ApplicationInterface;
