@@ -342,12 +342,12 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         }
 
         config.inboundProtocolConfiguration.oidc[ "refreshToken" ] = {
-            expiryInSeconds: Number(OIDCMeta?.defaultRefreshTokenExpiryTime)
+            expiryInSeconds: parseInt(OIDCMeta?.defaultRefreshTokenExpiryTime, 10)
         };
 
         if (showRefreshToken || (!fields || fields.includes("RefreshToken"))) {
             config.inboundProtocolConfiguration.oidc[ "refreshToken" ] = {
-                expiryInSeconds: Number(OIDCMeta?.defaultRefreshTokenExpiryTime),
+                expiryInSeconds: parseInt(OIDCMeta?.defaultRefreshTokenExpiryTime, 10),
                 renewRefreshToken: values.get("RefreshToken").includes("refreshToken")
             };
         }
@@ -366,8 +366,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         if (selectedTemplate?.templateId === ApplicationTemplateIdTypes.SPA && OIDCMeta) {
             config.inboundProtocolConfiguration.oidc["accessToken"] =
            {
-               applicationAccessTokenExpiryInSeconds: Number(OIDCMeta?.defaultApplicationAccessTokenExpiryTime),
-               userAccessTokenExpiryInSeconds: Number(OIDCMeta?.defaultUserAccessTokenExpiryTime)
+               applicationAccessTokenExpiryInSeconds: parseInt(OIDCMeta?.defaultApplicationAccessTokenExpiryTime, 10),
+               userAccessTokenExpiryInSeconds: parseInt(OIDCMeta?.defaultUserAccessTokenExpiryTime, 10)
            };
         }
 
