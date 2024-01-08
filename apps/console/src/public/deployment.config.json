@@ -459,6 +459,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:certificates"
+                    ],
                     "create": [
                         "internal_keystore_update"
                     ],
@@ -736,6 +739,9 @@
             "secretsManagement": {
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:secretsManagement"
+                    ],
                     "create": [
                         "internal_secret_mgt_add"
                     ],
