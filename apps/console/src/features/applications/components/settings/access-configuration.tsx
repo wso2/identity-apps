@@ -18,6 +18,7 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { FormValue } from "@wso2is/forms";
 import {
     Code,
     ConfirmationModal,
@@ -50,6 +51,7 @@ import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid, Header, Button as SemButton } from "semantic-ui-react";
 import { SAMLSelectionLanding } from "./protocols";
 import { applicationConfig } from "../../../../extensions";
+import useAuthorization from "../../../authorization/hooks/use-authorization";
 import {
     AppState,
     AuthenticatorAccordion,
@@ -225,6 +227,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const tenantName: string = store.getState().config.deployment.tenant;
     const allowMultipleProtocol: boolean = useSelector(
         (state: AppState) => state.config.deployment.allowMultipleAppProtocols);
+    const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
+    const { legacyAuthzRuntime } = useAuthorization();
 
     const [ selectedProtocol, setSelectedProtocol ] = useState<SupportedAuthProtocolTypes | string>(undefined);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>([]);
@@ -589,8 +593,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             return;
         }
 
-        const deletingProtocol: string = inboundProtocols
-            .find((protocol: string) => protocol === name);
+        const deletingProtocol: string = inboundProtocols.find((protocol: string) => protocol === name);
 
         if (!deletingProtocol) {
             return;
@@ -613,8 +616,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         }
         const newIndexes: number[] = [ ...accordionActiveIndexes ];
 
-        if (newIndexes.includes(SegmentedAuthenticatedAccordion.accordionIndex)) {
-            const removingIndex: number = newIndexes.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
+        if (newIndexes?.includes(SegmentedAuthenticatedAccordion.accordionIndex)) {
+            const removingIndex: number = newIndexes?.indexOf(SegmentedAuthenticatedAccordion.accordionIndex);
 
             newIndexes.splice(removingIndex, 1);
         } else {
@@ -731,10 +734,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                             allowedOrigins={ allowedOriginList }
                                                             metadata={
                                                                 // There's no separate meta for `OAuth2/OIDC`
-                                                                // Apps. Need to use `OIDC` for noe.
+                                                                // Apps. Need to use `OIDC` for now.
                                                                 authProtocolMeta[
-                                                                    protocol ===
-                                                                                SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                                    protocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
                                                                         ? SupportedAuthProtocolTypes.OIDC
                                                                         : protocol
                                                                 ]
@@ -742,8 +744,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                             initialValues={
                                                                 get(
                                                                     inboundProtocolConfig,
-                                                                    protocol ===
-                                                                                SupportedAuthProtocolTypes.OAUTH2_OIDC
+                                                                    protocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
                                                                         ? SupportedAuthProtocolTypes.OIDC
                                                                         : protocol
                                                                 )
@@ -756,7 +757,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                                     : undefined
                                                             }
                                                             onSubmit={
-                                                                (values: any) => handleSubmit(values, protocol)
+                                                                (values: Record<string, FormValue>) =>
+                                                                    handleSubmit(values, protocol)
                                                             }
                                                             type={ protocol as SupportedAuthProtocolTypes }
                                                             onApplicationRegenerate={
@@ -767,7 +769,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                                 readOnly || !hasRequiredScopes(
                                                                     featureConfig?.applications,
                                                                     featureConfig?.applications?.scopes?.update,
-                                                                    allowedScopes
+                                                                    allowedScopes,
+                                                                    organizationType,
+                                                                    legacyAuthzRuntime
                                                                 )
                                                             }
                                                             showSAMLCreation={
@@ -779,6 +783,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                             }
                                                             template={ template }
                                                             data-testid={
+                                                                `${ componentId }-inbound-${ protocol }-form`
+                                                            }
+                                                            data-componentid={
                                                                 `${ componentId }-inbound-${ protocol }-form`
                                                             }
                                                             containerRef={ emphasizedSegmentRef }
@@ -797,6 +804,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             accordionIndex={ index }
                                             handleAccordionOnClick={ handleAccordionOnClick }
                                             data-testid={ `${ componentId }-accordion` }
+                                            data-componentid={ `${ componentId }-accordion` }
                                         />
                                     )
                                     : (
@@ -808,7 +816,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             certificate={ certificate }
                                             metadata={
                                                 // There's no separate meta for `OAuth2/OIDC` Apps.
-                                                // Need to use `OIDC` for noe.
+                                                // Need to use `OIDC` for now.
                                                 authProtocolMeta[
                                                     protocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
                                                         ? SupportedAuthProtocolTypes.OIDC
@@ -829,17 +837,21 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     ]
                                                     : undefined
                                             }
-                                            onSubmit={ (values: any) => handleSubmit(values, protocol) }
+                                            onSubmit={ (values: Record<string, FormValue>) =>
+                                                handleSubmit(values, protocol) }
                                             type={ SupportedAuthProtocolTypes.CUSTOM }
                                             readOnly={
                                                 !hasRequiredScopes(
                                                     featureConfig?.applications,
                                                     featureConfig?.applications?.scopes?.update,
-                                                    allowedScopes
+                                                    allowedScopes,
+                                                    organizationType,
+                                                    legacyAuthzRuntime
                                                 )
                                             }
                                             template={ template }
                                             data-testid={ `${ componentId }-inbound-custom-form` }
+                                            data-componentid={ `${ componentId }-inbound-custom-form` }
                                             containerRef={ emphasizedSegmentRef }
                                         />
                                     )
@@ -865,7 +877,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             allowedOrigins={ allowedOriginList }
                                             metadata={
                                                 // There's no separate meta for `OAuth2/OIDC` Apps.
-                                                // Need to use `OIDC` for noe.
+                                                // Need to use `OIDC` for now.
                                                 authProtocolMeta[ inboundProtocolList[0] ===
                                                         SupportedAuthProtocolTypes.OAUTH2_OIDC
                                                     ? SupportedAuthProtocolTypes.OIDC
@@ -887,7 +899,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     : undefined
                                             }
                                             onSubmit={
-                                                (values: any) => handleSubmit(values, inboundProtocolList[0])
+                                                (values: Record<string, FormValue>) =>
+                                                    handleSubmit(values, inboundProtocolList[0])
                                             }
                                             type={ inboundProtocolList[0] as SupportedAuthProtocolTypes }
                                             onApplicationRegenerate={ handleApplicationRegenerate }
@@ -896,7 +909,10 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                 readOnly || !hasRequiredScopes(
                                                     featureConfig?.applications,
                                                     featureConfig?.applications?.scopes?.update,
-                                                    allowedScopes)
+                                                    allowedScopes,
+                                                    organizationType,
+                                                    legacyAuthzRuntime
+                                                )
                                             }
                                             showSAMLCreation={
                                                 inboundProtocolList[0] === SupportedAuthProtocolTypes.SAML
@@ -907,6 +923,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             }
                                             template={ template }
                                             data-testid={
+                                                `${ componentId }-inbound-${ inboundProtocolList[0] }-form`
+                                            }
+                                            data-componentid={
                                                 `${ componentId }-inbound-${ inboundProtocolList[0] }-form`
                                             }
                                             containerRef={ emphasizedSegmentRef }
@@ -923,7 +942,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             certificate={ certificate }
                                             metadata={
                                                 // There's no separate meta for `OAuth2/OIDC` Apps.
-                                                // Need to use `OIDC` for noe.
+                                                // Need to use `OIDC` for now.
                                                 authProtocolMeta[ inboundProtocolList[0] ===
                                                         SupportedAuthProtocolTypes.OAUTH2_OIDC
                                                     ? SupportedAuthProtocolTypes.OIDC
@@ -945,17 +964,22 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     : undefined
                                             }
                                             onSubmit={
-                                                (values: any) => handleSubmit(values, inboundProtocolList[0])
+                                                (values: Record<string, FormValue>) =>
+                                                    handleSubmit(values, inboundProtocolList[0])
                                             }
                                             type={ SupportedAuthProtocolTypes.CUSTOM }
                                             readOnly={
                                                 !hasRequiredScopes(
                                                     featureConfig?.applications,
                                                     featureConfig?.applications?.scopes?.update,
-                                                    allowedScopes)
+                                                    allowedScopes,
+                                                    organizationType,
+                                                    legacyAuthzRuntime
+                                                )
                                             }
                                             template={ template }
                                             data-testid={ `${ componentId }-inbound-custom-form` }
+                                            data-componentid={ `${ componentId }-inbound-custom-form` }
                                             containerRef={ emphasizedSegmentRef }
                                         />
                                     )
