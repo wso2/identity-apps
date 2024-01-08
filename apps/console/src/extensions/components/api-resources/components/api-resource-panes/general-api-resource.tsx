@@ -145,7 +145,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
 
     /**
      * Show danger zone component
-     * 
+     *
      * @returns `ReactElement`
      */
     const resolveDangerActions = (): ReactElement => {
@@ -298,7 +298,6 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                             />
                         </Form>
                     </EmphasizedSegment>
-                    <Divider hidden />
                     { resolveDangerActions() }
                     {
                         deletingAPIResource && (
