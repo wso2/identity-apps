@@ -116,11 +116,9 @@ regexp=(https://localhost:9443/myaccount|https://localhost:9443/t/(.*)/myaccount
 ```toml
 [console]
 callback_url = "regexp=(https://localhost:9443/console|https://localhost:9443/t/(.*)/console|https://localhost:9443/console/login|https://localhost:9443/t/(.*)/console/login|https://localhost:9001/console|https://localhost:9001/t/(.*)/console|https://localhost:9001/console/login|https://localhost:9001/t/(.*)/console/login|https://localhost:9443/o/(.*)/console|https://localhost:9001/o/(.*)/console|https://localhost:9001/o/(.*)/console/login)"
-access_url = "https://localhost:9001/t/(.*)/console"
 
 [myaccount]
 callback_url = "regexp=(https://localhost:9443/myaccount|https://localhost:9443/t/(.*)/myaccount|https://localhost:9443/myaccount/login|https://localhost:9443/t/(.*)/myaccount/login|https://localhost:9000/myaccount|https://localhost:9000/t/(.*)/myaccount|https://localhost:9000/myaccount/login|https://localhost:9000/t/(.*)/myaccount/login)"
-access_url = "https://localhost:9000/t/(.*)/myaccount"
 ```
 
 ## Build & Run
