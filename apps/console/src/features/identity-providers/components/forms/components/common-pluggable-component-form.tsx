@@ -367,7 +367,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             const enableField = (formKey: string): void => {
                 const props: CommonPluggableComponentMetaPropertyInterface = metadata
                     ?.properties
-                    .find(() => key === formKey);
+                    .find(({ key }: { key: string } ) => key === formKey);
 
                 if (props) props.isDisabled = false;
             };
@@ -375,7 +375,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             const disableField = (formKey: string): void => {
                 const props: CommonPluggableComponentMetaPropertyInterface = metadata
                     ?.properties
-                    ?.find(() => key === formKey);
+                    ?.find(( { key }: { key: string } ) => key === formKey);
 
                 if (props) props.isDisabled = true;
             };
@@ -420,7 +420,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             const changeLabel = (to: string): void => {
                 const props: CommonPluggableComponentMetaPropertyInterface = metadata
                     ?.properties
-                    .find(() => key === TARGET_FORM_KEY);
+                    .find(({ key }: { key: string }) => key === TARGET_FORM_KEY);
 
                 if (props) props.displayName = to;
             };
