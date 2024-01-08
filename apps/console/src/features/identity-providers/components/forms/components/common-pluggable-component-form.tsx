@@ -64,7 +64,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
     const commonKeys: string[] = [ "SelectMode", "SPEntityId", "NameIDType" ];
 
-    const enum SelectModTypes {
+    const enum SelectModeTypes {
         MANUAL = "Manual Configuration",
         FILEBASED = "Metadata File Configuration"
     }
@@ -368,9 +368,9 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
         if (key === "SelectMode") {
 
-            if (selectedMode === SelectModTypes.MANUAL) {
+            if (selectedMode === SelectModeTypes.MANUAL) {
                 setManualMode(true);
-            } else if (selectedMode === SelectModTypes.FILEBASED){
+            } else if (selectedMode === SelectModeTypes.FILEBASED){
                 setManualMode(false);
             }
         }
