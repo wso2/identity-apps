@@ -136,12 +136,12 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
 
     /**
      * Empty placeholder for the permissions list.
-     * 
+     *
      * @returns `ReactElement`
      */
     const showPlaceholders = (): ReactElement => {
         if (permissionsList?.length === 0) {
-            return ( 
+            return (
                 <>
                     <Divider className="mb-1" hidden />
                     <EmptyPlaceholder

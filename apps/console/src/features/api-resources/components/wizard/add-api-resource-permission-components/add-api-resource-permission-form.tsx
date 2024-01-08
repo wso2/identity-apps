@@ -145,7 +145,7 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                             loading={ permissionValidationLoading }
                         />
                         <Hint>
-                            <Trans 
+                            <Trans
                                 i18nKey= { "console:apiResources.wizard.addApiResource.steps." +
                                     "scopes.form.fields.scope.hint" }>
                                 A unique value that acts as the scope when requesting an access token.&nbsp;
@@ -160,11 +160,11 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                             type="text"
                             name="displayName"
                             label={ t("extensions:develop.apiResource.tabs.permissions.form.fields.displayName.label") }
-                            placeholder={ t("extensions:develop.apiResource.tabs.permissions.form.fields." + 
+                            placeholder={ t("extensions:develop.apiResource.tabs.permissions.form.fields." +
                                 "displayName.placeholder") }
                             required={ true }
                             tabIndex={ 2 }
-                            requiredErrorMessage={ t("extensions:develop.apiResource.tabs.permissions.form.fields." + 
+                            requiredErrorMessage={ t("extensions:develop.apiResource.tabs.permissions.form.fields." +
                                 "displayName.emptyValidate") }
                             data-testid={ `${componentId}-displayName` }
                         />
@@ -180,7 +180,7 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                             type="text"
                             name="description"
                             label={ t("console:apiResources.tabs.scopes.form.fields.description.label") }
-                            placeholder={ t("console:apiResources.tabs.scopes.form.fields." + 
+                            placeholder={ t("console:apiResources.tabs.scopes.form.fields." +
                                 "description.placeholder") }
                             tabIndex={ 3 }
                             data-testid={ `${componentId}-description` }

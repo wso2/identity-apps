@@ -47,7 +47,7 @@ import {
 /**
  * Prop-types for the API resources page component.
  */
-type GeneralAPIResourceInterface = SBACInterface<FeatureConfigInterface> & 
+type GeneralAPIResourceInterface = SBACInterface<FeatureConfigInterface> &
     IdentifiableComponentInterface & APIResourcePanesCommonPropsInterface;
 
 const FORM_ID: string = "apiResource-general-details";
@@ -116,7 +116,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
 
     /**
      * Show danger zone component
-     * 
+     *
      * @returns `ReactElement`
      */
     const resolveDangerActions = (): ReactElement => {
@@ -201,7 +201,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                             onSubmit={ updateConfigurations }
                             id={ FORM_ID }
                             validate={ validateForm }
-                            uncontrolledForm={ false } 
+                            uncontrolledForm={ false }
                         >
                             {
                                 apiResourceData.name && (
