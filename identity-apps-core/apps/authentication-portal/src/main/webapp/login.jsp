@@ -1051,7 +1051,10 @@
                                             src="libs/themes/default/assets/images/icons/outline-icons/clock-outline.svg"
                                             alt="TOTP Logo"
                                             role="presentation">
-                                        <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.authenticator")%></span>
+                                        <span>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp")%>
+                                        </span>
                                     </button>
                                 </div>
                             </div>
@@ -1072,7 +1075,10 @@
                                                 'sms-otp-authenticator')"
                                         >
                                         <img class="ui image" src="libs/themes/default/assets/images/icons/sms-icon.svg">
-                                        <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "sms-otp-authenticator.authenticator")%></span>
+                                        <span>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sms.otp")%>
+                                        </span>
                                     </button>
                                 </div>
                             </div>
@@ -1097,7 +1103,10 @@
                                             src="libs/themes/default/assets/images/icons/solid-icons/email-solid.svg"
                                             alt="Email OTP Logo"
                                             role="presentation">
-                                        <span><%=AuthenticationEndpointUtil.i18n(resourceBundle, "email.otp.authenticator")%></span>
+                                        <span>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "email.otp")%>
+                                        </span>
                                     </button>
                                 </div>
                             </div>

@@ -18,7 +18,9 @@
 
 import CardContent from "@mui/material/CardContent";
 import {
-    ArrowLoopRightUserIcon, UserBannerIcon
+    ArrowLoopRightUserIcon,
+    UserBannerIcon,
+    UserIcon
 } from "@oxygen-ui/react-icons";
 import Avatar from "@oxygen-ui/react/Avatar";
 import Card from "@oxygen-ui/react/Card";
@@ -29,7 +31,6 @@ import { GenericIcon, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Ref } from "semantic-ui-react";
-import RemoteLoggingIcon from "../../../themes/default/assets/images/icons/outline-icons/remote-logging.svg";
 import { AppConstants, history } from "../../core";
 import "./server.scss";
 
@@ -117,21 +118,20 @@ export const ServerSettingsListingPage: FunctionComponent<ServerSettingsListingP
                                                 variant="square"
                                                 randomBackgroundColor
                                                 backgroundColorRandomizer="remote-logging"
-                                                icon={ RemoteLoggingIcon }
                                                 className="server-configuration-icon-container"
-                                            />
+                                            >
+                                                <UserIcon className="icon" />
+                                            </Avatar>
                                         ) }
                                         inline
                                         transparent
                                         shape="square"
                                     />
                                 </div>
-                                <div>
-                                    <Typography variant="h6">
-                                        { t("console:manage.features.serverConfigs.remoteLogPublishing" +
-                                            ".title")  }
-                                    </Typography>
-                                </div>
+                                <Typography variant="h6">
+                                    { t("console:manage.features.serverConfigs.remoteLogPublishing" +
+                                        ".title")  }
+                                </Typography>
                             </CardContent>
                             <CardContent>
                                 <Typography variant="body2" color="text.secondary">
