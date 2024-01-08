@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import Chip from "@oxygen-ui/react/Chip";
+
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
