@@ -27,7 +27,7 @@ import ConsoleLoginFlow from "./console-login-flow/console-login-flow";
 import ConsoleProtocol from "./console-protocol/console-protocol";
 import ConsoleRolesList from "./console-roles/console-roles-list";
 import { useGetCurrentOrganizationType } from "../../organizations/hooks/use-get-organization-type";
-import { ConsoleSettingsModes } from "../models/ui";
+import { ConsoleSettingsModes, ConsoleSettingsTabIDs } from "../models/ui";
 import "./console-settings-tabs.scss";
 
 /**
@@ -90,7 +90,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     id: ConsoleSettingsModes.ADMINISTRATORS,
                     label: t("console:consoleSettings.administrators.tabLabel"),
                     pane: <ConsoleAdministrators />,
-                    value: 0
+                    value: ConsoleSettingsTabIDs.ADMINISTRATORS
                 },
                 {
                     className: "console-roles-list",
@@ -99,7 +99,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     id: ConsoleSettingsModes.ROLES,
                     label: t("console:consoleSettings.roles.tabLabel"),
                     pane: <ConsoleRolesList />,
-                    value: 1
+                    value: ConsoleSettingsTabIDs.ROLES
                 },
                 !isSubOrganization() && {
                     className: "console-protocol",
@@ -109,7 +109,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     id: ConsoleSettingsModes.PROTOCOL,
                     label: t("console:consoleSettings.protocol.tabLabel"),
                     pane: <ConsoleProtocol />,
-                    value: 3
+                    value: ConsoleSettingsTabIDs.PROTOCOL
                 },
                 !isSubOrganization() && {
                     className: "console-security",
@@ -118,7 +118,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     id: ConsoleSettingsModes.LOGIN_FLOW,
                     label: t("console:consoleSettings.loginFlow.tabLabel"),
                     pane: <ConsoleLoginFlow />,
-                    value: 4
+                    value: ConsoleSettingsTabIDs.LOGIN_FLOW
                 }
             ]
                 .filter((tab: ConsoleSettingsTabInterface) => !tab || !tab.hidden)
@@ -132,7 +132,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
      */
     const getActiveTabFromUrl = (): number => {
         const activeTabFromUrl: ConsoleSettingsTabInterface = consoleTabs.find((tab: ConsoleSettingsTabInterface) => {
-            return location.hash === `#tab=${tab.id}`;
+            return location.hash === `#tab=${tab.value}`;
         });
 
         return activeTabFromUrl ? activeTabFromUrl.value : consoleTabs[0].value;
@@ -162,6 +162,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
             <Tabs
                 value={ activeTab }
                 onChange={ (_: SyntheticEvent, newValue: number) => {
+                    location.hash = `#tab=${newValue}`;
                     setActiveTab(newValue);
                 } }
             >

@@ -1,5 +1,17 @@
 # @wso2is/identity-apps-core
 
+## 2.0.113
+
+### Patch Changes
+
+- [#5155](https://github.com/wso2/identity-apps/pull/5155) [`3b4db459fa`](https://github.com/wso2/identity-apps/commit/3b4db459facaae5c69b2fc9e02f50c84bb7a3d72) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add missing branding preference import paths
+
+## 2.0.112
+
+### Patch Changes
+
+- [#5150](https://github.com/wso2/identity-apps/pull/5150) [`1bbcd13423`](https://github.com/wso2/identity-apps/commit/1bbcd134236009b4b8da17159b233038f502d0a7) Thanks [@Avarjana](https://github.com/Avarjana)! - Show product logo URL when Powered By is enabled
+
 ## 2.0.111
 
 ### Patch Changes

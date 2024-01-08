@@ -24,7 +24,7 @@
     <groupId>org.wso2.identity.apps</groupId>
     <artifactId>identity-apps-console</artifactId>
     <packaging>pom</packaging>
-    <version>2.10.56-SNAPSHOT</version>
+    <version>2.10.57-SNAPSHOT</version>
     <name>WSO2 Identity Server Console - Parent</name>
     <description>WSO2 Identity Server Console Parent</description>
 

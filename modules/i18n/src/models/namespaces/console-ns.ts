@@ -6106,6 +6106,8 @@ export interface ConsoleNS {
                             emailVerificationDisabled: string;
                             emailInvalid: string;
                             alphanumericUsernameEnabled: string;
+                            inviteViaEmail: string;
+                            inviteOffline: string;
                         };
                         steps: {
                             basicDetails: string;

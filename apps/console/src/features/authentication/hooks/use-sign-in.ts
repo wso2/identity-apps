@@ -253,6 +253,10 @@ const useSignIn = (): UseSignInInterface => {
         window["AppUtils"].updateOrganizationType(orgType);
         dispatch(setUserOrganizationId(userOrganizationId));
 
+        if (legacyAuthzRuntime) {
+            dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
+        }
+
         if (window["AppUtils"].getConfig().organizationName || isFirstLevelOrg) {
             // We are actually getting the orgId here rather than orgName
             const orgId: string = isFirstLevelOrg ? orgIdIdToken : window["AppUtils"].getConfig().organizationName;
@@ -380,9 +384,8 @@ const useSignIn = (): UseSignInInterface => {
         if (!legacyAuthzRuntime) {
             // FIXME: Skipping /o/ appending from the `getServiceResourceEndpoints` level seems to be not working.
             wellKnownEndpoint = wellKnownEndpoint.replace("/o/", "/");
+            dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
         }
-
-        dispatch(setIsFirstLevelOrganization(isFirstLevelOrg));
 
         onAppReady();
 
