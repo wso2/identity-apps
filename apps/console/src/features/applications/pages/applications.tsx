@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import Chip from "@oxygen-ui/react/Chip";
+
 import { AccessControlConstants, Show } from "@wso2is/access-control";
 import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -456,14 +456,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     className="my-account-title mb-1"
                                 >
                                     { t("console:develop.features.applications.myaccount.title") }
-                                    {
-                                        isSAASDeployment && (
-                                            <Chip
-                                                label={ t("common:preview") }
-                                                className="oxygen-chip-beta ml-2"
-                                            />
-                                        )
-                                    }
                                     {
                                         applicationConfig?.advancedConfigurations?.showMyAccountStatus && (
                                             <Icon
