@@ -45,7 +45,6 @@
         "@storybook/react": "^6.5.9",
         "@storybook/theming": "^6.5.9",
         "@wso2is/core": "^2.0.25",
-        "@wso2is/forms": "^2.0.8",
         "@wso2is/theme": "^2.0.53",
         "classnames": "^2.2.6",
         "codemirror": "^5.52.0",
