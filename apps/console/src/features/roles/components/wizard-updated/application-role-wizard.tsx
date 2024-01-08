@@ -49,6 +49,7 @@ import {
     SelectedPermissionsInterface
 } from "../../models/roles";
 import { RoleAPIResourcesListItem } from "../edit-role/edit-role-common/role-api-resources-list-item";
+import {Policy} from "../../../../extensions/components/application/constants";
 
 interface ApplicationRoleWizardPropsInterface extends IdentifiableComponentInterface {
     application: ApplicationInterface;
@@ -121,7 +122,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
             const isNotSelected: boolean = !selectedAPIResources
                 ?.find((selectedAPIResource: APIResourceInterface) => selectedAPIResource?.id === apiResource?.id);
 
-            if (isNotSelected) {
+            if (isNotSelected && apiResource.policyId == Policy.ROLE) {
                 options.push({
                     key: apiResource?.id,
                     text: apiResource?.displayName,
