@@ -1,5 +1,34 @@
 # @wso2is/console
 
+## 2.10.57
+
+### Patch Changes
+
+- [#5159](https://github.com/wso2/identity-apps/pull/5159) [`4ac00258ac`](https://github.com/wso2/identity-apps/commit/4ac00258ac8fcf8d31fb8c92b45f4eca03f34e06) Thanks [@savindi7](https://github.com/savindi7)! - Fix globa token validity update issue
+
+* [#5161](https://github.com/wso2/identity-apps/pull/5161) [`f26e73598f`](https://github.com/wso2/identity-apps/commit/f26e73598f340f7ac2bf1196034aedf5ac209429) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Show multiple inbound authenticators in the protocol tab
+
+- [#5148](https://github.com/wso2/identity-apps/pull/5148) [`5fe0424f8e`](https://github.com/wso2/identity-apps/commit/5fe0424f8eb283e54d2f8f23eab6ffa7013e92c4) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Dynamically render custom connector wizard fields according to the selected mode
+
+* [#5144](https://github.com/wso2/identity-apps/pull/5144) [`fbdecb98fa`](https://github.com/wso2/identity-apps/commit/fbdecb98fa95cb15aa041bd21a52f0809ca82da9) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add translations in authentication portal
+
+- [#5141](https://github.com/wso2/identity-apps/pull/5141) [`068dd0721c`](https://github.com/wso2/identity-apps/commit/068dd0721c96b769c242afa962a3eab09343044b) Thanks [@brionmario](https://github.com/brionmario)! - Enable Organization login for My Account
+
+* [#5157](https://github.com/wso2/identity-apps/pull/5157) [`18e53a886c`](https://github.com/wso2/identity-apps/commit/18e53a886cfab86423b03b8ff9812309c3576fc7) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with tabs in console settings section
+
+- [#5163](https://github.com/wso2/identity-apps/pull/5163) [`f3a585ec3a`](https://github.com/wso2/identity-apps/commit/f3a585ec3a307a717d598a00c1f80d5a6e07e4ce) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove preview label from myaccount for SaaS deployment
+
+- Updated dependencies [[`5fe0424f8e`](https://github.com/wso2/identity-apps/commit/5fe0424f8eb283e54d2f8f23eab6ffa7013e92c4), [`fbdecb98fa`](https://github.com/wso2/identity-apps/commit/fbdecb98fa95cb15aa041bd21a52f0809ca82da9), [`068dd0721c`](https://github.com/wso2/identity-apps/commit/068dd0721c96b769c242afa962a3eab09343044b)]:
+  - @wso2is/react-components@2.0.31
+  - @wso2is/forms@2.0.9
+  - @wso2is/common@2.0.17
+  - @wso2is/dynamic-forms@2.0.22
+  - @wso2is/form@2.0.23
+  - @wso2is/i18n@2.0.89
+  - @wso2is/access-control@2.0.14
+  - @wso2is/core@2.0.26
+  - @wso2is/validation@2.0.3
+
 ## 2.10.56
 
 ### Patch Changes

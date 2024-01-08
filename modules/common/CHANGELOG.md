@@ -1,5 +1,20 @@
 # @wso2is/common
 
+## 2.0.17
+
+### Patch Changes
+
+- [#5148](https://github.com/wso2/identity-apps/pull/5148) [`5fe0424f8e`](https://github.com/wso2/identity-apps/commit/5fe0424f8eb283e54d2f8f23eab6ffa7013e92c4) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Dynamically render custom connector wizard fields according to the selected mode
+
+* [#5141](https://github.com/wso2/identity-apps/pull/5141) [`068dd0721c`](https://github.com/wso2/identity-apps/commit/068dd0721c96b769c242afa962a3eab09343044b) Thanks [@brionmario](https://github.com/brionmario)! - Enable Organization login for My Account
+
+* Updated dependencies [[`5fe0424f8e`](https://github.com/wso2/identity-apps/commit/5fe0424f8eb283e54d2f8f23eab6ffa7013e92c4), [`fbdecb98fa`](https://github.com/wso2/identity-apps/commit/fbdecb98fa95cb15aa041bd21a52f0809ca82da9), [`068dd0721c`](https://github.com/wso2/identity-apps/commit/068dd0721c96b769c242afa962a3eab09343044b)]:
+  - @wso2is/react-components@2.0.31
+  - @wso2is/forms@2.0.9
+  - @wso2is/i18n@2.0.89
+  - @wso2is/access-control@2.0.14
+  - @wso2is/core@2.0.26
+
 ## 2.0.16
 
 ### Patch Changes
