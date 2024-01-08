@@ -456,14 +456,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     className="my-account-title mb-1"
                                 >
                                     { t("console:develop.features.applications.myaccount.title") }
-                                    {
-                                        isSAASDeployment && (
-                                            <Chip
-                                                label={ t("common:preview") }
-                                                className="oxygen-chip-beta ml-2"
-                                            />
-                                        )
-                                    }
                                     <Icon
                                         color={ isMyAccountEnabled ? "green":"grey" }
                                         name={ isMyAccountEnabled ? "check circle" : "minus circle" }
