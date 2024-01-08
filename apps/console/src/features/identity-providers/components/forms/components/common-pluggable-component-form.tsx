@@ -91,7 +91,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      */
     const getUpdatedConfigurations = (values: Map<string, FormValue>): any => {
 
-        const properties: any[] = [];
+        const properties: CommonPluggableComponentPropertyInterface[] = [];
         const resolvedCustomProperties: string | string[] = showCustomProperties
             ? values.get("customProperties")
             : customProperties;
@@ -103,7 +103,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             if (key !== undefined && !isEmpty(value) && key !== "customProperties") {
                 properties.push({
                     key: key,
-                    value: interpretValueByType(value, key, propertyMetadata?.type)
+                    value: interpretValueByType(value, key, propertyMetadata?.type) as string
                 });
             }
 
