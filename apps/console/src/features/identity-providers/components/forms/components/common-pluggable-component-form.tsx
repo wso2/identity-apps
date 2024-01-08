@@ -270,7 +270,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                         && !isScopesDefined() && isScopesEmpty()) {
                         const updatedProperty: CommonPluggableComponentPropertyInterface = {
                             key: CommonConstants.FIELD_COMPONENT_SCOPES,
-                            value: metaProperty.description
+                            value: metaProperty.defaultValue
                         };
 
                         field = getField(updatedProperty, metaProperty, isSub,

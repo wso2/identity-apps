@@ -558,7 +558,7 @@ export const getDropDownFieldWithListener = (eachProp: CommonPluggableComponentP
                 listen={ (values: Map<string, FormValue>) => {
                     listen(propertyMetadata?.key, values);
                 } }
-                default ={ propertyMetadata?.defaultValue }
+                default ={ propertyMetadata?.key === "SelectMode" && propertyMetadata?.defaultValue }
             />) }
             {
                 showField
@@ -660,7 +660,8 @@ export enum CommonConstants {
     FIELD_COMPONENT_SCOPES = "Scopes",
     QUERY_PARAMETERS_KEY = "commonAuthQueryParams",
     SCOPE_KEY = "scopes",
-    RADIO = "RADIO"
+    RADIO = "RADIO",
+    SELECTMODE = "SelectMode"
 }
 
 /**
