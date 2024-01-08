@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -164,7 +164,7 @@ export interface UpdatedAPIResourceInterface {
 /**
  * Captures body of the updated API resource.
  */
-export interface GeneralUpadateAPIResourceInterface {
+export interface GeneralUpdateAPIResourceInterface {
     /**
      * Updated display name of the API resource
      */

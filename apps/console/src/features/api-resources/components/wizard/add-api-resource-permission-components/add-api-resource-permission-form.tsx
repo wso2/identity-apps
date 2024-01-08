@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -110,12 +110,12 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                             type="text"
                             name="identifier"
                             label={ t("console:apiResources.tabs.scopes.form.fields.scope.label") }
-                            placeholder={ t("console:apiResources.tabs.scopes.form.fields." + 
+                            placeholder={ t("console:apiResources.tabs.scopes.form.fields." +
                                 "scope.placeholder") }
                             required={ true }
                             tabIndex={ 1 }
                             requiredErrorMessage={ t("console:apiResources.wizard.addApiResource.steps." +
-                                "scopes.form.fields.scope.emptyValidate") }
+                                "scopes.form.fields.permission.emptyValidate") }
                             validation={ async (value: string, validation: Validation) => {
 
                                 setPermissionValidationLoading(true);
@@ -124,17 +124,17 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                                     if (!APIResourcesConstants.checkValidPermissionIdentifier(value)) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(t("console:apiResources.wizard." +
-                                            "addApiResource.steps.scopes.form.fields.scope.invalid"));
+                                            "addApiResource.steps.scopes.form.fields.permission.invalid"));
                                     } else {
                                         const filter: string = "name eq " + value;
 
-                                        const response: APIResourcePermissionInterface[] = 
+                                        const response: APIResourcePermissionInterface[] =
                                             await getAPIResourcePermissions(filter);
 
                                         if (response?.length > 0) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(t("console:apiResources.wizard." +
-                                            "addApiResource.steps.scopes.form.fields.scope.uniqueValidate"));
+                                            "addApiResource.steps.scopes.form.fields.permission.uniqueValidate"));
                                         }
                                     }
 
@@ -148,7 +148,7 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                             <Trans 
                                 i18nKey= { "console:apiResources.wizard.addApiResource.steps." +
                                     "scopes.form.fields.scope.hint" }>
-                                A unique value that acts as the scope when requesting an access token. 
+                                A unique value that acts as the scope when requesting an access token.&nbsp;
                                 <b>Note that the scope cannot be modified once created.</b>
                             </Trans>
                         </Hint>
@@ -156,7 +156,7 @@ export const AddAPIResourcePermissionForm: FunctionComponent<AddAPIResourceBasic
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                        <Field            
+                        <Field
                             type="text"
                             name="displayName"
                             label={ t("extensions:develop.apiResource.tabs.permissions.form.fields.displayName.label") }

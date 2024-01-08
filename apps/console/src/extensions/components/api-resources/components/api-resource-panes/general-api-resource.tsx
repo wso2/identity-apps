@@ -43,7 +43,7 @@ import {
     APIResourceInterface,
     APIResourcePanesCommonPropsInterface,
     GeneralErrorAPIResourceInterface,
-    GeneralUpadateAPIResourceInterface
+    GeneralUpdateAPIResourceInterface
 } from "../../models";
 
 /**
@@ -189,7 +189,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
      * @param values - Form values.
      * @returns Sanitized form values.
      */
-    const updateConfigurations = (values: GeneralUpadateAPIResourceInterface): void => {
+    const updateConfigurations = (values: GeneralUpdateAPIResourceInterface): void => {
         handleUpdateAPIResource({
             displayName: values.displayName?.toString().trim() 
         });
@@ -201,7 +201,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
      * @param values - Form Values.
      * @returns Form validation.
      */
-    const validateForm = (values: GeneralUpadateAPIResourceInterface): GeneralErrorAPIResourceInterface=> {
+    const validateForm = (values: GeneralUpdateAPIResourceInterface): GeneralErrorAPIResourceInterface=> {
 
         const errors: GeneralErrorAPIResourceInterface = {
             displayName: undefined
