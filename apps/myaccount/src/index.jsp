@@ -167,11 +167,11 @@
             var applicationDomain = window.location.origin;
             var isSignOutSuccess = userAccessedPath.includes("sign_out_success");
 
-            if(isSignOutSuccess && userTenant) {
+            if(startupConfig.legacyAuthzRuntime && isSignOutSuccess && userTenant) {
                 if (startupConfig.subdomainApplication) {
                     window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant;
                 } else {
-                    window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant + "/<%= htmlWebpackPlugin.options.basename %>";
+                    window.location.href = applicationDomain + "/" + startupConfig.tenantPrefix + "/" + userTenant + "/myaccount";
                 }
             }
 
