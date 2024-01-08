@@ -174,6 +174,10 @@ export interface FeatureConfigInterface {
      */
     users?: FeatureAccessConfigInterface;
     /**
+     * User roles feature.
+     */
+    userRoles?: FeatureAccessConfigInterface;
+    /**
      * Secret Management Feature UI Access Scopes.
      */
     secretsManagement?: FeatureAccessConfigInterface;
