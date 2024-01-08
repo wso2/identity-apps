@@ -62,7 +62,40 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     const [ customProperties, setCustomProperties ] = useState<string>(undefined);
     const [ manualMode, setManualMode ] = useState<boolean>(true);
 
-    const commonKeys: string[] = [ "SelectMode", "SPEntityId", "NameIDType" ];
+    const samlManualkeys: string[] = [
+        "isAssertionSigned",
+        "ACSUrl",
+        "ForceAuthentication",
+        "IncludeAuthnContext",
+        "SignatureAlgorithm",
+        "RequestMethod",
+        "SSOUrl",
+        "IsAuthnRespSigned",
+        "AuthnContextClassRef",
+        "AttributeConsumingServiceIndex",
+        "IdPEntityId",
+        "IncludeNameIDPolicy",
+        "ResponseAuthnContextClassRef",
+        "ArtifactResolveUrl",
+        "ISArtifactResolveReqSigned",
+        "ISArtifactResponseSigned",
+        "DigestAlgorithm",
+        "IsLogoutReqSigned",
+        "IsAssertionEncrypted",
+        "commonAuthQueryParams",
+        "IncludeCert",
+        "IsLogoutEnabled",
+        "LogoutReqUrl",
+        "IncludeProtocolBinding",
+        "IsUserIdInClaims",
+        "AuthnContextComparisonLevel",
+        "IsSLORequestAccepted",
+        "ISAuthnReqSigned"
+    ];
+
+    const samlFileBasedkeys: string[] = [
+        "meta_data_saml"
+    ];
 
     const enum SelectModeTypes {
         MANUAL = "Manual Configuration",
@@ -277,18 +310,20 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                             `${ testId }-form`, handleParentPropertyChange, manualMode);
                     }
                     else if (
-                        commonKeys.includes(metaProperty?.key)
+                        samlManualkeys.includes(metaProperty?.key)
                     ) {
                         field = getField(property, metaProperty, isSub, `${ testId }-form`,
-                            handleParentPropertyChange, true);
+                            handleParentPropertyChange, manualMode);
                     }
-                    else if (metaProperty?.key === "meta_data_saml") {
+                    else if (
+                        samlFileBasedkeys.includes(metaProperty?.key)
+                    ) {
                         field = getField(property, metaProperty, isSub, `${ testId }-form`,
                             handleParentPropertyChange, !manualMode);
                     }
                     else {
                         field = getField(property, metaProperty, isSub, `${ testId }-form`,
-                            handleParentPropertyChange, manualMode);
+                            handleParentPropertyChange, true);
                     }
                 }
                 else if (isRadioButtonWithSubProperties(metaProperty)) {
