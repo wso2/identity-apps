@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,16 +16,14 @@
  * under the License.
  */
 
-import { useContext } from "react";
-import useAuthorization from "../../authorization/hooks/use-authorization";
-import { MultitenantConstants } from "../../core/constants/multitenant-constants";
-import useAppSettings from "../../core/hooks/use-app-settings";
-import OrganizationsContext, { OrganizationsContextProps } from "../context/organizations-context";
+import useAppSettings from "./use-app-settings";
+import useAuthorization from "./use-authorization";
+import { MultiTenantConstants } from "../constants/multi-tenant-constants";
 
 /**
  * Interface for the return type of the UseOrganizations hook.
  */
-export interface UseOrganizationsInterface extends OrganizationsContextProps {
+export interface UseOrganizationsInterface {
     /**
      * Set the organization id in the local storage.
      * @param orgId - Organization id.
@@ -71,15 +69,9 @@ export interface UseOrganizationsInterface extends OrganizationsContextProps {
  * @returns An object containing the current Organizations context.
  */
 const useOrganizations = (): UseOrganizationsInterface => {
-    const context: OrganizationsContextProps = useContext(OrganizationsContext);
-
     const { legacyAuthzRuntime } = useAuthorization();
 
     const { getLocalStorageSetting, setLocalStorageSetting, removeLocalStorageSetting } = useAppSettings();
-
-    if (context === undefined) {
-        throw new Error("useOrganizations must be used within a OrganizationsProvider");
-    }
 
     /**
      * Transforms the tenant domain to the correct format.
@@ -88,10 +80,10 @@ const useOrganizations = (): UseOrganizationsInterface => {
      * @returns Transformed tenant domain.
      */
     const transformTenantDomain = (tenantDomain: string): string => {
-        // With the latest Authz framework, `carbon.super` is resolved as `Super`.
         if (!legacyAuthzRuntime) {
-            if (tenantDomain === MultitenantConstants.SUPER_TENANT_DISPLAY_NAME) {
-                return MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
+        // With the latest Authz framework, `carbon.super` is resolved as `Super`.
+            if (tenantDomain === MultiTenantConstants.SUPER_TENANT_DISPLAY_NAME) {
+                return MultiTenantConstants.SUPER_TENANT_DOMAIN_NAME;
             }
         }
 
@@ -145,7 +137,6 @@ const useOrganizations = (): UseOrganizationsInterface => {
     };
 
     return {
-        ...context,
         getOrgIdInLocalStorage,
         getUserOrgInLocalStorage,
         removeOrgIdInLocalStorage,

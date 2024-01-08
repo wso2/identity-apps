@@ -29,6 +29,7 @@ import { BrowserRouter } from "react-router-dom";
 import { PreLoader } from "./components";
 import { Config } from "./configs";
 import { ProtectedApp } from "./protected-app";
+import AppSettingsProvider from "./providers/app-settings-provider";
 import { store } from "./store";
 import { getAuthInitializeConfig } from "./utils";
 
@@ -79,19 +80,21 @@ const RootWithConfig = () => {
     }
 
     return (
-        <Provider store={ store }>
-            <BrowserRouter>
-                <AuthProvider
-                    config={
-                        getAuthInitializeConfig()
-                    }
-                    fallback={ <PreLoader /> }
-                    getAuthParams={ getAuthParams }
-                >
-                    <ProtectedApp />
-                </AuthProvider>
-            </BrowserRouter>
-        </Provider>
+        <AppSettingsProvider>
+            <Provider store={ store }>
+                <BrowserRouter>
+                    <AuthProvider
+                        config={
+                            getAuthInitializeConfig()
+                        }
+                        fallback={ <PreLoader /> }
+                        getAuthParams={ getAuthParams }
+                    >
+                        <ProtectedApp />
+                    </AuthProvider>
+                </BrowserRouter>
+            </Provider>
+        </AppSettingsProvider>
     );
 };
 

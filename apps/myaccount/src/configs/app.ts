@@ -53,6 +53,7 @@ export class Config {
             customServerHost: window["AppUtils"]?.getConfig()?.customServerHost,
             idpConfigs: window["AppUtils"]?.getConfig()?.idpConfigs,
             loginCallbackUrl: window["AppUtils"]?.getConfig()?.loginCallbackURL,
+            organizationPrefix: window["AppUtils"]?.getConfig()?.organizationPrefix,
             serverHost: window["AppUtils"]?.getConfig()?.serverOriginWithTenant,
             serverOrigin: window["AppUtils"]?.getConfig()?.serverOrigin,
             superTenant: window["AppUtils"]?.getConfig()?.superTenant,

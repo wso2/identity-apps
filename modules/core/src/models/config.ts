@@ -102,6 +102,12 @@ export interface CommonDeploymentConfigInterface<T = Record<string, unknown>, S 
      */
     loginCallbackUrl: string;
     /**
+     * Organization prefix.
+     * ex: `o`.
+     * usage: `/${organizationPrefix}/<org_id>` - `/o/<org_id>`
+     */
+    organizationPrefix: string;
+    /**
      * Host of the Identity Sever.
      * ex: https://localhost:9443
      */

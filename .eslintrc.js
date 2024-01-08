@@ -72,7 +72,7 @@ const getLicenseHeaderPattern = () => {
     const LICENSE_HEADER_DEFAULT_PATTERN = [
         "*",
         {
-            pattern: " Copyright \\(c\\) \\b(2019|202[0-3])(?:-(202[0-3]))?, WSO2 LLC. \\(https://www.wso2.com\\)\.$",
+            pattern: " Copyright \\(c\\) \\b(2019|202[0-4])(?:-(202[0-4]))?, WSO2 LLC. \\(https://www.wso2.com\\)\.$",
             template: " * Copyright (c) {{year}}, WSO2 LLC. (https://www.wso2.com)."
         },
         " *",
