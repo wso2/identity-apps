@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,7 @@ import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import Toolbar from "@oxygen-ui/react/Toolbar";
 import Typography from "@oxygen-ui/react/Typography";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, {
@@ -40,8 +41,11 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import SecretSelectionDropdown from "./secret-selection-dropdown";
 import { AdaptiveScriptUtils } from "../../../applications/utils/adaptive-script-utils";
+import { FeatureConfigInterface } from "../../../core/models";
+import { AppState } from "../../../core/store";
 import { SecretModel } from "../../../secrets/models/secret";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import { SupportedEditorThemes } from "../../models/script-editor";
@@ -73,6 +77,9 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
 
     const [ editorTheme, setEditorTheme ] = useState<SupportedEditorThemes>(SupportedEditorThemes.DARK);
     const [ isSecretSelectionDropdownOpen, setIsSecretSelectionDropdownOpen ] = useState<boolean>(false);
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
     /**
      * Callback function to handle the editor theme change.
@@ -172,12 +179,18 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
                                 </FormControl>
                             </div>
                             <div className="secret-selection-menu-wrapper">
-                                <SecretSelectionDropdown
-                                    open={ isSecretSelectionDropdownOpen }
-                                    onClose={ () => setIsSecretSelectionDropdownOpen(false) }
-                                    onOpen={ () => setIsSecretSelectionDropdownOpen(true) }
-                                    onSecretSelect={ (secret: SecretModel) => replaceCodeBlock(secret.secretName) }
-                                />
+                                {
+                                    hasRequiredScopes(featureConfig?.secretsManagement,
+                                        featureConfig?.secretsManagement?.scopes?.read, allowedScopes) && (
+                                        <SecretSelectionDropdown
+                                            open={ isSecretSelectionDropdownOpen }
+                                            onClose={ () => setIsSecretSelectionDropdownOpen(false) }
+                                            onOpen={ () => setIsSecretSelectionDropdownOpen(true) }
+                                            onSecretSelect={ (secret: SecretModel) =>
+                                                replaceCodeBlock(secret.secretName) }
+                                        />
+                                    )
+                                }
                             </div>
                         </div>
                     </Toolbar>

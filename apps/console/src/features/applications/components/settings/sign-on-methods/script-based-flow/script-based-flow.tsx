@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import { FeatureStatus, FeatureTags, useCheckFeatureStatus, useCheckFeatureTags } from "@wso2is/access-control";
 import { UIConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
@@ -58,14 +59,14 @@ import React, {
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, Dropdown, Header, Icon, Input, Menu, Sidebar } from "semantic-ui-react";
 import { stripSlashes } from "slashes";
 import { ScriptTemplatesSidePanel, ScriptTemplatesSidePanelRefInterface } from "./script-templates-side-panel";
 import { ELK_RISK_BASED_TEMPLATE_NAME } from "../../../../../authentication-flow-builder/constants/template-constants";
 import useAuthenticationFlow from "../../../../../authentication-flow-builder/hooks/use-authentication-flow";
-import { AppUtils, EventPublisher, getOperationIcons } from "../../../../../core";
+import { AppState, AppUtils, EventPublisher, FeatureConfigInterface, getOperationIcons } from "../../../../../core";
 import { OrganizationType } from "../../../../../organizations/constants";
 import { OrganizationUtils } from "../../../../../organizations/utils";
 import { deleteSecret, getSecretList } from "../../../../../secrets/api/secret";
@@ -194,11 +195,15 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+
     /**
      * Calls method to load secrets to secret list.
      */
     useEffect(() => {
-        loadSecretListForSecretType();
+        hasRequiredScopes(featureConfig?.secretsManagement,
+            featureConfig?.secretsManagement?.scopes?.read, allowedScopes) && loadSecretListForSecretType();
     }, []);
 
     /**
@@ -944,7 +949,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             )
                         }
                     </Dropdown.Menu>
-                    { (OrganizationUtils.getOrganizationType() === OrganizationType.SUPER_ORGANIZATION ||
+                    { hasRequiredScopes(featureConfig?.secretsManagement,
+                        featureConfig?.secretsManagement?.scopes?.create, allowedScopes) &&
+                        (OrganizationUtils.getOrganizationType() === OrganizationType.SUPER_ORGANIZATION ||
                         OrganizationUtils.getOrganizationType() === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
                         OrganizationUtils.getOrganizationType() === OrganizationType.TENANT) && (
                         <Dropdown.Menu
@@ -1337,15 +1344,20 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     <Menu attached="top" className="action-panel" secondary>
                                         <Menu.Menu position="right">
                                             { resolveApiDocumentationLink() }
-                                            <Menu.Item
-                                                className={ `action ${ isSecretsDropdownOpen
-                                                    ? "selected-secret"
-                                                    : ""
-                                                }` }>
-                                                <div>
-                                                    { renderSecretListDropdown() }
-                                                </div>
-                                            </Menu.Item>
+                                            {
+                                                hasRequiredScopes(featureConfig?.secretsManagement,
+                                                    featureConfig?.secretsManagement?.scopes?.read, allowedScopes) && (
+                                                    <Menu.Item
+                                                        className={ `action ${ isSecretsDropdownOpen
+                                                            ? "selected-secret"
+                                                            : ""
+                                                        }` }>
+                                                        <div>
+                                                            { renderSecretListDropdown() }
+                                                        </div>
+                                                    </Menu.Item>
+                                                )
+                                            }
                                             <Menu.Item className="action">
                                                 <Tooltip
                                                     compact

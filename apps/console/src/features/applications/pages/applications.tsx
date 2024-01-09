@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -168,7 +168,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         data: myAccountStatus,
         isLoading: isMyAccountStatusLoading,
         error: myAccountStatusFetchRequestError
-    } = useMyAccountStatus(!isSubOrg);
+    } = useMyAccountStatus(!isSubOrg && applicationConfig?.advancedConfigurations?.showMyAccountStatus);
 
     /**
      * Sets the initial spinner.
@@ -456,11 +456,15 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                     className="my-account-title mb-1"
                                 >
                                     { t("console:develop.features.applications.myaccount.title") }
-                                    <Icon
-                                        color={ isMyAccountEnabled ? "green":"grey" }
-                                        name={ isMyAccountEnabled ? "check circle" : "minus circle" }
-                                        className="middle aligned ml-1"
-                                    />
+                                    {
+                                        applicationConfig?.advancedConfigurations?.showMyAccountStatus && (
+                                            <Icon
+                                                color={ isMyAccountEnabled ? "green":"grey" }
+                                                name={ isMyAccountEnabled ? "check circle" : "minus circle" }
+                                                className="middle aligned ml-1"
+                                            />
+                                        )
+                                    }
                                 </List.Header>
                                 <List.Description
                                     data-componentid="application-consumer-account-link-description"

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -103,6 +103,7 @@ export const applicationConfig: ApplicationConfig = {
         showDefaultMyAccountApplicationEditPage: true,
         showEnableAuthorization: true,
         showMyAccount: true,
+        showMyAccountStatus: false,
         showReturnAuthenticatedIdPs: true,
         showSaaS: true
     },
@@ -371,7 +372,8 @@ export const applicationConfig: ApplicationConfig = {
         },
         getTabExtensions: (
             props: Record<string, unknown>,
-            features: FeatureConfigInterface
+            features: FeatureConfigInterface,
+            isReadOnly: boolean
         ): ResourceTabPaneInterface[] => {
             const extendedFeatureConfig: ExtendedFeatureConfigInterface = features as ExtendedFeatureConfigInterface;
             const apiResourceFeatureEnabled: boolean = extendedFeatureConfig?.apiResources?.enabled;
@@ -409,7 +411,10 @@ export const applicationConfig: ApplicationConfig = {
                         ),
                         render: () => (
                             <ResourceTab.Pane controlledSegmentation>
-                                <APIAuthorization templateId={ application?.templateId } />
+                                <APIAuthorization
+                                    templateId={ application?.templateId }
+                                    readOnly={ isReadOnly }
+                                />
                             </ResourceTab.Pane>
                         )
                     }
@@ -443,6 +448,7 @@ export const applicationConfig: ApplicationConfig = {
                             <ResourceTab.Pane controlledSegmentation>
                                 <ApplicationRoles
                                     onUpdate={ onApplicationUpdate }
+                                    readOnly={ isReadOnly }
                                 />
                             </ResourceTab.Pane>
                         )

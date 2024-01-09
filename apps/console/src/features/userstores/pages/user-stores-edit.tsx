@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,14 +17,17 @@
  */
 
 import { UserstoreConstants } from "@wso2is/core/constants";
+import { IdentityAppsError } from "@wso2is/core/errors";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { GenericIcon, ResourceTab, TabPageLayout } from "@wso2is/react-components";
+import { GenericIcon, ResourceTab, ResourceTabPaneInterface, TabPageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { AppConstants, history } from "../../core";
+import { Dispatch } from "redux";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { getAType, getAUserStore } from "../api";
 import {
     EditBasicDetailsUserStore,
@@ -65,16 +68,19 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
-    const userStoreId = match.params.id;
+    const userStoreId: string = match.params.id;
 
     const [ userStore, setUserStore ] = useState<UserStore>(null);
     const [ type, setType ] = useState<UserstoreType>(null);
     const [ properties, setProperties ] = useState<CategorizedProperties>(null);
     const [ isGroupDetailsRequestLoading, setIsGroupDetailsRequestLoading ] = useState<boolean>(undefined);
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     /**
      * Fetches the userstore by its id
@@ -82,9 +88,9 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
     const getUserStore = () => {
         setIsGroupDetailsRequestLoading(true);
 
-        getAUserStore(userStoreId).then(response => {
+        getAUserStore(userStoreId).then((response: UserStore) => {
             setUserStore(response);
-        }).catch(error => {
+        }).catch((error: IdentityAppsError) => {
             dispatch(addAlert(
                 {
                     description: error?.description
@@ -106,9 +112,9 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
 
     useEffect(() => {
         if (userStore) {
-            getAType(userStore?.typeId, null).then((response) => {
+            getAType(userStore?.typeId, null).then((response: UserstoreType) => {
                 setType(response);
-            }).catch(error => {
+            }).catch((error: IdentityAppsError) => {
                 dispatch(addAlert({
                     description: error?.description
                         || t("console:manage.features.userstores.notifications.fetchUserstoreMetadata." +
@@ -129,14 +135,25 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
     }, [ type ]);
 
     /**
+     * Returns if the userstore is readonly or not based on the scopes.
+     *
+     * @returns If an userstore is Read Only or not.
+     */
+    const resolveReadOnlyState = (): boolean => {
+        return !hasRequiredScopes(featureConfig?.userStores, featureConfig?.userStores?.scopes?.update,
+            allowedScopes);
+    };
+
+    /**
      * The tab panes
      */
-    const panes = [
+    const panes: ResourceTabPaneInterface[] = [
         {
             menuItem:  t ("console:manage.features.userstores.pageLayout.edit.tabs.general"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <EditBasicDetailsUserStore
+                        readOnly={ resolveReadOnlyState() }
                         properties={ properties?.basic }
                         userStore={ userStore }
                         update={ getUserStore }
@@ -152,6 +169,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <EditConnectionDetails
+                        readOnly={ resolveReadOnlyState() }
                         update={ getUserStore }
                         type={ type }
                         id={ userStoreId }
@@ -166,6 +184,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <EditUserDetails
+                        readOnly={ resolveReadOnlyState() }
                         update={ getUserStore }
                         type={ type }
                         id={ userStoreId }
@@ -180,6 +199,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <EditGroupDetails
+                        readOnly={ resolveReadOnlyState() }
                         update={ getUserStore }
                         type={ type }
                         id={ userStoreId }

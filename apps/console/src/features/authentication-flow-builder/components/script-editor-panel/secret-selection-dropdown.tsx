@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,10 +27,14 @@ import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Typography from "@oxygen-ui/react/Typography";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { MouseEvent, ReactElement, SVGProps, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import SecretDeleteConfirmationModal from "./secret-delete-confirmation-modal";
+import { FeatureConfigInterface } from "../../../core/models";
+import { AppState } from "../../../core/store";
 import { useGetSecrets } from "../../../secrets/api/secret";
 import AddSecretWizard from "../../../secrets/components/add-secret-wizard";
 import { ADAPTIVE_SCRIPT_SECRETS } from "../../../secrets/constants/secrets.common";
@@ -83,6 +87,9 @@ const SecretSelectionDropdown = (props: SecretSelectionDropdownPropsInterface): 
     const { open, onSecretSelect, onClose, onOpen, [ "data-componentid" ]: componentId } = props;
 
     const { t } = useTranslation();
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
 
     const { data: secretsList, isLoading: isSecretsListRequestLoading, mutate: mutateSecretsList } = useGetSecrets(
         ADAPTIVE_SCRIPT_SECRETS
@@ -204,20 +211,25 @@ const SecretSelectionDropdown = (props: SecretSelectionDropdownPropsInterface): 
                     ) }
                     <Divider />
                     <ListItem onClick={ () => null } disableGutters disablePadding>
-                        <Button
-                            fullWidth
-                            color="primary"
-                            className="create-new-secret-button"
-                            startIcon={ <PlusIcon size={ 14 } /> }
-                            onClick={ () => {
-                                setSecretsDropdownAnchorEl(null);
-                                setIsDropdownOpen(false);
-                                setShowAddSecretModal(true);
-                            } }
-                            data-componentid={ `${ componentId }-create-new-secret-button` }
-                        >
-                            { t("console:loginFlow.scriptEditor.secretSelector.actions.create.label") }
-                        </Button>
+                        {
+                            hasRequiredScopes(featureConfig?.secretsManagement,
+                                featureConfig?.secretsManagement?.scopes?.create, allowedScopes) && (
+                                <Button
+                                    fullWidth
+                                    color="primary"
+                                    className="create-new-secret-button"
+                                    startIcon={ <PlusIcon size={ 14 } /> }
+                                    onClick={ () => {
+                                        setSecretsDropdownAnchorEl(null);
+                                        setIsDropdownOpen(false);
+                                        setShowAddSecretModal(true);
+                                    } }
+                                    data-componentid={ `${ componentId }-create-new-secret-button` }
+                                >
+                                    { t("console:loginFlow.scriptEditor.secretSelector.actions.create.label") }
+                                </Button>
+                            )
+                        }
                     </ListItem>
                 </List>
             </Popover>

@@ -27,6 +27,7 @@ import useUIConfig from "@wso2is/common/src/hooks/use-ui-configs";
 import {
     AppConstants as CommonAppConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     setDeploymentConfigs,
@@ -121,12 +122,15 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
 
     const {
         data: originalConnectorCategories,
         error: connectorCategoriesFetchRequestError
     } = useGovernanceConnectorCategories(
-        featureConfig?.server?.enabled && isFirstLevelOrg);
+        featureConfig?.server?.enabled && isFirstLevelOrg &&
+        hasRequiredScopes(featureConfig?.governanceConnectors, featureConfig?.governanceConnectors?.scopes?.read,
+            allowedScopes));
 
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);

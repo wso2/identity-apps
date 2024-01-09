@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -244,7 +244,8 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
     const {
         data: OIDCScopeList,
-        isLoading: isOIDCScopeListLoading
+        isLoading: isOIDCScopeListLoading,
+        isValidating: isOIDCScopeListValidating
     } = useOIDCScopesList();
 
     const [ duplicatedMappingValues,setDuplicatedMappingValues ] = useState<Array<string>>([]);
@@ -278,7 +279,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     }, [ claims, unfilteredExternalClaims ]);
 
     useEffect(() => {
-        if (!isOIDCScopeListLoading) {
+        if (!isOIDCScopeListLoading && !isOIDCScopeListValidating) {
             setScopes(OIDCScopeList);
             getClaims();
             getAllDialects();
@@ -286,7 +287,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 
             return;
         }
-    }, [ isOIDCScopeListLoading, OIDCScopeList ]);
+    }, [ isOIDCScopeListLoading, isOIDCScopeListValidating, OIDCScopeList ]);
 
     useEffect(() => {
         getExternalClaimsGroupedByScopes();
@@ -1301,7 +1302,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                     }
                                 </ConfirmationModal.Content>
                             </ConfirmationModal>
-                            { applicationConfig.attributeSettings.roleMapping && (
+                            { !readOnly && applicationConfig.attributeSettings.roleMapping && (
                                 <RoleMapping
                                     onChange={ setRoleMapping }
                                     initialMappings={ claimConfigurations?.role?.mappings }
