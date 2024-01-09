@@ -1,5 +1,22 @@
 # @wso2is/console
 
+## 2.10.58
+
+### Patch Changes
+
+- [#5165](https://github.com/wso2/identity-apps/pull/5165) [`faee03a142`](https://github.com/wso2/identity-apps/commit/faee03a142855a876c9c5718c9ca6ee7f8c33daf) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Fix wrong error value shown in API resource scope add wizard form
+
+* [#5154](https://github.com/wso2/identity-apps/pull/5154) [`afbc0c147d`](https://github.com/wso2/identity-apps/commit/afbc0c147d9d8aaf43fe93a8fe56932d066f289e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Disable Apple connection template for localhost
+
+- [#5164](https://github.com/wso2/identity-apps/pull/5164) [`177b1a1e1c`](https://github.com/wso2/identity-apps/commit/177b1a1e1c8bb7f53b670c811d7af44e091c8949) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with user creation wizard
+
+- Updated dependencies [[`afbc0c147d`](https://github.com/wso2/identity-apps/commit/afbc0c147d9d8aaf43fe93a8fe56932d066f289e), [`afbc0c147d`](https://github.com/wso2/identity-apps/commit/afbc0c147d9d8aaf43fe93a8fe56932d066f289e)]:
+  - @wso2is/common@2.0.18
+  - @wso2is/dynamic-forms@2.0.23
+  - @wso2is/form@2.0.24
+  - @wso2is/react-components@2.0.32
+  - @wso2is/i18n@2.0.90
+
 ## 2.10.57
 
 ### Patch Changes
