@@ -99,7 +99,7 @@ export const AddUserUpdated: React.FunctionComponent<AddUserProps> = (
 
     const [ passwordOption, setPasswordOption ] = useState<PasswordOptionTypes>(PasswordOptionTypes.CREATE_PASSWORD);
     const [ askPasswordOption, setAskPasswordOption ] = useState<string>(AskPasswordOptionTypes.OFFLINE);
-    const [ password, setPassword ] = useState<string>("");
+    const [ password, setPassword ] = useState<string>(initialValues?.newPassword ?? "");
     const [ userStoreRegex, setUserStoreRegex ] = useState<string>("");
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
