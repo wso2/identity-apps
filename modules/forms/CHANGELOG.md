@@ -1,5 +1,11 @@
 # @wso2is/forms
 
+## 2.0.10
+
+### Patch Changes
+
+- [#5172](https://github.com/wso2/identity-apps/pull/5172) [`2c84895c1f`](https://github.com/wso2/identity-apps/commit/2c84895c1fb817520aeee514dd05bd7dcacd89af) Thanks [@savindi7](https://github.com/savindi7)! - Update Oxygen version to 1.8.5
+
 ## 2.0.9
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @wso2is/myaccount
 
+## 2.2.79
+
+### Patch Changes
+
+- [#5151](https://github.com/wso2/identity-apps/pull/5151) [`c040ebb287`](https://github.com/wso2/identity-apps/commit/c040ebb28774818045cad8ad405871f9ad897f6e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix RBAC console issue for application view/edit and userstore view/edit roles
+
+* [#5172](https://github.com/wso2/identity-apps/pull/5172) [`2c84895c1f`](https://github.com/wso2/identity-apps/commit/2c84895c1fb817520aeee514dd05bd7dcacd89af) Thanks [@savindi7](https://github.com/savindi7)! - Update Oxygen version to 1.8.5
+
+* Updated dependencies [[`c040ebb287`](https://github.com/wso2/identity-apps/commit/c040ebb28774818045cad8ad405871f9ad897f6e), [`2c84895c1f`](https://github.com/wso2/identity-apps/commit/2c84895c1fb817520aeee514dd05bd7dcacd89af)]:
+  - @wso2is/i18n@2.0.91
+  - @wso2is/react-components@2.0.33
+  - @wso2is/forms@2.0.10
+
 ## 2.2.78
 
 ### Patch Changes
