@@ -26,6 +26,7 @@ import {
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import isLegacyAuthzRuntime from "../../authorization/utils/get-legacy-authz-runtime";
 import { store } from "../../core";
 import useRequest, { RequestErrorInterface, RequestResultInterface } from "../../core/hooks/use-request";
 import {
@@ -334,8 +335,9 @@ export const shareApplication = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${store.getState().config.endpoints.organizations}/organizations/${currentOrganizationId}/applications/` +
-            `${applicationId}/share`
+        url: isLegacyAuthzRuntime() ?
+            `${store.getState().config.endpoints.organizations}/organizations/${currentOrganizationId}/applications/` +
+            `${applicationId}/share` : `${store.getState().config.endpoints.applications}/${applicationId}/share`
     };
 
     return httpClient(requestConfig)
@@ -395,8 +397,9 @@ export const getSharedOrganizations = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.organizations}/organizations/${currentOrganizationId}/applications/` +
-            `${applicationId}/share`
+        url: isLegacyAuthzRuntime() ?
+            `${store.getState().config.endpoints.organizations}/organizations/${currentOrganizationId}/applications/` +
+            `${applicationId}/share` : `${store.getState().config.endpoints.applications}/${applicationId}/share`
     };
 
     return httpClient(requestConfig)
@@ -448,7 +451,7 @@ export const useGetOrganizationBreadCrumb = <data = BreadcrumbList, Error = Requ
 
     const { data, error, isValidating, mutate } = useRequest<data, Error>(shouldSendRequest ? requestConfig : null);
 
-    return { 
+    return {
         data,
         error: error,
         isLoading: !error && !data,
@@ -474,9 +477,10 @@ export const unshareApplication = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${
-            store.getState().config.endpoints.organizations
-        }/organizations/${ currentOrganizationId }/applications/${ applicationId }/shared-apps`
+        url: isLegacyAuthzRuntime() ?
+            `${store.getState().config.endpoints.organizations
+            }/organizations/${currentOrganizationId}/applications/${applicationId}/shared-apps` :
+            `${store.getState().config.endpoints.applications}/${applicationId}/shared-apps`
     };
 
     return httpClient(requestConfig).catch((error: HttpError) => {
