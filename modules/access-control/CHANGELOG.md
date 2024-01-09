@@ -1,5 +1,14 @@
 # @wso2is/access-control
 
+## 2.0.14
+
+### Patch Changes
+
+- [#5141](https://github.com/wso2/identity-apps/pull/5141) [`068dd0721c`](https://github.com/wso2/identity-apps/commit/068dd0721c96b769c242afa962a3eab09343044b) Thanks [@brionmario](https://github.com/brionmario)! - Enable Organization login for My Account
+
+- Updated dependencies [[`068dd0721c`](https://github.com/wso2/identity-apps/commit/068dd0721c96b769c242afa962a3eab09343044b)]:
+  - @wso2is/core@2.0.26
+
 ## 2.0.13
 
 ### Patch Changes

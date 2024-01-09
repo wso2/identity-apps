@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -43,13 +43,13 @@ import {
     APIResourceInterface,
     APIResourcePanesCommonPropsInterface,
     GeneralErrorAPIResourceInterface,
-    GeneralUpadateAPIResourceInterface
+    GeneralUpdateAPIResourceInterface
 } from "../../models";
 
 /**
  * Prop-types for the API resources page component.
  */
-type GeneralAPIResourceInterface = SBACInterface<ExtendedFeatureConfigInterface> & 
+type GeneralAPIResourceInterface = SBACInterface<ExtendedFeatureConfigInterface> &
     IdentifiableComponentInterface & APIResourcePanesCommonPropsInterface;
 
 const FORM_ID: string = "apiResource-general-details";
@@ -114,7 +114,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                         }));
 
                         break;
-                        
+
                     case APIResourcesConstants.NO_VALID_API_RESOURCE_ID_FOUND:
                     case APIResourcesConstants.API_RESOURCE_NOT_FOUND:
                         dispatch(addAlert<AlertInterface>({
@@ -145,7 +145,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
 
     /**
      * Show danger zone component
-     * 
+     *
      * @returns `ReactElement`
      */
     const resolveDangerActions = (): ReactElement => {
@@ -189,9 +189,9 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
      * @param values - Form values.
      * @returns Sanitized form values.
      */
-    const updateConfigurations = (values: GeneralUpadateAPIResourceInterface): void => {
+    const updateConfigurations = (values: GeneralUpdateAPIResourceInterface): void => {
         handleUpdateAPIResource({
-            displayName: values.displayName?.toString().trim() 
+            displayName: values.displayName?.toString().trim()
         });
     };
 
@@ -201,7 +201,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
      * @param values - Form Values.
      * @returns Form validation.
      */
-    const validateForm = (values: GeneralUpadateAPIResourceInterface): GeneralErrorAPIResourceInterface=> {
+    const validateForm = (values: GeneralUpdateAPIResourceInterface): GeneralErrorAPIResourceInterface=> {
 
         const errors: GeneralErrorAPIResourceInterface = {
             displayName: undefined
@@ -210,7 +210,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
         if (!values.displayName?.toString().trim()) {
             errors.displayName = t("extensions:develop.apiResource.tabs.general.form" +
             ".fields.name.emptyValidate");
-            
+
             setIsFormValidationError(true);
         } else {
 
@@ -228,7 +228,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                         isManagedByChoreo && (
                             <Alert severity="warning">
                                 <Trans i18nKey={ "extensions:develop.apiResource.tabs.choreoApiEditWarning" }>
-                                    Updating this API resource will create unforeseen errors as this is an API 
+                                    Updating this API resource will create unforeseen errors as this is an API
                                     resource managed by Choreo. <b>Proceed with caution.</b>
                                 </Trans>
                             </Alert>
@@ -240,7 +240,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                             onSubmit={ updateConfigurations }
                             id={ FORM_ID }
                             validate={ validateForm }
-                            uncontrolledForm={ false } 
+                            uncontrolledForm={ false }
                         >
                             {
                                 apiResourceData.displayName && (
@@ -297,7 +297,7 @@ export const GeneralAPIResource: FunctionComponent<GeneralAPIResourceInterface> 
                                         ".updateButton") }
                             />
                         </Form>
-                    </EmphasizedSegment>  
+                    </EmphasizedSegment>
                     { resolveDangerActions() }
                     {
                         deletingAPIResource && (

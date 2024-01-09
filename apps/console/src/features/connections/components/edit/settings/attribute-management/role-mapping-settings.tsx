@@ -17,7 +17,8 @@
  */
 
 import { RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { DynamicField, Heading, Hint, KeyValue } from "@wso2is/react-components";
+import { DynamicField, KeyValue } from "@wso2is/forms";
+import { Heading, Hint } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,17 +26,16 @@ import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { AppState } from "../../../../../core";
 import { getOrganizationRoles } from "../../../../../organizations/api";
+import { useGetCurrentOrganizationType } from "../../../../../organizations/hooks/use-get-organization-type";
 import {
     OrganizationResponseInterface,
     OrganizationRoleListItemInterface,
     OrganizationRoleListResponseInterface
 } from "../../../../../organizations/models";
-import { OrganizationUtils } from "../../../../../organizations/utils";
 import { getRolesList } from "../../../../../roles/api/roles";
 import { ConnectionManagementConstants } from "../../../../constants/connection-constants";
 import { ConnectionRoleMappingInterface } from "../../../../models/connection";
 import { handleGetRoleListError } from "../../../../utils/connection-utils";
-import { useGetCurrentOrganizationType } from "apps/console/src/features/organizations/hooks/use-get-organization-type";
 
 /**
  * Proptypes for the identity providers settings component.

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,18 @@
  * under the License.
  */
 
-export * from "./forms";
-export * from "./models";
-export { Field, GroupFields } from "./components";
-export * from "./utils";
-export { DynamicField, KeyValue } from "./components/dynamic-field";
+/**
+ * Class containing Multi-tenant related constants.
+ */
+export class MultiTenantConstants {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     */
+    private constructor() { }
+
+    public static readonly SUPER_TENANT_DOMAIN_NAME: string = "carbon.super";
+
+    public static readonly SUPER_TENANT_DISPLAY_NAME: string = "Super";
+}

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,13 @@
  * under the License.
  */
 
-export * from "./forms";
-export * from "./models";
-export { Field, GroupFields } from "./components";
-export * from "./utils";
-export { DynamicField, KeyValue } from "./components/dynamic-field";
+/**
+ * Gets the legacy authz runtime flag from the deployment config.
+ *
+ * @returns `boolean` True if legacy authz runtime is enabled and false if not.
+ */
+const isLegacyAuthzRuntime = (): boolean => {
+    return window["AppUtils"]?.getConfig()?.legacyAuthzRuntime;
+};
+
+export default isLegacyAuthzRuntime;

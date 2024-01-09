@@ -189,6 +189,8 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     const handleOrganizationSwitch = async (): Promise<void> => {
         if (legacyAuthzRuntime) {
             switchOrganizationInLegacyMode(breadcrumbList, organization);
+
+            return;
         }
 
         let response: BasicUserInfo = null;

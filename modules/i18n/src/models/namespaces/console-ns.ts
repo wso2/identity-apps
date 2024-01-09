@@ -3171,10 +3171,13 @@ export interface ConsoleNS {
             applications: Page;
             applicationsEdit: EditPage;
             authenticationProvider?: Page;
-            authenticationProviderTemplate?: {
+            authenticationProviderTemplate: {
                 title: string;
                 subTitle: string;
                 backButton: string;
+                disabledHint: {
+                    apple: string;
+                };
                 search: {
                     placeholder: string;
                 };

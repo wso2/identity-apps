@@ -18,7 +18,8 @@
 
 import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DynamicField, Heading, KeyValue } from "@wso2is/react-components";
+import { DynamicField, KeyValue } from "@wso2is/forms";
+import { Heading } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import useUIConfig from "modules/common/src/hooks/use-ui-configs";
 import React, { FunctionComponent, useEffect, useState } from "react";
