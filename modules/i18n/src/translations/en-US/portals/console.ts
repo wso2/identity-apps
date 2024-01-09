@@ -10746,7 +10746,7 @@ export const console: ConsoleNS = {
                                 placeholder: "Search users"
                             },
                             assign: {
-                                placeholder: "Assign users"
+                                placeholder: "Type username/s to search and assign users"
                             },
                             remove: {
                                 label: "Removing users",
