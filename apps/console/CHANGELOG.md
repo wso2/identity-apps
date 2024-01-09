@@ -1,5 +1,22 @@
 # @wso2is/console
 
+## 2.10.60
+
+### Patch Changes
+
+- [#5168](https://github.com/wso2/identity-apps/pull/5168) [`8186bbf365`](https://github.com/wso2/identity-apps/commit/8186bbf365547a95a1c50dbda0bc61d857249934) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Update application sharing endpoint urls
+
+* [#4332](https://github.com/wso2/identity-apps/pull/4332) [`3fa16290af`](https://github.com/wso2/identity-apps/commit/3fa16290af6257a209d38c2f5639cffd764a7290) Thanks [@jcgarciaa](https://github.com/jcgarciaa)! - Display message when layout preview differs from actual page.
+
+- [#5109](https://github.com/wso2/identity-apps/pull/5109) [`ccf90cfa9b`](https://github.com/wso2/identity-apps/commit/ccf90cfa9b816ba078824170af3b3301b568e38d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix issue with sending userstore domain ID to search users in secondary user store
+
+* [#4965](https://github.com/wso2/identity-apps/pull/4965) [`d68021e826`](https://github.com/wso2/identity-apps/commit/d68021e8266febf3facc1c6ea0e8f6815bac4b33) Thanks [@jcgarciaa](https://github.com/jcgarciaa)! - Fix duplicated calls to tenant/me API when console loads
+
+- [#5176](https://github.com/wso2/identity-apps/pull/5176) [`57a731dcc8`](https://github.com/wso2/identity-apps/commit/57a731dcc87525013d07060800f09f779dbc2063) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Fix showing dangerzone for system admin when change from deployment.toml config
+
+- Updated dependencies [[`ccf90cfa9b`](https://github.com/wso2/identity-apps/commit/ccf90cfa9b816ba078824170af3b3301b568e38d)]:
+  - @wso2is/i18n@2.0.92
+
 ## 2.10.59
 
 ### Patch Changes
