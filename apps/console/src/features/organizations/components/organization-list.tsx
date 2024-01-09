@@ -290,6 +290,8 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     ): Promise<void> => {
         if (legacyAuthzRuntime) {
             switchOrganizationInLegacyMode(breadcrumbList, organization);
+
+            return;
         }
 
         let response: BasicUserInfo = null;
