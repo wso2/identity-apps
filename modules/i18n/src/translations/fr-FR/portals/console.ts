@@ -10934,6 +10934,10 @@ export const console: ConsoleNS = {
                             "Vous pouvez en ajouter à l'aide de l'assistant de création.",
                         title: "Ajouter un annuaire"
                     },
+                    emptyListReadOnly: {
+                        subtitles: "Il n'y a actuellement aucun magasin d'utilisateurs disponible.",
+                        title: "Pas de magasins d'utilisateurs"
+                    },
                     emptySearch: {
                         action: "Réinitialiser la recherche",
                         subtitles: "La recheche \"{{query}}\" n'a renvoyé aucun résultat. "

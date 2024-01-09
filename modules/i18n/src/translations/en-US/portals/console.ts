@@ -12633,10 +12633,14 @@ export const console: ConsoleNS = {
                 placeholders: {
                     emptyList: {
                         action: "New User Store",
-                        subtitles: "There are currently no user stores available."
+                        subtitles: "There are currently no user stores available. "
                             + "You can add a new user store easily by following the "
                             + "steps in the user store creation wizard.",
                         title: "Add a new user store"
+                    },
+                    emptyListReadOnly: {
+                        subtitles: "There are currently no user stores available.",
+                        title: "No user stores"
                     },
                     emptySearch: {
                         action: "Clear search query",

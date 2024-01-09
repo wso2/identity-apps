@@ -6515,6 +6515,7 @@ export interface ConsoleNS {
                 placeholders: {
                     emptySearch: Placeholder;
                     emptyList: Placeholder;
+                    emptyListReadOnly: Placeholder;
                 };
                 sqlEditor: {
                     reset: string;
