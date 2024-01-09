@@ -379,6 +379,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      * Handles form submit.
      *
      * @param values - Form values.
+     * @param protocol - The protocol to be updated.
      */
     const handleSubmit = (
         values: {
