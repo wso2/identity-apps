@@ -360,7 +360,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
 
         getSharedOrganizations(
-            currentOrganization.id,
             application.id
         ).then((response: AxiosResponse) => {
             setSharedOrganizationsList(response.data.organizations);

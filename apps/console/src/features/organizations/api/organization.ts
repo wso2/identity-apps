@@ -322,7 +322,6 @@ export const deleteOrganization = (id: string): Promise<string> => {
  * @returns a promise containing the response
  */
 export const shareApplication = (
-    currentOrganizationId: string,
     applicationId: string,
     data: ShareApplicationRequestInterface
 ): Promise<any> => {
@@ -334,8 +333,7 @@ export const shareApplication = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${store.getState().config.endpoints.organizations}/organizations/${currentOrganizationId}/applications/` +
-            `${applicationId}/share`
+        url: `${store.getState().config.endpoints.applications}/${applicationId}/share`
     };
 
     return httpClient(requestConfig)
@@ -385,7 +383,6 @@ export const stopSharingApplication = (
  * Get the list of organizations given app is shared with.
  */
 export const getSharedOrganizations = (
-    currentOrganizationId: string,
     applicationId: string
 ): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
@@ -395,8 +392,7 @@ export const getSharedOrganizations = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.organizations}/organizations/${currentOrganizationId}/applications/` +
-            `${applicationId}/share`
+        url: `${store.getState().config.endpoints.applications}/${applicationId}/share`
     };
 
     return httpClient(requestConfig)
@@ -448,7 +444,7 @@ export const useGetOrganizationBreadCrumb = <data = BreadcrumbList, Error = Requ
 
     const { data, error, isValidating, mutate } = useRequest<data, Error>(shouldSendRequest ? requestConfig : null);
 
-    return { 
+    return {
         data,
         error: error,
         isLoading: !error && !data,
@@ -465,8 +461,7 @@ export const useGetOrganizationBreadCrumb = <data = BreadcrumbList, Error = Requ
  * @returns
  */
 export const unshareApplication = (
-    applicationId: string,
-    currentOrganizationId: string
+    applicationId: string
 ): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -474,9 +469,7 @@ export const unshareApplication = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${
-            store.getState().config.endpoints.organizations
-        }/organizations/${ currentOrganizationId }/applications/${ applicationId }/shared-apps`
+        url: `${store.getState().config.endpoints.applications}/${ applicationId }/shared-apps`
     };
 
     return httpClient(requestConfig).catch((error: HttpError) => {

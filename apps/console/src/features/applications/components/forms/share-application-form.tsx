@@ -228,7 +228,6 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
 
     const fetchSharedOrganizationsList = (): void => {
         getSharedOrganizations(
-            currentOrganization.id,
             application.id
         ).then((response: AxiosResponse) => {
             setSharedOrganizationList(response.data.organizations);
@@ -272,7 +271,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
             if (sharedWithAll) {
                 addedOrganizations = checkedUnassignedListItems.map((org: OrganizationInterface) => org.id);
 
-                await unshareApplication(application.id, currentOrganization.id);
+                await unshareApplication(application.id);
 
             } else {
                 addedOrganizations = differenceBy(
@@ -296,7 +295,6 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
 
         if (shareType === ShareType.SHARE_ALL || shareType === ShareType.SHARE_SELECTED) {
             shareApplication(
-                currentOrganization.id,
                 application.id,
                 shareAppData
             )
@@ -407,7 +405,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                     });
             });
         } else if (shareType === ShareType.UNSHARE) {
-            unshareApplication(application.id, currentOrganization.id)
+            unshareApplication(application.id)
                 .then(() => {
                     dispatch(
                         addAlert({

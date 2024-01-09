@@ -94,7 +94,7 @@ export interface ApplicationShareModalPropsInterface
 
 export const ApplicationShareModal: FunctionComponent<ApplicationShareModalPropsInterface> = (
     props: ApplicationShareModalPropsInterface
-) => { 
+) => {
     const {
         applicationId,
         clientId,
@@ -118,7 +118,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         checkedUnassignedListItems,
         setCheckedUnassignedListItems
     ] = useState<OrganizationInterface[]>([]);
-    const [ shareType, setShareType ] = useState<ShareType>( 
+    const [ shareType, setShareType ] = useState<ShareType>(
         ShareType.SHARE_ALL
     );
     const [ subOrganizationList, setSubOrganizationList ] = useState<Array<OrganizationInterface>>([]);
@@ -185,7 +185,6 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
         });
 
         getSharedOrganizations(
-            currentOrganization.id,
             applicationId
         ).then((response: AxiosResponse) => {
             setSharedOrganizationList(response.data.organizations);
@@ -230,7 +229,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
             if (shareType) {
                 addedOrganizations = checkedUnassignedListItems.map((org: OrganizationInterface) => org.id);
 
-                await unshareApplication(applicationId, currentOrganization.id);
+                await unshareApplication(applicationId);
 
             } else {
                 addedOrganizations = differenceBy(
@@ -254,7 +253,6 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
 
         if(shareType === ShareType.SHARE_ALL || shareType === ShareType.SHARE_SELECTED) {
             shareApplication(
-                currentOrganization.id,
                 applicationId,
                 shareAppData
             )
@@ -375,7 +373,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                     });
             });
         } else if (shareType === ShareType.UNSHARE) {
-            unshareApplication(applicationId, currentOrganization.id)
+            unshareApplication(applicationId)
                 .then(() => {
                     onClose(null, null);
                     dispatch(
@@ -533,9 +531,9 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                         checked={ shareType === ShareType.SHARE_SELECTED }
                         data-componentid={ `${ componentId }-share-with-all-checkbox` }
                     />
-                    <Transition 
-                        visible={ shareType === ShareType.SHARE_SELECTED } 
-                        animation="slide down" 
+                    <Transition
+                        visible={ shareType === ShareType.SHARE_SELECTED }
+                        animation="slide down"
                         duration={ 1000 }
                     >
                         <TransferComponent
@@ -592,7 +590,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                                                     (org: OrganizationInterface) =>
                                                         org.id === organization.id
                                                 ) !== -1;
-    
+
                                         return (
                                             <TransferListItem
                                                 disabled={
@@ -617,21 +615,21 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                                     }
                                 ) }
                             </TransferList>
-                        </TransferComponent> 
+                        </TransferComponent>
                     </Transition>
                 </Segment>
             </Modal.Content>
             <Modal.Actions>
-                <LinkButton 
+                <LinkButton
                     data-testid={ `${ componentId }-cancel-button` }
                     onClick={ () => onApplicationSharingCompleted() }
                 >
                     { t("common:cancel") }
                 </LinkButton>
                 <PrimaryButton
-                    disabled={ 
+                    disabled={
                         shareType === ShareType.SHARE_SELECTED &&
-                        (checkedUnassignedListItems?.length == 0 || !subOrganizationList) 
+                        (checkedUnassignedListItems?.length == 0 || !subOrganizationList)
                     }
                     onClick={ () => {
                         handleShareApplication();
