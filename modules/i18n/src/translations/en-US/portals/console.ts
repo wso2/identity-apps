@@ -7028,7 +7028,7 @@ export const console: ConsoleNS = {
             authenticationProviderTemplate: {
                 backButton: "Go back to Connections",
                 disabledHint: {
-                    apple: "The Sign in with Apple feature cannot be configured with localhost (or 127.0.0.1). Attempting this setup results in an invalid domain error from Apple's configuration step. For testing, use a real or DNS-resolvable domain name. For local development, domain mappings in the `etc/hosts` file can be utilized."
+                    apple: "The Sign in with Apple feature cannot be configured with localhost or 127.0.0.1. Attempting this setup results in an invalid domain error from Apple's configuration step. For testing, use a real or DNS-resolvable domain name. For local development, domain mappings in the `etc/hosts` file can be utilized."
                 },
                 search: {
                     placeholder: "Search by name"
