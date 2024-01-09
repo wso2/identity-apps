@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -48,6 +48,7 @@ import {
     ConnectionInterface,
     FederatedAuthenticatorInterface,
     OutboundProvisioningConnectorInterface,
+    OutboundProvisioningConnectorMetaDataInterface,
     OutboundProvisioningConnectorMetaInterface,
     OutboundProvisioningConnectorWithMetaInterface,
     OutboundProvisioningConnectorsInterface
@@ -56,8 +57,9 @@ import {
     handleGetOutboundProvisioningConnectorMetadataError,
     handleUpdateOutboundProvisioningConnectorError
 } from "../../../utils/connection-utils";
-import { 
-    OutboundProvisioningConnectorCreateWizard 
+import { OutboundConnectors as OutboundConnectorsLocalMetadata } from "../../meta/connectors";
+import {
+    OutboundProvisioningConnectorCreateWizard
 } from "../../wizards/outbound-provisioning-connector-create-wizard";
 import { OutboundProvisioningConnectorFormFactory } from "../forms";
 
@@ -151,6 +153,10 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                             resolve({
                                 data: data,
                                 id: connectorId,
+                                localMeta: OutboundConnectorsLocalMetadata
+                                    .find((meta: OutboundProvisioningConnectorMetaDataInterface) => {
+                                        return meta.connectorId === connectorId;
+                                    }),
                                 meta: meta
                             });
                         })
@@ -434,8 +440,16 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                                 isReadOnly={ isReadOnly }
                                                                             />
                                                                         ),
+                                                                        icon: {
+                                                                            icon: connector?.localMeta?.icon,
+                                                                            verticalAlign: "middle"
+                                                                        },
                                                                         id: connector?.id,
-                                                                        title: connector?.meta?.displayName
+                                                                        title: connector?.localMeta?.displayName
+                                                                            ?? connector?.meta?.displayName,
+                                                                        titleOptions: {
+                                                                            flex: true
+                                                                        }
                                                                     }
                                                                 ]
                                                             }
