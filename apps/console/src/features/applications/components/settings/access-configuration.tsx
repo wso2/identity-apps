@@ -380,8 +380,15 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      *
      * @param values - Form values.
      */
-    const handleSubmit = (values: any, protocol: string): void => {
+    const handleSubmit = (
+        values: {
+            inbound: Record<string, unknown>;
+            general: ApplicationInterface;
+        },
+        protocol: string
+    ): void => {
         setIsLoading(true);
+
         updateApplicationDetails({ id: appId, ...values.general }, true)
             .then(async () => {
                 await handleInboundConfigFormSubmit(values.inbound, protocol);
