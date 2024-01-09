@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -73,6 +73,10 @@ import { AccountConfigSettingsInterface, SchemaAttributeValueInterface, SubValue
  */
 interface UserProfilePropsInterface extends TestableComponentInterface, SBACInterface<FeatureConfigInterface> {
     /**
+     * System admin username
+     */
+    adminUsername: string;
+    /**
      * On alert fired callback.
      */
     onAlertFired: (alert: AlertInterface) => void;
@@ -133,6 +137,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 ): ReactElement => {
 
     const {
+        adminUsername,
         onAlertFired,
         user,
         handleUserUpdate,
@@ -1104,7 +1109,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     ((!isReadOnly || allowDeleteOnly || isUserManagedByParentOrg)
                     && ((adminUserType === AdminAccountTypes.INTERNAL && !isPrivilegedUser)
                         || (!(resolveUsernameOrDefaultEmail(user, false) === tenantAdmin ||
-                                    resolveUsernameOrDefaultEmail(user, false) === "admin")
+                                    resolveUsernameOrDefaultEmail(user, false) === adminUsername)
                         && !authenticatedUser.includes(resolveUsernameOrDefaultEmail(user, false))))) && (
                         <Show
                             when={ AccessControlConstants.USER_DELETE }
