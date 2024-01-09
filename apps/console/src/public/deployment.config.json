@@ -933,6 +933,31 @@
                     ]
                 }
             },
+            "userV1Roles": {
+                "disabledFeatures": [
+                ],
+                "enabled": true,
+                "scopes": {
+                    "read": [
+                        "internal_user_mgt_view",
+                        "internal_role_mgt_view",
+                        "internal_userstore_view",
+                        "internal_group_mgt_view"
+                    ],
+                    "feature": [
+                        "console:roles"
+                    ],
+                    "create": [
+                        "internal_role_mgt_create"
+                    ],
+                    "update": [
+                        "internal_role_mgt_update"
+                    ],
+                    "delete": [
+                        "internal_role_mgt_delete"
+                    ]
+                }
+            },
             "userRoles": {
                 "disabledFeatures": [],
                 "enabled": true,
