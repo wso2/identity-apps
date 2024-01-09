@@ -59,7 +59,7 @@ import { applicationConfig } from "../../../../extensions";
 import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { getSharedOrganizations } from "../../../organizations/api";
 import { OrganizationType } from "../../../organizations/constants";
-import { OrganizationInterface, OrganizationResponseInterface } from "../../../organizations/models";
+import { OrganizationInterface } from "../../../organizations/models";
 import { getGeneralIcons } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants";
 import CustomApplicationTemplate
@@ -192,8 +192,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         state.config.ui.isClientSecretHashEnabled);
     const orgType: OrganizationType = useSelector((state: AppState) =>
         state?.organization?.organizationType);
-    const currentOrganization: OrganizationResponseInterface = useSelector((state: AppState) =>
-        state.organization.organization);
     const { isFAPIApplication } = initialValues;
 
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
