@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.114
+
+### Patch Changes
+
+- [#5144](https://github.com/wso2/identity-apps/pull/5144) [`fbdecb98fa`](https://github.com/wso2/identity-apps/commit/fbdecb98fa95cb15aa041bd21a52f0809ca82da9) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add translations in authentication portal
+
 ## 2.0.113
 
 ### Patch Changes
