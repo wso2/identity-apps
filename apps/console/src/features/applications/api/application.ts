@@ -129,8 +129,10 @@ export const deleteApplication = (id: string): Promise<any> => {
  *
  * @returns A promise containing the response.
  */
-export const updateApplicationDetails = (app: ApplicationInterface, skipEmptyPayloads?: boolean): Promise<any> => {
-
+export const updateApplicationDetails = (
+    app: ApplicationInterface,
+    skipEmptyPayloads?: boolean
+): Promise<ApplicationBasicInterface | void> => {
     const { id, ...rest } = app;
 
     if (skipEmptyPayloads && isEmpty(rest)) {
