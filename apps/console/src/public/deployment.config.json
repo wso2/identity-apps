@@ -257,17 +257,20 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:apiResources"
+                    ],
                     "update": [
-                        "internal_application_mgt_update"
+                        "internal_api_resource_update"
                     ],
                     "create": [
-                        "internal_application_mgt_create"
+                        "internal_api_resource_create"
                     ],
                     "read": [
-                        "internal_application_mgt_view"
+                        "internal_api_resource_view"
                     ],
                     "delete": [
-                        "internal_application_mgt_update"
+                        "internal_api_resource_delete"
                     ]
                 }
             },
@@ -295,6 +298,9 @@
                 "disabledFeatures": [ "branding.hostnameUrlBranding" ],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:applications"
+                    ],
                     "update": [
                         "internal_application_mgt_update"
                     ],
@@ -331,6 +337,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:eventPublishing"
+                    ],
                     "update": [
                         "internal_event_config_update"
                     ],
@@ -391,6 +400,8 @@
                         "internal_cors_origins_view",
                         "internal_application_mgt_view",
                         "internal_claim_meta_view",
+                        "internal_role_mgt_view",
+                        "internal_userstore_view",
                         "internal_idp_view"
                     ],
                     "update": [
@@ -405,6 +416,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:workflowApprovals"
+                    ],
                     "update": [
                         "internal_humantask_view"
                     ],
@@ -445,6 +459,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:certificates"
+                    ],
                     "create": [
                         "internal_keystore_update"
                     ],
@@ -463,6 +480,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:settings"
+                    ],
                     "create": [
                         "internal_role_mgt_create"
                     ],
@@ -486,6 +506,9 @@
                 "disabledFeatures": [ ],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:notificationChannels"
+                    ],
                     "update": [
                         "internal_config_mgt_update"
                     ],
@@ -540,6 +563,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:emailTemplates"
+                    ],
                     "update": [
                         "internal_email_mgt_update"
                     ],
@@ -644,6 +670,9 @@
             "identityVerificationProviders": {
                 "enabled": false,
                 "scopes": {
+                    "feature": [
+                        "console:idvps"
+                    ],
                     "create": [
                         "internal_idvp_create"
                     ],
@@ -684,6 +713,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:server"
+                    ],
                     "create": [],
                     "read": [
                         "internal_governance_view"
@@ -707,6 +739,9 @@
             "secretsManagement": {
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:secretsManagement"
+                    ],
                     "create": [
                         "internal_secret_mgt_add"
                     ],
@@ -781,6 +816,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:home"
+                    ],
                     "delete": [],
                     "create": [
                         "internal_application_mgt_create",
@@ -882,6 +920,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
                     "delete": [],
                     "create": [],
                     "read": [
@@ -889,6 +930,31 @@
                     ],
                     "update": [
                         "internal_governance_update"
+                    ]
+                }
+            },
+            "userV1Roles": {
+                "disabledFeatures": [
+                ],
+                "enabled": true,
+                "scopes": {
+                    "read": [
+                        "internal_user_mgt_view",
+                        "internal_role_mgt_view",
+                        "internal_userstore_view",
+                        "internal_group_mgt_view"
+                    ],
+                    "feature": [
+                        "console:roles"
+                    ],
+                    "create": [
+                        "internal_role_mgt_create"
+                    ],
+                    "update": [
+                        "internal_role_mgt_update"
+                    ],
+                    "delete": [
+                        "internal_role_mgt_delete"
                     ]
                 }
             },
@@ -953,6 +1019,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:userstores"
+                    ],
                     "read": [
                         "internal_userstore_view"
                     ],

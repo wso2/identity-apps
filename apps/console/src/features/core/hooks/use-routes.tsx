@@ -163,7 +163,7 @@ const useRoutes = (): useRoutesInterface => {
             getAppViewRoutes(commonConfig.useExtendedRoutes),
             featureConfig,
             allowedScopes,
-            window[ "AppUtils" ].getConfig().organizationName ? false : commonConfig.checkForUIResourceScopes,
+            true,
             resolveHiddenRoutes(),
             allowedRoutes
         );
