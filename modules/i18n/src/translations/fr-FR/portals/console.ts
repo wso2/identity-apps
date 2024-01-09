@@ -5393,7 +5393,7 @@ export const console: ConsoleNS = {
             authenticationProviderTemplate: {
                 backButton: "Revenir aux connexions",
                 disabledHint: {
-                    apple: "La connexion avec la fonction avec Apple ne peut pas être configurée avec LocalHost (ou 127.0.0.1).Tenter cette configuration entraîne une erreur de domaine non valide à partir de l'étape de configuration d'Apple.Pour les tests, utilisez un nom de domaine réel ou résoluble DNS.Pour le développement local, les mappages de domaines dans le fichier `etc/hosts` peuvent être utilisés."
+                    apple: "La connexion avec la fonction avec Apple ne peut pas être configurée avec LocalHost ou 127.0.0.1.Tenter cette configuration entraîne une erreur de domaine non valide à partir de l'étape de configuration d'Apple.Pour les tests, utilisez un nom de domaine réel ou résoluble DNS.Pour le développement local, les mappages de domaines dans le fichier `etc/hosts` peuvent être utilisés."
                 },
                 search: {
                     placeholder: "Recherche par nom"
