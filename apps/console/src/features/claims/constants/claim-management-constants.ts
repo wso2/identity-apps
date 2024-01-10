@@ -153,4 +153,10 @@ export class ClaimManagementConstants {
      * The error code that is returned when there is no item in the list
      */
      public static readonly RESOURCE_NOT_FOUND_ERROR_CODE: string = "CMT-50017";
+
+     /**
+     * The character length of the regex field.
+     */
+     public static readonly REGEX_FIELD_MAX_LENGTH: number = 255;
+     public static readonly REGEX_FIELD_MIN_LENGTH: number = 3;
 }

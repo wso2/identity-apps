@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import { Card, Grid, Icon, Label } from "semantic-ui-react";
 import { attributeConfig } from "../../../../../extensions";
 import { getTechnologyLogos } from "../../../../core";
+import { ClaimManagementConstants } from "../../../constants";
 
 /**
  * Prop types of `BasicDetailsLocalClaims` component
@@ -591,8 +592,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     } }
                                     ref={ regExField }
                                     data-testid={ `${ testId }-form-regex-input` }
-                                    maxLength={ 255 }
-                                    minLength={ 3 }
+                                    maxLength= { ClaimManagementConstants.REGEX_FIELD_MAX_LENGTH }
+                                    minLength={ ClaimManagementConstants.REGEX_FIELD_MIN_LENGTH }
                                 />
                                 <Popup
                                     content={ t("console:manage.features.claims.local.forms.regExHint") }
