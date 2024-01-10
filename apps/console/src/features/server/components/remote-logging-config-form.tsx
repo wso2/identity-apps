@@ -16,7 +16,10 @@
  * under the License.
  */
 
-import { Divider, Grid, Switch, Typography } from "@oxygen-ui/react";
+import Divider from "@oxygen-ui/react/Divider";
+import Grid from "@oxygen-ui/react/Grid";
+import Switch from "@oxygen-ui/react/Switch";
+import Typography from "@oxygen-ui/react/Typography";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import {
@@ -35,7 +38,7 @@ import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { 
+import {
     restoreRemoteLogPublishingConfigurationByLogType,
     updateRemoteLogPublishingConfigurationByLogType
 } from "../api/server";
@@ -43,19 +46,21 @@ import { LogType, RemoteLogPublishingConfigurationInterface } from "../models/se
 
 interface RemoteLoggingConfigFormProps extends IdentifiableComponentInterface {
     logType: LogType;
-    logConfig: RemoteLogPublishingConfigurationInterface
+    logConfig: RemoteLogPublishingConfigurationInterface,
+    mutateRemoteLoggingRequest: () => void;
 }
 
 export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): ReactElement => {
-    const { 
+    const {
         logType,
         logConfig,
-        ["data-componentid"]: componentId 
+        mutateRemoteLoggingRequest,
+        ["data-componentid"]: componentId
     } = props;
 
     const [ isVerifyHostnameEnabled, setVerifyHostnameEnabled ] = useState<boolean>(false);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
-    
+
     const [ resetForm, setResetForm ] = useTrigger();
     const dispatch: Dispatch = useDispatch();
 
@@ -77,6 +82,7 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
 
         updateRemoteLogPublishingConfigurationByLogType(remoteLogPublishConfig)
             .then(() => {
+                mutateRemoteLoggingRequest();
                 dispatch(
                     addAlert<AlertInterface>({
                         description: t(
@@ -93,10 +99,10 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
             .catch((_err: AxiosError) => {
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("console:manage.features.serverConfigs.remoteLogPublishing." + 
+                        description: t("console:manage.features.serverConfigs.remoteLogPublishing." +
                         "notification.error.updateError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.serverConfigs.remoteLogPublishing." + 
+                        message: t("console:manage.features.serverConfigs.remoteLogPublishing." +
                         "notification.error.updateError.message")
                     })
                 );
@@ -108,6 +114,7 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
             .then(() => {
                 setShowDeleteConfirmationModal(false);
                 setResetForm();
+                mutateRemoteLoggingRequest();
                 dispatch(
                     addAlert<AlertInterface>({
                         description: t(
@@ -125,10 +132,10 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
             .catch((_err: AxiosError) => {
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("console:manage.features.serverConfigs.remoteLogPublishing." + 
+                        description: t("console:manage.features.serverConfigs.remoteLogPublishing." +
                         "notification.error.updateError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("console:manage.features.serverConfigs.remoteLogPublishing." + 
+                        message: t("console:manage.features.serverConfigs.remoteLogPublishing." +
                         "notification.error.updateError.message")
                     })
                 );
@@ -177,9 +184,9 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
                                 <Grid
                                     xs={ 12 }
                                     sm={ 6 }
-                                    display="flex" 
+                                    display="flex"
                                     justifyContent={ "flex-end" }
-                                >    
+                                >
                                     <Switch
                                         checked={ logConfig?.verifyHostname }
                                         onChange={ (_event: React.SyntheticEvent, checked: boolean) => {
@@ -274,7 +281,7 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
                             >
                                 { t("common:update") }
                             </PrimaryButton>
-                        </Forms> 
+                        </Forms>
                     </Grid>
                 </div>
             </EmphasizedSegment>
@@ -291,12 +298,12 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
                     header={ t("console:manage.features.serverConfigs.remoteLogPublishing.dangerZone.header", {
                         logType: startCase(toLower(logType))
                     }) }
-                    subheader={ 
+                    subheader={
                         t(
                             "console:manage.features.serverConfigs.remoteLogPublishing.dangerZone.subheader",  {
                                 logType: toLower(logType)
                             }
-                        ) 
+                        )
                     }
                     onActionClick={ (): void => {
                         setShowDeleteConfirmationModal(true);
@@ -308,7 +315,7 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
                 type="negative"
                 open={ showDeleteConfirmationModal }
                 assertionHint={ t(
-                    "console:manage.features.serverConfigs.remoteLogPublishing.dangerZone." + 
+                    "console:manage.features.serverConfigs.remoteLogPublishing.dangerZone." +
                     "confirmation.hint"
                 ) }
                 assertionType="checkbox"

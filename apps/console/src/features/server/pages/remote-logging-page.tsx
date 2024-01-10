@@ -19,30 +19,35 @@
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PageLayout, ResourceTab } from "@wso2is/react-components";
-import React, { FC, ReactElement, useEffect } from "react";
+import React, { FC, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { TabProps } from "semantic-ui-react";
 import { AppConstants, history } from "../../core";
 import {
     useRemoteLogPublishingConfigs
 } from "../api/server";
 import { RemoteLoggingConfigForm } from "../components/remote-logging-config-form";
 import { LogType, RemoteLogPublishingConfigurationInterface } from "../models/server";
+import { RemoteLoggingTabIds } from "../models/ui";
 
 type RemoteLoggingPageInterface = IdentifiableComponentInterface;
 
 export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
     props: RemoteLoggingPageInterface
 ): ReactElement => {
-    
+
     const { [ "data-componentid" ]: componentId } = props;
 
     const {
         data: remoteLogPublishingConfigs,
         isLoading: isRemoteLogPublishingConfigsLoading,
-        error: remoteLogPublishingConfigRetrievalError
+        error: remoteLogPublishingConfigRetrievalError,
+        mutate: mutateRemoteLoggingRequest
     } = useRemoteLogPublishingConfigs();
+
+    const [ activeTab, setActiveTab ] = useState<RemoteLoggingTabIds>(RemoteLoggingTabIds.AUDIT);
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -51,10 +56,10 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
         if (remoteLogPublishingConfigRetrievalError && !isRemoteLogPublishingConfigsLoading) {
             dispatch(
                 addAlert<AlertInterface>({
-                    description: t("console:manage.features.serverConfigs.remoteLogPublishing." + 
+                    description: t("console:manage.features.serverConfigs.remoteLogPublishing." +
                     "notification.error.fetchError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("console:manage.features.serverConfigs.remoteLogPublishing." + 
+                    message: t("console:manage.features.serverConfigs.remoteLogPublishing." +
                     "notification.error.fetchError.message")
                 })
             );
@@ -70,26 +75,12 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
 
     const panes: any = [
         {
-            menuItem: "Audit Logs",
-            render: () => (
-                <RemoteLoggingConfigForm
-                    logType={ LogType.AUDIT }
-                    logConfig={ remoteLogPublishingConfigs?.find(
-                        (config: RemoteLogPublishingConfigurationInterface) => config.logType === LogType.AUDIT
-                    ) }
-                />    
-            )
+            "data-tabid": RemoteLoggingTabIds.AUDIT,
+            menuItem: "Audit Logs"
         },
         {
-            menuItem: "Carbon Logs",
-            render: () => (
-                <RemoteLoggingConfigForm
-                    logType={ LogType.CARBON }
-                    logConfig={ remoteLogPublishingConfigs?.find(
-                        (config: RemoteLogPublishingConfigurationInterface) => config.logType === LogType.CARBON
-                    ) }
-                /> 
-            )
+            "data-tabid": RemoteLoggingTabIds.CARBON,
+            menuItem: "Carbon Logs"
         }
     ];
 
@@ -108,11 +99,35 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
             isLoading={ isRemoteLogPublishingConfigsLoading }
         >
             <ResourceTab
+                onTabChange={ (_event: React.SyntheticEvent, _data: TabProps, activeTabMetadata?: {
+                    "data-tabid": RemoteLoggingTabIds;
+                    index: number | string;
+                }) => {
+                    activeTabMetadata && setActiveTab(activeTabMetadata["data-tabid"]);
+                } }
                 className="tabs resource-tabs"
                 menu={ { pointing: true, secondary: true } }
                 panes={ panes }
                 renderActiveOnly
             />
+            { activeTab === RemoteLoggingTabIds.AUDIT && (
+                <RemoteLoggingConfigForm
+                    mutateRemoteLoggingRequest={ mutateRemoteLoggingRequest }
+                    logType={ LogType.AUDIT }
+                    logConfig={ remoteLogPublishingConfigs?.find(
+                        (config: RemoteLogPublishingConfigurationInterface) => config.logType === LogType.AUDIT
+                    ) }
+                />
+            ) }
+            { activeTab === RemoteLoggingTabIds.CARBON && (
+                <RemoteLoggingConfigForm
+                    mutateRemoteLoggingRequest={ mutateRemoteLoggingRequest }
+                    logType={ LogType.CARBON }
+                    logConfig={ remoteLogPublishingConfigs?.find(
+                        (config: RemoteLogPublishingConfigurationInterface) => config.logType === LogType.CARBON
+                    ) }
+                />
+            ) }
         </PageLayout>
     );
 };
