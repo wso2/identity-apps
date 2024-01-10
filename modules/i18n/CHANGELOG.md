@@ -1,5 +1,17 @@
 # @wso2is/i18n
 
+## 2.0.92
+
+### Patch Changes
+
+- [#5109](https://github.com/wso2/identity-apps/pull/5109) [`ccf90cfa9b`](https://github.com/wso2/identity-apps/commit/ccf90cfa9b816ba078824170af3b3301b568e38d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix issue with sending userstore domain ID to search users in secondary user store
+
+## 2.0.91
+
+### Patch Changes
+
+- [#5151](https://github.com/wso2/identity-apps/pull/5151) [`c040ebb287`](https://github.com/wso2/identity-apps/commit/c040ebb28774818045cad8ad405871f9ad897f6e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix RBAC console issue for application view/edit and userstore view/edit roles
+
 ## 2.0.90
 
 ### Patch Changes

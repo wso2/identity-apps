@@ -24,7 +24,6 @@ export const commonConfig: CommonConfig = {
     },
     blockLoopBackCalls: false,
     checkCustomLayoutExistanceBeforeEnabling: false,
-    checkForUIResourceScopes: false,
     enableDefaultBrandingPreviewSection: true,
     enableDefaultPreLoader: true,
     enableOrganizationAssociations: false,

@@ -69,6 +69,10 @@ interface BrandingPreferencePreviewInterface extends IdentifiableComponentInterf
      *
      */
     screenType: PreviewScreenType;
+    /**
+     * On preview resize callback.
+     */
+    onPreviewResize: (width: number) => void;
 }
 
 /**
@@ -86,7 +90,8 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
         ["data-componentid"]: componentId,
         brandingPreference,
         isLoading,
-        screenType
+        screenType,
+        onPreviewResize
     } = props;
 
     const { t } = useTranslation();
@@ -120,7 +125,7 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
     const { data: previewScreenSkeletonStyles } = usePreviewStyle(screenType);
 
     /**
-     * Update the ifram styles to acheive responsiveness.
+     * Update the iframe styles to achieve responsiveness.
      */
     const updateStyles = () => {
         if (!brandingPreviewContainerRef) {
@@ -151,6 +156,7 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
             transformOrigin: "0 0",
             width: iFrameOriginalWidth
         });
+        onPreviewResize(parentWidth);
     };
 
     /**

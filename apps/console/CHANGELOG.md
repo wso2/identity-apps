@@ -1,5 +1,50 @@
 # @wso2is/console
 
+## 2.10.61
+
+### Patch Changes
+
+- [#5178](https://github.com/wso2/identity-apps/pull/5178) [`402f7c900b`](https://github.com/wso2/identity-apps/commit/402f7c900be04cc5fa41c8f392fda7f291c33674) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix build failure in forms module
+
+- Updated dependencies [[`402f7c900b`](https://github.com/wso2/identity-apps/commit/402f7c900be04cc5fa41c8f392fda7f291c33674)]:
+  - @wso2is/forms@2.0.11
+  - @wso2is/common@2.0.20
+
+## 2.10.60
+
+### Patch Changes
+
+- [#5168](https://github.com/wso2/identity-apps/pull/5168) [`8186bbf365`](https://github.com/wso2/identity-apps/commit/8186bbf365547a95a1c50dbda0bc61d857249934) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Update application sharing endpoint urls
+
+* [#4332](https://github.com/wso2/identity-apps/pull/4332) [`3fa16290af`](https://github.com/wso2/identity-apps/commit/3fa16290af6257a209d38c2f5639cffd764a7290) Thanks [@jcgarciaa](https://github.com/jcgarciaa)! - Display message when layout preview differs from actual page.
+
+- [#5109](https://github.com/wso2/identity-apps/pull/5109) [`ccf90cfa9b`](https://github.com/wso2/identity-apps/commit/ccf90cfa9b816ba078824170af3b3301b568e38d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix issue with sending userstore domain ID to search users in secondary user store
+
+* [#4965](https://github.com/wso2/identity-apps/pull/4965) [`d68021e826`](https://github.com/wso2/identity-apps/commit/d68021e8266febf3facc1c6ea0e8f6815bac4b33) Thanks [@jcgarciaa](https://github.com/jcgarciaa)! - Fix duplicated calls to tenant/me API when console loads
+
+- [#5176](https://github.com/wso2/identity-apps/pull/5176) [`57a731dcc8`](https://github.com/wso2/identity-apps/commit/57a731dcc87525013d07060800f09f779dbc2063) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Fix showing dangerzone for system admin when change from deployment.toml config
+
+- Updated dependencies [[`ccf90cfa9b`](https://github.com/wso2/identity-apps/commit/ccf90cfa9b816ba078824170af3b3301b568e38d)]:
+  - @wso2is/i18n@2.0.92
+
+## 2.10.59
+
+### Patch Changes
+
+- [#5160](https://github.com/wso2/identity-apps/pull/5160) [`19b2dbc4e4`](https://github.com/wso2/identity-apps/commit/19b2dbc4e45d820ae67d246d1e155ea6b4b28518) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Introduce console ui scope for RBAC
+
+* [#5151](https://github.com/wso2/identity-apps/pull/5151) [`c040ebb287`](https://github.com/wso2/identity-apps/commit/c040ebb28774818045cad8ad405871f9ad897f6e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix RBAC console issue for application view/edit and userstore view/edit roles
+
+- [#5172](https://github.com/wso2/identity-apps/pull/5172) [`2c84895c1f`](https://github.com/wso2/identity-apps/commit/2c84895c1fb817520aeee514dd05bd7dcacd89af) Thanks [@savindi7](https://github.com/savindi7)! - Update Oxygen version to 1.8.5
+
+- Updated dependencies [[`c040ebb287`](https://github.com/wso2/identity-apps/commit/c040ebb28774818045cad8ad405871f9ad897f6e), [`2c84895c1f`](https://github.com/wso2/identity-apps/commit/2c84895c1fb817520aeee514dd05bd7dcacd89af)]:
+  - @wso2is/i18n@2.0.91
+  - @wso2is/react-components@2.0.33
+  - @wso2is/dynamic-forms@2.0.24
+  - @wso2is/form@2.0.25
+  - @wso2is/common@2.0.19
+  - @wso2is/forms@2.0.10
+
 ## 2.10.58
 
 ### Patch Changes

@@ -1,5 +1,36 @@
 # @wso2is/myaccount
 
+## 2.2.81
+
+### Patch Changes
+
+- [#5178](https://github.com/wso2/identity-apps/pull/5178) [`402f7c900b`](https://github.com/wso2/identity-apps/commit/402f7c900be04cc5fa41c8f392fda7f291c33674) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix build failure in forms module
+
+- Updated dependencies [[`402f7c900b`](https://github.com/wso2/identity-apps/commit/402f7c900be04cc5fa41c8f392fda7f291c33674)]:
+  - @wso2is/forms@2.0.11
+
+## 2.2.80
+
+### Patch Changes
+
+- [#5109](https://github.com/wso2/identity-apps/pull/5109) [`ccf90cfa9b`](https://github.com/wso2/identity-apps/commit/ccf90cfa9b816ba078824170af3b3301b568e38d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix issue with sending userstore domain ID to search users in secondary user store
+
+- Updated dependencies [[`ccf90cfa9b`](https://github.com/wso2/identity-apps/commit/ccf90cfa9b816ba078824170af3b3301b568e38d)]:
+  - @wso2is/i18n@2.0.92
+
+## 2.2.79
+
+### Patch Changes
+
+- [#5151](https://github.com/wso2/identity-apps/pull/5151) [`c040ebb287`](https://github.com/wso2/identity-apps/commit/c040ebb28774818045cad8ad405871f9ad897f6e) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix RBAC console issue for application view/edit and userstore view/edit roles
+
+* [#5172](https://github.com/wso2/identity-apps/pull/5172) [`2c84895c1f`](https://github.com/wso2/identity-apps/commit/2c84895c1fb817520aeee514dd05bd7dcacd89af) Thanks [@savindi7](https://github.com/savindi7)! - Update Oxygen version to 1.8.5
+
+* Updated dependencies [[`c040ebb287`](https://github.com/wso2/identity-apps/commit/c040ebb28774818045cad8ad405871f9ad897f6e), [`2c84895c1f`](https://github.com/wso2/identity-apps/commit/2c84895c1fb817520aeee514dd05bd7dcacd89af)]:
+  - @wso2is/i18n@2.0.91
+  - @wso2is/react-components@2.0.33
+  - @wso2is/forms@2.0.10
+
 ## 2.2.78
 
 ### Patch Changes

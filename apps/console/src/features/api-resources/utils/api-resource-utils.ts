@@ -92,9 +92,7 @@ export class APIResourceUtils {
      */
     public static isSystemAPI(type: string): boolean {
 
-        return type === APIResourcesConstants.SYSTEM
-            || type === APIResourcesConstants.SYSTEM_ORG
-            || type === APIResourcesConstants.SYSTEM_FEATURE;
+        return type !== APIResourcesConstants.BUSINESS;
     }
 
     public static resolveApiResourceGroup = (groupName: string): string => {

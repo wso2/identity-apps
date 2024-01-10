@@ -1,5 +1,14 @@
 # @wso2is/dynamic-forms
 
+## 2.0.24
+
+### Patch Changes
+
+- [#5172](https://github.com/wso2/identity-apps/pull/5172) [`2c84895c1f`](https://github.com/wso2/identity-apps/commit/2c84895c1fb817520aeee514dd05bd7dcacd89af) Thanks [@savindi7](https://github.com/savindi7)! - Update Oxygen version to 1.8.5
+
+- Updated dependencies [[`2c84895c1f`](https://github.com/wso2/identity-apps/commit/2c84895c1fb817520aeee514dd05bd7dcacd89af)]:
+  - @wso2is/react-components@2.0.33
+
 ## 2.0.23
 
 ### Patch Changes

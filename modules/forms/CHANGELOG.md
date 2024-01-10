@@ -1,5 +1,17 @@
 # @wso2is/forms
 
+## 2.0.11
+
+### Patch Changes
+
+- [#5178](https://github.com/wso2/identity-apps/pull/5178) [`402f7c900b`](https://github.com/wso2/identity-apps/commit/402f7c900be04cc5fa41c8f392fda7f291c33674) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix build failure in forms module
+
+## 2.0.10
+
+### Patch Changes
+
+- [#5172](https://github.com/wso2/identity-apps/pull/5172) [`2c84895c1f`](https://github.com/wso2/identity-apps/commit/2c84895c1fb817520aeee514dd05bd7dcacd89af) Thanks [@savindi7](https://github.com/savindi7)! - Update Oxygen version to 1.8.5
+
 ## 2.0.9
 
 ### Patch Changes

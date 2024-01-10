@@ -34,10 +34,6 @@ import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/co
 import { LocalStorageUtils, StringUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import { GenericIcon, useDocumentation } from "@wso2is/react-components";
-import {
-    TenantTier,
-    TenantTierRequestResponse
-} from "apps/console/src/extensions/components/subscription/models/subscription";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
@@ -53,6 +49,10 @@ import { useSelector } from "react-redux";
 import { organizationConfigs } from "../../../extensions";
 import { FeatureGateConstants } from "../../../extensions/components/feature-gate/constants/feature-gate";
 import { SubscriptionContext } from "../../../extensions/components/subscription/contexts/subscription-context";
+import {
+    TenantTier,
+    TenantTierRequestResponse
+} from "../../../extensions/components/subscription/models/subscription";
 import { ReactComponent as LogoutIcon } from "../../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../../themes/default/assets/images/icons/user-icon.svg";
 import { ReactComponent as AskHelpIcon } from "../../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
@@ -170,7 +170,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 setUpgradeButtonURL(upgradeButtonURL);
             }
         );
-    }, []);
+    }, [ tenantDomain, associatedTenants ]);
 
     /**
      * Show the organization switching dropdown only if
