@@ -30,6 +30,7 @@ import {
 } from "../api/server";
 import { RemoteLoggingConfigForm } from "../components/remote-logging-config-form";
 import { LogType, RemoteLogPublishingConfigurationInterface } from "../models/server";
+import { RemoteLoggingTabIds } from "../models/ui";
 
 type RemoteLoggingPageInterface = IdentifiableComponentInterface;
 
@@ -46,7 +47,7 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
         mutate: mutateRemoteLoggingRequest
     } = useRemoteLogPublishingConfigs();
 
-    const [ activeTab, setActiveTab ] = useState<TabProps["activeIndex"]>(0);
+    const [ activeTab, setActiveTab ] = useState<string>(RemoteLoggingTabIds.AUDIT);
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -74,9 +75,11 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
 
     const panes: any = [
         {
+            "data-tabid": RemoteLoggingTabIds.AUDIT,
             menuItem: "Audit Logs"
         },
         {
+            "data-tabid": RemoteLoggingTabIds.CARBON,
             menuItem: "Carbon Logs"
         }
     ];
@@ -96,15 +99,18 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
             isLoading={ isRemoteLogPublishingConfigsLoading }
         >
             <ResourceTab
-                onTabChange={ (_event: React.SyntheticEvent, data: TabProps) => {
-                    setActiveTab(data.activeIndex);
+                onTabChange={ (_event: React.SyntheticEvent, _data: TabProps, activeTabMetadata?: {
+                    "data-tabid": string;
+                    index: number | string;
+                }) => {
+                    activeTabMetadata && setActiveTab(activeTabMetadata["data-tabid"]);
                 } }
                 className="tabs resource-tabs"
                 menu={ { pointing: true, secondary: true } }
                 panes={ panes }
                 renderActiveOnly
             />
-            { activeTab === 0 && (
+            { activeTab === RemoteLoggingTabIds.AUDIT && (
                 <RemoteLoggingConfigForm
                     mutateRemoteLoggingRequest={ mutateRemoteLoggingRequest }
                     formId="audit"
@@ -114,7 +120,7 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
                     ) }
                 />
             ) }
-            { activeTab === 1 && (
+            { activeTab === RemoteLoggingTabIds.CARBON && (
                 <RemoteLoggingConfigForm
                     mutateRemoteLoggingRequest={ mutateRemoteLoggingRequest }
                     formId="carbon"

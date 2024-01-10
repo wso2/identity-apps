@@ -116,6 +116,7 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
             .then(() => {
                 setShowDeleteConfirmationModal(false);
                 setResetForm();
+                mutateRemoteLoggingRequest();
                 dispatch(
                     addAlert<AlertInterface>({
                         description: t(
