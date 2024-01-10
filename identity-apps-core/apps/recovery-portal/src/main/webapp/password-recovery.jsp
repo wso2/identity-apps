@@ -222,7 +222,7 @@
                         %>
                         <div class="field">
                             <label class="mb-5" for="username">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, usernameLabel)%>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "password.reset.with.username")%>
                             </label>
                             <div class="ui fluid left icon input">
                                 <input
@@ -252,7 +252,7 @@
 
                         <div class="field">
                             <label class="mb-5" for="username">
-                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, usernameLabel)%>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "password.reset.with.username")%>
                             </label>
                             <div class="ui fluid left icon input">
                                 <% if (isMultiAttributeLoginEnabledInTenant) { %>
