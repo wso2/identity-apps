@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.63
+
+### Patch Changes
+
+- [#5183](https://github.com/wso2/identity-apps/pull/5183) [`99604b22b9`](https://github.com/wso2/identity-apps/commit/99604b22b937ea70399cc84bb76aeb659191ea2d) Thanks [@savindi7](https://github.com/savindi7)! - Fix form state issue in remote log publishing.
+
 ## 2.10.62
 
 ### Patch Changes
