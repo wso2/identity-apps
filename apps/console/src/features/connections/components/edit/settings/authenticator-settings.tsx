@@ -679,7 +679,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         return [
             // Checkbox which triggers the default state of authenticator.
-            availableAuthenticators.length > 1 && {
+            availableAuthenticators?.length > 1 && {
                 defaultChecked: isDefaultAuthenticator,
                 disabled: authenticator.data?.isDefault || !authenticator.data?.isEnabled,
                 label: t(isDefaultAuthenticator ?
@@ -690,7 +690,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 type: "checkbox"
             },
             // Toggle Switch which enables/disables the authenticator state.
-            availableAuthenticators.length > 1 && {
+            availableAuthenticators?.length > 1 && {
                 defaultChecked: authenticator.data?.isEnabled,
                 disabled: isDefaultAuthenticator,
                 label: t(authenticator.data?.isEnabled ?
@@ -787,7 +787,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         return (
             <Grid>
                 {
-                    availableAuthenticators.length > 1
+                    availableAuthenticators?.length > 1
                     && (
                         <Grid.Row>
                             <Grid.Column width={ 16 } textAlign="right">
@@ -819,7 +819,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                             globalActions={ [
                                                 {
                                                     disabled:
-                                                        availableAuthenticators.length <= 1
+                                                        availableAuthenticators?.length <= 1
                                                         && isDefaultAuthenticatorPredicate(authenticator),
                                                     icon: "trash alternate",
                                                     onClick: handleAuthenticatorDeleteOnClick,
@@ -855,7 +855,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                             />
                                                         ),
                                                         hideChevron: (
-                                                            availableAuthenticators.length <= 1
+                                                            availableAuthenticators?.length <= 1
                                                             || isEmpty(authenticator.meta?.properties)
                                                         ),
                                                         icon: {
@@ -867,7 +867,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                 ]
                                             }
                                             accordionActiveIndexes={
-                                                availableAuthenticators.length > 1
+                                                availableAuthenticators?.length > 1
                                                     ? accordionActiveIndexes
                                                     : [ 0 ]
                                             }
