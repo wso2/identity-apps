@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.62
+
+### Patch Changes
+
+- [#5184](https://github.com/wso2/identity-apps/pull/5184) [`ae505f6899`](https://github.com/wso2/identity-apps/commit/ae505f6899d5f969033a70c1f358f6311f13de2f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Make isReadOnly optional in application config
+
 ## 2.10.61
 
 ### Patch Changes
