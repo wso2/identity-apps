@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.2.81
+
+### Patch Changes
+
+- [#5178](https://github.com/wso2/identity-apps/pull/5178) [`402f7c900b`](https://github.com/wso2/identity-apps/commit/402f7c900be04cc5fa41c8f392fda7f291c33674) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix build failure in forms module
+
+- Updated dependencies [[`402f7c900b`](https://github.com/wso2/identity-apps/commit/402f7c900be04cc5fa41c8f392fda7f291c33674)]:
+  - @wso2is/forms@2.0.11
+
 ## 2.2.80
 
 ### Patch Changes
