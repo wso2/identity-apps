@@ -131,7 +131,7 @@ export class ClaimManagementConstants {
     ];
 
     /**
-     * Display names of User Id & Username to 
+     * Display names of User Id & Username to
      * identify.
      */
     public static readonly USER_ID_CLAIM_URI: string = "http://wso2.org/claims/userid";
