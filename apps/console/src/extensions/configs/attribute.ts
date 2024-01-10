@@ -277,7 +277,7 @@ export const attributeConfig: AttributeConfig = {
             showOnlyMandatory: true,
             showPrimaryUserStore: false,
             showReadOnlyAttribute: false,
-            showRegularExpression: true,
+            showRegularExpression: false,
             showSummary: false
         },
         customDialectURI: "urn:scim:wso2:schema",
