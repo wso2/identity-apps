@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 2.0.115
+
+### Patch Changes
+
+- [#5177](https://github.com/wso2/identity-apps/pull/5177) [`c6b5bf1a82`](https://github.com/wso2/identity-apps/commit/c6b5bf1a82897424d2c43efd2a1300514bd30b40) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix UI disparities between cloud offering UI and onprem UI
+
+* [#5180](https://github.com/wso2/identity-apps/pull/5180) [`d18b92b09c`](https://github.com/wso2/identity-apps/commit/d18b92b09c4044a7a94791e94b6a74396d16e345) Thanks [@Achintha444](https://github.com/Achintha444)! - [fix] locale not setting properly when the language cookie is not set
+
 ## 2.0.114
 
 ### Patch Changes
