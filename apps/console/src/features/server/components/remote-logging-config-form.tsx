@@ -45,7 +45,6 @@ import {
 import { LogType, RemoteLogPublishingConfigurationInterface } from "../models/server";
 
 interface RemoteLoggingConfigFormProps extends IdentifiableComponentInterface {
-    formId: "audit" | "carbon";
     logType: LogType;
     logConfig: RemoteLogPublishingConfigurationInterface,
     mutateRemoteLoggingRequest: () => void;
@@ -53,7 +52,6 @@ interface RemoteLoggingConfigFormProps extends IdentifiableComponentInterface {
 
 export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): ReactElement => {
     const {
-        formId,
         logType,
         logConfig,
         mutateRemoteLoggingRequest,
@@ -149,7 +147,7 @@ export const RemoteLoggingConfigForm = (props: RemoteLoggingConfigFormProps): Re
             <EmphasizedSegment padded="very">
                 <div className="form-container with-max-width">
                     <Grid xs={ 12 } md={ 8 } lg={ 4 }>
-                        <Forms id={ formId } onSubmit={ handleRemoteLoggingConfigUpdate } resetState={ resetForm }>
+                        <Forms onSubmit={ handleRemoteLoggingConfigUpdate } resetState={ resetForm }>
                             <Field
                                 label={ "Destination URL" }
                                 name={ "remoteUrl" }

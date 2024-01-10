@@ -47,7 +47,7 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
         mutate: mutateRemoteLoggingRequest
     } = useRemoteLogPublishingConfigs();
 
-    const [ activeTab, setActiveTab ] = useState<string>(RemoteLoggingTabIds.AUDIT);
+    const [ activeTab, setActiveTab ] = useState<RemoteLoggingTabIds>(RemoteLoggingTabIds.AUDIT);
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -100,7 +100,7 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
         >
             <ResourceTab
                 onTabChange={ (_event: React.SyntheticEvent, _data: TabProps, activeTabMetadata?: {
-                    "data-tabid": string;
+                    "data-tabid": RemoteLoggingTabIds;
                     index: number | string;
                 }) => {
                     activeTabMetadata && setActiveTab(activeTabMetadata["data-tabid"]);
@@ -113,7 +113,6 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
             { activeTab === RemoteLoggingTabIds.AUDIT && (
                 <RemoteLoggingConfigForm
                     mutateRemoteLoggingRequest={ mutateRemoteLoggingRequest }
-                    formId="audit"
                     logType={ LogType.AUDIT }
                     logConfig={ remoteLogPublishingConfigs?.find(
                         (config: RemoteLogPublishingConfigurationInterface) => config.logType === LogType.AUDIT
@@ -123,7 +122,6 @@ export const RemoteLoggingPage: FC<RemoteLoggingPageInterface> = (
             { activeTab === RemoteLoggingTabIds.CARBON && (
                 <RemoteLoggingConfigForm
                     mutateRemoteLoggingRequest={ mutateRemoteLoggingRequest }
-                    formId="carbon"
                     logType={ LogType.CARBON }
                     logConfig={ remoteLogPublishingConfigs?.find(
                         (config: RemoteLogPublishingConfigurationInterface) => config.logType === LogType.CARBON
