@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -154,7 +154,7 @@ export class AccessControlConstants {
      * Identity verification provider delete permission
      */
     public static readonly IDVP_DELETE: string = "identity_verification_provider:delete";
-    
+
     /**
      * Users feature permission
      */
@@ -424,5 +424,25 @@ export class AccessControlConstants {
      * EventConfig delete permission
      */
     public static readonly EVENT_CONFIG_DELETE: string = "internal_event_config_update";
+
+    /**
+     * Notifications senders read permission
+     */
+    public static readonly NOTIFICATION_SENDERS_READ: string = "internal_notification_senders_view";
+
+    /**
+     * Notifications senders write permission
+     */
+    public static readonly NOTIFICATION_SENDERS_WRITE: string = "internal_notification_senders_create";
+
+    /**
+     * Notifications senders edit permission
+     */
+    public static readonly NOTIFICATION_SENDERS_EDIT: string = "internal_notification_senders_update";
+
+    /**
+     * Notifications senders delete permission
+     */
+    public static readonly NOTIFICATION_SENDERS_DELETE: string = "internal_notification_senders_delete";
 
 }

@@ -43,7 +43,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
     } = props;
     const { t } = useTranslation();
 
-    return (  
+    return (
         <EmphasizedSegment className="form-wrapper" padded={ "very" }>
             <Grid>
                 <Grid.Row columns={ 1 }>
@@ -60,7 +60,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                                 margin: "dense"
                             } }
                             ariaLabel="twilioKey"
-                            readOnly={ isReadOnly }
+                            disabled={ isReadOnly }
                             required={ true }
                             data-componentid={ `${componentId}-twilio-key` }
                             name="twilioKey"
@@ -69,7 +69,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                             placeholder={ t("extensions:develop.smsProviders.form.twilio.accountSID.placeholder") }
                             helperText={ (
                                 <Hint compact>
-                                    { t("extensions:develop.smsProviders.form.twilio.accountSID.hint") } 
+                                    { t("extensions:develop.smsProviders.form.twilio.accountSID.hint") }
                                 </Hint>
                             ) }
                             component={ TextFieldAdapter }
@@ -85,7 +85,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                             FormControlProps={ {
                                 margin: "dense"
                             } }
-                            readOnly={ isReadOnly }
+                            disabled={ isReadOnly }
                             ariaLabel="twilioSecret"
                             required={ true }
                             data-componentid={ `${componentId}-twilio-secret` }
@@ -100,7 +100,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                             ) }
                             component={ TextFieldAdapter }
                             maxLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
-                            minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH } 
+                            minLength={ SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
                             autoComplete="new-password"
                         />
                     </Grid.Column>
@@ -113,7 +113,7 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                             FormControlProps={ {
                                 margin: "dense"
                             } }
-                            readOnly={ isReadOnly }
+                            disabled={ isReadOnly }
                             ariaLabel="twilioSender"
                             required={ true }
                             data-componentid={ `${componentId}-twilio-sender` }
@@ -133,20 +133,25 @@ const TwilioSMSProvider: FunctionComponent<TwilioSMSProviderPageInterface> = (
                         />
                     </Grid.Column>
                 </Grid.Row>
-                <Divider hidden />
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <PrimaryButton
-                            size="small"
-                            onClick={ onSubmit }
-                            readOnly={ isReadOnly }
-                            ariaLabel="SMS provider form update button"
-                            data-componentid={ `${componentId}-update-button` }
-                        >
-                            { "Submit" }
-                        </PrimaryButton>
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    !isReadOnly && (
+                        <>
+                            <Divider hidden />
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <PrimaryButton
+                                        size="small"
+                                        onClick={ onSubmit }
+                                        ariaLabel="SMS provider form update button"
+                                        data-componentid={ `${componentId}-update-button` }
+                                    >
+                                        { "Submit" }
+                                    </PrimaryButton>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </>
+                    )
+                }
             </Grid>
         </EmphasizedSegment>
     );

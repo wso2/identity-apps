@@ -221,33 +221,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         feature.organizations
     ]);
 
-    /**
-     * Check if there are applications registered and set the value to local storage.
-     */
-    useEffect(() => {
-        if (
-            !isEmpty(
-                LocalStorageUtils.getValueFromLocalStorage("IsAppsAvailable")
-            ) &&
-            LocalStorageUtils.getValueFromLocalStorage("IsAppsAvailable") ===
-            "true"
-        ) {
-            return;
-        }
-
-        getApplicationList(null, null, null)
-            .then((response: ApplicationListInterface) => {
-                LocalStorageUtils.setValueInLocalStorage(
-                    "IsAppsAvailable",
-                    response.totalResults > 0 ? "true" : "false"
-                );
-            })
-            .catch(() => {
-                // Add debug logs here one a logger is added.
-                // Tracked here https://github.com/wso2/product-is/issues/11650.
-            });
-    }, []);
-
     const resolveUsername = (): string => {
         if (profileInfo?.name?.givenName) {
             return profileInfo.name.givenName;

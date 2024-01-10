@@ -62,7 +62,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 margin: "dense"
                             } }
                             ariaLabel="provider"
-                            readOnly={ isReadOnly }
+                            disabled={ isReadOnly }
                             required={ true }
                             data-componentid={ `${componentId}-provider` }
                             name="provider"
@@ -91,7 +91,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 margin: "dense"
                             } }
                             ariaLabel="providerURL"
-                            readOnly={ isReadOnly }
+                            disabled={ isReadOnly }
                             required={ true }
                             data-componentid={ `${componentId}-providerURL` }
                             name="providerURL"
@@ -103,7 +103,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                     { t("extensions:develop.smsProviders.form.custom.providerUrl.hint") }
                                 </Hint>
                             ) }
-                                
+
                             component={ TextFieldAdapter }
                             maxLength={
                                 SMSProviderConstants.SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH
@@ -125,7 +125,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                             } }
                             ariaLabel="key"
                             required={ true }
-                            readOnly={ isReadOnly }
+                            disabled={ isReadOnly }
                             data-componentid={ `${componentId}-key` }
                             name="key"
                             type="text"
@@ -154,7 +154,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 margin: "dense"
                             } }
                             ariaLabel="secret"
-                            readOnly={ isReadOnly }
+                            disabled={ isReadOnly }
                             required={ true }
                             data-componentid={ `${componentId}-secret` }
                             name="secret"
@@ -186,7 +186,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 margin: "dense"
                             } }
                             ariaLabel="sender"
-                            readOnly={ isReadOnly }
+                            disabled={ isReadOnly }
                             required={ true }
                             data-componentid={ `${componentId}-sender` }
                             name="sender"
@@ -216,7 +216,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 margin: "dense"
                             } }
                             ariaLabel="contentType"
-                            readOnly={ isReadOnly }
+                            disabled={ isReadOnly }
                             required={ true }
                             data-componentid={ `${componentId}-contentType` }
                             name="contentType"
@@ -248,7 +248,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 margin: "dense"
                             } }
                             ariaLabel="headers"
-                            readOnly={ isReadOnly }
+                            disabled={ isReadOnly }
                             required={ true }
                             data-componentid={ `${componentId}-headers` }
                             name="headers"
@@ -278,7 +278,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 margin: "dense"
                             } }
                             ariaLabel="httpMethod"
-                            readOnly={ isReadOnly }
+                            disabled={ isReadOnly }
                             required={ true }
                             data-componentid={ `${componentId}-httpMethod` }
                             name="httpMethod"
@@ -310,7 +310,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 margin: "dense"
                             } }
                             ariaLabel="payload"
-                            readOnly={ isReadOnly }
+                            disabled={ isReadOnly }
                             required={ true }
                             data-componentid={ `${componentId}-payload` }
                             name="payload"
@@ -333,20 +333,25 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                         />
                     </Grid.Column>
                 </Grid.Row>
-                <Divider hidden />
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                        <PrimaryButton
-                            size="small"
-                            onClick={ onSubmit }
-                            ariaLabel="SMS provider form update button"
-                            data-componentid={ `${componentId}-update-button` }
-                            readOnly={ isReadOnly }
-                        >
-                            { "Submit" }
-                        </PrimaryButton>
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    !isReadOnly && (
+                        <>
+                            <Divider hidden />
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <PrimaryButton
+                                        size="small"
+                                        onClick={ onSubmit }
+                                        ariaLabel="SMS provider form update button"
+                                        data-componentid={ `${componentId}-update-button` }
+                                    >
+                                        { "Submit" }
+                                    </PrimaryButton>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </>
+                    )
+                }
             </Grid>
         </EmphasizedSegment>
     );
