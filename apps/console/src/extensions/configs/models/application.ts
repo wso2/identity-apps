@@ -77,7 +77,7 @@ export interface ApplicationConfig {
         getTabExtensions: (
             props: Record<string, unknown>,
             features: FeatureConfigInterface,
-            isReadOnly: boolean,
+            isReadOnly?: boolean,
             tenantDomain?: string
         ) => ResourceTabPaneInterface[];
         getTabPanelReadOnlyStatus: (tabPanelName: string, application: ApplicationInterface) => boolean;
