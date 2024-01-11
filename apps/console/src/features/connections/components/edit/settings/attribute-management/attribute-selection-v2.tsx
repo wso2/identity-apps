@@ -24,9 +24,9 @@ import { useTranslation } from "react-i18next";
 import { Grid, Icon, Segment, Table } from "semantic-ui-react";
 import { AddAttributeSelectionModal } from "./attribute-selection-modal";
 import { AttributeMappingList } from "./attributes-mapping-list";
-import { 
+import {
     ConnectionClaimInterface,
-    ConnectionCommonClaimMappingInterface 
+    ConnectionCommonClaimMappingInterface
 } from "../../../../models/connection";
 
 /**
@@ -184,7 +184,7 @@ export const AttributesSelectionV2: FunctionComponent<AttributesSelectionV2Props
                                 >
                                     <Table.Body>
                                         <Table.Row>
-                                            <Table.Cell collapsing width="6">
+                                            <Table.Cell collapsing width="10">
                                                 <Form
                                                     id={ FORM_ID }
                                                     // eslint-disable-next-line @typescript-eslint/no-empty-function
