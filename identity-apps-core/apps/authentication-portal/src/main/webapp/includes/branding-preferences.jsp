@@ -395,7 +395,7 @@
     String APP_PREFERENCE_RESOURCE_TYPE = "APP";
     String preferenceResourceType = ORG_PREFERENCE_RESOURCE_TYPE;
     String tenantRequestingPreferences = tenantForTheming;
-    String applicationRequestingPreferences = spAppName;
+    String applicationRequestingPreferences = spAppId;
     String locale = StringUtils.isNotBlank(getUserLocaleCode(request)) ? getUserLocaleCode(request) : DEFAULT_RESOURCE_LOCALE;
 
     try {
