@@ -679,7 +679,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         return [
             // Checkbox which triggers the default state of authenticator.
-            {
+            availableAuthenticators?.length > 1 && {
                 defaultChecked: isDefaultAuthenticator,
                 disabled: authenticator.data?.isDefault || !authenticator.data?.isEnabled,
                 label: t(isDefaultAuthenticator ?
@@ -690,7 +690,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 type: "checkbox"
             },
             // Toggle Switch which enables/disables the authenticator state.
-            {
+            availableAuthenticators?.length > 1 && {
                 defaultChecked: authenticator.data?.isEnabled,
                 disabled: isDefaultAuthenticator,
                 label: t(authenticator.data?.isEnabled ?
@@ -786,23 +786,28 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         return (
             <Grid>
-                <Grid.Row>
-                    <Grid.Column width={ 16 } textAlign="right">
-                        <PrimaryButton
-                            onClick={ handleAddAuthenticator }
-                            disabled={
-                                ConnectionManagementConstants.SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP
-                                    ? isEmpty(availableTemplates) && isEmpty(availableManualModeOptions)
-                                    : isEmpty(availableManualModeOptions)
-                            }
-                            loading={ isIdPTemplateFetchRequestLoading }
-                            data-testid={ `${ testId }-add-authenticator-button` }
-                        >
-                            <Icon name="add"/>
-                            { t("console:develop.features.authenticationProvider.buttons.addAuthenticator") }
-                        </PrimaryButton>
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    availableAuthenticators?.length > 1
+                    && (
+                        <Grid.Row>
+                            <Grid.Column width={ 16 } textAlign="right">
+                                <PrimaryButton
+                                    onClick={ handleAddAuthenticator }
+                                    disabled={
+                                        ConnectionManagementConstants.SHOW_PREDEFINED_TEMPLATES_IN_EXPERT_MODE_SETUP
+                                            ? isEmpty(availableTemplates) && isEmpty(availableManualModeOptions)
+                                            : isEmpty(availableManualModeOptions)
+                                    }
+                                    loading={ isIdPTemplateFetchRequestLoading }
+                                    data-testid={ `${ testId }-add-authenticator-button` }
+                                >
+                                    <Icon name="add"/>
+                                    { t("console:develop.features.authenticationProvider.buttons.addAuthenticator") }
+                                </PrimaryButton>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         {
@@ -813,7 +818,9 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                             key={ index }
                                             globalActions={ [
                                                 {
-                                                    disabled: isDefaultAuthenticatorPredicate(authenticator),
+                                                    disabled:
+                                                        availableAuthenticators?.length <= 1
+                                                        && isDefaultAuthenticatorPredicate(authenticator),
                                                     icon: "trash alternate",
                                                     onClick: handleAuthenticatorDeleteOnClick,
                                                     popoverText: "Remove Authenticator",
@@ -847,7 +854,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                                 templateId={ identityProvider.templateId }
                                                             />
                                                         ),
-                                                        hideChevron: isEmpty(authenticator.meta?.properties),
+                                                        hideChevron: (
+                                                            availableAuthenticators?.length <= 1
+                                                            || isEmpty(authenticator.meta?.properties)
+                                                        ),
                                                         icon: {
                                                             icon: resolveAuthenticatorIcon(authenticator)
                                                         },
@@ -856,7 +866,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                     }
                                                 ]
                                             }
-                                            accordionActiveIndexes={ accordionActiveIndexes }
+                                            accordionActiveIndexes={
+                                                availableAuthenticators?.length > 1
+                                                    ? accordionActiveIndexes
+                                                    : [ 0 ]
+                                            }
                                             accordionIndex={ index }
                                             handleAccordionOnClick={ handleAccordionOnClick }
                                             data-testid={ `${ testId }-accordion` }
