@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,18 +27,25 @@ export class AppConstants {
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
-     *
-     * @hideconstructor
      */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
+
+    /**
+     * Get the client origin. ex: `https://localhost:9443`.
+     *
+     * @returns The client origin.
+     */
+    public static getClientOrigin(): string {
+        return window["AppUtils"]?.getConfig()?.clientOrigin;
+    }
 
     /**
      * Get the main view base path.
      * If `this.getTenantQualifiedAppBasePath()` returns with just "/",
      * return empty string.
      *
-     * @return {string}
+     * @returns The main view base path.
      */
     public static getMainViewBasePath(): string {
         return this.getTenantQualifiedAppBasePath() !== "/"
@@ -49,7 +56,7 @@ export class AppConstants {
     /**
      * Get tenant qualified app base name. ex: `t/<BASENAME>`
      *
-     * @return {string}
+     * @returns The tenant qualified app base name.
      */
     public static getTenantQualifiedAppBasename(): string {
         return window["AppUtils"].getConfig().appBaseWithTenant;
@@ -58,7 +65,7 @@ export class AppConstants {
     /**
      * Get tenant qualified app base path. ex: `/t/<BASENAME>`
      *
-     * @return {string}
+     * @returns The tenant qualified app base path.
      */
     public static getTenantQualifiedAppBasePath(): string {
         return "/" + StringUtils.removeSlashesFromPath(this.getTenantQualifiedAppBasename());
@@ -67,7 +74,7 @@ export class AppConstants {
     /**
      * Get app base name. ex: `<BASENAME>`
      *
-     * @return {string}
+     * @returns The app base name.
      */
     public static getAppBasename(): string {
         return window["AppUtils"].getConfig().appBase;
@@ -76,7 +83,7 @@ export class AppConstants {
     /**
      * Get tenant qualified app base path. ex: `/<BASENAME>`
      *
-     * @return {string}
+     * @returns The tenant qualified app base path.
      */
     public static getAppBasePath(): string {
         return "/" + StringUtils.removeSlashesFromPath(this.getAppBasename());
@@ -85,7 +92,7 @@ export class AppConstants {
     /**
      * Get the app home path.
      *
-     * @return {string}
+     * @returns The app home path.
      */
     public static getAppHomePath(): string {
         return window["AppUtils"].getConfig().routes.home;
@@ -94,7 +101,7 @@ export class AppConstants {
     /**
      * Get the app login path.
      *
-     * @return {string}
+     * @returns The app login path.
      */
     public static getAppLoginPath(): string {
         return window[ "AppUtils" ].getConfig().routes.login;
@@ -103,7 +110,7 @@ export class AppConstants {
     /**
      * Get the app login path.
      *
-     * @return {string}
+     * @returns The app login path.
      */
     public static getAppLogoutPath(): string {
         return window[ "AppUtils" ].getConfig().routes.logout;
@@ -112,7 +119,7 @@ export class AppConstants {
     /**
      * Get the app Client ID.
      *
-     * @return {string}
+     * @returns The app Client ID.
      */
     public static getClientID(): string {
         return window["AppUtils"].getConfig().clientID;
@@ -121,7 +128,7 @@ export class AppConstants {
     /**
      * Get app theme configs.
      *
-     * @return {AppThemeConfigInterface}
+     * @returns App theme configs.
      */
     public static getAppTheme(): AppThemeConfigInterface {
         return window["AppUtils"].getConfig().ui?.theme;
@@ -130,7 +137,7 @@ export class AppConstants {
     /**
      * Get the tenant path. ex: `/t/wso2.com`.
      *
-     * @return {string}
+     * @returns The tenant path.
      */
     public static getTenantPath(): string {
         return window["AppUtils"].getConfig().tenantPath;
@@ -139,7 +146,7 @@ export class AppConstants {
     /**
      * Get the super tenant. ex: `carbon.super`.
      *
-     * @return {string}
+     * @returns The super tenant domain.
      */
     public static getSuperTenant(): string {
         return window["AppUtils"].getConfig().superTenant;
@@ -148,7 +155,7 @@ export class AppConstants {
     /**
      * Get the tenant. ex: `abc.com`.
      *
-     * @return {string}
+     * @returns The tenant domain.
      */
     public static getTenant(): string {
         return window["AppUtils"].getConfig().tenant;
@@ -156,9 +163,6 @@ export class AppConstants {
 
     /**
      * Set of keys used to enable/disable features.
-     * @constant
-     * @type {Map<string, string>}
-     * @default
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set("OVERVIEW_ACCOUNT_STATUS", "overview.accountStatus")
@@ -188,7 +192,7 @@ export class AppConstants {
     /**
      * Get all the app paths as a map.
      *
-     * @return {Map<string, string>}
+     * @returns App paths map.
      */
     public static getPaths(): Map<string, string> {
 
@@ -211,58 +215,37 @@ export class AppConstants {
 
     /**
      * Name of the app config file for the portal.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly APP_CONFIG_FILE_NAME: string = "app.config.json";
 
     /**
      * Application settings key in local storage.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly APPLICATION_SETTINGS_STORAGE_KEY: string = "application_settings";
 
     /**
      * Primary user store identifier.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly PRIMARY_USER_STORE_IDENTIFIER: string = "PRIMARY";
 
     /**
      * Portal SP description.
      * Should be same as the description defined in AppPortalConstants.java in components/common.
-     * @constant
-     * @type {string}
-     * @default
      */
     public static readonly PORTAL_SP_DESCRIPTION: string = "This is the my account application.";
 
     /**
-     * Error description when the user selects no in the logout prompt
-     * @constant
-     * @type {string}
-     * @default
+     * Error description when the user selects no in the logout prompt.
      */
     public static readonly USER_DENIED_LOGOUT_REQUEST: string = "End User denied the logout request";
 
     /**
-     * Error description when the user denies consent to the app
-     * @constant
-     * @type {string}
-     * @default
+     * Error description when the user denies consent to the app.
      */
     public static readonly USER_DENIED_CONSENT: string = "User denied the consent";
 
     /**
-     * Key of the time at which an auth error occurred in the session storage
-     * @constant
-     * @type {string}
-     * @default
+     * Key of the time at which an auth error occurred in the session storage.
      */
     public static readonly AUTH_ERROR_TIME: string = "authErrorTime";
 }
