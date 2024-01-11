@@ -243,6 +243,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
                     "delete": [],
                     "update": [
                         "internal_governance_update"
@@ -493,9 +496,14 @@
                     "read": [
                         "internal_application_mgt_view",
                         "internal_user_mgt_list",
+                        "internal_user_mgt_view",
+                        "internal_userstore_view",
                         "internal_role_mgt_view",
+                        "internal_group_mgt_view",
                         "internal_guest_mgt_invite_list",
-                        "internal_idp_view"
+                        "internal_idp_view",
+                        "internal_session_view",
+                        "internal_governance_view"
                     ],
                     "delete": [
                         "internal_guest_mgt_invite_delete"
@@ -585,6 +593,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
                     "delete": [],
                     "update": [
                         "internal_governance_update"
@@ -848,6 +859,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
                     "delete": [],
                     "create": [],
                     "read": [
@@ -862,6 +876,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
                     "delete": [],
                     "create": [],
                     "read": [
@@ -876,6 +893,9 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
                     "read": [
                         "internal_governance_view"
                     ],
