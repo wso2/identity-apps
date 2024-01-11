@@ -433,13 +433,17 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     let inboundAuthTypeLabelClass: string = "";
 
                     if (app.clientId) {
-                        inboundAuthKey = app.clientId;
-                        inboundAuthType = ApplicationInboundTypes.CLIENTID;
-                        inboundAuthTypeLabelClass = "client-id-label";
+                        if (!(app.issuer || app.realm)) {
+                            inboundAuthKey = app.clientId;
+                            inboundAuthType = ApplicationInboundTypes.CLIENTID;
+                            inboundAuthTypeLabelClass = "client-id-label";
+                        }
                     } else if (app.issuer) {
-                        inboundAuthKey = app.issuer;
-                        inboundAuthType = ApplicationInboundTypes.ISSUER;
-                        inboundAuthTypeLabelClass = "issuer-label";
+                        if (!(app.clientId || app.realm)) {
+                            inboundAuthKey = app.issuer;
+                            inboundAuthType = ApplicationInboundTypes.ISSUER;
+                            inboundAuthTypeLabelClass = "issuer-label";
+                        }
                     }
 
                     return (
