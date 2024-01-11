@@ -251,6 +251,7 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
                                             <Grid.Column width={ 11 } className="first-column">
                                                 <div className="associations-list-avatar-wrapper">
                                                     <AppAvatar
+                                                        hoverable={ false }
                                                         defaultIcon={ ConnectionIcon }
                                                         size="mini"
                                                         image={
