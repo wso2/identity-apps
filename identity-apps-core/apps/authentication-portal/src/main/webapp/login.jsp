@@ -1041,7 +1041,10 @@
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(userTenantDomain))%>')"
                                                     >
                                                         <img class="ui image" src="libs/themes/default/assets/images/branding/asgardeo-trifacta.svg">
-                                                        <span><%=Encode.forHtmlContent("Continue With Asgardeo")%></span>
+                                                        <span>
+                                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue.with")%>
+                                                            <%=Encode.forHtmlContent("Asgardeo")%>
+                                                        </span>
                                                 </button>
                                             </div>
                                         </div>
@@ -1059,7 +1062,10 @@
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(userTenantDomain))%>')"
                                                     >
                                                         <img class="ui image" src="libs/themes/default/assets/images/identity-providers/enterprise-idp-illustration.svg">
-                                                        <span><%=Encode.forHtmlContent("Continue With Organization")%></span>
+                                                        <span>
+                                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue.with")%>
+                                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization")%>
+                                                        </span>
                                                 </button>
                                             </div>
                                         </div>
