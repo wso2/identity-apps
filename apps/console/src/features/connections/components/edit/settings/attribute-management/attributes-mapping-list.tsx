@@ -22,9 +22,9 @@ import React, { FunctionComponent, ReactElement, ReactNode, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Icon, Table } from "semantic-ui-react";
 import { AttributeMappingListItem } from "./attribute-mapping-list-item";
-import { 
+import {
     ConnectionClaimInterface,
-    ConnectionCommonClaimMappingInterface 
+    ConnectionCommonClaimMappingInterface
 } from "../../../../models/connection";
 
 export interface AttributeMappingListProps extends TestableComponentInterface {
@@ -126,7 +126,7 @@ export const AttributeMappingList: FunctionComponent<AttributeMappingListProps> 
                                                 position="bottom left"
                                             ></Popup>
                                         </Table.Cell>
-                                        { (!readOnly || !editingMappings.includes(mapping?.claim?.id)) ? (
+                                        { !readOnly ? (
                                             <Table.Cell textAlign="right">
                                                 <Popup
                                                     trigger={ (
