@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="24" viewBox="0 0 14 12">
+  <path id="magic-link-icon" d="M2,12a2,2,0,0,1-2-2V4A2,2,0,0,1,2,2H12a2,2,0,0,1,2,2v6a2,2,0,0,1-2,2ZM.6,10A1.4,1.4,0,0,0,2,11.4H12A1.4,1.4,0,0,0,13.4,10V4.074L7.18,8.114a.419.419,0,0,1-.387,0L.6,4.093ZM6.987,7.525l6.3-4.088A1.4,1.4,0,0,0,12,2.6H2a1.4,1.4,0,0,0-1.288.851ZM11.75,8V7.25H11v-.5h.75V6h.5v.75H13v.5h-.75V8ZM9.7,4a.5.5,0,1,1,.5.5A.5.5,0,0,1,9.7,4Zm3.05-2V1.25H12V.75h.75V0h.5V.75H14v.5h-.75V2ZM7.7,1a.5.5,0,1,1,.5.5A.5.5,0,0,1,7.7,1Zm.2,0A.3.3,0,1,0,8.2.7.3.3,0,0,0,7.9,1Z" transform="translate(-0.001)" />
+</svg>
