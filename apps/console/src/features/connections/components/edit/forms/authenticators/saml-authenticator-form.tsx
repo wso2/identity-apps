@@ -215,8 +215,6 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         { key: 25, text: "Custom Authentication Context Class", value: "Custom Authentication Context Class" }
     ];
 
-    const authorizedRedirectURL: string = config?.deployment?.customServerHost + "/commonauth";
-
     /**
      * ISAuthnReqSigned, IsLogoutReqSigned these two fields states will be used by other
      * fields states. Basically, algorithms fields enable and disable states will be
