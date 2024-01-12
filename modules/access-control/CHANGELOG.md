@@ -1,5 +1,14 @@
 # @wso2is/access-control
 
+## 2.0.16
+
+### Patch Changes
+
+- [#5200](https://github.com/wso2/identity-apps/pull/5200) [`0d34235611`](https://github.com/wso2/identity-apps/commit/0d34235611229eee382218d2c1b00313cecc96cf) Thanks [@savindi7](https://github.com/savindi7)! - Remove Carbon log configuration capability and fix UI issues in the Remote Logging page.
+
+- Updated dependencies [[`1883513877`](https://github.com/wso2/identity-apps/commit/1883513877d53d42c73f7b8b1b6d7c2cf0e5d849)]:
+  - @wso2is/core@2.0.28
+
 ## 2.0.15
 
 ### Patch Changes
