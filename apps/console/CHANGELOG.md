@@ -1,5 +1,24 @@
 # @wso2is/console
 
+## 2.10.67
+
+### Patch Changes
+
+- [#5200](https://github.com/wso2/identity-apps/pull/5200) [`0d34235611`](https://github.com/wso2/identity-apps/commit/0d34235611229eee382218d2c1b00313cecc96cf) Thanks [@savindi7](https://github.com/savindi7)! - Remove Carbon log configuration capability and fix UI issues in the Remote Logging page.
+
+* [#5202](https://github.com/wso2/identity-apps/pull/5202) [`1883513877`](https://github.com/wso2/identity-apps/commit/1883513877d53d42c73f7b8b1b6d7c2cf0e5d849) Thanks [@brionmario](https://github.com/brionmario)! - Add passive STS cert hint
+
+* Updated dependencies [[`0d34235611`](https://github.com/wso2/identity-apps/commit/0d34235611229eee382218d2c1b00313cecc96cf), [`1883513877`](https://github.com/wso2/identity-apps/commit/1883513877d53d42c73f7b8b1b6d7c2cf0e5d849)]:
+  - @wso2is/react-components@2.0.35
+  - @wso2is/theme@2.0.55
+  - @wso2is/i18n@2.0.95
+  - @wso2is/access-control@2.0.16
+  - @wso2is/common@2.0.22
+  - @wso2is/dynamic-forms@2.0.26
+  - @wso2is/form@2.0.27
+  - @wso2is/forms@2.0.13
+  - @wso2is/core@2.0.28
+
 ## 2.10.66
 
 ### Patch Changes
