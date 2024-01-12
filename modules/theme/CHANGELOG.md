@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.0.54
+
+### Patch Changes
+
+- [#5194](https://github.com/wso2/identity-apps/pull/5194) [`05673b852f`](https://github.com/wso2/identity-apps/commit/05673b852f9b0fc80ec2b5e092d310c01a06ceee) Thanks [@brionmario](https://github.com/brionmario)! - Fix federated association image resolving issues.
+
 ## 2.0.53
 
 ### Patch Changes
