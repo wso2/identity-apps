@@ -2307,8 +2307,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     data-testid={ `${ testId }-access-token-revoke-token-checkbox` }
                                 />
                                 <Hint>
-                                    { t("console:develop.features.applications.forms.inboundOIDC.sections" +
-                                        ".accessToken.fields.revokeToken.hint") }
+                                    <Trans
+                                        i18nKey={
+                                            "console:develop.features.applications.forms.inboundOIDC.sections" +
+                                            ".accessToken.fields.revokeToken.hint"
+                                        }
+                                    >
+                                        Allow revoking tokens of this application when a bound IDP session gets
+                                        terminated through a user logout. Remember to include either
+                                        <Code withBackground>client_id</Code> or
+                                        <Code withBackground>id_token_hint</Code> in the logout request.
+                                    </Trans>
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>

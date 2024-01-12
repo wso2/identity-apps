@@ -2131,7 +2131,8 @@ export const console: ConsoleNS = {
                                     },
                                     revokeToken: {
                                         hint: "Allow revoking tokens of this application when a bound IDP session " +
-                                            "gets terminated through a user logout.",
+                                            "gets terminated through a user logout. Remember to include either <1>client_id</1> " +
+                                            "or <3>id_token_hint</3> in the logout request.",
                                         label: "Revoke tokens upon user logout"
                                     },
                                     type: {
