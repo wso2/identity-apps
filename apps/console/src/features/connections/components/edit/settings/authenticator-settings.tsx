@@ -518,7 +518,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
 
         const data: { authenticators: FederatedAuthenticatorInterface[], defaultAuthenticatorId: string } = {
             authenticators: authenticatorsList,
-            defaultAuthenticatorId: identityProvider.federatedAuthenticators.defaultAuthenticatorId
+            defaultAuthenticatorId:
+                authenticatorsList?.length !== 0
+                    ? identityProvider.federatedAuthenticators.defaultAuthenticatorId
+                    : ""
         };
 
         updateFederatedAuthenticators(data, identityProvider.id)
@@ -571,20 +574,6 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      */
     const handleAuthenticatorDeleteOnClick = (e: MouseEvent<HTMLDivElement>, id: string): void => {
         if (!id) {
-            return;
-        }
-
-        if (id == identityProvider.federatedAuthenticators.defaultAuthenticatorId) {
-            dispatch(addAlert({
-                description: t("console:develop.features.authenticationProvider" +
-                    ".notifications.deleteDefaultAuthenticator" +
-                    ".error.description"),
-                level: AlertLevels.WARNING,
-                message: t("console:develop.features.authenticationProvider.notifications." +
-                    "deleteDefaultAuthenticator" +
-                    ".error.message")
-            }));
-
             return;
         }
 
@@ -819,7 +808,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                             globalActions={ [
                                                 {
                                                     disabled:
-                                                        availableAuthenticators?.length <= 1
+                                                        availableAuthenticators?.length > 1
                                                         && isDefaultAuthenticatorPredicate(authenticator),
                                                     icon: "trash alternate",
                                                     onClick: handleAuthenticatorDeleteOnClick,
