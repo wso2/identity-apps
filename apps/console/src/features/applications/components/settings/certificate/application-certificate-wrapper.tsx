@@ -474,7 +474,6 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                     />
                                 )
                             }
-                            <>{ console.log(certEmpty + " " + PEMValue + " " + selectedCertType) }</>
                             {
                                 certEmpty
                                 && isEmpty(PEMValue)
