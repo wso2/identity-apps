@@ -124,7 +124,6 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
      * Set the certificate type
      */
     useEffect(()=> {
-
         if (certificate?.type){
             setSelectedCertType(certificate?.type);
         }
@@ -302,7 +301,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                 "advancedConfig.sections.certificate.fields.type.label")
                                 }
                                 name="certificateType"
-                                default={ CertificateTypeInterface.NONE }
+                                default={ selectedCertType }
                                 listen={
                                     (values: Map<string, FormValue>) => {
                                         setSelectedCertType(
@@ -475,6 +474,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                     />
                                 )
                             }
+                            <>{ console.log(certEmpty + " " + PEMValue + " " + selectedCertType) }</>
                             {
                                 certEmpty
                                 && isEmpty(PEMValue)
