@@ -316,7 +316,7 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
                                     (event: React.SyntheticEvent, value: string) => {
                                         const certType: CertificateTypeInterface = value as CertificateTypeInterface;
 
-                                        if(CertificateTypeInterface.NONE === certType && 
+                                        if(CertificateTypeInterface.NONE === certType &&
                                             (canDiscardCertificate && !canDiscardCertificate())){
                                             setShowInvalidOperationModal(true);
 
