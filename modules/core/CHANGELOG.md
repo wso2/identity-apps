@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.0.27
+
+### Patch Changes
+
+- [#5182](https://github.com/wso2/identity-apps/pull/5182) [`4480cc0094`](https://github.com/wso2/identity-apps/commit/4480cc0094268ca86030ff7d307bdb5fd2e6a763) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Conditionally display the regex field for attributes
+
 ## 2.0.26
 
 ### Patch Changes

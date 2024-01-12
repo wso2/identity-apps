@@ -1,5 +1,29 @@
 # @wso2is/console
 
+## 2.10.64
+
+### Patch Changes
+
+- [#5185](https://github.com/wso2/identity-apps/pull/5185) [`3795f19f0e`](https://github.com/wso2/identity-apps/commit/3795f19f0e5523655565c12533b694e1910c14aa) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Enable a single authenticator for custom connector
+
+* [#5192](https://github.com/wso2/identity-apps/pull/5192) [`3216354305`](https://github.com/wso2/identity-apps/commit/3216354305e6f32ae97596f09871379cc67e3ad3) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Add a text field for the ACS Url
+
+- [#5166](https://github.com/wso2/identity-apps/pull/5166) [`ad47e5b21f`](https://github.com/wso2/identity-apps/commit/ad47e5b21f80e54a74058a453255902255d5b925) Thanks [@ChanikaRuchini](https://github.com/ChanikaRuchini)! - Allow assignment of only RBAC-authorized APIs to application roles
+
+* [#5182](https://github.com/wso2/identity-apps/pull/5182) [`4480cc0094`](https://github.com/wso2/identity-apps/commit/4480cc0094268ca86030ff7d307bdb5fd2e6a763) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Conditionally display the regex field for attributes
+
+- [#5187](https://github.com/wso2/identity-apps/pull/5187) [`1e820725ea`](https://github.com/wso2/identity-apps/commit/1e820725eaddc252ec9540661ebe79cabd4a7d7a) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Fix width issue in attribute mapping search of custom connector
+
+- Updated dependencies [[`4480cc0094`](https://github.com/wso2/identity-apps/commit/4480cc0094268ca86030ff7d307bdb5fd2e6a763)]:
+  - @wso2is/core@2.0.27
+  - @wso2is/access-control@2.0.15
+  - @wso2is/common@2.0.21
+  - @wso2is/dynamic-forms@2.0.25
+  - @wso2is/form@2.0.26
+  - @wso2is/forms@2.0.12
+  - @wso2is/i18n@2.0.93
+  - @wso2is/react-components@2.0.34
+
 ## 2.10.63
 
 ### Patch Changes
