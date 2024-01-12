@@ -237,6 +237,9 @@ export const ApplicationCertificateWrapper: FunctionComponent<ApplicationWrapper
             case SupportedAuthProtocolTypes.SAML:
                 return t("console:develop.features.applications.forms.advancedConfig" +
                     ".sections.certificate.hint.customSaml");
+            case SupportedAuthProtocolTypes.WS_FEDERATION:
+                return t("console:develop.features.applications.forms.advancedConfig" +
+                    ".sections.certificate.hint.customPassiveSTS");
             default:
                 return null;
         }

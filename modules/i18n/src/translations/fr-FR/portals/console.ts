@@ -1905,6 +1905,7 @@ export const console: ConsoleNS = {
                                 hint: {
                                     customOidc: "Ce certificat est utilisé pour chiffrer le <1>id_token</1>" +
                                         " renvoyé après l'authentification.",
+                                    customPassiveSTS: "Ce certificat est utilisé pour valider les signatures des demandes signées.",
                                     customSaml: "Ce certificat permet de valider les signatures des " +
                                         "requêtes signées et de chiffrer les assertions SAML renvoyées " +
                                         "après authentification."
