@@ -328,6 +328,7 @@ export const identityProviderConfig: IdentityProviderConfig = {
         github: true,
         google: true,
         hypr: true,
+        iproov: true,
         microsoft: true,
         oidc: true,
         organizationEnterprise: true,

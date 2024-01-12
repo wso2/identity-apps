@@ -4180,6 +4180,48 @@ export const console: ConsoleNS = {
                                 }
                             }
                         },
+                        iproov: {
+                            baseUrl: {
+                                hint: "iProov base URL",
+                                label: "Base URL",
+                                placeholder: "Enter Base URL.",
+                                validations: {
+                                    required: "Base URL is a required field."
+                                }
+                            },
+                            oauthUsername: {
+                                hint: "OAuth username from iProov application.",
+                                label: "OAuth Username",
+                                placeholder: "Enter OAuth username from iProov application.",
+                                validations: {
+                                    required: "OAuth username is a required field."
+                                }
+                            },
+                            oauthPassword: {
+                                hint: "OAuth password from iProov application.",
+                                label: "OAuth Password",
+                                placeholder: "Enter OAuth password from iProov application.",
+                                validations: {
+                                    required: "OAuth password is a required field."
+                                }
+                            },
+                            apiKey: {
+                                hint: "API Key from iProov application",
+                                label: "API Key",
+                                placeholder: "Enter API Key from iProov application.",
+                                validations: {
+                                    required: "API Key is a required field."
+                                }
+                            },
+                            apiSecret: {
+                                hint: "API Secret from iProov application.",
+                                label: "API Secret",
+                                placeholder: "Enter API Secret from iProov application.",
+                                validations: {
+                                    required: "API Secret is a required field."
+                                }
+                            },
+                        },
                         saml: {
                             AuthRedirectUrl: {
                                 ariaLabel: "SAML assertion consumer service URL",
@@ -5420,6 +5462,40 @@ export const console: ConsoleNS = {
                             preRequisites: {
                                 rpDescription: "Before you begin, create a relying party application in the <1>HYPR control center</1>, and obtain the application ID.",
                                 tokenDescription: "You also have to obtain an <1>API token</1> for your application created on HYPR.",
+                                heading: "Prerequisite"
+                            }
+                        }
+                    },
+                    iproov: {
+                        wizardHelp: {
+                            baseUrl: {
+                                description: "Provide the <1>base URL</1>  of your iProov server deployment.",
+                                heading: "Base URL"
+                            },
+                            oauthUsername: {
+                                description: "Provide the <1>OAuth Username</1> of the application registered in the iProov control center.",
+                                heading: "OAUTH Username"
+                            },
+                            oauthPassword: {
+                                description: "Provide the <1>OAuth Password</1> of the application registered in the iProov control center.",
+                                heading: "OAUTH Password"
+                            },
+                            apiKey: {
+                                description: "Provide the <1>API Key</1> of the application registered in the iProov control center.",
+                                heading: "API Key"
+                            },
+                            apiSecret: {
+                                description: "Provide the <1>API Secret</1> of the application registered in the iProov control center.",
+                                heading: "API Secret"
+                            },
+                            heading: "Help",
+                            name: {
+                                connectionDescription: "Provide a unique name for the connection.",
+                                heading: "Name",
+                                idpDescription: "Provide a unique name for the connection."
+                            },
+                            preRequisites: {
+                                rpDescription: "Before you begin, create an application in the <1>iProov control center</1>, and obtain the application ID.",
                                 heading: "Prerequisite"
                             }
                         }

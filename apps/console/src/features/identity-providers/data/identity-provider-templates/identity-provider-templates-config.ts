@@ -30,6 +30,7 @@ import FacebookIDPTemplate from "./templates/facebook/facebook.json";
 import GitHubIDPTemplate from "./templates/github/github.json";
 import GoogleIDPTemplate from "./templates/google/google.json";
 import HYPRIDPTemplate from "./templates/hypr/hypr.json";
+import IproovIDPTemplate from "./templates/iproov/iproov.json";
 import MicrosoftIDPTemplate from "./templates/microsoft/microsoft.json";
 import EnterpriseOIDCIdentityProviderTemplate
     from "./templates/oidc-identity-provider/enterprise-oidc-identity-provider.json";
@@ -174,6 +175,15 @@ export const getIdentityProviderTemplatesConfig = (): IdentityProviderTemplatesC
                                 ?? identityProviderConfig.templates.hypr,
                             id: HYPRIDPTemplate.id,
                             resource: HYPRIDPTemplate
+                        },
+                        {
+                            content: {
+                                wizardHelp: lazy(() => import("./templates/iproov/create-wizard-help"))
+                            },
+                            enabled: window["AppUtils"].getConfig().ui.identityProviderTemplates?.iproov?.enabled
+                                ?? identityProviderConfig.templates.iproov,
+                            id: IproovIDPTemplate.id,
+                            resource: IproovIDPTemplate
                         },
                         {
                             content: {

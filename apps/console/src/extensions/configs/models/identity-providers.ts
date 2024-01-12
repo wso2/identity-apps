@@ -144,6 +144,7 @@ export interface IdentityProviderConfig {
         google: boolean;
         github: boolean;
         hypr: boolean;
+        iproov: boolean;
         microsoft: boolean;
         enterprise: boolean;
         saml: boolean;
