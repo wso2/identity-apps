@@ -989,8 +989,7 @@
                 "enabled": true,
                 "scopes": {
                     "create": [
-                        "internal_role_mgt_create",
-                        "internal_application_mgt_view"
+                        "internal_role_mgt_create"
                     ],
                     "feature": [
                         "console:roles"
@@ -999,16 +998,17 @@
                         "internal_user_mgt_view",
                         "internal_role_mgt_view",
                         "internal_userstore_view",
-                        "internal_group_mgt_view"
+                        "internal_group_mgt_view",
+                        "internal_application_mgt_view",
+                        "internal_user_mgt_list",
+                        "internal_idp_view",
+                        "internal_api_resource_view"
                     ],
                     "update": [
                         "internal_role_mgt_update"
                     ],
                     "delete": [
-                        "internal_role_mgt_delete",
-                        "internal_application_mgt_view",
-                        "internal_user_mgt_view",
-                        "internal_group_mgt_view"
+                        "internal_role_mgt_delete"
                     ]
                 }
             },
