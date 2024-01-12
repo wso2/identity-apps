@@ -438,7 +438,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
     return (
         <PageLayout
             title={ t("extensions:develop.emailProviders.heading") }
-            pageTitle={ "test" }
+            pageTitle={ t("extensions:develop.emailProviders.heading") }
             description={ resolvePageDescription() }
             bottomMargin={ false }
             contentTopMargin={ false }
