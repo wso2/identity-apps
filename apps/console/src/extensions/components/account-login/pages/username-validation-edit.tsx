@@ -75,9 +75,8 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
     const [ isSubmitting, setSubmitting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<ValidationFormInterface>(undefined);
     const [ isApplicationRedirect, setApplicationRedirect ] = useState<boolean>(false);
-    const [ currentValues, setCurrentValues ] = useState<ValidationFormInterface>(
-        initialFormValues
-    );
+    const [ currentValues, setCurrentValues ] = useState<ValidationFormInterface>(initialFormValues);
+    const [ pageLoaded, setPageLoaded ] = useState<boolean>(false);
 
     const {
         data: validationData,
@@ -98,10 +97,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
         }
 
         initializeForm();
-    }, [
-        validationData,
-        isValidationLoading
-    ]);
+    }, [ validationData, isValidationLoading ]);
 
     useEffect(() => {
         if (initialFormValues !== undefined) {
@@ -109,6 +105,13 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
         }
 
     }, [ initialFormValues ]);
+
+    useEffect(() => {
+        if (currentValues !== undefined) {
+            setTimeout(setPageLoaded, 200, true);
+        }
+
+    }, [ currentValues ]);
 
     useEffect(() => {
         const locationState: unknown = history.location.state;
@@ -285,7 +288,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
         return null;
     };
 
-    const handleUpdateUserameValidationData = (values: ValidationFormInterface): void => {
+    const handleUpdateUsernameValidationData = (values: ValidationFormInterface): void => {
 
         if (!validateForm(values)) {
             return;
@@ -358,7 +361,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 16 }>
                             <EmphasizedSegment className="form-wrapper" padded={ "very" }>
-                                { !isValidationLoading
+                                { pageLoaded
                                     ? (
                                         <div className="validation-configurations password-validation-configurations">
                                             <Form
@@ -368,7 +371,7 @@ export const UsernameValidationEditPage: FunctionComponent<UsernameValidationEdi
                                                 validate={ null }
                                                 onSubmit={
                                                     (values: ValidationFormInterface) =>
-                                                        handleUpdateUserameValidationData(values)
+                                                        handleUpdateUsernameValidationData(values)
                                                 }
                                             >
                                                 <div>
