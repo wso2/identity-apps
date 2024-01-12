@@ -1,5 +1,16 @@
 # @wso2is/console
 
+## 2.10.66
+
+### Patch Changes
+
+- [#5197](https://github.com/wso2/identity-apps/pull/5197) [`9102f67f24`](https://github.com/wso2/identity-apps/commit/9102f67f2409ab375c8ce084b8fdf4b9a8323502) Thanks [@dasuni-30](https://github.com/dasuni-30)! - Allow federated authenticator deletion when there is only one authenticator
+
+* [#5201](https://github.com/wso2/identity-apps/pull/5201) [`681e94273b`](https://github.com/wso2/identity-apps/commit/681e94273bc7561398ab02feeebba678984e3f88) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix application certificate delete issue
+
+* Updated dependencies [[`05673b852f`](https://github.com/wso2/identity-apps/commit/05673b852f9b0fc80ec2b5e092d310c01a06ceee)]:
+  - @wso2is/theme@2.0.54
+
 ## 2.10.65
 
 ### Patch Changes
