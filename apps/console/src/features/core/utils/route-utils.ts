@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -273,7 +273,7 @@ export class RouteUtils {
             name: "Branding"
         };
 
-        const overview: NavCategory= {
+        const overview: NavCategory = {
             id: "overview",
             order: 0
         };
@@ -293,18 +293,18 @@ export class RouteUtils {
             order: 3
         };
 
-        const monitoring: NavCategory = {
-            id: "monitoring",
+        const preferences: NavCategory = {
+            id: "preferences",
             order: 4
         };
 
-        const settings: NavCategory = {
-            id: "insights",
+        const monitoring: NavCategory = {
+            id: "monitoring",
             order: 5
         };
 
-        const other: NavCategory = {
-            id: "other",
+        const settings: NavCategory = {
+            id: "settings",
             order: 6
         };
 
@@ -322,29 +322,31 @@ export class RouteUtils {
         const CategoryMappedRoutes: Omit<RouteInterface, "showOnSidePanel">[] = [
             {
                 category: overview,
-                id: "gettingStarted"
+                id: "gettingStarted",
+                order: 0
             },
             {
-                category: monitoring,
-                id: "insights"
+                category: overview,
+                id: "insights",
+                order: 1
             },
             {
                 category: build,
                 id: "applications",
-                order: 1,
+                order: 0,
                 selected: history.location.pathname.includes("applications")
             },
             {
                 category: build,
-                id: "apiResources",
-                order: 3,
-                selected: history.location.pathname.includes("/api-resources")
+                id: "identityProviders",
+                order: 1,
+                selected: history.location.pathname.includes("/connections")
             },
             {
                 category: build,
-                id: "identityProviders",
+                id: "apiResources",
                 order: 2,
-                selected: history.location.pathname.includes("/connections")
+                selected: history.location.pathname.includes("/api-resources")
             },
             {
                 category: organizations,
@@ -410,48 +412,41 @@ export class RouteUtils {
                 parent: branding
             },
             {
-                category: other,
+                category: preferences,
+                id: "loginAndRegistration",
+                selected: pathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
+            },
+            {
+                category: preferences,
                 id: "notificationChannels",
                 selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
                     history.location.pathname === AppConstants.getPaths().get("SMS_PROVIDER") ||
                     history.location.pathname === AppConstants.getPaths().get("EMAIL_AND_SMS")
             },
             {
+                category: monitoring,
+                id: "logs"
+            },
+            {
+                category: monitoring,
+                id: "analytics"
+            },
+            {
                 category: settings,
-                id: "administrators"
+                id: "administrators",
+                order: 0
             },
             {
                 category: settings,
                 id: "consoleSettings",
+                order: 1,
                 selected: history.location.pathname.includes("/settings")
             },
             {
                 category: settings,
                 id: "server",
+                order: 2,
                 selected: history.location.pathname.includes("server")
-            },
-            {
-                category: build,
-                id: "emailProviders",
-                parent: branding
-            },
-            {
-                category: monitoring,
-                id: "logs"
-            },
-            {
-                category: build,
-                id: "smsProviders",
-                parent: branding
-            },
-            {
-                category: settings,
-                id: "loginAndRegistration",
-                selected: pathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
-            },
-            {
-                category: other,
-                id: "analytics"
             }
         ];
 
