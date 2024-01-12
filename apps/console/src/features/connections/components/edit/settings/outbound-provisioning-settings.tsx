@@ -153,10 +153,11 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                             resolve({
                                 data: data,
                                 id: connectorId,
-                                localMeta: OutboundConnectorsLocalMetadata
-                                    .find((meta: OutboundProvisioningConnectorMetaDataInterface) => {
+                                localMeta: OutboundConnectorsLocalMetadata?.find(
+                                    (meta: OutboundProvisioningConnectorMetaDataInterface) => {
                                         return meta.connectorId === connectorId;
-                                    }),
+                                    }
+                                ),
                                 meta: meta
                             });
                         })
