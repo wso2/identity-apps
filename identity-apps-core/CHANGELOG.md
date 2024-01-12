@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 2.0.116
+
+### Patch Changes
+
+- [#5190](https://github.com/wso2/identity-apps/pull/5190) [`a556419787`](https://github.com/wso2/identity-apps/commit/a5564197873cf051eaf4182218b28c10cef088f9) Thanks [@jcgarciaa](https://github.com/jcgarciaa)! - Fix enterprise login buttons localization
+
 ## 2.0.115
 
 ### Patch Changes
