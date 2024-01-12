@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.10.72
+
+### Patch Changes
+
+- [#5215](https://github.com/wso2/identity-apps/pull/5215) [`4a1eb0b6ca`](https://github.com/wso2/identity-apps/commit/4a1eb0b6cac18af93f700e683fff465bd7c094a5) Thanks [@brionmario](https://github.com/brionmario)! - Fix Console Maven Release
+
 ## 2.10.71
 
 ### Patch Changes
