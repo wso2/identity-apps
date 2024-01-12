@@ -183,8 +183,6 @@ export const AppView: FunctionComponent<RouteComponentProps> = (
             return;
         }
 
-        console.log(filteredRoutes);
-
         if (initLoad.current) {
             // Try to handle any un-expected routing issues. Returns a void if no issues are found.
             RouteUtils.gracefullyHandleRouting(

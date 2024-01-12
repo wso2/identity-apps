@@ -77,7 +77,9 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         let originalConnectors: Array<any> = GovernanceConnectorUtils.getPredefinedConnectorCategories();
 
         if (!featureConfig?.organizationDiscovery?.enabled ||
-            !UIConfig?.legacyMode?.loginAndRegistrationEmailDomainDiscovery) {
+            !UIConfig?.legacyMode?.loginAndRegistrationEmailDomainDiscovery ||
+            !hasRequiredScopes(featureConfig?.organizationDiscovery,
+                featureConfig?.organizationDiscovery?.scopes?.read, allowedScopes)) {
             originalConnectors = originalConnectors.filter(
                 (category: any) => category.id !== ServerConfigurationsConstants.ORGANIZATION_SETTINGS_CATEGORY_ID
             );

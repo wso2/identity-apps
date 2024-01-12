@@ -381,6 +381,31 @@ export class AccessControlConstants {
     public static readonly ORGANIZATION_READ: string = "organization:read";
 
     /**
+     * Organization Discovery feature permission.
+     */
+    public static readonly ORGANIZATION_DISCOVERY: string = "organization";
+
+    /**
+     * Organization Discovery write permission.
+     */
+    public static readonly ORGANIZATION_DISCOVERY_WRITE: string = "organizationDiscovery:write";
+
+    /**
+     * Organization Discovery edit permission.
+     */
+    public static readonly ORGANIZATION_DISCOVERY_EDIT: string = "organizationDiscovery:edit";
+
+    /**
+     * Organization Discovery delete permission.
+     */
+    public static readonly ORGANIZATION_DISCOVERY_DELETE: string = "organizationDiscovery:delete";
+
+    /**
+     * Organization Discovery read permission.
+     */
+    public static readonly ORGANIZATION_DISCOVERY_READ: string = "organizationDiscovery:read";
+
+    /**
      * Organization feature permission.
      */
     public static readonly ORGANIZATION_ROLES: string = "organization_roles";

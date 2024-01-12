@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlConstants, Show } from "@wso2is/access-control";
+import { Show } from "@wso2is/access-control";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     FeatureAccessConfigInterface,
@@ -37,6 +37,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent } fro
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
+import { AccessControlConstants } from "../../access-control/constants/access-control";
 import {
     AppConstants,
     AppState,
@@ -267,7 +268,7 @@ const DiscoverableOrganizationsList: FunctionComponent<DiscoverableOrganizations
                     className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
                     action={
                         onEmptyListPlaceholderActionClick && (
-                            <Show when={ AccessControlConstants.ORGANIZATION_WRITE }>
+                            <Show when={ AccessControlConstants.ORGANIZATION_DISCOVERY_WRITE }>
                                 <PrimaryButton
                                     onClick={ () => {
                                         eventPublisher.publish(componentId + "-click-assign-email-domain-button");

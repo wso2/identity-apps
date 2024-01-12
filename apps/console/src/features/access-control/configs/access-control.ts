@@ -229,6 +229,32 @@ export class AccessControlUtils {
                 allowedScopes
             ),
 
+            [ AccessControlConstants.ORGANIZATION_DISCOVERY ]: hasRequiredScopes(
+                featureConfig?.organizationDiscovery,
+                featureConfig?.organizationDiscovery?.scopes?.feature,
+                allowedScopes
+            ),
+            [ AccessControlConstants.ORGANIZATION_DISCOVERY_READ ]: hasRequiredScopes(
+                featureConfig?.organizationDiscovery,
+                featureConfig?.organizationDiscovery?.scopes?.read,
+                allowedScopes
+            ),
+            [ AccessControlConstants.ORGANIZATION_DISCOVERY_EDIT ]: hasRequiredScopes(
+                featureConfig?.organizationDiscovery,
+                featureConfig?.organizationDiscovery?.scopes?.update,
+                allowedScopes
+            ),
+            [ AccessControlConstants.ORGANIZATION_DISCOVERY_DELETE ]: hasRequiredScopes(
+                featureConfig?.organizationDiscovery,
+                featureConfig?.organizationDiscovery?.scopes?.delete,
+                allowedScopes
+            ),
+            [ AccessControlConstants.ORGANIZATION_DISCOVERY_WRITE ]: hasRequiredScopes(
+                featureConfig?.organizationDiscovery,
+                featureConfig?.organizationDiscovery?.scopes?.create,
+                allowedScopes
+            ),
+
             [ AccessControlConstants.ORGANIZATION_ROLES ]: hasRequiredScopes(
                 featureConfig?.organizationsRoles,
                 featureConfig?.organizationsRoles?.scopes?.feature,
