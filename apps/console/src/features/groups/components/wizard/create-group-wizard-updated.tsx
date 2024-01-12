@@ -565,7 +565,7 @@ export const CreateGroupWizardUpdated: FunctionComponent<CreateGroupProps> =
                 <Heading as="h6">Create new group and add users to the group.</Heading>
             </Modal.Header>
             {
-                showStepper && (
+                showStepper && !isRoleReadOnly && (
                     <Modal.Content className="steps-container">
                         <Steps.Group
                             current={ currentStep }
