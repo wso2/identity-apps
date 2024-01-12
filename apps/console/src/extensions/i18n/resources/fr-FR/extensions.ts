@@ -2066,7 +2066,7 @@ export const extensions: Extensions = {
                 fromAddress: {
                     label: "De l'adresse",
                     placeholder: "entrez une adresse email",
-                    hint: "Pour des raisons de sécurité, nous prenons actuellement en charge le port <1>587</1> uniquement."
+                    hint: "L'adresse from est l'adresse e-mail que vous souhaitez apparaître comme l'expéditeur de vos e-mails sortants.Cela devrait être une adresse e-mail auquel vous avez accès."
                 },
                 replyToAddress: {
                     label: "Répondre à l'adresse",
